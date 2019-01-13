@@ -1,5 +1,7 @@
 package org.hl7.fhir.dstu3.formats;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * org.hl7.fhir.dstu3
@@ -19,7 +21,6 @@ package org.hl7.fhir.dstu3.formats;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,30 +52,11 @@ package org.hl7.fhir.dstu3.formats;
 */
 
 // Generated on Mon, Apr 17, 2017 08:38+1000 for FHIR v3.0.1
-
-import org.hl7.fhir.dstu3.model.DateType;
-import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.CodeType;
-import org.hl7.fhir.dstu3.model.StringType;
-import org.hl7.fhir.dstu3.model.IntegerType;
-import org.hl7.fhir.dstu3.model.OidType;
-import org.hl7.fhir.dstu3.model.UriType;
-import org.hl7.fhir.dstu3.model.UuidType;
-import org.hl7.fhir.dstu3.model.InstantType;
-import org.hl7.fhir.dstu3.model.BooleanType;
-import org.hl7.fhir.dstu3.model.Base64BinaryType;
-import org.hl7.fhir.dstu3.model.UnsignedIntType;
-import org.hl7.fhir.dstu3.model.MarkdownType;
-import org.hl7.fhir.dstu3.model.TimeType;
-import org.hl7.fhir.dstu3.model.IdType;
-import org.hl7.fhir.dstu3.model.PositiveIntType;
-import org.hl7.fhir.dstu3.model.DecimalType;
 import org.hl7.fhir.dstu3.model.*;
-import org.xmlpull.v1.*;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.FHIRException;
-import java.io.IOException;
+import org.hl7.fhir.utilities.Utilities;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class XmlParser extends XmlParserBase {
 

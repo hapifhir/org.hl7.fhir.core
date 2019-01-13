@@ -25,17 +25,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.utilities.graphql.Package;
-import org.hl7.fhir.utilities.graphql.Selection;
-import org.hl7.fhir.utilities.graphql.StringValue;
-import org.hl7.fhir.utilities.graphql.Value;
-import org.hl7.fhir.utilities.graphql.Variable;
-import org.hl7.fhir.utilities.graphql.VariableValue;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.model.BackboneElement;
@@ -52,10 +44,6 @@ import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.utils.GraphQLEngine.SearchEdge;
-import org.hl7.fhir.r4.utils.GraphQLEngine.SearchWrapper;
-import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.GraphQLEngine.IGraphQLStorageServices.ReferenceResolution;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
@@ -70,6 +58,12 @@ import org.hl7.fhir.utilities.graphql.NumberValue;
 import org.hl7.fhir.utilities.graphql.ObjectValue;
 import org.hl7.fhir.utilities.graphql.Operation;
 import org.hl7.fhir.utilities.graphql.Operation.OperationType;
+import org.hl7.fhir.utilities.graphql.Package;
+import org.hl7.fhir.utilities.graphql.Selection;
+import org.hl7.fhir.utilities.graphql.StringValue;
+import org.hl7.fhir.utilities.graphql.Value;
+import org.hl7.fhir.utilities.graphql.Variable;
+import org.hl7.fhir.utilities.graphql.VariableValue;
 
 public class GraphQLEngine {
   

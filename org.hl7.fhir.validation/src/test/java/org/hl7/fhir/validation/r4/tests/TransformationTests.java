@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.r4.tests;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 
 import org.hl7.fhir.r4.test.support.TestingUtilities;

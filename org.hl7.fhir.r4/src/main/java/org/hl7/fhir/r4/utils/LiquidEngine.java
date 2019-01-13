@@ -1,5 +1,10 @@
 package org.hl7.fhir.r4.utils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*-
  * #%L
  * org.hl7.fhir.r4
@@ -23,15 +28,14 @@ package org.hl7.fhir.r4.utils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.ExpressionNode;
+import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.Tuple;
+import org.hl7.fhir.r4.model.TypeDetails;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LiquidEngine implements IEvaluationContext {
 

@@ -1,10 +1,9 @@
 package org.hl7.fhir.r4.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.SnomedExpressions;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

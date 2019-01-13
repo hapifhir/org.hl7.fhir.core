@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4.utils;
 
+import org.hl7.fhir.exceptions.FHIRException;
+
 /*-
  * #%L
  * org.hl7.fhir.r4
@@ -23,7 +25,6 @@ package org.hl7.fhir.r4.utils;
 
 import org.hl7.fhir.r4.model.ExpressionNode;
 import org.hl7.fhir.r4.model.ExpressionNode.SourceLocation;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
 // shared lexer for concrete syntaxes 

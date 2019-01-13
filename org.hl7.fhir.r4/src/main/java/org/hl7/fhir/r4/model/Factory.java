@@ -26,9 +26,9 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.UUID;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 

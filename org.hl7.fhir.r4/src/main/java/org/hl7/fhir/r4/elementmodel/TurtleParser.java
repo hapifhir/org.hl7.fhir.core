@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
@@ -44,9 +46,6 @@ import org.hl7.fhir.r4.utils.formats.Turtle.TTLList;
 import org.hl7.fhir.r4.utils.formats.Turtle.TTLLiteral;
 import org.hl7.fhir.r4.utils.formats.Turtle.TTLObject;
 import org.hl7.fhir.r4.utils.formats.Turtle.TTLURL;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;

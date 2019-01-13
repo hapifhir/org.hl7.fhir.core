@@ -24,7 +24,6 @@ package org.hl7.fhir.r4.formats;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.util.Stack;
 
 import org.hl7.fhir.utilities.Utilities;
 

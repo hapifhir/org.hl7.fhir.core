@@ -24,6 +24,9 @@ package org.hl7.fhir.r4.context;
 import java.util.List;
 import java.util.Set;
 
+import org.fhir.ucum.UcumService;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.ParserType;
 import org.hl7.fhir.r4.model.CodeSystem;
@@ -39,15 +42,10 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureMap;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.IResourceValidator;
-import org.fhir.ucum.UcumEssenceService;
-import org.fhir.ucum.UcumService;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 

@@ -21,7 +21,6 @@ package org.hl7.fhir.r4.test.support;
  */
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

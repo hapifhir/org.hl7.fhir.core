@@ -25,13 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.hl7.fhir.r4.elementmodel.Element;
-import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r4.elementmodel.Element;
+import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import com.google.gson.JsonObject;

@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Stack;
 
-import org.hl7.fhir.r4.utils.formats.JsonTrackingParser.PresentedBigDecimal;
 import org.hl7.fhir.utilities.Utilities;
 
 import com.google.gson.JsonArray;

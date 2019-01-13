@@ -4,25 +4,14 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.CodeableConcept.*;
-import org.hl7.fhir.r4.model.CodeableConcept.*;
 import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Coding.*;
-import org.hl7.fhir.r4.model.Coding.*;
 import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Enumerations.*;
 import org.hl7.fhir.r4.model.Narrative;
-import org.hl7.fhir.r4.model.Narrative.*;
+import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Observation.*;
+import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Quantity.*;
 import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Reference.*;
-import org.hl7.fhir.r4.model.Reference.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class GeneratorTestFragments {

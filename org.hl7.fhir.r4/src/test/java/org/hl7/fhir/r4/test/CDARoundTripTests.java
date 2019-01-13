@@ -1,7 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import static org.junit.Assert.*;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

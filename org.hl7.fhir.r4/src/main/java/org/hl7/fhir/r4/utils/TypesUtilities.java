@@ -24,7 +24,6 @@ package org.hl7.fhir.r4.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r4.utils.TypesUtilities.TypeClassification;
 import org.hl7.fhir.utilities.Utilities;
 
 

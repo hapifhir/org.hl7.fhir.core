@@ -20,7 +20,6 @@ package org.hl7.fhir.r4.model;
  * #L%
  */
 
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -51,16 +50,15 @@ package org.hl7.fhir.r4.model;
 */
 
 // Generated on Mon, Mar 5, 2018 18:26+1100 for FHIR v3.2.0
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Block;
-import org.hl7.fhir.instance.model.api.*;
-import org.hl7.fhir.exceptions.FHIRException;
+import ca.uhn.fhir.model.api.annotation.Description;
 /**
  * Base definition for all elements that are defined inside a resource - but not those in a data type.
  */
