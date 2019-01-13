@@ -1,0 +1,167 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ca.uhn.hapi.fhir</groupId>
+		<artifactId>hapi-deployable-pom</artifactId>
+		<version>3.7.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.hl7.fhir</groupId>
+	<artifactId>org.hl7.fhir.core</artifactId>
+
+	<packaging>pom</packaging>
+
+	<name>HL7 Core Artifacts</name>
+
+	<organization>
+		<name>Health Level 7</name>
+		<url>http://hl7.org</url>
+	</organization>
+
+	<dependencies>
+
+		<!-- Use logback for tests -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<dependencyManagement>
+
+		<dependencies>
+			<dependency>
+				<groupId>com.atlassian.commonmark</groupId>
+				<artifactId>commonmark</artifactId>
+				<version>0.12.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.atlassian.commonmark</groupId>
+				<artifactId>commonmark-ext-gfm-tables</artifactId>
+				<version>0.12.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.rjeschke</groupId>
+				<artifactId>txtmark</artifactId>
+				<version>0.13</version>
+			</dependency>
+		</dependencies>
+
+	</dependencyManagement>
+
+	<modules>
+		<module>org.hl7.fhir.utilities</module>
+		<module>org.hl7.fhir.dstu2</module>
+		<module>org.hl7.fhir.dstu2016may</module>
+		<module>org.hl7.fhir.dstu3</module>
+		<module>org.hl7.fhir.r4</module>
+		<!--<module>org.hl7.fhir.rdf</module>-->
+		<module>org.hl7.fhir.convertors</module>
+		<module>org.hl7.fhir.validation</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.basepom.maven</groupId>
+				<artifactId>duplicate-finder-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+				<configuration>
+					<printEqualFiles>false</printEqualFiles>
+					<failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
+					<failBuildInCaseOfEqualContentConflict>true</failBuildInCaseOfEqualContentConflict>
+					<failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>
+					<checkCompileClasspath>true</checkCompileClasspath>
+					<checkRuntimeClasspath>false</checkRuntimeClasspath>
+					<checkTestClasspath>false</checkTestClasspath>
+					<skip>false</skip>
+					<quiet>false</quiet>
+					<preferLocal>true</preferLocal>
+					<useResultFile>true</useResultFile>
+					<resultFileMinClasspathCount>2</resultFileMinClasspathCount>
+					<resultFile>${project.build.directory}/duplicate-finder-result.xml</resultFile>
+					<ignoredDependencies>
+						<dependency>
+							<groupId>javax.el</groupId>
+							<artifactId>javax.el-api</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>javax.mail</groupId>
+							<artifactId>javax.mail-api</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>javax.activation</groupId>
+							<artifactId>javax.activation-api</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.helger</groupId>
+							<artifactId>ph-schematron</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.jscience</groupId>
+							<artifactId>jscience</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.springframework</groupId>
+							<artifactId>spring-jcl</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.springframework</groupId>
+							<artifactId>spring-jcl</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.code.findbugs</groupId>
+							<artifactId>annotations</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.derby</groupId>
+							<artifactId>derbyclient</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.derby</groupId>
+							<artifactId>derbynet</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.derby</groupId>
+							<artifactId>derbyclient</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.poi</groupId>
+							<artifactId>ooxml-schemas</artifactId>
+						</dependency>
+					</ignoredDependencies>
+					<ignoredResourcePatterns>
+						<ignoredResourcePattern>changelog.txt</ignoredResourcePattern>
+						<ignoredResource>javac.bat</ignoredResource>
+						<ignoredResource>about.html</ignoredResource>
+						<ignoredResource>changelog.xml</ignoredResource>
+					</ignoredResourcePatterns>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
