@@ -56,14 +56,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Java Parser -->
-		<dependency>
-			<groupId>com.google.code.javaparser</groupId>
-			<artifactId>javaparser</artifactId>
-			<version>1.0.11</version>
-			<optional>true</optional>
-		</dependency>
-
 	</dependencies>
 
 </project>
