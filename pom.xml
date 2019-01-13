@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>ca.uhn.hapi.fhir</groupId>
-		<artifactId>hapi-deployable-pom</artifactId>
-		<version>3.7.0-SNAPSHOT</version>
-	</parent>
+	<!--<parent>-->
+		<!--<groupId>ca.uhn.hapi.fhir</groupId>-->
+		<!--<artifactId>hapi-deployable-pom</artifactId>-->
+		<!--<version>3.7.0-SNAPSHOT</version>-->
+	<!--</parent>-->
 
 	<groupId>org.hl7.fhir</groupId>
 	<artifactId>org.hl7.fhir.core</artifactId>
@@ -52,6 +52,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -92,115 +93,115 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<forceJavacCompilerUse>false</forceJavacCompilerUse>
-					<encoding>UTF-8</encoding>
-					<fork>false</fork>
-				</configuration>
-				<dependencies>
-				</dependencies>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-compiler-plugin</artifactId>-->
+				<!--<version>3.8.0</version>-->
+				<!--<configuration>-->
+					<!--<source>1.8</source>-->
+					<!--<target>1.8</target>-->
+					<!--<forceJavacCompilerUse>false</forceJavacCompilerUse>-->
+					<!--<encoding>UTF-8</encoding>-->
+					<!--<fork>false</fork>-->
+				<!--</configuration>-->
+				<!--<dependencies>-->
+				<!--</dependencies>-->
+			<!--</plugin>-->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.basepom.maven</groupId>
-				<artifactId>duplicate-finder-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>default</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<inherited>true</inherited>
-					</execution>
-				</executions>
-				<configuration>
-					<printEqualFiles>false</printEqualFiles>
-					<failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
-					<failBuildInCaseOfEqualContentConflict>true</failBuildInCaseOfEqualContentConflict>
-					<failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>
-					<checkCompileClasspath>true</checkCompileClasspath>
-					<checkRuntimeClasspath>false</checkRuntimeClasspath>
-					<checkTestClasspath>false</checkTestClasspath>
-					<skip>false</skip>
-					<quiet>false</quiet>
-					<preferLocal>true</preferLocal>
-					<useResultFile>true</useResultFile>
-					<resultFileMinClasspathCount>2</resultFileMinClasspathCount>
-					<resultFile>${project.build.directory}/duplicate-finder-result.xml</resultFile>
-					<ignoredDependencies>
-						<dependency>
-							<groupId>javax.el</groupId>
-							<artifactId>javax.el-api</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>javax.mail</groupId>
-							<artifactId>javax.mail-api</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>javax.activation</groupId>
-							<artifactId>javax.activation-api</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>com.helger</groupId>
-							<artifactId>ph-schematron</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>commons-logging</groupId>
-							<artifactId>commons-logging</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.jscience</groupId>
-							<artifactId>jscience</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-jcl</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-jcl</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>com.google.code.findbugs</groupId>
-							<artifactId>annotations</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.apache.derby</groupId>
-							<artifactId>derbyclient</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.apache.derby</groupId>
-							<artifactId>derbynet</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.apache.derby</groupId>
-							<artifactId>derbyclient</artifactId>
-						</dependency>
-						<dependency>
-							<groupId>org.apache.poi</groupId>
-							<artifactId>ooxml-schemas</artifactId>
-						</dependency>
-					</ignoredDependencies>
-					<ignoredResourcePatterns>
-						<ignoredResourcePattern>changelog.txt</ignoredResourcePattern>
-						<ignoredResource>javac.bat</ignoredResource>
-						<ignoredResource>about.html</ignoredResource>
-						<ignoredResource>changelog.xml</ignoredResource>
-					</ignoredResourcePatterns>
-				</configuration>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.basepom.maven</groupId>-->
+				<!--<artifactId>duplicate-finder-maven-plugin</artifactId>-->
+				<!--<executions>-->
+					<!--<execution>-->
+						<!--<id>default</id>-->
+						<!--<phase>verify</phase>-->
+						<!--<goals>-->
+							<!--<goal>check</goal>-->
+						<!--</goals>-->
+						<!--<inherited>true</inherited>-->
+					<!--</execution>-->
+				<!--</executions>-->
+				<!--<configuration>-->
+					<!--<printEqualFiles>false</printEqualFiles>-->
+					<!--<failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>-->
+					<!--<failBuildInCaseOfEqualContentConflict>true</failBuildInCaseOfEqualContentConflict>-->
+					<!--<failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>-->
+					<!--<checkCompileClasspath>true</checkCompileClasspath>-->
+					<!--<checkRuntimeClasspath>false</checkRuntimeClasspath>-->
+					<!--<checkTestClasspath>false</checkTestClasspath>-->
+					<!--<skip>false</skip>-->
+					<!--<quiet>false</quiet>-->
+					<!--<preferLocal>true</preferLocal>-->
+					<!--<useResultFile>true</useResultFile>-->
+					<!--<resultFileMinClasspathCount>2</resultFileMinClasspathCount>-->
+					<!--<resultFile>${project.build.directory}/duplicate-finder-result.xml</resultFile>-->
+					<!--<ignoredDependencies>-->
+						<!--<dependency>-->
+							<!--<groupId>javax.el</groupId>-->
+							<!--<artifactId>javax.el-api</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>javax.mail</groupId>-->
+							<!--<artifactId>javax.mail-api</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>javax.activation</groupId>-->
+							<!--<artifactId>javax.activation-api</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>com.helger</groupId>-->
+							<!--<artifactId>ph-schematron</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>commons-logging</groupId>-->
+							<!--<artifactId>commons-logging</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.jscience</groupId>-->
+							<!--<artifactId>jscience</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.springframework</groupId>-->
+							<!--<artifactId>spring-jcl</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.springframework</groupId>-->
+							<!--<artifactId>spring-jcl</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>com.google.code.findbugs</groupId>-->
+							<!--<artifactId>annotations</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.apache.derby</groupId>-->
+							<!--<artifactId>derbyclient</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.apache.derby</groupId>-->
+							<!--<artifactId>derbynet</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.apache.derby</groupId>-->
+							<!--<artifactId>derbyclient</artifactId>-->
+						<!--</dependency>-->
+						<!--<dependency>-->
+							<!--<groupId>org.apache.poi</groupId>-->
+							<!--<artifactId>ooxml-schemas</artifactId>-->
+						<!--</dependency>-->
+					<!--</ignoredDependencies>-->
+					<!--<ignoredResourcePatterns>-->
+						<!--<ignoredResourcePattern>changelog.txt</ignoredResourcePattern>-->
+						<!--<ignoredResource>javac.bat</ignoredResource>-->
+						<!--<ignoredResource>about.html</ignoredResource>-->
+						<!--<ignoredResource>changelog.xml</ignoredResource>-->
+					<!--</ignoredResourcePatterns>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
 		</plugins>
 	</build>
 
