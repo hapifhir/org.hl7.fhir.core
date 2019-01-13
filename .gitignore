@@ -139,8 +139,6 @@ local.properties
 # JDT-specific (Eclipse Java Development Tools)
 **/.settings
 **/.target
-**/.project
-**/.classpath
 **/.factorypath
 **/.springBeans
 
