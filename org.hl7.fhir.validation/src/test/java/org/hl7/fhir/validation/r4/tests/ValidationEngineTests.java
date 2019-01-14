@@ -7,7 +7,7 @@ import org.hl7.fhir.r4.model.FhirPublication;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.validation.ValidationEngine;
 import org.hl7.fhir.utilities.Utilities;
 import org.junit.Assert;

@@ -14,7 +14,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.LiquidEngine;
 import org.hl7.fhir.r4.utils.LiquidEngine.ILiquidEngineIcludeResolver;
 import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
@@ -44,7 +44,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
   
   @Parameters(name = "{index}: file{0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), "tests", "resources", "liquid-tests.json")));
+    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(TestingUtilities.resourceNameToFile("liquid", "liquid-tests.json")));
     JsonArray tests = testdoc.getAsJsonArray("tests");
     List<Object[]> objects = new ArrayList<Object[]>(tests.size());
     for (JsonElement n : tests) {
@@ -61,12 +61,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
 
   @Before
   public void setUp() throws Exception {
-    if (TestingUtilities.context == null) {
-      SimpleWorkerContext wc = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
-      wc.setUcumService(new UcumEssenceService(Utilities.path(TestingUtilities.home(), "tests", "ucum-essence.xml")));
-      TestingUtilities.context = wc;
-    }
-    engine = new LiquidEngine(TestingUtilities.context, null);
+    engine = new LiquidEngine(TestingUtilities.context(), null);
     engine.setIncludeResolver(this);
   }
 
@@ -81,7 +76,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
   private Resource loadResource() throws IOException, FHIRFormatError {
     String name = test.get("focus").getAsString();
     if (!resources.containsKey(name)) {
-      String fn = Utilities.path(TestingUtilities.content(), name.replace("/", "-")+".xml");
+      String fn = TestingUtilities.resourceNameToFile(name.replace("/", "-")+".xml");
       resources.put(name, new XmlParser().parse(new FileInputStream(fn)));
     }
     return resources.get(test.get("focus").getAsString());

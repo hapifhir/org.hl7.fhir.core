@@ -32,7 +32,7 @@ import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r4.utils.IResourceValidator;
 import org.hl7.fhir.r4.utils.IResourceValidator.IValidatorResourceFetcher;

@@ -37,8 +37,8 @@ import org.hl7.fhir.r4.model.TestScript.SetupActionOperationComponent;
 import org.hl7.fhir.r4.model.TestScript.TestActionComponent;
 import org.hl7.fhir.r4.model.TestScript.TestScriptFixtureComponent;
 import org.hl7.fhir.r4.model.TestScript.TestScriptTestComponent;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
 import org.hl7.fhir.r4.utils.CodingUtilities;
 import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
@@ -60,13 +60,13 @@ public class SnapShotGenerationTests {
 
     @Override
     public boolean isDatatype(String name) {
-      StructureDefinition sd = TestingUtilities.context.fetchTypeDefinition(name);
+      StructureDefinition sd = TestingUtilities.context().fetchTypeDefinition(name);
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE); 
     }
 
     @Override
     public boolean isResource(String typeSimple) {
-      StructureDefinition sd = TestingUtilities.context.fetchTypeDefinition(name);
+      StructureDefinition sd = TestingUtilities.context().fetchTypeDefinition(name);
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.RESOURCE); 
     }
 
@@ -90,7 +90,7 @@ public class SnapShotGenerationTests {
 
     @Override
     public String getLinkForProfile(StructureDefinition profile, String url) {
-      StructureDefinition sd = TestingUtilities.context.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = TestingUtilities.context().fetchResource(StructureDefinition.class, url);
       if (sd == null)
         return url+"|"+url;
       else
@@ -229,7 +229,7 @@ public class SnapShotGenerationTests {
     @Override
     public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
       if ("fixture".equals(functionName))
-        return new TypeDetails(CollectionStatus.SINGLETON, TestingUtilities.context.getResourceNamesAsSet());
+        return new TypeDetails(CollectionStatus.SINGLETON, TestingUtilities.context().getResourceNamesAsSet());
       return null;
     }
 
@@ -255,7 +255,7 @@ public class SnapShotGenerationTests {
 
     @Override
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
-      IResourceValidator val = TestingUtilities.context.newValidator();
+      IResourceValidator val = TestingUtilities.context().newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
         val.validate(appContext, valerrors, (Resource) item, url);
@@ -275,7 +275,7 @@ public class SnapShotGenerationTests {
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
-    context.tests = (TestScript) new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.home(), "tests", "resources", "snapshot-generation-tests.xml")));
+    context.tests = (TestScript) new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation-tests.xml")));
 
     context.checkTestsDetails();
 
@@ -302,24 +302,21 @@ public class SnapShotGenerationTests {
   @Test
   public void test() throws FHIRException {
     try {
-    if (TestingUtilities.context == null) {
-      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
-    }
     for (Resource cr : context.tests.getContained()) {
       if (cr instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) cr;
         if (sd.getType().equals("Extension")) {
-          if (TestingUtilities.context.fetchResource(StructureDefinition.class, sd.getUrl()) == null) {
+          if (TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getUrl()) == null) {
             sd.setUserData("path", "test-"+sd.getId()+".html");
-            StructureDefinition extd = TestingUtilities.context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-            new ProfileUtilities(TestingUtilities.context, null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
-            TestingUtilities.context.cacheResource(sd);
+            StructureDefinition extd = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+            new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
+            TestingUtilities.context().cacheResource(sd);
           }
         }
       }
     }
     if (fp == null)
-      fp = new FHIRPathEngine(TestingUtilities.context);
+      fp = new FHIRPathEngine(TestingUtilities.context());
     fp.setHostServices(context);
 
     resolveFixtures();
@@ -333,7 +330,7 @@ public class SnapShotGenerationTests {
           StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
           StructureDefinition base = getSD(source.getBaseDefinition()); 
           StructureDefinition output = source.copy();
-          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, new TestPKP());
+          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, new TestPKP());
           pu.setIds(source, false);
           if ("sort=true".equals(op.getParams())) {
             List<String> errors = new ArrayList<String>();
@@ -347,14 +344,14 @@ public class SnapShotGenerationTests {
           
           new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
           if (output.getDifferential().hasElement())
-            new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context).setPkp(new TestPKP()).generate(output, null);
+            new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
           new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+"-d.xml")), output);
           
         } else if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("sortDifferential")) {
           StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
           StructureDefinition base = getSD(source.getBaseDefinition()); 
           StructureDefinition output = source.copy();
-          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
+          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
           pu.setIds(source, false);
           List<String> errors = new ArrayList<String>();          
           pu.sortDifferential(base, output, output.getUrl(), errors);
@@ -386,7 +383,7 @@ public class SnapShotGenerationTests {
     if (sd == null)
       sd = findContainedProfile(url);
     if (sd == null)
-      sd = TestingUtilities.context.fetchResource(StructureDefinition.class, url);
+      sd = TestingUtilities.context().fetchResource(StructureDefinition.class, url);
     return sd;
   }
 
@@ -396,7 +393,7 @@ public class SnapShotGenerationTests {
         StructureDefinition sd = (StructureDefinition) r;
         if  (sd.getUrl().equals(url)) {
           StructureDefinition p = sd.copy();
-          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
+          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
           pu.setIds(p, false);
           List<String> errors = new ArrayList<String>();          
           pu.sortDifferential(getSD(p.getBaseDefinition()), p, url, errors);
@@ -414,7 +411,7 @@ public class SnapShotGenerationTests {
     if (context.fixtures == null) {
       context.fixtures = new HashMap<String, Resource>();
       for (TestScriptFixtureComponent fd : context.tests.getFixture()) {
-        Resource r = TestingUtilities.context.fetchResource(Resource.class, fd.getResource().getReference());
+        Resource r = TestingUtilities.context().fetchResource(Resource.class, fd.getResource().getReference());
         context.fixtures.put(fd.getId(), r);
       }
     }

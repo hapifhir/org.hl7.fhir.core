@@ -24,7 +24,7 @@ import org.hl7.fhir.r4.model.PrimitiveType;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.Utilities;
@@ -96,7 +96,7 @@ public class FHIRPathTests {
 
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    Document dom = XMLUtil.parseFileToDom(Utilities.path(TestingUtilities.home(), "tests", "resources", "tests-fhir-r4.xml"));
+    Document dom = XMLUtil.parseFileToDom(TestingUtilities.resourceNameToFile("fhirpath", "tests-fhir-r4.xml"));
 
     List<Element> list = new ArrayList<Element>();
     List<Element> groups = new ArrayList<Element>();
@@ -144,14 +144,8 @@ public class FHIRPathTests {
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
-    if (TestingUtilities.context == null) {
-      SimpleWorkerContext wc = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
-      TestingUtilities.context = wc;
-    }
-    if (TestingUtilities.context.getUcumService() == null)
-      TestingUtilities.context.setUcumService(new UcumEssenceService(Utilities.path(TestingUtilities.home(), "tests", "ucum-essence.xml")));
     if (fp == null)
-      fp = new FHIRPathEngine(TestingUtilities.context);
+      fp = new FHIRPathEngine(TestingUtilities.context());
     fp.setHostServices(new FHIRPathTestEvaluationServices());
     String input = test.getAttribute("inputfile");
     String expression = XMLUtil.getNamedChild(test, "expression").getTextContent();
@@ -167,7 +161,7 @@ public class FHIRPathTests {
       else {
         res = resources.get(input);
         if (res == null) {
-          res = new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.content(), input)));
+          res = new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile(input)));
           resources.put(input, res);
         }
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);

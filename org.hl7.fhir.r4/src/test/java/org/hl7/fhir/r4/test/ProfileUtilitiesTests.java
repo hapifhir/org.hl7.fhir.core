@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
@@ -15,7 +16,7 @@ import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -25,117 +26,6 @@ import org.junit.Test;
 
 public class ProfileUtilitiesTests {
 
-//  private String root;
-//  private SimpleWorkerContext context;
-//  private ProfileComparer comp;
-//  
-////  public ProfileUtilitiesTests(String root) {
-////    super();
-////    this.root = root;
-////  }
-//
-////  public ProfileUtilitiesTests() {
-////    super();
-////    root = TestingUtilities.home();
-////    
-////  }
-//
-//  public static void main(String[] args) throws EOperationOutcome, Exception {
-//    // new ProfileUtilitiesTests().execute(args);
-//    ProfileUtilitiesTests put = new ProfileUtilitiesTests();
-//    put.root = "C:\\work\\org.hl7.fhir\\build\\publish";
-//    put.testSnapshotGeneration();
-//    //    StructureDefinition p = (StructureDefinition) new XmlParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\lipid-report-cholesterol.profile.xml"));
-//    //    new ProfileUtilities(context, messages, null).generateSchematrons(new FileOutputStream("c:\\temp\\test.sch"), p);
-//  }
-//  
-//  public void execute(String[] args) throws FileNotFoundException, IOException, FHIRException {
-//    System.out.println("loading context");
-//    context = SimpleWorkerContext.fromPack(Utilities.path(root, "validation.zip"));
-//    comp = new ProfileComparer(context);
-//    
-//    compare("patient-daf-dafpatient.profile.xml", "patient-qicore-qicore-patient.profile.xml");
-//    compare("encounter-daf-dafencounter.profile.xml", "encounter-qicore-qicore-encounter.profile.xml");
-//    compare("substance-daf-dafsubstance.profile.xml", "substance-qicore-qicore-substance.profile.xml");
-//    compare("medication-daf-dafmedication.profile.xml", "medication-qicore-qicore-medication.profile.xml");
-//    compare("procedure-daf-dafprocedure.profile.xml", "procedure-qicore-qicore-procedure.profile.xml");
-//    compare("familymemberhistory-daf-daffamilymemberhistory.profile.xml", "familymemberhistory-qicore-qicore-familymemberhistory.profile.xml");
-//    compare("immunization-daf-dafimmunization.profile.xml", "immunization-qicore-qicore-immunization.profile.xml");
-//    compare("condition-daf-dafcondition.profile.xml", "condition-qicore-qicore-condition.profile.xml");
-//    compare("allergyintolerance-daf-dafallergyintolerance.profile.xml", "allergyintolerance-qicore-qicore-allergyintolerance.profile.xml");
-//    compare("medicationadministration-daf-dafmedicationadministration.profile.xml", "medicationadministration-qicore-qicore-medicationadministration.profile.xml");
-//    compare("medicationdispense-daf-dafmedicationdispense.profile.xml", "medicationdispense-qicore-qicore-medicationdispense.profile.xml");
-//    compare("medicationprescription-daf-dafmedicationprescription.profile.xml", "medicationprescription-qicore-qicore-medicationprescription.profile.xml");
-//    compare("medicationstatement-daf-dafmedicationstatement.profile.xml", "medicationstatement-qicore-qicore-medicationstatement.profile.xml");
-//    compare("observation-daf-smokingstatus-dafsmokingstatus.profile.xml", "observation-qicore-qicore-observation.profile.xml");
-//    compare("observation-daf-vitalsigns-dafvitalsigns.profile.xml", "observation-qicore-qicore-observation.profile.xml");
-////    compare("observation-daf-results-dafresultobs.profile.xml", "observation-qicore-qicore-observation.profile.xml");
-////    compare("diagnosticorder-daf-dafdiagnosticorder.profile.xml", "diagnosticorder-qicore-qicore-diagnosticorder.profile.xml");
-////    compare("diagnosticreport-daf-dafdiagnosticreport.profile.xml", "diagnosticreport-qicore-qicore-diagnosticreport.profile.xml");
-//    
-//    System.out.println("processing output");
-//    for (ProfileComparison outcome : comp.getComparisons()) { 
-//      if (outcome.getSubset() != null)
-//        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\temp\\intersection-"+outcome.getId()+".xml"), outcome.getSubset());
-//      if (outcome.getSuperset() != null)
-//        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\temp\\union-"+outcome.getId()+".xml"), outcome.getSuperset());
-//    
-//      System.out.println("\r\n"+outcome.getId()+": Comparison of "+outcome.getLeft().getUrl()+" and "+outcome.getRight().getUrl());
-//      for (ValidationMessage vm : outcome.getMessages())
-//        if (vm.getLevel() == IssueSeverity.INFORMATION)
-//      System.out.println(vm.summary());
-//      for (ValidationMessage vm : outcome.getMessages())
-//        if (vm.getLevel() == IssueSeverity.WARNING)
-//          System.out.println(vm.summary());
-//      for (ValidationMessage vm : outcome.getMessages())
-//        if (vm.getLevel() == IssueSeverity.ERROR)
-//          System.out.println(vm.summary());
-//      for (ValidationMessage vm : outcome.getMessages())
-//        if (vm.getLevel() == IssueSeverity.FATAL)
-//          System.out.println(vm.summary());
-//      System.out.println("done. "+Integer.toString(outcome.getMessages().size())+" messages");
-//      System.out.println("=================================================================");
-//    }
-//	}
-//
-//  private void compare(String fn1, String fn2) throws FHIRFormatError, FileNotFoundException, IOException, DefinitionException {
-//    System.out.println("Compare "+fn1+" to "+fn2);
-//    System.out.println("  .. load");
-//    StructureDefinition left = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(root, fn1)));
-//    StructureDefinition right = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(root, fn2)));
-//    System.out.println(" .. compare");
-//    comp.compareProfiles(left, right);
-//    
-//  }
-//  
-//  public void testSnapshotGeneration() throws EOperationOutcome, Exception {
-//    System.out.println("Loading");
-//    context = SimpleWorkerContext.fromPack(Utilities.path(root, "definitions.xml.zip"));
-//    System.out.println("Loaded "+Integer.toString(context.totalCount())+" resources"); 
-//    
-//    // simple tests
-//    testSimple();
-//    testSimple2();
-//    testCardinalityChange();
-//    testDocumentationAppend();
-//    textTypeNarrowing1();
-//    textTypeNarrowing2();
-//    testMapping();
-//    
-//    // ok, now we test walking into a new type:
-//    testTypeWalk();
-//     // todo: testTypeWalk2();  
-//    
-//    // slicing tests
-//    testSlicingSimple();
-//    testSlicingExtension(false);
-//    testSlicingExtension(true);
-//    testSlicingExtensionComplex(true);
-//    testSlicingExtensionComplex(false);
-//    testSlicingTask8742();
-//    System.out.println("Success"); 
-//  }
-//
 //  /**
 //   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base 
 //   * 
@@ -144,18 +34,16 @@ public class ProfileUtilitiesTests {
 //   * @throws EOperationOutcome 
 //   */
   @Test
-  public void testSimple() throws FHIRException, FileNotFoundException, IOException {
-    if (TestingUtilities.context == null)
-      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
+  public void testSimple() throws FHIRException, FileNotFoundException, IOException, UcumException {
 
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -192,16 +80,13 @@ public class ProfileUtilitiesTests {
 //   */
   @Test
   public void testSimple2() throws EOperationOutcome, Exception {
-    if (TestingUtilities.context == null)
-      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
-
-    StructureDefinition base = TestingUtilities.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
     StructureDefinition focus = base.copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {

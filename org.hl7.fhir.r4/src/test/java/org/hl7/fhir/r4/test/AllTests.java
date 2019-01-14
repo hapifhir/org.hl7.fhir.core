@@ -5,7 +5,18 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ FHIRPathTests.class, NarrativeGeneratorTests.class, /*ShexGeneratorTests.class, StructureMapTests.class, */ TurtleTests.class, GraphQLParserTests.class })
+@SuiteClasses({ 
+    SnomedExpressionsTests.class, 
+    GraphQLParserTests.class,
+    TurtleTests.class,
+    ProfileUtilitiesTests.class,
+    ResourceRoundTripTests.class, 
+    GraphQLEngineTests.class,
+    LiquidEngineTests.class,
+    FHIRPathTests.class,
+    NarrativeGeneratorTests.class,
+    ShexGeneratorTests.class,
+    SnapShotGenerationTests.class})
 public class AllTests {
 
 }

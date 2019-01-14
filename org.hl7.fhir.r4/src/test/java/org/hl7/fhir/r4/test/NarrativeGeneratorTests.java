@@ -5,11 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.EOperationOutcome;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.Utilities;
@@ -23,11 +24,9 @@ public class NarrativeGeneratorTests {
 	private NarrativeGenerator gen;
 	
 	@Before
-	public void setUp() throws FileNotFoundException, IOException, FHIRException {
-    if (TestingUtilities.context == null)
-      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
+	public void setUp() throws FileNotFoundException, IOException, FHIRException, UcumException {
 		if (gen == null)
-  		gen = new NarrativeGenerator("", null, TestingUtilities.context);
+  		gen = new NarrativeGenerator("", null, TestingUtilities.context());
 	}
 
 	@After
@@ -36,14 +35,14 @@ public class NarrativeGeneratorTests {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
-		process(Utilities.path(TestingUtilities.home(), "source", "questionnaireresponse", "questionnaireresponse-example-f201-lifelines.xml"));
+		process(TestingUtilities.resourceNameToFile("questionnaireresponse-example-f201-lifelines.xml"));
 	}
 
 	private void process(String path) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
 	  XmlParser p = new XmlParser();
 	  DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
 	  gen.generate(r, null);
-	  FileOutputStream s = new FileOutputStream(Utilities.path(TestingUtilities.temp(), "gen.xml"));
+	  FileOutputStream s = new FileOutputStream(TestingUtilities.resourceNameToFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
 	  

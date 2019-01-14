@@ -151,3 +151,5 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+/org.hl7.fhir.r4/src/test/resources/gen
+/org.hl7.fhir.r4/src/test/resources/graphql/*.out

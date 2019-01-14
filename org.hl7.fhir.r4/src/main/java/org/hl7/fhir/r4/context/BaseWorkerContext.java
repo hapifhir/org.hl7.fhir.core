@@ -422,7 +422,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           throw new Error("no url in expand value set 2");
         res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
       } catch (Exception e) {
-        res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog.getLastId());
+        res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
       }
       txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
       return res;

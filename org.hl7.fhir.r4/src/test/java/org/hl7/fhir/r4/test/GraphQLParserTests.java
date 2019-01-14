@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.EGraphEngine;
@@ -24,7 +24,7 @@ public class GraphQLParserTests {
 
   @Parameters(name = "{index}: {0}")
   public static Iterable<Object[]> data() throws FileNotFoundException, IOException  {
-    String src = TextFile.fileToString(Utilities.path(TestingUtilities.home(), "tests", "graphql", "parser-tests.gql"));
+    String src = TextFile.fileToString(TestingUtilities.resourceNameToFile("graphql", "parser-tests.gql"));
     String[] tests = src.split("###");
     int i = 0;
     for (String s : tests) 

@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.r4.tests;
 
 import java.io.File;
 
-import org.hl7.fhir.r4.test.support.TestingUtilities;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.validation.Validator;
 import org.hl7.fhir.utilities.Utilities;
 import org.junit.Test;
