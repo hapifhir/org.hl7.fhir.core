@@ -98,7 +98,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (ve == null) {
       ve = new ValidationEngine(TestingUtilities.content(), DEF_TX, null, FhirPublication.R4);
       ve.getContext().setCanRunWithoutTerminology(true);
-      TestingUtilities.context = ve.getContext();
+      TestingUtilities.fcontext = ve.getContext();
     }
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
@@ -153,8 +153,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v))
       sd = (StructureDefinition) new VersionConvertor_10_40(null).convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(new FileInputStream(filename)));
     if (!sd.hasSnapshot()) {
-      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
-      StructureDefinition base = TestingUtilities.context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
+      StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), sd.getTitle());
 // (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
@@ -174,7 +174,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         System.out.println("warning: "+vm.getDisplay());
       }
     }
-    if (TestingUtilities.context.isNoTerminologyServer() || !focus.has("tx-dependent")) {
+    if (TestingUtilities.context().isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Expected "+Integer.toString(focus.get("errorCount").getAsInt())+" errors, but found "+Integer.toString(ec)+".", focus.get("errorCount").getAsInt(), ec);
       if (focus.has("warningCount"))
         Assert.assertEquals("Expected "+Integer.toString(focus.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", focus.get("warningCount").getAsInt(), wc);
@@ -228,7 +228,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @Override
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     if (url.equals("Patient/test"))
-      return new ObjectConverter(TestingUtilities.context).convert(new Patient());
+      return new ObjectConverter(TestingUtilities.context()).convert(new Patient());
     return null;
   }
 
@@ -247,7 +247,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
-    IResourceValidator val = TestingUtilities.context.newValidator();
+    IResourceValidator val = TestingUtilities.context().newValidator();
     List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
     if (item instanceof Resource) {
       val.validate(appContext, valerrors, (Resource) item, url);
