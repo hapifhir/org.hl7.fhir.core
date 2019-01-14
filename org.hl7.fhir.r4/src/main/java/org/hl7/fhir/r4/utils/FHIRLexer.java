@@ -79,10 +79,14 @@ public class FHIRLexer {
     return currentLocation;
   }
 
-  public boolean isConstant(boolean incDoubleQuotes) {
-    return current != null && (current.charAt(0) == '\'' || (incDoubleQuotes && current.charAt(0) == '"') || current.charAt(0) == '@' || current.charAt(0) == '%' || 
+  public boolean isConstant() {
+    return current != null && (current.charAt(0) == '\'' || current.charAt(0) == '"') || current.charAt(0) == '@' || current.charAt(0) == '%' || 
         current.charAt(0) == '-' || current.charAt(0) == '+' || (current.charAt(0) >= '0' && current.charAt(0) <= '9') || 
-        current.equals("true") || current.equals("false") || current.equals("{}"));
+        current.equals("true") || current.equals("false") || current.equals("{}");
+  }
+
+  public boolean isFixedName() {
+    return current != null && (current.charAt(0) == '`');
   }
 
   public boolean isStringConstant() {
@@ -210,7 +214,7 @@ public class FHIRLexer {
         if (ch == '}')
           cursor++;
         current = source.substring(currentStart, cursor);
-      } else if (ch == '"'){
+      } else if (ch == '"') {
         cursor++;
         boolean escape = false;
         while (cursor < source.length() && (escape || source.charAt(cursor) != '"')) {
@@ -241,6 +245,20 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
         if (ech == '\'')
           current = "\'"+current.substring(1, current.length() - 1)+"\'";
+      } else if (ch == '`') {
+        cursor++;
+        boolean escape = false;
+        while (cursor < source.length() && (escape || source.charAt(cursor) != '`')) {
+          if (escape)
+            escape = false;
+          else 
+            escape = (source.charAt(cursor) == '\\');
+          cursor++;
+        }
+        if (cursor == source.length())
+          throw error("Unterminated string");
+        cursor++;
+        current = "`"+source.substring(currentStart+1, cursor-1)+"`";
       } else if (ch == '@'){
         int start = cursor;
         cursor++;
@@ -307,6 +325,13 @@ public class FHIRLexer {
     return processConstant(take());
   }
 
+  public String readFixedName(String desc) throws FHIRLexerException {
+    if (!isFixedName())
+      throw error("Found "+current+" expecting \"["+desc+"]\"");
+
+    return processFixedName(take());
+  }
+
   public String processConstant(String s) throws FHIRLexerException {
     StringBuilder b = new StringBuilder();
     int i = 1;
@@ -337,7 +362,7 @@ public class FHIRLexer {
           b.append('\\');
           break;
         case '/': 
-          b.append('\\');
+          b.append('/');
           break;
         case 'u':
           i++;
@@ -354,8 +379,57 @@ public class FHIRLexer {
       }
     }
     return b.toString();
-
   }
+  
+  public String processFixedName(String s) throws FHIRLexerException {
+    StringBuilder b = new StringBuilder();
+    int i = 1;
+    while (i < s.length()-1) {
+      char ch = s.charAt(i);
+      if (ch == '\\') {
+        i++;
+        switch (s.charAt(i)) {
+        case 't': 
+          b.append('\t');
+          break;
+        case 'r':
+          b.append('\r');
+          break;
+        case 'n': 
+          b.append('\n');
+          break;
+        case 'f': 
+          b.append('\f');
+          break;
+        case '\'':
+          b.append('\'');
+          break;
+        case '"':
+          b.append('"');
+          break;
+        case '\\': 
+          b.append('\\');
+          break;
+        case '/': 
+          b.append('/');
+          break;
+        case 'u':
+          i++;
+          int uc = Integer.parseInt(s.substring(i, i+4), 16);
+          b.append((char) uc);
+          i = i + 4;
+          break;
+        default:
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
+        }
+      } else {
+        b.append(ch);
+        i++;
+      }
+    }
+    return b.toString();
+  }
+
   public void skipToken(String token) throws FHIRLexerException {
     if (getCurrent().equals(token))
       next();

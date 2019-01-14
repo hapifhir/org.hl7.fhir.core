@@ -806,7 +806,7 @@ public class FHIRPathEngine {
       lexer.take();
       lexer.setCurrent("+"+lexer.getCurrent());
     }
-    if (lexer.isConstant(false)) {
+    if (lexer.isConstant()) {
       boolean isString = lexer.isStringConstant();
       result.setConstant(processConstant(lexer));
       result.setKind(Kind.Constant);
@@ -845,10 +845,10 @@ public class FHIRPathEngine {
       result.setEnd(lexer.getCurrentLocation());
       lexer.next();
     } else {
-      if (!lexer.isToken() && !lexer.getCurrent().startsWith("\"")) 
+      if (!lexer.isToken() && !lexer.getCurrent().startsWith("`")) 
         throw lexer.error("Found "+lexer.getCurrent()+" expecting a token name");
-      if (lexer.getCurrent().startsWith("\""))
-        result.setName(lexer.readConstant("Path Name"));
+      if (lexer.isFixedName())
+        result.setName(lexer.readFixedName("Path Name"));
       else
         result.setName(lexer.take());
       result.setEnd(lexer.getCurrentLocation());

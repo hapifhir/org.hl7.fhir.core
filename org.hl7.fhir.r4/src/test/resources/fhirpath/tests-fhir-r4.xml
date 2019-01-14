@@ -38,8 +38,8 @@
 		</test>
 
 		<!-- test(patient(), "name.\"given\"", 3, "string"); -->
-    <test name="testSimpleDoubleQuotes" inputfile="patient-example.xml">
-			<expression>name."given"</expression>
+    <test name="testSimpleBackTick" inputfile="patient-example.xml">
+			<expression>name.`given`</expression>
 			<output type="string">Peter</output>
 			<output type="string">James</output>
 			<output type="string">Jim</output>

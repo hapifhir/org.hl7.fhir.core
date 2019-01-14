@@ -1013,7 +1013,7 @@ public class StructureMapUtilities {
 		  // no dependencies - imply what is to be done based on types
 		}
 		if (newFmt) {
-		  if (lexer.isConstant(true)) {
+		  if (lexer.isConstant()) {
 		    rule.setName(lexer.take());
 		  } else {
 		    if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement())
@@ -1120,7 +1120,7 @@ public class StructureMapUtilities {
 		  if (start != null)
 	      target.setContext(start);
 			lexer.token("=");
-			isConstant = lexer.isConstant(true);
+			isConstant = lexer.isConstant();
 			name = lexer.take();
 		} else 
 		  name = start;
@@ -1180,7 +1180,7 @@ public class StructureMapUtilities {
 
 
 	private void parseParameter(StructureMapGroupRuleTargetComponent target, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
-		if (!lexer.isConstant(true)) {
+		if (!lexer.isConstant()) {
 			target.addParameter().setValue(new IdType(lexer.take()));
 		} else if (lexer.isStringConstant())
 			target.addParameter().setValue(new StringType(lexer.readConstant("??")));
