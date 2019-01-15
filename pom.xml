@@ -2,16 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!--<parent>-->
-		<!--<groupId>ca.uhn.hapi.fhir</groupId>-->
-		<!--<artifactId>hapi-deployable-pom</artifactId>-->
-		<!--<version>3.7.0-SNAPSHOT</version>-->
-	<!--</parent>-->
+	<parent>
+		<groupId>ca.uhn.hapi.fhir</groupId>
+		<artifactId>hapi-deployable-pom</artifactId>
+		<version>3.7.0-SNAPSHOT</version>
+	</parent>
 
-	<groupId>org.hl7.fhir</groupId>
 	<artifactId>org.hl7.fhir.core</artifactId>
-    <version>4.0.0</version>
-
 	<packaging>pom</packaging>
 
 	<name>HL7 Core Artifacts</name>
