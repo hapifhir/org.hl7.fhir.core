@@ -49,7 +49,7 @@ package org.hl7.fhir.dstu3.utils.client;
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
   
-*/
+ */
 
 
 import java.io.ByteArrayOutputStream;
@@ -64,6 +64,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +74,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -117,7 +117,7 @@ public class ClientUtils {
   private int timeout = 5000;
   private String username;
   private String password;
-
+  private ToolingClientLogger logger;
 
   public HttpHost getProxy() {
     return proxy;
@@ -301,6 +301,7 @@ public class ClientUtils {
 				httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 			}
 			request.setEntity(new ByteArrayEntity(payload));
+      log(request);
 			response = httpclient.execute(request);
 		} catch(IOException ioe) {
 			throw new EFhirClientException("Error sending HTTP Post/Put Payload", ioe);
@@ -318,7 +319,7 @@ public class ClientUtils {
 		HttpResponse response = null;
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
-			
+      log(request);
 			HttpParams params = httpclient.getParams();
 			HttpConnectionParams.setConnectionTimeout(params, timeout);
 			HttpConnectionParams.setSoTimeout(params, timeout);
@@ -342,26 +343,21 @@ public class ClientUtils {
   protected <T extends Resource> T unmarshalReference(HttpResponse response, String format) {
 		T resource = null;
 		OperationOutcome error = null;
-		InputStream instream = null;
-		HttpEntity entity = response.getEntity();
-		if (entity != null && entity.getContentLength() > 0) {
-			try {
-			    instream = entity.getContent();
-//			    System.out.println(writeInputStreamAsString(instream));
-			    resource = (T)getParser(format).parse(instream);
+    byte[] cnt = log(response);
+    if (cnt != null) {
+      try {
+        resource = (T)getParser(format).parse(cnt);
 	    		if (resource instanceof OperationOutcome && hasError((OperationOutcome)resource)) {
 	    			error = (OperationOutcome) resource;
 	    		}
 			} catch(IOException ioe) {
-				throw new EFhirClientException("Error unmarshalling entity from Http Response: "+ioe.getMessage(), ioe);
+        throw new EFhirClientException("Error reading Http Response: "+ioe.getMessage(), ioe);
 			} catch(Exception e) {
 				throw new EFhirClientException("Error parsing response message: "+e.getMessage(), e);
-			} finally {
-				try{instream.close();}catch(IOException ioe){/* TODO log error */}
 			}
 		}
 		if(error != null) {
-			throw new EFhirClientException("Error from Server: "+ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from server: "+ResourceUtilities.getErrorDescription(error), error);
 		}
 		return resource;
 	}
@@ -374,36 +370,29 @@ public class ClientUtils {
 	 */
   protected Bundle unmarshalFeed(HttpResponse response, String format) {
     Bundle feed = null;
-		InputStream instream = null;
-		HttpEntity entity = response.getEntity();
+    byte[] cnt = log(response);
 		String contentType = response.getHeaders("Content-Type")[0].getValue();
 		OperationOutcome error = null;
 		try {
-			if (entity != null) {
-			    instream = entity.getContent();
+      if (cnt != null) {
 			    if(contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains("text/xml+fhir")) {
-//			    	error = (OperationOutcome)getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(instream);
-//			    } else {
-			    	Resource rf = getParser(format).parse(instream);
+          Resource rf = getParser(format).parse(cnt);
 			    	if (rf instanceof Bundle)
 			    	  feed = (Bundle) rf;
 			    	else if (rf instanceof OperationOutcome && hasError((OperationOutcome) rf)) {
 			    		error = (OperationOutcome) rf;
 			    		} else {
-			    			throw new EFhirClientException("Error unmarshalling feed from Http Response: a resource was returned instead");
+            throw new EFhirClientException("Error reading server response: a resource was returned instead");
 			    		}
 			    }
-			    instream.close();
 			}
 		} catch(IOException ioe) {
-			throw new EFhirClientException("Error unmarshalling feed from Http Response", ioe);
+      throw new EFhirClientException("Error reading Http Response", ioe);
 		} catch(Exception e) {
 			throw new EFhirClientException("Error parsing response message", e);
-		} finally {
-			try{instream.close();}catch(IOException ioe){/* TODO log error */}
 		}
 		if(error != null) {
-			throw new EFhirClientException("Error unmarshalling feed: "+ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from server: "+ResourceUtilities.getErrorDescription(error), error);
 		}
 		return feed;
 	}
@@ -531,24 +520,6 @@ public class ClientUtils {
 		}
 	}
 	
-	/**
-	 * Used for debugging
-	 * 
-	 * @param instream
-	 * @return
-	 */
-  protected String writeInputStreamAsString(InputStream instream) {
-		String value = null;
-		try {
-			value = IOUtils.toString(instream, "UTF-8");
-			System.out.println(value);
-			
-		} catch(IOException ioe) {
-			//Do nothing
-		}
-		return value;
-	}
-	
   public Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName, Resource resource, String resourceFormat) throws IOException {
     HttpPost httppost = new HttpPost(resourceUri);
     String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
@@ -594,14 +565,88 @@ public class ClientUtils {
   protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload) {
     HttpResponse response = null;
     try {
+      log(request);
       HttpClient httpclient = new DefaultHttpClient();
       request.setEntity(new ByteArrayEntity(payload));
       response = httpclient.execute(request);
+      log(response);
     } catch(IOException ioe) {
       throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
     }
     return response;
   }
   
+  private void log(HttpUriRequest request) {
+    if (logger != null) {
+      List<String> headers = new ArrayList<>();
+      for (Header h : request.getAllHeaders()) {
+        headers.add(h.toString());
+      }
+      logger.logRequest(request.getMethod(), request.getURI().toString(), headers, null);
+    }    
+  }
+  private void log(HttpEntityEnclosingRequestBase request)  {
+    if (logger != null) {
+      List<String> headers = new ArrayList<>();
+      for (Header h : request.getAllHeaders()) {
+        headers.add(h.toString());
+      }
+      byte[] cnt = null;
+      InputStream s;
+      try {
+        s = request.getEntity().getContent();
+        cnt = IOUtils.toByteArray(s);
+        s.close();
+      } catch (Exception e) {
+      }
+      logger.logRequest(request.getMethod(), request.getURI().toString(), headers, cnt);
+    }    
+  }  
+  
+  private byte[] log(HttpResponse response) {
+    byte[] cnt = null;
+    try {
+      InputStream s = response.getEntity().getContent();
+      cnt = IOUtils.toByteArray(s);
+      s.close();
+    } catch (Exception e) {
+    }
+    if (logger != null) {
+      List<String> headers = new ArrayList<>();
+      for (Header h : response.getAllHeaders()) {
+        headers.add(h.toString());
+      }
+      logger.logResponse(response.getStatusLine().toString(), headers, cnt);
+    }
+    return cnt;
+  }
+
+  public ToolingClientLogger getLogger() {
+    return logger;
+  }
+
+  public void setLogger(ToolingClientLogger logger) {
+    this.logger = logger;
+  }
+
+  
+  /**
+   * Used for debugging
+   * 
+   * @param instream
+   * @return
+   */
+  protected String writeInputStreamAsString(InputStream instream) {
+    String value = null;
+    try {
+      value = IOUtils.toString(instream, "UTF-8");
+      System.out.println(value);
+
+    } catch(IOException ioe) {
+      //Do nothing
+    }
+    return value;
+  }
+
 
 }
