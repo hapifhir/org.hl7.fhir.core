@@ -1926,7 +1926,7 @@
         <label value="test1-5"/>
         <description value="The snapshot elements must be the same - check binding"/>
         <direction value="response"/>
-        <expression value="fixture('t1o').snapshot.element.all(aliasAs('A').binding.valueSet = fixture('patient').snapshot.element.where(path = alias('A').path).binding.valueSet)"/>
+        <expression value="fixture('t1o').snapshot.element.where(binding.valueSet.exists()).all(aliasAs('A').binding.valueSet.trace('A') = fixture('patient').snapshot.element.where(path = alias('A').path).binding.valueSet.trace('B'))"/>
         <warningOnly value="false"/>
       </assert>
     </action>
@@ -2028,7 +2028,7 @@
         <label value="test4-1"/>
         <description value="The patient.identifier documentation must be right"/>
         <direction value="response"/>
-        <expression value="fixture('t4o').snapshot.element.where(path = 'Patient.identifier').doco != '... some more doco'"/>
+        <expression value="fixture('t4o').snapshot.element.where(path = 'Patient.identifier').doco.trace('doco') != '... some more doco'"/>
         <warningOnly value="false"/>
       </assert>
     </action>
