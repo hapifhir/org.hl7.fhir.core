@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4.test;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -311,6 +312,7 @@ public class SnapShotGenerationTests {
             StructureDefinition extd = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
             new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
             TestingUtilities.context().cacheResource(sd);
+            debugSaveResource(sd);
           }
         }
       }
@@ -339,6 +341,7 @@ public class SnapShotGenerationTests {
               throw new FHIRException("Sort failed: "+errors.toString());
           }
           pu.generateSnapshot(base, output, source.getUrl(), source.getName());
+          debugSaveResource(output);
           context.fixtures.put(op.getResponseId(), output);
           context.snapshots.put(output.getUrl(), output);
           
@@ -377,6 +380,14 @@ public class SnapShotGenerationTests {
     }
   }
 
+
+  private void debugSaveResource(Resource r) throws IOException {
+    String dir = System.getProperty("java.io.tmpdir");
+    if (new File("c:\\temp").exists())
+      dir = "c:\\temp";
+    String fn = Utilities.path(dir, r.fhirType()+"-"+r.getId()+".xml");
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(fn), r);
+  }
 
   private StructureDefinition getSD(String url) throws DefinitionException, FHIRException {
     StructureDefinition sd = context.snapshots.get(url);

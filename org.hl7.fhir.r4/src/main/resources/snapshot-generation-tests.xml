@@ -2028,7 +2028,7 @@
         <label value="test4-1"/>
         <description value="The patient.identifier documentation must be right"/>
         <direction value="response"/>
-        <expression value="fixture('t4o').snapshot.element.where(path = 'Patient.identifier').doco.trace('doco') != '... some more doco'"/>
+        <expression value="fixture('t4o').snapshot.element.where(path = 'Patient.identifier').definition.trace('definition') != '... some more doco'"/>
         <warningOnly value="false"/>
       </assert>
     </action>
