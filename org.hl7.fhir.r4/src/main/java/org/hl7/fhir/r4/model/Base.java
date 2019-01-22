@@ -24,6 +24,7 @@ package org.hl7.fhir.r4.model;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,14 @@ private Map<String, Object> userData;
 		return null;
 	}
 	
+  public boolean isDateTime() {
+    return false;
+  }
+
+  public Date dateTimeValue() {
+    return null;
+  }
+  
 	public abstract String fhirType() ;
 	
 	public boolean hasType(String... name) {

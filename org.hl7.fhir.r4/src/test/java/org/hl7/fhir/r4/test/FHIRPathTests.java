@@ -149,7 +149,7 @@ public class FHIRPathTests {
     fp.setHostServices(new FHIRPathTestEvaluationServices());
     String input = test.getAttribute("inputfile");
     String expression = XMLUtil.getNamedChild(test, "expression").getTextContent();
-    boolean fail = "true".equals(XMLUtil.getNamedChild(test, "expression").getAttribute("invalid"));
+    boolean fail = Utilities.existsInList(XMLUtil.getNamedChild(test, "expression").getAttribute("invalid"), "true", "semantic");
     Resource res = null;
 
     List<Base> outcome = new ArrayList<Base>();
@@ -182,20 +182,38 @@ public class FHIRPathTests {
 
     List<Element> expected = new ArrayList<Element>();
     XMLUtil.getNamedChildren(test, "output", expected);
-    Assert.assertTrue(String.format("Expected %d objects but found %d", expected.size(), outcome.size()), outcome.size() == expected.size());
-    for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
-      String tn = expected.get(i).getAttribute("type");
-      if (!Utilities.noString(tn)) {
-        Assert.assertTrue(String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()), tn.equals(outcome.get(i).fhirType()));
+    Assert.assertTrue(String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression), outcome.size() == expected.size());
+    if ("false".equals(test.getAttribute("ordered"))) {
+      for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
+        String tn = outcome.get(i).fhirType();
+        String s;
+        if (outcome.get(i) instanceof Quantity)
+          s = fp.convertToString(outcome.get(i));
+        else
+          s = ((PrimitiveType) outcome.get(i)).asStringValue();
+        boolean found = false;
+        for (Element e : expected) {
+          if ((Utilities.noString(e.getAttribute("type")) || e.getAttribute("type").equals(tn)) &&
+              (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s)))
+            found = true;
+        }
+        Assert.assertTrue(String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression), found);
       }
-      String v = expected.get(i).getTextContent();
-      if (!Utilities.noString(v)) {
-        if (outcome.get(i) instanceof Quantity) {
-          Quantity q = fp.parseQuantityString(v);
-          Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()), outcome.get(i).equalsDeep(q));
-        } else {
-          Assert.assertTrue(String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()), outcome.get(i) instanceof PrimitiveType);
-          Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()), v.equals(((PrimitiveType)outcome.get(i)).asStringValue()));
+    } else {
+      for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
+        String tn = expected.get(i).getAttribute("type");
+        if (!Utilities.noString(tn)) {
+          Assert.assertTrue(String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()), tn.equals(outcome.get(i).fhirType()));
+        }
+        String v = expected.get(i).getTextContent();
+        if (!Utilities.noString(v)) {
+          if (outcome.get(i) instanceof Quantity) {
+            Quantity q = fp.parseQuantityString(v);
+            Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()), outcome.get(i).equalsDeep(q));
+          } else {
+            Assert.assertTrue(String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()), outcome.get(i) instanceof PrimitiveType);
+            Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression), v.equals(((PrimitiveType)outcome.get(i)).asStringValue()));
+          }
         }
       }
     }

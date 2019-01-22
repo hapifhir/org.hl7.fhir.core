@@ -29,7 +29,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class ExpressionNode {
 
   public enum Kind {
-		Name, Function, Constant, Group
+		Name, Function, Constant, Group, Unary
 	}
 	public static class SourceLocation {
 		private int line;
@@ -61,7 +61,8 @@ public class ExpressionNode {
     
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
-    Children, Descendants, MemberOf, Trace, Today, Now, Resolve, Extension, HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
+    Children, Descendants, MemberOf, Trace, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
+    HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
     ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo;
 
     public static Function fromCode(String name) {
@@ -111,6 +112,10 @@ public class ExpressionNode {
       if (name.equals("now")) return Function.Now;
       if (name.equals("resolve")) return Function.Resolve;
       if (name.equals("extension")) return Function.Extension;
+      if (name.equals("allFalse")) return Function.AllFalse;
+      if (name.equals("anyFalse")) return Function.AnyFalse;
+      if (name.equals("allTrue")) return Function.AllTrue;
+      if (name.equals("anyTrue")) return Function.AnyTrue;
       if (name.equals("hasValue")) return Function.HasValue;
       if (name.equals("alias")) return Function.Alias;
       if (name.equals("aliasAs")) return Function.AliasAs;
@@ -182,6 +187,10 @@ public class ExpressionNode {
       case Now : return "now";
       case Resolve : return "resolve";
       case Extension : return "extension";
+      case AllFalse : return "allFalse";
+      case AnyFalse : return "anyFalse";
+      case AllTrue : return "allTrue";
+      case AnyTrue : return "anyTrue";
       case HasValue : return "hasValue";
       case Alias : return "alias";
       case AliasAs : return "aliasAs";
@@ -209,7 +218,7 @@ public class ExpressionNode {
   }
 
 	public enum Operation {
-		Equals, Equivalent, NotEquals, NotEquivalent, LessThen, Greater, LessOrEqual, GreaterOrEqual, Is, As, Union, Or, And, Xor, Implies, 
+		Equals, Equivalent, NotEquals, NotEquivalent, LessThan, Greater, LessOrEqual, GreaterOrEqual, Is, As, Union, Or, And, Xor, Implies, 
 		Times, DivideBy, Plus, Minus, Concatenate, Div, Mod, In, Contains, MemberOf;
 
 		public static Operation fromCode(String name) {
@@ -226,7 +235,7 @@ public class ExpressionNode {
 			if (name.equals(">"))
 				return Operation.Greater;
 			if (name.equals("<"))
-				return Operation.LessThen;
+				return Operation.LessThan;
 			if (name.equals(">="))
 				return Operation.GreaterOrEqual;
 			if (name.equals("<="))
@@ -275,7 +284,7 @@ public class ExpressionNode {
 			case NotEquals : return "!=";
 			case NotEquivalent : return "!~";
 			case Greater : return ">";
-			case LessThen : return "<";
+			case LessThan : return "<";
 			case GreaterOrEqual : return ">=";
 			case LessOrEqual : return "<=";
 			case Union : return "|";
@@ -579,6 +588,8 @@ public class ExpressionNode {
 
 			break;
 
+		case Unary:
+		  break;
 		case Constant:
 			if (constant == null) 
 				return "No Constant provided @ "+location();

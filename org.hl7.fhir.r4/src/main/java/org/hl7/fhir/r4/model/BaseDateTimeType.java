@@ -846,4 +846,15 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		}
 	}
 
+	@Override
+	public boolean isDateTime() {
+	  return true;
+	}
+
+  @Override
+  public Date dateTimeValue() {
+    return getValue();
+  }
+  
+
 }

@@ -90,7 +90,7 @@ public class FHIRLexer {
   }
 
   public boolean isStringConstant() {
-    return current.charAt(0) == '\'' || current.charAt(0) == '"';
+    return current.charAt(0) == '\'' || current.charAt(0) == '"' || current.charAt(0) == '`';
   }
 
   public String take() throws FHIRLexerException {
@@ -185,9 +185,9 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
       } else if (ch == '%') {
         cursor++;
-        if (cursor < source.length() && (source.charAt(cursor) == '"')) {
+        if (cursor < source.length() && (source.charAt(cursor) == '`')) {
           cursor++;
-          while (cursor < source.length() && (source.charAt(cursor) != '"'))
+          while (cursor < source.length() && (source.charAt(cursor) != '`'))
             cursor++;
           cursor++;
         } else
@@ -228,6 +228,20 @@ public class FHIRLexer {
           throw error("Unterminated string");
         cursor++;
         current = "\""+source.substring(currentStart+1, cursor-1)+"\"";
+      } else if (ch == '`') {
+        cursor++;
+        boolean escape = false;
+        while (cursor < source.length() && (escape || source.charAt(cursor) != '`')) {
+          if (escape)
+            escape = false;
+          else 
+            escape = (source.charAt(cursor) == '\\');
+          cursor++;
+        }
+        if (cursor == source.length())
+          throw error("Unterminated string");
+        cursor++;
+        current = "`"+source.substring(currentStart+1, cursor-1)+"`";
       } else if (ch == '\''){
         cursor++;
         char ech = ch;
@@ -357,6 +371,9 @@ public class FHIRLexer {
           break;
         case '"':
           b.append('"');
+          break;
+        case '`':
+          b.append('`');
           break;
         case '\\': 
           b.append('\\');

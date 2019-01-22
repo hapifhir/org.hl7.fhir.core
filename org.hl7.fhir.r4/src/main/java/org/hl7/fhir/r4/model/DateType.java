@@ -203,4 +203,9 @@ public class DateType extends BaseDateTimeType {
 	public String fhirType() {
 		return "date";		
 	}
+
+  @Override
+  public boolean isDateTime() {
+    return true;
+  }
 }
