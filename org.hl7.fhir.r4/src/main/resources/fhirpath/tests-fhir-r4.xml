@@ -230,7 +230,7 @@
 		<test name="testLiteralDecimal" inputfile="observation-example.xml"><expression invalid="semantic">Observation.value.value &lt; 'test'</expression><!-- no output - empty set --></test>
 
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate = @1974-12-25</expression><output type="boolean">true</output></test>
-		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00</expression><output type="boolean">true</output></test>
+		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00</expression></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00-10:00</expression><output type="boolean">true</output></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00+10:00</expression><output type="boolean">true</output></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00Z</expression><output type="boolean">true</output></test>
@@ -601,6 +601,10 @@
 		<test inputfile="patient-example.xml"><expression>1 = 1</expression><output type="boolean">true</output></test>
     <test inputfile="patient-example.xml"><expression>{} = {}</expression></test>
     <test inputfile="patient-example.xml"><expression>true = {}</expression></test>
+    <test inputfile="patient-example.xml"><expression>(1) = (1)</expression><output type="boolean">true</output></test>
+    <test inputfile="patient-example.xml"><expression>(1 | 2) = (1 | 2)</expression><output type="boolean">true</output></test>
+    <test inputfile="patient-example.xml"><expression>(1 | 2 | 3) = (1 | 2 | 3)</expression><output type="boolean">true</output></test>
+<!--    <test inputfile="patient-example.xml"><expression>(1 | 1) = (1 | 2 | {})</expression></test> -->
 		<test inputfile="patient-example.xml"><expression>1 = 2</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>'a' = 'a'</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>'a' = 'A'</expression><output type="boolean">false</output></test>
@@ -615,7 +619,7 @@
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 = @2012-04-15T10:00:00</expression></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00 = @2012-04-15T10:00:00</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00Z = @2012-04-15T10:00:00</expression></test>
-		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00+02:00 = @2012-04-15T14:00:00+03:00</expression><output type="boolean">true</output></test>
+		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00+02:00 = @2012-04-15T16:00:00+03:00</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>name = name</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2) = name.take(2).first() | name.take(2).last()</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2) = name.take(2).last() | name.take(2).first()</expression><output type="boolean">false</output></test>
@@ -638,7 +642,7 @@
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 != @2012-04-15T10:00:00</expression></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00 != @2012-04-15T10:00:00</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00Z != @2012-04-15T10:00:00</expression></test>
-		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00+02:00 != @2012-04-15T14:00:00+03:00</expression><output type="boolean">false</output></test>
+		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00+02:00 != @2012-04-15T16:00:00+03:00</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>name != name</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2) != name.take(2).first() | name.take(2).last()</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2) != name.take(2).last() | name.take(2).first()</expression><output type="boolean">true</output></test>
@@ -648,7 +652,7 @@
 	<group name="testEquivalent">
 		<test inputfile="patient-example.xml"><expression>1 ~ 1</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>{} ~ {}</expression><output type="boolean">true</output></test>
-		<test inputfile="patient-example.xml"><expression>1 ~ {}</expression><output type="boolean">false</output></test>
+		<test inputfile="patient-example.xml"><expression>1 ~ {}</expression></test>
 		<test inputfile="patient-example.xml"><expression>1 ~ 2</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>'a' ~ 'a'</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>'a' ~ 'A'</expression><output type="boolean">true</output></test>
@@ -670,7 +674,7 @@
 	<group name="testNotEquivalent">
 		<test inputfile="patient-example.xml"><expression>1 !~ 1</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>{} !~ {}</expression><output type="boolean">false</output></test>
-		<test inputfile="patient-example.xml"><expression>{} !~ 1</expression><output type="boolean">true</output></test>
+		<test inputfile="patient-example.xml"><expression>{} !~ 1</expression></test>
 		<test inputfile="patient-example.xml"><expression>1 !~ 2</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>'a' !~ 'a'</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>'a' !~ 'A'</expression><output type="boolean">false</output></test>
