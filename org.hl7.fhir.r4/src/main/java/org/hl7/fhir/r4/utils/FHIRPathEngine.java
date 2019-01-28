@@ -72,7 +72,6 @@ import org.hl7.fhir.utilities.Utilities;
 
 //import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
-import net.sf.saxon.om.Item;
 
 /**
  * 
