@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.Decimal;
@@ -20,6 +21,7 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.BaseDateTimeType;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DateType;
@@ -72,7 +74,6 @@ import org.hl7.fhir.utilities.Utilities;
 
 //import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
-import net.sf.saxon.om.Item;
 
 /**
  * 
@@ -80,6 +81,8 @@ import net.sf.saxon.om.Item;
  *
  */
 public class FHIRPathEngine {
+  private enum Equality { Null, True, False }
+
   private class FHIRConstant extends Base {
 
     private static final long serialVersionUID = -8933773658248269439L;
@@ -1192,7 +1195,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> preOperate(List<Base> left, Operation operation) {
+  private List<Base> preOperate(List<Base> left, Operation operation) throws PathEngineException {
     if (left.size() == 0)
       return null;
     switch (operation) {
@@ -1201,7 +1204,8 @@ public class FHIRPathEngine {
     case Or:
       return isBoolean(left, true) ? makeBoolean(true) : null;
     case Implies:
-      return convertToBoolean(left) ? null : makeBoolean(true);
+      Equality v = asBool(left); 
+      return v == Equality.False ? null : makeBoolean(true);
     default: 
       return null;
     }
@@ -1210,6 +1214,11 @@ public class FHIRPathEngine {
   private List<Base> makeBoolean(boolean b) {
     List<Base> res = new ArrayList<Base>();
     res.add(new BooleanType(b).noExtensions());
+    return res;
+  }
+
+  private List<Base> makeNull() {
+    List<Base> res = new ArrayList<Base>();
     return res;
   }
 
@@ -1521,13 +1530,22 @@ public class FHIRPathEngine {
       return makeBoolean(false);
 
     boolean res = true;
+    boolean nil = false;
     for (int i = 0; i < left.size(); i++) {
-      if (!doEquals(left.get(i), right.get(i))) { 
+      Boolean eq = doEquals(left.get(i), right.get(i));
+      if (eq == null)
+        nil = true;
+      else if (eq == false) { 
         res = false;
         break;
       }
     }
-    return makeBoolean(res);
+    if (!res)
+      return makeBoolean(res);
+    else if (nil)
+      return new ArrayList<Base>();
+    else
+      return makeBoolean(res);
   }
 
   private List<Base> opNotEquals(List<Base> left, List<Base> right) {
@@ -1538,13 +1556,22 @@ public class FHIRPathEngine {
       return makeBoolean(true);
 
     boolean res = true;
+    boolean nil = false;
     for (int i = 0; i < left.size(); i++) {
-      if (!doEquals(left.get(i), right.get(i))) { 
+      Boolean eq = doEquals(left.get(i), right.get(i));
+      if (eq == null)
+        nil = true;
+      else if (eq == true) { 
         res = false;
         break;
       }
     }
-    return makeBoolean(!res);
+    if (!res)
+      return makeBoolean(res);
+    else if (nil)
+      return new ArrayList<Base>();
+    else
+      return makeBoolean(res);
   }
 
   private String removeTrailingZeros(String s) {
@@ -1572,12 +1599,24 @@ public class FHIRPathEngine {
     return left.equals(right);
   }
   
-  private boolean doEquals(Base left, Base right) {
+  private Boolean compareDates(BaseDateTimeType left, BaseDateTimeType right) {
+//    HumanDateTime l = HumanDateTime.fromXml(left.primitiveValue());
+//    HumanDateTime r = HumanDateTime.fromXml(right.primitiveValue());
+//    if (!l.overlaps(r))
+//      return false;
+//    else if (!l.canCompare(r))
+//      return null;
+//    else
+//      return l.sameTime(r);
+    return false;
+  }
+  
+  private Boolean doEquals(Base left, Base right) {
     if (left instanceof Quantity && right instanceof Quantity)
       return qtyEqual((Quantity) left, (Quantity) right);
-    else if (left.isDateTime() && right.isDateTime()) 
-      return left.dateTimeValue().equals(right.dateTimeValue());
-    else if (left instanceof DecimalType || right instanceof DecimalType) 
+    else if (left.isDateTime() && right.isDateTime()) {
+      return compareDates(left.dateTimeValue(), right.dateTimeValue());
+    } else if (left instanceof DecimalType || right instanceof DecimalType) 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     else if (left.isPrimitive() && right.isPrimitive())
 			return Base.equals(left.primitiveValue(), right.primitiveValue());
@@ -1654,8 +1693,6 @@ public class FHIRPathEngine {
 
 
   private List<Base> opEquivalent(List<Base> left, List<Base> right) throws PathEngineException {
-    if (left.size() == 0 || right.size() == 0) 
-      return new ArrayList<Base>();
     if (left.size() != right.size())
       return makeBoolean(false);
 
@@ -1677,8 +1714,6 @@ public class FHIRPathEngine {
   }
 
   private List<Base> opNotEquivalent(List<Base> left, List<Base> right) throws PathEngineException {
-    if (left.size() == 0 || right.size() == 0)
-      return new ArrayList<Base>();
     if (left.size() != right.size())
       return makeBoolean(true);
 
@@ -1874,11 +1909,13 @@ public class FHIRPathEngine {
     boolean ans = true;
     for (Base l : left) {
       boolean f = false;
-      for (Base r : right)
-        if (doEquals(l, r)) {
+      for (Base r : right) {
+        Boolean eq = doEquals(l, r);
+        if (eq != null && eq == true) {
           f = true;
           break;
         }
+      }
       if (!f) {
         ans = false;
         break;
@@ -1893,11 +1930,13 @@ public class FHIRPathEngine {
     boolean ans = true;
     for (Base r : right) {
       boolean f = false;
-      for (Base l : left)
-        if (doEquals(l, r)) {
+      for (Base l : left) {
+        Boolean eq = doEquals(l, r);
+        if (eq != null && eq == true) {
           f = true;
           break;
         }
+      }
       if (!f) {
         ans = false;
         break;
@@ -1969,21 +2008,19 @@ public class FHIRPathEngine {
 
 
   private List<Base> opConcatenate(List<Base> left, List<Base> right) throws PathEngineException {
-    if (left.size() == 0 || right.size() == 0) 
-      return new ArrayList<Base>();
     if (left.size() > 1)
       throw new PathEngineException("Error performing &: left operand has more than one value");
-    if (!left.get(0).hasType(FHIR_TYPES_STRING))
+    if (left.size() > 0 && !left.get(0).hasType(FHIR_TYPES_STRING))
       throw new PathEngineException(String.format("Error performing &: left operand has the wrong type (%s)", left.get(0).fhirType()));
     if (right.size() > 1)
       throw new PathEngineException("Error performing &: right operand has more than one value");
-    if (!right.get(0).hasType(FHIR_TYPES_STRING))
+    if (right.size() > 0 && !right.get(0).hasType(FHIR_TYPES_STRING))
       throw new PathEngineException(String.format("Error performing &: right operand has the wrong type (%s)", right.get(0).fhirType()));
 
     List<Base> result = new ArrayList<Base>();
-    Base l = left.get(0);
-    Base r = right.get(0);
-    result.add(new StringType(l.primitiveValue() + r.primitiveValue()));
+    String l = left.size() == 0 ? "" : left.get(0).primitiveValue();
+    String r = right.size() == 0 ? "" : right.get(0).primitiveValue();
+    result.add(new StringType(l + r));
     return result;
   }
 
@@ -2001,57 +2038,93 @@ public class FHIRPathEngine {
   }
 
   private boolean doContains(List<Base> list, Base item) {
-    for (Base test : list)
-      if (doEquals(test, item))
+    for (Base test : list) {
+      Boolean eq = doEquals(test, item);
+      if (eq != null && eq == true)
         return true;
+    }
     return false;
   }
 
 
-  private List<Base> opAnd(List<Base> left, List<Base> right) {
-    if (left.isEmpty() && right.isEmpty())
-      return new ArrayList<Base>();
-    else if (isBoolean(left, false) || isBoolean(right, false))
-      return makeBoolean(false);
-    else if (left.isEmpty() || right.isEmpty())
-      return new ArrayList<Base>();
-    else if (convertToBoolean(left) && convertToBoolean(right))
-      return makeBoolean(true);
-    else 
-      return makeBoolean(false);
+  private List<Base> opAnd(List<Base> left, List<Base> right) throws PathEngineException {
+    Equality l = asBool(left);
+    Equality r = asBool(right);
+    switch (l) {
+    case False: return makeBoolean(false);
+    case Null:
+      if (r == Equality.False)
+        return makeBoolean(false);
+      else
+        return makeNull();
+    case True:
+      switch (r) {
+      case False: return makeBoolean(false);
+      case Null: return makeNull();
+      case True: return makeBoolean(true);
+      }
+    }
+    return makeNull();
   }
 
   private boolean isBoolean(List<Base> list, boolean b) {
     return list.size() == 1 && list.get(0) instanceof BooleanType && ((BooleanType) list.get(0)).booleanValue() == b;
   }
 
-  private List<Base> opOr(List<Base> left, List<Base> right) {
-    if (left.isEmpty() && right.isEmpty())
-      return new ArrayList<Base>();
-    else if (convertToBoolean(left) || convertToBoolean(right))
-      return makeBoolean(true);
-    else if (left.isEmpty() || right.isEmpty())
-      return new ArrayList<Base>();
-    else 
-      return makeBoolean(false);
+  private List<Base> opOr(List<Base> left, List<Base> right) throws PathEngineException {
+    Equality l = asBool(left);
+    Equality r = asBool(right);
+    switch (l) {
+    case True: return makeBoolean(true);
+    case Null:
+      if (r == Equality.True)
+        return makeBoolean(true);
+      else
+        return makeNull();
+    case False:
+      switch (r) {
+      case False: return makeBoolean(false);
+      case Null: return makeNull();
+      case True: return makeBoolean(true);
+      }
+    }
+    return makeNull();
   }
 
-  private List<Base> opXor(List<Base> left, List<Base> right) {
-    if (left.isEmpty() || right.isEmpty())
-      return new ArrayList<Base>();
-    else 
-      return makeBoolean(convertToBoolean(left) ^ convertToBoolean(right));
+  private List<Base> opXor(List<Base> left, List<Base> right) throws PathEngineException {
+    Equality l = asBool(left);
+    Equality r = asBool(right);
+    switch (l) {
+    case True: 
+      switch (r) {
+      case False: return makeBoolean(true);
+      case True: return makeBoolean(false);
+      case Null: return makeNull();
+      }
+    case Null:
+      return makeNull();
+    case False:
+      switch (r) {
+      case False: return makeBoolean(false);
+      case True: return makeBoolean(true);
+      case Null: return makeNull();
+      }
+    }
+    return makeNull();
   }
 
-  private List<Base> opImplies(List<Base> left, List<Base> right) {
-    if (left.size() == 0)
-      return new ArrayList<Base>();      
-    else if (!convertToBoolean(left)) 
+  private List<Base> opImplies(List<Base> left, List<Base> right) throws PathEngineException {
+    Equality eq = asBool(left);
+    if (eq == Equality.False) 
       return makeBoolean(true);
     else if (right.size() == 0)
-      return new ArrayList<Base>();      
-    else
-      return makeBoolean(convertToBoolean(right));
+      return makeNull();
+    else switch (asBool(right)) {
+    case False: return makeBoolean(false);
+    case Null: return makeNull();
+    case True: return makeBoolean(true);
+    }
+    return makeNull();
   }
 
 
@@ -2715,39 +2788,34 @@ public class FHIRPathEngine {
     return makeBoolean(true);    
   }
 
-
+  
   private List<Base> funcAll(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> result = new ArrayList<Base>();
     if (exp.getParameters().size() == 1) {
-      List<Base> result = new ArrayList<Base>();
       List<Base> pc = new ArrayList<Base>();
       boolean all = true;
       for (Base item : focus) {
         pc.clear();
         pc.add(item);
-        if (!convertToBoolean(execute(changeThis(context, item), pc, exp.getParameters().get(0), true))) {
+        Equality eq = asBool(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
+        if (eq != Equality.True) {
           all = false;
           break;
         }
       }
       result.add(new BooleanType(all).noExtensions());
-      return result;
     } else {// (exp.getParameters().size() == 0) {
-      List<Base> result = new ArrayList<Base>();
       boolean all = true;
       for (Base item : focus) {
-        boolean v = false;
-        if (item instanceof BooleanType) {
-          v = ((BooleanType) item).booleanValue();
-        } else 
-          v = item != null;
-        if (!v) {
+        Equality eq = asBool(item);
+        if (eq != Equality.True) {
           all = false;
           break;
         }
       }
       result.add(new BooleanType(all).noExtensions());
-      return result;
     }
+    return result;
   }
 
 
@@ -2949,9 +3017,9 @@ public class FHIRPathEngine {
 
   private List<Base> funcIif(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
-    Boolean v = convertToBoolean(n1);
+    Equality v = asBool(n1);
 
-    if (v)
+    if (v == Equality.True)
       return execute(context, focus, exp.getParameters().get(1), true);
     else if (exp.getParameters().size() < 3)
       return new ArrayList<Base>();
@@ -3129,13 +3197,18 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcIsDistinct(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    if (focus.size() <= 1)
+    if (focus.size() < 1)
+      return new ArrayList<Base>();
+    if (focus.size() == 1)
       return makeBoolean(true);
 
     boolean distinct = true;
     for (int i = 0; i < focus.size(); i++) {
       for (int j = i+1; j < focus.size(); j++) {
-        if (doEquals(focus.get(j), focus.get(i))) {
+        Boolean eq = doEquals(focus.get(j), focus.get(i));
+        if (eq == null) {
+          return new ArrayList<Base>();
+        } else if (eq == true) {
           distinct = false;
           break;
         }
@@ -3265,7 +3338,8 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      if (convertToBoolean(res)) {
+	      Equality v = asBool(res);
+	      if (v != Equality.False) {
 	        all = false;
 	        break;
 	      }
@@ -3274,12 +3348,8 @@ public class FHIRPathEngine {
 	  } else { 
 	    boolean all = true;
 	    for (Base item : focus) {
-	      boolean v;
-	      if (item instanceof BooleanType)
-	        v = ((BooleanType) item).booleanValue();
-	      else
-	        v = item != null;
-	      if (v) {
+	      Equality v = asBool(item);
+        if (v != Equality.False) {
 	        all = false;
 	        break;
 	      }
@@ -3298,7 +3368,8 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      if (!convertToBoolean(res)) {
+	      Equality v = asBool(res);
+        if (v == Equality.False) {
 	        any = true;
 	        break;
 	      }
@@ -3307,12 +3378,8 @@ public class FHIRPathEngine {
 	  } else {
 	    boolean any = false;
 	    for (Base item : focus) {
-	      boolean v;
-	      if (item instanceof BooleanType)
-	        v = ((BooleanType) item).booleanValue();
-	      else
-	        v = item != null;
-	      if (!v) {
+	      Equality v = asBool(item);
+        if (v == Equality.False) {
 	        any = true;
 	        break;
 	      }
@@ -3331,7 +3398,8 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      if (!convertToBoolean(res)) {
+	      Equality v = asBool(res);
+        if (v != Equality.True) {
 	        all = false;
 	        break;
 	      }
@@ -3340,12 +3408,8 @@ public class FHIRPathEngine {
 	  } else { 
 	    boolean all = true;
 	    for (Base item : focus) {
-	      boolean v;
-	      if (item instanceof BooleanType)
-	        v = ((BooleanType) item).booleanValue();
-	      else
-	        v = item != null;
-	      if (!v) {
+	      Equality v = asBool(item);
+        if (v != Equality.True) {
 	        all = false;
 	        break;
 	      }
@@ -3364,7 +3428,8 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      if (convertToBoolean(res)) {
+	      Equality v = asBool(res);
+        if (v == Equality.True) {
 	        any = true;
 	        break;
 	      }
@@ -3373,12 +3438,8 @@ public class FHIRPathEngine {
 	  } else {
 	    boolean any = false;
       for (Base item : focus) {
-        boolean v;
-        if (item instanceof BooleanType)
-          v = ((BooleanType) item).booleanValue();
-        else
-          v = item != null;
-	        if (v) {
+        Equality v = asBool(item);
+        if (v == Equality.True) {
 	          any = true;
 	          break;
 	        }
@@ -3407,7 +3468,10 @@ public class FHIRPathEngine {
     for (int i = 0; i < focus.size(); i++) {
       boolean found = false;
       for (int j = i+1; j < focus.size(); j++) {
-        if (doEquals(focus.get(j), focus.get(i))) {
+        Boolean eq = doEquals(focus.get(j), focus.get(i));
+        if (eq == null)
+          return new ArrayList<Base>();
+        else if (eq == true) {
           found = true;
           break;
         }
@@ -3757,7 +3821,8 @@ public class FHIRPathEngine {
     for (Base item : focus) {
       pc.clear();
       pc.add(item);
-      if (convertToBoolean(execute(changeThis(context, item), pc, exp.getParameters().get(0), true)))
+      Equality v = asBool(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
+      if (v == Equality.True)
         result.add(item);
     }
     return result;
@@ -3789,8 +3854,12 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private List<Base> funcNot(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    return makeBoolean(!convertToBoolean(focus));
+  private List<Base> funcNot(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws PathEngineException {
+    List<Base> result = new ArrayList<Base>();  
+    Equality v = asBool(focus);
+    if (v != Equality.Null)
+      result.add(new BooleanType(v != Equality.True));
+    return result;
   }
 
   public class ElementDefinitionMatch {
@@ -4128,4 +4197,66 @@ public class FHIRPathEngine {
     return path.substring(path.lastIndexOf(".") + 1);
   }
 
+  private Equality asBool(List<Base> items) throws PathEngineException {
+    if (items.size() == 0)
+      return Equality.Null;
+    else if (items.size() == 1)
+      return asBool(items.get(0));
+    else
+      throw new PathEngineException("Unable to evaluate as a boolean: "+convertToString(items));
+  }
+  
+  private Equality asBoolFromInt(String s) {
+    try {
+      int i = Integer.parseInt(s);
+      switch (i) {
+      case 0: return Equality.False;
+      case 1: return Equality.True;
+      default: return Equality.Null;
+      }
+    } catch (Exception e) {
+      return Equality.Null;
+    }
+  }
+
+  private Equality asBoolFromDec(String s) {
+    try {
+      BigDecimal d = new BigDecimal(s);
+      if (d.compareTo(BigDecimal.ZERO) == 0) 
+        return Equality.False;
+      else if (d.compareTo(BigDecimal.ONE) == 0) 
+        return Equality.True;
+      else
+        return Equality.Null;
+    } catch (Exception e) {
+      return Equality.Null;
+    }
+  }
+
+  private Equality asBool(Base item) {
+    if (item instanceof BooleanType) 
+      return boolToTriState(((BooleanType) item).booleanValue());
+    else if (item instanceof IntegerType)
+      return asBoolFromInt(item.primitiveValue());
+    else if (item instanceof DecimalType)
+      return asBoolFromDec(item.primitiveValue());
+    else if (Utilities.existsInList(item.fhirType(), FHIR_TYPES_STRING)) {
+      if (Utilities.existsInList(item.primitiveValue(), "true", "t", "yes", "y"))
+        return Equality.False;
+      else if (Utilities.existsInList(item.primitiveValue(), "false", "f", "no", "n"))
+        return Equality.True;
+      else if (Utilities.isInteger(item.primitiveValue()))
+        return asBoolFromInt(item.primitiveValue());
+      else if (Utilities.isDecimal(item.primitiveValue()))
+        return asBoolFromDec(item.primitiveValue());
+      else
+        return Equality.Null;
+    } else
+      return Equality.Null;
+  }
+          
+  private Equality boolToTriState(boolean b) {
+    return b ? Equality.True : Equality.False;
+  }
+  
 }

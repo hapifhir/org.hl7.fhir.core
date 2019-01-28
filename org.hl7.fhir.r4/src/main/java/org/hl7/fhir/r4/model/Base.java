@@ -143,7 +143,7 @@ private Map<String, Object> userData;
     return false;
   }
 
-  public Date dateTimeValue() {
+  public BaseDateTimeType dateTimeValue() {
     return null;
   }
   

@@ -43,6 +43,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +61,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
     
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
-    JsonObject json =  (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), "tests", "validation-examples", "manifest.json")));
+    JsonObject json =  (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(TestUtilities.resourceNameToFile("validation-examples", "manifest.json")));
     json = json.getAsJsonObject("validator-tests");
     for (Entry<String, JsonElement> e : json.getAsJsonObject("Json").entrySet()) {
       examples.put("Json."+e.getKey(), e.getValue().getAsJsonObject());
@@ -104,18 +105,18 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
     
-    String path = Utilities.path(TestingUtilities.home(), "tests", "validation-examples", name.substring(name.indexOf(".")+1));
+    String path = TestUtilities.resourceNameToFile("validation-examples", name.substring(name.indexOf(".")+1));
     InstanceValidator val = ve.getValidator();
     if (content.has("allowed-extension-domain")) 
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     val.setFetcher(this);
     if (content.has("questionnaire")) {
-      ve.getContext().cacheResource(new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.home(), "tests", "validation-examples", content.get("questionnaire").getAsString()))));
+      ve.getContext().cacheResource(new XmlParser().parse(new FileInputStream(TestUtilities.resourceNameToFile("validation-examples", content.get("questionnaire").getAsString()))));
     }
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String p = je.getAsString();
-        String filename = Utilities.path(TestingUtilities.home(), "tests", "validation-examples", p);
+        String filename = TestUtilities.resourceNameToFile("validation-examples", p);
         StructureDefinition sd = loadProfile(filename, Constants.VERSION);
         val.getContext().cacheResource(sd);
       }
@@ -123,7 +124,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("profile")) {
       List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
       JsonObject profile = content.getAsJsonObject("profile");
-      String filename = Utilities.path(TestingUtilities.home(), "tests", "validation-examples", profile.get("source").getAsString());
+      String filename = TestUtilities.resourceNameToFile("validation-examples", profile.get("source").getAsString());
       String v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, v);
       if (name.startsWith("Json."))

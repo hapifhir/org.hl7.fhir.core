@@ -852,8 +852,12 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	}
 
   @Override
-  public Date dateTimeValue() {
-    return getValue();
+  public BaseDateTimeType dateTimeValue() {
+    return this;
+  }
+
+  public boolean hasTime() {
+    return (myPrecision == TemporalPrecisionEnum.MINUTE || myPrecision == TemporalPrecisionEnum.SECOND || myPrecision == TemporalPrecisionEnum.MILLI);
   }
   
 
