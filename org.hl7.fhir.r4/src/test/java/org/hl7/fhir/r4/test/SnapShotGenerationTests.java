@@ -389,7 +389,7 @@ public class SnapShotGenerationTests {
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(fn), r);
   }
 
-  private StructureDefinition getSD(String url) throws DefinitionException, FHIRException {
+  private StructureDefinition getSD(String url) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.snapshots.get(url);
     if (sd == null)
       sd = findContainedProfile(url);
@@ -398,7 +398,7 @@ public class SnapShotGenerationTests {
     return sd;
   }
 
-  private StructureDefinition findContainedProfile(String url) throws DefinitionException, FHIRException {
+  private StructureDefinition findContainedProfile(String url) throws DefinitionException, FHIRException, IOException {
     for (Resource r : context.tests.getContained()) {
       if (r instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) r;
@@ -411,6 +411,7 @@ public class SnapShotGenerationTests {
           if (!errors.isEmpty())
             throw new FHIRException(errors.get(0));
           pu.generateSnapshot(getSD(p.getBaseDefinition()), p, p.getUrl(), p.getName());
+          debugSaveResource(p);
           return p;
         }
       }

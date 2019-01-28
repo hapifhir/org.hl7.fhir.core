@@ -1827,6 +1827,78 @@
       </differential>
     </StructureDefinition>
   </contained>
+  <contained>
+    <StructureDefinition>
+      <id value="t38-dt"/>
+      <url value="http://example.org/fhir/StructureDefinition/profile-duration"/>
+      <name value="t38-dt"/>
+      <status value="draft"/>
+      <description value="fixture for #38-dt: Deep nesting"/>
+      <kind value="resource"/>
+      <abstract value="false"/>
+      <type value="Duration"/>
+      <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Duration"/>
+      <derivation value="constraint"/>
+      <differential>
+        <element>
+          <path value="Duration"/>
+        </element>
+        <element>
+          <path value="Duration.value"/>
+          <min value="1"/>
+        </element>
+        <element>
+          <path value="Duration.unit"/>
+          <min value="1"/>
+        </element>
+        <element>
+          <path value="Duration.system"/>
+        </element>
+        <element>
+          <path value="Duration.code"/>
+          <binding>
+            <strength value="extensible"/>
+            <valueSet value="https://fhir.infoway-inforoute.ca/ValueSet/prescribedquantityunit"/>
+          </binding>
+        </element>
+      </differential>
+    </StructureDefinition>
+  </contained>
+  <contained>
+    <StructureDefinition>
+      <id value="t38"/>
+      <url value="urn:uuid:00d940df-0e4f-40db-8051-252901d659e4"/>
+      <name value="t38"/>
+      <status value="draft"/>
+      <description value="fixture for #38: Deep nesting"/>
+      <kind value="resource"/>
+      <abstract value="false"/>
+      <type value="MedicationRequest"/>
+      <baseDefinition value="http://hl7.org/fhir/StructureDefinition/MedicationRequest"/>
+      <derivation value="constraint"/>
+      <differential>
+        <element>
+          <path value="MedicationRequest"/>
+        </element>
+        <element>
+          <path value="MedicationRequest.dosageInstruction"/>
+        </element>
+        <element>
+          <path value="MedicationRequest.dosageInstruction.timing"/>
+        </element>
+        <element>
+          <path value="MedicationRequest.dosageInstruction.timing.repeat"/>
+        </element>
+        <element>
+          <path value="MedicationRequest.dosageInstruction.timing.repeat.bounds[x]"/>
+          <type>
+            <code value="Duration"/>
+            <profile value="http://example.org/fhir/StructureDefinition/profile-duration"/>
+          </type>
+        </element>
+      </differential>
+    </StructureDefinition>
+  </contained>  
   <url value="http://hl7.org/fhir/tests/snapshotgeneration"/>
   <name value="SnapshotGenerationTests"/>
   <title value="Snapshot generation test script"/>
@@ -2178,9 +2250,9 @@
     <action>
       <assert>
         <label value="test9-1"/>
-        <description value="Mustsupport must be true on Patient.identifier"/>
+        <description value="Mustsupport must not be true on Patient.identifier"/>
         <direction value="response"/>
-        <expression value="fixture('t9o').snapshot.element.where(path = 'Patient.identifier').mustSupport.not()"/>
+        <expression value="fixture('t9o').snapshot.element.where(path = 'Patient.identifier').mustSupport.empty()"/>
         <warningOnly value="false"/>
       </assert>
     </action>
@@ -3514,10 +3586,7 @@
         <warningOnly value="false"/>
       </assert>
     </action>
-  </test>
-<!--
-  this triggers a complex bug in the snapshot generation to do with tracking paths when repeatedly walking across recursion (contentReference != null)
-  
+  </test> 
   <test>
     <name value="Test36"/>
     <description value="Test deep nesting"/>
@@ -3544,5 +3613,30 @@
       </assert>
     </action>
   </test>
-  -->
+ <test>
+    <name value="Test38"/>
+    <description value="Test deep nesting"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t38o"/>
+        <sourceId value="t38"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test38"/>
+        <description value="Snapshot generation didn't blow up"/>
+        <direction value="response"/>
+        <expression value="fixture('t38o').snapshot.element.count() > 0"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
 </TestScript>
