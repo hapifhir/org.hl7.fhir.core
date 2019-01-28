@@ -855,6 +855,44 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   public Date dateTimeValue() {
     return getValue();
   }
-  
+
+	/**
+	 * This method implements an equality check using the rules as defined by FHIRPath.
+	 *
+	 * This method returns:
+	 * <ul>
+	 *     <li>true if the given datetimes represent the exact same instant with the same precision (irrespective of the timezone)</li>
+	 *     <li>true if the given datetimes represent the exact same instant but one includes milliseconds of <code>.[0]+</code> while the other includes only SECONDS precision (irrespecitve of the timezone)</li>
+	 *     <li>true if the given datetimes represent the exact same year/year-month/year-month-date (if both operands have the same precision)</li>
+	 *     <li>false if the given datetimes have the same precision but do not represent the same instant (irrespective of timezone)</li>
+	 *     <li>null otherwise (since these datetimes are not comparable)</li>
+	 * </ul>
+	 */
+	public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
+
+		// Same precision
+		if (getPrecision() == theOther.getPrecision()) {
+			return getValue().getTime() == theOther.getValue().getTime();
+		}
+
+		// Both represent 0 millis but the millis are optional
+		if (((Integer)0).equals(getMillis())) {
+			if (((Integer)0).equals(theOther.getMillis())) {
+				if (getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
+					if (theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
+						return getValue().getTime() == theOther.getValue().getTime();
+					}
+				}
+			}
+		}
+
+		if (getPrecision() != theOther.getPrecision()) {
+			return null;
+		}
+
+		return false;
+	}
+
+
 
 }
