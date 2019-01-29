@@ -664,7 +664,7 @@
 		<test inputfile="patient-example.xml"><expression>0.0 ~ 0</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 ~ @2012-04-15</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 ~ @2012-04-16</expression><output type="boolean">false</output></test>
-		<test inputfile="patient-example.xml"><expression>@2012-04-15 ~ @2012-04-15T10:00:00</expression><output type="boolean">true</output></test>
+		<test inputfile="patient-example.xml"><expression>@2012-04-15 ~ @2012-04-15T10:00:00</expression><output type="boolean">false</output></test>
 		<!--    <test inputfile="patient-example.xml"><expression>name ~ name</expression><output type="boolean">true</output></test> -->
 		<test inputfile="patient-example.xml"><expression>name.take(2).given ~ name.take(2).first().given | name.take(2).last().given</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2).given ~ name.take(2).last().given | name.take(2).first().given</expression><output type="boolean">true</output></test>
@@ -686,7 +686,7 @@
 		<test inputfile="patient-example.xml"><expression>0.0 !~ 0</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 !~ @2012-04-15</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 !~ @2012-04-16</expression><output type="boolean">true</output></test>
-		<test inputfile="patient-example.xml"><expression>@2012-04-15 !~ @2012-04-15T10:00:00</expression><output type="boolean">false</output></test>
+		<test inputfile="patient-example.xml"><expression>@2012-04-15 !~ @2012-04-15T10:00:00</expression><output type="boolean">true</output></test>
 		<!--    <test inputfile="patient-example.xml"><expression>name !~ name</expression><output type="boolean">true</output></test> -->
 		<test inputfile="patient-example.xml"><expression>name.take(2).given !~ name.take(2).first().given | name.take(2).last().given</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2).given !~ name.take(2).last().given | name.take(2).first().given</expression><output type="boolean">false</output></test>

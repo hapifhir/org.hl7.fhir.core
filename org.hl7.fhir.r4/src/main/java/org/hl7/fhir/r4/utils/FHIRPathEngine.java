@@ -1215,7 +1215,7 @@ public class FHIRPathEngine {
       return isBoolean(left, true) ? makeBoolean(true) : null;
     case Implies:
       Equality v = asBool(left); 
-      return v == Equality.False ? null : makeBoolean(true);
+      return v == Equality.False ? makeBoolean(true) : null;
     default: 
       return null;
     }
@@ -1610,15 +1610,7 @@ public class FHIRPathEngine {
   }
   
   private Boolean compareDates(BaseDateTimeType left, BaseDateTimeType right) {
-//    HumanDateTime l = HumanDateTime.fromXml(left.primitiveValue());
-//    HumanDateTime r = HumanDateTime.fromXml(right.primitiveValue());
-//    if (!l.overlaps(r))
-//      return false;
-//    else if (!l.canCompare(r))
-//      return null;
-//    else
-//      return l.sameTime(r);
-    return false;
+    return left.equalsUsingFhirPathRules(right);
   }
   
   private Boolean doEquals(Base left, Base right) {
@@ -2130,7 +2122,7 @@ public class FHIRPathEngine {
     else if (right.size() == 0)
       return makeNull();
     else switch (asBool(right)) {
-    case False: return makeBoolean(false);
+    case False: return eq == Equality.Null ? makeNull() : makeBoolean(false);
     case Null: return makeNull();
     case True: return makeBoolean(true);
     }
