@@ -7,7 +7,17 @@
 		<artifactId>hapi-deployable-pom</artifactId>
 		<version>3.7.0-SNAPSHOT</version>
 	</parent>
-  <version>3.7.1-SNAPSHOT</version>
+
+	<!--
+	Note: Version of this project and the version of HAPI FHIR are not locked to
+	each other. It is fine to bump the point version of this POM without affecting
+	HAPI FHIR.
+	-->
+	<version>3.7.1-SNAPSHOT</version>
+
+	<properties>
+		<hapi_fhir_version>3.7.0-SNAPSHOT</hapi_fhir_version>
+	</properties>
 
 	<artifactId>org.hl7.fhir.core</artifactId>
 	<packaging>pom</packaging>
@@ -59,6 +69,28 @@
 	<dependencyManagement>
 
 		<dependencies>
+
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>hapi-fhir-base</artifactId>
+				<version>${hapi_fhir_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.utilities</artifactId>
+				<version>${hapi_fhir_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>hapi-fhir-structures-r4</artifactId>
+				<version>${hapi_fhir_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>hapi-fhir-validation-resources-r4</artifactId>
+				<version>${hapi_fhir_version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.atlassian.commonmark</groupId>
 				<artifactId>commonmark</artifactId>

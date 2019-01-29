@@ -18,18 +18,10 @@
 		<dependency>
          <groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-base</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>org.hl7.fhir.utilities</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ca.uhn.hapi.fhir</groupId>
-			<artifactId>org.hl7.fhir.convertors</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 		<!-- FHIR Versions -->
@@ -53,18 +45,21 @@
 			<artifactId>org.hl7.fhir.r4</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>ca.uhn.hapi.fhir</groupId>
+			<artifactId>org.hl7.fhir.convertors</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<!-- Validation resources (StructureDefinitions, ValueSets, etc.) -->
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-structures-r4</artifactId>
-			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-validation-resources-r4</artifactId>
-			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 
