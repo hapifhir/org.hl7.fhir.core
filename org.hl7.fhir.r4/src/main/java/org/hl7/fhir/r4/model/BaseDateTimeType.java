@@ -9,9 +9,9 @@ package org.hl7.fhir.r4.model;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,7 +58,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *            If the specified precision is not allowed for this type
 	 */
@@ -79,7 +79,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *            If the specified precision is not allowed for this type
 	 */
@@ -128,7 +128,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Returns <code>true</code> if the given object represents a date/time before <code>this</code> object
-	 * 
+	 *
 	 * @throws NullPointerException
 	 *            If <code>this.getValue()</code> or <code>theDateTimeType.getValue()</code>
 	 *            return <code>null</code>
@@ -140,7 +140,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Returns <code>true</code> if the given object represents a date/time before <code>this</code> object
-	 * 
+	 *
 	 * @throws NullPointerException
 	 *            If <code>this.getValue()</code> or <code>theDateTimeType.getValue()</code>
 	 *            return <code>null</code>
@@ -304,7 +304,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Gets the precision for this datatype (using the default for the given type if not set)
-	 * 
+	 *
 	 * @see #setPrecision(TemporalPrecisionEnum)
 	 */
 	public TemporalPrecisionEnum getPrecision() {
@@ -370,7 +370,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Returns <code>true</code> if this object represents a date that is today's date
-	 * 
+	 *
 	 * @throws NullPointerException
 	 *            if {@link #getValue()} returns <code>null</code>
 	 */
@@ -599,7 +599,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Sets the precision for this datatype
-	 * 
+	 *
 	 * @throws DataFormatException
 	 */
 	public void setPrecision(TemporalPrecisionEnum thePrecision) throws DataFormatException {
@@ -668,7 +668,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 * Sets the value for this type using the given Java Date object as the time, and using the specified precision, as
 	 * well as the local timezone as determined by the local operating system. Both of
 	 * these properties may be modified in subsequent calls if neccesary.
-	 * 
+	 *
 	 * @param theValue
 	 *           The date value
 	 * @param thePrecision
@@ -800,7 +800,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	/**
 	 * Returns a human readable version of this date/time using the system local format, converted to the local timezone
 	 * if neccesary.
-	 * 
+	 *
 	 * @see #toHumanDisplay() for a method which does not convert the time to the local timezone before rendering it.
 	 */
 	public String toHumanDisplayLocalTimezone() {
@@ -857,18 +857,32 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
 	/**
-	 * This method implements an equality check using the rules as defined by FHIRPath.
+	 * This method implements a datetime equality check using the rules as defined by FHIRPath.
 	 *
 	 * This method returns:
 	 * <ul>
 	 *     <li>true if the given datetimes represent the exact same instant with the same precision (irrespective of the timezone)</li>
 	 *     <li>true if the given datetimes represent the exact same instant but one includes milliseconds of <code>.[0]+</code> while the other includes only SECONDS precision (irrespecitve of the timezone)</li>
 	 *     <li>true if the given datetimes represent the exact same year/year-month/year-month-date (if both operands have the same precision)</li>
-	 *     <li>false if the given datetimes have the same precision but do not represent the same instant (irrespective of timezone)</li>
+     *     <li>false if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could not represent the same instant in any timezone</li>
+     *     <li>null if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could potentially represent the same instant in any timezone</li>
+     *     <li>false if the given datetimes have the same precision but do not represent the same instant (irrespective of timezone)</li>
 	 *     <li>null otherwise (since these datetimes are not comparable)</li>
 	 * </ul>
 	 */
 	public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
+
+		if (hasTimezoneIfRequired() != theOther.hasTimezoneIfRequired()) {
+			if (getPrecision() == theOther.getPrecision()) {
+				if (getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal() && theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
+                    boolean couldBeTheSameTime = couldBeTheSameTime(this, theOther) || couldBeTheSameTime(theOther, this);
+                    if (!couldBeTheSameTime) {
+                        return false;
+                    }
+				}
+			}
+			return null;
+		}
 
 		// Same precision
 		if (getPrecision() == theOther.getPrecision()) {
@@ -886,13 +900,26 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 			}
 		}
 
-		if (getPrecision() != theOther.getPrecision()) {
-			return null;
-		}
-
 		return false;
 	}
 
+    private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
+        boolean theCouldBeTheSameTime = false;
+        if (theArg1.getTimeZone() == null && theArg2.getTimeZone() != null) {
+            long lowLeft = new DateTimeType(theArg1.getValueAsString()+"Z").getValue().getTime() - (14 * DateUtils.MILLIS_PER_HOUR);
+            long highLeft = new DateTimeType(theArg1.getValueAsString()+"Z").getValue().getTime() + (14 * DateUtils.MILLIS_PER_HOUR);
+            long right = theArg2.getValue().getTime();
+            if (right >= lowLeft && right <= highLeft) {
+                theCouldBeTheSameTime = true;
+            }
+        }
+        return theCouldBeTheSameTime;
+    }
+
+    boolean hasTimezoneIfRequired() {
+		return getPrecision().ordinal() <= TemporalPrecisionEnum.DAY.ordinal() ||
+				getTimeZone() != null;
+	}
 
 
 }
