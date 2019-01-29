@@ -448,6 +448,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.externalHostServices = hostServices;
     fpe = new FHIRPathEngine(context);
     fpe.setHostServices(new ValidatorHostServices());
+    if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
+      fpe.setLegacyMode(true);
     source = Source.InstanceValidator;
   }
 

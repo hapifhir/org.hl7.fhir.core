@@ -174,6 +174,7 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -310,6 +311,17 @@ public class FHIRPathEngine {
       if (v != null)
         result.add(v);
   }
+
+  
+  public boolean isLegacyMode() {
+    return legacyMode;
+  }
+
+
+  public void setLegacyMode(boolean legacyMode) {
+    this.legacyMode = legacyMode;
+  }
+
 
   // --- public API -------------------------------------------------------
   /**
@@ -1549,7 +1561,7 @@ public class FHIRPathEngine {
   }
 
   private List<Base> opNotEquals(List<Base> left, List<Base> right) {
-    if (left.size() == 0 || right.size() == 0)
+    if (!legacyMode && (left.size() == 0 || right.size() == 0))
       return new ArrayList<Base>();
 
     if (left.size() != right.size())
@@ -3529,7 +3541,8 @@ public class FHIRPathEngine {
     if (focus.size() == 1) {
       String s = convertToString(focus.get(0));
       result.add(new BooleanType(!Utilities.noString(s)).noExtensions());
-    }
+    } else
+      result.add(new BooleanType(false).noExtensions());
     return result;
   }
 

@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.r4.tests;
+package org.hl7.fhir.validation.tests;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;

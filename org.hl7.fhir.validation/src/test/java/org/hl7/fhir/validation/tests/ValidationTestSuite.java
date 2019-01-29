@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.r4.tests;
+package org.hl7.fhir.validation.tests;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -97,7 +97,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @Test
   public void test() throws Exception {
     if (ve == null) {
-      ve = new ValidationEngine(TestingUtilities.content(), DEF_TX, null, FhirPublication.R4);
+      ve = new ValidationEngine("hl7.fhir.core#4.0.0", DEF_TX, null, FhirPublication.R4);
       ve.getContext().setCanRunWithoutTerminology(true);
       TestingUtilities.fcontext = ve.getContext();
     }

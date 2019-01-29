@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.r4.tests;
+package org.hl7.fhir.validation.tests;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Assert;
@@ -21,7 +22,7 @@ public class JsonSchemaTests {
   
   public static final String  TEST_SCHEMA = "{\r\n"+
       "  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r\n"+
-      "  \"id\": \"http://hl7.org/fhir/test-json-schema/3.4\",\r\n"+
+ //     "  \"id\": \"http://hl7.org/fhir/test-json-schema/4.0\",\r\n"+
       "  \"description\": \"for unit tests\",\r\n"+
       "  \"discriminator\": {\r\n"+
       "    \"propertyName\": \"resourceType\",\r\n"+
@@ -129,11 +130,11 @@ public class JsonSchemaTests {
   @Before
   public void setUp() throws Exception {
     if (sFhir == null) {
-      String path = Utilities.path("r:\\fhir\\publish", "fhir.schema.json"); // todo... what should this be?
-      String source = TextFile.fileToString(path);
-      JSONObject rawSchema = new JSONObject(new JSONTokener(source));
-      sFhir = SchemaLoader.load(rawSchema);
-      rawSchema = new JSONObject(new JSONTokener(TEST_SCHEMA));
+//      String path = TestUtilities.resourceNameToFile("fhir.schema.json"); // todo... what should this be?
+//      String source = TextFile.fileToString(path);
+//      JSONObject rawSchema = new JSONObject(new JSONTokener(source));
+//      sFhir = SchemaLoader.load(rawSchema);
+      JSONObject rawSchema = new JSONObject(new JSONTokener(TEST_SCHEMA));
       sTest = SchemaLoader.load(rawSchema);
     }
   }
