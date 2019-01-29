@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4.test;
 
+import org.hl7.fhir.r4.model.BaseDateTimeTypeTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -16,6 +17,7 @@ import org.junit.runners.Suite.SuiteClasses;
     FHIRPathTests.class,
     NarrativeGeneratorTests.class,
     ShexGeneratorTests.class,
+    BaseDateTimeTypeTest.class,
     SnapShotGenerationTests.class})
 public class AllTests {
 
