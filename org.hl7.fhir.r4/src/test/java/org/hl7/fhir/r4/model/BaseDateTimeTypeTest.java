@@ -31,8 +31,6 @@ public class BaseDateTimeTypeTest {
         assertFalse(compareDateTimes("2001-01-02", "2001-01-03"));
         // Different instant - Same timezone
         assertFalse(compareDateTimes("2001-01-02T11:22:33.444Z", "2001-01-02T11:22:33.445Z"));
-        // Different precision
-        // assertNull(compareDateTimes("2001-01-02T11:22:33.444Z", "2001-01-02T11:22:33Z"));
 
         // FHIRPath tests:
         assertFalse(compareDateTimes("1974-12-25", "1974-12-25T12:34:00+10:00"));
