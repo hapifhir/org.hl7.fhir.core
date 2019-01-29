@@ -39,6 +39,7 @@ import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeSystem;
+import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -285,7 +286,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public boolean supportsSystem(String system) throws TerminologyServiceException {
     synchronized (lock) {
-      if (codeSystems.containsKey(system))
+      if (codeSystems.containsKey(system) && codeSystems.get(system).getContent() != CodeSystemContentMode.NOTPRESENT)
         return true;
       else if (supportedCodeSystems.contains(system))
         return true;
