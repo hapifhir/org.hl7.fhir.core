@@ -7,6 +7,7 @@
 		<artifactId>hapi-deployable-pom</artifactId>
 		<version>3.7.0-SNAPSHOT</version>
 	</parent>
+  <version>3.7.1-SNAPSHOT</version>
 
 	<artifactId>org.hl7.fhir.core</artifactId>
 	<packaging>pom</packaging>
