@@ -413,7 +413,7 @@
         }
       },
       "message-infinite-loop.xml" : {
-        "errorCount": 33
+        "errorCount": 34
       },
       "slice-profile-and-local-patient.xml" : {
         "errorCount": 0,
