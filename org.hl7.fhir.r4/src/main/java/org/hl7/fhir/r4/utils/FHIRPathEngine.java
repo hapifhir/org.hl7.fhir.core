@@ -463,9 +463,7 @@ public class FHIRPathEngine {
     DateTimeType dateRight = new DateTimeType(dateRightString);
 
     if (theEquivalenceTest) {
-      TemporalPrecisionEnum lowestPrecision = dateLeft.getPrecision().ordinal() < dateRight.getPrecision().ordinal() ? dateLeft.getPrecision() : dateRight.getPrecision();
-      dateLeft.setPrecision(lowestPrecision);
-      dateRight.setPrecision(lowestPrecision);
+      return dateLeft.equalsUsingFhirPathRules(dateRight) == Boolean.TRUE ? 0 : 1;
     }
 
     if (dateLeft.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
