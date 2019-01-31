@@ -2023,7 +2023,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     ElementDefinition ed = null;
-    ExpressionNode expr = fpe.parse(discriminator);
+    ExpressionNode expr = fpe.parse(fixExpr(discriminator));
     long t2 = System.nanoTime();
     ed = fpe.evaluateDefinition(expr, profile, element);
     sdTime = sdTime + (System.nanoTime() - t2);
@@ -2048,7 +2048,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (element == null)
             throw new DefinitionException("Unable to resolve element "+id+" in profile "+p);
         }
-        expr = fpe.parse(discriminator);
+        expr = fpe.parse(fixExpr(discriminator));
         t2 = System.nanoTime();
         ed = fpe.evaluateDefinition(expr, profile, element);
         sdTime = sdTime + (System.nanoTime() - t2);
@@ -2586,7 +2586,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       try {
-        n = fpe.parse(expression.toString());
+        n = fpe.parse(fixExpr(expression.toString()));
       } catch (FHIRLexerException e) {
         throw new FHIRException("Problem processing expression "+expression +" in profile " + profile.getUrl() + " path " + path + ": " + e.getMessage());
       }
@@ -3911,7 +3911,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (n == null) {
       long t = System.nanoTime();
       try {
-        n = fpe.parse(inv.getExpression());
+        n = fpe.parse(fixExpr(inv.getExpression()));
       } catch (FHIRLexerException e) {
         throw new FHIRException("Problem processing expression "+inv.getExpression() +" in profile " + profile.getUrl() + " path " + path + ": " + e.getMessage());
       }
@@ -3931,12 +3931,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       msg = ex.getMessage(); 
     }
     if (!ok) {
-      // GDG 18-feb 2018 - why do it again? just to waste cycles?
-//      try {
-//        ok = fpe.evaluateToBoolean(hostContext, resource, element, n);
-//      } catch (PathEngineException e) {
-//        throw new FHIRException("Problem processing expression "+inv.getExpression() +" in profile " + profile.getUrl() + " path " + path + ": " + e.getMessage());
-//      }
       if (!Utilities.noString(msg))
         msg = " ("+msg+")";
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
@@ -4311,7 +4305,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               try {
                 ExpressionNode n = (ExpressionNode) inv.getUserData("validator.expression.cache");
                 if (n == null) {
-                  n = fpe.parse(inv.getExpression());
+                  n = fpe.parse(fixExpr(inv.getExpression()));
                   inv.setUserData("validator.expression.cache", n);
                 }
                 fpe.check(null, sd.getKind() == StructureDefinitionKind.RESOURCE ?  sd.getType() : "DomainResource", ed.getPath(), n);
@@ -4324,5 +4318,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
   }
+
+  private String fixExpr(String expr) {
+    // this is a hack work around for past publication of wrong FHIRPath expressions
+    if ("(component.empty() and hasMember.empty()) implies (dataAbsentReason or value)".equals(expr))
+      return "(component.empty() and hasMember.empty()) implies (dataAbsentReason.exists() or value.exists())";
+    if ("isModifier implies isModifierReason.exists()".equals(expr))
+      return "(isModifier.exists() and isModifier) implies isModifierReason.exists()";
+    if ("(%resource.kind = 'logical' or element.first().path.startsWith(%resource.type)) and (element.tail().not() or  element.tail().all(path.startsWith(%resource.differential.element.first().path.replaceMatches('\\\\..*','')&'.')))".equals(expr))
+      return "(%resource.kind = 'logical' or element.first().path.startsWith(%resource.type)) and (element.tail().empty() or  element.tail().all(path.startsWith(%resource.differential.element.first().path.replaceMatches('\\\\..*','')&'.')))";
+    if ("differential.element.all(id) and differential.element.id.trace('ids').isDistinct()".equals(expr))
+      return "differential.element.all(id.exists()) and differential.element.id.trace('ids').isDistinct()";
+    if ("snapshot.element.all(id) and snapshot.element.id.trace('ids').isDistinct()".equals(expr))
+      return "snapshot.element.all(id.exists()) and snapshot.element.id.trace('ids').isDistinct()";
+    if ("".equals(expr))
+      return "";
+    if ("".equals(expr))
+      return "";
+    if ("".equals(expr))
+      return "";
+    return expr;
+  }
+
 
 }
