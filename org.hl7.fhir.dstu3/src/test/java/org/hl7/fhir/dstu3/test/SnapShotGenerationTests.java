@@ -13,6 +13,8 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.codec.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
@@ -195,9 +197,10 @@ public class SnapShotGenerationTests {
   private static FHIRPathEngine fp;
 
   @Parameters(name = "{index}: file {0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError {
+  public static Iterable<Object[]> data() throws IOException, FHIRFormatError {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
-    context.tests = (TestScript) new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.home(), "tests", "resources", "snapshot-generation-tests.xml")));
+    String contents = readFileFromClasspathAsString("snapshot-generation-tests.xml");
+    context.tests = (TestScript) new XmlParser().parse(contents);
 
     context.checkTestsDetails();
 
@@ -207,6 +210,10 @@ public class SnapShotGenerationTests {
       objects.add(new Object[] { e.getName(), e, context });
     }
     return objects;
+  }
+
+  private static String readFileFromClasspathAsString(String theClasspath) throws IOException {
+    return IOUtils.toString(SnapShotGenerationTests.class.getResourceAsStream(theClasspath), Charsets.UTF_8);
   }
 
 
