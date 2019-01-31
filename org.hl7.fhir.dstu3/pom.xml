@@ -17,11 +17,11 @@
         <!-- HAPI Dependencies -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>hapi-fhir-base</artifactId>
+            <artifactId>org.hl7.fhir.utilities</artifactId>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.utilities</artifactId>
+            <artifactId>hapi-fhir-base</artifactId>
         </dependency>
 
         <!-- UCUM -->
