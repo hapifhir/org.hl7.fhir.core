@@ -18,7 +18,8 @@ import org.junit.runners.Suite.SuiteClasses;
     NarrativeGeneratorTests.class,
     ShexGeneratorTests.class,
     BaseDateTimeTypeTest.class,
-    SnapShotGenerationTests.class})
+    SnapShotGenerationTests.class,
+    FHIRMappingLanguageTests.class})
 public class AllTests {
 
 }
