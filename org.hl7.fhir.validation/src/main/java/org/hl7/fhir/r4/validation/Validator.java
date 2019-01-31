@@ -75,6 +75,7 @@ import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
@@ -100,6 +101,7 @@ public class Validator {
 
 
   public static void main(String[] args) throws Exception {
+    System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
      if (hasParam(args, "-tests")) {
       try {
 			Class<?> clazz = Class.forName("org.hl7.fhir.validation.r4.tests.ValidationEngineTests");
@@ -108,7 +110,6 @@ public class Validator {
         e.printStackTrace();
       }
     } else if (args.length == 0 || hasParam(args, "help") || hasParam(args, "?") || hasParam(args, "-?") || hasParam(args, "/?") ) {
-      System.out.println("FHIR Validation tool v"+Constants.VERSION+" ("+ToolsVersion.TOOLS_VERSION+")");
       System.out.println("");
       System.out.println("The FHIR validation tool validates a FHIR resource or bundle.");
       System.out.println("The validation tool compares a resource against the base definitions and any");
@@ -245,7 +246,6 @@ public class Validator {
         }
       }
     } else { 
-      System.out.println("FHIR Validator Build "+getGitBuild());
       System.out.print("Arguments:");
       for (String s : args) 
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
