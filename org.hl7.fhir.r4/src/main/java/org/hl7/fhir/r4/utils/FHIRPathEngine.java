@@ -1736,7 +1736,7 @@ public class FHIRPathEngine {
     return makeBoolean(!res);
   }
 
-  private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary"};
+  private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary", "canonical", "url"};
 
 	private List<Base> opLessThan(List<Base> left, List<Base> right) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
@@ -3200,7 +3200,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcIsDistinct(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     if (focus.size() < 1)
-      return new ArrayList<Base>();
+      return makeBoolean(true);
     if (focus.size() == 1)
       return makeBoolean(true);
 
@@ -4239,22 +4239,29 @@ public class FHIRPathEngine {
   private Equality asBool(Base item) {
     if (item instanceof BooleanType) 
       return boolToTriState(((BooleanType) item).booleanValue());
-    else if (item instanceof IntegerType)
+    else if (item.isBooleanPrimitive()) {
+      if (Utilities.existsInList(item.primitiveValue(), "true"))
+        return Equality.True;
+      else if (Utilities.existsInList(item.primitiveValue(), "false"))
+        return Equality.False;
+      else
+        return Equality.Null;
+    } else if (item instanceof IntegerType || Utilities.existsInList(item.fhirType(), "integer", "positiveint", "unsignedInt"))
       return asBoolFromInt(item.primitiveValue());
-    else if (item instanceof DecimalType)
+    else if (item instanceof DecimalType || Utilities.existsInList(item.fhirType(), "decimal"))
       return asBoolFromDec(item.primitiveValue());
     else if (Utilities.existsInList(item.fhirType(), FHIR_TYPES_STRING)) {
       if (Utilities.existsInList(item.primitiveValue(), "true", "t", "yes", "y"))
-        return Equality.False;
-      else if (Utilities.existsInList(item.primitiveValue(), "false", "f", "no", "n"))
         return Equality.True;
+      else if (Utilities.existsInList(item.primitiveValue(), "false", "f", "no", "n"))
+        return Equality.False;
       else if (Utilities.isInteger(item.primitiveValue()))
         return asBoolFromInt(item.primitiveValue());
       else if (Utilities.isDecimal(item.primitiveValue()))
         return asBoolFromDec(item.primitiveValue());
       else
         return Equality.Null;
-    } else
+    } 
       return Equality.Null;
   }
           
