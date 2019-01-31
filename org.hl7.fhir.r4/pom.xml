@@ -16,12 +16,18 @@
 
 		<!-- HAPI Dependencies -->
 		<dependency>
-         <groupId>ca.uhn.hapi.fhir</groupId>
-			<artifactId>hapi-fhir-base</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>org.hl7.fhir.utilities</artifactId>
+		</dependency>
+		<dependency>
+         <groupId>ca.uhn.hapi.fhir</groupId>
+			<artifactId>hapi-fhir-base</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>ca.uhn.hapi.fhir</groupId>
+					<artifactId>hapi-fhir-utilities</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- UCUM -->

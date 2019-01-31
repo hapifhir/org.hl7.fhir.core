@@ -66,6 +66,7 @@ public class TestingUtilities {
 	    PackageCacheManager pcm;
 	    try {
 	      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+	      pcm.resolvePackage("hl7.fhir.core", "4.0.0", "4.0.1"); // FIXME: JA How to get the current version?
 	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackageCache("hl7.fhir.core", "4.0.0"));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());

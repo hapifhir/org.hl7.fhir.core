@@ -43,6 +43,9 @@ public class TestingUtilities {
     String s = System.getenv("FHIR_HOME");
     if (!Utilities.noString(s))
       return s;
+    s = System.getProperty("FHIR_HOME");
+	  if (!Utilities.noString(s))
+		  return s;
     s = "C:\\work\\org.hl7.fhir\\build";
     if (new File(s).exists())
       return s;
