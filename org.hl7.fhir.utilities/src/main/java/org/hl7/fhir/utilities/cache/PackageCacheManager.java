@@ -393,7 +393,8 @@ public class PackageCacheManager {
   private void analysePackage(String dir, String v, Map<String, String> profiles, Map<String, String> canonicals) throws IOException {
     int i = 0;
     int c = 11;
-    for (File f : new File(Utilities.path(dir, "package")).listFiles()) {
+    File[] packages = new File(Utilities.path(dir, "package")).listFiles();
+    for (File f : packages) {
       i++;
       if (progress && i % 20 == 0) {
         c++;
