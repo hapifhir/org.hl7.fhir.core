@@ -540,11 +540,11 @@ public class ValidationEngine {
     }
     NpmPackage pi = null;
     if (version == null) {
-      pi = pcm.loadPackageCacheLatest(id);
+      pi = pcm.loadPackageFromCacheOnly(id);
       if (pi != null)
         log("   ... Using version "+pi.version());
     } else
-      pi = pcm.loadPackageCache(id, version);
+      pi = pcm.loadPackageFromCacheOnly(id, version);
     if (pi == null) {
       return resolvePackage(id, version);
     } else
@@ -557,7 +557,7 @@ public class ValidationEngine {
     } catch (IOException e) {
       log("Unable to connect to build.fhir.org to check on packages");
     }
-    NpmPackage pi = pcm.resolvePackage(id, v, Constants.VERSION);
+    NpmPackage pi = pcm.loadPackage(id, v);
     if (pi != null && v == null)
       log("   ... Using version "+pi.version());
     return loadPackage(pi);
