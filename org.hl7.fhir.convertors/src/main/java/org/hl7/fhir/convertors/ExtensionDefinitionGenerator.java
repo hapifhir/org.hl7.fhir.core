@@ -383,7 +383,7 @@ public class ExtensionDefinitionGenerator {
   private List<StructureDefinition> loadSource() throws IOException, FHIRException {
     List<StructureDefinition> list = new ArrayList<>();
     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    NpmPackage npm = pcm.loadPackageCache("hl7.fhir.core", sourceVersion.toCode());
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.core", sourceVersion.toCode());
     if (sourceVersion == FHIRVersion._4_0_0)
       context = SimpleWorkerContext.fromPackage(npm);
     else if (sourceVersion == FHIRVersion._3_0_1)

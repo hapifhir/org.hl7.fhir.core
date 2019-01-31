@@ -162,7 +162,7 @@ public class PackageCacheManager {
       boolean del = true;
       NpmPackage pck;
       try {
-        pck = resolvePackage(id, ver, "xx");
+        pck = loadPackageFromCacheOnly(id, ver);
         if (pck.getNpm().has("tools-version")) {
           del = pck.getNpm().get("tools-version").getAsInt() < minVer;
         }
@@ -247,7 +247,13 @@ public class PackageCacheManager {
     return names;
   }
 
-  public NpmPackage loadPackageCacheLatest(String id) throws IOException {
+  /**
+   * get the latest version of the package from what is in the cache
+   * @param id
+   * @return
+   * @throws IOException
+   */
+  public NpmPackage loadPackageFromCacheOnly(String id) throws IOException {
     String match = null;
     List<String> l = sorted(new File(cacheFolder).list());
     for (int i = l.size()-1; i >= 0; i--) {
@@ -259,7 +265,17 @@ public class PackageCacheManager {
     return null;    
   }
   
-  public NpmPackage loadPackageCache(String id, String version) throws IOException {
+  /** 
+   * Load the identified package from the cache - it it exists 
+   * 
+   * This is for special purpose only. Generally, use the loadPackage method
+   *  
+   * @param id
+   * @param version
+   * @return
+   * @throws IOException
+   */
+  public NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
         return p;
@@ -271,7 +287,7 @@ public class PackageCacheManager {
       }
     }
     if ("dev".equals(version))
-      return loadPackageCache(id, "current");
+      return loadPackageFromCacheOnly(id, "current");
     else
       return null;
   }
@@ -515,13 +531,17 @@ public class PackageCacheManager {
     return false;
   }
   
-  public NpmPackage resolvePackage(String id, String v, String currentVersion) throws FHIRException, IOException {
-    NpmPackage p = loadPackageCache(id, v);
+  public NpmPackage loadPackage(String id) throws FHIRException, IOException {
+    throw new Error("Not done yet");
+  }
+  
+  public NpmPackage loadPackage(String id, String v) throws FHIRException, IOException {
+    NpmPackage p = loadPackageFromCacheOnly(id, v);
     if (p != null)
       return p;
 
     if ("dev".equals(v)) {
-      p = loadPackageCache(id, "current");
+      p = loadPackageFromCacheOnly(id, "current");
       if (p != null)
         return p;
       v = "current";
@@ -560,13 +580,13 @@ public class PackageCacheManager {
           return addPackageToCache(id, v, stream);
         }
       }
-      // special case: current version
-      if (id.equals("hl7.fhir.core") && v.equals(currentVersion)) {
-        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", "package.tgz"), true);
-        if (stream == null)
-          throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL("http://build.fhir.org", "package.tgz"));
-        return addPackageToCache(id, v, stream);
-      }
+//      // special case: current version
+//      if (id.equals("hl7.fhir.core") && v.equals(currentVersion)) {
+//        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", "package.tgz"), true);
+//        if (stream == null)
+//          throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL("http://build.fhir.org", "package.tgz"));
+//        return addPackageToCache(id, v, stream);
+//      }
       throw new FHIRException("Unable to resolve version "+v+" for package "+id);
     }
   }

@@ -26,8 +26,8 @@ public class CDARoundTripTests {
   public void setUp() throws Exception {
     context = new SimpleWorkerContext();
     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    context.loadFromPackage(pcm.loadPackageCacheLatest("hl7.fhir.core"), null, "StructureDefinition");
-    context.loadFromPackage(pcm.loadPackageCacheLatest("hl7.fhir.cda"), null, "StructureDefinition");
+    context.loadFromPackage(pcm.loadPackage("hl7.fhir.core"), null, "StructureDefinition");
+    context.loadFromPackage(pcm.loadPackage("hl7.fhir.cda"), null, "StructureDefinition");
   }
 
   @Test
