@@ -512,12 +512,12 @@ public class Element extends Base {
 	  @SuppressWarnings("unchecked")
     List<ElementDecoration> decorations = (List<ElementDecoration>) getUserData("fhir.decorations");
 	  if (decorations == null) {
-	    decorations = new ArrayList<ElementDecoration>();
+	    decorations = new ArrayList<>();
 	    setUserData("fhir.decorations", decorations);
 	  }
 	  decorations.add(new ElementDecoration(DecorationType.TYPE, profile.getUserString("path"), definition.getPath()));
-	  if (tail(definition.getId()).contains(":")) {
-	    String[] details = tail(definition.getId()).split("\\:");
+	  if (definition.getId() != null && tail(definition.getId()).contains(":")) {
+	    String[] details = tail(definition.getId()).split(":");
 	    decorations.add(new ElementDecoration(DecorationType.SLICE, null, details[1]));
 	  }
 	}
