@@ -66,9 +66,10 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <shadedClassifierName/>
+                            <shadedClassifierName>standalone</shadedClassifierName>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.hl7.fhir.r4.validation.Validator</mainClass>
                                 </transformer>
                             </transformers>
