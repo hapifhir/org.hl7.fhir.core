@@ -153,6 +153,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public static SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
     SimpleWorkerContext res = new SimpleWorkerContext();
     res.setAllowLoadingDuplicates(true);
+    res.version = pi.getNpm().get("version").getAsString();
     res.loadFromPackage(pi, loader);
     return res;
   }
@@ -523,7 +524,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public String getVersion() {
-    return version+"-"+revision;
+    return version;
   }
 
   
