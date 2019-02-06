@@ -1,4 +1,4 @@
-<TestScript xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../schema/fhir-single.xsd">
+<TestScript xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir schemas/fhir-single.xsd">
   <!--
  in this test script, are a set of test cases for snapshot generation
  
@@ -39,6 +39,8 @@
  34. Referencing a custom extension
  35. Referencing a profiled custom extension
  36. Deep recursion
+ 37. Constrained polymorphic elements
+ 38. Deep nesting
 -->
   <contained>
     <StructureDefinition>
@@ -1733,7 +1735,7 @@
         </element>
       </differential>
     </StructureDefinition>
-  </contained>  
+  </contained>
   <contained>
     <StructureDefinition>
       <id value="t35"/>
@@ -1829,6 +1831,54 @@
   </contained>
   <contained>
     <StructureDefinition>
+      <id value="t37"/>
+      <url value="urn:uuid:2918bbbf-2145-4c13-822e-7dfd758694ec"/>
+      <name value="t38"/>
+      <status value="draft"/>
+      <description value="fixture for #38: Constrained polymporphic elements"/>
+      <kind value="resource"/>
+      <abstract value="false"/>
+      <type value="MedicationDispense"/>
+      <baseDefinition value="http://hl7.org/fhir/StructureDefinition/MedicationDispense"/>
+      <derivation value="constraint"/>
+      <differential>
+        <element>
+          <path value="MedicationDispense"/>
+        </element>
+        <element>
+          <path value="MedicationDispense.dosageInstruction"/>
+        </element>
+        <element>
+          <!-- Including this element isn't strictly necessary to reproduce the problem.  However, its inclusion seemed to prevent certain errors from showing up when I trimmed the instance, so I'm leaving it in -->
+          <path value="MedicationDispense.dosageInstruction.extension"/>
+          <slicing>
+            <discriminator>
+              <type value="value"/>
+              <path value="url"/>
+            </discriminator>
+            <rules value="open"/>
+          </slicing>
+          <mustSupport value="true"/>
+        </element>
+        <element>
+          <path value="MedicationOrder.dosageInstruction.additionalInstruction"/>
+          <type>
+            <code value="Quantity"/>
+          </type>
+          <mustSupport value="true"/>
+        </element>
+        <element>
+          <path value="MedicationOrder.dosageInstruction.doseQuantity"/>
+          <type>
+            <code value="Quantity"/>
+          </type>
+          <mustSupport value="true"/>
+        </element>
+      </differential>
+    </StructureDefinition>
+  </contained>
+  <contained>
+    <StructureDefinition>
       <id value="t38-dt"/>
       <url value="http://example.org/fhir/StructureDefinition/profile-duration"/>
       <name value="t38-dt"/>
@@ -1898,7 +1948,7 @@
         </element>
       </differential>
     </StructureDefinition>
-  </contained>  
+  </contained>
   <url value="http://hl7.org/fhir/tests/snapshotgeneration"/>
   <name value="SnapshotGenerationTests"/>
   <title value="Snapshot generation test script"/>
@@ -3586,7 +3636,7 @@
         <warningOnly value="false"/>
       </assert>
     </action>
-  </test> 
+  </test>
   <test>
     <name value="Test36"/>
     <description value="Test deep nesting"/>
@@ -3613,7 +3663,33 @@
       </assert>
     </action>
   </test>
- <test>
+  <test>
+    <name value="Test37"/>
+    <description value="Test deep nesting"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t37o"/>
+        <sourceId value="t37"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test37"/>
+        <description value="Snapshot includes polymorphic constrained element"/>
+        <direction value="response"/>
+        <expression value="fixture('t37o').snapshot.element.where(path = 'MedicationDispense.dosageInstruction.doseQuantity').count() = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
+  <test>
     <name value="Test38"/>
     <description value="Test deep nesting"/>
     <action>
