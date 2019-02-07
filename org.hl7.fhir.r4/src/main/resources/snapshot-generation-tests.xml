@@ -3666,10 +3666,10 @@
     </action>
     <action>
       <assert>
-        <label value="test37"/>
-        <description value="Snapshot missing polymorphic constrained element from differential"/>
+        <label value="test37-0"/>
+        <description value="Snapshot must not generate ok"/>
         <direction value="response"/>
-        <expression value="fixture('t37o').snapshot.element.where(path = 'MedicationRequest.dosageInstruction.timing.repeat').mustSupport"/>
+        <response value="bad"/>
         <warningOnly value="false"/>
       </assert>
     </action>
