@@ -39,7 +39,7 @@
  34. Referencing a custom extension
  35. Referencing a profiled custom extension
  36. Deep recursion
- 37. Constrained polymorphic elements
+ 37. Test Bad Path
  38. Deep nesting
 -->
   <contained>
@@ -1832,10 +1832,10 @@
   <contained>
     <StructureDefinition>
       <id value="t37"/>
-      <url value="urn:uuid:2918bbbf-2145-4c13-822e-7dfd758694ec"/>
-      <name value="t38"/>
+      <url value="urn:uuid:44a92f3e-3681-4dbc-baa2-48a07e2765ca"/>
+      <name value="t37"/>
       <status value="draft"/>
-      <description value="fixture for #38: Constrained polymporphic elements"/>
+      <description value="fixture for #37: Test bad Path"/>
       <kind value="resource"/>
       <abstract value="false"/>
       <type value="MedicationDispense"/>
@@ -1846,10 +1846,9 @@
           <path value="MedicationDispense"/>
         </element>
         <element>
-          <path value="MedicationDispense.dosageInstruction"/>
+          <path value="MedicationDispense.invalid"/>
         </element>
         <element>
-          <!-- Including this element isn't strictly necessary to reproduce the problem.  However, its inclusion seemed to prevent certain errors from showing up when I trimmed the instance, so I'm leaving it in -->
           <path value="MedicationDispense.dosageInstruction.extension"/>
           <slicing>
             <discriminator>
@@ -1858,20 +1857,6 @@
             </discriminator>
             <rules value="open"/>
           </slicing>
-          <mustSupport value="true"/>
-        </element>
-        <element>
-          <path value="MedicationOrder.dosageInstruction.additionalInstruction"/>
-          <type>
-            <code value="Quantity"/>
-          </type>
-          <mustSupport value="true"/>
-        </element>
-        <element>
-          <path value="MedicationOrder.dosageInstruction.doseQuantity"/>
-          <type>
-            <code value="Quantity"/>
-          </type>
           <mustSupport value="true"/>
         </element>
       </differential>
@@ -2009,6 +1994,13 @@
     </action>
     <action>
       <assert>
+        <label value="test1-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test1-1"/>
         <description value="The snapshot must have the same number of elements, in the same order, with matching paths"/>
         <direction value="response"/>
@@ -2070,6 +2062,13 @@
     </action>
     <action>
       <assert>
+        <label value="test2-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test2-1"/>
         <description value="The snapshot must have the same number of elements, in the same order, with matching paths"/>
         <direction value="response"/>
@@ -2101,6 +2100,13 @@
         <responseId value="t3o"/>
         <sourceId value="t3"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test3-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2147,6 +2153,13 @@
     </action>
     <action>
       <assert>
+        <label value="test4-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test4-1"/>
         <description value="The patient.identifier documentation must be right"/>
         <direction value="response"/>
@@ -2169,6 +2182,13 @@
         <responseId value="t5o"/>
         <sourceId value="t5"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test5-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2206,6 +2226,13 @@
     </action>
     <action>
       <assert>
+        <label value="test6-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test6-1"/>
         <description value="The patient.deceased type must be right"/>
         <direction value="response"/>
@@ -2240,6 +2267,13 @@
     </action>
     <action>
       <assert>
+        <label value="test7-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test7-1"/>
         <description value="The mapping must be made"/>
         <direction value="response"/>
@@ -2262,6 +2296,13 @@
         <responseId value="t8o"/>
         <sourceId value="t8"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test8-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2299,6 +2340,13 @@
     </action>
     <action>
       <assert>
+        <label value="test9-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test9-1"/>
         <description value="Mustsupport must not be true on Patient.identifier"/>
         <direction value="response"/>
@@ -2330,6 +2378,13 @@
         <responseId value="t10o"/>
         <sourceId value="t10"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test10-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2400,6 +2455,13 @@
         <responseId value="t11o"/>
         <sourceId value="t11"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test11-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2482,6 +2544,13 @@
     </action>
     <action>
       <assert>
+        <label value="test12-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test12-1"/>
         <description value="Patient.extension must be sliced"/>
         <direction value="response"/>
@@ -2552,6 +2621,13 @@
     </action>
     <action>
       <assert>
+        <label value="test12a-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test12a-1"/>
         <description value="Patient.extension must be sliced"/>
         <direction value="response"/>
@@ -2610,6 +2686,13 @@
         <responseId value="t13o"/>
         <sourceId value="t13"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test13-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2821,6 +2904,13 @@
     </action>
     <action>
       <assert>
+        <label value="test14-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test14-1"/>
         <description value="element count increased by 13"/>
         <expression value="fixture('t14o').snapshot.element.count() = fixture('organization').snapshot.element.count() + 13"/>
@@ -2842,6 +2932,13 @@
         <responseId value="t15o"/>
         <sourceId value="t15"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test15-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2869,6 +2966,13 @@
     </action>
     <action>
       <assert>
+        <label value="test16-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test16-1"/>
         <description value="element count increased by 17"/>
         <expression value="fixture('t16o').snapshot.element.count() = fixture('t15o').snapshot.element.count() + 17"/>
@@ -2890,6 +2994,13 @@
         <responseId value="t17o"/>
         <sourceId value="t17"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test17-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -2972,6 +3083,13 @@
     </action>
     <action>
       <assert>
+        <label value="test18-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test18-1"/>
         <description value="Patient.modifierExtension must be sliced"/>
         <direction value="response"/>
@@ -3051,6 +3169,13 @@
     </action>
     <action>
       <assert>
+        <label value="test19-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test19-1"/>
         <description value="Patient.modifierExtension must be sliced"/>
         <direction value="response"/>
@@ -3109,6 +3234,13 @@
         <responseId value="t20o"/>
         <sourceId value="t20"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test20-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -3182,6 +3314,13 @@
     </action>
     <action>
       <assert>
+        <label value="test21-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test21-1"/>
         <description value="PlanDefinition.action.action must be sliced"/>
         <direction value="response"/>
@@ -3243,6 +3382,13 @@
     </action>
     <action>
       <assert>
+        <label value="test22-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test22-1"/>
         <description value="element count increased by 76"/>
         <expression value="fixture('t22o').snapshot.element.count().trace('t22o') = fixture('patient').snapshot.element.count().trace('t22patient') + 76"/>
@@ -3265,6 +3411,13 @@
         <responseId value="t23o"/>
         <sourceId value="t23"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test23-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -3304,6 +3457,13 @@
     </action>
     <action>
       <assert>
+        <label value="test24-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test24-1"/>
         <description value="Element count of profile a is increased by 24 from base Patient"/>
         <expression value="fixture('t24bo').snapshot.element.count().trace('t24ao') = fixture('patient').snapshot.element.count().trace('t24Patient') + 22"/>
@@ -3336,6 +3496,13 @@
     </action>
     <action>
       <assert>
+        <label value="test25-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test25-1"/>
         <description value="element count increased by ??"/>
         <!-!- Update once we know what the new snapshot size should be -!->
@@ -3361,6 +3528,13 @@
     </action>
     <action>
       <assert>
+        <label value="test26-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test26-1"/>
         <description value="differential element count the same"/>
         <expression value="fixture('t26o').differential.element.count() = fixture('t26').differential.element.count()"/>
@@ -3382,6 +3556,13 @@
         <responseId value="t27o"/>
         <sourceId value="t27"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test27-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -3420,6 +3601,13 @@
     </action>
     <action>
       <assert>
+        <label value="test28-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test28-1"/>
         <description value="Element count must be increased by 16"/>
         <direction value="response"/>
@@ -3443,6 +3631,13 @@
         <responseId value="t29o"/>
         <sourceId value="t29"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test29-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -3481,7 +3676,14 @@
     </action>
     <action>
       <assert>
-        <label value="test30"/>
+        <label value="test30-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test30-1"/>
         <description value="Snapshot doesn't result in an error'"/>
         <direction value="response"/>
         <expression value="fixture('t30bo').snapshot.element.count().trace('t30bo')>1"/>
@@ -3504,6 +3706,13 @@
         <responseId value="t31o"/>
         <sourceId value="t31"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test31-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -3533,6 +3742,13 @@
     </action>
     <action>
       <assert>
+        <label value="test32-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test32"/>
         <description value="Snapshot Questionnaire.item element has slicing'"/>
         <direction value="response"/>
@@ -3559,6 +3775,13 @@
     </action>
     <action>
       <assert>
+        <label value="test33-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test33"/>
         <description value="Snapshot contains referenced item children with correct path'"/>
         <direction value="response"/>
@@ -3582,6 +3805,13 @@
         <responseId value="t34o"/>
         <sourceId value="t34"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test34-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>
@@ -3620,6 +3850,13 @@
     </action>
     <action>
       <assert>
+        <label value="test35-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test35"/>
         <description value="There must be 2 elements on Basic.identifier.extension in the snapshot"/>
         <direction value="response"/>
@@ -3655,6 +3892,13 @@
     </action>
     <action>
       <assert>
+        <label value="test36-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
         <label value="test36"/>
         <description value="Snapshot generation didn't blow up"/>
         <direction value="response"/>
@@ -3665,7 +3909,7 @@
   </test>
   <test>
     <name value="Test37"/>
-    <description value="Test deep nesting"/>
+    <description value="Test bad path"/>
     <action>
       <operation>
         <type>
@@ -3681,11 +3925,9 @@
     </action>
     <action>
       <assert>
-        <label value="test37"/>
-        <description value="Snapshot includes polymorphic constrained element"/>
-        <direction value="response"/>
-        <expression value="fixture('t37o').snapshot.element.where(path = 'MedicationDispense.dosageInstruction.doseQuantity').count() = 1"/>
-        <warningOnly value="false"/>
+        <label value="test37-0"/>
+        <description value="Snapshot must not generate ok"/>
+        <response value="bad"/>
       </assert>
     </action>
   </test>
@@ -3704,6 +3946,13 @@
         <responseId value="t38o"/>
         <sourceId value="t38"/>
       </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test38-0"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+      </assert>
     </action>
     <action>
       <assert>

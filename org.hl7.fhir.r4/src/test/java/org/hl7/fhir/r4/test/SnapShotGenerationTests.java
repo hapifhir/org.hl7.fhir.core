@@ -33,6 +33,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.TestScript;
+import org.hl7.fhir.r4.model.TestScript.AssertionResponseTypes;
 import org.hl7.fhir.r4.model.TestScript.SetupActionAssertComponent;
 import org.hl7.fhir.r4.model.TestScript.SetupActionOperationComponent;
 import org.hl7.fhir.r4.model.TestScript.TestActionComponent;
@@ -167,8 +168,8 @@ public class SnapShotGenerationTests {
               throw new Error("Unsupported: actions must have a label");
             if (!a.hasDescription())
               throw new Error("Unsupported: actions must have a description");
-            if (!a.hasExpression())
-              throw new Error("Unsupported: actions must have an expression");
+            if (!a.hasExpression() && !a.hasResponse())
+              throw new Error("Unsupported: actions must have an expression or a response");
           } else {
             throw new Error("Unsupported: Unrecognized action type");            
           }
@@ -323,33 +324,35 @@ public class SnapShotGenerationTests {
 
     resolveFixtures();
     
+    TestScript.AssertionResponseTypes lastOpOutcome = null;
     for (int i = 0; i < test.getAction().size(); i++) {
       TestActionComponent action = test.getAction().get(i);
       if (action.hasOperation()) {
-        SetupActionOperationComponent op = action.getOperation();
-        Coding opType = op.getType();
-        if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("snapshot")) {
-          StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
-          StructureDefinition base = getSD(source.getBaseDefinition()); 
-          StructureDefinition output = source.copy();
-          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, new TestPKP());
-          pu.setIds(source, false);
-          if ("sort=true".equals(op.getParams())) {
-            List<String> errors = new ArrayList<String>();
-            pu.sortDifferential(base, output, source.getName(), errors);
-            if (errors.size() > 0)
-              throw new FHIRException("Sort failed: "+errors.toString());
-          }
-          pu.generateSnapshot(base, output, source.getUrl(), source.getName());
-          debugSaveResource(output);
-          context.fixtures.put(op.getResponseId(), output);
-          context.snapshots.put(output.getUrl(), output);
-          
-          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
-          if (output.getDifferential().hasElement())
-            new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
-          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+"-d.xml")), output);
-          
+        lastOpOutcome = AssertionResponseTypes.OKAY;
+        try {
+          SetupActionOperationComponent op = action.getOperation();
+          Coding opType = op.getType();
+          if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("snapshot")) {
+            StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
+            StructureDefinition base = getSD(source.getBaseDefinition()); 
+            StructureDefinition output = source.copy();
+            ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, new TestPKP());
+            pu.setIds(source, false);
+            if ("sort=true".equals(op.getParams())) {
+              List<String> errors = new ArrayList<String>();
+              pu.sortDifferential(base, output, source.getName(), errors);
+              if (errors.size() > 0)
+                throw new FHIRException("Sort failed: "+errors.toString());
+            }
+            pu.generateSnapshot(base, output, source.getUrl(), source.getName());
+            debugSaveResource(output);
+            context.fixtures.put(op.getResponseId(), output);
+            context.snapshots.put(output.getUrl(), output);
+            
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+            if (output.getDifferential().hasElement())
+              new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+"-d.xml")), output);
         } else if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("sortDifferential")) {
           StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
           StructureDefinition base = getSD(source.getBaseDefinition()); 
@@ -368,10 +371,19 @@ public class SnapShotGenerationTests {
         } else {
           throw new Error("Unsupported operation: " + opType.getSystem() + " : " + opType.getCode());
         }
+        } catch (Exception e) {
+          lastOpOutcome = AssertionResponseTypes.BAD;
+        }
+        
       } else if (action.hasAssert()) {
         SetupActionAssertComponent a = action.getAssert();
-        boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
-        Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
+        if (a.getResponse() != null) {
+          Assert.assertTrue(a.getLabel()+" (response): "+a.getDescription(), a.getResponse() == lastOpOutcome);         
+        }
+        if (a.hasExpression()) {
+          boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
+          Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
+        }
       }
     }
     } catch (Exception e) {
