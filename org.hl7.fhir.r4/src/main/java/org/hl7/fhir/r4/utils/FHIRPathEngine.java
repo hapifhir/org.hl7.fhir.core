@@ -1906,8 +1906,10 @@ public class FHIRPathEngine {
 	}
 
   private List<Base> opIn(List<Base> left, List<Base> right) throws FHIRException {
-    if (left.size() == 0 || right.size() == 0) 
+    if (left.size() == 0) 
       return new ArrayList<Base>();
+    if (right.size() == 0) 
+      return makeBoolean(false);
     boolean ans = true;
     for (Base l : left) {
       boolean f = false;

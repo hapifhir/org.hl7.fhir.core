@@ -650,8 +650,14 @@ public class ProfileUtilities extends TranslatingUtilities {
                 }
                 if (outcome.getType().size() > 1)
                   for (TypeRefComponent t : outcome.getType()) {
-                    if (!t.getCode().equals("Reference"))
-                      throw new DefinitionException(diffMatches.get(0).getPath()+" has children ("+differential.getElement().get(diffCursor).getPath()+") and multiple types ("+typeCode(outcome.getType())+") in profile "+profileName);
+                    if (!t.getCode().equals("Reference")) {
+                      boolean nonExtension = false;
+                      for (ElementDefinition ed : diffMatches)
+                        if (ed != diffMatches.get(0) && !ed.getPath().endsWith(".extension"))
+                          nonExtension = true;
+                      if (nonExtension)
+                        throw new DefinitionException(diffMatches.get(0).getPath()+" has children ("+differential.getElement().get(diffCursor).getPath()+") and multiple types ("+typeCode(outcome.getType())+") in profile "+profileName);
+                    }
                 }
               }
               int start = diffCursor;
@@ -668,7 +674,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                   nbl++;
                 processPaths(indent+"  ", result, base, differential, nbc, start - 1, nbl-1, diffCursor - 1, url, profileName, tgt.getPath(), diffMatches.get(0).getPath(), trimDifferential, contextName, resultPathBase, false, redirectorStack(redirector, outcome, cpath));
               } else {
-                StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
+                StructureDefinition dt = outcome.getType().size() == 1 ? getProfileForDataType(outcome.getType().get(0)) : getProfileForDataType("Element");
                 if (dt == null)
                   throw new DefinitionException(diffMatches.get(0).getPath()+" has children ("+differential.getElement().get(diffCursor).getPath()+") for type "+typeCode(outcome.getType())+" in profile "+profileName+", but can't find type");
                 contextName = dt.getUrl();
@@ -1191,6 +1197,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       sd = context.fetchTypeDefinition(type.getCode());
     if (sd == null)
       System.out.println("XX: failed to find profle for type: " + type.getCode()); // debug GJM
+    return sd;
+  }
+
+  private StructureDefinition getProfileForDataType(String type)  {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    if (sd == null)
+      System.out.println("XX: failed to find profle for type: " + type); // debug GJM
     return sd;
   }
 

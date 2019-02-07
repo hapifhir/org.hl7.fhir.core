@@ -33,6 +33,7 @@ import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.BooleanType;
+import org.hl7.fhir.r4.model.Questionnaire;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.Expression.ExpressionLanguage;
@@ -76,7 +77,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 
 public class VersionConvertor_30_40 {
-  private static List<String> CANONICAL_URLS = new ArrayList<String>();
+  private static List<String> CANONICAL_URLS = new ArrayList<>();
   static {
     CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/11179-permitted-value-conceptmap");
     CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/11179-permitted-value-valueset");
@@ -16013,6 +16014,7 @@ public class VersionConvertor_30_40 {
       tgt.setType(convertQuestionnaireItemType(src.getType()));
     for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen())
       tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
+    tgt.setEnableBehavior(Questionnaire.EnableWhenBehavior.ANY);
     if (src.hasRequired())
       tgt.setRequired(src.getRequired());
     if (src.hasRepeats())
@@ -16029,6 +16031,9 @@ public class VersionConvertor_30_40 {
       tgt.addInitial().setValue(convertType(src.getInitial()));
     for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireItemComponent(t));
+    for (org.hl7.fhir.dstu3.model.Extension t : src.getModifierExtension()) {
+    	tgt.addModifierExtension(convertExtension(t));
+    }
     return tgt;
   }
 
@@ -16131,8 +16136,10 @@ public class VersionConvertor_30_40 {
       tgt.setOperator(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemOperator.EXISTS);
       tgt.setAnswer(convertType(src.getHasAnswerElement()));
     }
-    else if (src.hasAnswer())
-      tgt.setAnswer(convertType(src.getAnswer()));
+    else if (src.hasAnswer()) {
+    	tgt.setOperator(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemOperator.EQUAL);
+    	tgt.setAnswer(convertType(src.getAnswer()));
+    }
     return tgt;
   }
 
