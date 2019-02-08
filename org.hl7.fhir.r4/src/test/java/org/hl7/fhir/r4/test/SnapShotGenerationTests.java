@@ -146,13 +146,13 @@ public class SnapShotGenerationTests {
         if (!test.getActionFirstRep().hasOperation())
           throw new Error("Unsupported: first action must be an operation");
         for (int i = 0; i < test.getAction().size(); i++) {
-//          if (!test.getAction().get(i).hasAssert())
-//            throw new Error("Unsupported: following actions must be an asserts");
+          //          if (!test.getAction().get(i).hasAssert())
+          //            throw new Error("Unsupported: following actions must be an asserts");
           TestActionComponent action = test.getAction().get(i);
           if (action.hasOperation()) {
             SetupActionOperationComponent op = test.getActionFirstRep().getOperation();
             if (!CodingUtilities.matches(op.getType(), "http://hl7.org/fhir/testscript-operation-codes", "snapshot")
-            && !CodingUtilities.matches(op.getType(), "http://hl7.org/fhir/testscript-operation-codes", "sortDifferential"))
+                && !CodingUtilities.matches(op.getType(), "http://hl7.org/fhir/testscript-operation-codes", "sortDifferential"))
               throw new Error("Unsupported action operation type "+CodingUtilities.present(op.getType()));
             if (!"StructureDefinition".equals(op.getResource()))
               throw new Error("Unsupported action operation resource "+op.getResource());
@@ -192,7 +192,7 @@ public class SnapShotGenerationTests {
     public Resource fetchFixture(String id) {
       if (fixtures.containsKey(id))
         return fixtures.get(id);
-      
+
       for (TestScriptFixtureComponent ds : tests.getFixture()) {
         if (id.equals(ds.getId()))
           throw new Error("not done yet");
@@ -304,108 +304,107 @@ public class SnapShotGenerationTests {
   @Test
   public void test() throws FHIRException {
     try {
-    for (Resource cr : context.tests.getContained()) {
-      if (cr instanceof StructureDefinition) {
-        StructureDefinition sd = (StructureDefinition) cr;
-        if (sd.getType().equals("Extension")) {
-          if (TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getUrl()) == null) {
-            sd.setUserData("path", "test-"+sd.getId()+".html");
-            StructureDefinition extd = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-            new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
-            TestingUtilities.context().cacheResource(sd);
-            debugSaveResource(sd);
+      for (Resource cr : context.tests.getContained()) {
+        if (cr instanceof StructureDefinition) {
+          StructureDefinition sd = (StructureDefinition) cr;
+          if (sd.getType().equals("Extension")) {
+            if (TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getUrl()) == null) {
+              sd.setUserData("path", "test-"+sd.getId()+".html");
+              StructureDefinition extd = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
+              TestingUtilities.context().cacheResource(sd);
+              debugSaveResource(sd);
+            }
           }
         }
       }
-    }
-    if (fp == null)
-      fp = new FHIRPathEngine(TestingUtilities.context());
-    fp.setHostServices(context);
+      if (fp == null)
+        fp = new FHIRPathEngine(TestingUtilities.context());
+      fp.setHostServices(context);
 
-    resolveFixtures();
-    
-    TestScript.AssertionResponseTypes lastOpOutcome = null;
-    for (int i = 0; i < test.getAction().size(); i++) {
-      TestActionComponent action = test.getAction().get(i);
-      if (action.hasOperation()) {
-        lastOpOutcome = AssertionResponseTypes.OKAY;
-        try {
-          SetupActionOperationComponent op = action.getOperation();
-          Coding opType = op.getType();
-          if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("snapshot")) {
-            StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
-            StructureDefinition base = getSD(source.getBaseDefinition()); 
-            StructureDefinition output = source.copy();
-            ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, new TestPKP());
-            pu.setIds(source, false);
-            if ("sort=true".equals(op.getParams())) {
-              List<String> errors = new ArrayList<String>();
-              pu.sortDifferential(base, output, source.getName(), errors);
-              if (errors.size() > 0)
-                throw new FHIRException("Sort failed: "+errors.toString());
+      resolveFixtures();
+
+      TestScript.AssertionResponseTypes lastOpOutcome = null;
+      for (int i = 0; i < test.getAction().size(); i++) {
+        TestActionComponent action = test.getAction().get(i);
+        if (action.hasOperation()) {
+          lastOpOutcome = AssertionResponseTypes.OKAY;
+          try {
+            SetupActionOperationComponent op = action.getOperation();
+            Coding opType = op.getType();
+            if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("snapshot")) {
+              StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
+              StructureDefinition base = getSD(source.getBaseDefinition()); 
+              StructureDefinition output = source.copy();
+              ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, new TestPKP());
+              pu.setIds(source, false);
+              if ("sort=true".equals(op.getParams())) {
+                List<String> errors = new ArrayList<String>();
+                int lastCount = output.getDifferential().getElement().size();
+                pu.sortDifferential(base, output, source.getName(), errors);
+                if (errors.size() > 0)
+                  throw new FHIRException("Sort failed: "+errors.toString());
+                if (lastCount != output.getDifferential().getElement().size())
+                  throw new FHIRException("Sort failed: counts differ; at least one of the paths in the differential is illegal");
+                
+              }
+              pu.generateSnapshot(base, output, source.getUrl(), source.getName());
+              debugSaveResource(output);
+              context.fixtures.put(op.getResponseId(), output);
+              context.snapshots.put(output.getUrl(), output);
+
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+              if (output.getDifferential().hasElement())
+                new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+"-d.xml")), output);
+            } else if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("sortDifferential")) {
+              StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
+              StructureDefinition base = getSD(source.getBaseDefinition()); 
+              StructureDefinition output = source.copy();
+              ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
+              pu.setIds(source, false);
+              List<String> errors = new ArrayList<String>();          
+              pu.sortDifferential(base, output, output.getUrl(), errors);
+              if (!errors.isEmpty())
+                throw new FHIRException(errors.get(0));
+              context.fixtures.put(op.getResponseId(), output);
+              context.snapshots.put(output.getUrl(), output);
+
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+            } else if (action.hasAssert()) {
+              SetupActionAssertComponent a = action.getAssert();
+              if (a.hasResponse() && a.getResponse().equals(TestScript.AssertionResponseTypes.BAD))
+                Assert.fail(action.getAssert().getLabel()+": "+action.getAssert().getDescription());
+              else {
+                boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
+                Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
+              }
+            } else {
+              throw new Error("Unsupported operation: " + opType.getSystem() + " : " + opType.getCode());
             }
-            pu.generateSnapshot(base, output, source.getUrl(), source.getName());
-            debugSaveResource(output);
-            context.fixtures.put(op.getResponseId(), output);
-            context.snapshots.put(output.getUrl(), output);
-            
-            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
-            if (output.getDifferential().hasElement())
-              new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
-            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+"-d.xml")), output);
-        } else if (opType.getSystem().equals("http://hl7.org/fhir/testscript-operation-codes") && opType.getCode().equals("sortDifferential")) {
-          StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
-          StructureDefinition base = getSD(source.getBaseDefinition()); 
-          StructureDefinition output = source.copy();
-          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
-          pu.setIds(source, false);
-          List<String> errors = new ArrayList<String>();          
-          pu.sortDifferential(base, output, output.getUrl(), errors);
-          if (!errors.isEmpty())
-            throw new FHIRException(errors.get(0));
-          context.fixtures.put(op.getResponseId(), output);
-          context.snapshots.put(output.getUrl(), output);
-          
-          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
-            
-            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
-              
-          } else {
-            throw new Error("Unsupported operation: " + opType.getSystem() + " : " + opType.getCode());
+            lastOpOutcome = AssertionResponseTypes.OKAY;
+          } catch (Exception e) {
+            for (int j = i+1;i < test.getAction().size(); i++) {
+              TestActionComponent followAction = test.getAction().get(j);
+              if (followAction.hasAssert() && followAction.getAssert().hasResponse() && followAction.getAssert().getResponse().equals(TestScript.AssertionResponseTypes.BAD)) {
+                lastOpOutcome = AssertionResponseTypes.BAD;
+                break;
+              }
+            }
           }
         } else if (action.hasAssert()) {
           SetupActionAssertComponent a = action.getAssert();
-          if (a.hasResponse() && a.getResponse().equals(TestScript.AssertionResponseTypes.BAD))
-            Assert.fail(action.getAssert().getLabel()+": "+action.getAssert().getDescription());
-          else {
+          if (a.getResponse() != null) {
+            Assert.assertTrue(a.getLabel()+" (response): "+a.getDescription(), a.getResponse() == lastOpOutcome);         
+          }
+          if (a.hasExpression()) {
             boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
             Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
           }
         }
-      } catch (Exception e) {
-        boolean ok = false;
-        for (int j = i+1;i < test.getAction().size(); i++) {
-          TestActionComponent followAction = test.getAction().get(j);
-          if (followAction.hasAssert() && followAction.getAssert().hasResponse() && followAction.getAssert().getResponse().equals(TestScript.AssertionResponseTypes.BAD)) {
-            ok = true;
-            break;
-          }
-        }
-        } catch (Exception e) {
-          lastOpOutcome = AssertionResponseTypes.BAD;
-        }
-        
-      } else if (action.hasAssert()) {
-        SetupActionAssertComponent a = action.getAssert();
-        if (a.getResponse() != null) {
-          Assert.assertTrue(a.getLabel()+" (response): "+a.getDescription(), a.getResponse() == lastOpOutcome);         
-        }
-        if (a.hasExpression()) {
-          boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
-          Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
-        }
       }
-    }
     } catch (Exception e) {
       e.printStackTrace();
       throw new FHIRException(e);

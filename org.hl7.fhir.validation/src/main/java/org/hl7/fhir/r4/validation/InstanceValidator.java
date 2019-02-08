@@ -216,8 +216,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     @Override
     public Base resolveReference(Object appContext, String url) throws FHIRException {
       ValidatorHostContext c = (ValidatorHostContext) appContext;
-      if (c.container != null || externalHostServices == null)
-        throw new Error("Not done yet - resolve "+url+" locally");
+      if (c.container != null)
+        throw new Error("Not done yet - resolve "+url+" locally (1)");
+      else if (externalHostServices == null)
+        throw new Error("Not done yet - resolve "+url+" locally (2)");
       else 
         return externalHostServices.resolveReference(c.appContext, url);
           
@@ -3291,10 +3293,20 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
       String url = getCanonicalURLForEntry(entry);
       String id = getIdForEntry(entry);
       if (url != null) {
-        rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry", ":0"), !url.equals(fullUrl) || (url.matches(Constants.URI_REGEX) && url.endsWith("/"+id)), "The canonical URL ("+url+") cannot match the fullUrl ("+fullUrl+") unless the resource id ("+id+") also matches");
+        if (!(!url.equals(fullUrl) || (url.matches(uriRegexForVersion()) && url.endsWith("/"+id))))
+          rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry", ":0"), false, "The canonical URL ("+url+") cannot match the fullUrl ("+fullUrl+") unless the resource id ("+id+") also matches");
         rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry", ":0"), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild("resource").fhirType(), id))), "The canonical URL ("+url+") cannot match the fullUrl ("+fullUrl+") unless on the canonical server itself");
       }
     }
+  }
+
+  public final static String URI_REGEX3 = "((http|https)://([A-Za-z0-9\\\\\\.\\:\\%\\$]*\\/)*)?(Account|ActivityDefinition|AllergyIntolerance|AdverseEvent|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CapabilityStatement|CarePlan|CareTeam|ChargeItem|Claim|ClaimResponse|ClinicalImpression|CodeSystem|Communication|CommunicationRequest|CompartmentDefinition|Composition|ConceptMap|Condition (aka Problem)|Consent|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceRequest|DeviceUseStatement|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|Endpoint|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExpansionProfile|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|GraphDefinition|Group|GuidanceResponse|HealthcareService|ImagingManifest|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|Library|Linkage|List|Location|Measure|MeasureReport|Media|Medication|MedicationAdministration|MedicationDispense|MedicationRequest|MedicationStatement|MessageDefinition|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Organization|Parameters|Patient|PaymentNotice|PaymentReconciliation|Person|PlanDefinition|Practitioner|PractitionerRole|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RequestGroup|ResearchStudy|ResearchSubject|RiskAssessment|Schedule|SearchParameter|Sequence|ServiceDefinition|Slot|Specimen|StructureDefinition|StructureMap|Subscription|Substance|SupplyDelivery|SupplyRequest|Task|TestScript|TestReport|ValueSet|VisionPrescription)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
+
+  private String uriRegexForVersion() {
+    if ("3.0.1".equals(context.getVersion()))
+      return URI_REGEX3;
+    else
+      return Constants.URI_REGEX;
   }
 
   private String getCanonicalURLForEntry(Element entry) {
@@ -3961,16 +3973,16 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
           ToolingExtensions.readBooleanExtension(inv, "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice")) {
           if (bpWarnings == BestPracticeWarningLevel.Hint) 
-            hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+inv.getExpression()+"]");
+            hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Warning) 
-            warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+inv.getExpression()+"]");
+            warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Error) 
-            rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+inv.getExpression()+"]");
+            rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
       }
       if (inv.getSeverity() == ConstraintSeverity.ERROR)
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+inv.getExpression()+"]");
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
       else if (inv.getSeverity() == ConstraintSeverity.WARNING)
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman()+msg+" ["+inv.getExpression()+"]");
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
     }
   }
 
@@ -4346,6 +4358,7 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
 
   private String fixExpr(String expr) {
     // this is a hack work around for past publication of wrong FHIRPath expressions
+    // R4
     if ("(component.empty() and hasMember.empty()) implies (dataAbsentReason or value)".equals(expr))
       return "(component.empty() and hasMember.empty()) implies (dataAbsentReason.exists() or value.exists())";
     if ("isModifier implies isModifierReason.exists()".equals(expr))
@@ -4356,10 +4369,25 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
       return "differential.element.all(id.exists()) and differential.element.id.trace('ids').isDistinct()";
     if ("snapshot.element.all(id) and snapshot.element.id.trace('ids').isDistinct()".equals(expr))
       return "snapshot.element.all(id.exists()) and snapshot.element.id.trace('ids').isDistinct()";
-    if ("".equals(expr))
-      return "";
-    if ("".equals(expr))
-      return "";
+    
+    // R3
+    if ("(code or value.empty()) and (system.empty() or system = 'urn:iso:std:iso:4217')".equals(expr))
+      return "(code.exists() or value.empty()) and (system.empty() or system = 'urn:iso:std:iso:4217')";
+    if ("value.empty() or code!=component.code".equals(expr)) 
+      return "value.empty() or (code in component.code).not()";
+    if ("(code or value.empty()) and (system.empty() or system = %ucum) and (value.empty() or value > 0)".equals(expr))
+      return "(code.exists() or value.empty()) and (system.empty() or system = %ucum) and (value.empty() or value > 0)";
+    if ("element.all(definition and min and max)".equals(expr))
+      return "element.all(definition.exists() and min.exists() and max.exists())";
+    if ("telecom or endpoint".equals(expr))
+      return "telecom.exists() or endpoint.exists()";
+    if ("(code or value.empty()) and (system.empty() or system = %ucum) and (value.empty() or value > 0)".equals(expr))
+      return "(code.exists() or value.empty()) and (system.empty() or system = %ucum) and (value.empty() or value > 0)";
+    if ("searchType implies type = 'string'".equals(expr))
+      return "searchType.exists() implies type = 'string'";
+    if ("abatement.empty() or (abatement as boolean).not()  or clinicalStatus='resolved' or clinicalStatus='remission' or clinicalStatus='inactive'".equals(expr))
+      return "abatement.empty() or (abatement is boolean).not() or (abatement as boolean).not() or (clinicalStatus = 'resolved') or (clinicalStatus = 'remission') or (clinicalStatus = 'inactive')";    
+    
     if ("".equals(expr))
       return "";
     return expr;

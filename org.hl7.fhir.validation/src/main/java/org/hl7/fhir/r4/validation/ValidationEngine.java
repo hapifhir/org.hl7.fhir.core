@@ -770,9 +770,17 @@ public class ValidationEngine {
     results.setType(Bundle.BundleType.COLLECTION);
     for (String ref : refs) {
       Content cnt = loadContent(ref, "validate");
-      OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles);
-      ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref);
-      results.addEntry().setResource(outcome);
+      if (refs.size() > 1)
+        System.out.println("Validate "+ref);
+      try {
+        OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles);
+        ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref);
+        if (refs.size() > 1)
+          produceValidationSummary(outcome);
+        results.addEntry().setResource(outcome);
+      } catch (Throwable e) {
+        System.out.println("Validation Infrastructure fail validating "+ref+": "+e.getMessage());
+      }
     }
     if (asBundle)
       return results;
@@ -780,6 +788,14 @@ public class ValidationEngine {
       return results.getEntryFirstRep().getResource();
   }
   
+  private void produceValidationSummary(OperationOutcome oo) {
+    for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
+      if (iss.getSeverity() == org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.ERROR || iss.getSeverity() == org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.FATAL) {
+        System.out.println("  "+iss.getSeverity().toCode()+": "+iss.getDetails().getText());
+      }
+    } 
+  }
+
   public OperationOutcome validateString(String location, String source, FhirFormat format, List<String> profiles) throws Exception {
     return validate(location, source.getBytes(), format, profiles);
   }
