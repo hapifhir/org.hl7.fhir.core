@@ -368,8 +368,28 @@ public class SnapShotGenerationTests {
           
           new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
             
-        } else {
-          throw new Error("Unsupported operation: " + opType.getSystem() + " : " + opType.getCode());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+              
+          } else {
+            throw new Error("Unsupported operation: " + opType.getSystem() + " : " + opType.getCode());
+          }
+        } else if (action.hasAssert()) {
+          SetupActionAssertComponent a = action.getAssert();
+          if (a.hasResponse() && a.getResponse().equals(TestScript.AssertionResponseTypes.BAD))
+            Assert.fail(action.getAssert().getLabel()+": "+action.getAssert().getDescription());
+          else {
+            boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
+            Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
+          }
+        }
+      } catch (Exception e) {
+        boolean ok = false;
+        for (int j = i+1;i < test.getAction().size(); i++) {
+          TestActionComponent followAction = test.getAction().get(j);
+          if (followAction.hasAssert() && followAction.getAssert().hasResponse() && followAction.getAssert().getResponse().equals(TestScript.AssertionResponseTypes.BAD)) {
+            ok = true;
+            break;
+          }
         }
         } catch (Exception e) {
           lastOpOutcome = AssertionResponseTypes.BAD;
