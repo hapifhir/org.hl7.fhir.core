@@ -1838,25 +1838,25 @@
       <description value="fixture for #37: Test bad Path"/>
       <kind value="resource"/>
       <abstract value="false"/>
-      <type value="MedicationDispense"/>
-      <baseDefinition value="http://hl7.org/fhir/StructureDefinition/MedicationDispense"/>
+      <type value="MedicationRequest"/>
+      <baseDefinition value="http://hl7.org/fhir/StructureDefinition/MedicationRequest"/>
       <derivation value="constraint"/>
       <differential>
         <element>
-          <path value="MedicationDispense"/>
+          <path value="MedicationRequest"/>
         </element>
         <element>
-          <path value="MedicationDispense.invalid"/>
+          <path value="MedicationRequest.dosageInstruction"/>
         </element>
         <element>
-          <path value="MedicationDispense.dosageInstruction.extension"/>
-          <slicing>
-            <discriminator>
-              <type value="value"/>
-              <path value="url"/>
-            </discriminator>
-            <rules value="open"/>
-          </slicing>
+          <path value="MedicationRequest.dosageInstruction.timing"/>
+        </element>
+        <element>
+          <path value="MedicationRequiest.dosageInstruction.timing.event"/>
+          <mustSupport value="true"/>
+        </element>
+        <element>
+          <path value="MedicationRequest.dosageInstruction.timing.repeat"/>
           <mustSupport value="true"/>
         </element>
       </differential>
@@ -3928,6 +3928,7 @@
         <label value="test37-0"/>
         <description value="Snapshot must not generate ok"/>
         <response value="bad"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
   </test>
