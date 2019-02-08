@@ -344,8 +344,6 @@ public class SnapShotGenerationTests {
                 pu.sortDifferential(base, output, source.getName(), errors);
                 if (errors.size() > 0)
                   throw new FHIRException("Sort failed: "+errors.toString());
-                if (lastCount != output.getDifferential().getElement().size())
-                  throw new FHIRException("Sort failed: counts differ; at least one of the paths in the differential is illegal");
                 
               }
               pu.generateSnapshot(base, output, source.getUrl(), source.getName());

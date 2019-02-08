@@ -3119,8 +3119,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public void sortDifferential(StructureDefinition base, StructureDefinition diff, String name, List<String> errors) throws FHIRException  {
-
     final List<ElementDefinition> diffList = diff.getDifferential().getElement();
+    int lastCount = diffList.size();
     // first, we move the differential elements into a tree
     if (diffList.isEmpty())
       return;
@@ -3160,6 +3160,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     // now, we serialise them back to a list
     diffList.clear();
     writeElements(edh, diffList);
+    
+    if (lastCount != diffList.size())
+      errors.add("Sort failed: counts differ; at least one of the paths in the differential is illegal");
   }
 
   private int processElementsIntoTree(ElementDefinitionHolder edh, int i, List<ElementDefinition> list) {
