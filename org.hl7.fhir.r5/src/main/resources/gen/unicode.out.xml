@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CodeSystem xmlns="http://hl7.org/fhir">
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <h2/>
+      <p>This code system null defines the following codes:</p>
+      <table class="codes">
+        <tr>
+          <td style="white-space:nowrap">
+            <b>Code</b>
+          </td>
+          <td>
+            <b>Display</b>
+          </td>
+          <td>
+            <b>Definition</b>
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap">125901
+            <a name="null-125901"> </a>
+          </td>
+          <td>CARDIOsphere</td>
+          <td>CARDIOsphere&#x99; ultrasonic contrast agent produced by POINT Biomedical</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <status value="active"/>
+  <caseSensitive value="true"/>
+  <content value="complete"/>
+  <concept>
+    <code value="125901"/>
+    <display value="CARDIOsphere"/>
+    <definition value="CARDIOsphere&#x99; ultrasonic contrast agent produced by POINT Biomedical"/>
+  </concept>
+</CodeSystem>
