@@ -1,17 +1,6 @@
 package org.hl7.fhir.dstu3.test.support;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.google.gson.*;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
 import org.hl7.fhir.utilities.CSFile;
@@ -22,12 +11,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSyntaxException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TestingUtilities {
   private static final boolean SHOW_DIFF = true;
@@ -275,5 +264,7 @@ public class TestingUtilities {
 		return null;
 	}
 
-
+  public static String resourceNameToFile(String name) throws IOException {
+    return Utilities.path(System.getProperty("user.dir"), "src", "main", "resources", name);
+  }
 }

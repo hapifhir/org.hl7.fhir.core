@@ -63,6 +63,12 @@ public class FHIRLexer {
     currentLocation = new SourceLocation(1, 1);
     next();
   }
+  public FHIRLexer(String source, int i) throws FHIRLexerException {
+    this.source = source;
+    this.cursor = i;
+    currentLocation = new SourceLocation(1, 1);
+    next();
+  }
   public String getCurrent() {
     return current;
   }
@@ -361,4 +367,7 @@ public class FHIRLexer {
       next();
   }
 
+  public int getCurrentStart() {
+    return currentStart;
+  }
 }

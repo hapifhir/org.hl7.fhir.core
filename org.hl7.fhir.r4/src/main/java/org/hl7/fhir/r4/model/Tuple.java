@@ -21,14 +21,16 @@ package org.hl7.fhir.r4.model;
  */
 
 
+import ca.uhn.fhir.fluentpath.INarrativeConstantMap;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.exceptions.FHIRException;
-
-public class Tuple extends Base {
+public class Tuple extends Base implements INarrativeConstantMap {
   private Map<String, List<Base>> properties = new HashMap<>();
 
   @Override
@@ -70,5 +72,8 @@ public class Tuple extends Base {
       return getProperty(name.hashCode(), name, checkValid);
   }
 
-
+  @Override
+  public void addConstant(String s, List<IBase> list) {
+    this.addProperty(s, (List<Base>)(List<?>)list);
+  }
 }

@@ -21,42 +21,17 @@ package org.hl7.fhir.dstu3.utils;
  */
 
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
+import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
+import ca.uhn.fhir.util.ElementUtil;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
-import org.hl7.fhir.dstu3.model.Base;
-import org.hl7.fhir.dstu3.model.BooleanType;
-import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.DateType;
-import org.hl7.fhir.dstu3.model.DecimalType;
-import org.hl7.fhir.dstu3.model.ElementDefinition;
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.dstu3.model.ExpressionNode;
-import org.hl7.fhir.dstu3.model.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.dstu3.model.ExpressionNode.Function;
-import org.hl7.fhir.dstu3.model.ExpressionNode.Kind;
-import org.hl7.fhir.dstu3.model.ExpressionNode.Operation;
-import org.hl7.fhir.dstu3.model.ExpressionNode.SourceLocation;
-import org.hl7.fhir.dstu3.model.IntegerType;
-import org.hl7.fhir.dstu3.model.Property;
-import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.model.StringType;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.dstu3.model.ExpressionNode.*;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.dstu3.model.TemporalPrecisionEnum;
-import org.hl7.fhir.dstu3.model.TimeType;
-import org.hl7.fhir.dstu3.model.TypeDetails;
 import org.hl7.fhir.dstu3.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.dstu3.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.dstu3.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
@@ -65,8 +40,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.Utilities;
 
-import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
-import ca.uhn.fhir.util.ElementUtil;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  *
@@ -231,6 +206,40 @@ public class FHIRPathEngine {
       throw lexer.error("Premature ExpressionNode termination at unexpected token \""+lexer.getCurrent()+"\"");
     result.check();
     return result;
+  }
+
+  /**
+   * Parse a path for later use using execute
+   *
+   * @param path
+   * @return
+   * @throws PathEngineException
+   * @throws Exception
+   */
+  public ExpressionNodeWithOffset parsePartial(String path, int i) throws FHIRLexerException {
+    FHIRLexer lexer = new FHIRLexer(path, i);
+    if (lexer.done())
+      throw lexer.error("Path cannot be empty");
+    ExpressionNode result = parseExpression(lexer, true);
+    result.check();
+    return new ExpressionNodeWithOffset(lexer.getCurrentStart(), result);
+  }
+
+  public static class ExpressionNodeWithOffset implements IExpressionNodeWithOffset {
+    private int offset;
+    private ExpressionNode node;
+    public ExpressionNodeWithOffset(int offset, ExpressionNode node) {
+      super();
+      this.offset = offset;
+      this.node = node;
+    }
+    public int getOffset() {
+      return offset;
+    }
+    public ExpressionNode getNode() {
+      return node;
+    }
+
   }
 
   /**
@@ -1796,6 +1805,14 @@ public class FHIRPathEngine {
 
 	private List<Base> execute(ExecutionContext context, Base item, ExpressionNode exp, boolean atEntry) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
+    if (atEntry && context.appInfo != null && hostServices != null) {
+      // we'll see if the name matches a constant known by the context.
+      Base temp = hostServices.resolveConstant(context.appInfo, exp.getName());
+      if (temp != null) {
+        result.add(temp);
+        return result;
+      }
+    }
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0))) {// special case for start up
       if (item.isResource() && item.fhirType().equals(exp.getName()))
         result.add(item);

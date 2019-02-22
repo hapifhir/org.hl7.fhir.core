@@ -1,5 +1,13 @@
 package org.hl7.fhir.r4.utils;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r4.context.IWorkerContext;
+import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.utils.FHIRPathEngine.ExpressionNodeWithOffset;
+import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.utilities.Utilities;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +22,9 @@ import java.util.Map;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,22 +33,10 @@ import java.util.Map;
  * #L%
  */
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.ExpressionNode;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.Tuple;
-import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.ExpressionNodeWithOffset;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.utilities.Utilities;
-
 public class LiquidEngine implements IEvaluationContext {
 
   public interface ILiquidEngineIcludeResolver {
-    public String fetchInclude(LiquidEngine engine, String name);
+    public String fetchInclude(String name);
   }
   
   private IEvaluationContext externalHostServices;
@@ -173,7 +169,7 @@ public class LiquidEngine implements IEvaluationContext {
 
     @Override
     public void evaluate(StringBuilder b, Resource resource, LiquidEngineContext ctxt) throws FHIRException {
-      String src = includeResolver.fetchInclude(LiquidEngine.this, page);
+      String src = includeResolver.fetchInclude(page);
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);
       LiquidEngineContext nctxt =  new LiquidEngineContext(ctxt.externalContext);
