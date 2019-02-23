@@ -8,7 +8,6 @@ import junit.framework.Assert;
 import org.apache.commons.collections4.map.HashedMap;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.narrative.LiquidHostServices;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.liquid.LiquidEngine;
@@ -58,9 +57,7 @@ public class UtilitiesLiquidEngineTests implements LiquidEngine.ILiquidEngineInc
   @Before
   public void setUp() throws Exception {
     engine = new LiquidEngine(fhirContext);
-    LiquidHostServices liquidHostServices = new LiquidHostServices(engine);
-    liquidHostServices.setEnvironmentVariable("FHIR_VERSION", fhirContext.getVersion().getVersion().name());
-    engine.setHostServices(liquidHostServices);
+    engine.setEnvironmentVariable("PROFILE", "dev");
     engine.setIncludeResolver(this);
   }
 

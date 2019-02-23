@@ -1,19 +1,15 @@
 package org.hl7.fhir.utilities.liquid;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.fluentpath.IExpressionNode;
-import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
-import ca.uhn.fhir.fluentpath.IFluentPath;
-import ca.uhn.fhir.fluentpath.INarrativeConstantMap;
+import ca.uhn.fhir.fluentpath.*;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.*;
 
-public class LiquidEngine {
+public class LiquidEngine implements INarrativeConstantResolver {
   public interface ILiquidEngineIncludeResolver {
     public String fetchInclude(String name);
   }
@@ -40,7 +36,7 @@ public class LiquidEngine {
   public LiquidEngine(FhirContext fhirContext) {
     super();
     engine = fhirContext.newFluentPath();
-
+    engine.setHostServices(this);
   }
 
   public ILiquidEngineIncludeResolver getIncludeResolver() {
@@ -328,14 +324,14 @@ public class LiquidEngine {
 
   }
 
-  public void setHostServices(Object theHostServices) {
-    engine.setHostServices(theHostServices);
-  }
-
-  public IBase resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public IBase resolveConstant(Object appContext, String name, boolean beforeContext) {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (ctxt.vars.containsKey(name))
       return ctxt.vars.get(name);
     return null;
+  }
+
+  public void setEnvironmentVariable(String key, String value) {
+    engine.setEnvironmentVariable(key, value);
   }
 }

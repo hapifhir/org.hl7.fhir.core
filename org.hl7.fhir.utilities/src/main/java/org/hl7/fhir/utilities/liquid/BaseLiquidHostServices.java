@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.liquid;
 
+import ca.uhn.fhir.fluentpath.INarrativeConstantResolver;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
 
@@ -8,10 +9,10 @@ import java.util.Map;
 
 public abstract class BaseLiquidHostServices {
   private Map<String, String> environmentVariables = new HashMap<>();
-  private final LiquidEngine myLiquidEngine;
+  private final INarrativeConstantResolver myNarrativeConstantResolver;
 
-  public BaseLiquidHostServices(LiquidEngine theLiquidEngine) {
-    myLiquidEngine = theLiquidEngine;
+  public BaseLiquidHostServices(INarrativeConstantResolver theNarrativeConstantResolver) {
+    myNarrativeConstantResolver = theNarrativeConstantResolver;
   }
 
   public void setEnvironmentVariable(String key, String value) {
@@ -23,7 +24,7 @@ public abstract class BaseLiquidHostServices {
   }
 
   protected IBase resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
-    IBase retval = myLiquidEngine.resolveConstant(appContext, name, beforeContext);
+    IBase retval = myNarrativeConstantResolver.resolveConstant(appContext, name, beforeContext);
     if (retval != null) {
       return retval;
     }
