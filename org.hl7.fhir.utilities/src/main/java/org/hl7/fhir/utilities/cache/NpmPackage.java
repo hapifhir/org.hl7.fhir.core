@@ -144,6 +144,17 @@ import com.google.gson.JsonObject;
       return res;
     }
 
+    public List<String> listResources(String... types) throws IOException {
+      List<String> files = list("package");
+      List<String> res = new ArrayList<String>();
+      for (String s : files) {
+        String[] n = s.split("\\-");
+        if (Utilities.existsInList(n[0], types))
+          res.add(s);
+      }
+      return res;
+    }
+    
     /** 
      * Copies all the files in the package folder [folder] to the nominated dest, 
      * and returns a list of all the file names copied

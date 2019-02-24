@@ -26,21 +26,21 @@ import java.util.Map;
 
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.HTMLClientLogger;
-import org.hl7.fhir.r4.model.CapabilityStatement;
-import org.hl7.fhir.r4.model.Parameters;
-import org.hl7.fhir.r4.model.TerminologyCapabilities;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.context.HTMLClientLogger;
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.TerminologyClient;
 
 public class TerminologyClientR2 implements TerminologyClient {
 
   private FHIRToolingClient client; // todo: use the R2 client
-  private VersionConvertor_10_40 conv;
+  private VersionConvertor_10_50 conv;
   
   public TerminologyClientR2(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
-    conv = new VersionConvertor_10_40(null);
+    conv = new VersionConvertor_10_50(null);
   }
 
   @Override

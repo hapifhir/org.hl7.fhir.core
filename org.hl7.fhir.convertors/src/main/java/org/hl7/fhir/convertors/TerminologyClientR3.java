@@ -26,12 +26,12 @@ import java.util.Map;
 
 import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.HTMLClientLogger;
-import org.hl7.fhir.r4.model.CapabilityStatement;
-import org.hl7.fhir.r4.model.Parameters;
-import org.hl7.fhir.r4.model.TerminologyCapabilities;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.context.HTMLClientLogger;
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.TerminologyClient;
 
 public class TerminologyClientR3 implements TerminologyClient {
 
@@ -43,7 +43,7 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return (TerminologyCapabilities) VersionConvertor_30_40.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false);
+    return (TerminologyCapabilities) VersionConvertor_30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false);
   }
 
   @Override
@@ -53,24 +53,24 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertor_30_40.convertResource(vs, false);
-    org.hl7.fhir.dstu3.model.ExpansionProfile p2 = (org.hl7.fhir.dstu3.model.ExpansionProfile) VersionConvertor_30_40.convertResource(p, false);
+    org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertor_30_50.convertResource(vs, false);
+    org.hl7.fhir.dstu3.model.ExpansionProfile p2 = (org.hl7.fhir.dstu3.model.ExpansionProfile) VersionConvertor_30_50.convertResource(p, false);
     vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
-    return (ValueSet) VersionConvertor_30_40.convertResource(vs2, false);
+    return (ValueSet) VersionConvertor_30_50.convertResource(vs2, false);
   }
 
   @Override
   public Parameters validateCS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_40.convertResource(pin, false);
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin, false);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_30_40.convertResource(p2, false);
+    return (Parameters) VersionConvertor_30_50.convertResource(p2, false);
   }
 
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_40.convertResource(pin, false);
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin, false);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_30_40.convertResource(p2, false);
+    return (Parameters) VersionConvertor_30_50.convertResource(p2, false);
   }
 
   @Override
@@ -85,12 +85,12 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
-    return (CapabilityStatement) VersionConvertor_30_40.convertResource(client.getCapabilitiesStatementQuick(), false);
+    return (CapabilityStatement) VersionConvertor_30_50.convertResource(client.getCapabilitiesStatementQuick(), false);
   }
 
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
-    return (Parameters) VersionConvertor_30_40.convertResource(client.lookupCode(params), false);
+    return (Parameters) VersionConvertor_30_50.convertResource(client.lookupCode(params), false);
   }
   
 }
