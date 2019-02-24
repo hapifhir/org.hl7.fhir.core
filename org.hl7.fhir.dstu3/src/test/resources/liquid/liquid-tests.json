@@ -34,13 +34,13 @@
       "output": "texamplet"
     },
     {
-      "name": "external constant",
+      "name": "environment variable",
       "focus": "Patient/example",
       "template": "{{ %\"FHIR_VERSION\" }}",
       "output": "DSTU3"
     },
     {
-      "name": "external constant no quote",
+      "name": "environment variable no quote",
       "focus": "Patient/example",
       "template": "{{ %PROFILE }}",
       "output": "dev"
