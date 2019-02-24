@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.tests;
 
-import org.hl7.fhir.r4.validation.NativeHostServices;
+import org.hl7.fhir.r5.validation.NativeHostServices;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 

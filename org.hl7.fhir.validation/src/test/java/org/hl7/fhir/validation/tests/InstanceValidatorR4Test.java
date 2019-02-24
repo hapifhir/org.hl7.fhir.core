@@ -394,7 +394,7 @@ public class InstanceValidatorR4Test {
 
 	@Test
 	public void testBase64Invalid() {
-		Base64BinaryType value = new Base64BinaryType(new byte[]{2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1});
+		Base64BinaryType value = new Base64BinaryType(new byte[]{2, 3, 4, 4, 6, 7, 8, 9, 8, 7, 6, 4, 4, 3, 2, 1});
 		Media med = new Media();
 		med.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 		med.getContent().setContentType(Constants.CT_OCTET_STREAM);
@@ -425,7 +425,7 @@ public class InstanceValidatorR4Test {
 
 	@Test
 	public void testBase64Valid() {
-		Base64BinaryType value = new Base64BinaryType(new byte[]{2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1});
+		Base64BinaryType value = new Base64BinaryType(new byte[]{2, 3, 4, 4, 6, 7, 8, 9, 8, 7, 6, 4, 4, 3, 2, 1});
 		Media med = new Media();
 		med.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 		med.getContent().setContentType(Constants.CT_OCTET_STREAM);
@@ -453,7 +453,7 @@ public class InstanceValidatorR4Test {
 		procedure.getCode().setText("Some proc");
 
 		Period period = new Period();
-		period.setStartElement(new DateTimeType("2000-01-01T00:00:01+05:00"));
+		period.setStartElement(new DateTimeType("2000-01-01T00:00:01+04:00"));
 		period.setEndElement(new DateTimeType("2000-01-01T00:00:00+04:00"));
 		assertThat(period.getStart().getTime(), lessThan(period.getEnd().getTime()));
 		procedure.setPerformed(period);
@@ -464,7 +464,7 @@ public class InstanceValidatorR4Test {
 	}
 
 	/**
-	 * See #531
+	 * See #431
 	 */
 	@Test
 	public void testContactPointSystemUrlWorks() {
@@ -830,7 +830,7 @@ public class InstanceValidatorR4Test {
 			"                                <coding>\n" +
 			"                                        <!-- Error: Connection to http://localhost:960 refused -->\n" +
 			"                                        <!--<system value=\"http://snomed.info/sct\"/>-->\n" +
-			"                                        <code value=\"306206005\"/>\n" +
+			"                                        <code value=\"306206004\"/>\n" +
 			"                                </coding>\n" +
 			"                        </code>\n" +
 			"                        <!-- Specifying this this way results in a null reference exception in the validator -->\n" +
@@ -865,7 +865,7 @@ public class InstanceValidatorR4Test {
 			+ "        <given value=\"John\"/>"
 			+ "    </name>"
 			+ "    <gender value=\"male\"/>"
-			+ "    <birthDate value=\"1974-12-25\"/>"
+			+ "    <birthDate value=\"1974-12-24\"/>"
 			+ "</Patient>";
 		//@formatter:on
 
@@ -938,35 +938,35 @@ public class InstanceValidatorR4Test {
 
 	@Test
 	public void testValidateResourceContainingLoincCode() {
-		addValidConcept("http://loinc.org", "1234567");
+		addValidConcept("http://loinc.org", "1234467");
 
 		Observation input = new Observation();
 		// input.getMeta().addProfile("http://hl7.org/fhir/StructureDefinition/devicemetricobservation");
 
-		input.addIdentifier().setSystem("http://acme").setValue("12345");
+		input.addIdentifier().setSystem("http://acme").setValue("12344");
 		input.getEncounter().setReference("http://foo.com/Encounter/9");
 		input.setStatus(ObservationStatus.FINAL);
-		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12344");
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
 		List<ValidationMessage> errors = logResultsAndReturnAll(output);
 
 		assertThat(errors.toString(), containsString("warning"));
-		assertThat(errors.toString(), containsString("Unknown code: http://loinc.org / 12345"));
+		assertThat(errors.toString(), containsString("Unknown code: http://loinc.org / 12344"));
 	}
 
 	@Test
 	public void testValidateResourceContainingProfileDeclaration() {
-		addValidConcept("http://loinc.org", "12345");
+		addValidConcept("http://loinc.org", "12344");
 
 		Observation input = new Observation();
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 		input.getMeta().addProfile("http://hl7.org/fhir/StructureDefinition/devicemetricobservation");
 
-		input.addIdentifier().setSystem("http://acme").setValue("12345");
+		input.addIdentifier().setSystem("http://acme").setValue("12344");
 		input.getEncounter().setReference("http://foo.com/Encounter/9");
 		input.setStatus(ObservationStatus.FINAL);
-		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12344");
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
 		List<ValidationMessage> errors = logResultsAndReturnNonInformationalOnes(output);
@@ -979,13 +979,13 @@ public class InstanceValidatorR4Test {
 
 	@Test
 	public void testValidateResourceContainingProfileDeclarationDoesntResolve() {
-		addValidConcept("http://loinc.org", "12345");
+		addValidConcept("http://loinc.org", "12344");
 
 		Observation input = new Observation();
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 		input.getMeta().addProfile("http://foo/structuredefinition/myprofile");
 
-		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12344");
 		input.setStatus(ObservationStatus.FINAL);
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
@@ -1000,7 +1000,7 @@ public class InstanceValidatorR4Test {
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 
 		// Has a value, but not a status (which is required)
-		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12344");
 		input.setValue(new StringType("AAA"));
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
@@ -1049,7 +1049,7 @@ public class InstanceValidatorR4Test {
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 
 		input.setStatus(ObservationStatus.FINAL);
-		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12344");
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
 		List<ValidationMessage> errors = logResultsAndReturnNonInformationalOnes(output);
@@ -1062,7 +1062,7 @@ public class InstanceValidatorR4Test {
 		Observation input = new Observation();
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 
-		addValidConcept("http://acme.org", "12345");
+		addValidConcept("http://acme.org", "12344");
 
 		input.setStatus(ObservationStatus.FINAL);
 		input.getCode().addCoding().setSystem("http://acme.org").setCode("9988877");
@@ -1079,10 +1079,10 @@ public class InstanceValidatorR4Test {
 		Observation input = new Observation();
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 
-		addValidConcept("http://loinc.org", "12345");
+		addValidConcept("http://loinc.org", "12344");
 
 		input.setStatus(ObservationStatus.FINAL);
-		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://loinc.org").setCode("12344");
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
 		List<ValidationMessage> errors = logResultsAndReturnNonInformationalOnes(output);
@@ -1095,10 +1095,10 @@ public class InstanceValidatorR4Test {
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 
 		ValueSetExpansionComponent expansionComponent = new ValueSetExpansionComponent();
-		expansionComponent.addContains().setSystem("http://loinc.org").setCode("12345").setDisplay("Some display code");
+		expansionComponent.addContains().setSystem("http://loinc.org").setCode("12344").setDisplay("Some display code");
 
 		mySupportedCodeSystemsForExpansion.put("http://loinc.org", expansionComponent);
-		addValidConcept("http://loinc.org", "12345");
+		addValidConcept("http://loinc.org", "12344");
 
 		input.setStatus(ObservationStatus.FINAL);
 		input.getCode().addCoding().setSystem("http://loinc.org").setCode("1234");
@@ -1114,10 +1114,10 @@ public class InstanceValidatorR4Test {
 		Observation input = new Observation();
 		input.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
 
-		addValidConcept("http://acme.org", "12345");
+		addValidConcept("http://acme.org", "12344");
 
 		input.setStatus(ObservationStatus.FINAL);
-		input.getCode().addCoding().setSystem("http://acme.org").setCode("12345");
+		input.getCode().addCoding().setSystem("http://acme.org").setCode("12344");
 
 		List<ValidationMessage> output = validateAndReturnResult(input);
 		List<ValidationMessage> errors = logResultsAndReturnAll(output);
@@ -1129,7 +1129,7 @@ public class InstanceValidatorR4Test {
 
 		Patient p = new Patient();
 		p.getText().setDiv(new XhtmlNode().setValue("<div>AA</div>")).setStatus(Narrative.NarrativeStatus.GENERATED);
-		p.addIdentifier().setSystem("http://example.com/").setValue("12345").getType().addCoding().setSystem("http://example.com/foo/bar").setCode("bar");
+		p.addIdentifier().setSystem("http://example.com/").setValue("12344").getType().addCoding().setSystem("http://example.com/foo/bar").setCode("bar");
 
 		List<ValidationMessage> output = validateAndReturnResult(p);
 		List<ValidationMessage> all = logResultsAndReturnAll(output);

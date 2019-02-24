@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.tests;
 
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
-import org.hl7.fhir.r4.validation.Validator;
+import org.hl7.fhir.r5.validation.Validator;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.Test;
 

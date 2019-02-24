@@ -72,13 +72,22 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.R2016MayToR4Loader;
+import org.hl7.fhir.convertors.R2016MayToR5Loader;
 import org.hl7.fhir.convertors.R2ToR4Loader;
+import org.hl7.fhir.convertors.R2ToR5Loader;
 import org.hl7.fhir.convertors.R3ToR4Loader;
+import org.hl7.fhir.convertors.R3ToR5Loader;
+import org.hl7.fhir.convertors.R4ToR5Loader;
 import org.hl7.fhir.convertors.TerminologyClientFactory;
 import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -619,7 +628,8 @@ public class ValidationEngine {
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
     } else 
-      context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+      throw new NotImplementedException("Do not use R4 validator... being phased out");
+    //context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
 	}
 
   public void loadProfile(String src) throws Exception {

@@ -32,11 +32,11 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 
-public class TerminologyClientR4 implements TerminologyClient {
+public class TerminologyClientR5 implements TerminologyClient {
 
   private FHIRToolingClient client;
   
-  public TerminologyClientR4(String address) throws URISyntaxException {
+  public TerminologyClientR5(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
   }
 
