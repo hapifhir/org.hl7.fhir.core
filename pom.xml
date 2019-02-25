@@ -122,6 +122,7 @@
 		<module>org.hl7.fhir.dstu2016may</module>
 		<module>org.hl7.fhir.dstu3</module>
 		<module>org.hl7.fhir.r4</module>
+		<module>org.hl7.fhir.r5</module>
 		<!--<module>org.hl7.fhir.rdf</module>-->
 		<module>org.hl7.fhir.convertors</module>
 		<module>org.hl7.fhir.validation</module>
