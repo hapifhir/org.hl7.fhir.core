@@ -237,7 +237,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         throw new NotImplementedException("Not done yet (ValidatorHostServices.conformsToProfile), when item is element");
       boolean ok = true;
       for (ValidationMessage v : valerrors)
-        ok = ok && v.getLevel().isError();
+        ok = ok && !v.getLevel().isError();
       return ok;
     }
 
