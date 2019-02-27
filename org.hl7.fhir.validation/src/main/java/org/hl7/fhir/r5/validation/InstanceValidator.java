@@ -1483,7 +1483,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("dateTime")) {
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' does not have a valid year");
       rule(errors, IssueType.INVALID, e.line(), e.col(), path,
           e.primitiveValue()
           .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"),
@@ -1508,7 +1507,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("date")) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' does not have a valid year");
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
             "Not a valid date");
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength()==0 ||  e.primitiveValue().length() <= context.getMaxLength(), "value is longer than permitted maximum value of " + context.getMaxLength());
@@ -1579,7 +1577,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, IssueType.INVALID, e.line(), e.col(), path,
           e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"),
           "The instant '" + e.primitiveValue() + "' is not valid (by regex)");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' does not have a valid year");
       try {
         InstantType dt = new InstantType(e.primitiveValue());
       } catch (Exception ex) {
@@ -4118,18 +4115,6 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
       throw new FHIRException("Unable to resolve slice matching - slice matching by value set not done");      
     } else {
       throw new FHIRException("Unable to resolve slice matching - no fixed value or required value set");
-    }
-  }
-
-  private boolean yearIsValid(String v) {
-    if (v == null) {
-      return false;
-    }
-    try {
-      int i = Integer.parseInt(v.substring(0, Math.min(4, v.length())));
-      return i >= 1800 && i <= 2100;
-    } catch (NumberFormatException e) {
-      return false;
     }
   }
 
