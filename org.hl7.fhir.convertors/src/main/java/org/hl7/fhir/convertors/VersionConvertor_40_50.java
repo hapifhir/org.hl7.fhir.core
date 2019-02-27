@@ -2977,10 +2977,10 @@ public class VersionConvertor_40_50 {
       return convertTime((org.hl7.fhir.r4.model.TimeType) src);
     if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
       return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
-    if (src instanceof org.hl7.fhir.r4.model.UriType)
-      return convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.UrlType)
       return convertUrl((org.hl7.fhir.r4.model.UrlType) src);
+    if (src instanceof org.hl7.fhir.r4.model.UriType)
+      return convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.UuidType)
       return convertUuid((org.hl7.fhir.r4.model.UuidType) src);
     if (src instanceof org.hl7.fhir.r4.model.Extension)
@@ -3103,10 +3103,10 @@ public class VersionConvertor_40_50 {
       return convertTime((org.hl7.fhir.r5.model.TimeType) src);
     if (src instanceof org.hl7.fhir.r5.model.UnsignedIntType)
       return convertUnsignedInt((org.hl7.fhir.r5.model.UnsignedIntType) src);
-    if (src instanceof org.hl7.fhir.r5.model.UriType)
-      return convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.UrlType)
       return convertUrl((org.hl7.fhir.r5.model.UrlType) src);
+    if (src instanceof org.hl7.fhir.r5.model.UriType)
+      return convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.UuidType)
       return convertUuid((org.hl7.fhir.r5.model.UuidType) src);
     if (src instanceof org.hl7.fhir.r5.model.Extension)
