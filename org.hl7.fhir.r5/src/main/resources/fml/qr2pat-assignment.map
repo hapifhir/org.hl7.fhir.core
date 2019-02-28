@@ -1,0 +1,8 @@
+map "http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/qr2patassignment" = "qr2patassignment"
+
+uses "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse" alias QuestionnaireResponse as source
+uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as target
+
+group QuestionnaireResponse(source src : QuestionnaireResponse, target tgt : Patient) {
+  src -> tgt.gender = 'female' "Simple Assignment";
+}

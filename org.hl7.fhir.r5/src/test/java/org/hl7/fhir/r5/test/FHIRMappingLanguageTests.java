@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.test;
+package org.hl7.fhir.r5.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,22 +12,22 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.SimpleWorkerContext;
-import org.hl7.fhir.r4.elementmodel.Manager;
-import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.ResourceFactory;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.model.StructureMap;
-import org.hl7.fhir.r4.terminologies.ConceptMapEngine;
-import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.StructureMapUtilities;
-import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ResourceFactory;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
@@ -102,7 +102,7 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 		Resource resource = null;
 		try {
 			StructureMapUtilities scu = new StructureMapUtilities(context, this);
-			org.hl7.fhir.r4.elementmodel.Element src = Manager.parse(context,
+			org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context,
 					new ByteArrayInputStream(TextFile.fileToBytes(fileSource)), FhirFormat.JSON);
 			StructureMap structureMap = scu.parse(TextFile.fileToString(fileMap), name);
 			String typeName = scu.getTargetType(structureMap).getType();
