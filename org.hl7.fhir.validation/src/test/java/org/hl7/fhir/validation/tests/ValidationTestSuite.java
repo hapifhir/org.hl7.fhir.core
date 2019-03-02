@@ -125,25 +125,24 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         val.getContext().cacheResource(sd);
       }
     }
+    List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
+    if (name.startsWith("Json."))
+      val.validate(null, errors, new FileInputStream(path), FhirFormat.JSON);
+    else
+      val.validate(null, errors, new FileInputStream(path), FhirFormat.XML);
+    checkOutcomes(errors, content);
     if (content.has("profile")) {
-      List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
+      List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       JsonObject profile = content.getAsJsonObject("profile");
       String filename = TestUtilities.resourceNameToFile("validation-examples", profile.get("source").getAsString());
       String v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, v);
       if (name.startsWith("Json."))
-        val.validate(null, errors, new FileInputStream(path), FhirFormat.JSON, sd);
+        val.validate(null, errorsProfile, new FileInputStream(path), FhirFormat.JSON, sd);
       else
-         val.validate(null, errors, new FileInputStream(path), FhirFormat.XML, sd);
-      checkOutcomes(errors, profile);
-    } else {
-      List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-      if (name.startsWith("Json."))
-        val.validate(null, errors, new FileInputStream(path), FhirFormat.JSON);
-      else
-        val.validate(null, errors, new FileInputStream(path), FhirFormat.XML);
-      checkOutcomes(errors, content);
-    }
+         val.validate(null, errorsProfile, new FileInputStream(path), FhirFormat.XML, sd);
+      checkOutcomes(errorsProfile, profile);
+    } 
   }
 
   public StructureDefinition loadProfile(String filename, String v)

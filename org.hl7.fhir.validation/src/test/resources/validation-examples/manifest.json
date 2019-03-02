@@ -388,6 +388,28 @@
         "errorCount": 0,
         "warningCount": 1
       },
+      "patient-conform-profile.xml" : {
+        "errorCount": 0,
+        "warningCount": 1
+      },
+      "patient-bad-gender.xml" : {
+        "errorCount": 1,
+        "warningCount": 0,
+        "profile" : {
+          "source" : "patient-conform-profile.xml", 
+          "errorCount": 2,
+          "warningCount": 0
+        }
+      },
+      "patient-warning-maritalstatus.xml" : {
+        "errorCount": 0,
+        "warningCount": 1,
+        "profile" : {
+          "source" : "patient-conform-profile.xml", 
+          "errorCount": 0,
+          "warningCount": 1
+        }
+      },
       "document-good.xml" : {
         "errorCount": 0,
         "profiles" : ["document-section-library.xml"],
