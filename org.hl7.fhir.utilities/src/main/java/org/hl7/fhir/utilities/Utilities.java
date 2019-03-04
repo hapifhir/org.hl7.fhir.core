@@ -1148,5 +1148,13 @@ public class Utilities {
     }    
   }
 
+  public static String extractBaseUrl(String url) {
+    if (url.contains("/"))
+      return url.substring(0,  url.lastIndexOf("/"));
+    else
+      return url;
+          
+  }
+
 
 }
