@@ -3366,7 +3366,7 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
       candidateResources.add(entry.getNamedChild("resource"));
     }
     // Find resources that are pointed to as stylesheet links
-    List<String> sheets = new ArrayList();
+    List<String> sheets = new ArrayList<>();
     List<Element> links = bundle.getChildren("link");
     for (Element link : links) {
       if (link.getChildValue("relation").equals("stylesheet")) {
