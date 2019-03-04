@@ -246,6 +246,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     boolean hasLinkFor(String typeSimple);
     String getLinkFor(String corePath, String typeSimple);
     BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException;
+    BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException;
     String getLinkForProfile(StructureDefinition profile, String url);
     boolean prependLinks();
   }
@@ -2675,8 +2676,21 @@ public class ProfileUtilities extends TranslatingUtilities {
             c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, " (", null)));
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));              
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));
+              
               c.getPieces().add(gen.new Piece(null, ")", null));
+            }
+            if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
+              br = pkp.resolveBinding(profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), definition.getPath());
+              c.addPiece(gen.new Piece("br"));
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"extension-elementdefinition-maxvalueset.html", translate("sd.table", "Max Binding")+": ", "Max Value Set Extension").addStyle("font-weight:bold")));             
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
+            }
+            if (binding.hasExtension(ToolingExtensions.EXT_MIN_VALUESET)) {
+              br = pkp.resolveBinding(profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MIN_VALUESET), definition.getPath());
+              c.addPiece(gen.new Piece("br"));
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"extension-elementdefinition-minvalueset.html", translate("sd.table", "Mon Binding")+": ", "Min Value Set Extension").addStyle("font-weight:bold")));             
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
             }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {

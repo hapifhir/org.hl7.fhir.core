@@ -4400,5 +4400,9 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
     return expr;
   }
 
+  public IEvaluationContext getExternalHostServices() {
+    return externalHostServices;
+  }
+
 
 }
