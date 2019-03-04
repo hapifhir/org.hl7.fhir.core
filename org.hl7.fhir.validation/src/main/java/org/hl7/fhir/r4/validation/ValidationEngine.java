@@ -463,7 +463,7 @@ public class ValidationEngine {
     if (stream != null)
       return readZip(stream);
     stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
-    FhirFormat fmt = checkIsResource(stream);
+    FhirFormat fmt = checkIsResource(stream, src);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
       res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytes(src));
@@ -488,14 +488,20 @@ public class ValidationEngine {
   private Map<String, byte[]> scanDirectory(File f) throws FileNotFoundException, IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (File ff : f.listFiles()) {
-      FhirFormat fmt = checkIsResource(ff.getAbsolutePath());
-      if (fmt != null) {
-        res.put(Utilities.changeFileExt(ff.getName(), "."+fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
+      if (!isIgnoreFile(ff)) {
+        FhirFormat fmt = checkIsResource(ff.getAbsolutePath());
+        if (fmt != null) {
+          res.put(Utilities.changeFileExt(ff.getName(), "."+fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
+        }
       }
     }
     return res;
   }
 
+
+  private boolean isIgnoreFile(File ff) {
+    return Utilities.existsInList(ff.getName(), ".DS_Store");
+  }
 
   private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FileNotFoundException, IOException {
     return loadPackage(pcm.extractLocally(stream, name));
@@ -585,7 +591,8 @@ public class ValidationEngine {
     this.noInvariantChecks = value;
   }
 
-  private FhirFormat checkIsResource(InputStream stream) {
+  private FhirFormat checkIsResource(InputStream stream, String filename) {
+    System.out.println("   ..Detect format for "+filename);
     try {
       Manager.parse(context, stream, FhirFormat.XML);
       return FhirFormat.XML;
@@ -606,6 +613,7 @@ public class ValidationEngine {
       return FhirFormat.TEXT;
     } catch (Exception e) {
     }
+    System.out.println("     .. not a resource: "+filename);
     return null;    
   }
 
@@ -622,7 +630,7 @@ public class ValidationEngine {
     if (Utilities.existsInList(ext, "txt")) 
       return FhirFormat.TEXT;
 
-    return checkIsResource(new FileInputStream(path));
+    return checkIsResource(new FileInputStream(path), path);
 	}
 
   public void connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
@@ -667,6 +675,8 @@ public class ValidationEngine {
               res = new org.hl7.fhir.dstu3.formats.XmlParser().parse(new ByteArrayInputStream(t.getValue()));
             else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
               res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(new ByteArrayInputStream(t.getValue()));
+            else if (fn.endsWith(".txt") || fn.endsWith(".map") )
+              res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(t.getValue()));
             else
               throw new Exception("Unsupported format for "+fn);
             r = VersionConvertor_30_40.convertResource(res, false);
@@ -696,6 +706,8 @@ public class ValidationEngine {
               r = new JsonParser().parse(new ByteArrayInputStream(t.getValue()));
             else if (fn.endsWith(".txt"))
               r = new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(t.getValue()), fn);
+            else if (fn.endsWith(".txt") || fn.endsWith(".map") )
+              r = new org.hl7.fhir.r4.utils.StructureMapUtilities(null).parse(new String(t.getValue()), fn);
             else
               throw new Exception("Unsupported format for "+fn);
           } else
@@ -764,6 +776,8 @@ public class ValidationEngine {
         res.cntType = FhirFormat.XML; 
       else if (t.getKey().endsWith(".ttl"))
         res.cntType = FhirFormat.TURTLE; 
+      else if (t.getKey().endsWith(".txt") || t.getKey().endsWith(".map"))
+        res.cntType = FhirFormat.TEXT; 
       else
         throw new Exception("Todo: Determining resource type is not yet done");
     }

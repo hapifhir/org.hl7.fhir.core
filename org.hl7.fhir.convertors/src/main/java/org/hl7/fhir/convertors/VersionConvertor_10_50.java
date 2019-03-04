@@ -11574,7 +11574,7 @@ public org.hl7.fhir.dstu2.model.ValueSet.ConceptDefinitionDesignationComponent c
     if (src.hasExtension("http://hl7.org/fhir/StructureDefinition/valueset-extensible"))
       tgt.setExtensible(((BooleanType) src.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/valueset-extensible").getValue()).booleanValue());
     org.hl7.fhir.r5.model.CodeSystem srcCS = (CodeSystem) src.getUserData("r2-cs");
-    if (srcCS == null)
+    if (srcCS == null && advisor != null) 
       srcCS = advisor.getCodeSystem(src);
     if (srcCS != null) {
       tgt.getCodeSystem().setSystem(srcCS.getUrl());
