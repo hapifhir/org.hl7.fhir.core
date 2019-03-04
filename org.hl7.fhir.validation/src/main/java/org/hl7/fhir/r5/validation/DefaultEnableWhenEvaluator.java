@@ -117,7 +117,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
     
 	private boolean comparePrimitiveAnswer(PrimitiveType<?> actualAnswer, PrimitiveType<?> expectedAnswer, QuestionnaireItemOperator questionnaireItemOperator) {                
         if (actualAnswer.getValue() instanceof Comparable){            
-           return compareComparable((Comparable)actualAnswer.getValue(), (Comparable) expectedAnswer.getValue(), questionnaireItemOperator);                  
+           return compareComparable((Comparable<?>)actualAnswer.getValue(), (Comparable<?>) expectedAnswer.getValue(), questionnaireItemOperator);                  
         } else if (questionnaireItemOperator == QuestionnaireItemOperator.EQUAL){
             return actualAnswer.equalsShallow(expectedAnswer);
         } else if (questionnaireItemOperator == QuestionnaireItemOperator.NOT_EQUAL){

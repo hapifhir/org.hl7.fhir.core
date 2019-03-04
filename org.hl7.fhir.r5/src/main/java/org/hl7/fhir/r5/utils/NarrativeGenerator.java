@@ -4171,18 +4171,37 @@ public class NarrativeGenerator implements INarrativeGenerator {
       addTableRow(t, "System History", showOp(rest, SystemRestfulInteraction.HISTORYSYSTEM));
       addTableRow(t, "System Search", showOp(rest, SystemRestfulInteraction.SEARCHSYSTEM));
 
+      boolean hasVRead = false;
+      boolean hasPatch = false;
+      boolean hasDelete = false;
+      boolean hasHistory = false;
+      boolean hasUpdates = false;
+      for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
+        hasVRead = hasOp(r, TypeRestfulInteraction.VREAD);
+        hasPatch = hasOp(r, TypeRestfulInteraction.PATCH);
+        hasDelete = hasOp(r, TypeRestfulInteraction.DELETE);
+        hasHistory = hasOp(r, TypeRestfulInteraction.HISTORYTYPE);
+        hasUpdates = hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE);
+      }
+      
       t = x.table(null);
       XhtmlNode tr = t.tr();
       tr.th().b().tx("Resource Type");
       tr.th().b().tx("Profile");
-      tr.th().b().tx("Read");
-      tr.th().b().tx("V-Read");
-      tr.th().b().tx("Search");
-      tr.th().b().tx("Update");
-      tr.th().b().tx("Updates");
-      tr.th().b().tx("Create");
-      tr.th().b().tx("Delete");
-      tr.th().b().tx("History");
+      tr.th().b().attribute("title", "GET a resource (read interaction)").tx("Read");
+      if (hasVRead)
+        tr.th().b().attribute("title", "GET past versions of resources (vread interaction)").tx("V-Read");
+      tr.th().b().attribute("title", "GET all set of resources of the type (search interaction)").tx("Search");
+      tr.th().b().attribute("title", "PUT a new resource version (update interaction)").tx("Update");
+      if (hasPatch)
+        tr.th().b().attribute("title", "PATCH a new resource version (patch interaction)").tx("Patch");
+      tr.th().b().attribute("title", "POST a new resource (create interaction)").tx("Create");
+      if (hasDelete)
+        tr.th().b().attribute("title", "DELETE a resource (delete interaction)").tx("Delete");
+      if (hasUpdates)
+        tr.th().b().attribute("title", "GET changes to a resource (history interaction on instance)").tx("Updates");
+      if (hasHistory)
+        tr.th().b().attribute("title", "GET changes for all resources of the type (history interaction on type)").tx("History");
 
       for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
         tr = t.tr();
@@ -4191,13 +4210,19 @@ public class NarrativeGenerator implements INarrativeGenerator {
           tr.td().ah(prefix+r.getProfile()).addText(r.getProfile());
         }
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.VREAD));
+        if (hasVRead)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.VREAD));
         tr.td().addText(showOp(r, TypeRestfulInteraction.SEARCHTYPE));
         tr.td().addText(showOp(r, TypeRestfulInteraction.UPDATE));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYINSTANCE));
+        if (hasPatch)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.PATCH));
         tr.td().addText(showOp(r, TypeRestfulInteraction.CREATE));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.DELETE));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYTYPE));
+        if (hasDelete)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.DELETE));
+        if (hasUpdates)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYINSTANCE));
+        if (hasHistory)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYTYPE));
       }
     }
 
@@ -4205,6 +4230,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return true;
   }
 
+  private boolean hasOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
+    for (ResourceInteractionComponent op : r.getInteraction()) {
+      if (op.getCode() == on)
+        return true;
+    }
+    return false;
+  }
+  
   private String showOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
     for (ResourceInteractionComponent op : r.getInteraction()) {
       if (op.getCode() == on)
