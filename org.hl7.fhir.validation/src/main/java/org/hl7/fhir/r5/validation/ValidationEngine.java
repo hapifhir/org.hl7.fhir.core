@@ -972,7 +972,7 @@ public class ValidationEngine {
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType); 
     StructureMap map = context.getTransform(mapUri);
     if (map == null)
-      throw new Error("Unable to find map "+mapUri);
+      throw new Error("Unable to find map "+mapUri+" (Known Maps = "+context.listMapUrls()+")");
     
     scu.transform(null, src, map, null);
     if (outputs.size() == 0)

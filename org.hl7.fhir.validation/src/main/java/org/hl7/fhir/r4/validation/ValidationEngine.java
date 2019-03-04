@@ -619,6 +619,8 @@ public class ValidationEngine {
       return FhirFormat.TURTLE;
     if (Utilities.existsInList(ext, "map")) 
       return FhirFormat.TEXT;
+    if (Utilities.existsInList(ext, "txt")) 
+      return FhirFormat.TEXT;
 
     return checkIsResource(new FileInputStream(path));
 	}
@@ -656,6 +658,7 @@ public class ValidationEngine {
     for (Entry<String, byte[]> t : source.entrySet()) {
       String fn = t.getKey();
       if (!exemptFile(fn)) {
+        System.out.print(" ..file: "+fn);
         Resource r = null;
         try { 
           if (version.equals("3.0.1") || version.equals("3.0.0")) {
@@ -962,7 +965,7 @@ public class ValidationEngine {
     org.hl7.fhir.r4.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType); 
     StructureMap map = context.getTransform(mapUri);
     if (map == null)
-      throw new Error("Unable to find map "+mapUri);
+      throw new Error("Unable to find map "+mapUri+" (Known Maps = "+context.listMapUrls()+")");
     
     scu.transform(null, src, map, null);
     if (outputs.size() == 0)
