@@ -311,7 +311,7 @@ public class SnapShotGenerationTests {
             if (TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getUrl()) == null) {
               sd.setUserData("path", "test-"+sd.getId()+".html");
               StructureDefinition extd = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-              new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
+              new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), "http://test.org/extension", sd.getName());
               TestingUtilities.context().cacheResource(sd);
               debugSaveResource(sd);
             }
@@ -346,7 +346,7 @@ public class SnapShotGenerationTests {
                   throw new FHIRException("Sort failed: "+errors.toString());
                 
               }
-              pu.generateSnapshot(base, output, source.getUrl(), source.getName());
+              pu.generateSnapshot(base, output, source.getUrl(), "http://test.org/profile", source.getName());
               debugSaveResource(output);
               context.fixtures.put(op.getResponseId(), output);
               context.snapshots.put(output.getUrl(), output);
@@ -439,7 +439,7 @@ public class SnapShotGenerationTests {
           pu.sortDifferential(getSD(p.getBaseDefinition()), p, url, errors);
           if (!errors.isEmpty())
             throw new FHIRException(errors.get(0));
-          pu.generateSnapshot(getSD(p.getBaseDefinition()), p, p.getUrl(), p.getName());
+          pu.generateSnapshot(getSD(p.getBaseDefinition()), p, p.getUrl(), "http://test.org/contained", p.getName());
           debugSaveResource(p);
           return p;
         }
