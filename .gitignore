@@ -155,3 +155,4 @@ local.properties
 /org.hl7.fhir.r4/src/test/resources/graphql/*.out
 /org.hl7.fhir.r4/src/main/resources/graphql/*.out
 /org.hl7.fhir.r4/src/main/resources/gen
+/release_batch_template.txt

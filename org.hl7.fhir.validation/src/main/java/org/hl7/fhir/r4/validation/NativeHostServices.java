@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
@@ -116,8 +117,7 @@ public class NativeHostServices {
     @Override
     public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
       throw new FHIRException("Code systems cannot be handled at this time"); // what to do? need thread local storage? 
-    }
-
+    } 
   }
 
   private ValidationEngine validator;

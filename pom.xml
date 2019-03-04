@@ -13,7 +13,7 @@
 	each other. It is fine to bump the point version of this POM without affecting
 	HAPI FHIR.
 	-->
-	<version>3.7.4-SNAPSHOT</version>
+	<version>3.7.8-SNAPSHOT</version>
 
 	<properties>
 		<hapi_fhir_version>3.7.0-SNAPSHOT</hapi_fhir_version>
@@ -122,6 +122,7 @@
 		<module>org.hl7.fhir.dstu2016may</module>
 		<module>org.hl7.fhir.dstu3</module>
 		<module>org.hl7.fhir.r4</module>
+		<module>org.hl7.fhir.r5</module>
 		<!--<module>org.hl7.fhir.rdf</module>-->
 		<module>org.hl7.fhir.convertors</module>
 		<module>org.hl7.fhir.validation</module>

@@ -66,6 +66,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.sound.sampled.AudioFormat;
@@ -1146,6 +1147,18 @@ public class Utilities {
       else if (extension == null || file.getName().endsWith(extension)) 
         visitor.visitFile(file);
     }    
+  }
+
+  public static String extractBaseUrl(String url) {
+    if (url.contains("/"))
+      return url.substring(0,  url.lastIndexOf("/"));
+    else
+      return url;
+          
+  }
+
+  public static String listCanonicalUrls(Set<String> keys) {
+    return keys.toString();
   }
 
 
