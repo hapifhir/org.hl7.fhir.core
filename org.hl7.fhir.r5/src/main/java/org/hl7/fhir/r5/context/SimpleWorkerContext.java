@@ -601,6 +601,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     this.ignoreProfileErrors = ignoreProfileErrors;
   }
 
+  public String listMapUrls() {
+    return Utilities.listCanonicalUrls(transforms.keySet());
+  }
+
 
 
 

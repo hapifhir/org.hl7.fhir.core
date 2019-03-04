@@ -109,7 +109,7 @@ public class Transformer {
 			Bundle bundle = new Bundle();
 			StructureMap map = scu.getLibrary().get(mapUri);
 			if (map == null)
-				throw new Error("Unable to find map "+mapUri);
+				throw new Error("Unable to find map "+mapUri+" (Known Maps = "+Utilities.listCanonicalUrls(scu.getLibrary().keySet())+")");
 			scu.transform(null, e, map, bundle);
 			new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(output), bundle);
 			return true;

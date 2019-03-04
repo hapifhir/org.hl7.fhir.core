@@ -91,7 +91,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   private Set<String> supportedCodeSystems = new HashSet<String>();
   private Map<String, ValueSet> valueSets = new HashMap<String, ValueSet>();
   private Map<String, ConceptMap> maps = new HashMap<String, ConceptMap>();
-  private Map<String, StructureMap> transforms = new HashMap<String, StructureMap>();
+  protected Map<String, StructureMap> transforms = new HashMap<String, StructureMap>();
   private Map<String, StructureDefinition> structures = new HashMap<String, StructureDefinition>();
   private Map<String, ImplementationGuide> guides = new HashMap<String, ImplementationGuide>();
   private Map<String, SearchParameter> searchParameters = new HashMap<String, SearchParameter>();

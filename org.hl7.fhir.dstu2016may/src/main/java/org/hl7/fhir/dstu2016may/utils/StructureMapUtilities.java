@@ -816,7 +816,7 @@ public class StructureMapUtilities {
 		for (UriType imp : map.getImport()) {
 			StructureMap impMap = library.get(imp.getValue());
 			if (impMap == null)
-				throw new FHIRException("Unable to find map "+imp.getValue());
+				throw new FHIRException("Unable to find map "+imp.getValue()+" (Known Maps = "+Utilities.listCanonicalUrls(library.keySet())+")");
 			for (StructureMapGroupComponent grp : impMap.getGroup()) {
 				if (grp.getName().equals(dependent.getName())) {
 					if (targetMap == null) {

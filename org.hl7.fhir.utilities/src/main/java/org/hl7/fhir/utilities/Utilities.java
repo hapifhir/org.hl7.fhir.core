@@ -66,6 +66,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.sound.sampled.AudioFormat;
@@ -1154,6 +1155,10 @@ public class Utilities {
     else
       return url;
           
+  }
+
+  public static String listCanonicalUrls(Set<String> keys) {
+    return keys.toString();
   }
 
 
