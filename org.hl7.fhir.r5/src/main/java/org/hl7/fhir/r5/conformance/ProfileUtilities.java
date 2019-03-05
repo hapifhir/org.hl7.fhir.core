@@ -307,13 +307,18 @@ public class ProfileUtilities extends TranslatingUtilities {
    * @return A List containing the element children (all of them are Elements)
    */
   public static List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id) {
+    return getChildList(profile, path, id, false);
+  }
+  
+  public static List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id, boolean diff) {
     List<ElementDefinition> res = new ArrayList<ElementDefinition>();
 
     boolean capturing = id==null;
     if (id==null && !path.contains("."))
       capturing = true;
-    
-    for (ElementDefinition e : profile.getSnapshot().getElement()) {
+  
+    List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();
+    for (ElementDefinition e : list) {
       if (e == null)
         throw new Error("element = null: "+profile.getUrl());
       if (e.getId() == null)
@@ -332,9 +337,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   
         if (!Utilities.noString(e.getContentReference()) && path.startsWith(p)) {
           if (path.length() > p.length())
-            return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null);
+            return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
           else
-            return getChildList(profile, e.getContentReference(), null);
+            return getChildList(profile, e.getContentReference(), null, diff);
           
         } else if (p.startsWith(path+".") && !p.equals(path)) {
           String tail = p.substring(path.length()+1);
@@ -348,9 +353,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
+  public static List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element, boolean diff) {
+    return getChildList(structure, element.getPath(), element.getId(), diff);
+  }
 
   public static List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element) {
-    return getChildList(structure, element.getPath(), element.getId());
+    return getChildList(structure, element.getPath(), element.getId(), false);
 	}
 
   public void updateMaps(StructureDefinition base, StructureDefinition derived) throws DefinitionException {
