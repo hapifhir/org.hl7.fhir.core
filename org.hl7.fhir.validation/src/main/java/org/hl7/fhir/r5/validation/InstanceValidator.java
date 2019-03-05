@@ -2537,9 +2537,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       // GG: this approach is flawed because it treats discriminators individually rather than collectively
       StringBuilder expression = new StringBuilder("true");
+      boolean anyFound = false;
+      Set<String> discriminators = new HashSet<>();
       for (ElementDefinitionSlicingDiscriminatorComponent s : slicer.getSlicing().getDiscriminator()) {
         String discriminator = s.getPath();
-
+        discriminators.add(discriminator);
+        
         List<ElementDefinition> criteriaElements = getCriteriaForDiscriminator(path, ed, discriminator, profile, s.getType() == DiscriminatorType.PROFILE);
         boolean found = false;
         for (ElementDefinition criteriaElement : criteriaElements) {
@@ -2592,8 +2595,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (found)
             break;
         }
-        if (!found)
-          throw new DefinitionException("Could not match discriminator (" + discriminator + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions");
+        if (found)
+          anyFound = true;
+      }
+      if (!anyFound) {
+        if (slicer.getSlicing().getDiscriminator().size() > 1)
+          throw new DefinitionException("Could not match any discriminators (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions for any of the discriminators");
+        else 
+          throw new DefinitionException("Could not match discriminator (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions");
       }
 
       try {

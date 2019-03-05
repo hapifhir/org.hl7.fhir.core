@@ -132,6 +132,14 @@
       "patient-lang3.json" : {
         "errorCount": 0,
         "warningCount": 1
+      }, 
+      "patient-au-5.json" : {
+        "errorCount": 0,
+        "warningCount": 0,
+        "profile" : {
+          "source" : "profile-patient-au.xml", 
+          "errorCount": 0
+        }
       }
 		},
 		"Xml": {
