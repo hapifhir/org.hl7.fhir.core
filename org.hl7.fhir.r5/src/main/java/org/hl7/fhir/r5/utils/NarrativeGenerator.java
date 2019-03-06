@@ -151,6 +151,7 @@ import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.RelatedArtifact;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.Signature;
@@ -1599,6 +1600,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     } else if (e instanceof Signature) {
       return false;
     } else if (e instanceof UsageContext) {
+      return false;
+    } else if (e instanceof RelatedArtifact) {
       return false;
     } else if (e instanceof ElementDefinition) {
       return false;
