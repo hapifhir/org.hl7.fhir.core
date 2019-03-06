@@ -2269,7 +2269,7 @@ public class StructureMapUtilities {
 	 * @return
 	 * @throws Exception
 	 */
-  public StructureMapAnalysis analyse(Object appInfo, StructureMap map) throws Exception {
+  public StructureMapAnalysis analyse(Object appInfo, StructureMap map) throws FHIRException {
     ids.clear();
     StructureMapAnalysis result = new StructureMapAnalysis(); 
     TransformContext context = new TransformContext(appInfo);
@@ -2297,7 +2297,7 @@ public class StructureMapUtilities {
   }
 
 
-  private void analyseGroup(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapAnalysis result) throws Exception {
+  private void analyseGroup(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapAnalysis result) throws FHIRException {
     log(indent+"Analyse Group : "+group.getName());
     // todo: extends
     // todo: check inputs
@@ -2322,7 +2322,7 @@ public class StructureMapUtilities {
       xs.addText("Input: "+v.property.getPath());
   }
 
-  private void analyseRule(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapGroupRuleComponent rule, StructureMapAnalysis result) throws Exception {
+  private void analyseRule(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapGroupRuleComponent rule, StructureMapAnalysis result) throws FHIRException {
     log(indent+"Analyse rule : "+rule.getName());
     XhtmlNode tr = result.summary.addTag("tr");
     XhtmlNode xs = tr.addTag("td");
@@ -2330,7 +2330,7 @@ public class StructureMapUtilities {
 
     VariablesForProfiling srcVars = vars.copy();
     if (rule.getSource().size() != 1)
-      throw new Exception("Rule \""+rule.getName()+"\": not handled yet");
+      throw new FHIRException("Rule \""+rule.getName()+"\": not handled yet");
     VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
 
     TargetWriter tw = new TargetWriter();
@@ -2393,7 +2393,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private VariablesForProfiling analyseSource(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMapGroupRuleSourceComponent src, XhtmlNode td) throws Exception {
+  private VariablesForProfiling analyseSource(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMapGroupRuleSourceComponent src, XhtmlNode td) throws FHIRException {
     VariableForProfiling var = vars.get(VariableMode.INPUT, src.getContext());
     if (var == null)
       throw new FHIRException("Rule \""+ruleId+"\": Unknown input variable "+src.getContext());
@@ -2409,7 +2409,7 @@ public class StructureMapUtilities {
     if (src.hasElement()) {
       Property element = prop.getBaseProperty().getChild(prop.types.getType(), src.getElement());
       if (element == null)
-        throw new Exception("Rule \""+ruleId+"\": Unknown element name "+src.getElement());
+        throw new FHIRException("Rule \""+ruleId+"\": Unknown element name "+src.getElement());
       if (element.getDefinition().getMin() == 0)
         optional = true;
       if (element.getDefinition().getMax().equals("*"))
@@ -2437,14 +2437,14 @@ public class StructureMapUtilities {
   }
 
 
-  private void analyseTarget(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMap map, StructureMapGroupRuleTargetComponent tgt, String tv, TargetWriter tw, List<StructureDefinition> profiles, String sliceName) throws Exception {
+  private void analyseTarget(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMap map, StructureMapGroupRuleTargetComponent tgt, String tv, TargetWriter tw, List<StructureDefinition> profiles, String sliceName) throws FHIRException {
     VariableForProfiling var = null;
     if (tgt.hasContext()) {
       var = vars.get(VariableMode.OUTPUT, tgt.getContext());
       if (var == null)
-        throw new Exception("Rule \""+ruleId+"\": target context not known: "+tgt.getContext());
+        throw new FHIRException("Rule \""+ruleId+"\": target context not known: "+tgt.getContext());
       if (!tgt.hasElement())
-        throw new Exception("Rule \""+ruleId+"\": Not supported yet");
+        throw new FHIRException("Rule \""+ruleId+"\": Not supported yet");
     }
 
     
@@ -2455,7 +2455,7 @@ public class StructureMapUtilities {
     } else {
       Property vp = var.property.baseProperty.getChild(tgt.getElement(),  tgt.getElement());
       if (vp == null)
-        throw new Exception("Unknown Property "+tgt.getElement()+" on "+var.property.path);
+        throw new FHIRException("Unknown Property "+tgt.getElement()+" on "+var.property.path);
       
       type = new TypeDetails(CollectionStatus.SINGLETON, vp.getType(tgt.getElement()));
     }
@@ -2849,19 +2849,19 @@ public class StructureMapUtilities {
     return prop;
   }
 
-  private PropertyWithType resolveType(StructureMap map, String type, StructureMapInputMode mode) throws Exception {
+  private PropertyWithType resolveType(StructureMap map, String type, StructureMapInputMode mode) throws FHIRException {
     for (StructureMapStructureComponent imp : map.getStructure()) {
       if ((imp.getMode() == StructureMapModelMode.SOURCE && mode == StructureMapInputMode.SOURCE) || 
           (imp.getMode() == StructureMapModelMode.TARGET && mode == StructureMapInputMode.TARGET)) {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl());
         if (sd == null)
-          throw new Exception("Import "+imp.getUrl()+" cannot be resolved");
+          throw new FHIRException("Import "+imp.getUrl()+" cannot be resolved");
         if (sd.getId().equals(type)) {
           return new PropertyWithType(sd.getType(), new Property(worker, sd.getSnapshot().getElement().get(0), sd), null, new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl()));
         }
       }
     }
-    throw new Exception("Unable to find structure definition for "+type+" in imports");
+    throw new FHIRException("Unable to find structure definition for "+type+" in imports");
   }
 
 
