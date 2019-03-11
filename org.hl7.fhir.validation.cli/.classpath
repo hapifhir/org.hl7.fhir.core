@@ -8,7 +8,7 @@
   <classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar" sourcepath="M2_REPO/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar" sourcepath="M2_REPO/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0-sources.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.7.0-SNAPSHOT/hapi-fhir-base-3.7.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.7.0-SNAPSHOT/hapi-fhir-base-3.7.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.8.0-SNAPSHOT/hapi-fhir-base-3.8.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.8.0-SNAPSHOT/hapi-fhir-base-3.8.0-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar" sourcepath="M2_REPO/com/google/code/gson/gson/2.8.5/gson-2.8.5-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1.jar" sourcepath="M2_REPO/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-text/1.6/commons-text-1.6.jar" sourcepath="M2_REPO/org/apache/commons/commons-text/1.6/commons-text-1.6-sources.jar"/>
@@ -28,14 +28,14 @@
   <classpathentry kind="src" path="/org.hl7.fhir.dstu2016may"/>
   <classpathentry kind="src" path="/org.hl7.fhir.dstu3"/>
   <classpathentry kind="src" path="/org.hl7.fhir.r4"/>
-  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-structures-r4/3.7.0-SNAPSHOT/hapi-fhir-structures-r4-3.7.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-structures-r4/3.7.0-SNAPSHOT/hapi-fhir-structures-r4-3.7.0-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-utilities/3.7.0-SNAPSHOT/hapi-fhir-utilities-3.7.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-utilities/3.7.0-SNAPSHOT/hapi-fhir-utilities-3.7.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-structures-r4/3.8.0-SNAPSHOT/hapi-fhir-structures-r4-3.8.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-structures-r4/3.8.0-SNAPSHOT/hapi-fhir-structures-r4-3.8.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-utilities/3.8.0-SNAPSHOT/hapi-fhir-utilities-3.8.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-utilities/3.8.0-SNAPSHOT/hapi-fhir-utilities-3.8.0-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.jar" sourcepath="M2_REPO/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.jar" sourcepath="M2_REPO/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.jar" sourcepath="M2_REPO/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.jar" sourcepath="M2_REPO/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.jar" sourcepath="M2_REPO/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-validation-resources-r4/3.7.0-SNAPSHOT/hapi-fhir-validation-resources-r4-3.7.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-validation-resources-r4/3.7.0-SNAPSHOT/hapi-fhir-validation-resources-r4-3.7.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-validation-resources-r4/3.8.0-SNAPSHOT/hapi-fhir-validation-resources-r4-3.8.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-validation-resources-r4/3.8.0-SNAPSHOT/hapi-fhir-validation-resources-r4-3.8.0-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/saxon/Saxon-HE/9.5.1-5/Saxon-HE-9.5.1-5.jar" sourcepath="M2_REPO/net/sf/saxon/Saxon-HE/9.5.1-5/Saxon-HE-9.5.1-5-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/xpp3/xpp3/1.1.4c/xpp3-1.1.4c.jar" sourcepath="M2_REPO/xpp3/xpp3/1.1.4c/xpp3-1.1.4c-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/xpp3/xpp3_xpath/1.1.4c/xpp3_xpath-1.1.4c.jar" sourcepath="M2_REPO/xpp3/xpp3_xpath/1.1.4c/xpp3_xpath-1.1.4c-sources.jar"/>

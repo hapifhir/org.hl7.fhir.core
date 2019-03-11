@@ -1,6 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+<<<<<<< HEAD
 
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
@@ -15,8 +16,15 @@
 	-->
 	<version>3.7.36-SNAPSHOT</version>
 
+=======
+	<groupId>ca.uhn.hapi.fhir</groupId>
+	<!-- Note: Version of this project and the version of HAPI FHIR are not 
+		locked to each other. It is fine to bump the point version of this POM without 
+		affecting HAPI FHIR. -->
+	<version>3.7.31-SNAPSHOT</version>
+>>>>>>> update projects to hapi-fhir-base 3.8.0-snapshot
 	<properties>
-		<hapi_fhir_version>3.7.0-SNAPSHOT</hapi_fhir_version>
+		<hapi_fhir_version>3.8.0-SNAPSHOT</hapi_fhir_version>
 	</properties>
 
 	<artifactId>org.hl7.fhir.core</artifactId>
@@ -81,21 +89,34 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
 			<dependency>
-				<groupId>ca.uhn.hapi.fhir</groupId>
-				<artifactId>org.hl7.fhir.utilities</artifactId>
-				<version>${project.version}</version>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<artifactId>hamcrest-core</artifactId>
+						<groupId>org.hamcrest</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>ca.uhn.hapi.fhir</groupId>
-				<artifactId>hapi-fhir-structures-r4</artifactId>
-				<version>${hapi_fhir_version}</version>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>java-hamcrest</artifactId>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>ca.uhn.hapi.fhir</groupId>
-				<artifactId>hapi-fhir-validation-resources-r4</artifactId>
-				<version>${hapi_fhir_version}</version>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>2.23.4</version>
 			</dependency>
+			<!-- <dependency> <groupId>ca.uhn.hapi.fhir</groupId> <artifactId>org.hl7.fhir.utilities</artifactId> 
+				<version>${project.version}</version> </dependency> <dependency> <groupId>ca.uhn.hapi.fhir</groupId> 
+				<artifactId>hapi-fhir-structures-r4</artifactId> <version>${hapi_fhir_version}</version> 
+				</dependency> <dependency> <groupId>ca.uhn.hapi.fhir</groupId> <artifactId>hapi-fhir-validation-resources-r4</artifactId> 
+				<version>${hapi_fhir_version}</version> </dependency> -->
 
 			<dependency>
 				<groupId>com.atlassian.commonmark</groupId>
@@ -123,7 +144,7 @@
 		<module>org.hl7.fhir.dstu3</module>
 		<module>org.hl7.fhir.r4</module>
 		<module>org.hl7.fhir.r5</module>
-		<!--<module>org.hl7.fhir.rdf</module>-->
+		<!--  		<module>org.hl7.fhir.rdf</module> -->
 		<module>org.hl7.fhir.convertors</module>
 		<module>org.hl7.fhir.validation</module>
 		<module>org.hl7.fhir.validation.cli</module>
@@ -147,9 +168,27 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-utils</artifactId>
+						<version>3.1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.21.0</version>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<runOrder>random</runOrder>
+					<argLine>-Dfile.encoding=UTF-8 -Xmx1024m</argLine>
+					<forkCount>1.0C</forkCount>
 				</configuration>
 			</plugin>
 			<plugin>
