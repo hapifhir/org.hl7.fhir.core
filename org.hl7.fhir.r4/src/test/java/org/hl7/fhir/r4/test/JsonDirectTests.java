@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.utilities.Utilities;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,10 +24,10 @@ public class JsonDirectTests {
 
   @Test
   public void test() throws FHIRFormatError, FileNotFoundException, IOException {
-    File src = new File("C:\\temp\\obs.xml");
-    File xml = new File("C:\\temp\\xml.xml");
-    File json = new File("C:\\temp\\json.json");
-    File json2 = new File("C:\\temp\\json2.json");
+    File src = new File(Utilities.path("[tmp]", "obs.xml"));
+    File xml = new File(Utilities.path("[tmp]", "xml.xml"));
+    File json = new File(Utilities.path("[tmp]", "json.json"));
+    File json2 = new File(Utilities.path("[tmp]", "json2.json"));
     FileUtils.copyFile(new File("C:\\work\\org.hl7.fhir\\build\\publish\\observation-decimal.xml"), src);
     Observation obs = (Observation) new XmlParser().parse(new FileInputStream(src));
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(json), obs);
