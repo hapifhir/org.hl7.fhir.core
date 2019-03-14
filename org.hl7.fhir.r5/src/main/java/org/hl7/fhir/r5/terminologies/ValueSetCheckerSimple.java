@@ -145,7 +145,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private ValidationResult validateCode(Coding code, CodeSystem cs) {
     ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code.getCode());
     if (cc == null)
-      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+code+" in "+cs.getUrl());
+      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+gen(code)+" in "+cs.getUrl());
     if (code.getDisplay() == null)
       return new ValidationResult(cc);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -160,6 +160,13 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         return new ValidationResult(cc);
     }
     return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" must be one of '"+b.toString()+"'", cc);
+  }
+
+  private String gen(Coding code) {
+    if (code.hasSystem())
+      return code.getSystem()+"#"+code.getCode();
+    else
+      return null;
   }
 
   private String getValueSetSystem() throws FHIRException {

@@ -1978,6 +1978,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
     StructureDefinition sd = context.fetchTypeDefinition(path.substring(0, path.length()-4));
     if (sd == null)
       return false;
+    if (Utilities.existsInList(path.substring(0, path.length()-4), "CapabilityStatement", "StructureDefinition", "ImplementationGuide", "SearchParameter", "MessageDefinition", "OperationDefinition", "CompartmentDefinition", "StructureMap", "GraphDefinition", 
+        "ExampleScenario", "CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", "TerminologyCapabilities"))
+      return true;
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
 

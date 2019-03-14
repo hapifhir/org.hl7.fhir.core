@@ -67,6 +67,26 @@ import com.google.gson.JsonObject;
  */
 public class PackageCacheManager {
 
+  public class VersionHistory {
+    private String id;
+    private String canonical;
+    private String current;
+    private Map<String, String> versions = new HashMap<>();
+    public String getCanonical() {
+      return canonical;
+    }
+    public String getCurrent() {
+      return current;
+    }
+    public Map<String, String> getVersions() {
+      return versions;
+    }
+    public String getId() {
+      return id;
+    } 
+  }
+
+
   public class PackageEntry {
 
     private byte[] bytes;
@@ -95,6 +115,8 @@ public class PackageCacheManager {
   private boolean progress = true;
   private List<NpmPackage> temporaryPackages = new ArrayList<NpmPackage>();
   private Map<String, String> ciList = new HashMap<String, String>();
+  private List<String> allUrls;
+  private Map<String, VersionHistory> historyCache = new HashMap<>();
   
   public PackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
     if (userMode)
@@ -104,15 +126,17 @@ public class PackageCacheManager {
     if (!(new File(cacheFolder).exists()))
       Utilities.createDirectory(cacheFolder);
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-      TextFile.stringToFile("[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"));  
+      TextFile.stringToFile("[cache]\r\nversion="+CACHE_VERSION+"\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);  
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
     boolean save = false;
-    if ("1".equals(ini.getStringProperty("cache", "version"))) {
+    String v = ini.getStringProperty("cache", "version");
+    if ("1".equals(v)) {
       convertPackageCacheFrom1To2();
       ini.setStringProperty("cache", "version", "2", null);
+      v = ini.getStringProperty("cache", "version");
       save = true;
     }
-    if (!CACHE_VERSION.equals(ini.getStringProperty("cache", "version"))) {
+    if (!CACHE_VERSION.equals(v)) {
       clearCache();
       ini.setStringProperty("cache", "version", CACHE_VERSION, null);
       save = true;
@@ -123,8 +147,8 @@ public class PackageCacheManager {
     save = checkIniHasMapping("fhir.argonaut.scheduling", "http://fhir.org/guides/argonaut-scheduling", ini) || save;
     save = checkIniHasMapping("fhir.hspc.acog", "http://hl7.org/fhir/fpar", ini) || save;
     save = checkIniHasMapping("hl7.fhir.au.argonaut", "http://hl7.org.au/fhir/argonaut", ini) || save;
-    save = checkIniHasMapping("hl7.fhir.au.base", "http://hl7.org.au/fhir", ini) || save;
-    save = checkIniHasMapping("hl7.fhir.au.pd", "http://hl7.org.au/fhir", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.au.base", "http://hl7.org.au/fhir/base", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.au.pd", "http://hl7.org.au/fhir/pd", ini) || save;
     save = checkIniHasMapping("hl7.fhir.smart", "http://hl7.org/fhir/smart-app-launch", ini) || save;
     save = checkIniHasMapping("hl7.fhir.snomed", "http://hl7.org/fhir/ig/snomed", ini) || save;
     save = checkIniHasMapping("hl7.fhir.test.v10", "http://hl7.org/fhir/test-ig-10", ini) || save;
@@ -148,8 +172,12 @@ public class PackageCacheManager {
     save = checkIniHasMapping("hl7.fhir.uv.vhdir", "http://hl7.org/fhir/ig/vhdir", ini) || save;
     save = checkIniHasMapping("hl7.fhir.vn.base", "http://hl7.org/fhir/ig/vietnam", ini) || save;
     save = checkIniHasMapping("hl7.fhir.vocabpoc", "http://hl7.org/fhir/ig/vocab-poc", ini) || save;
-    if (save)
-      ini.save();    
+    if (save) {
+      if (!CACHE_VERSION.equals(ini.getStringProperty("cache", "version"))) {
+        throw new Error("what?");
+      }
+      ini.save();
+    }
     checkDeleteVersion("hl7.fhir.core", "1.0.2", 2);
     checkDeleteVersion("hl7.fhir.core", "1.4.0", 2);
     checkDeleteVersion("hl7.fhir.core", "current", toolsVersion);
@@ -217,9 +245,19 @@ public class PackageCacheManager {
 
 
   public void recordMap(String url, String id) throws IOException {
+    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
+        throw new Error("what?");
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
     ini.setStringProperty("urls", id, url, null);
+    if (!CACHE_VERSION.equals(ini.getStringProperty("cache", "version"))) {
+      throw new Error("what?");
+    }
+    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
+      throw new Error("what?");
+
     ini.save();
+    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
+      throw new Error("what?");
   }
 
   public String getPackageUrl(String id) throws IOException {
@@ -318,7 +356,9 @@ public class PackageCacheManager {
       System.out.print("|");
     JsonObject npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.bytesToString(npmb));
     if (npm.get("name") == null || id == null || !id.equals(npm.get("name").getAsString()))
-      throw new IOException("Attempt to import a mis-identified package "+id);
+      // work around for stupid core-r4 problem
+      if (!npm.get("name").getAsString().startsWith(id))
+        throw new IOException("Attempt to import a mis-identified package. Expected "+id+", got "+npm.get("name").getAsString());
     if (version == null)
       version = npm.get("version").getAsString();
     
@@ -647,6 +687,59 @@ public class PackageCacheManager {
       return hasPackage(id, "current");
     else
       return false;
+  }
+
+
+  public List<String> getUrls() throws IOException {
+    if (allUrls == null)
+    {
+      IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+      allUrls = new ArrayList<>();
+      for (String s : ini.getPropertyNames("urls"))
+        allUrls.add(ini.getStringProperty("urls", s));
+      try {
+        System.out.println("Listing known Implementation Guides");
+        URL url = new URL("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        InputStream json = connection.getInputStream();
+        JsonObject packages = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
+        JsonArray guides = packages.getAsJsonArray("guides");
+        for (JsonElement g : guides) {
+          JsonObject gi = (JsonObject) g;
+          if (gi.has("canonical"))
+            if (!allUrls.contains(gi.get("canonical").getAsString()))
+              allUrls.add(gi.get("canonical").getAsString());
+        }
+      } catch (Exception e) {
+        System.out.println("   .. failed: "+e.getMessage());
+      }
+    }
+    return allUrls;    
+  }
+
+
+  public VersionHistory listVersions(String url) throws IOException {
+    if (historyCache.containsKey(url))
+      return historyCache.get(url);
+    
+    URL url1 = new URL(Utilities.pathURL(url, "package-list.json")+"?nocache=" + System.currentTimeMillis());
+    HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
+    connection.setRequestMethod("GET");
+    InputStream json = connection.getInputStream();
+    JsonObject packageList = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
+    VersionHistory res = new VersionHistory();
+    res.id = packageList.get("package-id").getAsString();
+    res.canonical = packageList.get("canonical").getAsString();
+    for (JsonElement j : packageList.getAsJsonArray("list")) {
+      JsonObject jo = (JsonObject) j;
+      if ("current".equals(jo.get("version").getAsString()))
+        res.current = jo.get("path").getAsString();
+      else
+        res.versions.put(jo.get("version").getAsString(), jo.get("path").getAsString());
+    }
+    historyCache.put(url, res);
+    return res;
   }
 
 }
