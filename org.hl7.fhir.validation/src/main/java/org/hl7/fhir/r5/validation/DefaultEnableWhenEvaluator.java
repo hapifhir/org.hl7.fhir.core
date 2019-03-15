@@ -145,7 +145,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
 		    return result > 0;
 		}
 		
-        throw new UnprocessableEntityException("Bad operator for PrimitiveType comparison");
+        throw new UnprocessableEntityException("Bad operator for PrimitiveType comparison: "+questionnaireItemOperator.toCode());
 
 	}
 
@@ -198,7 +198,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
         return true;
     }
     private List<Element> findSubItems(Element item) {
-        List<Element> results = item.getChildren(LINKID_ELEMENT)
+        List<Element> results = item.getChildren(ITEM_ELEMENT)
                 .stream()
                 .flatMap(i -> findSubItems(i).stream())
                 .collect(Collectors.toList());
