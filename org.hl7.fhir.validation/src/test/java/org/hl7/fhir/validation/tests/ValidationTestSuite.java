@@ -87,6 +87,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   private String name;
   private JsonObject content;
+  private static String veVersion;
   
   public ValidationTestSuite(String name, JsonObject content) {
     this.name = name;
@@ -100,10 +101,24 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-    if (ve == null) {
-      ve = new ValidationEngine("hl7.fhir.core#4.0.0", DEF_TX, null, FhirPublication.R4);
+    String v = "5.0";
+    if (content.has("version")) 
+      v = content.get("version").getAsString();
+      
+    if (ve == null || !v.equals(veVersion)) {
+      if (v.equals("5.0"))
+        ve = new ValidationEngine("hl7.fhir.core#4.1.0", DEF_TX, null, FhirPublication.R5);
+      else if (v.equals("3.0"))
+        ve = new ValidationEngine("hl7.fhir.core#3.0.1", DEF_TX, null, FhirPublication.STU3);
+      else if (v.equals("4.0"))
+        ve = new ValidationEngine("hl7.fhir.core#4.0.0", DEF_TX, null, FhirPublication.R4);
+      else if (v.equals("1.0"))
+        ve = new ValidationEngine("hl7.fhir.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2);
+      else
+        throw new Exception("unknown version "+v);
       ve.getContext().setCanRunWithoutTerminology(true);
       TestingUtilities.fcontext = ve.getContext();
+      veVersion = v;
     }
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
@@ -115,13 +130,13 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     val.setFetcher(this);
     if (content.has("questionnaire")) {
-      ve.getContext().cacheResource(new XmlParser().parse(new FileInputStream(TestUtilities.resourceNameToFile("validation-examples", content.get("questionnaire").getAsString()))));
+      ve.getContext().cacheResource(loadResource(TestUtilities.resourceNameToFile("validation-examples", content.get("questionnaire").getAsString()), v));
     }
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String p = je.getAsString();
         String filename = TestUtilities.resourceNameToFile("validation-examples", p);
-        StructureDefinition sd = loadProfile(filename, Constants.VERSION);
+        StructureDefinition sd = loadProfile(filename, v);
         val.getContext().cacheResource(sd);
       }
     }
@@ -135,7 +150,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       JsonObject profile = content.getAsJsonObject("profile");
       String filename = TestUtilities.resourceNameToFile("validation-examples", profile.get("source").getAsString());
-      String v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
+      v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, v);
       if (name.startsWith("Json."))
         val.validate(null, errorsProfile, new FileInputStream(path), FhirFormat.JSON, sd);
@@ -145,19 +160,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } 
   }
 
-  public StructureDefinition loadProfile(String filename, String v)
-      throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-    StructureDefinition sd = null;
-    if (Constants.VERSION.equals(v))
-      sd = (StructureDefinition) new XmlParser().parse(new FileInputStream(filename));
-    else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(v))
-      sd = (StructureDefinition) VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(new FileInputStream(filename)), false);
-    else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(v))
-      sd = (StructureDefinition) VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(new FileInputStream(filename)));
-    else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v))
-      sd = (StructureDefinition) new VersionConvertor_10_50(null).convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(new FileInputStream(filename)));
-    else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(v))
-      sd = (StructureDefinition) VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(filename)));
+  public StructureDefinition loadProfile(String filename, String v)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+    StructureDefinition sd = (StructureDefinition) loadResource(filename, v);
     if (!sd.hasSnapshot()) {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
@@ -165,6 +169,21 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 // (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
     return sd;
+  }
+  
+  public Resource loadResource(String filename, String v)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+    if (Constants.VERSION.equals(v) || "5.0".equals(v))
+      return new XmlParser().parse(new FileInputStream(filename));
+    else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(v) || "3.0".equals(v))
+      return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(new FileInputStream(filename)), false);
+    else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(v) || "1.4".equals(v))
+      return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(new FileInputStream(filename)));
+    else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v) || "1.0".equals(v))
+      return new VersionConvertor_10_50(null).convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(new FileInputStream(filename)));
+    else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(v) || "4.0".equals(v))
+      return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(filename)));
+    else
+      throw new FHIRException("unknown version "+v);
   }
 
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus) {
