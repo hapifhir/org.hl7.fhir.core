@@ -681,6 +681,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
       if (uri.startsWith("http:") || uri.startsWith("https:")) {
         String version = null;
+        if (uri.contains("|")) {
+          version = uri.substring(uri.lastIndexOf("|")+1);
+          uri = uri.substring(0, uri.lastIndexOf("|"));
+        }
         if (uri.contains("#"))
           uri = uri.substring(0, uri.indexOf("#"));
         if (class_ == Resource.class || class_ == null) {
