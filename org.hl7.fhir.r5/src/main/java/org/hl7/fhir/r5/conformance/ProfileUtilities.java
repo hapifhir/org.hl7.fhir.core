@@ -2626,7 +2626,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.addPiece(checkForNoChange(fallback.getShortElement(), gen.new Piece(null, gt(fallback.getShortElement()), null)));
         }
         if (url != null) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) 
+            c.addPiece(gen.new Piece("br"));
           String fullUrl = url.startsWith("#") ? baseURL+url : url;
           StructureDefinition ed = context.fetchResource(StructureDefinition.class, url);
           String ref = null;
@@ -2831,7 +2832,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
       } else {
         if (url != null) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) 
+            c.addPiece(gen.new Piece("br"));
           String fullUrl = url.startsWith("#") ? baseURL+url : url;
           StructureDefinition ed = context.fetchResource(StructureDefinition.class, url);
           String ref = null;
