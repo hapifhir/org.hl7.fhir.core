@@ -2954,14 +2954,18 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // ok, now we have a list of known items, grouped by linkId. We"ve made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<Element> mapItem = map.get(qItem.getLinkId());
-      if (mapItem != null){
-    	  rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot), "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
-        validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
-      } else { 
-    	//item is missing, is the question enabled?
-    	if (myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot)) {    	  
-    	  rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), !qItem.getRequired(), "No response found for required item "+qItem.getLinkId());
-    	}
+      validateQuestionannaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem);
+    }
+  }
+
+  public void validateQuestionannaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem) {
+    if (mapItem != null){
+      rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot), "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
+      validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
+    } else { 
+      //item is missing, is the question enabled?
+      if (myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot) && qItem.getRequired()) {    	  
+        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "No response found for required item (item id = '"+qItem.getLinkId()+"')");
       }
     }
   }
