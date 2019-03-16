@@ -36,7 +36,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
     
     public boolean checkConditionResults(List<EnableWhenResult> evaluationResults,
             QuestionnaireItemComponent questionnaireItem) {        
-        if (questionnaireItem.hasEnableBehavior() && questionnaireItem.getEnableBehavior() == EnableWhenBehavior.ANY){
+        if ((questionnaireItem.hasEnableBehavior() && questionnaireItem.getEnableBehavior() == EnableWhenBehavior.ANY) || evaluationResults.size() == 1){
             return evaluationResults.stream().anyMatch(EnableWhenResult::isEnabled);
         } if (questionnaireItem.hasEnableBehavior() && questionnaireItem.getEnableBehavior() == EnableWhenBehavior.ALL){
             return evaluationResults.stream().allMatch(EnableWhenResult::isEnabled);
