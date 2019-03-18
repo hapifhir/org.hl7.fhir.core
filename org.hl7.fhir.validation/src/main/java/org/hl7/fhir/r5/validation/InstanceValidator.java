@@ -2959,12 +2959,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   }
 
   public void validateQuestionannaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem) {
+    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot);
     if (mapItem != null){
-      rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot), "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
+      if (!enabled)
+        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), enabled, "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
       validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
     } else { 
       //item is missing, is the question enabled?
-      if (myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot) && qItem.getRequired()) {    	  
+      if (enabled && qItem.getRequired()) {    	  
         rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "No response found for required item (item id = '"+qItem.getLinkId()+"')");
       }
     }

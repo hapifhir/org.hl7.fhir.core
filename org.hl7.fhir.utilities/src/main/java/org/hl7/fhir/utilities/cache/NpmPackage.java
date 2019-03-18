@@ -292,5 +292,18 @@ import com.google.gson.JsonObject;
         return npm.get("canonical").getAsString();
     }
 
+    public InputStream loadResource(String type, String id) throws IOException {
+      String file = type+"-"+id+".json";
+      if (content.containsKey("package/"+file))
+        return new ByteArrayInputStream(content.get("package/"+file));
+      else {
+        File f = new File(Utilities.path(path, "package", file));
+        if (f.exists())
+          return new FileInputStream(f);
+        else
+          return null;
+      }
+    }
+
 
   }
