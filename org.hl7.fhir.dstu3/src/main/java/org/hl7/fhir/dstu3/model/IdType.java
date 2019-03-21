@@ -9,9 +9,9 @@ package org.hl7.fhir.dstu3.model;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -96,7 +96,7 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
  * <p>
  * Note that the 64 character
  * limit applies only to the ID portion ("123" in the examples above).
- * </p>     
+ * </p>
  * <p>
  * In most situations, you only need to populate the resource's ID (e.g.
  * <code>123</code>) in resources you are constructing and the encoder will
@@ -108,7 +108,7 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
  * Regex for ID: [a-z0-9\-\.]{1,36}
  * </p>
  */
-@DatatypeDef(name = "id", profileOf=StringType.class)
+@DatatypeDef(name = "id", profileOf = StringType.class)
 public final class IdType extends UriType implements IPrimitiveType<String>, IIdType {
   /**
    * This is the maximum length for the ID
@@ -152,7 +152,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * Create a new ID using a string. This String may contain a simple ID (e.g.
    * "1234") or it may contain a complete URL
    * (http://example.com/fhir/Patient/1234).
-   * 
+   *
    * <p>
    * <b>Description</b>: A whole number in the range 0 to 2^64-1 (optionally
    * represented in hex), a uuid, an oid, or any other combination of lowercase
@@ -168,11 +168,9 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Constructor
-   * 
-   * @param theResourceType
-   *          The resource type (e.g. "Patient")
-   * @param theIdPart
-   *          The ID (e.g. "123")
+   *
+   * @param theResourceType The resource type (e.g. "Patient")
+   * @param theIdPart       The ID (e.g. "123")
    */
   public IdType(String theResourceType, BigDecimal theIdPart) {
     this(theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
@@ -180,11 +178,9 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Constructor
-   * 
-   * @param theResourceType
-   *          The resource type (e.g. "Patient")
-   * @param theIdPart
-   *          The ID (e.g. "123")
+   *
+   * @param theResourceType The resource type (e.g. "Patient")
+   * @param theIdPart       The ID (e.g. "123")
    */
   public IdType(String theResourceType, Long theIdPart) {
     this(theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
@@ -193,10 +189,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Constructor
    *
-   * @param theResourceType
-   *          The resource type (e.g. "Patient")
-   * @param theId
-   *          The ID (e.g. "123")
+   * @param theResourceType The resource type (e.g. "Patient")
+   * @param theId           The ID (e.g. "123")
    */
   public IdType(String theResourceType, String theId) {
     this(theResourceType, theId, null);
@@ -204,13 +198,10 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Constructor
-   * 
-   * @param theResourceType
-   *          The resource type (e.g. "Patient")
-   * @param theId
-   *          The ID (e.g. "123")
-   * @param theVersionId
-   *          The version ID ("e.g. "456")
+   *
+   * @param theResourceType The resource type (e.g. "Patient")
+   * @param theId           The ID (e.g. "123")
+   * @param theVersionId    The version ID ("e.g. "456")
    */
   public IdType(String theResourceType, String theId, String theVersionId) {
     this(null, theResourceType, theId, theVersionId);
@@ -218,15 +209,11 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Constructor
-   * 
-   * @param theBaseUrl
-   *          The server base URL (e.g. "http://example.com/fhir")
-   * @param theResourceType
-   *          The resource type (e.g. "Patient")
-   * @param theId
-   *          The ID (e.g. "123")
-   * @param theVersionId
-   *          The version ID ("e.g. "456")
+   *
+   * @param theBaseUrl      The server base URL (e.g. "http://example.com/fhir")
+   * @param theResourceType The resource type (e.g. "Patient")
+   * @param theId           The ID (e.g. "123")
+   * @param theVersionId    The version ID ("e.g. "456")
    */
   public IdType(String theBaseUrl, String theResourceType, String theId, String theVersionId) {
     myBaseUrl = theBaseUrl;
@@ -256,7 +243,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * @deprecated Use {@link #getIdPartAsBigDecimal()} instead (this method was
-   *             deprocated because its name is ambiguous)
+   * deprocated because its name is ambiguous)
    */
   @Deprecated
   public BigDecimal asBigDecimal() {
@@ -273,7 +260,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     if (!(theArg0 instanceof IdType)) {
       return false;
     }
-    return StringUtils.equals(getValueAsString(), ((IdType)theArg0).getValueAsString());
+    return StringUtils.equals(getValueAsString(), ((IdType) theArg0).getValueAsString());
   }
 
   /**
@@ -289,8 +276,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
       return isEmpty();
     }
     return ObjectUtils.equals(getResourceType(), theId.getResourceType())
-        && ObjectUtils.equals(getIdPart(), theId.getIdPart())
-        && ObjectUtils.equals(getVersionIdPart(), theId.getVersionIdPart());
+      && ObjectUtils.equals(getIdPart(), theId.getIdPart())
+      && ObjectUtils.equals(getVersionIdPart(), theId.getVersionIdPart());
   }
 
   /**
@@ -320,9 +307,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Returns the unqualified portion of this ID as a big decimal, or
    * <code>null</code> if the value is null
-   * 
-   * @throws NumberFormatException
-   *           If the value is not a valid BigDecimal
+   *
+   * @throws NumberFormatException If the value is not a valid BigDecimal
    */
   public BigDecimal getIdPartAsBigDecimal() {
     String val = getIdPart();
@@ -335,9 +321,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Returns the unqualified portion of this ID as a {@link Long}, or
    * <code>null</code> if the value is null
-   * 
-   * @throws NumberFormatException
-   *           If the value is not a valid Long
+   *
+   * @throws NumberFormatException If the value is not a valid Long
    */
   @Override
   public Long getIdPartAsLong() {
@@ -357,7 +342,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * Returns the value of this ID. Note that this value may be a fully qualified
    * URL, a relative/partial URL, or a simple ID. Use {@link #getIdPart()} to
    * get just the ID portion.
-   * 
+   *
    * @see #getIdPart()
    */
   @Override
@@ -418,7 +403,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Returns true if this ID has a base url
-   * 
+   *
    * @see #getBaseUrl()
    */
   public boolean hasBaseUrl() {
@@ -492,10 +477,10 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     return true;
   }
 
-	/**
+  /**
    * Returns <code>true</code> if the unqualified ID is a valid {@link Long}
    * value (in other words, it consists only of digits)
-	 */
+   */
   @Override
   public boolean isIdPartValidLong() {
     return isValidLong(getIdPart());
@@ -521,7 +506,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Set the value
-   * 
+   *
    * <p>
    * <b>Description</b>: A whole number in the range 0 to 2^64-1 (optionally
    * represented in hex), a uuid, an oid, or any other combination of lowercase
@@ -551,8 +536,9 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
       myResourceType = null;
       myHaveComponentParts = true;
     } else if (theValue.startsWith("urn:")) {
+      int idIndex = theValue.lastIndexOf(':');
       myBaseUrl = null;
-      myUnqualifiedId = theValue;
+      myUnqualifiedId = theValue.substring(idIndex + 1);
       myUnqualifiedVersionId = null;
       myResourceType = null;
       myHaveComponentParts = true;
@@ -592,7 +578,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Set the value
-   * 
+   *
    * <p>
    * <b>Description</b>: A whole number in the range 0 to 2^64-1 (optionally
    * represented in hex), a uuid, an oid, or any other combination of lowercase
@@ -621,7 +607,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IdType toUnqualified() {
     if (isLocal() || isUrn()) {
-       return new IdType(getValueAsString());
+      return new IdType(getValueAsString());
     }
     return new IdType(getResourceType(), getIdPart(), getVersionIdPart());
   }
@@ -629,7 +615,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IdType toUnqualifiedVersionless() {
     if (isLocal() || isUrn()) {
-       return new IdType(getValueAsString());
+      return new IdType(getValueAsString());
     }
     return new IdType(getResourceType(), getIdPart());
   }
@@ -637,7 +623,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IdType toVersionless() {
     if (isLocal() || isUrn()) {
-       return new IdType(getValueAsString());
+      return new IdType(getValueAsString());
     }
     return new IdType(getBaseUrl(), getResourceType(), getIdPart(), null);
   }
@@ -645,7 +631,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IdType withResourceType(String theResourceName) {
     if (isLocal() || isUrn()) {
-       return new IdType(getValueAsString());
+      return new IdType(getValueAsString());
     }
     return new IdType(theResourceName, getIdPart(), getVersionIdPart());
   }
@@ -656,18 +642,16 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * those respective parts). Essentially, because IdType can contain either a
    * complete URL or a partial one (or even jut a simple ID), this method may be
    * used to translate into a complete URL.
-   * 
-   * @param theServerBase
-   *          The server base (e.g. "http://example.com/fhir")
-   * @param theResourceType
-   *          The resource name (e.g. "Patient")
+   *
+   * @param theServerBase   The server base (e.g. "http://example.com/fhir")
+   * @param theResourceType The resource name (e.g. "Patient")
    * @return A fully qualified URL for this ID (e.g.
-   *         "http://example.com/fhir/Patient/1")
+   * "http://example.com/fhir/Patient/1")
    */
   @Override
   public IdType withServerBase(String theServerBase, String theResourceType) {
     if (isLocal() || isUrn()) {
-       return new IdType(getValueAsString());
+      return new IdType(getValueAsString());
     }
     return new IdType(theServerBase, theResourceType, getIdPart(), getVersionIdPart());
   }
@@ -675,18 +659,17 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Creates a new instance of this ID which is identical, but refers to the
    * specific version of this resource ID noted by theVersion.
-   * 
-   * @param theVersion
-   *          The actual version string, e.g. "1"
+   *
+   * @param theVersion The actual version string, e.g. "1"
    * @return A new instance of IdType which is identical, but refers to the
-   *         specific version of this resource ID noted by theVersion.
+   * specific version of this resource ID noted by theVersion.
    */
   @Override
   public IdType withVersion(String theVersion) {
     Validate.notBlank(theVersion, "Version may not be null or empty");
 
     if (isLocal() || isUrn()) {
-       return new IdType(getValueAsString());
+      return new IdType(getValueAsString());
     }
 
     String existingValue = getValue();
@@ -759,28 +742,28 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     return theIdPart.toString();
   }
 
-	public String fhirType() {
-		return "id";
-	}
-	
-	public IIdType setParts(String theBaseUrl, String theResourceType, String theIdPart, String theVersionIdPart) {
-		if (isNotBlank(theVersionIdPart)) {
-			Validate.notBlank(theResourceType, "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
-			Validate.notBlank(theIdPart, "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
-		}
-		if (isNotBlank(theBaseUrl) && isNotBlank(theIdPart)) {
-			Validate.notBlank(theResourceType, "If theBaseUrl is populated and theIdPart is populated, theResourceType must be populated");
-		}
-		
-		setValue(null);
-		
-		myBaseUrl = theBaseUrl;
-		myResourceType = theResourceType;
-		myUnqualifiedId = theIdPart;
-		myUnqualifiedVersionId = StringUtils.defaultIfBlank(theVersionIdPart, null);
-		myHaveComponentParts = true;
-		
-		return this;
-	}
-	
+  public String fhirType() {
+    return "id";
+  }
+
+  public IIdType setParts(String theBaseUrl, String theResourceType, String theIdPart, String theVersionIdPart) {
+    if (isNotBlank(theVersionIdPart)) {
+      Validate.notBlank(theResourceType, "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
+      Validate.notBlank(theIdPart, "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
+    }
+    if (isNotBlank(theBaseUrl) && isNotBlank(theIdPart)) {
+      Validate.notBlank(theResourceType, "If theBaseUrl is populated and theIdPart is populated, theResourceType must be populated");
+    }
+
+    setValue(null);
+
+    myBaseUrl = theBaseUrl;
+    myResourceType = theResourceType;
+    myUnqualifiedId = theIdPart;
+    myUnqualifiedVersionId = StringUtils.defaultIfBlank(theVersionIdPart, null);
+    myHaveComponentParts = true;
+
+    return this;
+  }
+
 }
