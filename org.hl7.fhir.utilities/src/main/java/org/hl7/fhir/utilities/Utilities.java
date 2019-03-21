@@ -1161,5 +1161,9 @@ public class Utilities {
     return keys.toString();
   }
 
+  public static boolean isValidId(String id) {
+    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
+  }
+
 
 }

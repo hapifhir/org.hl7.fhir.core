@@ -63,6 +63,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.LinkedTransferQueue;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -150,6 +151,7 @@ import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.RelatedArtifact;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.Signature;
@@ -174,6 +176,9 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.r5.utils.NarrativeGenerator.ILiquidTemplateProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -187,6 +192,12 @@ import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
 
 public class NarrativeGenerator implements INarrativeGenerator {
+
+  public interface ILiquidTemplateProvider {
+
+    String findTemplate(ResourceContext rcontext, DomainResource r);
+
+  }
 
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
@@ -271,15 +282,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
       }
       return null;
     }
-
   }
 
   private static final String ABSTRACT_CODE_HINT = "This code is not selectable ('Abstract')";
 
   public interface IReferenceResolver {
-
     ResourceWithReference resolve(String url);
-
   }
 
   private Bundle bundle;
@@ -290,6 +298,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private ProfileKnowledgeProvider pkp;
   private MarkDownProcessor markdown = new MarkDownProcessor(Dialect.COMMON_MARK);
   private ITypeParser parser; // when generating for an element model
+  private ILiquidTemplateProvider templateProvider;
+  private IEvaluationContext services;
   
   public boolean generate(Bundle b, boolean evenIfAlreadyHasNarrative, Set<String> outputTracker) throws EOperationOutcome, FHIRException, IOException {
     boolean res = false;
@@ -312,6 +322,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (rcontext == null)
       rcontext = new ResourceContext(null, r);
     
+    if (templateProvider != null) {
+      String liquidTemplate = templateProvider.findTemplate(rcontext, r);
+      if (liquidTemplate != null) {
+        return generateByLiquid(rcontext, r, liquidTemplate, outputTracker);
+      }
+    }
     if (r instanceof ConceptMap) {
       return generate(rcontext, (ConceptMap) r); // Maintainer = Grahame
     } else if (r instanceof ValueSet) {
@@ -348,6 +364,24 @@ public class NarrativeGenerator implements INarrativeGenerator {
       else
         return false;
     }
+  }
+
+  private boolean generateByLiquid(ResourceContext rcontext, DomainResource r, String liquidTemplate, Set<String> outputTracker) {
+
+    LiquidEngine engine = new LiquidEngine(context, services);
+    XhtmlNode x;
+    try {
+      LiquidDocument doc = engine.parse(liquidTemplate, "template");
+      String html = engine.evaluate(doc, r, rcontext);
+      x = new XhtmlParser().parseFragment(html);
+      if (!x.getName().equals("div"))
+        throw new FHIRException("Error in template: Root element is not 'div'");
+    } catch (FHIRException | IOException e) {
+      x = new XhtmlNode(NodeType.Element, "div");
+      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+    }
+    inject(r, x,  NarrativeStatus.GENERATED);
+    return true;
   }
 
   private interface PropertyWrapper {
@@ -973,6 +1007,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
     this.basePath = basePath;
     init();
   }
+  
+  public NarrativeGenerator setLiquidServices(ILiquidTemplateProvider templateProvider, IEvaluationContext services) {
+    this.templateProvider = templateProvider;
+    this.services = services;
+    return this;
+  }
 
   public Base parseType(String xml, String type) throws IOException, FHIRException {
     if (parser != null)
@@ -1561,6 +1601,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return false;
     } else if (e instanceof UsageContext) {
       return false;
+    } else if (e instanceof RelatedArtifact) {
+      return false;
     } else if (e instanceof ElementDefinition) {
       return false;
     } else if (!(e instanceof Attachment))
@@ -1936,6 +1978,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
     StructureDefinition sd = context.fetchTypeDefinition(path.substring(0, path.length()-4));
     if (sd == null)
       return false;
+    if (Utilities.existsInList(path.substring(0, path.length()-4), "CapabilityStatement", "StructureDefinition", "ImplementationGuide", "SearchParameter", "MessageDefinition", "OperationDefinition", "CompartmentDefinition", "StructureMap", "GraphDefinition", 
+        "ExampleScenario", "CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", "TerminologyCapabilities"))
+      return true;
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
 

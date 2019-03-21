@@ -36,7 +36,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
     
     public boolean checkConditionResults(List<EnableWhenResult> evaluationResults,
             QuestionnaireItemComponent questionnaireItem) {        
-        if (questionnaireItem.hasEnableBehavior() && questionnaireItem.getEnableBehavior() == EnableWhenBehavior.ANY){
+        if ((questionnaireItem.hasEnableBehavior() && questionnaireItem.getEnableBehavior() == EnableWhenBehavior.ANY) || evaluationResults.size() == 1){
             return evaluationResults.stream().anyMatch(EnableWhenResult::isEnabled);
         } if (questionnaireItem.hasEnableBehavior() && questionnaireItem.getEnableBehavior() == EnableWhenBehavior.ALL){
             return evaluationResults.stream().allMatch(EnableWhenResult::isEnabled);
@@ -145,7 +145,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
 		    return result > 0;
 		}
 		
-        throw new UnprocessableEntityException("Bad operator for PrimitiveType comparison");
+        throw new UnprocessableEntityException("Bad operator for PrimitiveType comparison: "+questionnaireItemOperator.toCode());
 
 	}
 
@@ -198,7 +198,7 @@ public class DefaultEnableWhenEvaluator implements IEnableWhenEvaluator {
         return true;
     }
     private List<Element> findSubItems(Element item) {
-        List<Element> results = item.getChildren(LINKID_ELEMENT)
+        List<Element> results = item.getChildren(ITEM_ELEMENT)
                 .stream()
                 .flatMap(i -> findSubItems(i).stream())
                 .collect(Collectors.toList());

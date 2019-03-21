@@ -436,6 +436,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
+  public BindingResolution resolveBinding(StructureDefinition profile, String url, String path) {
+    return null;
+  }
+
+  @Override
   public String getLinkForProfile(StructureDefinition profile, String url) {
     return null;
   }

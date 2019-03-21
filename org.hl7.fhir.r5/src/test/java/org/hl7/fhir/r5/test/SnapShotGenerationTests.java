@@ -91,6 +91,14 @@ public class SnapShotGenerationTests {
     }
 
     @Override
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+      BindingResolution br = new BindingResolution();
+      br.url = path+"/something.html";
+      br.display = "something";
+      return br;
+    }
+
+    @Override
     public String getLinkForProfile(StructureDefinition profile, String url) {
       StructureDefinition sd = TestingUtilities.context().fetchResource(StructureDefinition.class, url);
       if (sd == null)

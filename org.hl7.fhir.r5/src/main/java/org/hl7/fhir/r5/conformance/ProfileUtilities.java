@@ -246,6 +246,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     boolean hasLinkFor(String typeSimple);
     String getLinkFor(String corePath, String typeSimple);
     BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException;
+    BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException;
     String getLinkForProfile(StructureDefinition profile, String url);
     boolean prependLinks();
   }
@@ -306,13 +307,18 @@ public class ProfileUtilities extends TranslatingUtilities {
    * @return A List containing the element children (all of them are Elements)
    */
   public static List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id) {
+    return getChildList(profile, path, id, false);
+  }
+  
+  public static List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id, boolean diff) {
     List<ElementDefinition> res = new ArrayList<ElementDefinition>();
 
     boolean capturing = id==null;
     if (id==null && !path.contains("."))
       capturing = true;
-    
-    for (ElementDefinition e : profile.getSnapshot().getElement()) {
+  
+    List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();
+    for (ElementDefinition e : list) {
       if (e == null)
         throw new Error("element = null: "+profile.getUrl());
       if (e.getId() == null)
@@ -331,9 +337,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   
         if (!Utilities.noString(e.getContentReference()) && path.startsWith(p)) {
           if (path.length() > p.length())
-            return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null);
+            return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
           else
-            return getChildList(profile, e.getContentReference(), null);
+            return getChildList(profile, e.getContentReference(), null, diff);
           
         } else if (p.startsWith(path+".") && !p.equals(path)) {
           String tail = p.substring(path.length()+1);
@@ -347,9 +353,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
+  public static List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element, boolean diff) {
+    return getChildList(structure, element.getPath(), element.getId(), diff);
+  }
 
   public static List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element) {
-    return getChildList(structure, element.getPath(), element.getId());
+    return getChildList(structure, element.getPath(), element.getId(), false);
 	}
 
   public void updateMaps(StructureDefinition base, StructureDefinition derived) throws DefinitionException {
@@ -399,55 +408,60 @@ public class ProfileUtilities extends TranslatingUtilities {
 
     derived.setSnapshot(new StructureDefinitionSnapshotComponent());
 
-    
-    // so we have two lists - the base list, and the differential list
-    // the differential list is only allowed to include things that are in the base list, but
-    // is allowed to include them multiple times - thereby slicing them
+    try {
+      // so we have two lists - the base list, and the differential list
+      // the differential list is only allowed to include things that are in the base list, but
+      // is allowed to include them multiple times - thereby slicing them
 
-    // our approach is to walk through the base list, and see whether the differential
-    // says anything about them.
-    int baseCursor = 0;
-    int diffCursor = 0; // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
+      // our approach is to walk through the base list, and see whether the differential
+      // says anything about them.
+      int baseCursor = 0;
+      int diffCursor = 0; // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
 
-    if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty())
-      throw new Error("type on first differential element!");
+      if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty())
+        throw new Error("type on first differential element!");
 
-    for (ElementDefinition e : derived.getDifferential().getElement()) 
-      e.clearUserData(GENERATED_IN_SNAPSHOT);
-    
-    // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
+      for (ElementDefinition e : derived.getDifferential().getElement()) 
+        e.clearUserData(GENERATED_IN_SNAPSHOT);
 
-    processPaths("", derived.getSnapshot(), base.getSnapshot(), derived.getDifferential(), baseCursor, diffCursor, base.getSnapshot().getElement().size()-1, 
-        derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.getId(), null, null, false, base.getUrl(), null, false, new ArrayList<ElementRedirection>());
-    if (!derived.getSnapshot().getElementFirstRep().getType().isEmpty())
-      throw new Error("type on first snapshot element for "+derived.getSnapshot().getElementFirstRep().getPath()+" in "+derived.getUrl()+" from "+base.getUrl());
-    updateMaps(base, derived);
-    setIds(derived, false);
-    
-    if (DEBUG) {
-      System.out.println("Differential: ");
-      for (ElementDefinition ed : derived.getDifferential().getElement())
-        System.out.println("  "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  id = "+ed.getId()+" "+constraintSummary(ed));
-      System.out.println("Snapshot: ");
-      for (ElementDefinition ed : derived.getSnapshot().getElement())
-        System.out.println("  "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  id = "+ed.getId()+" "+constraintSummary(ed));
-    }
-    //Check that all differential elements have a corresponding snapshot element
-    for (ElementDefinition e : derived.getDifferential().getElement()) {
-      if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
-        System.out.println("Error in snapshot generation: Differential for "+derived.getUrl()+" with id: " + e.getId()+" has an element that is not marked with a snapshot match");
-        if (exception)
-          throw new DefinitionException("Snapshot for "+derived.getUrl()+" does not contain an element that matches an existing differential element that has id: " + e.getId());
-        else
-          messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, "Snapshot for "+derived.getUrl()+" does not contain an element that matches an existing differential element that has id: " + e.getId(), ValidationMessage.IssueSeverity.ERROR));
+      // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
+
+      processPaths("", derived.getSnapshot(), base.getSnapshot(), derived.getDifferential(), baseCursor, diffCursor, base.getSnapshot().getElement().size()-1, 
+          derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.getId(), null, null, false, base.getUrl(), null, false, new ArrayList<ElementRedirection>());
+      if (!derived.getSnapshot().getElementFirstRep().getType().isEmpty())
+        throw new Error("type on first snapshot element for "+derived.getSnapshot().getElementFirstRep().getPath()+" in "+derived.getUrl()+" from "+base.getUrl());
+      updateMaps(base, derived);
+      setIds(derived, false);
+
+      if (DEBUG) {
+        System.out.println("Differential: ");
+        for (ElementDefinition ed : derived.getDifferential().getElement())
+          System.out.println("  "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  id = "+ed.getId()+" "+constraintSummary(ed));
+        System.out.println("Snapshot: ");
+        for (ElementDefinition ed : derived.getSnapshot().getElement())
+          System.out.println("  "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  id = "+ed.getId()+" "+constraintSummary(ed));
       }
-    }
-    if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-      for (ElementDefinition ed : derived.getSnapshot().getElement()) {
-        if (!ed.hasBase()) {
-          ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
+      //Check that all differential elements have a corresponding snapshot element
+      for (ElementDefinition e : derived.getDifferential().getElement()) {
+        if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
+          System.out.println("Error in snapshot generation: Differential for "+derived.getUrl()+" with id: " + e.getId()+" has an element that is not marked with a snapshot match");
+          if (exception)
+            throw new DefinitionException("Snapshot for "+derived.getUrl()+" does not contain an element that matches an existing differential element that has id: " + e.getId());
+          else
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, "Snapshot for "+derived.getUrl()+" does not contain an element that matches an existing differential element that has id: " + e.getId(), ValidationMessage.IssueSeverity.ERROR));
         }
       }
+      if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+          if (!ed.hasBase()) {
+            ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
+          }
+        }
+      }
+    } catch (Exception e) {
+      // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
+      derived.setSnapshot(null);
+      throw e;
     }
   }
 
@@ -2617,7 +2631,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.addPiece(checkForNoChange(fallback.getShortElement(), gen.new Piece(null, gt(fallback.getShortElement()), null)));
         }
         if (url != null) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) 
+            c.addPiece(gen.new Piece("br"));
           String fullUrl = url.startsWith("#") ? baseURL+url : url;
           StructureDefinition ed = context.fetchResource(StructureDefinition.class, url);
           String ref = null;
@@ -2675,8 +2690,21 @@ public class ProfileUtilities extends TranslatingUtilities {
             c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, " (", null)));
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));              
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));
+              
               c.getPieces().add(gen.new Piece(null, ")", null));
+            }
+            if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
+              br = pkp.resolveBinding(profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), definition.getPath());
+              c.addPiece(gen.new Piece("br"));
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"extension-elementdefinition-maxvalueset.html", translate("sd.table", "Max Binding")+": ", "Max Value Set Extension").addStyle("font-weight:bold")));             
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
+            }
+            if (binding.hasExtension(ToolingExtensions.EXT_MIN_VALUESET)) {
+              br = pkp.resolveBinding(profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MIN_VALUESET), definition.getPath());
+              c.addPiece(gen.new Piece("br"));
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"extension-elementdefinition-minvalueset.html", translate("sd.table", "Mon Binding")+": ", "Min Value Set Extension").addStyle("font-weight:bold")));             
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
             }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
@@ -2809,7 +2837,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
       } else {
         if (url != null) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) 
+            c.addPiece(gen.new Piece("br"));
           String fullUrl = url.startsWith("#") ? baseURL+url : url;
           StructureDefinition ed = context.fetchResource(StructureDefinition.class, url);
           String ref = null;

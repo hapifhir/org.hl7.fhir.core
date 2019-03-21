@@ -132,6 +132,14 @@
       "patient-lang3.json" : {
         "errorCount": 0,
         "warningCount": 1
+      }, 
+      "patient-au-5.json" : {
+        "errorCount": 0,
+        "warningCount": 0,
+        "profile" : {
+          "source" : "profile-patient-au.xml", 
+          "errorCount": 0
+        }
       }
 		},
 		"Xml": {
@@ -323,7 +331,7 @@
         }
       },
       "uk-nhs-pat.xml" : {
-        "version" : "1.0.2",
+        "version" : "1.0",
         "use-test" : false,
         "allowed-extension-domain" : "http://hl7.org/fhir/ccda/StructureDefinition/",
         "errorCount": 0,
@@ -443,6 +451,15 @@
           "source" : "slice-profile-and-local-profile.xml", 
           "errorCount": 0
         }
+      }, 
+      "questionnaireResponse-enableWhen-test.xml" : {
+        "questionnaire" : "questionnaire-enableWhen-test.xml",
+        "errorCount": 0
+      }, 
+      "questionnaireResponse-enableWhen-test3.xml" : {
+        "version" : "3.0",
+        "questionnaire" : "questionnaire-enableWhen-test3.xml",
+        "errorCount": 0
       }
 		}
 	}

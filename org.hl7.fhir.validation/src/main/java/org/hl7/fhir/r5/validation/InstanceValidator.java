@@ -26,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1483,7 +1484,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("dateTime")) {
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' does not have a valid year");
+      warning(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is outside the range of reasonable years - check for data entry error");
       rule(errors, IssueType.INVALID, e.line(), e.col(), path,
           e.primitiveValue()
           .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"),
@@ -1508,7 +1509,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("date")) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' does not have a valid year");
+      warning(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is outside the range of reasonable years - check for data entry error");
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
             "Not a valid date");
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength()==0 ||  e.primitiveValue().length() <= context.getMaxLength(), "value is longer than permitted maximum value of " + context.getMaxLength());
@@ -1579,7 +1580,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, IssueType.INVALID, e.line(), e.col(), path,
           e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"),
           "The instant '" + e.primitiveValue() + "' is not valid (by regex)");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' does not have a valid year");
+      warning(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is outside the range of reasonable years - check for data entry error");
       try {
         InstantType dt = new InstantType(e.primitiveValue());
       } catch (Exception ex) {
@@ -2536,9 +2537,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       // GG: this approach is flawed because it treats discriminators individually rather than collectively
       StringBuilder expression = new StringBuilder("true");
+      boolean anyFound = false;
+      Set<String> discriminators = new HashSet<>();
       for (ElementDefinitionSlicingDiscriminatorComponent s : slicer.getSlicing().getDiscriminator()) {
         String discriminator = s.getPath();
-
+        discriminators.add(discriminator);
+        
         List<ElementDefinition> criteriaElements = getCriteriaForDiscriminator(path, ed, discriminator, profile, s.getType() == DiscriminatorType.PROFILE);
         boolean found = false;
         for (ElementDefinition criteriaElement : criteriaElements) {
@@ -2591,8 +2595,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (found)
             break;
         }
-        if (!found)
-          throw new DefinitionException("Could not match discriminator (" + discriminator + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions");
+        if (found)
+          anyFound = true;
+      }
+      if (!anyFound) {
+        if (slicer.getSlicing().getDiscriminator().size() > 1)
+          throw new DefinitionException("Could not match any discriminators (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions for any of the discriminators");
+        else 
+          throw new DefinitionException("Could not match discriminator (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions");
       }
 
       try {
@@ -2944,14 +2954,20 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // ok, now we have a list of known items, grouped by linkId. We"ve made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<Element> mapItem = map.get(qItem.getLinkId());
-      if (mapItem != null){
-    	  rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot), "Item has answer, even though it is not enabled "+qItem.getLinkId());
-        validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
-      } else { 
-    	//item is missing, is the question enabled?
-    	if (myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot)) {    	  
-    	  rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), !qItem.getRequired(), "No response found for required item "+qItem.getLinkId());
-    	}
+      validateQuestionannaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem);
+    }
+  }
+
+  public void validateQuestionannaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem) {
+    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot);
+    if (mapItem != null){
+      if (!enabled)
+        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), enabled, "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
+      validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
+    } else { 
+      //item is missing, is the question enabled?
+      if (enabled && qItem.getRequired()) {    	  
+        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "No response found for required item (item id = '"+qItem.getLinkId()+"')");
       }
     }
   }
@@ -4127,10 +4143,14 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
     }
     try {
       int i = Integer.parseInt(v.substring(0, Math.min(4, v.length())));
-      return i >= 1800 && i <= 2100;
+      return i >= 1800 && i <= thisYear() + 80;
     } catch (NumberFormatException e) {
       return false;
     }
+  }
+
+  private int thisYear() {
+    return Calendar.getInstance().get(Calendar.YEAR);
   }
 
   public class ChildIterator {
@@ -4398,6 +4418,10 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
     if ("".equals(expr))
       return "";
     return expr;
+  }
+
+  public IEvaluationContext getExternalHostServices() {
+    return externalHostServices;
   }
 
 

@@ -381,7 +381,9 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       ValueSet result = txClient.expandValueset(vs, p, params);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN);
+      if (txLog != null)
+        res.setTxLink(txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -679,6 +681,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
       if (uri.startsWith("http:") || uri.startsWith("https:")) {
         String version = null;
+        if (uri.contains("|")) {
+          version = uri.substring(uri.lastIndexOf("|")+1);
+          uri = uri.substring(0, uri.lastIndexOf("|"));
+        }
         if (uri.contains("#"))
           uri = uri.substring(0, uri.indexOf("#"));
         if (class_ == Resource.class || class_ == null) {
@@ -710,8 +716,14 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         } else if (class_ == StructureMap.class) {
           return (T) transforms.get(uri);
         } else if (class_ == ValueSet.class) {
-          return (T) valueSets.get(uri);
+          if (valueSets.containsKey(uri+"|"+version))
+            return (T) valueSets.get(uri+"|"+version);
+          else
+            return (T) valueSets.get(uri);
         } else if (class_ == CodeSystem.class) {
+          if (codeSystems.containsKey(uri+"|"+version))
+            return (T) codeSystems.get(uri+"|"+version);
+          else
           return (T) codeSystems.get(uri);
         } else if (class_ == ConceptMap.class) {
           return (T) maps.get(uri);
