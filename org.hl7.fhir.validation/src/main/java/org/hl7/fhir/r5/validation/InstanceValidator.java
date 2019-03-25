@@ -2150,7 +2150,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    warning(errors, IssueType.REQUIRED, -1, -1, path, match!=null || !targetUrl.startsWith("urn"), "URN reference is not locally contained within the bundle " + ref);
+    if (match == null)
+      warning(errors, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), "URN reference is not locally contained within the bundle " + ref);
     return match;
   }
 
@@ -2972,12 +2973,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     }
   }
 
-private String misplacedItemError(QuestionnaireItemComponent qItem) {
-	return qItem.hasLinkId() ? 
-			String.format("Structural Error: item with linkid %s is in the wrong place", qItem.getLinkId())
-			:
-			"Structural Error: item is in the wrong place";
-}
+  private String misplacedItemError(QuestionnaireItemComponent qItem) {
+  	return qItem.hasLinkId() ? String.format("Structural Error: item with linkid %s is in the wrong place", qItem.getLinkId()) : "Structural Error: item is in the wrong place";
+  }
 
   private void validateQuestionnaireResponseItemQuantity( List<ValidationMessage> errors, Element answer, NodeStack stack)	{
 

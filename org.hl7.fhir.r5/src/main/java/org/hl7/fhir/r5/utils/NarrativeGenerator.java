@@ -1392,9 +1392,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return;
     else if (e instanceof InstantType)
       x.addText(((InstantType) e).toHumanDisplay());
-    else if (e instanceof DateTimeType)
-      x.addText(((DateTimeType) e).toHumanDisplay());
-    else if (e instanceof Base64BinaryType)
+    else if (e instanceof DateTimeType) {
+      if (e.hasPrimitiveValue())
+        x.addText(((DateTimeType) e).toHumanDisplay());
+    } else if (e instanceof Base64BinaryType)
       x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
     else if (e instanceof org.hl7.fhir.r5.model.DateType)
       x.addText(((org.hl7.fhir.r5.model.DateType) e).toHumanDisplay());
