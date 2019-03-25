@@ -127,6 +127,7 @@
 		<module>org.hl7.fhir.convertors</module>
 		<module>org.hl7.fhir.validation</module>
 		<module>org.hl7.fhir.validation.cli</module>
+		<module>org.hl7.fhir.igtools</module>
 	</modules>
 
 	<build>
