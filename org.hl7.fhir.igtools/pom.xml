@@ -58,6 +58,10 @@
             <artifactId>ST4</artifactId>
             <version>4.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
     </dependencies>
 
