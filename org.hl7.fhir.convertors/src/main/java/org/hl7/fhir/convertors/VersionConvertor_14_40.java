@@ -1505,8 +1505,14 @@ public class VersionConvertor_14_40 {
       tgt.setCode(src.getCode());
     }
     if (tgt.hasTarget()) {
-      for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile())
-        tgt.addTargetProfile(u.getValue());
+      for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile()) {
+        // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
+        String baseName = u.getValue().toLowerCase();
+        if (baseName.contains("reference") && !baseName.contains("documentreference"))
+          tgt.addProfile(u.getValue());          
+        else
+          tgt.addTargetProfile(u.getValue());
+      }
     } else {
       for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile())
         tgt.addProfile(u.getValue());
@@ -1530,6 +1536,14 @@ public class VersionConvertor_14_40 {
     if (src.hasTarget()) {
       for (org.hl7.fhir.r4.model.UriType u : src.getTargetProfile()) {
         tgt.addProfile(u.getValue());
+        String baseName = u.getValue().toLowerCase();
+        if (baseName.contains("reference") && !baseName.contains("documentreference"))
+          throw new Error("2016May Target profile contains the word 'reference':" + u);
+      }
+      for (org.hl7.fhir.r4.model.UriType u : src.getProfile()) {
+        tgt.addProfile(u.getValue());
+        if (!u.toString().toLowerCase().contains("reference"))
+          throw new Error("2016May profile doesn't contain the word 'reference':" + u);
       }
     } else {
       for (org.hl7.fhir.r4.model.UriType u : src.getProfile()) {
