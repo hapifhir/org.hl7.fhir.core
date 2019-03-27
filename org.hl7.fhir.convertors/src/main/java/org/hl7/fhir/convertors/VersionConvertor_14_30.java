@@ -1422,8 +1422,14 @@ public class VersionConvertor_14_30 {
     copyElement(src, tgt);
     tgt.setCode(src.getCode());
     for (org.hl7.fhir.dstu2016may.model.UriType t : src.getProfile()) {
-      if (src.hasTarget())
-        tgt.setTargetProfile(t.getValueAsString());
+      if (src.hasTarget()) {
+        // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
+        String baseName = t.getValue().toLowerCase();
+        if (baseName.contains("reference") && !baseName.contains("documentreference"))
+          tgt.setProfile(t.getValueAsString());
+        else
+          tgt.setTargetProfile(t.getValueAsString());
+      }
       else
         tgt.setProfile(t.getValueAsString());
     }
@@ -1439,9 +1445,19 @@ public class VersionConvertor_14_30 {
     org.hl7.fhir.dstu2016may.model.ElementDefinition.TypeRefComponent tgt = new org.hl7.fhir.dstu2016may.model.ElementDefinition.TypeRefComponent();
     copyElement(src, tgt);
     tgt.setCode(src.getCode());
-    if (src.hasTarget())
-      tgt.addProfile(src.getTargetProfile());
-    else
+    if (src.hasTarget()) {
+      if (src.hasTargetProfile()) {
+        tgt.addProfile(src.getTargetProfile());
+        String baseName = src.getTargetProfile().toLowerCase();
+        if (baseName.contains("reference") && !baseName.contains("documentreference"))
+          throw new Error("2016May Target profile contains the word 'reference':" + src.getTargetProfile());
+      }
+      if (src.hasProfile()) {
+        tgt.addProfile(src.getProfile());
+        if (!src.getProfile().toLowerCase().contains("reference"))
+          throw new Error("2016May profile doesn't contain the word 'reference':" + src.getTargetProfile());
+      }
+    } else
       tgt.addProfile(src.getProfile());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.AggregationMode> t : src.getAggregation())
       tgt.addAggregation(convertAggregationMode(t.getValue()));
