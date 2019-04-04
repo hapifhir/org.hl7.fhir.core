@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils.formats;
 
+import java.io.File;
+
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -22,10 +24,12 @@ package org.hl7.fhir.r5.utils.formats;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Stack;
 
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
 import com.google.gson.JsonArray;
@@ -333,6 +337,26 @@ public class JsonTrackingParser {
   private String itemName;
   private String itemValue;
 
+  public static JsonObject parseJson(String source) throws IOException {
+    return parse(source, null);
+  }
+  
+  public static JsonObject parseJson(InputStream stream) throws IOException {
+    return parse(TextFile.streamToString(stream), null);
+  }
+  
+  public static JsonObject parseJson(byte[] stream) throws IOException {
+    return parse(TextFile.bytesToString(stream), null);
+  }
+  
+  public static JsonObject parseJson(File source) throws IOException {
+    return parse(TextFile.fileToString(source), null);
+  }
+  
+  public static JsonObject parseJsonFile(String source) throws IOException {
+    return parse(TextFile.fileToString(source), null);
+  }
+  
 	public static JsonObject parse(String source, Map<JsonElement, LocationData> map) throws IOException {
 		JsonTrackingParser self = new JsonTrackingParser();
 		self.map = map;
@@ -404,7 +428,8 @@ public class JsonTrackingParser {
 				loc = lexer.location.copy();
 				obj.add(itemName, arr);
 				next();
-				readArray(arr, false);
+				if (!readArray(arr, false))
+				  next(true);
 				if (map != null)
 		      map.put(arr, loc);
 				break;
@@ -418,8 +443,10 @@ public class JsonTrackingParser {
 		}
 	}
 
-	private void readArray(JsonArray arr, boolean root) throws IOException {
+	private boolean readArray(JsonArray arr, boolean root) throws IOException {
+	  boolean res = false;
 	  while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
+	    res  = true;
 	    switch (itemType) {
 	    case Object:
 	    	JsonObject obj  = new JsonObject(); // (arr.path+'['+inttostr(i)+']');
@@ -466,9 +493,14 @@ public class JsonTrackingParser {
 	    }
 	    next();
 	  }
+	  return res;
 	}
 
-	private void next() throws IOException {
+  private void next() throws IOException {
+    next(false);
+  }
+  
+	private void next(boolean noPop) throws IOException {
 		switch (itemType) {
 		case Object :
 			lexer.consume(TokenType.Open);
@@ -484,7 +516,7 @@ public class JsonTrackingParser {
 		case Number: 
 		case End: 
 		case Boolean :
-			if (itemType == ItemType.End)
+			if (itemType == ItemType.End && !noPop)
 				lexer.states.pop();
 			if (lexer.getType() == TokenType.Comma) {
 				lexer.next();
