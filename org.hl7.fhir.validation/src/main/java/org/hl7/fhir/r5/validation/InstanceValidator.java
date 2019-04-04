@@ -151,7 +151,6 @@ import ca.uhn.fhir.util.ObjectUtil;
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
-
   private class ValidatorHostContext {
     private Object appContext;
     private Element container; // bundle, or parameters

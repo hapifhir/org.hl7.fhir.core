@@ -36,7 +36,7 @@ public class BaseWriter {
   }
 
   protected JsonArray forceArray(String arrayName) {
-    JsonArray arr = object.get(arrayName).getAsJsonArray();
+    JsonArray arr = object.getAsJsonArray(arrayName);
     if (arr == null) {
       arr = new JsonArray();
       object.add(arrayName, arr);
