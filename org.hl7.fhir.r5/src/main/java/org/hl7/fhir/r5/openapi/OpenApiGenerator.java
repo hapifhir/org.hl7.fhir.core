@@ -2,9 +2,11 @@ package org.hl7.fhir.r5.openapi;
 
 import java.util.List;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceVersionPolicy;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
@@ -13,24 +15,32 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
+import org.hl7.fhir.r5.model.SearchParameter;
+import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterLocation;
+import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterStyle;
+import org.hl7.fhir.r5.openapi.SchemaWriter.SchemaType;
+
 
 public class OpenApiGenerator {
 
+  private IWorkerContext context;
   private CapabilityStatement source;
   private Writer dest;
 
-  public OpenApiGenerator(CapabilityStatement cs, Writer oa) {
+  public OpenApiGenerator(IWorkerContext context, CapabilityStatement cs, Writer oa) {
+    this.context = context;
     this.source = cs;
     this.dest = oa;
   }
 
-  public void generate(String license) {
-    dest.info().title(source.getTitle()).description(source.getDescription()).license(license, null).version(source.getVersion());
-    if (source.hasPublisher())
-      dest.info().contact(source.getPublisher(), null, null);
+  public void generate(String license, String url) {
+    dest.info().title(source.getTitle()).description(source.getDescription()).license(license, url).version(source.getVersion());
     for (ContactDetail cd : source.getContact()) {
       dest.info().contact(cd.getName(), email(cd.getTelecom()), url(cd.getTelecom()));
     }
+    if (source.hasPublisher())
+      dest.info().contact(source.getPublisher(), null, null);
    
     if (source.hasImplementation()) {
       dest.server(source.getImplementation().getUrl()).description(source.getImplementation().getDescription());
@@ -42,8 +52,23 @@ public class OpenApiGenerator {
         generatePaths(csr);
       }
     }
+    writeBaseParameters(dest.components());
   }
   
+  private void writeBaseParameters(ComponentsWriter components) {
+    components.parameter("summary").name("_summary").in(ParameterLocation.query).description("Requests the server to return a designated subset of the resource").allowEmptyValue().style(ParameterStyle.matrix)
+        .schema().type(SchemaType.string).enums("true", "text", "data", "count", "false");
+    
+    components.parameter("format").name("_format").in(ParameterLocation.query).description("Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)").allowEmptyValue().style(ParameterStyle.matrix)
+        .schema().type(SchemaType.string).format("mime-type");
+    
+    components.parameter("pretty").name("_pretty").in(ParameterLocation.query).description("Ask for a pretty printed response for human convenience").allowEmptyValue().style(ParameterStyle.matrix)
+        .schema().type(SchemaType.bool);
+  
+    components.parameter("elements").name("_elements").in(ParameterLocation.query).description("Requests the server to return a collection of elements from the resource").allowEmptyValue().style(ParameterStyle.matrix).explode(false)
+        .schema().type(SchemaType.array).format("string");    
+  }
+
   private void generatePaths(CapabilityStatementRestComponent csr) {
     for (CapabilityStatementRestResourceComponent r : csr.getResource())
       generateResource(r);
@@ -58,6 +83,8 @@ public class OpenApiGenerator {
       generateVRead(r);
     if (hasOp(r, TypeRestfulInteraction.UPDATE)) 
       generateUpdate(r);
+    if (hasOp(r, TypeRestfulInteraction.CREATE)) 
+      generateCreate(r);
   }
 
   private void generateRead(CapabilityStatementRestResourceComponent r) {
@@ -73,6 +100,12 @@ public class OpenApiGenerator {
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
     if (isXml())
       resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+    
+    // parameters:
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
   }
 
   private void generateSearch(CapabilityStatementRestResourceComponent r) {
@@ -88,6 +121,35 @@ public class OpenApiGenerator {
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
     if (isXml())
       resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
+    for (CapabilityStatementRestResourceSearchParamComponent spc : r.getSearchParam()) {
+      ParameterWriter p = op.parameter(spc.getName());
+      p.in(ParameterLocation.query).description(spc.getDocumentation());
+      p.schema().type(getSchemaType(spc.getType()));
+      if (spc.hasDefinition()) {
+        SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition());
+        if (sp != null) {
+          p.description(sp.getDescription());
+        }
+      }
+    }
+  }
+
+  private SchemaType getSchemaType(SearchParamType type) {
+    switch (type) {
+    // case COMPOSITE:
+    case DATE: return SchemaType.dateTime;
+    case NUMBER: return SchemaType.number; 
+    case QUANTITY: return SchemaType.string;
+    case REFERENCE: return SchemaType.string;
+    case STRING: return SchemaType.string;
+    case TOKEN: return SchemaType.string;
+    case URI: return SchemaType.string;
+    }
+    return null;
   }
 
   private void generateVRead(CapabilityStatementRestResourceComponent r) {
@@ -103,12 +165,19 @@ public class OpenApiGenerator {
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
     if (isXml())
       resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
   }
 
   // todo: how does prefer header affect return type?
   private void generateUpdate(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResId(r).operation("put");
-    op.summary("Update the current state of the resource");
+    if (r.getUpdateCreate())
+      op.summary("Update the current state of the resource (can create a new resource if it does not exist)");
+    else
+      op.summary("Update the current state of the resource");
     op.operationId("update"+r.getType());
     RequestBodyWriter req = op.request();
     req.description("The new state of the resource").required(true);
@@ -126,6 +195,36 @@ public class OpenApiGenerator {
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
     if (isXml())
       resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
+  }
+
+  private void generateCreate(CapabilityStatementRestResourceComponent r) {
+    OperationWriter op = makePathRes(r).operation("put");
+    op.summary("Create a new resource");
+    op.operationId("create"+r.getType());
+    RequestBodyWriter req = op.request();
+    req.description("The new state of the resource").required(true);
+    if (isJson())
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
+    if (isXml())
+      req.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+    
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the resource being returned after being updated");
+    if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
   }
 
   private void opOutcome(ResponseObjectWriter resp) {

@@ -741,8 +741,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
               b.append("\r\n");
             }
           }
-          if (res != null)
-            return (T) res;
+          return (T) res;
         }
       }
       if (class_ == CodeSystem.class && codeSystems.containsKey(uri))

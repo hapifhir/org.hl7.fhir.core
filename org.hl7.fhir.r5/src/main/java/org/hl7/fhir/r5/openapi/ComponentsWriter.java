@@ -17,4 +17,10 @@ public class ComponentsWriter extends BaseWriter {
     ensureMapObject("schemas", name).addProperty("$ref", uri);
     return this;
   }
+
+  public ParameterWriter parameter(String name) {
+    JsonObject po = new JsonObject();
+    ensureMapObject("parameters", name).add(name, po);
+    return new ParameterWriter(po);
+  }
 }

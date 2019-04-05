@@ -37,13 +37,15 @@ public class InfoWriter extends BaseWriter {
   }
 
   public InfoWriter contact(String name, String email, String url) {
-    JsonObject person = new JsonObject();
-    person.addProperty("name", name);
-    if (!Utilities.noString(email))
-      person.addProperty("email", email);
-    if (!Utilities.noString(url))
-      person.addProperty("url", url);
-    object.add("contact", person);
+    if (name != null && !object.has("contact")) {
+      JsonObject person = new JsonObject();
+      person.addProperty("name", name);
+      if (!Utilities.noString(email))
+        person.addProperty("email", email);
+      if (!Utilities.noString(url))
+        person.addProperty("url", url);
+      object.add("contact", person);
+    }
     return this;            
   }
   

@@ -20,13 +20,13 @@ public class Writer extends BaseWriter {
   public Writer(OutputStream stream) {
     super( new JsonObject());
     this.stream = stream;
-    object.addProperty("openapi", "3.0.1");
+    object.addProperty("openapi", "3.0.2");
   }
   
   public Writer(OutputStream stream, InputStream template) throws JsonSyntaxException, IOException {
     super(parse(template));
     this.stream = stream;
-    object.addProperty("openapi", "3.0.1");
+    object.addProperty("openapi", "3.0.2");
   }
   
   private static JsonObject parse(InputStream template) throws JsonSyntaxException, IOException {
