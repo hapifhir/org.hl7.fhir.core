@@ -39,11 +39,13 @@ public class OperationWriter extends BaseWriter {
   }
   
   public ParameterWriter parameter(String name) {
-    return new ParameterWriter(ensureMapObject("parameters", name));
+    JsonObject obj = forceArrayObject("parameters");
+    obj.addProperty("name", name);
+    return new ParameterWriter(obj);
   }
 
-  public OperationWriter pathRef(String name, String url) {
-    ensureMapObject("parameters", name).addProperty("$ref", url);
+  public OperationWriter paramRef(String url) {
+    forceArrayObject("parameters").addProperty("$ref", url);
     return this;
   }
   

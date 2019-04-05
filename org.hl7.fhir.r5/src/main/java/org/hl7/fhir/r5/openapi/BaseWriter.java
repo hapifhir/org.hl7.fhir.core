@@ -44,6 +44,17 @@ public class BaseWriter {
     return arr;
   }
   
+  protected JsonObject forceArrayObject(String arrayName) {
+    JsonArray arr = object.getAsJsonArray(arrayName);
+    if (arr == null) {
+      arr = new JsonArray();
+      object.add(arrayName, arr);
+    }
+    JsonObject obj = new JsonObject();
+    arr.add(obj);
+    return obj;
+  }
+  
 
   protected JsonObject ensureMapObject(String mapName, String value) {
     JsonObject map = object.getAsJsonObject(mapName);

@@ -20,9 +20,19 @@ public class ParameterWriter extends BaseWriter {
     return this;            
   }
   
-
+  public ParameterWriter name(String value) {
+    object.addProperty("name", value);
+    return this;            
+  }
+  
+  public ParameterWriter allowEmptyValue() {
+    object.addProperty("allowEmptyValue", true);
+    return this;            
+  }
+  
   public ParameterWriter description(String value) {
-    object.addProperty("description", value);
+    if (value != null)
+      object.addProperty("description", value);
     return this;            
   }
   
@@ -62,6 +72,12 @@ public class ParameterWriter extends BaseWriter {
   public ParameterWriter schema(JsonObject jsonSchema) {
     object.add("schema", jsonSchema);
     return this;
+  }
+  
+  public SchemaWriter schema() {
+    JsonObject so = new JsonObject();
+    object.add("schema", so);
+    return new SchemaWriter(so);
   }
   
   public ParameterWriter schemaRef(String name, String uri) {
