@@ -23,6 +23,7 @@ package org.hl7.fhir.r5.validation;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,6 +40,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.exceptions.*;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -56,6 +61,7 @@ import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Attachment;
 import org.hl7.fhir.r5.model.Base;
@@ -82,8 +88,10 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
@@ -120,6 +128,7 @@ import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.r5.utils.ValidationProfileSet.ProfileRegistration;
+import org.hl7.fhir.r5.utils.Version;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -2775,7 +2784,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } // todo... try getting the value set the other way...
   }
 
-  private void validateQuestionannaireResponse(List<ValidationMessage> errors, Element element, NodeStack stack) {
+  private void validateQuestionannaireResponse(List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException, IOException {
     Element q = element.getNamedChild("questionnaire");
     String questionnaire = null;
     if (q != null) {
@@ -2793,13 +2802,62 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 	 }
     if (hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, "No questionnaire is identified, so no validation can be performed against the base questionnaire")) {
       long t = System.nanoTime();
-      Questionnaire qsrc = context.fetchResource(Questionnaire.class, questionnaire);
+      Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
       sdTime = sdTime + (System.nanoTime() - t);
       if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire \""+questionnaire+"\" could not be resolved, so no validation can be performed against the base questionnaire")) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
         validateQuestionannaireResponseItems(qsrc, qsrc.getItem(), errors, element, stack, inProgress, element);
       }
     }
+  }
+
+  private Questionnaire loadQuestionnaire(Element resource, String id) throws FHIRException, IOException {
+    for (Element contained : resource.getChildren("contained")) {
+      if (contained.getIdBase().equals(id)) {
+        FhirPublication v = FhirPublication.fromCode(context.getVersion());
+        ByteArrayOutputStream bs = new  ByteArrayOutputStream();
+        new JsonParser(context).compose(contained, bs, OutputStyle.NORMAL, id);
+        byte[] json = bs.toByteArray();         
+        switch (v) {
+        case DSTU1: throw new FHIRException("Unsupported version R1");
+        case DSTU2:
+          org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
+          Resource r5 = new VersionConvertor_10_50(null).convertResource(r2);
+          if (r5 instanceof Questionnaire)
+            return (Questionnaire) r5;
+          else 
+            return null;
+        case DSTU2016May: 
+          org.hl7.fhir.dstu2016may.model.Resource r2a = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(json);
+          r5 = VersionConvertor_14_50.convertResource(r2a);
+          if (r5 instanceof Questionnaire)
+            return (Questionnaire) r5;
+          else 
+            return null;
+        case STU3:
+          org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
+          r5 = VersionConvertor_30_50.convertResource(r3, false);
+          if (r5 instanceof Questionnaire)
+            return (Questionnaire) r5;
+          else 
+            return null;
+        case R4:
+          org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
+          r5 = VersionConvertor_40_50.convertResource(r4);
+          if (r5 instanceof Questionnaire)
+            return (Questionnaire) r5;
+          else 
+            return null;
+        case R5:
+          r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
+          if (r5 instanceof Questionnaire)
+            return (Questionnaire) r5;
+          else 
+            return null;
+        }
+      }
+    }
+    return null;
   }
 
   private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot) {
