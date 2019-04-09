@@ -1467,7 +1467,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       // now, do we check the URI target?
       if (fetcher != null) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, fetcher.resolveURL(appContext, path, e.primitiveValue()), "URL value '"+e.primitiveValue()+"' does not resolve");
+        boolean found = fetcher.resolveURL(appContext, path, e.primitiveValue());
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, "URL value '"+e.primitiveValue()+"' does not resolve");
       }
     }
     if (type.equals("id")) {
