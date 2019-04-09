@@ -2915,27 +2915,51 @@ public class VersionConvertor_30_50 {
     throw new FHIRException("Unknown type "+src.fhirType());
   }
 
-  private static void copyDomainResource(org.hl7.fhir.dstu3.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+  private static void copyDomainResource(org.hl7.fhir.dstu3.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText())
       tgt.setText(convertNarrative(src.getText()));
     for (org.hl7.fhir.dstu3.model.Resource t1 : src.getContained())
       tgt.addContained(convertResource(t1, false));
-    for (org.hl7.fhir.dstu3.model.Extension t2 : src.getExtension())
-      tgt.addExtension(convertExtension(t2));
-    for (org.hl7.fhir.dstu3.model.Extension t3 : src.getModifierExtension())
-      tgt.addModifierExtension(convertExtension(t3));
+    for (org.hl7.fhir.dstu3.model.Extension t2 : src.getExtension()) {
+      boolean ok = true;
+      for (String s : extensionsToIgnore)
+        if (s.equals(t2.getUrl()))
+          ok = false;
+      if (ok)
+        tgt.addExtension(convertExtension(t2));
+    }
+    for (org.hl7.fhir.dstu3.model.Extension t3 : src.getModifierExtension()) {
+      boolean ok = true;
+      for (String s : extensionsToIgnore)
+        if (s.equals(t3.getUrl()))
+          ok = false;
+      if (ok)
+        tgt.addModifierExtension(convertExtension(t3));
+    }
   }
-  private static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu3.model.DomainResource tgt) throws FHIRException {
+  private static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu3.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText())
       tgt.setText(convertNarrative(src.getText()));
     for (org.hl7.fhir.r5.model.Resource t1 : src.getContained())
       tgt.addContained(convertResource(t1, false));
-    for (org.hl7.fhir.r5.model.Extension t2 : src.getExtension())
-      tgt.addExtension(convertExtension(t2));
-    for (org.hl7.fhir.r5.model.Extension t3 : src.getModifierExtension())
+    for (org.hl7.fhir.r5.model.Extension t2 : src.getExtension()) {
+      boolean ok = true;
+      for (String s : extensionsToIgnore)
+        if (s.equals(t2.getUrl()))
+          ok = false;
+      if (ok)
+        tgt.addExtension(convertExtension(t2));
+      }
+    for (org.hl7.fhir.r5.model.Extension t3 : src.getModifierExtension()) {
+      boolean ok = true;
+      for (String s : extensionsToIgnore)
+        if (s.equals(t3.getUrl()))
+          ok = false;
+      if (ok)
       tgt.addModifierExtension(convertExtension(t3));
+    }
   }
   public static org.hl7.fhir.r5.model.Parameters convertParameters(org.hl7.fhir.dstu3.model.Parameters src) throws FHIRException {
     if (src == null)
@@ -19794,7 +19818,7 @@ public class VersionConvertor_30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet tgt = new org.hl7.fhir.r5.model.ValueSet();
-    copyDomainResource(src, tgt);
+    copyDomainResource(src, tgt, "http://hl7.org/fhir/StructureDefinition/valueset-extensible");
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
@@ -19840,7 +19864,7 @@ public class VersionConvertor_30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet tgt = new org.hl7.fhir.dstu3.model.ValueSet();
-    copyDomainResource(src, tgt);
+    copyDomainResource(src, tgt, "http://hl7.org/fhir/StructureDefinition/valueset-extensible");
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
