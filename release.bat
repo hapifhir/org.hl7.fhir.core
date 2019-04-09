@@ -4,11 +4,11 @@ REM make sure you are committed
 echo
 
 echo ===============================================================
-echo upgrade and release fhir.core from 3.7.22-SNAPSHOT to 3.7.23-SNAPSHOT
+echo upgrade and release fhir.core from 3.7.23-SNAPSHOT to 3.7.24-SNAPSHOT
 echo ===============================================================
 pause
 
-call mvn versions:set -DnewVersion=3.7.23-SNAPSHOT
+call mvn versions:set -DnewVersion=3.7.24-SNAPSHOT
 
 echo ===============================================================
 echo upgraded version number using maven
@@ -25,8 +25,8 @@ echo next: replace references in java code + ivy
 echo ===============================================================
 pause
 
-call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.java" --excludeFileMask "*.dll, *.exe" --includeSubDirectories --find "3.7.22-SNAPSHOT" --replace "3.7.23-SNAPSHOT"
-call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.xml" --excludeFileMask "*.dll, *.exe" --find "3.7.22-SNAPSHOT" --replace "3.7.23-SNAPSHOT"
+call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.java" --excludeFileMask "*.dll, *.exe" --includeSubDirectories --find "3.7.23-SNAPSHOT" --replace "3.7.24-SNAPSHOT"
+call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.xml" --excludeFileMask "*.dll, *.exe" --find "3.7.23-SNAPSHOT" --replace "3.7.24-SNAPSHOT"
 
 echo ===============================================================
 echo done replacing references
