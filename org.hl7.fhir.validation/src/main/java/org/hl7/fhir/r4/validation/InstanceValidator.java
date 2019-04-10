@@ -2564,14 +2564,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               expression.append(" and " + discriminator + " is " + type);
           } else if (s.getType() == DiscriminatorType.PROFILE) {
             if (criteriaElement.getType().size() == 0)
-              throw new DefinitionException("Profile based discriminators nust have a type ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have a type ("+criteriaElement.getId()+")");
             if (criteriaElement.getType().size() != 1)
-              throw new DefinitionException("Profile based discriminators nust have only one type ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have only one type ("+criteriaElement.getId()+")");
             List<CanonicalType> list = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()") ? criteriaElement.getType().get(0).getTargetProfile() : criteriaElement.getType().get(0).getProfile();
             if (list.size() == 0)
-              throw new DefinitionException("Profile based discriminators nust have a type with a profile ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have a type with a profile ("+criteriaElement.getId()+")");
             if (list.size() > 1)
-              throw new DefinitionException("Profile based discriminators nust have a type with only one profile ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have a type with only one profile ("+criteriaElement.getId()+")");
             expression.append(" and "+discriminator+".conformsTo('"+list.get(0).getValue()+"')");
           } else if (s.getType() == DiscriminatorType.EXISTS) {
             if (criteriaElement.hasMin() && criteriaElement.getMin()>=1)
