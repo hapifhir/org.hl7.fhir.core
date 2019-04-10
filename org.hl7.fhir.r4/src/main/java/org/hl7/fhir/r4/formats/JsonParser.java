@@ -55,8 +55,8 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.utils.formats.JsonTrackingParser.PresentedBigDecimal;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonTrackingParser.PresentedBigDecimal;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import com.google.gson.JsonArray;
