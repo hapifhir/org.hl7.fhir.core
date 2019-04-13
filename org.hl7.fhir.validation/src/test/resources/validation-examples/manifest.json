@@ -460,6 +460,13 @@
         "version" : "3.0",
         "questionnaire" : "questionnaire-enableWhen-test3.xml",
         "errorCount": 0
+      },
+      "extension-slice.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "extension-slice-profile.xml", 
+          "errorCount": 0          
+        }
       }
 		}
 	}
