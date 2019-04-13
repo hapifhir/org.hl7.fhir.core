@@ -343,5 +343,10 @@ import com.google.gson.JsonObject;
       }
     }
 
+    /** special case when playing around inside the package **/
+    public Map<String, byte[]> getContent() {
+      return content;
+    }
+
 
   }
