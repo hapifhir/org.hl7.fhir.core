@@ -25,6 +25,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -85,7 +86,18 @@ public class NPMPackageGenerator {
     System.out.println("create package file at "+destFile);
     this.destFile = destFile;
     start();
-    buildPackageJson(canonical, kind, url, genDate, ig);
+    List<String> fhirVersion = new ArrayList<>();
+    for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
+      fhirVersion.add(v.asStringValue());
+    buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
+  }
+  
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate, List<String> fhirVersion) throws FHIRException, IOException {
+    super();
+    System.out.println("create package file at "+destFile);
+    this.destFile = destFile;
+    start();
+    buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
   }
   
   public NPMPackageGenerator(String destFile, JsonObject npm) throws FHIRException, IOException {
@@ -102,7 +114,7 @@ public class NPMPackageGenerator {
   }
   
   
-  private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig) throws FHIRException, IOException {
+  private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (!ig.hasPackageId())
       b.append("packageId");
@@ -134,8 +146,8 @@ public class NPMPackageGenerator {
     if (kind != PackageType.CORE) {
       JsonObject dep = new JsonObject();
       npm.add("dependencies", dep);
-      for (Enumeration<FHIRVersion> v : ig.getFhirVersion()) { // TODO: fix for multiple versions
-        dep.addProperty("hl7.fhir.core", v.asStringValue());
+      for (String v : fhirVersion) { // TODO: fix for multiple versions
+        dep.addProperty("hl7.fhir.core", v);
       }
       for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
         dep.addProperty(d.getPackageId(), d.getVersion());

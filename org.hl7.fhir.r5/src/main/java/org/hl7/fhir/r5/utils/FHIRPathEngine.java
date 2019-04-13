@@ -4145,10 +4145,12 @@ public class FHIRPathEngine {
         List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-           sd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
-           while (sd!=null && !sd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
-             sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-           if (sd.getUrl().equals(targetUrl)) {
+           StructureDefinition exsd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
+           while (exsd!=null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
+             exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
+           if (exsd.getUrl().equals(targetUrl)) {
+             if (ProfileUtilities.getChildMap(sd, t).isEmpty())
+               sd = exsd;
              focus = t;
              break;
            }

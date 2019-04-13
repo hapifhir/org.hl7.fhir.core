@@ -467,7 +467,21 @@
           "source" : "slice-by-polymorphic-type2-profile.xml", 
           "errorCount": 0
         }
+      },
+      "extension-slice.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "extension-slice-profile.xml", 
+          "errorCount": 0          
+        },
+      },
+      "slice-by-polymorphic-type2.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "slice-by-polymorphic-type2-profile.xml", 
+          "errorCount": 0
+        }
       }
-		}
+    }
 	}
 }
