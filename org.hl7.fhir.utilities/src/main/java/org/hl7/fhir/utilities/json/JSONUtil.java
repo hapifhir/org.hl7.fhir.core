@@ -1,6 +1,8 @@
 package org.hl7.fhir.utilities.json;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /*-
  * #%L
@@ -66,6 +68,20 @@ public class JSONUtil {
         return obj;
     }
     return null;
+  }
+
+  public static String str(JsonObject json, String name) {
+    JsonElement e = json.get(name);
+    return e == null ? null : e.getAsString();
+  }
+
+  public static List<JsonObject> objects(JsonObject json, String name) {
+    List<JsonObject> res = new ArrayList<>();
+    if (json.has(name))
+      for (JsonElement e : json.getAsJsonArray(name))
+        if (e instanceof JsonObject)
+          res.add((JsonObject) e);
+    return res;
   }
 
 }
