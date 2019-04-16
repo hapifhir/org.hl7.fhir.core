@@ -324,8 +324,9 @@ public class Utilities {
 //	  }
   }
 
-  public static void createDirectory(String path) throws IOException{
-    new CSFile(path).mkdirs();    
+  public static File createDirectory(String path) throws IOException{
+    new CSFile(path).mkdirs();
+    return new File(path);
   }
 
   public static String changeFileExt(String name, String ext) {
