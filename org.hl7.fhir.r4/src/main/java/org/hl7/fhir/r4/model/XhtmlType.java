@@ -39,6 +39,7 @@ public class XhtmlType extends Element {
   }
 
   public XhtmlType() {
+    this(new Narrative());
     // "<div xmlns=\""+FormatUtilities.XHTML_NS+"\"></div>"
   }
 
