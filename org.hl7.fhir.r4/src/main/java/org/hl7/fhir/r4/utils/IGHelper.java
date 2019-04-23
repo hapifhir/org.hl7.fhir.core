@@ -29,7 +29,7 @@ public class IGHelper {
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode()) {
+      if (name.toCode().equals(p.getCode())) {
         return p.getValue();
       }
     }
@@ -43,13 +43,13 @@ public class IGHelper {
 
   public static void setParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name, String value) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode()) {
+      if (name.toCode().equals(p.getCode())) {
         p.setValue(value);
         return;
       }
     }
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(name);
+    p.setCode(name.toCode());
     p.setValue(value);
   }
   

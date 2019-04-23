@@ -192,6 +192,10 @@ public class TextFile {
     return streamToBytes(new FileInputStream(new CSFile(srcFile)));
   }
 
+  public static byte[] fileToBytes(File file) throws FileNotFoundException, IOException {
+    return streamToBytes(new FileInputStream(file));
+  }
+
   public static String bytesToString(byte[] bs) throws IOException {
     return streamToString(new ByteArrayInputStream(bs));
   }

@@ -832,6 +832,10 @@ public class Utilities {
   }
 
 
+  public static String makeUuidLC() {
+    return UUID.randomUUID().toString().toLowerCase();
+  }
+
   public static String makeUuidUrn() {
     return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
   }
@@ -1165,6 +1169,7 @@ public class Utilities {
   public static boolean isValidId(String id) {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
+
 
 
 }
