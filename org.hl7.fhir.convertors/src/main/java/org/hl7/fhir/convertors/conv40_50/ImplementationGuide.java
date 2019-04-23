@@ -1057,7 +1057,7 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     copyElement(src, tgt);
     if (src.hasCode())
-      tgt.setCode(convertGuideParameterCode(src.getCode()));
+      tgt.setCodeElement(convertString(src.getCodeElement()));
     if (src.hasValue())
       tgt.setValueElement(convertString(src.getValueElement()));
     return tgt;
@@ -1069,7 +1069,7 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     copyElement(src, tgt);
     if (src.hasCode())
-      tgt.setCode(convertGuideParameterCode(src.getCode()));
+      tgt.setCodeElement(convertString(src.getCodeElement()));
     if (src.hasValue())
       tgt.setValueElement(convertString(src.getValueElement()));
     return tgt;
