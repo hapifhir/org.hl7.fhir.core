@@ -860,52 +860,75 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     return (myPrecision == TemporalPrecisionEnum.MINUTE || myPrecision == TemporalPrecisionEnum.SECOND || myPrecision == TemporalPrecisionEnum.MILLI);
   }
 
-	/**
-	 * This method implements a datetime equality check using the rules as defined by FHIRPath.
-	 *
-	 * This method returns:
-	 * <ul>
-	 *     <li>true if the given datetimes represent the exact same instant with the same precision (irrespective of the timezone)</li>
-	 *     <li>true if the given datetimes represent the exact same instant but one includes milliseconds of <code>.[0]+</code> while the other includes only SECONDS precision (irrespecitve of the timezone)</li>
-	 *     <li>true if the given datetimes represent the exact same year/year-month/year-month-date (if both operands have the same precision)</li>
-     *     <li>false if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could not represent the same instant in any timezone</li>
-     *     <li>null if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could potentially represent the same instant in any timezone</li>
-     *     <li>false if the given datetimes have the same precision but do not represent the same instant (irrespective of timezone)</li>
-	 *     <li>null otherwise (since these datetimes are not comparable)</li>
-	 * </ul>
-	 */
-	public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
+  /**
+   * This method implements a datetime equality check using the rules as defined by FHIRPath.
+   *
+   * This method returns:
+   * <ul>
+   *     <li>true if the given datetimes represent the exact same instant with the same precision (irrespective of the timezone)</li>
+   *     <li>true if the given datetimes represent the exact same instant but one includes milliseconds of <code>.[0]+</code> while the other includes only SECONDS precision (irrespecitve of the timezone)</li>
+   *     <li>true if the given datetimes represent the exact same year/year-month/year-month-date (if both operands have the same precision)</li>
+   *     <li>false if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could not represent the same instant in any timezone</li>
+   *     <li>null if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could potentially represent the same instant in any timezone</li>
+   *     <li>false if the given datetimes have the same precision but do not represent the same instant (irrespective of timezone)</li>
+   *     <li>null otherwise (since these datetimes are not comparable)</li>
+   * </ul>
+   */
+  public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
 
-		if (hasTimezoneIfRequired() != theOther.hasTimezoneIfRequired()) {
-			if (getPrecision() == theOther.getPrecision()) {
-				if (getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal() && theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
-                    boolean couldBeTheSameTime = couldBeTheSameTime(this, theOther) || couldBeTheSameTime(theOther, this);
-                    if (!couldBeTheSameTime) {
-                        return false;
-                    }
-				}
-			}
-			return null;
-		}
+    BaseDateTimeType me = this;
 
-		// Same precision
-		if (getPrecision() == theOther.getPrecision()) {
-			return getValue().getTime() == theOther.getValue().getTime();
-		}
+    // Per FHIRPath rules, we compare equivalence at the lowest precision of the two values,
+    // so if we need to, we'll clone either side and reduce its precision
+    int lowestPrecision = Math.min(me.getPrecision().ordinal(), theOther.getPrecision().ordinal());
+    TemporalPrecisionEnum lowestPrecisionEnum = TemporalPrecisionEnum.values()[lowestPrecision];
+    if (me.getPrecision() != lowestPrecisionEnum) {
+      me = new DateTimeType(me.getValueAsString());
+      me.setPrecision(lowestPrecisionEnum);
+    }
+    if (theOther.getPrecision() != lowestPrecisionEnum) {
+      theOther = new DateTimeType(theOther.getValueAsString());
+      theOther.setPrecision(lowestPrecisionEnum);
+    }
 
-		// Both represent 0 millis but the millis are optional
-		if (((Integer)0).equals(getMillis())) {
-			if (((Integer)0).equals(theOther.getMillis())) {
-				if (getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
-					if (theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
-						return getValue().getTime() == theOther.getValue().getTime();
-					}
-				}
-			}
-		}
+    if (me.hasTimezoneIfRequired() != theOther.hasTimezoneIfRequired()) {
+      if (me.getPrecision() == theOther.getPrecision()) {
+        if (me.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal() && theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
+          boolean couldBeTheSameTime = couldBeTheSameTime(me, theOther) || couldBeTheSameTime(theOther, me);
+          if (!couldBeTheSameTime) {
+            return false;
+          }
+        }
+      }
+      return null;
+    }
 
-		return false;
-	}
+    // Same precision
+    if (me.getPrecision() == theOther.getPrecision()) {
+      if (me.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
+        long leftTime = me.getValue().getTime();
+        long rightTime = theOther.getValue().getTime();
+        return leftTime == rightTime;
+      } else {
+        String leftTime = me.getValueAsString();
+        String rightTime = theOther.getValueAsString();
+        return leftTime.equals(rightTime);
+      }
+    }
+
+    // Both represent 0 millis but the millis are optional
+    if (((Integer)0).equals(me.getMillis())) {
+      if (((Integer)0).equals(theOther.getMillis())) {
+        if (me.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
+          if (theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
+            return me.getValue().getTime() == theOther.getValue().getTime();
+          }
+        }
+      }
+    }
+
+    return false;
+  }
 
     private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
         boolean theCouldBeTheSameTime = false;
