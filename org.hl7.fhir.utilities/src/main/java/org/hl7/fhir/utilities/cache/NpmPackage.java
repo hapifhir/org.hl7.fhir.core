@@ -350,22 +350,22 @@ import com.google.gson.JsonObject;
       return content;
     }
 
-    public static NpmPackage fromFolder(String folder) throws IOException {
-      return fromFolder(folder, null);
+    public static NpmPackage fromFolder(String folder, String... exemptions) throws IOException {
+      return fromFolder(folder, null, exemptions);
     }
     
-    public static NpmPackage fromFolder(String folder, PackageType defType) throws IOException {
+    public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
       NpmPackage res = new NpmPackage(null);
-      loadFiles(res, folder, new File(folder));
+      loadFiles(res, folder, new File(folder), exemptions);
       if (!res.content.containsKey("package/package.json") && defType != null)
         res.content.put("package/package.json", TextFile.stringToBytes("{ \"type\" : \""+defType.getCode()+"\"}", false));
       res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/package.json")));
       return res;
     }
 
-    private static void loadFiles(NpmPackage res, String base, File folder) throws FileNotFoundException, IOException {
+    private static void loadFiles(NpmPackage res, String base, File folder, String... exemptions) throws FileNotFoundException, IOException {
       for (File f : folder.listFiles()) {
-        if (!f.getName().equals(".git")) {
+        if (!f.getName().equals(".git") || !Utilities.existsInList(f.getName(), exemptions)) {
           if (f.isDirectory()) 
             loadFiles(res, base, f);
           else {
