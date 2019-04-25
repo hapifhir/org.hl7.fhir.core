@@ -251,7 +251,7 @@ public class Validator {
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
       System.out.println();
         
-      String definitions = "hl7.fhir.core#"+Constants.VERSION;
+      String definitions = "hl7.fhir.core#current";
       String map = null;
       List<String> igs = new ArrayList<String>();
       List<String> questionnaires = new ArrayList<String>();
