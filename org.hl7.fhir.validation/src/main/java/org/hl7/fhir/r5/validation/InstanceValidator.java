@@ -3816,7 +3816,6 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (isPrimitiveType(type)) {
             checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile);
           } else {
-//            checkNonPrimitive(appContext, errors, ei.path, type, ei.definition, ei.element, profile);
             if (ei.definition.hasFixed()) {
               checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
             }
