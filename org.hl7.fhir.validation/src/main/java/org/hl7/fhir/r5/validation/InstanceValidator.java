@@ -3817,6 +3817,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile);
           } else {
 //            checkNonPrimitive(appContext, errors, ei.path, type, ei.definition, ei.element, profile);
+            if (ei.definition.hasFixed()) {
+              checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
+            }
           }
           if (type.equals("Identifier")) {
             checkIdentifier(errors, ei.path, ei.element, ei.definition);
@@ -3833,7 +3836,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           } else if (type.equals("Resource")) {
             validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
           // (str.matches(".*([.,/])work\\1$"))
-          }
+          } 
         } else {
           if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
             validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false);
