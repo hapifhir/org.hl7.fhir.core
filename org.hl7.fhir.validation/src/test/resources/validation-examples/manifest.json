@@ -467,6 +467,21 @@
           "source" : "extension-slice-profile.xml", 
           "errorCount": 0          
         }
+      }, 
+      "observation-cholesterol-good.xml" : {
+        "errorCount": 0
+      }, 
+      "observation-cholesterol-bad-referencerangemissing.xml" : {
+        "errorCount": 1,
+        "errors": ["ERROR: Observation: Profile http://hl7.org/fhir/StructureDefinition/cholesterol, Element 'Observation.referenceRange': minimum required = 1, but only found 0"]
+      }, 
+      "observation-cholesterol-bad-referencerangehighfixedquantitywrong.xml" : {
+        "errorCount": 1,
+        "errors": ["ERROR: Observation.referenceRange.high.value: Value is '0' but must be '4.5'"]
+      }, 
+      "observation-cholesterol-bad-wrongcode.xml" : {
+        "errorCount": 2,
+        "errors": ["ERROR: Observation.code.coding.code: Value is '13457-7' but must be '35200-5'","ERROR: Observation.code.coding.display: Value is 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' but must be 'Cholesterol [Moles/?volume] in Serum or Plasma'"]
       }
 		}
 	}
