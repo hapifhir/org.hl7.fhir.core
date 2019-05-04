@@ -87,7 +87,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.hl7.fhir.r4.validation.Validator</mainClass>
+                            <mainClass>org.hl7.fhir.r5.validation.Validator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
