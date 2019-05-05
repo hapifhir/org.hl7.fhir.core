@@ -2,7 +2,7 @@
 	<!-- extract from http://hl7.org/fhir/triglyceride-examples.html, changed 
 		id from triglyceride and added explicit profile reference to http://hl7.org/fhir/StructureDefinition/triglyceride 
 		and added snomed ct code for triglyceride -->
-	<id value="observation-triglyceride-good" />
+	<id value="observation-triglyceride-good2" />
 	<meta>
 		<profile
 			value="http://hl7.org/fhir/StructureDefinition/triglyceride" />
@@ -65,17 +65,22 @@
 	</text>
 	<status value="final" />
 	<code>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="85600001" />
+      <display value="Triacylglycerol" />
+    </coding>
 		<coding>
 			<system value="http://loinc.org" />
 			<code value="35217-9" />
 			<display
 				value="Triglyceride [Moles/&#x200B;volume] in Serum or Plasma" />
 		</coding>
-		<coding>
-			<system value="http://snomed.info/sct" />
-			<code value="85600001" />
-			<display value="Triacylglycerol" />
-		</coding>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="85600001" />
+      <display value="Triacylglycerol" />
+    </coding>
 		<text value="Triglyceride" />
 	</code>
 	<subject>

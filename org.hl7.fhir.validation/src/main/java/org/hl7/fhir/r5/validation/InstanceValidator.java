@@ -121,6 +121,7 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -872,15 +873,55 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
     return false;
   }
-
-  private void checkCodeableConcept(List<ValidationMessage> errors, String path, Element focus, CodeableConcept fixed) {
+  
+  
+  private boolean hasErrors(List<ValidationMessage> errors) {
+    if (errors!=null) {
+      for (ValidationMessage vm : errors) {
+        if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  private void checkCodeableConcept(List<ValidationMessage> errors, String path, Element focus, CodeableConcept fixed,
+      boolean pattern) {
     checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus);
     List<Element> codings = new ArrayList<Element>();
     focus.getNamedChildren("coding", codings);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() == fixed.getCoding().size(),
-        "Expected " + Integer.toString(fixed.getCoding().size()) + " but found " + Integer.toString(codings.size()) + " coding elements")) {
-      for (int i = 0; i < codings.size(); i++)
-        checkFixedValue(errors, path + ".coding", codings.get(i), fixed.getCoding().get(i), "coding", focus);
+    if (pattern) {
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() >= fixed.getCoding().size(),
+          "Expected " + Integer.toString(fixed.getCoding().size()) + " but found " + Integer.toString(codings.size())
+              + " coding elements")) {
+        for (int i = 0; i < fixed.getCoding().size(); i++) {
+          Coding fixedCoding = fixed.getCoding().get(i);
+          boolean found = false;
+          List<ValidationMessage> errorsFixed = null;
+          for (int j = 0; j < codings.size() && !found; ++j) {
+            errorsFixed = new ArrayList<ValidationMessage>();
+            checkFixedValue(errorsFixed, path + ".coding", codings.get(j), fixedCoding, "coding", focus);
+            if (!hasErrors(errorsFixed)) {
+              found = true;
+            }
+          }
+          if (!found) {
+            rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false,
+                "Expected patternCodeableConcept not found for"+
+                    " system: " + fixedCoding.getSystemElement().asStringValue() +
+                    " code: " + fixedCoding.getCodeElement().asStringValue() +
+                    " display: " + fixedCoding.getDisplayElement().asStringValue());
+          }
+        }
+      }
+    } else {
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() == fixed.getCoding().size(),
+          "Expected " + Integer.toString(fixed.getCoding().size()) + " but found " + Integer.toString(codings.size())
+              + " coding elements")) {
+        for (int i = 0; i < codings.size(); i++)
+          checkFixedValue(errors, path + ".coding", codings.get(i), fixed.getCoding().get(i), "coding", focus);
+      }
     }
   }
 
@@ -1292,8 +1333,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // return b.toString();
   // }
   //
-
+  
   private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String propName, Element parent) {
+	  checkFixedValue(errors, path, focus, fixed, propName, parent, false);
+  }
+
+  private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String propName, Element parent, boolean pattern) {
     if ((fixed == null || fixed.isEmpty()) && focus == null)
       ; // this is all good
     else if (fixed == null && focus != null)
@@ -1356,7 +1401,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof HumanName)
         checkHumanName(errors, path, focus, (HumanName) fixed);
       else if (fixed instanceof CodeableConcept)
-        checkCodeableConcept(errors, path, focus, (CodeableConcept) fixed);
+        checkCodeableConcept(errors, path, focus, (CodeableConcept) fixed, pattern);
       else if (fixed instanceof Timing)
         checkTiming(errors, path, focus, (Timing) fixed);
       else if (fixed instanceof Period)
@@ -1622,8 +1667,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    if (context.hasFixed())
-      checkFixedValue(errors,path,e, context.getFixed(), context.getSliceName(), null);
+    if (context.hasFixed()) {
+      checkFixedValue(errors,path,e, context.getFixed(), context.getSliceName(), null, false);
+    } 
+    if (context.hasPattern()) {
+      checkFixedValue(errors, path, e, context.getPattern(), context.getSliceName(), null, true);
+    }
 
     // for nothing to check
   }
@@ -3818,6 +3867,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           } else {
             if (ei.definition.hasFixed()) {
               checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
+            }
+            if (ei.definition.hasPattern()) {
+                checkFixedValue(errors,ei.path, ei.element, ei.definition.getPattern(), ei.definition.getSliceName(), null, true);
             }
           }
           if (type.equals("Identifier")) {
