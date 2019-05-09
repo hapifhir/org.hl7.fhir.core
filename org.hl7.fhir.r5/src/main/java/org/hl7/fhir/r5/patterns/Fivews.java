@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.patterns;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -29,18 +29,13 @@ package org.hl7.fhir.r5.model;
   
 */
 
-// Generated on Tue, May 7, 2019 08:21+1000 for FHIR v4.1.0
+// Generated on Wed, May 8, 2019 10:40+1000 for FHIR v4.1.0
 
+import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Enumeration;
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
-import org.hl7.fhir.instance.model.api.*;
 import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Who What When Where Why - Common pattern for all resources that deals with attribution.
@@ -606,109 +601,161 @@ public interface Fivews extends PatternBase {
     /**
      * @return {@link #identifier} (Business Identifier.)
      */
-    public List<Identifier> getIdentifier();
+    public List<Identifier> getIdentifier() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setIdentifier(List<Identifier> theIdentifier);
+    public Fivews setIdentifier(List<Identifier> theIdentifier) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for identifier
+     */
     public boolean hasIdentifier();
+    /**
+     * @return minimum allowed cardinality for identifier. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getIdentifierMin();
+    /**
+     * @return maximum allowed cardinality for identifier. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getIdentifierMax();
 
-    public Identifier addIdentifier();
+    public Identifier addIdentifier() throws FHIRException;
 
-    public Fivews addIdentifier(Identifier t);
+    public Fivews addIdentifier(Identifier t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
      */
-    public Identifier getIdentifierFirstRep() ;
+    public Identifier getIdentifierFirstRep() throws FHIRException;
 
     /**
      * @return {@link #version} (Identifier for this version.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
-    public StringType getVersionElement();
+    public StringType getVersionElement() throws FHIRException;
 
-    public boolean hasVersionElement();
-
+    /**
+     * @return whether there is more than zero values for version
+     */
     public boolean hasVersion();
+    /**
+     * @return minimum allowed cardinality for version. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getVersionMin() throws FHIRException;
+    /**
+     * @return maximum allowed cardinality for version. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getVersionMax() throws FHIRException;
+    public boolean hasVersionElement();
 
     /**
      * @param value {@link #version} (Identifier for this version.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
-    public Fivews setVersionElement(StringType value) ;
+    public Fivews setVersionElement(StringType value) throws FHIRException;
 
     /**
      * @return Identifier for this version.
      */
-    public String getVersion();
+    public String getVersion() throws FHIRException;
 
     /**
      * @param value Identifier for this version.
      */
-    public Fivews setVersion(String value);
+    public Fivews setVersion(String value) throws FHIRException;
 
     /**
      * @return {@link #status} (Status Field.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<CanonicalStatus> getStatusElement();
+    public Enumeration<CanonicalStatus> getStatusElement() throws FHIRException;
 
-    public boolean hasStatusElement();
-
+    /**
+     * @return whether there is more than zero values for status
+     */
     public boolean hasStatus();
+    /**
+     * @return minimum allowed cardinality for status. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getStatusMin() throws FHIRException;
+    /**
+     * @return maximum allowed cardinality for status. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getStatusMax() throws FHIRException;
+    public boolean hasStatusElement();
 
     /**
      * @param value {@link #status} (Status Field.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Fivews setStatusElement(Enumeration<CanonicalStatus> value) ;
+    public Fivews setStatusElement(Enumeration<CanonicalStatus> value) throws FHIRException;
 
     /**
      * @return Status Field.
      */
-    public CanonicalStatus getStatus();
+    public CanonicalStatus getStatus() throws FHIRException;
 
     /**
      * @param value Status Field.
      */
-    public Fivews setStatus(CanonicalStatus value);
+    public Fivews setStatus(CanonicalStatus value) throws FHIRException;
 
     /**
      * @return {@link #class_} (Classifier Field.)
      */
-    public List<CodeableConcept> getClass_();
+    public List<CodeableConcept> getClass_() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setClass_(List<CodeableConcept> theClass_);
+    public Fivews setClass_(List<CodeableConcept> theClass_) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for class_
+     */
     public boolean hasClass_();
+    /**
+     * @return minimum allowed cardinality for class_. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getClass_Min();
+    /**
+     * @return maximum allowed cardinality for class_. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getClass_Max();
 
-    public CodeableConcept addClass_();
+    public CodeableConcept addClass_() throws FHIRException;
 
-    public Fivews addClass_(CodeableConcept t);
+    public Fivews addClass_(CodeableConcept t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #class_}, creating it if it does not already exist
      */
-    public CodeableConcept getClass_FirstRep() ;
+    public CodeableConcept getClass_FirstRep() throws FHIRException;
 
     /**
      * @return {@link #grade} (A field that indicates the potential impact of the content of the resource.)
      */
-    public CodeableConcept getGrade();
+    public CodeableConcept getGrade() throws FHIRException ;
 
+    /**
+     * @return whether there is more than zero values for grade
+     */
     public boolean hasGrade();
-
+    /**
+     * @return minimum allowed cardinality for grade. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getGradeMin();
+    /**
+     * @return maximum allowed cardinality for grade. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getGradeMax();
     /**
      * @param value {@link #grade} (A field that indicates the potential impact of the content of the resource.)
      */
-    public Fivews setGrade(CodeableConcept value);
+    public Fivews setGrade(CodeableConcept value) throws FHIRException;
 
     /**
      * @return {@link #what} (what this resource is about.)
      */
-    public Type getWhat();
+    public Type getWhat() throws FHIRException ;
 
     /**
      * @return {@link #what} (what this resource is about.)
@@ -724,105 +771,147 @@ public interface Fivews extends PatternBase {
 
     public boolean hasWhatReference();
 
+    /**
+     * @return whether there is more than zero values for what
+     */
     public boolean hasWhat();
-
+    /**
+     * @return minimum allowed cardinality for what. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhatMin();
+    /**
+     * @return maximum allowed cardinality for what. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhatMax();
     /**
      * @param value {@link #what} (what this resource is about.)
      */
-    public Fivews setWhat(Type value);
+    public Fivews setWhat(Type value) throws FHIRException;
 
     /**
      * @return {@link #subject} (Who this resource is about.)
      */
-    public List<Reference> getSubject();
+    public List<Reference> getSubject() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setSubject(List<Reference> theSubject);
+    public Fivews setSubject(List<Reference> theSubject) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for subject
+     */
     public boolean hasSubject();
+    /**
+     * @return minimum allowed cardinality for subject. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getSubjectMin();
+    /**
+     * @return maximum allowed cardinality for subject. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getSubjectMax();
 
-    public Reference addSubject();
+    public Reference addSubject() throws FHIRException;
 
-    public Fivews addSubject(Reference t);
+    public Fivews addSubject(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
      */
-    public Reference getSubjectFirstRep() ;
+    public Reference getSubjectFirstRep() throws FHIRException;
 
     /**
      * @return {@link #context} (a resource that gives context for the work described in this resource (usually Encounter or EpisodeOfCare).)
      */
-    public Reference getContext();
+    public Reference getContext() throws FHIRException ;
 
+    /**
+     * @return whether there is more than zero values for context
+     */
     public boolean hasContext();
-
+    /**
+     * @return minimum allowed cardinality for context. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getContextMin();
+    /**
+     * @return maximum allowed cardinality for context. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getContextMax();
     /**
      * @param value {@link #context} (a resource that gives context for the work described in this resource (usually Encounter or EpisodeOfCare).)
      */
-    public Fivews setContext(Reference value);
-
-    /**
-     * @return {@link #context} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (a resource that gives context for the work described in this resource (usually Encounter or EpisodeOfCare).)
-     */
-    public Resource getContextTarget();
-
-    /**
-     * @param value {@link #context} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (a resource that gives context for the work described in this resource (usually Encounter or EpisodeOfCare).)
-     */
-    public Fivews setContextTarget(Resource value);
+    public Fivews setContext(Reference value) throws FHIRException;
 
     /**
      * @return {@link #init} (when the work described in this resource was started (or will be).). This is the underlying object with id, value and extensions. The accessor "getInit" gives direct access to the value
      */
-    public DateTimeType getInitElement();
+    public DateTimeType getInitElement() throws FHIRException;
 
-    public boolean hasInitElement();
-
+    /**
+     * @return whether there is more than zero values for init
+     */
     public boolean hasInit();
+    /**
+     * @return minimum allowed cardinality for init. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getInitMin() throws FHIRException;
+    /**
+     * @return maximum allowed cardinality for init. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getInitMax() throws FHIRException;
+    public boolean hasInitElement();
 
     /**
      * @param value {@link #init} (when the work described in this resource was started (or will be).). This is the underlying object with id, value and extensions. The accessor "getInit" gives direct access to the value
      */
-    public Fivews setInitElement(DateTimeType value) ;
+    public Fivews setInitElement(DateTimeType value) throws FHIRException;
 
     /**
      * @return when the work described in this resource was started (or will be).
      */
-    public Date getInit();
+    public Date getInit() throws FHIRException;
 
     /**
      * @param value when the work described in this resource was started (or will be).
      */
-    public Fivews setInit(Date value);
+    public Fivews setInit(Date value) throws FHIRException;
 
     /**
      * @return {@link #planned} (when this resource is planned to occur.)
      */
-    public List<Timing> getPlanned();
+    public List<Timing> getPlanned() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setPlanned(List<Timing> thePlanned);
+    public Fivews setPlanned(List<Timing> thePlanned) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for planned
+     */
     public boolean hasPlanned();
+    /**
+     * @return minimum allowed cardinality for planned. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getPlannedMin();
+    /**
+     * @return maximum allowed cardinality for planned. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getPlannedMax();
 
-    public Timing addPlanned();
+    public Timing addPlanned() throws FHIRException;
 
-    public Fivews addPlanned(Timing t);
+    public Fivews addPlanned(Timing t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #planned}, creating it if it does not already exist
      */
-    public Timing getPlannedFirstRep() ;
+    public Timing getPlannedFirstRep() throws FHIRException;
 
     /**
      * @return {@link #done} (when the work described in this resource was completed (or will be).)
      */
-    public Type getDone();
+    public Type getDone() throws FHIRException ;
 
     /**
      * @return {@link #done} (when the work described in this resource was completed (or will be).)
@@ -838,204 +927,312 @@ public interface Fivews extends PatternBase {
 
     public boolean hasDonePeriod();
 
+    /**
+     * @return whether there is more than zero values for done
+     */
     public boolean hasDone();
-
+    /**
+     * @return minimum allowed cardinality for done. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getDoneMin();
+    /**
+     * @return maximum allowed cardinality for done. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getDoneMax();
     /**
      * @param value {@link #done} (when the work described in this resource was completed (or will be).)
      */
-    public Fivews setDone(Type value);
+    public Fivews setDone(Type value) throws FHIRException;
 
     /**
      * @return {@link #recorded} (when this resource itself was created.). This is the underlying object with id, value and extensions. The accessor "getRecorded" gives direct access to the value
      */
-    public InstantType getRecordedElement();
+    public InstantType getRecordedElement() throws FHIRException;
 
-    public boolean hasRecordedElement();
-
+    /**
+     * @return whether there is more than zero values for recorded
+     */
     public boolean hasRecorded();
+    /**
+     * @return minimum allowed cardinality for recorded. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getRecordedMin() throws FHIRException;
+    /**
+     * @return maximum allowed cardinality for recorded. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getRecordedMax() throws FHIRException;
+    public boolean hasRecordedElement();
 
     /**
      * @param value {@link #recorded} (when this resource itself was created.). This is the underlying object with id, value and extensions. The accessor "getRecorded" gives direct access to the value
      */
-    public Fivews setRecordedElement(InstantType value) ;
+    public Fivews setRecordedElement(InstantType value) throws FHIRException;
 
     /**
      * @return when this resource itself was created.
      */
-    public Date getRecorded();
+    public Date getRecorded() throws FHIRException;
 
     /**
      * @param value when this resource itself was created.
      */
-    public Fivews setRecorded(Date value);
+    public Fivews setRecorded(Date value) throws FHIRException;
 
     /**
      * @return {@link #author} (who authored the content of the resource.)
      */
-    public List<Reference> getAuthor();
+    public List<Reference> getAuthor() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setAuthor(List<Reference> theAuthor);
+    public Fivews setAuthor(List<Reference> theAuthor) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for author
+     */
     public boolean hasAuthor();
+    /**
+     * @return minimum allowed cardinality for author. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getAuthorMin();
+    /**
+     * @return maximum allowed cardinality for author. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getAuthorMax();
 
-    public Reference addAuthor();
+    public Reference addAuthor() throws FHIRException;
 
-    public Fivews addAuthor(Reference t);
+    public Fivews addAuthor(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist
      */
-    public Reference getAuthorFirstRep() ;
+    public Reference getAuthorFirstRep() throws FHIRException;
 
     /**
      * @return {@link #source} (Who provided the information in this resource.)
      */
-    public List<Reference> getSource();
+    public List<Reference> getSource() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setSource(List<Reference> theSource);
+    public Fivews setSource(List<Reference> theSource) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for source
+     */
     public boolean hasSource();
+    /**
+     * @return minimum allowed cardinality for source. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getSourceMin();
+    /**
+     * @return maximum allowed cardinality for source. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getSourceMax();
 
-    public Reference addSource();
+    public Reference addSource() throws FHIRException;
 
-    public Fivews addSource(Reference t);
+    public Fivews addSource(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist
      */
-    public Reference getSourceFirstRep() ;
+    public Reference getSourceFirstRep() throws FHIRException;
 
     /**
      * @return {@link #actor} (who did the work described the resource (or will do).)
      */
-    public List<Reference> getActor();
+    public List<Reference> getActor() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setActor(List<Reference> theActor);
+    public Fivews setActor(List<Reference> theActor) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for actor
+     */
     public boolean hasActor();
+    /**
+     * @return minimum allowed cardinality for actor. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getActorMin();
+    /**
+     * @return maximum allowed cardinality for actor. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getActorMax();
 
-    public Reference addActor();
+    public Reference addActor() throws FHIRException;
 
-    public Fivews addActor(Reference t);
+    public Fivews addActor(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #actor}, creating it if it does not already exist
      */
-    public Reference getActorFirstRep() ;
+    public Reference getActorFirstRep() throws FHIRException;
 
     /**
      * @return {@link #cause} (who prompted the work described in the resource.)
      */
-    public List<Reference> getCause();
+    public List<Reference> getCause() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setCause(List<Reference> theCause);
+    public Fivews setCause(List<Reference> theCause) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for cause
+     */
     public boolean hasCause();
+    /**
+     * @return minimum allowed cardinality for cause. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getCauseMin();
+    /**
+     * @return maximum allowed cardinality for cause. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getCauseMax();
 
-    public Reference addCause();
+    public Reference addCause() throws FHIRException;
 
-    public Fivews addCause(Reference t);
+    public Fivews addCause(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #cause}, creating it if it does not already exist
      */
-    public Reference getCauseFirstRep() ;
+    public Reference getCauseFirstRep() throws FHIRException;
 
     /**
      * @return {@link #witness} (who attests to the content of the resource (individual or org).)
      */
-    public List<Reference> getWitness();
+    public List<Reference> getWitness() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setWitness(List<Reference> theWitness);
+    public Fivews setWitness(List<Reference> theWitness) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for witness
+     */
     public boolean hasWitness();
+    /**
+     * @return minimum allowed cardinality for witness. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWitnessMin();
+    /**
+     * @return maximum allowed cardinality for witness. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWitnessMax();
 
-    public Reference addWitness();
+    public Reference addWitness() throws FHIRException;
 
-    public Fivews addWitness(Reference t);
+    public Fivews addWitness(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #witness}, creating it if it does not already exist
      */
-    public Reference getWitnessFirstRep() ;
+    public Reference getWitnessFirstRep() throws FHIRException;
 
     /**
      * @return {@link #who} (An actor involved in the work described by this resource.)
      */
-    public List<Reference> getWho();
+    public List<Reference> getWho() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setWho(List<Reference> theWho);
+    public Fivews setWho(List<Reference> theWho) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for who
+     */
     public boolean hasWho();
+    /**
+     * @return minimum allowed cardinality for who. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhoMin();
+    /**
+     * @return maximum allowed cardinality for who. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhoMax();
 
-    public Reference addWho();
+    public Reference addWho() throws FHIRException;
 
-    public Fivews addWho(Reference t);
+    public Fivews addWho(Reference t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #who}, creating it if it does not already exist
      */
-    public Reference getWhoFirstRep() ;
+    public Reference getWhoFirstRep() throws FHIRException;
 
     /**
      * @return {@link #where} (The location of the work described.)
      */
-    public List<Type> getWhere();
+    public List<Type> getWhere() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setWhere(List<Type> theWhere);
+    public Fivews setWhere(List<Type> theWhere) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for where
+     */
     public boolean hasWhere();
+    /**
+     * @return minimum allowed cardinality for where. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhereMin();
+    /**
+     * @return maximum allowed cardinality for where. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhereMax();
 
-    public Type addWhere();
+    public Type addWhere() throws FHIRException;
 
-    public Fivews addWhere(Type t);
+    public Fivews addWhere(Type t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #where}, creating it if it does not already exist
      */
-    public Type getWhereFirstRep() ;
+    public Type getWhereFirstRep() throws FHIRException;
 
     /**
      * @return {@link #why} (Why this work was done.)
      */
-    public List<Type> getWhy();
+    public List<Type> getWhy() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setWhy(List<Type> theWhy);
+    public Fivews setWhy(List<Type> theWhy) throws FHIRException;
 
+    /**
+     * @return whether there is more than zero values for why
+     */
     public boolean hasWhy();
+    /**
+     * @return minimum allowed cardinality for why. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhyMin();
+    /**
+     * @return maximum allowed cardinality for why. Note that with patterns, this may be different for the underlying resource
+     */
+    public int getWhyMax();
 
-    public Type addWhy();
+    public Type addWhy() throws FHIRException;
 
-    public Fivews addWhy(Type t);
+    public Fivews addWhy(Type t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #why}, creating it if it does not already exist
      */
-    public Type getWhyFirstRep() ;
+    public Type getWhyFirstRep() throws FHIRException;
 
   public String fhirType();
 
