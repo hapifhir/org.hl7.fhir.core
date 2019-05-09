@@ -1106,7 +1106,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
       } catch (Exception e) {
-        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding");
+        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding: " + e.toString());
       }
     }
   }
@@ -2381,13 +2381,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return null;
       } else {
         long t = System.nanoTime();
-        if (!Utilities.isAbsoluteUrl(reference))
-          reference = resolve(uri, reference);
-        ValueSet fr = context.fetchResource(ValueSet.class, reference);
-        txTime = txTime + (System.nanoTime() - t);
+			ValueSet fr = context.fetchResource(ValueSet.class, reference);
+			if (fr == null) {
+				if (!Utilities.isAbsoluteUrl(reference)) {
+					reference = resolve(uri, reference);
+					fr = context.fetchResource(ValueSet.class, reference);
+				}
+			}
+			txTime = txTime + (System.nanoTime() - t);
         return fr;
       }
-    } else 
+    } else
       return null;
   }
 
@@ -4057,11 +4061,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Error) 
             rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
+      } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
+      } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
       }
-      if (inv.getSeverity() == ConstraintSeverity.ERROR)
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
-      else if (inv.getSeverity() == ConstraintSeverity.WARNING)
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
     }
   }
 
