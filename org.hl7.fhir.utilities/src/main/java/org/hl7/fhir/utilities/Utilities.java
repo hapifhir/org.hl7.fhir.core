@@ -64,6 +64,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1168,6 +1169,13 @@ public class Utilities {
 
   public static boolean isValidId(String id) {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
+  }
+
+  public static List<String> sorted(Set<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list);
+    return list;
   }
 
 
