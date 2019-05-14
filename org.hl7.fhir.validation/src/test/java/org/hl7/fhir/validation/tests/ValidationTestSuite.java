@@ -107,7 +107,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       
     if (ve == null || !v.equals(veVersion)) {
       if (v.equals("5.0"))
-        ve = new ValidationEngine("hl7.fhir.core#4.1.0", DEF_TX, null, FhirPublication.R5);
+        ve = new ValidationEngine("hl7.fhir.core#current", DEF_TX, null, FhirPublication.R5);
       else if (v.equals("3.0"))
         ve = new ValidationEngine("hl7.fhir.core#3.0.1", DEF_TX, null, FhirPublication.STU3);
       else if (v.equals("4.0"))
