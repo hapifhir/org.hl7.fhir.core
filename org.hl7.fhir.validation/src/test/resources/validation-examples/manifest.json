@@ -482,6 +482,13 @@
       "observation-cholesterol-bad-wrongcode.xml" : {
         "errorCount": 2,
         "errors": ["ERROR: Observation.code.coding.code: Value is '13457-7' but must be '35200-5'","ERROR: Observation.code.coding.display: Value is 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' but must be 'Cholesterol [Moles/?volume] in Serum or Plasma'"]
+      },
+      "invariant.example.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "invariant.profile.xml", 
+          "errorCount": 1
+        }
       }
 		}
 	}
