@@ -686,8 +686,9 @@ public class ResourceFactory extends Factory {
         case 116076: return new UriType();
         case 116079: return new UrlType();
         case 3601339: return new UuidType();
+        case 114035747: return new XhtmlType();
       default:
-        throw new FHIRException("Unknown Resource or Type Name '"+name+"'");
+        throw new FHIRException("Unknown Resource or Type Name '"+name+"': " + name.hashCode());
     }
   }
 

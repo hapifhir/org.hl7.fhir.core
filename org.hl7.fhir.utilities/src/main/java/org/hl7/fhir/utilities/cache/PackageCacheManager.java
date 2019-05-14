@@ -246,18 +246,18 @@ public class PackageCacheManager {
 
   public void recordMap(String url, String id) throws IOException {
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-        throw new Error("what?");
+        throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" not found #1");
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
     ini.setStringProperty("urls", id, url, null);
     if (!CACHE_VERSION.equals(ini.getStringProperty("cache", "version"))) {
-      throw new Error("what?");
+      throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" cache version mismatch: expected '"+CACHE_VERSION+"', found '"+ini.getStringProperty("cache", "version")+"'");
     }
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-      throw new Error("what?");
+      throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" not found #2");
 
     ini.save();
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-      throw new Error("what?");
+      throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" not found #3");
   }
 
   public String getPackageUrl(String id) throws IOException {
@@ -388,7 +388,7 @@ public class PackageCacheManager {
     Map<String, String> canonicals = new HashMap<String, String>(); 
     if ("hl7.fhir.core".equals(npm.get("name").getAsString()))
       analysePackage(packRoot, npm.get("version").getAsString(), profiles, canonicals);
-    else
+    else if (npm.has("dependencies")) // templates do not
       analysePackage(packRoot, npm.getAsJsonObject("dependencies").get("hl7.fhir.core").getAsString(), profiles, canonicals);
     IniFile ini = new IniFile(Utilities.path(packRoot, "cache.ini"));
     ini.setTimeStampFormat("dd/MM/yyyy h:mm:ss a");

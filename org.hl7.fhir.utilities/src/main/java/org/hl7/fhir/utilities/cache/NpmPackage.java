@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -348,5 +350,41 @@ import com.google.gson.JsonObject;
       return content;
     }
 
+    public static NpmPackage fromFolder(String folder, String... exemptions) throws IOException {
+      return fromFolder(folder, null, exemptions);
+    }
+    
+    public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
+      NpmPackage res = new NpmPackage(null);
+      loadFiles(res, folder, new File(folder), exemptions);
+      if (!res.content.containsKey("package/package.json") && defType != null)
+        res.content.put("package/package.json", TextFile.stringToBytes("{ \"type\" : \""+defType.getCode()+"\"}", false));
+      res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/package.json")));
+      return res;
+    }
 
+    private static void loadFiles(NpmPackage res, String base, File folder, String... exemptions) throws FileNotFoundException, IOException {
+      for (File f : folder.listFiles()) {
+        if (!f.getName().equals(".git") || !Utilities.existsInList(f.getName(), exemptions)) {
+          if (f.isDirectory()) 
+            loadFiles(res, base, f);
+          else {
+            String name = f.getAbsolutePath().substring(base.length()+1).replace("\\",  "/");
+            byte[] cnt = TextFile.fileToBytes(f);
+            res.content.put(name, cnt);
+          }
+        }
+      }
+    }
+
+    public void unPack(String dir) throws IOException {
+      for (String s : content.keySet()) {
+        String fn = Utilities.path(dir, s);
+        String dn = Utilities.getDirectoryForFile(fn);
+        Utilities.createDirectory(dn);
+        TextFile.bytesToFile(content.get(s), fn);
+      }
+      if (path != null)
+        FileUtils.copyDirectory(new File(path), new File(dir));      
+    }
   }

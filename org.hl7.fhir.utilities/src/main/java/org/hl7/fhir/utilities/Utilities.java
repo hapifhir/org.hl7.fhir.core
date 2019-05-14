@@ -64,6 +64,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -324,8 +325,9 @@ public class Utilities {
 //	  }
   }
 
-  public static void createDirectory(String path) throws IOException{
-    new CSFile(path).mkdirs();    
+  public static File createDirectory(String path) throws IOException{
+    new CSFile(path).mkdirs();
+    return new File(path);
   }
 
   public static String changeFileExt(String name, String ext) {
@@ -831,6 +833,10 @@ public class Utilities {
   }
 
 
+  public static String makeUuidLC() {
+    return UUID.randomUUID().toString().toLowerCase();
+  }
+
   public static String makeUuidUrn() {
     return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
   }
@@ -1164,6 +1170,14 @@ public class Utilities {
   public static boolean isValidId(String id) {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
+
+  public static List<String> sorted(Set<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list);
+    return list;
+  }
+
 
 
 }

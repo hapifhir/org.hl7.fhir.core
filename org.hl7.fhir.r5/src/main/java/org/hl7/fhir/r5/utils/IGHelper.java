@@ -20,14 +20,16 @@ package org.hl7.fhir.r5.utils;
  * #L%
  */
 
-
-import org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionComponent;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent;
 
 public class IGHelper {
 
-  public static String readStringParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name) {
+  
+  public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;
+  public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
+
+  public static String readStringParameter(ImplementationGuideDefinitionComponent ig, String name) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
       if (name == p.getCode()) {
         return p.getValue();
@@ -36,12 +38,12 @@ public class IGHelper {
     return null;
   }
 
-  public static boolean getBooleanParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name, boolean defaultValue) {
+  public static boolean getBooleanParameter(ImplementationGuideDefinitionComponent ig, String name, boolean defaultValue) {
     String v = readStringParameter(ig, name);
     return v == null ? false : Boolean.parseBoolean(v);
   }
 
-  public static void setParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name, String value) {
+  public static void setParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
       if (name == p.getCode()) {
         p.setValue(value);
@@ -53,7 +55,13 @@ public class IGHelper {
     p.setValue(value);
   }
   
-  public static void setParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name, boolean value) {
+  public static void addParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
+    ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
+    p.setCode(name);
+    p.setValue(value);
+  }
+  
+  public static void setParameter(ImplementationGuideDefinitionComponent ig, String name, boolean value) {
     setParameter(ig, name, Boolean.toString(value));
   }
 
