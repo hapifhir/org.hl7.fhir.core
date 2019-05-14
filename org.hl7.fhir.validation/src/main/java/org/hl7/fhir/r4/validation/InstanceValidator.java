@@ -1098,7 +1098,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
       } catch (Exception e) {
-        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding");
+        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding: " + e.toString());
       }
     }
   }
@@ -2162,7 +2162,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
       sdTime = sdTime + (System.nanoTime() - t);
-      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot())
+      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/" + type)) && sd.hasSnapshot())
         return sd;
     }
     return null;
@@ -2371,13 +2371,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return null;
       } else {
         long t = System.nanoTime();
-        if (!Utilities.isAbsoluteUrl(reference))
-          reference = resolve(uri, reference);
-        ValueSet fr = context.fetchResource(ValueSet.class, reference);
-        txTime = txTime + (System.nanoTime() - t);
+			ValueSet fr = context.fetchResource(ValueSet.class, reference);
+			if (fr == null) {
+				if (!Utilities.isAbsoluteUrl(reference)) {
+					reference = resolve(uri, reference);
+					fr = context.fetchResource(ValueSet.class, reference);
+				}
+			}
+			txTime = txTime + (System.nanoTime() - t);
         return fr;
       }
-    } else 
+    } else
       return null;
   }
 
@@ -2942,11 +2946,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       }
     }
 
-    // ok, now we have a list of known items, grouped by linkId. We"ve made an error for anything out of order
+    // ok, now we have a list of known items, grouped by linkId. We've made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<Element> mapItem = map.get(qItem.getLinkId());
       if (mapItem != null){
-    	  rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot), "Item has answer, even though it is not enabled "+qItem.getLinkId());
+    	  rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot), "Item with linkId [{0}] has answer, even though it is not enabled", qItem.getLinkId());
         validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
       } else { 
     	//item is missing, is the question enabled?
@@ -3984,11 +3988,11 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
             warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Error) 
             rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
+      } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
+      } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
       }
-      if (inv.getSeverity() == ConstraintSeverity.ERROR)
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
-      else if (inv.getSeverity() == ConstraintSeverity.WARNING)
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
     }
   }
 

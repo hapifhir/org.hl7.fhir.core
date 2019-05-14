@@ -23,6 +23,7 @@ package org.hl7.fhir.r5.utils;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
@@ -57,7 +59,7 @@ import com.google.gson.JsonObject;
 public class NPMPackageGenerator {
 
   public enum Category {
-    RESOURCE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL;
+    RESOURCE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL;
     
     private String getDirectory() {
       switch (this) {
@@ -66,6 +68,8 @@ public class NPMPackageGenerator {
       case SCHEMATRON: return "/xml/";
       case RDF: return "/rdf/";      
       case OTHER: return "/other/";      
+      case TEMPLATE: return "/other/";      
+      case JEKYLL: return "/jekyll/";      
       case TOOL: return "/bin/";      
       }
       return "/";
@@ -112,8 +116,7 @@ public class NPMPackageGenerator {
     } catch (UnsupportedEncodingException e) {
     }
   }
-  
-  
+ 
   private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (!ig.hasPackageId())
@@ -245,4 +248,33 @@ public class NPMPackageGenerator {
   public String filename() {
     return destFile;
   }
+
+  public void loadDir(String rootDir, String name) throws IOException {
+    loadFiles(rootDir, new File(Utilities.path(rootDir, name)));
+  }
+
+  public void loadFiles(String root, File dir, String... noload) throws IOException {
+    for (File f : dir.listFiles()) {
+      if (!Utilities.existsInList(f.getName(), noload)) {
+        if (f.isDirectory()) {
+          loadFiles(root, f);
+        } else {
+          String path = f.getAbsolutePath().substring(root.length()+1);
+          byte[] content = TextFile.fileToBytes(f);
+          if (created.contains(path)) 
+            System.out.println("Duplicate package file "+path);
+          else {
+            created.add(path);
+            TarArchiveEntry entry = new TarArchiveEntry(path);
+            entry.setSize(content.length);
+            tar.putArchiveEntry(entry);
+            tar.write(content);
+            tar.closeArchiveEntry();
+          }
+        }
+      }
+    }
+  }
+  
+  
 }

@@ -1106,7 +1106,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
       } catch (Exception e) {
-        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding");
+        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding: " + e.toString());
       }
     }
   }
@@ -2172,7 +2172,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
       sdTime = sdTime + (System.nanoTime() - t);
-      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot())
+      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/" + type)) && sd.hasSnapshot())
         return sd;
     }
     return null;
@@ -2381,13 +2381,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return null;
       } else {
         long t = System.nanoTime();
-        if (!Utilities.isAbsoluteUrl(reference))
-          reference = resolve(uri, reference);
-        ValueSet fr = context.fetchResource(ValueSet.class, reference);
-        txTime = txTime + (System.nanoTime() - t);
+			ValueSet fr = context.fetchResource(ValueSet.class, reference);
+			if (fr == null) {
+				if (!Utilities.isAbsoluteUrl(reference)) {
+					reference = resolve(uri, reference);
+					fr = context.fetchResource(ValueSet.class, reference);
+				}
+			}
+			txTime = txTime + (System.nanoTime() - t);
         return fr;
       }
-    } else 
+    } else
       return null;
   }
 
@@ -3816,7 +3820,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (isPrimitiveType(type)) {
             checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile);
           } else {
-//            checkNonPrimitive(appContext, errors, ei.path, type, ei.definition, ei.element, profile);
+            if (ei.definition.hasFixed()) {
+              checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
+            }
           }
           if (type.equals("Identifier")) {
             checkIdentifier(errors, ei.path, ei.element, ei.definition);
@@ -3833,7 +3839,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           } else if (type.equals("Resource")) {
             validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
           // (str.matches(".*([.,/])work\\1$"))
-          }
+          } 
         } else {
           if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
             validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false);
@@ -4055,11 +4061,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Error) 
             rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
+      } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
+      } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
       }
-      if (inv.getSeverity() == ConstraintSeverity.ERROR)
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
-      else if (inv.getSeverity() == ConstraintSeverity.WARNING)
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
     }
   }
 
