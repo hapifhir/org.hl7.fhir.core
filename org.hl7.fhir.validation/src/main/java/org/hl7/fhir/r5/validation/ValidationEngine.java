@@ -817,8 +817,9 @@ public class ValidationEngine {
         if (refs.size() > 1)
           produceValidationSummary(outcome);
         results.addEntry().setResource(outcome);
-      } catch (Throwable e) {
+      } catch (Exception e) {
         System.out.println("Validation Infrastructure fail validating "+ref+": "+e.getMessage());
+        throw e;
       }
     }
     if (asBundle)
