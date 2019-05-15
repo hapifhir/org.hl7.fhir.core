@@ -1,0 +1,39 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "status": "in-progress",
+  "item": [
+    {
+      "linkId": "patient",
+      "text": "Patient",
+      "item": [
+        {
+          "linkId": "patient.lastname",
+          "text": "Name",
+          "answer": [
+            {
+              "valueString": "Brönnimann-Bertholet"
+            }
+          ]
+        },
+        {
+          "linkId": "patient.firstname",
+          "text": "Vorname",
+          "answer": [
+            {
+              "valueString": "Elisabeth"
+            }
+          ]
+        },
+        {
+          "linkId": "patient.sex",
+          "text": "Geschlecht",
+          "answer": [
+            {
+              "valueString": "female"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -467,7 +467,40 @@
           "source" : "extension-slice-profile.xml", 
           "errorCount": 0          
         }
+      },
+      "slice-by-polymorphic-type2.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "slice-by-polymorphic-type2-profile.xml", 
+          "errorCount": 0
+        }
       }, 
+      "observation-bp-validationfails.xml" : {
+        "errorCount": 4,
+        "errors": [
+        "ERROR: Observation.component[1]: Error in discriminator at Observation.component:SystolicBP.code.coding: slicing found",
+        "ERROR: Observation.component[2]: Error in discriminator at Observation.component:SystolicBP.code.coding: slicing found",
+        "ERROR: Observation.component[1]: Error in discriminator at Observation.component:DiastolicBP.code.coding: slicing found",
+        "ERROR: Observation.component[2]: Error in discriminator at Observation.component:DiastolicBP.code.coding: slicing found"
+        ]        
+      },
+      "observation-bp.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "observation-bp-profile.xml", 
+          "errorCount": 0
+        }
+      }, 
+      "observation-bp-bad-onlydiastolic.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "observation-bp-profile.xml", 
+          "errorCount": 1,
+          "errors": [
+           "ERROR: Observation: Profile http://hl7.org/fhir/StructureDefinition/observation-bp-profile, Element 'Observation.component[SystolicBP]': minimum required = 1, but only found 0"
+          ] 
+        }
+      },      
       "observation-cholesterol-good.xml" : {
         "errorCount": 0
       }, 
@@ -489,7 +522,21 @@
           "source" : "invariant.profile.xml", 
           "errorCount": 1
         }
+      },
+      "observation-triglyceride-good.xml" : {
+        "warningCount": 1,
+        "errorCount": 0,
+        "warnings": ["WARNING: Observation.code.coding[1]: The display \"Triglyceride [Moles/​volume] in Serum or Plasma\" is not a valid display for the code {http://loinc.org}35217-9 - should be one of [\"Triglyceride [Mass or Moles/volume] in Serum or Plasma\",\"Trigl SerPl-msCnc\""]
+      }, 
+      "observation-triglyceride-good2.xml" : {
+        "warningCount": 1,
+        "errorCount": 0,
+        "warnings": ["WARNING: Observation.code.coding[2]: The display \"Triglyceride [Moles/​volume] in Serum or Plasma\" is not a valid display for the code {http://loinc.org}35217-9 - should be one of [\"Triglyceride [Mass or Moles/volume] in Serum or Plasma\",\"Trigl SerPl-msCnc\""]
+      },       
+      "observation-triglyceride-bad-wrongcode.xml" : {
+        "errorCount": 1,
+        "errors": ["ERROR: Observation.code: Expected patternCodeableConcept not found for system: http://loinc.org code: 35217-9 display: Triglyceride [Moles/​volume] in Serum or Plasma"]
       }
-		}
+    }
 	}
 }

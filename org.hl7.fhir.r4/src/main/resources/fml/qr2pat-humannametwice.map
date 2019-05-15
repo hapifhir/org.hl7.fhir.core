@@ -1,0 +1,26 @@
+map "http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/qr2pathumannametwice" = "qr2pathumannametwice"
+
+uses "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse" alias QuestionnaireResponse as source
+uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as target
+
+group entry(source src : QuestionnaireResponse, target tgt : Patient) {
+  src.item as item then item(item, tgt);
+}
+
+group item(source src, target tgt) {
+  src.item as item then item(item, tgt);
+  src.item as item where linkId.value = 'patient.lastname' -> tgt.name as name then humanNameFamily(item, name);
+  src.item as item where linkId.value = 'patient.firstname' -> tgt.name as name then humanNameGiven(item, name);
+  src.item as item where linkId.value = 'patient.sex' -> tgt.gender = (item.answer.valueString);
+}
+
+group humanNameFamily(source src, target tgt: HumanName) {
+  src.answer as answer -> tgt.family = (answer.valueString);
+}
+group humanNameGiven(source src, target tgt: HumanName) {
+  src.answer as answer -> tgt.given = (answer.valueString);
+}
+
+group administrativeGender(source src, target tgt: code) {
+  src.answer as answer -> tgt = (answer.valueString);
+}
