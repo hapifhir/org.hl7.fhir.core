@@ -466,6 +466,13 @@
         "profile" : {
           "source" : "extension-slice-profile.xml", 
           "errorCount": 0          
+        },
+      },
+      "slice-by-polymorphic-type2.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "slice-by-polymorphic-type2-profile.xml", 
+          "errorCount": 0
         }
       }, 
       "observation-cholesterol-good.xml" : {
@@ -483,6 +490,6 @@
         "errorCount": 2,
         "errors": ["ERROR: Observation.code.coding.code: Value is '13457-7' but must be '35200-5'","ERROR: Observation.code.coding.display: Value is 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' but must be 'Cholesterol [Moles/?volume] in Serum or Plasma'"]
       }
-		}
+    }
 	}
 }
