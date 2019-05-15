@@ -475,6 +475,32 @@
           "errorCount": 0
         }
       }, 
+      "observation-bp-validationfails.xml" : {
+        "errorCount": 4,
+        "errors": [
+        "ERROR: Observation.component[1]: Error in discriminator at Observation.component:SystolicBP.code.coding: slicing found",
+        "ERROR: Observation.component[2]: Error in discriminator at Observation.component:SystolicBP.code.coding: slicing found",
+        "ERROR: Observation.component[1]: Error in discriminator at Observation.component:DiastolicBP.code.coding: slicing found",
+        "ERROR: Observation.component[2]: Error in discriminator at Observation.component:DiastolicBP.code.coding: slicing found"
+        ]        
+      },
+      "observation-bp.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "observation-bp-profile.xml", 
+          "errorCount": 0
+        }
+      }, 
+      "observation-bp-bad-onlydiastolic.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "observation-bp-profile.xml", 
+          "errorCount": 1,
+          "errors": [
+           "ERROR: Observation: Profile http://hl7.org/fhir/StructureDefinition/observation-bp-profile, Element 'Observation.component[SystolicBP]': minimum required = 1, but only found 0"
+          ] 
+        }
+      },      
       "observation-cholesterol-good.xml" : {
         "errorCount": 0
       }, 
