@@ -1,0 +1,10 @@
+{
+  "resourceType" : "Patient",
+  "name" : [{
+    "family" : "Brönnimann-Bertholet"
+  },
+  {
+    "given" : ["Elisabeth"]
+  }],
+  "gender" : "female"
+}

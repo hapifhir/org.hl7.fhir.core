@@ -1,0 +1,6 @@
+<fml-tests>
+ <test name="http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/qr2patassignment" source="qr.json" map="qr2pat-assignment.map" output="qr2pat-assignment-res.json" />
+ <test name="http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/qr2patgender" source="qr.json" map="qr2pat-gender.map" output="qr2pat-gender-res.json" />
+ <test name="http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/qr2pathumannametwice" source="qr.json" map="qr2pat-humannametwice.map" output="qr2pat-humannametwice-res.json" />
+ <test name="http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/qr2pathumannameshared" source="qr.json" map="qr2pat-humannameshared.map" output="qr2pat-humannameshared-res.json" />
+</fml-tests>
