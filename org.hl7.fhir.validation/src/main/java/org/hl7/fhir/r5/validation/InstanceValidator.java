@@ -2708,30 +2708,33 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throws DefinitionException {
     if (cc.hasText())
       throw new DefinitionException("Unsupported CodeableConcept pattern - using text - for discriminator(" + discriminator + ") for slice " + ed.getId());
-    if (!cc.hasCoding() || cc.getCoding().size() > 1)
-      throw new DefinitionException("Unsupported CodeableConcept pattern - must be just one coding - for discriminator(" + discriminator + ") for slice " + ed.getId());
-    Coding c = cc.getCodingFirstRep();
-    if (c.hasExtension() || cc.hasExtension())
+    if (!cc.hasCoding())
+      throw new DefinitionException("Unsupported CodeableConcept pattern - must have at least one coding - for discriminator(" + discriminator + ") for slice " + ed.getId());
+    if (cc.hasExtension())
       throw new DefinitionException("Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
-    expression.append(" and " + discriminator + ".coding.where(");
-    boolean first = true;
-    if (c.hasSystem()) {
-      first = false;
-      expression.append("system = '"+c.getSystem()+"'");
+    for(Coding c : cc.getCoding()) {
+      if (c.hasExtension())
+        throw new DefinitionException("Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
+      expression.append(" and " + discriminator + ".coding.where(");
+      boolean first = true;
+      if (c.hasSystem()) {
+        first = false;
+        expression.append("system = '"+c.getSystem()+"'");
+      }
+      if (c.hasVersion()) {
+        if (first) first = false; else expression.append(" and ");
+        expression.append("version = '"+c.getVersion()+"'");
+      }
+      if (c.hasCode()) {
+        if (first) first = false; else expression.append(" and ");
+        expression.append("code = '"+c.getCode()+"'");
+      }
+      if (c.hasDisplay()) {
+        if (first) first = false; else expression.append(" and ");
+        expression.append("display = '"+c.getDisplay()+"'");
+      }
+      expression.append(").exists()");
     }
-    if (c.hasVersion()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("version = '"+c.getVersion()+"'");
-    }
-    if (c.hasCode()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("code = '"+c.getCode()+"'");
-    }
-    if (c.hasDisplay()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("display = '"+c.getDisplay()+"'");
-    }
-    expression.append(").exists()");
   }
 
   private void buildFixedExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
