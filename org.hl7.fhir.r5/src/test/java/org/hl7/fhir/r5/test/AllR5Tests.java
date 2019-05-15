@@ -19,6 +19,6 @@ import org.junit.runners.Suite.SuiteClasses;
     ShexGeneratorTests.class,
     BaseDateTimeTypeTest.class,
     SnapShotGenerationTests.class})
-public class AllTests {
+public class AllR5Tests {
 
 }
