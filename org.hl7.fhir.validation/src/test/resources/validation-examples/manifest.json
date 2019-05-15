@@ -505,10 +505,7 @@
         "errorCount": 0,
         "profile" : {
           "source" : "observation-bp-profile-twocodesrequired.xml", 
-          "errorCount": 0,
-          "errors": [
-//           "ERROR: Observation: Profile http://hl7.org/fhir/StructureDefinition/observation-bp-profile, Element 'Observation.component[SystolicBP]': minimum required = 1, but only found 0"
-          ] 
+          "errorCount": 0
         }
       },      
       "observation-cholesterol-good.xml" : {
