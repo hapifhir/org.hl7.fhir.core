@@ -489,6 +489,20 @@
       "observation-cholesterol-bad-wrongcode.xml" : {
         "errorCount": 2,
         "errors": ["ERROR: Observation.code.coding.code: Value is '13457-7' but must be '35200-5'","ERROR: Observation.code.coding.display: Value is 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' but must be 'Cholesterol [Moles/?volume] in Serum or Plasma'"]
+      },
+      "observation-triglyceride-good.xml" : {
+        "warningCount": 1,
+        "errorCount": 0,
+        "warnings": ["WARNING: Observation.code.coding[1]: The display \"Triglyceride [Moles/​volume] in Serum or Plasma\" is not a valid display for the code {http://loinc.org}35217-9 - should be one of [\"Triglyceride [Mass or Moles/volume] in Serum or Plasma\",\"Trigl SerPl-msCnc\""]
+      }, 
+      "observation-triglyceride-good2.xml" : {
+        "warningCount": 1,
+        "errorCount": 0,
+        "warnings": ["WARNING: Observation.code.coding[2]: The display \"Triglyceride [Moles/​volume] in Serum or Plasma\" is not a valid display for the code {http://loinc.org}35217-9 - should be one of [\"Triglyceride [Mass or Moles/volume] in Serum or Plasma\",\"Trigl SerPl-msCnc\""]
+      },       
+      "observation-triglyceride-bad-wrongcode.xml" : {
+        "errorCount": 1,
+        "errors": ["ERROR: Observation.code: Expected patternCodeableConcept not found for system: http://loinc.org code: 35217-9 display: Triglyceride [Moles/​volume] in Serum or Plasma"]
       }
     }
 	}
