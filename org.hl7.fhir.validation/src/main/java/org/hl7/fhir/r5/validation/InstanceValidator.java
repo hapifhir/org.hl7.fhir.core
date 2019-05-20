@@ -4007,7 +4007,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
     }
     if (match) {
-      boolean isOk = ei.definition == null || ei.definition == slicer;
+      boolean isOk = ei.definition == null || ei.definition == slicer || (ei.definition.getPath().endsWith("[x]") && ed.getPath().startsWith(ei.definition.getPath().replace("[x]", "")));
       if (rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, isOk, "Profile " + profile.getUrl() + ", Element matches more than one slice - " + (ei.definition==null || !ei.definition.hasSliceName() ? "" : ei.definition.getSliceName()) + ", " + (ed.hasSliceName() ? ed.getSliceName() : ""))) {
         ei.definition = ed;
         if (ei.slice == null) {
