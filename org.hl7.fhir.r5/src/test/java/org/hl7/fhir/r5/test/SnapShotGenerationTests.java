@@ -301,6 +301,7 @@ public class SnapShotGenerationTests {
   private final TestScriptTestComponent test;
   private final String name;
   private SnapShotGenerationTestsContext context;
+  private List<ValidationMessage> messages;
 
   public SnapShotGenerationTests(String name, TestScriptTestComponent e, SnapShotGenerationTestsContext context) {
     this.name = name;
@@ -312,6 +313,7 @@ public class SnapShotGenerationTests {
   @Test
   public void test() throws FHIRException {
     try {
+      messages = new ArrayList<ValidationMessage>();
       for (Resource cr : context.tests.getContained()) {
         if (cr instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) cr;
@@ -344,7 +346,7 @@ public class SnapShotGenerationTests {
               StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
               StructureDefinition base = getSD(source.getBaseDefinition()); 
               StructureDefinition output = source.copy();
-              ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, new TestPKP());
+              ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
               pu.setIds(source, false);
               if ("sort=true".equals(op.getParams())) {
                 List<String> errors = new ArrayList<String>();
