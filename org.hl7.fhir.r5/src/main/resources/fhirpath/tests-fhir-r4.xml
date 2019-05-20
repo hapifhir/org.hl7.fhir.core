@@ -232,8 +232,8 @@
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate = @1974-12-25</expression><output type="boolean">true</output></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00</expression></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00-10:00</expression><output type="boolean">true</output></test>
-		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00+10:00</expression><output type="boolean">true</output></test>
-		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00Z</expression><output type="boolean">true</output></test>
+		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00+10:00</expression></test>
+		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @1974-12-25T12:34:00Z</expression></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @T12:14:15</expression><output type="boolean">true</output></test>
 		<test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate != @T12:14</expression><output type="boolean">true</output></test>
     <test name="testLiteralDate" inputfile="patient-example.xml"><expression>Patient.birthDate &lt; today()</expression><output type="boolean">true</output></test>
@@ -618,7 +618,7 @@
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 = @2012-04-16</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 = @2012-04-15T10:00:00</expression></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00 = @2012-04-15T10:00:00</expression><output type="boolean">false</output></test>
-		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00Z = @2012-04-15T10:00:00</expression></test>
+		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00Z = @2012-04-15T10:00:00</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00+02:00 = @2012-04-15T16:00:00+03:00</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>name = name</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2) = name.take(2).first() | name.take(2).last()</expression><output type="boolean">true</output></test>
@@ -641,7 +641,7 @@
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 != @2012-04-16</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15 != @2012-04-15T10:00:00</expression></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00 != @2012-04-15T10:00:00</expression><output type="boolean">true</output></test>
-		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00Z != @2012-04-15T10:00:00</expression></test>
+		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00Z != @2012-04-15T10:00:00</expression><output type="boolean">true</output></test>
 		<test inputfile="patient-example.xml"><expression>@2012-04-15T15:00:00+02:00 != @2012-04-15T16:00:00+03:00</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>name != name</expression><output type="boolean">false</output></test>
 		<test inputfile="patient-example.xml"><expression>name.take(2) != name.take(2).first() | name.take(2).last()</expression><output type="boolean">false</output></test>
