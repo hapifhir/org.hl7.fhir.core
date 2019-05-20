@@ -140,6 +140,10 @@
           "source" : "profile-patient-au.xml", 
           "errorCount": 0
         }
+      },
+      "medication-atc.json" : {
+        "errorCount": 1,
+        "allowed-extension-domain" : "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open"
       }
 		},
 		"Xml": {
@@ -297,7 +301,7 @@
         "errorCount": 1
       },
       "ccda-example.xml" : {
-        "use-test" : true,
+        "use-test" : false,
         "allowed-extension-domain" : "http://hl7.org/fhir/ccda/StructureDefinition/",
         "errorCount": 0,
         "profile" : {
@@ -306,7 +310,7 @@
         }
       },
       "ccda-example-bad.xml" : {
-        "use-test" : true,
+        "use-test" : false,
         "allowed-extension-domain" : "http://hl7.org/fhir/ccda/StructureDefinition/",
         "errorCount": 0,
         "profile" : {
@@ -398,7 +402,7 @@
       },
       "patient-conform-profile.xml" : {
         "errorCount": 0,
-        "warningCount": 1
+        "warningCount": 0
       },
       "patient-bad-gender.xml" : {
         "errorCount": 1,
