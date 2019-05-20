@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.json;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 /*-
  * #%L
@@ -82,6 +83,22 @@ public class JSONUtil {
         if (e instanceof JsonObject)
           res.add((JsonObject) e);
     return res;
+  }
+
+  public static void merge(JsonObject source, JsonObject target) {
+    for (Entry<String, JsonElement> pp : source.entrySet()) {
+      if (target.has(pp.getKey())) {
+        JsonElement te = target.get(pp.getKey());
+        if (te.isJsonObject() && pp.getValue().isJsonObject()) {
+          merge(te.getAsJsonObject(), pp.getValue().getAsJsonObject());
+        } else {
+          target.remove(pp.getKey());
+          target.add(pp.getKey(), pp.getValue());
+        }
+      } else {
+        target.add(pp.getKey(), pp.getValue());
+      }
+    }
   }
 
 }
