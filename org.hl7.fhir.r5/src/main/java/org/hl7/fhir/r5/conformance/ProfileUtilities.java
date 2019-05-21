@@ -3424,16 +3424,17 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
   
   // generate an Excel representation of the structure definition
-  public void generateXlsx(OutputStream dest, StructureDefinition structure, boolean asXml) throws IOException, DefinitionException, Exception {
+  public void generateXlsx(OutputStream dest, StructureDefinition structure, boolean asXml, boolean hideMustSupportFalse) throws IOException, DefinitionException, Exception {
     if (!structure.hasSnapshot())
       throw new DefinitionException("needs a snapshot");
 
-    XLSXWriter xlsx = new XLSXWriter(dest, structure, asXml);
+    XLSXWriter xlsx = new XLSXWriter(dest, structure, asXml, hideMustSupportFalse);
 
     for (ElementDefinition child : structure.getSnapshot().getElement()) {
       xlsx.processElement(child);
     }
     xlsx.dump();
+    xlsx.close();
   }
   
   private class Slicer extends ElementDefinitionSlicingComponent {
