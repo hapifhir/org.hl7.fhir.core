@@ -147,7 +147,6 @@
       }, 
       "bp.json" : {
         "errorCount": 0,
-        "warningCount": 1,
         "profile" : {
           "source" : "bp-profile.xml", 
           "errorCount": 0
