@@ -2,11 +2,11 @@ REM replace versions before running
 REM make sure you are committed
 
 @echo off
-echo
+echo ..
 echo =====================================================================
 echo upgrade and release fhir.core from 3.7.34-SNAPSHOT to 3.7.35-SNAPSHOT
 echo =====================================================================
-echo
+echo ..
 echo check versions and make sure committed...
 pause
 

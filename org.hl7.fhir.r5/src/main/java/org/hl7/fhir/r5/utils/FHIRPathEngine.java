@@ -4123,10 +4123,18 @@ public class FHIRPathEngine {
     ElementDefinition focus = null;
 
     if (expr.getKind() == Kind.Name) {
+      if (element.hasSlicing()) {
+        ElementDefinition slice = pickMandatorySlice(sd, element);
+        if (slice == null)
+          throw new DefinitionException("Error in discriminator at "+element.getId()+": found a sliced element while resolving the fixed value for one of the slices");
+        element = slice;
+      }
+      
       List<ElementDefinition> childDefinitions;
       childDefinitions = ProfileUtilities.getChildMap(sd, element);
       // if that's empty, get the children of the type
       if (childDefinitions.isEmpty()) {
+
         sd = fetchStructureByType(element);
         if (sd == null)
           throw new DefinitionException("Problem with use of resolve() - profile '"+element.getType().get(0).getProfile()+"' on "+element.getId()+" could not be resolved");
@@ -4181,9 +4189,20 @@ public class FHIRPathEngine {
       throw new DefinitionException("Unable to resolve discriminator");      
     else if (expr.getInner() == null)
       return focus;
-    else
+    else {
       return evaluateDefinition(expr.getInner(), sd, focus);
+    }
   }
+
+  private ElementDefinition pickMandatorySlice(StructureDefinition sd, ElementDefinition element) throws DefinitionException {
+    List<ElementDefinition> list = ProfileUtilities.getSliceList(sd, element);
+    for (ElementDefinition ed : list) {
+      if (ed.getMin() > 0)
+        return ed;
+    }
+    return null;
+  }
+
 
   private StructureDefinition fetchStructureByType(ElementDefinition ed) throws DefinitionException {
     if (ed.getType().size() == 0)
@@ -4192,8 +4211,6 @@ public class FHIRPathEngine {
       throw new DefinitionException("Error in discriminator at "+ed.getId()+": no children, multiple types");
     if (ed.getType().get(0).getProfile().size() > 1)
       throw new DefinitionException("Error in discriminator at "+ed.getId()+": no children, multiple type profiles");
-    if (ed.hasSlicing()) 
-      throw new DefinitionException("Error in discriminator at "+ed.getId()+": slicing found");
     if (ed.getType().get(0).hasProfile()) 
       return worker.fetchResource(StructureDefinition.class, ed.getType().get(0).getProfile().get(0).getValue());
     else
