@@ -2743,7 +2743,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       CodeableConcept cc = (CodeableConcept) fixed;
       buildCodeableConceptExpression(ed, expression, discriminator, cc);
     } else {
-      expression.append(" and (" + discriminator + " = ");
+      expression.append(" and (");
       if (fixed instanceof StringType) {
         Gson gson = new Gson();
         String json = gson.toJson((StringType)fixed);
@@ -2760,7 +2760,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         expression.append(((BooleanType)fixed).asStringValue());
       } else
         throw new DefinitionException("Unsupported fixed value type for discriminator(" + discriminator + ") for slice " + ed.getId() + ": " + fixed.getClass().getName());
-      expression.append(")");
+      expression.append(" in " + discriminator +")");
     }
   }
 
