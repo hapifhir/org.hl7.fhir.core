@@ -29,6 +29,9 @@
 			"group-choice-good.json": {
 				"errorCount": 0
 			},
+			"contained.json": {
+				"errorCount": 0
+			},
 			"group-minimal-tiny.json": {
 				"errorCount": 0
 			},
@@ -548,7 +551,17 @@
       "observation-triglyceride-bad-wrongcode.xml" : {
         "errorCount": 1,
         "errors": ["ERROR: Observation.code: Expected patternCodeableConcept not found for system: http://loinc.org code: 35217-9 display: Triglyceride [Moles/​volume] in Serum or Plasma"]
+      },
+      "slicing-example-uk.xml" : {
+        "version" : "3.0",
+        "errorCount": 13,
+        "allowed-extension-domains" : ["https://fhir.nhs.uk/STU3", "https://fhir.hl7.org.uk/STU3"],
+        "profile" : {
+          "source" : "slicing-example-uk.profile.xml", 
+          "errorCount": 16
+        }
       }
+      
     }
 	}
 }
