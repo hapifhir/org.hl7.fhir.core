@@ -560,8 +560,14 @@
           "source" : "slicing-example-uk.profile.xml", 
           "errorCount": 16
         }
+      },
+       "patient-contained-org.xml" : {
+        "errorCount": 0,
+        "profile" : {
+          "source" : "patient-contained-org-profile.xml", 
+          "errorCount": 1
+        }
       }
-      
     }
 	}
 }
