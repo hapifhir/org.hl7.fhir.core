@@ -128,6 +128,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     InstanceValidator val = ve.getValidator();
     if (content.has("allowed-extension-domain")) 
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
+    if (content.has("allowed-extension-domains"))
+      for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
+        val.getExtensionDomains().add(a.getAsString());
     val.setFetcher(this);
     if (content.has("questionnaire")) {
       ve.getContext().cacheResource(loadResource(TestUtilities.resourceNameToFile("validation-examples", content.get("questionnaire").getAsString()), v));

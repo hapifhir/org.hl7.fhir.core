@@ -1178,6 +1178,16 @@ public class Utilities {
     return list;
   }
 
+  public static void analyseStringDiffs(Set<String> source, Set<String> target, Set<String> missed, Set<String> extra) {
+    for (String s : source)
+      if (!target.contains(s))
+        missed.add(s);
+    for (String s : target)
+      if (!source.contains(s))
+        extra.add(s);
+    
+  }
+
 
 
 }
