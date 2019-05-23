@@ -560,8 +560,16 @@
           "source" : "slicing-example-uk.profile.xml", 
           "errorCount": 16
         }
+      },
+       "patient-translated-codes.xml" : {
+        "errorCount": 0,
+        "warningCount": 4,
+        "profile" : {
+          "source" : "patient-translated-codes.profile.xml", 
+          "errorCount": 0,
+          "warningCount": 0
+        }
       }
-      
     }
 	}
 }
