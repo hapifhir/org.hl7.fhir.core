@@ -392,11 +392,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!ok)
             errors.add(new ValidationMessage(Source.InstanceValidator, IssueType.UNKNOWN, path, "Profile mismatch on type for "+profile.getProfile()+": the profile constrains "+sd.getType()+" but the element is "+element.fhirType(), IssueSeverity.ERROR));
         } else 
-          addProfile(errors, profile.getProfile(), profile.isError(), path, element);          
+          addProfile(errors, profile.getProfile(), profile.isError(), path, element, sd);          
       }
     }
     
-    public boolean addProfile(List<ValidationMessage> errors, String profile, boolean error, String path, Element element) {
+    public boolean addProfile(List<ValidationMessage> errors, String profile, boolean error, String path, Element element, StructureDefinition containingProfile) {
       String effectiveProfile = profile;
       String version = null;
       if (profile.contains("|")) {
@@ -404,10 +404,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         version = profile.substring(profile.indexOf('|')+1);
       }
       StructureDefinition sd = null;
-      if (providedProfiles != null)
-        sd = providedProfiles.fetch(effectiveProfile);
-      if (sd == null)
-        sd = context.fetchResource(StructureDefinition.class, effectiveProfile);
+      if (profile.startsWith("#")) {
+        if (!rule(errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" is local, but there is not local context", profile)) {
+          return false;
+        }
+          
+        if (containingProfile.hasUserData("container"))
+          containingProfile = (StructureDefinition) containingProfile.getUserData("container");
+        sd = (StructureDefinition) containingProfile.getContained(profile);
+        if (sd != null)
+          sd.setUserData("container", containingProfile);
+      } else {
+        if (providedProfiles != null)
+          sd = providedProfiles.fetch(effectiveProfile);
+        if (sd == null)
+          sd = context.fetchResource(StructureDefinition.class, effectiveProfile);
+      }
       
       if (warningOrError(error, errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" could not be resolved", profile)) {
         if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, version==null || (sd.getVersion()!=null && sd.getVersion().equals(version)), 
@@ -1180,7 +1192,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String p = stack.addToLiteralPath("meta", "profile", ":" + Integer.toString(i));
         if (rule(errors, IssueType.INVALID, element.line(), element.col(), p, !Utilities.noString(ref), "StructureDefinition reference invalid")) {
           long t = System.nanoTime();
-          resourceProfiles.addProfile(errors, ref, errorForUnknownProfiles, p, element);
+          resourceProfiles.addProfile(errors, ref, errorForUnknownProfiles, p, element, null);
           i++;
         }
       }
@@ -1859,7 +1871,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 b.append(bt);
                 ok = bt.equals(ft);
                 if (ok && we!=null && pol.checkValid()) {
-                  doResourceProfile(hostContext, we, pr, errors, stack.push(we, -1, null, null), path, element);
+                  doResourceProfile(hostContext, we, pr, errors, stack.push(we, -1, null, null), path, element, profile);
                 }
               } else
                 ok = true; // suppress following check
@@ -1909,8 +1921,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void doResourceProfile(ValidatorHostContext hostContext, Element resource, String profile, List<ValidationMessage> errors, NodeStack stack, String path, Element element) throws FHIRException, IOException {
-    ResourceProfiles resourceProfiles = addResourceProfile(errors, resource, profile, path, element, stack);
+  private void doResourceProfile(ValidatorHostContext hostContext, Element resource, String profile, List<ValidationMessage> errors, NodeStack stack, String path, Element element, StructureDefinition containingProfile) throws FHIRException, IOException {
+    ResourceProfiles resourceProfiles = addResourceProfile(errors, resource, profile, path, element, stack, containingProfile);
     if (resourceProfiles.isProcessed()) {
       start(hostContext, errors, resource, resource, null, stack);
     }
@@ -1925,9 +1937,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return resourceProfiles;
   }
 
-  private ResourceProfiles addResourceProfile(List<ValidationMessage> errors, Element resource, String profile, String path, Element element, NodeStack stack) {
+  private ResourceProfiles addResourceProfile(List<ValidationMessage> errors, Element resource, String profile, String path, Element element, NodeStack stack, StructureDefinition containingProfile) {
     ResourceProfiles resourceProfiles = getResourceProfiles(resource, stack);
-    resourceProfiles.addProfile(errors, profile, errorForUnknownProfiles, path, element);
+    resourceProfiles.addProfile(errors, profile, errorForUnknownProfiles, path, element, containingProfile);
     return resourceProfiles;
   }
 
