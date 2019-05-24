@@ -800,8 +800,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public Resource fetchResourceById(String type, String uri) {
     synchronized (lock) {
       String[] parts = uri.split("\\/");
-      if (!Utilities.noString(type) && parts.length == 1)
-        return allResourcesById.get(type).get(parts[0]);
+      if (!Utilities.noString(type) && parts.length == 1) {
+        if (allResourcesById.containsKey(type))
+          return allResourcesById.get(type).get(parts[0]);
+        else
+          return null;
+      }
       if (parts.length >= 2) {
         if (!Utilities.noString(type))
           if (!type.equals(parts[parts.length-2])) 
