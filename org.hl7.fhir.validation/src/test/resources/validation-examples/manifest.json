@@ -561,12 +561,21 @@
           "errorCount": 16
         }
       },
-       "patient-contained-org.xml" : {
+      "patient-translated-codes.xml" : {
         "errorCount": 0,
+        "warningCount": 4,
         "profile" : {
-          "source" : "patient-contained-org-profile.xml", 
-          "errorCount": 1
-        }
+          "source" : "patient-translated-codes.profile.xml", 
+          "errorCount": 0,
+          "warningCount": 0
+      },
+      "patient-contained-org.xml" : {
+         "errorCount": 0,
+         "profile" : {
+           "source" : "patient-contained-org-profile.xml", 
+           "errorCount": 1
+         }
+        } 
       }
     }
 	}
