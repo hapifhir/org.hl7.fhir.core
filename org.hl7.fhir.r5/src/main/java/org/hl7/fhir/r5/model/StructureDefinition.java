@@ -3885,6 +3885,5 @@ public class StructureDefinition extends MetadataResource {
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_BASE = new ca.uhn.fhir.model.api.Include("StructureDefinition:base").toLocked();
 
-
 }
 
