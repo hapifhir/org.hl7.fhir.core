@@ -3369,7 +3369,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return "??Lang";
   }
  
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang) {
+  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
@@ -3417,7 +3417,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (c != null && 
         c.hasDefinitionElement()) {
       if (lang == null) {
-        td.addText(c.getDefinition());
+        if (hasMarkdownInDefinitions(cs))
+          addMarkdown(td, c.getDefinition());
+        else
+          td.addText(c.getDefinition());
       } else if (lang.equals("*")) {
         boolean sl = false;
         for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
@@ -3533,6 +3536,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return hasExtensions;
   }
 
+
+  private boolean hasMarkdownInDefinitions(CodeSystem cs) {
+    return ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
+  }
 
   private String makeAnchor(String codeSystem, String code) {
     String s = codeSystem+'-'+code;
