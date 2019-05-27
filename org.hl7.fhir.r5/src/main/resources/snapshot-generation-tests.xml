@@ -1997,6 +1997,7 @@
         <label value="test1-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2065,6 +2066,7 @@
         <label value="test2-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2106,6 +2108,7 @@
         <label value="test3-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2156,6 +2159,7 @@
         <label value="test4-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2188,6 +2192,7 @@
         <label value="test5-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2229,6 +2234,7 @@
         <label value="test6-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2270,6 +2276,7 @@
         <label value="test7-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2302,6 +2309,7 @@
         <label value="test8-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2343,6 +2351,7 @@
         <label value="test9-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2384,6 +2393,7 @@
         <label value="test10-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2461,6 +2471,7 @@
         <label value="test11-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2547,6 +2558,7 @@
         <label value="test12-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2624,6 +2636,7 @@
         <label value="test12a-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2692,6 +2705,7 @@
         <label value="test13-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2907,6 +2921,7 @@
         <label value="test14-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2938,6 +2953,7 @@
         <label value="test15-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -2969,6 +2985,7 @@
         <label value="test16-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3000,6 +3017,7 @@
         <label value="test17-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3086,6 +3104,7 @@
         <label value="test18-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3172,6 +3191,7 @@
         <label value="test19-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3240,6 +3260,7 @@
         <label value="test20-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3317,6 +3338,7 @@
         <label value="test21-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3385,6 +3407,7 @@
         <label value="test22-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3417,6 +3440,7 @@
         <label value="test23-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3460,6 +3484,7 @@
         <label value="test24-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3499,6 +3524,7 @@
         <label value="test25-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3531,6 +3557,7 @@
         <label value="test26-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3562,6 +3589,7 @@
         <label value="test27-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3604,6 +3632,7 @@
         <label value="test28-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3637,6 +3666,7 @@
         <label value="test29-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3679,6 +3709,7 @@
         <label value="test30-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3712,6 +3743,7 @@
         <label value="test31-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3745,6 +3777,7 @@
         <label value="test32-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3778,6 +3811,7 @@
         <label value="test33-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3811,6 +3845,7 @@
         <label value="test34-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3853,6 +3888,7 @@
         <label value="test35-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3895,6 +3931,7 @@
         <label value="test36-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
@@ -3953,6 +3990,7 @@
         <label value="test38-0"/>
         <description value="Snapshot must generate ok"/>
         <response value="okay"/>
+        <warningOnly value="false"/>
       </assert>
     </action>
     <action>
