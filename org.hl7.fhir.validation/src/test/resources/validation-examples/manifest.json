@@ -138,7 +138,7 @@
       }, 
       "patient-au-5.json" : {
         "errorCount": 0,
-        "warningCount": 0,
+        "warningCount": 1,
         "profile" : {
           "source" : "profile-patient-au.xml", 
           "errorCount": 0
@@ -563,7 +563,7 @@
       },
       "patient-translated-codes.xml" : {
         "errorCount": 0,
-        "warningCount": 4,
+        "warningCount": 2,
         "profile" : {
           "source" : "patient-translated-codes.profile.xml", 
           "errorCount": 0,

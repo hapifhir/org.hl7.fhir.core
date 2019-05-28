@@ -167,10 +167,12 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     }
     // also check to see if the value set has another display
     ConceptReferenceComponent vs = findValueSetRef(code.getSystem(), code.getCode());
-    if (vs != null && vs.hasDisplay()) {
-      b.append(vs.getDisplay());
-      if (code.getDisplay().equalsIgnoreCase(vs.getDisplay()))
-        return new ValidationResult(cc);
+    if (vs != null && (vs.hasDisplay() ||vs.hasDesignation())) {
+      if (vs.hasDisplay()) {
+        b.append(vs.getDisplay());
+        if (code.getDisplay().equalsIgnoreCase(vs.getDisplay()))
+          return new ValidationResult(cc);
+      }
       for (ConceptReferenceDesignationComponent ds : vs.getDesignation()) {
         b.append(ds.getValue());
         if (code.getDisplay().equalsIgnoreCase(ds.getValue()))
@@ -188,7 +190,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (system.equals(exp.getSystem()) && code.equals(exp.getCode())) {
         ConceptReferenceComponent cc = new ConceptReferenceComponent();
         cc.setDisplay(exp.getDisplay());
-        cc.setDesignation(cc.getDesignation());
+        cc.setDesignation(exp.getDesignation());
         return cc;
       }
     }
@@ -382,6 +384,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private boolean codeInConceptFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
     switch (f.getOp()) {
     case ISA: return codeInConceptIsAFilter(cs, f, code);
+    case ISNOTA: return !codeInConceptIsAFilter(cs, f, code);
     default:
       System.out.println("todo: handle concept filters with op = "+f.getOp()); 
       throw new FHIRException("Unable to handle system "+cs.getUrl()+" concept filter with op = "+f.getOp());
