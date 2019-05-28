@@ -821,14 +821,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // public API
-
-  private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display) throws TerminologyServiceException {
+  private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display, boolean checkDisplay) throws TerminologyServiceException {
     long t = System.nanoTime();
     boolean ss = context.supportsSystem(system);
     txTime = txTime + (System.nanoTime() - t);
     if (ss) {
       t = System.nanoTime();
-      ValidationResult s = context.validateCode(system, code, display);
+      ValidationResult s = context.validateCode(system, code, checkDisplay ? display : null);
       txTime = txTime + (System.nanoTime() - t);
       if (s == null)
         return true;
@@ -936,7 +935,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext)  {
+  private boolean checkCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext)  {
+    boolean res = true;
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
       if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing (cc)")) {
@@ -969,6 +969,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
                     ValidationResult vr = context.validateCode(cc, valueset);
+                    res = false;
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -1023,6 +1024,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+    return res;
   }
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc) {
@@ -1099,7 +1101,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".userSelected", focus.getNamedChild("userSelected"), fixed.getUserSelectedElement(), "userSelected", focus);
   }
 
-  private void checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept)  {
+  private void checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay)  {
     String code = element.getNamedChildValue("code");
     String system = element.getNamedChildValue("system");
     String display = element.getNamedChildValue("display");
@@ -1108,7 +1110,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (system != null && code != null && !noTerminologyChecks) {
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system (\""+system+"\")");
       try {
-        if (checkCode(errors, element, path, code, system, display))
+        if (checkCode(errors, element, path, code, system, display, checkDisplay))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing")) {
@@ -1237,7 +1239,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", allowedTypes.contains(actualType), "The Extension '" + url + "' definition allows for the types "+allowedTypes.toString()+" but found type "+actualType);
 
       // 3. is the content of the extension valid?
-      validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false);
+      validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true);
 
     }
     return ex;
@@ -2790,7 +2792,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(),
               "StructureDefinition has no snapshot - validation is against the snapshot, so it must be provided"))) {
         // Don't need to validate against the resource if there's a profile because the profile snapshot will include the relevant parts of the resources
-        validateElement(hostContext, errors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false);
+        validateElement(hostContext, errors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true);
       }
 
       // specific known special validations
@@ -2809,7 +2811,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 // todo: re-enable this when I can deal with the impact...   (GG)
 //      if (!profileUsage.getProfile().getType().equals(resource.fhirType()))
 //        throw new FHIRException("Profile type mismatch - resource is "+resource.fhirType()+", and profile is for "+profileUsage.getProfile().getType());
-      validateElement(hostContext, errors, profileUsage.getProfile(), profileUsage.getProfile().getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false);
+      validateElement(hostContext, errors, profileUsage.getProfile(), profileUsage.getProfile().getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true);
     }
   }
 
@@ -3632,7 +3634,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   // firstBase = ebase == null ? base : ebase;
 
   private void validateElement(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
-      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept) throws FHIRException, FHIRException, IOException {
+      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext) throws FHIRException, FHIRException, IOException {
     // element.markValidation(profile, definition);
 
     //		System.out.println("  "+stack.getLiteralPath()+" "+Long.toString((System.nanoTime() - time) / 1000000));
@@ -3877,6 +3879,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         String eiPath = ei.path;
         assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
         boolean thisIsCodeableConcept = false;
+        boolean checkDisplay = true;
 
         ei.element.markValidation(profile, ei.definition);
         if (type != null) {
@@ -3893,9 +3896,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (type.equals("Identifier")) {
             checkIdentifier(errors, ei.path, ei.element, ei.definition);
           } else if (type.equals("Coding")) {
-            checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept);
+            checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext);
           } else if (type.equals("CodeableConcept")) {
-            checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition);
+            checkDisplay = checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition);
             thisIsCodeableConcept = true;
           } else if (type.equals("Reference")) {
             checkReference(hostContext, errors, ei.path, ei.element, profile, ei.definition, actualType, localStack);
@@ -3908,7 +3911,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           } 
         } else {
           if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
-            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false);
+            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true);
         }
         StructureDefinition p = null;
         boolean elementValidated = false;
@@ -3948,7 +3951,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             p = this.context.fetchResource(StructureDefinition.class, typeProfile);
             if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + typeProfile)) {
               List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
-              validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept);
+              validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
               boolean hasError = false;
               for (ValidationMessage msg : profileErrors) {
                 if (msg.getLevel()==ValidationMessage.IssueSeverity.ERROR || msg.getLevel()==ValidationMessage.IssueSeverity.FATAL) {
@@ -3978,13 +3981,13 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
         if (p!=null) {
           if (!elementValidated) {
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept);
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
           }
           int index = profile.getSnapshot().getElement().indexOf(ei.definition);
           if (index < profile.getSnapshot().getElement().size() - 1) {
             String nextPath = profile.getSnapshot().getElement().get(index+1).getPath();
             if (!nextPath.equals(ei.definition.getPath()) && nextPath.startsWith(ei.definition.getPath()))
-              validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept);
+              validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
           }
         }
       }
