@@ -837,7 +837,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
         return true;
       }
-      if (s.getErrorClass().isInfrastructure())
+      if (s.getErrorClass() != null && s.getErrorClass().isInfrastructure())
         txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
       else if (s.getSeverity() == IssueSeverity.INFORMATION)
         txHint(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
@@ -898,8 +898,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
   
-  private void checkCodeableConcept(List<ValidationMessage> errors, String path, Element focus, CodeableConcept fixed,
-      boolean pattern) {
+  private void checkCodeableConcept(List<ValidationMessage> errors, String path, Element focus, CodeableConcept fixed, boolean pattern) {
     checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus);
     List<Element> codings = new ArrayList<Element>();
     focus.getNamedChildren("coding", codings);

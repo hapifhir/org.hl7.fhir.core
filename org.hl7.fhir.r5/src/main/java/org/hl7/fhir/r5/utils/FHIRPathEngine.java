@@ -4130,20 +4130,24 @@ public class FHIRPathEngine {
         element = slice;
       }
       
-      List<ElementDefinition> childDefinitions;
-      childDefinitions = ProfileUtilities.getChildMap(sd, element);
-      // if that's empty, get the children of the type
-      if (childDefinitions.isEmpty()) {
+      if (expr.getName().equals("$this")) {
+        focus = element;
+      } else { 
+        List<ElementDefinition> childDefinitions;
+        childDefinitions = ProfileUtilities.getChildMap(sd, element);
+        // if that's empty, get the children of the type
+        if (childDefinitions.isEmpty()) {
 
-        sd = fetchStructureByType(element);
-        if (sd == null)
-          throw new DefinitionException("Problem with use of resolve() - profile '"+element.getType().get(0).getProfile()+"' on "+element.getId()+" could not be resolved");
-        childDefinitions = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
-      }
-      for (ElementDefinition t : childDefinitions) {
-        if (tailMatches(t, expr.getName())) {
-          focus = t;
-          break;
+          sd = fetchStructureByType(element);
+          if (sd == null)
+            throw new DefinitionException("Problem with use of resolve() - profile '"+element.getType().get(0).getProfile()+"' on "+element.getId()+" could not be resolved");
+          childDefinitions = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
+        }
+        for (ElementDefinition t : childDefinitions) {
+          if (tailMatches(t, expr.getName())) {
+            focus = t;
+            break;
+          }
         }
       }
     } else if (expr.getKind() == Kind.Function) {
@@ -4186,7 +4190,7 @@ public class FHIRPathEngine {
     }
 
     if (focus == null)
-      throw new DefinitionException("Unable to resolve discriminator");      
+      throw new DefinitionException("Unable to resolve discriminator: "+expr.toString());      
     else if (expr.getInner() == null)
       return focus;
     else {

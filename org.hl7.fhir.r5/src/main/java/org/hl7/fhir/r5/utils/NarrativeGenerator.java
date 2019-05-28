@@ -4230,11 +4230,11 @@ public class NarrativeGenerator implements INarrativeGenerator {
       boolean hasHistory = false;
       boolean hasUpdates = false;
       for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
-        hasVRead = hasOp(r, TypeRestfulInteraction.VREAD);
-        hasPatch = hasOp(r, TypeRestfulInteraction.PATCH);
-        hasDelete = hasOp(r, TypeRestfulInteraction.DELETE);
-        hasHistory = hasOp(r, TypeRestfulInteraction.HISTORYTYPE);
-        hasUpdates = hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE);
+        hasVRead = hasVRead || hasOp(r, TypeRestfulInteraction.VREAD);
+        hasPatch = hasPatch || hasOp(r, TypeRestfulInteraction.PATCH);
+        hasDelete = hasDelete || hasOp(r, TypeRestfulInteraction.DELETE);
+        hasHistory = hasHistory || hasOp(r, TypeRestfulInteraction.HISTORYTYPE);
+        hasUpdates = hasUpdates || hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE);
       }
       
       t = x.table(null);
