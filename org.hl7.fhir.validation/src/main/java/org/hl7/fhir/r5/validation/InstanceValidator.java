@@ -2712,9 +2712,48 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Type pattern = criteriaElement.getPattern();
     if (pattern instanceof CodeableConcept) {
       CodeableConcept cc = (CodeableConcept) pattern;
+      expression.append(" and ");
       buildCodeableConceptExpression(ed, expression, discriminator, cc);
+    } else if (pattern instanceof Identifier) {
+    	Identifier ii = (Identifier) pattern;
+    	expression.append(" and ");
+    	buildIdentifierExpression(ed, expression, discriminator, ii);
     } else
       throw new DefinitionException("Unsupported fixed pattern type for discriminator(" + discriminator + ") for slice " + ed.getId() + ": " + pattern.getClass().getName());
+  }
+  
+  private void buildIdentifierExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Identifier ii)
+      throws DefinitionException {
+    if (ii.hasExtension())
+      throw new DefinitionException("Unsupported Identifier pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
+    boolean first = true;
+    expression.append(discriminator + ".where(");
+    if (ii.hasSystem()) {
+      first = false;
+      expression.append("system = '"+ii.getSystem()+"'");
+    }
+    if (ii.hasValue()) {
+      if (first) 
+        first = false; 
+      else 
+        expression.append(" and ");
+      expression.append("value = '"+ii.getValue()+"'");
+    }
+    if (ii.hasUse()) {
+      if (first) 
+        first = false; 
+       else 
+         expression.append(" and ");
+      expression.append("use = '"+ii.getUse()+"'");
+    }
+    if (ii.hasType()) {
+      if (first) 
+        first = false;
+      else 
+        expression.append(" and ");
+      buildCodeableConceptExpression(ed, expression, "type", ii.getType());
+    }
+    expression.append(").exists()");
   }
 
   private void buildCodeableConceptExpression(ElementDefinition ed, StringBuilder expression, String discriminator, CodeableConcept cc)
@@ -2725,10 +2764,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new DefinitionException("Unsupported CodeableConcept pattern - must have at least one coding - for discriminator(" + discriminator + ") for slice " + ed.getId());
     if (cc.hasExtension())
       throw new DefinitionException("Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
+    boolean firstCoding = true;
     for(Coding c : cc.getCoding()) {
       if (c.hasExtension())
         throw new DefinitionException("Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
-      expression.append(" and " + discriminator + ".coding.where(");
+      if (firstCoding) firstCoding = false; else expression.append(" and ");
+      expression.append(discriminator + ".coding.where(");
       boolean first = true;
       if (c.hasSystem()) {
         first = false;
@@ -2754,7 +2795,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Type fixed = criteriaElement.getFixed();
     if (fixed instanceof CodeableConcept) {
       CodeableConcept cc = (CodeableConcept) fixed;
+      expression.append(" and ");
       buildCodeableConceptExpression(ed, expression, discriminator, cc);
+    } else if (fixed instanceof Identifier) {
+      Identifier ii = (Identifier) fixed;
+      expression.append(" and ");
+      buildIdentifierExpression(ed, expression, discriminator, ii);
     } else {
       expression.append(" and (");
       if (fixed instanceof StringType) {
