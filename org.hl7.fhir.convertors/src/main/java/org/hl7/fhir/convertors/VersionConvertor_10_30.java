@@ -5789,8 +5789,8 @@ public class VersionConvertor_10_30 {
     tgt.setEffective(convertType(src.getEffective()));
     tgt.setIssued(src.getIssued());
 //    tgt.setPerformer(convertReference(src.getPerformer()));
-//    for (org.hl7.fhir.dstu2.model.Reference t : src.getRequest())
-//      tgt.addRequest(convertReference(t));
+    for (org.hl7.fhir.dstu2.model.Reference t : src.getRequest())
+      tgt.addBasedOn(convertReference(t));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getSpecimen())
       tgt.addSpecimen(convertReference(t));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getResult())
@@ -5822,8 +5822,8 @@ public class VersionConvertor_10_30 {
     tgt.setEffective(convertType(src.getEffective()));
     tgt.setIssued(src.getIssued());
 //    tgt.setPerformer(convertReference(src.getPerformer()));
-//    for (org.hl7.fhir.dstu3.model.Reference t : src.getRequest())
-//      tgt.addRequest(convertReference(t));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn())
+      tgt.addRequest(convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSpecimen())
       tgt.addSpecimen(convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getResult())
