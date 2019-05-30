@@ -569,7 +569,7 @@ public class Utilities {
     for(String arg: args) {
       if (!d)
         d = !noString(arg);
-      else if (!s.toString().endsWith("/"))
+      else if (!s.toString().endsWith("/") && !arg.startsWith("/"))
         s.append("/");
       s.append(arg);
     }

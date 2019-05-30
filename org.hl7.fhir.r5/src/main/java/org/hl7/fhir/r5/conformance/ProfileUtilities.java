@@ -3304,7 +3304,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         p = Utilities.uncapitalize(p);
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, sdNs(p));
       if (sd == null)
-        throw new Error("Unable to find profile "+p);
+        throw new Error("Unable to find profile '"+p+"' at "+ed.getId());
       ccmp = new ElementDefinitionComparer(false, sd.getSnapshot().getElement(), p, child.getSelf().getPath().length(), cmp.name);
     } else if (child.getSelf().hasType() && child.getSelf().getType().get(0).getCode().equals("Reference")) {
       for (TypeRefComponent t: child.getSelf().getType()) {
