@@ -327,12 +327,14 @@ public class TerminologyCache {
           NamedCache nc = new NamedCache();
           nc.name = title;
           caches.put(title, nc);
+          System.out.print(" - load "+title+".cache");
           String src = TextFile.fileToString(Utilities.path(folder, fn));
           if (src.startsWith("?"))
             src = src.substring(1);
           int i = src.indexOf(ENTRY_MARKER); 
           while (i > -1) {
             String s = src.substring(0, i);
+            System.out.print(".");
             src = src.substring(i+ENTRY_MARKER.length()+1);
             i = src.indexOf(ENTRY_MARKER);
             if (!Utilities.noString(s)) {
@@ -360,6 +362,7 @@ public class TerminologyCache {
               nc.list.add(ce);
             }
           }        
+          System.out.println("done");
         } catch (Exception e) {
           throw new FHIRException("Error loading "+fn+": "+e.getMessage(), e);
         }
