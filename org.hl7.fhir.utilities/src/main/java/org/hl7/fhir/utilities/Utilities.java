@@ -310,19 +310,25 @@ public class Utilities {
     return s.toString();
   }
 
-  public static void clearDirectory(String folder) throws IOException {
+  public static void clearDirectory(String folder, String... exemptions) throws IOException {
     File dir = new File(folder);
-    if (dir.exists())
-      FileUtils.cleanDirectory(dir);
-//	  String[] files = new CSFile(folder).list();
-//	  if (files != null) {
-//		  for (String f : files) {
-//			  File fh = new CSFile(folder+File.separatorChar+f);
-//			  if (fh.isDirectory()) 
-//				  clearDirectory(fh.getAbsolutePath());
-//			  fh.delete();
-//		  }
-//	  }
+    if (dir.exists()) {
+      if (exemptions.length == 0)
+        FileUtils.cleanDirectory(dir);
+      else {
+        String[] files = new CSFile(folder).list();
+        if (files != null) {
+          for (String f : files) {
+            if (!existsInList(f, exemptions)) {
+              File fh = new CSFile(folder+File.separatorChar+f);
+              if (fh.isDirectory()) 
+                clearDirectory(fh.getAbsolutePath());
+              fh.delete();
+            }
+          }
+        }
+      }
+    }
   }
 
   public static File createDirectory(String path) throws IOException{
