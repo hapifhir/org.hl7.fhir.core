@@ -490,7 +490,7 @@ public class ValidationEngine {
   private Map<String, byte[]> scanDirectory(File f) throws FileNotFoundException, IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (File ff : f.listFiles()) {
-      if (!isIgnoreFile(ff)) {
+      if (!isIgnoreFile(ff) && !ff.isDirectory()) {
       FhirFormat fmt = checkIsResource(ff.getAbsolutePath());
       if (fmt != null) {
         res.put(Utilities.changeFileExt(ff.getName(), "."+fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
@@ -502,7 +502,8 @@ public class ValidationEngine {
 
 
   private boolean isIgnoreFile(File ff) {
-    return Utilities.existsInList(ff.getName(), ".DS_Store");
+    return Utilities.existsInList(ff.getName(), ".DS_Store") || Utilities.existsInList(Utilities.getFileExtension(ff.getName()), ".md", ".css", ".js", ".png", ".gif", ".jpg", ".html", ".tgz", ".pack", ".zip");
+    
   }
 
   private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FileNotFoundException, IOException {
