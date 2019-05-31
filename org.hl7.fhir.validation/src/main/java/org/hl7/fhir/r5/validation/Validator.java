@@ -9,9 +9,9 @@ package org.hl7.fhir.r5.validation;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,27 +23,27 @@ package org.hl7.fhir.r5.validation;
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification, 
+Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
- * Redistributions of source code must retain the above copyright notice, this 
+ * Redistributions of source code must retain the above copyright notice, this
    list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, 
-   this list of conditions and the following disclaimer in the documentation 
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
- * Neither the name of HL7 nor the names of its contributors may be used to 
-   endorse or promote products derived from this software without specific 
+ * Neither the name of HL7 nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific
    prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 */
@@ -62,8 +62,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.conformance.ProfileComparer;
+import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Constants;
@@ -80,14 +82,14 @@ import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 /**
- * A executable class that will validate one or more FHIR resources against 
+ * A executable class that will validate one or more FHIR resources against
  * the specification
- * 
+ *
  * todo: schema validation (w3c xml, json schema, shex?)
- * 
- * if you want to host validation inside a process, skip this class, and look at 
+ *
+ * if you want to host validation inside a process, skip this class, and look at
  * ValidationEngine
- * 
+ *
  * todo: find a gome for this:
 
  * @author Grahame
@@ -194,7 +196,7 @@ public class Validator {
       System.out.println(" -snapshot");
       System.out.println("");
       System.out.println("-snapshot requires the parameters -defn, -txserver, -source, and -output. ig may be used to provide necessary base profiles");
-    } else if (hasParam(args, "-compare")) { 
+    } else if (hasParam(args, "-compare")) {
       String dest =  getParam(args, "-dest");
       if (dest == null)
         System.out.println("no -dest parameter provided");
@@ -245,12 +247,12 @@ public class Validator {
           }
         }
       }
-    } else { 
+    } else {
       System.out.print("Arguments:");
-      for (String s : args) 
+      for (String s : args)
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
       System.out.println();
-        
+
       String definitions = "hl7.fhir.core#current";
       String map = null;
       List<String> igs = new ArrayList<String>();
@@ -299,7 +301,7 @@ public class Validator {
             i++;
             if (i+1 == args.length)
               throw new Error("Specified -profile with @ without indicating profile location");
-            else 
+            else
               locations.put(p, args[++i]);
           }
         } else if (args[i].equals("-questionnaire"))
@@ -360,7 +362,7 @@ public class Validator {
         }
       if  (sources.isEmpty())
         throw new Exception("Must provide at least one source file");
-      
+
       // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
       System.out.println("  .. connect to tx server @ "+txServer);
       System.out.println("  .. definitions from "+definitions);
@@ -377,7 +379,13 @@ public class Validator {
       validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
 
-      XmlParser x = new XmlParser();
+      IParser x;
+      if (output != null && output.endsWith(".json"))
+        x = new JsonParser();
+      else
+        x = new XmlParser();
+      x.setOutputStyle(OutputStyle.PRETTY);
+
       if (mode == EngineMode.TRANSFORM) {
         if  (sources.size() > 1)
           throw new Exception("Can only have one source when doing a transform (found "+sources+")");
@@ -391,8 +399,7 @@ public class Validator {
           System.out.println(" ...success");
           if (output != null) {
             FileOutputStream s = new FileOutputStream(output);
-            x.setOutputStyle(OutputStyle.PRETTY);
-            x.compose(s, r, true);
+            x.compose(s, r);
             s.close();
           }
         } catch (Exception e) {
@@ -434,7 +441,7 @@ public class Validator {
             displayOO((OperationOutcome)r);
         } else {
           FileOutputStream s = new FileOutputStream(output);
-          x.compose(s, r, true);
+          x.compose(s, r);
           s.close();
         }
       }
@@ -496,7 +503,7 @@ public class Validator {
       else
         info++;
     }
-    
+
     System.out.println((error==0?"Success...":"*FAILURE* ")+ "validating "+file+": "+" error:"+Integer.toString(error)+" warn:"+Integer.toString(warn)+" info:"+Integer.toString(info));
     for (OperationOutcomeIssueComponent issue : oo.getIssue()) {
       System.out.println(getIssueSummary(issue));
@@ -507,7 +514,7 @@ public class Validator {
   private static String getIssueSummary(OperationOutcomeIssueComponent issue) {
     return "  " + issue.getSeverity().getDisplay() + " @ " + issue.getLocation().get(0).asStringValue() + " : " + issue.getDetails().getText();
   }
- 
+
 
   private static boolean hasParam(String[] args, String param) {
     for (String a : args)
