@@ -138,7 +138,7 @@ public class Validator {
       System.out.println("-version [ver]: The FHIR version to use. This can only appear once. ");
       System.out.println("    valid values 1.0 | 1.4 | 3.0 | "+Constants.VERSION.substring(0, 3)+" or 1.0.2 | 1.4.0 | 3.0.1 | "+Constants.VERSION);
       System.out.println("    Default value is  "+Constants.VERSION.substring(0, 3));
-      System.out.println("-ig [package|file|url]: an IG or profile definition to load. Can be ");
+      System.out.println("-ig [package|file|folder|url]: an IG or profile definition to load. Can be ");
       System.out.println("     the URL of an implementation guide or a package ([id]-[ver]) for");
       System.out.println("     a built implementation guide or a local folder that contains a");
       System.out.println("     set of conformance resources.");
