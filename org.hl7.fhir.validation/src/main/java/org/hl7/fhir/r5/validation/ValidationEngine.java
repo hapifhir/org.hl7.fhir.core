@@ -502,7 +502,7 @@ public class ValidationEngine {
 
 
   private boolean isIgnoreFile(File ff) {
-    return Utilities.existsInList(ff.getName(), ".DS_Store") || Utilities.existsInList(Utilities.getFileExtension(ff.getName()), ".md", ".css", ".js", ".png", ".gif", ".jpg", ".html", ".tgz", ".pack", ".zip");
+    return Utilities.existsInList(ff.getName(), ".DS_Store") || Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
     
   }
 
