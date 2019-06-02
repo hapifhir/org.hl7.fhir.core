@@ -484,6 +484,8 @@ public class Validator {
   private static void handleOutputToStream(Resource r, String output, OutputStream s) throws IOException {
     if (output.endsWith(".html") || output.endsWith(".htm") && r instanceof DomainResource)
       new XhtmlComposer(XhtmlComposer.HTML, true).compose(s, ((DomainResource) r).getText().getDiv());
+    else if (output.endsWith(".json"))
+        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(s, r);
     else
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, r);
     s.close();
