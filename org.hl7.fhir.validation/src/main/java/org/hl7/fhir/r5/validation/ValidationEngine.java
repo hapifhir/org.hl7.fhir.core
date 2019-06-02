@@ -747,7 +747,7 @@ public class ValidationEngine {
 	}
 
   private boolean exemptFile(String fn) {
-    return Utilities.existsInList(fn, "spec.internals", "version.info", "schematron.zip");
+    return Utilities.existsInList(fn, "spec.internals", "version.info", "schematron.zip", "package.json");
   }
 
   private String readInfoVersion(byte[] bs) throws IOException {
