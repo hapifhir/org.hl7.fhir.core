@@ -1162,12 +1162,13 @@ public class Utilities {
   }
 
   public static String extractBaseUrl(String url) {
-    if (url.contains("/"))
+	if (url == null)
+		return null;
+	else if (url.contains("/"))
       return url.substring(0,  url.lastIndexOf("/"));
     else
       return url;
-          
-  }
+	}
 
   public static String listCanonicalUrls(Set<String> keys) {
     return keys.toString();
