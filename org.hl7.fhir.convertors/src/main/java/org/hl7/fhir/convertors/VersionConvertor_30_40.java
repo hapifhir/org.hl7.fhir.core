@@ -200,6 +200,24 @@ public class VersionConvertor_30_40 {
     return tgt;
   }
 
+  public static org.hl7.fhir.r4.model.InstantType convertDateTimeToInstant(org.hl7.fhir.dstu3.model.DateTimeType src) throws FHIRException {
+    org.hl7.fhir.r4.model.InstantType tgt = new org.hl7.fhir.r4.model.InstantType(src.getValueAsString());
+    copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.DateTimeType convertInstantToDateTime(org.hl7.fhir.dstu3.model.InstantType src) throws FHIRException {
+    org.hl7.fhir.r4.model.DateTimeType tgt = new org.hl7.fhir.r4.model.DateTimeType(src.getValueAsString());
+    copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.DateTimeType convertInstantToDateTime(org.hl7.fhir.r4.model.InstantType src) throws FHIRException {
+    org.hl7.fhir.dstu3.model.DateTimeType tgt = new org.hl7.fhir.dstu3.model.DateTimeType(src.getValueAsString());
+    copyElement(src, tgt);
+    return tgt;
+  }
+
   public static org.hl7.fhir.r4.model.DecimalType convertDecimal(org.hl7.fhir.dstu3.model.DecimalType src) throws FHIRException {
     org.hl7.fhir.r4.model.DecimalType tgt = new org.hl7.fhir.r4.model.DecimalType(src.getValue());
     copyElement(src, tgt);
@@ -452,7 +470,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAuthor())
       tgt.setAuthor(convertType(src.getAuthor()));
     if (src.hasTime())
-      tgt.setTime(src.getTime());
+      tgt.setTimeElement(convertDateTime(src.getTimeElement()));
     if (src.hasText())
       tgt.setText(src.getText());
     return tgt;
@@ -466,7 +484,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAuthor())
       tgt.setAuthor(convertType(src.getAuthor()));
     if (src.hasTime())
-      tgt.setTime(src.getTime());
+      tgt.setTimeElement(convertDateTime(src.getTimeElement()));
     if (src.hasText())
       tgt.setText(src.getText());
     return tgt;
@@ -789,9 +807,9 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.Period tgt = new org.hl7.fhir.r4.model.Period();
     copyElement(src, tgt);
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertDateTime(src.getStartElement()));
     if (src.hasEnd())
-      tgt.setEnd(src.getEnd());
+      tgt.setEndElement(convertDateTime(src.getEndElement()));
     return tgt;
   }
 
@@ -801,9 +819,9 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.dstu3.model.Period tgt = new org.hl7.fhir.dstu3.model.Period();
     copyElement(src, tgt);
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertDateTime(src.getStartElement()));
     if (src.hasEnd())
-      tgt.setEnd(src.getEnd());
+      tgt.setEndElement(convertDateTime(src.getEndElement()));
     return tgt;
   }
 
@@ -2092,7 +2110,7 @@ public class VersionConvertor_30_40 {
     if (src.hasVersionId())
       tgt.setVersionId(src.getVersionId());
     if (src.hasLastUpdated())
-      tgt.setLastUpdated(src.getLastUpdated());
+      tgt.setLastUpdatedElement(convertInstant(src.getLastUpdatedElement()));
     for (org.hl7.fhir.dstu3.model.UriType t : src.getProfile())
       tgt.addProfile(t.getValue());
     for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurity())
@@ -2110,7 +2128,7 @@ public class VersionConvertor_30_40 {
     if (src.hasVersionId())
       tgt.setVersionId(src.getVersionId());
     if (src.hasLastUpdated())
-      tgt.setLastUpdated(src.getLastUpdated());
+      tgt.setLastUpdatedElement(convertInstant(src.getLastUpdatedElement()));
     for (org.hl7.fhir.r4.model.UriType t : src.getProfile())
       tgt.addProfile(t.getValue());
     for (org.hl7.fhir.r4.model.Coding t : src.getSecurity())
@@ -3030,8 +3048,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasDescription())
@@ -3041,9 +3059,9 @@ public class VersionConvertor_30_40 {
     if (src.hasUsage())
       tgt.setUsage(src.getUsage());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext())
@@ -3118,8 +3136,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasDescription())
@@ -3129,9 +3147,9 @@ public class VersionConvertor_30_40 {
     if (src.hasUsage())
       tgt.setUsage(src.getUsage());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext())
@@ -3370,13 +3388,13 @@ public class VersionConvertor_30_40 {
     if (src.hasOnset())
       tgt.setOnset(convertType(src.getOnset()));
     if (src.hasAssertedDate())
-      tgt.setRecordedDate(src.getAssertedDate());
+      tgt.setRecordedDateElement(convertDateTime(src.getAssertedDateElement()));
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
     if (src.hasAsserter())
       tgt.setAsserter(convertReference(src.getAsserter()));
     if (src.hasLastOccurrence())
-      tgt.setLastOccurrence(src.getLastOccurrence());
+      tgt.setLastOccurrenceElement(convertDateTime(src.getLastOccurrenceElement()));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent t : src.getReaction())
@@ -3414,7 +3432,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAsserter())
       tgt.setAsserter(convertReference(src.getAsserter()));
     if (src.hasLastOccurrence())
-      tgt.setLastOccurrence(src.getLastOccurrence());
+      tgt.setLastOccurrenceElement(convertDateTime(src.getLastOccurrenceElement()));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent t : src.getReaction())
@@ -3549,7 +3567,7 @@ public class VersionConvertor_30_40 {
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasOnset())
-      tgt.setOnset(src.getOnset());
+      tgt.setOnsetElement(convertDateTime(src.getOnsetElement()));
     if (src.hasSeverity())
       tgt.setSeverity(convertAllergyIntoleranceSeverity(src.getSeverity()));
     if (src.hasExposureRoute())
@@ -3571,7 +3589,7 @@ public class VersionConvertor_30_40 {
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasOnset())
-      tgt.setOnset(src.getOnset());
+      tgt.setOnsetElement(convertDateTime(src.getOnsetElement()));
     if (src.hasSeverity())
       tgt.setSeverity(convertAllergyIntoleranceSeverity(src.getSeverity()));
     if (src.hasExposureRoute())
@@ -3631,7 +3649,7 @@ public class VersionConvertor_30_40 {
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertInstant(src.getStartElement()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     if (src.hasMinutesDuration())
@@ -3639,7 +3657,7 @@ public class VersionConvertor_30_40 {
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSlot())
       tgt.addSlot(convertReference(t));
     if (src.hasCreated())
-      tgt.setCreated(src.getCreated());
+      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
     if (src.hasComment())
       tgt.setComment(src.getComment());
     for (org.hl7.fhir.dstu3.model.Reference t : src.getIncomingReferral())
@@ -3679,7 +3697,7 @@ public class VersionConvertor_30_40 {
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertInstant(src.getStartElement()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     if (src.hasMinutesDuration())
@@ -3687,7 +3705,7 @@ public class VersionConvertor_30_40 {
     for (org.hl7.fhir.r4.model.Reference t : src.getSlot())
       tgt.addSlot(convertReference(t));
     if (src.hasCreated())
-      tgt.setCreated(src.getCreated());
+      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
     if (src.hasComment())
       tgt.setComment(src.getComment());
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
@@ -3819,7 +3837,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAppointment())
       tgt.setAppointment(convertReference(src.getAppointment()));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertInstant(src.getStartElement()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType())
@@ -3843,7 +3861,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAppointment())
       tgt.setAppointment(convertReference(src.getAppointment()));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertInstant(src.getStartElement()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType())
@@ -3893,7 +3911,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAction())
       tgt.setAction(convertAuditEventAction(src.getAction()));
     if (src.hasRecorded())
-      tgt.setRecorded(src.getRecorded());
+      tgt.setRecordedElement(convertInstant(src.getRecordedElement()));
     if (src.hasOutcome())
       tgt.setOutcome(convertAuditEventOutcome(src.getOutcome()));
     if (src.hasOutcomeDesc())
@@ -3921,7 +3939,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAction())
       tgt.setAction(convertAuditEventAction(src.getAction()));
     if (src.hasRecorded())
-      tgt.setRecorded(src.getRecorded());
+      tgt.setRecordedElement(convertInstant(src.getRecordedElement()));
     if (src.hasOutcome())
       tgt.setOutcome(convertAuditEventOutcome(src.getOutcome()));
     if (src.hasOutcomeDesc())
@@ -4223,7 +4241,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setCreated(src.getCreated());
+      tgt.setCreatedElement(convertDate(src.getCreatedElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
     return tgt;
@@ -4241,7 +4259,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setCreated(src.getCreated());
+      tgt.setCreatedElement(convertDate(src.getCreatedElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
     return tgt;
@@ -4579,7 +4597,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEtag())
       tgt.setEtag(src.getEtag());
     if (src.hasLastModified())
-      tgt.setLastModified(src.getLastModified());
+      tgt.setLastModifiedElement(convertInstant(src.getLastModifiedElement()));
     if (src.hasOutcome())
       tgt.setOutcome(convertResource(src.getOutcome(), false));
     return tgt;
@@ -4597,7 +4615,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEtag())
       tgt.setEtag(src.getEtag());
     if (src.hasLastModified())
-      tgt.setLastModified(src.getLastModified());
+      tgt.setLastModifiedElement(convertInstant(src.getLastModifiedElement()));
     if (src.hasOutcome())
       tgt.setOutcome(convertResource(src.getOutcome(), false));
     return tgt;
@@ -4620,8 +4638,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -4683,8 +4701,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -4786,7 +4804,7 @@ public class VersionConvertor_30_40 {
     if (src.hasVersion())
       tgt.setVersion(src.getVersion());
     if (src.hasReleaseDate())
-      tgt.setReleaseDate(src.getReleaseDate());
+      tgt.setReleaseDateElement(convertDateTime(src.getReleaseDateElement()));
     return tgt;
   }
 
@@ -4800,7 +4818,7 @@ public class VersionConvertor_30_40 {
     if (src.hasVersion())
       tgt.setVersion(src.getVersion());
     if (src.hasReleaseDate())
-      tgt.setReleaseDate(src.getReleaseDate());
+      tgt.setReleaseDateElement(convertDateTime(src.getReleaseDateElement()));
     return tgt;
   }
 
@@ -6030,7 +6048,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasBillablePeriod())
 //      tgt.setBillablePeriod(convertPeriod(src.getBillablePeriod()));
 //    if (src.hasCreated())
-//      tgt.setCreated(src.getCreated());
+//      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
 //    if (src.hasEnterer())
 //      tgt.setEnterer(convertReference(src.getEnterer()));
 //    if (src.hasInsurer())
@@ -6098,7 +6116,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasBillablePeriod())
 //      tgt.setBillablePeriod(convertPeriod(src.getBillablePeriod()));
 //    if (src.hasCreated())
-//      tgt.setCreated(src.getCreated());
+//      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
 //    if (src.hasEnterer())
 //      tgt.setEnterer(convertReference(src.getEnterer()));
 //    if (src.hasInsurer())
@@ -6363,8 +6381,8 @@ public class VersionConvertor_30_40 {
 //    copyElement(src, tgt);
 //    if (src.hasSequence())
 //      tgt.setSequence(src.getSequence());
-//    if (src.hasDate())
-//      tgt.setDate(src.getDate());
+//    if (src.hasDateElement())
+//      tgt.setDateElement(convertDateTime(src.getDateElement()));
 //    if (src.hasProcedure())
 //      tgt.setProcedure(convertType(src.getProcedure()));
 //    return tgt;
@@ -6377,8 +6395,8 @@ public class VersionConvertor_30_40 {
 //    copyElement(src, tgt);
 //    if (src.hasSequence())
 //      tgt.setSequence(src.getSequence());
-//    if (src.hasDate())
-//      tgt.setDate(src.getDate());
+//    if (src.hasDateElement())
+//      tgt.setDateElement(convertDateTime(src.getDateElement()));
 //    if (src.hasProcedure())
 //      tgt.setProcedure(convertType(src.getProcedure()));
 //    return tgt;
@@ -6429,8 +6447,8 @@ public class VersionConvertor_30_40 {
 //      return null;
 //    org.hl7.fhir.r4.model.Claim.AccidentComponent tgt = new org.hl7.fhir.r4.model.Claim.AccidentComponent();
 //    copyElement(src, tgt);
-//    if (src.hasDate())
-//      tgt.setDate(src.getDate());
+//    if (src.hasDateElement())
+//      tgt.setDateElement(convertDateTime(src.getDateElement()));
 //    if (src.hasType())
 //      tgt.setType(convertCodeableConcept(src.getType()));
 //    if (src.hasLocation())
@@ -6443,8 +6461,8 @@ public class VersionConvertor_30_40 {
 //      return null;
 //    org.hl7.fhir.dstu3.model.Claim.AccidentComponent tgt = new org.hl7.fhir.dstu3.model.Claim.AccidentComponent();
 //    copyElement(src, tgt);
-//    if (src.hasDate())
-//      tgt.setDate(src.getDate());
+//    if (src.hasDateElement())
+//      tgt.setDateElement(convertDateTime(src.getDateElement()));
 //    if (src.hasType())
 //      tgt.setType(convertCodeableConcept(src.getType()));
 //    if (src.hasLocation())
@@ -6695,8 +6713,8 @@ public class VersionConvertor_30_40 {
       tgt.setEncounter(convertReference(src.getContext()));
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasAssessor())
       tgt.setAssessor(convertReference(src.getAssessor()));
     if (src.hasPrevious())
@@ -6741,8 +6759,8 @@ public class VersionConvertor_30_40 {
       tgt.setContext(convertReference(src.getEncounter()));
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasAssessor())
       tgt.setAssessor(convertReference(src.getAssessor()));
     if (src.hasPrevious())
@@ -6861,8 +6879,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -6919,8 +6937,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -7254,9 +7272,9 @@ public class VersionConvertor_30_40 {
     if (src.hasContext())
       tgt.setEncounter(convertReference(src.getContext()));
     if (src.hasSent())
-      tgt.setSent(src.getSent());
+      tgt.setSentElement(convertDateTime(src.getSentElement()));
     if (src.hasReceived())
-      tgt.setReceived(src.getReceived());
+      tgt.setReceivedElement(convertDateTime(src.getReceivedElement()));
     if (src.hasSender())
       tgt.setSender(convertReference(src.getSender()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
@@ -7301,9 +7319,9 @@ public class VersionConvertor_30_40 {
     if (src.hasEncounter())
       tgt.setContext(convertReference(src.getEncounter()));
     if (src.hasSent())
-      tgt.setSent(src.getSent());
+      tgt.setSentElement(convertDateTime(src.getSentElement()));
     if (src.hasReceived())
-      tgt.setReceived(src.getReceived());
+      tgt.setReceivedElement(convertDateTime(src.getReceivedElement()));
     if (src.hasSender())
       tgt.setSender(convertReference(src.getSender()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -7382,8 +7400,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -7420,8 +7438,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -7514,8 +7532,8 @@ public class VersionConvertor_30_40 {
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor())
       tgt.addAuthor(convertReference(t));
     if (src.hasTitle())
@@ -7552,8 +7570,8 @@ public class VersionConvertor_30_40 {
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAuthor())
       tgt.addAuthor(convertReference(t));
     if (src.hasTitle())
@@ -7633,7 +7651,7 @@ public class VersionConvertor_30_40 {
     if (src.hasMode())
       tgt.setMode(convertCompositionAttestationMode(src.getMode().get(0).getValue()));
     if (src.hasTime())
-      tgt.setTime(src.getTime());
+      tgt.setTimeElement(convertDateTime(src.getTimeElement()));
     if (src.hasParty())
       tgt.setParty(convertReference(src.getParty()));
     return tgt;
@@ -7647,7 +7665,7 @@ public class VersionConvertor_30_40 {
     if (src.hasMode())
       tgt.addMode(convertCompositionAttestationMode(src.getMode()));
     if (src.hasTime())
-      tgt.setTime(src.getTime());
+      tgt.setTimeElement(convertDateTime(src.getTimeElement()));
     if (src.hasParty())
       tgt.setParty(convertReference(src.getParty()));
     return tgt;
@@ -7842,8 +7860,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -7890,8 +7908,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -8173,7 +8191,7 @@ public class VersionConvertor_30_40 {
     if (src.hasAbatement())
       tgt.setAbatement(convertType(src.getAbatement()));
     if (src.hasAssertedDate())
-      tgt.setRecordedDate(src.getAssertedDate());
+      tgt.setRecordedDateElement(convertDateTime(src.getAssertedDateElement()));
     if (src.hasAsserter())
       tgt.setAsserter(convertReference(src.getAsserter()));
     if (src.hasStage())
@@ -8690,7 +8708,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasStatus())
 //      tgt.setStatus(convertContractStatus(src.getStatus()));
 //    if (src.hasIssued())
-//      tgt.setIssued(src.getIssued());
+//      tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
 //    if (src.hasApplies())
 //      tgt.setApplies(convertPeriod(src.getApplies()));
 //    for (org.hl7.fhir.dstu3.model.Reference t : src.getSubject())
@@ -8728,7 +8746,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasStatus())
 //      tgt.setStatus(convertContractStatus(src.getStatus()));
 //    if (src.hasIssued())
-//      tgt.setIssued(src.getIssued());
+//      tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
 //    if (src.hasApplies())
 //      tgt.setApplies(convertPeriod(src.getApplies()));
 //    for (org.hl7.fhir.r4.model.Reference t : src.getSubject())
@@ -8864,7 +8882,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasIdentifier())
 //      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
 //    if (src.hasEffectiveTime())
-//      tgt.setEffectiveTime(src.getEffectiveTime());
+//      tgt.setEffectiveTimeElement(convertDateTime(src.getEffectiveTimeElement()));
 //    if (src.hasQuantity())
 //      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
 //    if (src.hasUnitPrice())
@@ -8888,7 +8906,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasIdentifier())
 //      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
 //    if (src.hasEffectiveTime())
-//      tgt.setEffectiveTime(src.getEffectiveTime());
+//      tgt.setEffectiveTimeElement(convertDateTime(src.getEffectiveTimeElement()));
 //    if (src.hasQuantity())
 //      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
 //    if (src.hasUnitPrice())
@@ -8910,7 +8928,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasIdentifier())
 //      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
 //    if (src.hasIssued())
-//      tgt.setIssued(src.getIssued());
+//      tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
 //    if (src.hasApplies())
 //      tgt.setApplies(convertPeriod(src.getApplies()));
 //    if (src.hasType())
@@ -8936,7 +8954,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasIdentifier())
 //      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
 //    if (src.hasIssued())
-//      tgt.setIssued(src.getIssued());
+//      tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
 //    if (src.hasApplies())
 //      tgt.setApplies(convertPeriod(src.getApplies()));
 //    if (src.hasType())
@@ -8988,7 +9006,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasIdentifier())
 //      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
 //    if (src.hasEffectiveTime())
-//      tgt.setEffectiveTime(src.getEffectiveTime());
+//      tgt.setEffectiveTimeElement(convertDateTime(src.getEffectiveTimeElement()));
 //    if (src.hasQuantity())
 //      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
 //    if (src.hasUnitPrice())
@@ -9012,7 +9030,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasIdentifier())
 //      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
 //    if (src.hasEffectiveTime())
-//      tgt.setEffectiveTime(src.getEffectiveTime());
+//      tgt.setEffectiveTimeElement(convertDateTime(src.getEffectiveTimeElement()));
 //    if (src.hasQuantity())
 //      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
 //    if (src.hasUnitPrice())
@@ -9269,8 +9287,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasName())
@@ -9314,8 +9332,8 @@ public class VersionConvertor_30_40 {
 //      tgt.setStatus(convertPublicationStatus(src.getStatus()));
 //    if (src.hasExperimental())
 //      tgt.setExperimental(src.getExperimental());
-//    if (src.hasDate())
-//      tgt.setDate(src.getDate());
+//    if (src.hasDateElement())
+//      tgt.setDateElement(convertDateTime(src.getDateElement()));
 //    if (src.hasPublisher())
 //      tgt.setPublisher(src.getPublisher());
 //    if (src.hasName())
@@ -9414,7 +9432,7 @@ public class VersionConvertor_30_40 {
       tgt.setSeverity(convertDetectedIssueSeverity(src.getSeverity()));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
+    if (src.hasDateElement())
       tgt.setIdentified(convertDateTime(src.getDateElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
@@ -9520,8 +9538,8 @@ public class VersionConvertor_30_40 {
     copyElement(src, tgt);
     if (src.hasAction())
       tgt.setAction(convertCodeableConcept(src.getAction()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
     return tgt;
@@ -9534,8 +9552,8 @@ public class VersionConvertor_30_40 {
     copyElement(src, tgt);
     if (src.hasAction())
       tgt.setAction(convertCodeableConcept(src.getAction()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
     return tgt;
@@ -9559,9 +9577,9 @@ public class VersionConvertor_30_40 {
 //    if (src.hasManufacturer())
 //      tgt.setManufacturer(src.getManufacturer());
 //    if (src.hasManufactureDate())
-//      tgt.setManufactureDate(src.getManufactureDate());
+//      tgt.setManufactureDateElement(convertDateTime(src.getManufactureDateElement()));
 //    if (src.hasExpirationDate())
-//      tgt.setExpirationDate(src.getExpirationDate());
+//      tgt.setExpirationDateElement(convertDateTime(src.getExpirationDateElement()));
 //    if (src.hasModel())
 //      tgt.setModel(src.getModel());
 //    if (src.hasVersion())
@@ -9601,9 +9619,9 @@ public class VersionConvertor_30_40 {
 //    if (src.hasManufacturer())
 //      tgt.setManufacturer(src.getManufacturer());
 //    if (src.hasManufactureDate())
-//      tgt.setManufactureDate(src.getManufactureDate());
+//      tgt.setManufactureDateElement(convertDateTime(src.getManufactureDateElement()));
 //    if (src.hasExpirationDate())
-//      tgt.setExpirationDate(src.getExpirationDate());
+//      tgt.setExpirationDateElement(convertDateTime(src.getExpirationDateElement()));
 //    if (src.hasModel())
 //      tgt.setModel(src.getModel());
 //    if (src.hasVersion())
@@ -9989,7 +10007,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasState())
 //      tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
 //    if (src.hasTime())
-//      tgt.setTime(src.getTime());
+//      tgt.setTimeElement(convertDateTime(src.getTimeElement()));
 //    return tgt;
 //  }
 //
@@ -10003,7 +10021,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasState())
 //      tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
 //    if (src.hasTime())
-//      tgt.setTime(src.getTime());
+//      tgt.setTimeElement(convertDateTime(src.getTimeElement()));
 //    return tgt;
 //  }
 //
@@ -10070,7 +10088,7 @@ public class VersionConvertor_30_40 {
     if (src.hasTiming())
       tgt.setTiming(convertType(src.getTiming()));
     if (src.hasRecordedOn())
-      tgt.setRecordedOn(src.getRecordedOn());
+      tgt.setRecordedOnElement(convertDateTime(src.getRecordedOnElement()));
     if (src.hasSource())
       tgt.setSource(convertReference(src.getSource()));
     if (src.hasDevice())
@@ -10098,7 +10116,7 @@ public class VersionConvertor_30_40 {
     if (src.hasTiming())
       tgt.setTiming(convertType(src.getTiming()));
     if (src.hasRecordedOn())
-      tgt.setRecordedOn(src.getRecordedOn());
+      tgt.setRecordedOnElement(convertDateTime(src.getRecordedOnElement()));
     if (src.hasSource())
       tgt.setSource(convertReference(src.getSource()));
     if (src.hasDevice())
@@ -10162,7 +10180,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasIssued())
-      tgt.setIssued(src.getIssued());
+      tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
 //    for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent t : src.getPerformer())
 //      tgt.addPerformer(convertDiagnosticReportPerformerComponent(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSpecimen())
@@ -10204,7 +10222,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasIssued())
-      tgt.setIssued(src.getIssued());
+      tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
 //    for (org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportPerformerComponent t : src.getPerformer())
 //      tgt.addPerformer(convertDiagnosticReportPerformerComponent(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen())
@@ -10324,7 +10342,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasSubject())
 //      tgt.setSubject(convertReference(src.getSubject()));
 //    if (src.hasCreated())
-//      tgt.setCreated(src.getCreated());
+//      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
 //    for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor())
 //      tgt.addAgent().setWho(convertReference(t));
 //    for (org.hl7.fhir.dstu3.model.Reference t : src.getRecipient())
@@ -10356,7 +10374,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasSubject())
 //      tgt.setSubject(convertReference(src.getSubject()));
 //    if (src.hasCreated())
-//      tgt.setCreated(src.getCreated());
+//      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
 //    for (org.hl7.fhir.r4.model.Reference t : src.getAuthor())
 //      tgt.addAuthor(convertReference(t));
 //    for (org.hl7.fhir.r4.model.Reference t : src.getRecipient())
@@ -10458,7 +10476,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setDate(src.getCreated());
+      tgt.setDateElement(convertDateTimeToInstant(src.getCreatedElement()));
 //    for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor())
 //      tgt.addAuthor(convertReference(t));
     if (src.hasAuthenticator())
@@ -10497,8 +10515,8 @@ public class VersionConvertor_30_40 {
       tgt.setClass_(convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasDate())
-      tgt.setCreated(src.getDate());
+    if (src.hasDateElement())
+      tgt.setCreatedElement(convertInstantToDateTime(src.getDateElement()));
 //    for (org.hl7.fhir.r4.model.Reference t : src.getAuthor())
 //      tgt.addAuthor(convertReference(t));
     if (src.hasAuthenticator())
@@ -11377,8 +11395,8 @@ public class VersionConvertor_30_40 {
       tgt.setDataAbsentReason(convertCodeableConcept(src.getNotDoneReason()));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasName())
       tgt.setName(src.getName());
     if (src.hasRelationship())
@@ -11419,8 +11437,8 @@ public class VersionConvertor_30_40 {
       tgt.setNotDoneReason(convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasName())
       tgt.setName(src.getName());
     if (src.hasRelationship())
@@ -11618,7 +11636,7 @@ public class VersionConvertor_30_40 {
     if (src.hasTarget())
       tgt.addTarget(convertGoalTargetComponent(src.getTarget()));
     if (src.hasStatusDate())
-      tgt.setStatusDate(src.getStatusDate());
+      tgt.setStatusDateElement(convertDate(src.getStatusDateElement()));
     if (src.hasStatusReason())
       tgt.setStatusReason(src.getStatusReason());
     if (src.hasExpressedBy())
@@ -11656,7 +11674,7 @@ public class VersionConvertor_30_40 {
     if (src.hasTarget())
       tgt.setTarget(convertGoalTargetComponent(src.getTargetFirstRep()));
     if (src.hasStatusDate())
-      tgt.setStatusDate(src.getStatusDate());
+      tgt.setStatusDateElement(convertDate(src.getStatusDateElement()));
     if (src.hasStatusReason())
       tgt.setStatusReason(src.getStatusReason());
     if (src.hasExpressedBy())
@@ -11753,8 +11771,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -11768,7 +11786,7 @@ public class VersionConvertor_30_40 {
     if (src.hasPurpose())
       tgt.setPurpose(src.getPurpose());
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertCode(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfile(src.getProfile());
     for (org.hl7.fhir.dstu3.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
@@ -11791,8 +11809,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -11806,7 +11824,7 @@ public class VersionConvertor_30_40 {
     if (src.hasPurpose())
       tgt.setPurpose(src.getPurpose());
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertCode(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfile(src.getProfile());
     for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
@@ -12646,7 +12664,7 @@ public class VersionConvertor_30_40 {
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDate())
+    if (src.hasDateElement())
       tgt.setOccurrence(convertDateTime(src.getDateElement()));
     if (src.hasPrimarySource())
       tgt.setPrimarySource(src.getPrimarySource());
@@ -12659,7 +12677,7 @@ public class VersionConvertor_30_40 {
     if (src.hasLotNumber())
       tgt.setLotNumber(src.getLotNumber());
     if (src.hasExpirationDate())
-      tgt.setExpirationDate(src.getExpirationDate());
+      tgt.setExpirationDateElement(convertDate(src.getExpirationDateElement()));
     if (src.hasSite())
       tgt.setSite(convertCodeableConcept(src.getSite()));
     if (src.hasRoute())
@@ -12705,7 +12723,7 @@ public class VersionConvertor_30_40 {
     if (src.hasLotNumber())
       tgt.setLotNumber(src.getLotNumber());
     if (src.hasExpirationDate())
-      tgt.setExpirationDate(src.getExpirationDate());
+      tgt.setExpirationDateElement(convertDate(src.getExpirationDateElement()));
     if (src.hasSite())
       tgt.setSite(convertCodeableConcept(src.getSite()));
     if (src.hasRoute())
@@ -12782,8 +12800,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -12826,8 +12844,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -13132,8 +13150,8 @@ public class VersionConvertor_30_40 {
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasSource())
       tgt.setSource(convertReference(src.getSource()));
     if (src.hasOrderedBy())
@@ -13166,8 +13184,8 @@ public class VersionConvertor_30_40 {
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasSource())
       tgt.setSource(convertReference(src.getSource()));
     if (src.hasOrderedBy())
@@ -13234,8 +13252,8 @@ public class VersionConvertor_30_40 {
       tgt.setFlag(convertCodeableConcept(src.getFlag()));
     if (src.hasDeleted())
       tgt.setDeleted(src.getDeleted());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasItem())
       tgt.setItem(convertReference(src.getItem()));
     return tgt;
@@ -13250,8 +13268,8 @@ public class VersionConvertor_30_40 {
       tgt.setFlag(convertCodeableConcept(src.getFlag()));
     if (src.hasDeleted())
       tgt.setDeleted(src.getDeleted());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasItem())
       tgt.setItem(convertReference(src.getItem()));
     return tgt;
@@ -13639,7 +13657,7 @@ public class VersionConvertor_30_40 {
     if (src.hasLotNumber())
       tgt.setLotNumber(src.getLotNumber());
     if (src.hasExpirationDate())
-      tgt.setExpirationDate(src.getExpirationDate());
+      tgt.setExpirationDateElement(convertDateTime(src.getExpirationDateElement()));
     return tgt;
   }
 
@@ -13651,7 +13669,7 @@ public class VersionConvertor_30_40 {
     if (src.hasLotNumber())
       tgt.setLotNumber(src.getLotNumber());
     if (src.hasExpirationDate())
-      tgt.setExpirationDate(src.getExpirationDate());
+      tgt.setExpirationDateElement(convertDateTime(src.getExpirationDateElement()));
     return tgt;
   }
 
@@ -13859,9 +13877,9 @@ public class VersionConvertor_30_40 {
     if (src.hasDaysSupply())
       tgt.setDaysSupply(convertSimpleQuantity(src.getDaysSupply()));
     if (src.hasWhenPrepared())
-      tgt.setWhenPrepared(src.getWhenPrepared());
+      tgt.setWhenPreparedElement(convertDateTime(src.getWhenPreparedElement()));
     if (src.hasWhenHandedOver())
-      tgt.setWhenHandedOver(src.getWhenHandedOver());
+      tgt.setWhenHandedOverElement(convertDateTime(src.getWhenHandedOverElement()));
     if (src.hasDestination())
       tgt.setDestination(convertReference(src.getDestination()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReceiver())
@@ -13915,9 +13933,9 @@ public class VersionConvertor_30_40 {
     if (src.hasDaysSupply())
       tgt.setDaysSupply(convertSimpleQuantity(src.getDaysSupply()));
     if (src.hasWhenPrepared())
-      tgt.setWhenPrepared(src.getWhenPrepared());
+      tgt.setWhenPreparedElement(convertDateTime(src.getWhenPreparedElement()));
     if (src.hasWhenHandedOver())
-      tgt.setWhenHandedOver(src.getWhenHandedOver());
+      tgt.setWhenHandedOverElement(convertDateTime(src.getWhenHandedOverElement()));
     if (src.hasDestination())
       tgt.setDestination(convertReference(src.getDestination()));
     for (org.hl7.fhir.r4.model.Reference t : src.getReceiver())
@@ -14037,7 +14055,7 @@ public class VersionConvertor_30_40 {
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     if (src.hasAuthoredOn())
-      tgt.setAuthoredOn(src.getAuthoredOn());
+      tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
@@ -14091,7 +14109,7 @@ public class VersionConvertor_30_40 {
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     if (src.hasAuthoredOn())
-      tgt.setAuthoredOn(src.getAuthoredOn());
+      tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -14301,7 +14319,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasDateAsserted())
-      tgt.setDateAsserted(src.getDateAsserted());
+      tgt.setDateAssertedElement(convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
       tgt.setInformationSource(convertReference(src.getInformationSource()));
     if (src.hasSubject())
@@ -14345,7 +14363,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasDateAsserted())
-      tgt.setDateAsserted(src.getDateAsserted());
+      tgt.setDateAssertedElement(convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
       tgt.setInformationSource(convertReference(src.getInformationSource()));
     if (src.hasSubject())
@@ -14438,8 +14456,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -14496,8 +14514,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -14626,7 +14644,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSender())
       tgt.setSender(convertReference(src.getSender()));
 //    if (src.hasTimestamp())
-//      tgt.setTimestamp(src.getTimestamp());
+//      tgt.setTimestampElement(convertDateTime(src.getTimestampElement()));
     if (src.hasEnterer())
       tgt.setEnterer(convertReference(src.getEnterer()));
     if (src.hasAuthor())
@@ -14656,7 +14674,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSender())
       tgt.setSender(convertReference(src.getSender()));
 //    if (src.hasTimestamp())
-//      tgt.setTimestamp(src.getTimestamp());
+//      tgt.setTimestampElement(convertDateTime(src.getTimestampElement()));
     if (src.hasEnterer())
       tgt.setEnterer(convertReference(src.getEnterer()));
     if (src.hasAuthor())
@@ -14799,8 +14817,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasKind())
       tgt.setKind(convertNamingSystemType(src.getKind()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -14833,8 +14851,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasKind())
       tgt.setKind(convertNamingSystemType(src.getKind()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -14952,7 +14970,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasEncounter())
 //      tgt.setEncounter(convertReference(src.getEncounter()));
 //    if (src.hasDateTime())
-//      tgt.setDateTime(src.getDateTime());
+//      tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
 //    if (src.hasOrderer())
 //      tgt.setOrderer(convertReference(src.getOrderer()));
 //    for (org.hl7.fhir.dstu3.model.Reference t : src.getAllergyIntolerance())
@@ -14984,7 +15002,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasEncounter())
 //      tgt.setEncounter(convertReference(src.getEncounter()));
 //    if (src.hasDateTime())
-//      tgt.setDateTime(src.getDateTime());
+//      tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
 //    if (src.hasOrderer())
 //      tgt.setOrderer(convertReference(src.getOrderer()));
 //    for (org.hl7.fhir.r4.model.Reference t : src.getAllergyIntolerance())
@@ -15262,7 +15280,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasIssued())
-      tgt.setIssued(src.getIssued());
+      tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer())
       tgt.addPerformer(convertReference(t));
     if (src.hasValue())
@@ -15315,7 +15333,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasIssued())
-      tgt.setIssued(src.getIssued());
+      tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer())
       tgt.addPerformer(convertReference(t));
     if (src.hasValue())
@@ -15481,8 +15499,8 @@ public class VersionConvertor_30_40 {
       tgt.setKind(convertOperationKind(src.getKind()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -15535,8 +15553,8 @@ public class VersionConvertor_30_40 {
       tgt.setKind(convertOperationKind(src.getKind()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -15989,7 +16007,7 @@ public class VersionConvertor_30_40 {
     if (src.hasGender())
       tgt.setGender(convertAdministrativeGender(src.getGender()));
     if (src.hasBirthDate())
-      tgt.setBirthDate(src.getBirthDate());
+      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
       tgt.setDeceased(convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu3.model.Address t : src.getAddress())
@@ -16031,7 +16049,7 @@ public class VersionConvertor_30_40 {
     if (src.hasGender())
       tgt.setGender(convertAdministrativeGender(src.getGender()));
     if (src.hasBirthDate())
-      tgt.setBirthDate(src.getBirthDate());
+      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
       tgt.setDeceased(convertType(src.getDeceased()));
     for (org.hl7.fhir.r4.model.Address t : src.getAddress())
@@ -16216,9 +16234,9 @@ public class VersionConvertor_30_40 {
     if (src.hasResponse())
       tgt.setResponse(convertReference(src.getResponse()));
     if (src.hasStatusDate())
-      tgt.setPaymentDate(src.getStatusDate());
+      tgt.setPaymentDateElement(convertDate(src.getStatusDateElement()));
     if (src.hasCreated())
-      tgt.setCreated(src.getCreated());
+      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
     if (src.hasTarget())
       tgt.setRecipient(convertReference(src.getTarget()));
     if (src.hasProvider())
@@ -16244,9 +16262,9 @@ public class VersionConvertor_30_40 {
     if (src.hasResponse())
       tgt.setResponse(convertReference(src.getResponse()));
     if (src.hasPaymentDate())
-      tgt.setStatusDate(src.getPaymentDate());
+      tgt.setStatusDateElement(convertDate(src.getPaymentDateElement()));
     if (src.hasCreated())
-      tgt.setCreated(src.getCreated());
+      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
     if (src.hasRecipient())
       tgt.setTarget(convertReference(src.getRecipient()));
     if (src.hasProvider())
@@ -16297,7 +16315,7 @@ public class VersionConvertor_30_40 {
     if (src.hasGender())
       tgt.setGender(convertAdministrativeGender(src.getGender()));
     if (src.hasBirthDate())
-      tgt.setBirthDate(src.getBirthDate());
+      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.dstu3.model.Address t : src.getAddress())
       tgt.addAddress(convertAddress(t));
     if (src.hasPhoto())
@@ -16325,7 +16343,7 @@ public class VersionConvertor_30_40 {
     if (src.hasGender())
       tgt.setGender(convertAdministrativeGender(src.getGender()));
     if (src.hasBirthDate())
-      tgt.setBirthDate(src.getBirthDate());
+      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.r4.model.Address t : src.getAddress())
       tgt.addAddress(convertAddress(t));
     if (src.hasPhoto())
@@ -16405,7 +16423,7 @@ public class VersionConvertor_30_40 {
     if (src.hasGender())
       tgt.setGender(convertAdministrativeGender(src.getGender()));
     if (src.hasBirthDate())
-      tgt.setBirthDate(src.getBirthDate());
+      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto())
       tgt.addPhoto(convertAttachment(t));
     for (org.hl7.fhir.dstu3.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
@@ -16433,7 +16451,7 @@ public class VersionConvertor_30_40 {
     if (src.hasGender())
       tgt.setGender(convertAdministrativeGender(src.getGender()));
     if (src.hasBirthDate())
-      tgt.setBirthDate(src.getBirthDate());
+      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto())
       tgt.addPhoto(convertAttachment(t));
     for (org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
@@ -16643,7 +16661,7 @@ public class VersionConvertor_30_40 {
     if (src.hasPeriod())
       tgt.setOccurred(convertPeriod(src.getPeriod()));
     if (src.hasRecorded())
-      tgt.setRecorded(src.getRecorded());
+      tgt.setRecordedElement(convertInstant(src.getRecordedElement()));
     for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy())
       tgt.addPolicy(t.getValue());
     if (src.hasLocation())
@@ -16671,7 +16689,7 @@ public class VersionConvertor_30_40 {
     if (src.hasOccurredPeriod())
       tgt.setPeriod(convertPeriod(src.getOccurredPeriod()));
     if (src.hasRecorded())
-      tgt.setRecorded(src.getRecorded());
+      tgt.setRecordedElement(convertInstant(src.getRecordedElement()));
     for (org.hl7.fhir.r4.model.UriType t : src.getPolicy())
       tgt.addPolicy(t.getValue());
     if (src.hasLocation())
@@ -16808,8 +16826,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasDescription())
@@ -16817,9 +16835,9 @@ public class VersionConvertor_30_40 {
     if (src.hasPurpose())
       tgt.setPurpose(src.getPurpose());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext())
@@ -16858,8 +16876,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasDescription())
@@ -16867,9 +16885,9 @@ public class VersionConvertor_30_40 {
     if (src.hasPurpose())
       tgt.setPurpose(src.getPurpose());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext())
@@ -17091,7 +17109,7 @@ public class VersionConvertor_30_40 {
     if (src.hasContext())
       tgt.setEncounter(convertReference(src.getContext()));
     if (src.hasAuthored())
-      tgt.setAuthored(src.getAuthored());
+      tgt.setAuthoredElement(convertDateTime(src.getAuthoredElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
     if (src.hasSource())
@@ -17121,7 +17139,7 @@ public class VersionConvertor_30_40 {
     if (src.hasEncounter())
       tgt.setContext(convertReference(src.getEncounter()));
     if (src.hasAuthored())
-      tgt.setAuthored(src.getAuthored());
+      tgt.setAuthoredElement(convertDateTime(src.getAuthoredElement()));
     if (src.hasAuthor())
       tgt.setAuthor(convertReference(src.getAuthor()));
     if (src.hasSource())
@@ -17534,8 +17552,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -17590,8 +17608,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -17947,7 +17965,7 @@ public class VersionConvertor_30_40 {
     if (src.hasStandardSequence())
       tgt.setStandardSequence(convertCodeableConcept(src.getStandardSequence()));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStart(src.getStart()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     if (src.hasScore())
@@ -18117,7 +18135,7 @@ public class VersionConvertor_30_40 {
     if (src.hasStatus())
       tgt.setStatus(convertSlotStatus(src.getStatus()));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertInstant(src.getStartElement()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     if (src.hasOverbooked())
@@ -18147,7 +18165,7 @@ public class VersionConvertor_30_40 {
     if (src.hasStatus())
       tgt.setStatus(convertSlotStatus(src.getStatus()));
     if (src.hasStart())
-      tgt.setStart(src.getStart());
+      tgt.setStartElement(convertInstant(src.getStartElement()));
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     if (src.hasOverbooked())
@@ -18199,7 +18217,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasReceivedTime())
-      tgt.setReceivedTime(src.getReceivedTime());
+      tgt.setReceivedTimeElement(convertDateTime(src.getReceivedTimeElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getParent())
       tgt.addParent(convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getRequest())
@@ -18231,7 +18249,7 @@ public class VersionConvertor_30_40 {
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasReceivedTime())
-      tgt.setReceivedTime(src.getReceivedTime());
+      tgt.setReceivedTimeElement(convertDateTime(src.getReceivedTimeElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getParent())
       tgt.addParent(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getRequest())
@@ -18398,8 +18416,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -18470,8 +18488,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -18674,8 +18692,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -18718,8 +18736,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -19421,7 +19439,7 @@ public class VersionConvertor_30_40 {
     if (src.hasIdentifier())
       tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
     if (src.hasExpiry())
-      tgt.setExpiry(src.getExpiry());
+      tgt.setExpiryElement(convertDateTime(src.getExpiryElement()));
     if (src.hasQuantity())
       tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
     return tgt;
@@ -19435,7 +19453,7 @@ public class VersionConvertor_30_40 {
     if (src.hasIdentifier())
       tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
     if (src.hasExpiry())
-      tgt.setExpiry(src.getExpiry());
+      tgt.setExpiryElement(convertDateTime(src.getExpiryElement()));
     if (src.hasQuantity())
       tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
     return tgt;
@@ -19594,7 +19612,7 @@ public class VersionConvertor_30_40 {
     if (src.hasTester())
       tgt.setTester(src.getTester());
     if (src.hasIssued())
-      tgt.setIssued(src.getIssued());
+      tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
     for (org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertTestReportParticipantComponent(t));
     if (src.hasSetup())
@@ -19626,7 +19644,7 @@ public class VersionConvertor_30_40 {
     if (src.hasTester())
       tgt.setTester(src.getTester());
     if (src.hasIssued())
-      tgt.setIssued(src.getIssued());
+      tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
     for (org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertTestReportParticipantComponent(t));
     if (src.hasSetup())
@@ -19973,8 +19991,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -20029,8 +20047,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -20793,8 +20811,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -20839,8 +20857,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -20872,7 +20890,7 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ValueSetComposeComponent();
     copyElement(src, tgt);
     if (src.hasLockedDate())
-      tgt.setLockedDate(src.getLockedDate());
+      tgt.setLockedDateElement(convertDate(src.getLockedDateElement()));
     if (src.hasInactive())
       tgt.setInactive(src.getInactive());
     for (org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent t : src.getInclude())
@@ -20888,7 +20906,7 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.dstu3.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ValueSetComposeComponent();
     copyElement(src, tgt);
     if (src.hasLockedDate())
-      tgt.setLockedDate(src.getLockedDate());
+      tgt.setLockedDateElement(convertDate(src.getLockedDateElement()));
     if (src.hasInactive())
       tgt.setInactive(src.getInactive());
     for (org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent t : src.getInclude())
@@ -21060,7 +21078,7 @@ public class VersionConvertor_30_40 {
     if (src.hasIdentifier())
       tgt.setIdentifier(src.getIdentifier());
     if (src.hasTimestamp())
-      tgt.setTimestamp(src.getTimestamp());
+      tgt.setTimestampElement(convertDateTime(src.getTimestampElement()));
     if (src.hasTotal())
       tgt.setTotal(src.getTotal());
     if (src.hasOffset())
@@ -21080,7 +21098,7 @@ public class VersionConvertor_30_40 {
     if (src.hasIdentifier())
       tgt.setIdentifier(src.getIdentifier());
     if (src.hasTimestamp())
-      tgt.setTimestamp(src.getTimestamp());
+      tgt.setTimestampElement(convertDateTime(src.getTimestampElement()));
     if (src.hasTotal())
       tgt.setTotal(src.getTotal());
     if (src.hasOffset())
@@ -21178,7 +21196,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasEncounter())
 //      tgt.setEncounter(convertReference(src.getEncounter()));
 //    if (src.hasDateWritten())
-//      tgt.setDateWritten(src.getDateWritten());
+//      tgt.setDateWrittenElement(convertDateTime(src.getDateWrittenElement()));
 //    if (src.hasPrescriber())
 //      tgt.setPrescriber(convertReference(src.getPrescriber()));
 //    if (src.hasReason())
@@ -21202,7 +21220,7 @@ public class VersionConvertor_30_40 {
 //    if (src.hasEncounter())
 //      tgt.setEncounter(convertReference(src.getEncounter()));
 //    if (src.hasDateWritten())
-//      tgt.setDateWritten(src.getDateWritten());
+//      tgt.setDateWrittenElement(convertDateTime(src.getDateWrittenElement()));
 //    if (src.hasPrescriber())
 //      tgt.setPrescriber(convertReference(src.getPrescriber()));
 //    if (src.hasReason())
@@ -21377,8 +21395,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasDescription())
@@ -21388,9 +21406,9 @@ public class VersionConvertor_30_40 {
     if (src.hasUsage())
       tgt.setUsage(src.getUsage());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext())
@@ -21449,8 +21467,8 @@ public class VersionConvertor_30_40 {
       tgt.setStatus(convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimental(src.getExperimental());
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     if (src.hasDescription())
@@ -21460,9 +21478,9 @@ public class VersionConvertor_30_40 {
     if (src.hasUsage())
       tgt.setUsage(src.getUsage());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext())
@@ -22025,8 +22043,8 @@ public class VersionConvertor_30_40 {
       tgt.setExperimental(src.getExperimental());
     if (src.hasType())
       tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
@@ -22044,9 +22062,9 @@ public class VersionConvertor_30_40 {
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.dstu3.model.Contributor t : src.getContributor()) {
@@ -22096,8 +22114,8 @@ public class VersionConvertor_30_40 {
       tgt.setExperimental(src.getExperimental());
     if (src.hasType())
       tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasDate())
-      tgt.setDate(src.getDate());
+    if (src.hasDateElement())
+      tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
       tgt.setPublisher(src.getPublisher());
     for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
@@ -22115,9 +22133,9 @@ public class VersionConvertor_30_40 {
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
     if (src.hasApprovalDate())
-      tgt.setApprovalDate(src.getApprovalDate());
+      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
-      tgt.setLastReviewDate(src.getLastReviewDate());
+      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTopic())
