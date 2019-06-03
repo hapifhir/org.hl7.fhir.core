@@ -370,7 +370,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     for (StructureDefinitionMappingComponent baseMap : base.getMapping()) {
       boolean found = false;
       for (StructureDefinitionMappingComponent derivedMap : derived.getMapping()) {
-        if (derivedMap.getUri().equals(baseMap.getUri())) {
+        if (derivedMap.getUri() != null && derivedMap.getUri().equals(baseMap.getUri())) {
           found = true;
           break;
         }
