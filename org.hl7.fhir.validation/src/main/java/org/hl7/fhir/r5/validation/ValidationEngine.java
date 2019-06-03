@@ -1069,5 +1069,26 @@ public class ValidationEngine {
     this.mapLog = new PrintWriter(mapLog);
   }
 
+  public void prepare() {
+    for (StructureDefinition sd : context.allStructures()) {
+      try {
+        makeSnapshot(sd);
+      } catch (Exception e) {
+        System.out.println("Process Note: Unable to generate snapshot for "+sd.present());
+      }
+    }
+  }
+
+  private void makeSnapshot(StructureDefinition sd) throws DefinitionException, FHIRException {
+    if (sd.hasSnapshot())
+      return;
+    StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    if (sdb != null) {
+      makeSnapshot(sdb);
+      new ProfileUtilities(context, null, null).generateSnapshot(sdb, sd, sd.getUrl(), null, sd.getName());
+    }
+    
+  }
+
   
 }

@@ -1,0 +1,626 @@
+{
+  "resourceType" : "CapabilityStatement",
+  "id" : "base",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h2>Base FHIR Capability Statement (Full)</h2><div><p>This is the base Capability Statement for FHIR. It represents a server that provides the full set of functionality defined by FHIR. It is provided to use as a template for system designers to build their own Capability Statements from</p>\n</div><table><tr><td>Mode</td><td>SERVER</td></tr><tr><td>Description</td><td>All the functionality defined in FHIR</td></tr><tr><td>Transaction</td><td>y</td></tr><tr><td>System History</td><td>y</td></tr><tr><td>System Search</td><td>y</td></tr></table><table><tr><th><b>Resource Type</b></th><th><b>Profile</b></th><th><b title=\"GET a resource (read interaction)\">Read</b></th><th><b title=\"GET past versions of resources (vread interaction)\">V-Read</b></th><th><b title=\"GET all set of resources of the type (search interaction)\">Search</b></th><th><b title=\"PUT a new resource version (update interaction)\">Update</b></th><th><b title=\"POST a new resource (create interaction)\">Create</b></th><th><b title=\"DELETE a resource (delete interaction)\">Delete</b></th><th><b title=\"GET changes to a resource (history interaction on instance)\">Updates</b></th><th><b title=\"GET changes for all resources of the type (history interaction on type)\">History</b></th></tr><tr><td>Account</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Account\">http://hl7.org/fhir/StructureDefinition/Account</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ActivityDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ActivityDefinition\">http://hl7.org/fhir/StructureDefinition/ActivityDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>AdverseEvent</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/AdverseEvent\">http://hl7.org/fhir/StructureDefinition/AdverseEvent</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>AllergyIntolerance</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/AllergyIntolerance\">http://hl7.org/fhir/StructureDefinition/AllergyIntolerance</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Appointment</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Appointment\">http://hl7.org/fhir/StructureDefinition/Appointment</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>AppointmentResponse</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/AppointmentResponse\">http://hl7.org/fhir/StructureDefinition/AppointmentResponse</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>AuditEvent</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/AuditEvent\">http://hl7.org/fhir/StructureDefinition/AuditEvent</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Basic</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Basic\">http://hl7.org/fhir/StructureDefinition/Basic</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Binary</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Binary\">http://hl7.org/fhir/StructureDefinition/Binary</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>BiologicallyDerivedProduct</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/BiologicallyDerivedProduct\">http://hl7.org/fhir/StructureDefinition/BiologicallyDerivedProduct</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>BodyStructure</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/BodyStructure\">http://hl7.org/fhir/StructureDefinition/BodyStructure</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Bundle</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Bundle\">http://hl7.org/fhir/StructureDefinition/Bundle</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CapabilityStatement</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CapabilityStatement\">http://hl7.org/fhir/StructureDefinition/CapabilityStatement</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CapabilityStatement2</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CapabilityStatement2\">http://hl7.org/fhir/StructureDefinition/CapabilityStatement2</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CarePlan</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CarePlan\">http://hl7.org/fhir/StructureDefinition/CarePlan</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CareTeam</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CareTeam\">http://hl7.org/fhir/StructureDefinition/CareTeam</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CatalogEntry</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CatalogEntry\">http://hl7.org/fhir/StructureDefinition/CatalogEntry</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ChargeItem</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ChargeItem\">http://hl7.org/fhir/StructureDefinition/ChargeItem</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ChargeItemDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ChargeItemDefinition\">http://hl7.org/fhir/StructureDefinition/ChargeItemDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Claim</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Claim\">http://hl7.org/fhir/StructureDefinition/Claim</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ClaimResponse</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ClaimResponse\">http://hl7.org/fhir/StructureDefinition/ClaimResponse</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ClinicalImpression</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ClinicalImpression\">http://hl7.org/fhir/StructureDefinition/ClinicalImpression</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ClinicalUseIssue</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ClinicalUseIssue\">http://hl7.org/fhir/StructureDefinition/ClinicalUseIssue</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CodeSystem</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CodeSystem\">http://hl7.org/fhir/StructureDefinition/CodeSystem</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Communication</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Communication\">http://hl7.org/fhir/StructureDefinition/Communication</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CommunicationRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CommunicationRequest\">http://hl7.org/fhir/StructureDefinition/CommunicationRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CompartmentDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CompartmentDefinition\">http://hl7.org/fhir/StructureDefinition/CompartmentDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Composition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Composition\">http://hl7.org/fhir/StructureDefinition/Composition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ConceptMap</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ConceptMap\">http://hl7.org/fhir/StructureDefinition/ConceptMap</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Condition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Condition\">http://hl7.org/fhir/StructureDefinition/Condition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ConditionDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ConditionDefinition\">http://hl7.org/fhir/StructureDefinition/ConditionDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Consent</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Consent\">http://hl7.org/fhir/StructureDefinition/Consent</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Contract</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Contract\">http://hl7.org/fhir/StructureDefinition/Contract</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Coverage</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Coverage\">http://hl7.org/fhir/StructureDefinition/Coverage</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CoverageEligibilityRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CoverageEligibilityRequest\">http://hl7.org/fhir/StructureDefinition/CoverageEligibilityRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>CoverageEligibilityResponse</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/CoverageEligibilityResponse\">http://hl7.org/fhir/StructureDefinition/CoverageEligibilityResponse</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DetectedIssue</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DetectedIssue\">http://hl7.org/fhir/StructureDefinition/DetectedIssue</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Device</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Device\">http://hl7.org/fhir/StructureDefinition/Device</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DeviceDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DeviceDefinition\">http://hl7.org/fhir/StructureDefinition/DeviceDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DeviceMetric</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DeviceMetric\">http://hl7.org/fhir/StructureDefinition/DeviceMetric</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DeviceRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DeviceRequest\">http://hl7.org/fhir/StructureDefinition/DeviceRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DeviceUseStatement</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DeviceUseStatement\">http://hl7.org/fhir/StructureDefinition/DeviceUseStatement</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DiagnosticReport</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DiagnosticReport\">http://hl7.org/fhir/StructureDefinition/DiagnosticReport</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DocumentManifest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DocumentManifest\">http://hl7.org/fhir/StructureDefinition/DocumentManifest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>DocumentReference</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/DocumentReference\">http://hl7.org/fhir/StructureDefinition/DocumentReference</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>EffectEvidenceSynthesis</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/EffectEvidenceSynthesis\">http://hl7.org/fhir/StructureDefinition/EffectEvidenceSynthesis</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Encounter</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Encounter\">http://hl7.org/fhir/StructureDefinition/Encounter</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Endpoint</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Endpoint\">http://hl7.org/fhir/StructureDefinition/Endpoint</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>EnrollmentRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/EnrollmentRequest\">http://hl7.org/fhir/StructureDefinition/EnrollmentRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>EnrollmentResponse</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/EnrollmentResponse\">http://hl7.org/fhir/StructureDefinition/EnrollmentResponse</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>EpisodeOfCare</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/EpisodeOfCare\">http://hl7.org/fhir/StructureDefinition/EpisodeOfCare</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>EventDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/EventDefinition\">http://hl7.org/fhir/StructureDefinition/EventDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Evidence</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Evidence\">http://hl7.org/fhir/StructureDefinition/Evidence</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>EvidenceVariable</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/EvidenceVariable\">http://hl7.org/fhir/StructureDefinition/EvidenceVariable</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ExampleScenario</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ExampleScenario\">http://hl7.org/fhir/StructureDefinition/ExampleScenario</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ExplanationOfBenefit</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ExplanationOfBenefit\">http://hl7.org/fhir/StructureDefinition/ExplanationOfBenefit</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>FamilyMemberHistory</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/FamilyMemberHistory\">http://hl7.org/fhir/StructureDefinition/FamilyMemberHistory</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Flag</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Flag\">http://hl7.org/fhir/StructureDefinition/Flag</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Goal</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Goal\">http://hl7.org/fhir/StructureDefinition/Goal</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>GraphDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/GraphDefinition\">http://hl7.org/fhir/StructureDefinition/GraphDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Group</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Group\">http://hl7.org/fhir/StructureDefinition/Group</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>GuidanceResponse</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/GuidanceResponse\">http://hl7.org/fhir/StructureDefinition/GuidanceResponse</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>HealthcareService</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/HealthcareService\">http://hl7.org/fhir/StructureDefinition/HealthcareService</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ImagingStudy</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ImagingStudy\">http://hl7.org/fhir/StructureDefinition/ImagingStudy</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Immunization</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Immunization\">http://hl7.org/fhir/StructureDefinition/Immunization</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ImmunizationEvaluation</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ImmunizationEvaluation\">http://hl7.org/fhir/StructureDefinition/ImmunizationEvaluation</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ImmunizationRecommendation</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ImmunizationRecommendation\">http://hl7.org/fhir/StructureDefinition/ImmunizationRecommendation</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ImplementationGuide</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ImplementationGuide\">http://hl7.org/fhir/StructureDefinition/ImplementationGuide</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Ingredient</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Ingredient\">http://hl7.org/fhir/StructureDefinition/Ingredient</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>InsurancePlan</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/InsurancePlan\">http://hl7.org/fhir/StructureDefinition/InsurancePlan</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Invoice</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Invoice\">http://hl7.org/fhir/StructureDefinition/Invoice</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Library</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Library\">http://hl7.org/fhir/StructureDefinition/Library</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Linkage</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Linkage\">http://hl7.org/fhir/StructureDefinition/Linkage</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>List</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/List\">http://hl7.org/fhir/StructureDefinition/List</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Location</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Location\">http://hl7.org/fhir/StructureDefinition/Location</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Measure</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Measure\">http://hl7.org/fhir/StructureDefinition/Measure</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MeasureReport</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MeasureReport\">http://hl7.org/fhir/StructureDefinition/MeasureReport</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Media</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Media\">http://hl7.org/fhir/StructureDefinition/Media</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Medication</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Medication\">http://hl7.org/fhir/StructureDefinition/Medication</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MedicationAdministration</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MedicationAdministration\">http://hl7.org/fhir/StructureDefinition/MedicationAdministration</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MedicationDispense</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MedicationDispense\">http://hl7.org/fhir/StructureDefinition/MedicationDispense</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MedicationKnowledge</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MedicationKnowledge\">http://hl7.org/fhir/StructureDefinition/MedicationKnowledge</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MedicationRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MedicationRequest\">http://hl7.org/fhir/StructureDefinition/MedicationRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MedicationUsage</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MedicationUsage\">http://hl7.org/fhir/StructureDefinition/MedicationUsage</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MessageDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MessageDefinition\">http://hl7.org/fhir/StructureDefinition/MessageDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MessageHeader</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MessageHeader\">http://hl7.org/fhir/StructureDefinition/MessageHeader</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>MolecularSequence</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/MolecularSequence\">http://hl7.org/fhir/StructureDefinition/MolecularSequence</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>NamingSystem</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/NamingSystem\">http://hl7.org/fhir/StructureDefinition/NamingSystem</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>NutritionOrder</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/NutritionOrder\">http://hl7.org/fhir/StructureDefinition/NutritionOrder</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Observation</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Observation\">http://hl7.org/fhir/StructureDefinition/Observation</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ObservationDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ObservationDefinition\">http://hl7.org/fhir/StructureDefinition/ObservationDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>OperationDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/OperationDefinition\">http://hl7.org/fhir/StructureDefinition/OperationDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>OperationOutcome</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/OperationOutcome\">http://hl7.org/fhir/StructureDefinition/OperationOutcome</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Organization</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Organization\">http://hl7.org/fhir/StructureDefinition/Organization</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>OrganizationAffiliation</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/OrganizationAffiliation\">http://hl7.org/fhir/StructureDefinition/OrganizationAffiliation</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Patient</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Patient\">http://hl7.org/fhir/StructureDefinition/Patient</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>PaymentNotice</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/PaymentNotice\">http://hl7.org/fhir/StructureDefinition/PaymentNotice</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>PaymentReconciliation</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/PaymentReconciliation\">http://hl7.org/fhir/StructureDefinition/PaymentReconciliation</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Person</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Person\">http://hl7.org/fhir/StructureDefinition/Person</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>PlanDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/PlanDefinition\">http://hl7.org/fhir/StructureDefinition/PlanDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Practitioner</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Practitioner\">http://hl7.org/fhir/StructureDefinition/Practitioner</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>PractitionerRole</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/PractitionerRole\">http://hl7.org/fhir/StructureDefinition/PractitionerRole</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Procedure</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Procedure\">http://hl7.org/fhir/StructureDefinition/Procedure</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Provenance</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Provenance\">http://hl7.org/fhir/StructureDefinition/Provenance</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Questionnaire</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Questionnaire\">http://hl7.org/fhir/StructureDefinition/Questionnaire</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>QuestionnaireResponse</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse\">http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RegulatedAdministrableProduct</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RegulatedAdministrableProduct\">http://hl7.org/fhir/StructureDefinition/RegulatedAdministrableProduct</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RegulatedAuthorization</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RegulatedAuthorization\">http://hl7.org/fhir/StructureDefinition/RegulatedAuthorization</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RegulatedManufacturedItem</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RegulatedManufacturedItem\">http://hl7.org/fhir/StructureDefinition/RegulatedManufacturedItem</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RegulatedMedicinalProduct</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RegulatedMedicinalProduct\">http://hl7.org/fhir/StructureDefinition/RegulatedMedicinalProduct</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RegulatedPackagedProduct</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RegulatedPackagedProduct\">http://hl7.org/fhir/StructureDefinition/RegulatedPackagedProduct</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RelatedPerson</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RelatedPerson\">http://hl7.org/fhir/StructureDefinition/RelatedPerson</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RequestGroup</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RequestGroup\">http://hl7.org/fhir/StructureDefinition/RequestGroup</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ResearchDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ResearchDefinition\">http://hl7.org/fhir/StructureDefinition/ResearchDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ResearchElementDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ResearchElementDefinition\">http://hl7.org/fhir/StructureDefinition/ResearchElementDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ResearchStudy</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ResearchStudy\">http://hl7.org/fhir/StructureDefinition/ResearchStudy</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ResearchSubject</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ResearchSubject\">http://hl7.org/fhir/StructureDefinition/ResearchSubject</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RiskAssessment</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RiskAssessment\">http://hl7.org/fhir/StructureDefinition/RiskAssessment</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>RiskEvidenceSynthesis</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/RiskEvidenceSynthesis\">http://hl7.org/fhir/StructureDefinition/RiskEvidenceSynthesis</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Schedule</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Schedule\">http://hl7.org/fhir/StructureDefinition/Schedule</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SearchParameter</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SearchParameter\">http://hl7.org/fhir/StructureDefinition/SearchParameter</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ServiceRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ServiceRequest\">http://hl7.org/fhir/StructureDefinition/ServiceRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Slot</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Slot\">http://hl7.org/fhir/StructureDefinition/Slot</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Specimen</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Specimen\">http://hl7.org/fhir/StructureDefinition/Specimen</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SpecimenDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SpecimenDefinition\">http://hl7.org/fhir/StructureDefinition/SpecimenDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Statistic</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Statistic\">http://hl7.org/fhir/StructureDefinition/Statistic</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>StructureDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/StructureDefinition\">http://hl7.org/fhir/StructureDefinition/StructureDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>StructureMap</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/StructureMap\">http://hl7.org/fhir/StructureDefinition/StructureMap</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Subscription</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Subscription\">http://hl7.org/fhir/StructureDefinition/Subscription</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Substance</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Substance\">http://hl7.org/fhir/StructureDefinition/Substance</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SubstanceDefinition</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SubstanceDefinition\">http://hl7.org/fhir/StructureDefinition/SubstanceDefinition</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SubstanceNucleicAcid</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SubstanceNucleicAcid\">http://hl7.org/fhir/StructureDefinition/SubstanceNucleicAcid</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SubstancePolymer</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SubstancePolymer\">http://hl7.org/fhir/StructureDefinition/SubstancePolymer</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SubstanceProtein</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SubstanceProtein\">http://hl7.org/fhir/StructureDefinition/SubstanceProtein</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SubstanceReferenceInformation</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SubstanceReferenceInformation\">http://hl7.org/fhir/StructureDefinition/SubstanceReferenceInformation</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SubstanceSourceMaterial</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SubstanceSourceMaterial\">http://hl7.org/fhir/StructureDefinition/SubstanceSourceMaterial</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SupplyDelivery</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SupplyDelivery\">http://hl7.org/fhir/StructureDefinition/SupplyDelivery</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>SupplyRequest</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/SupplyRequest\">http://hl7.org/fhir/StructureDefinition/SupplyRequest</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>Task</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/Task\">http://hl7.org/fhir/StructureDefinition/Task</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>TerminologyCapabilities</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities\">http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>TestReport</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/TestReport\">http://hl7.org/fhir/StructureDefinition/TestReport</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>TestScript</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/TestScript\">http://hl7.org/fhir/StructureDefinition/TestScript</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>ValueSet</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/ValueSet\">http://hl7.org/fhir/StructureDefinition/ValueSet</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>VerificationResult</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/VerificationResult\">http://hl7.org/fhir/StructureDefinition/VerificationResult</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr><tr><td>VisionPrescription</td><td><a href=\"http://hl7.org/fhir/StructureDefinition/VisionPrescription\">http://hl7.org/fhir/StructureDefinition/VisionPrescription</a></td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td><td>y</td></tr></table></div>"
+  },
+  "url" : "http://hl7.org/fhir/CapabilityStatement/base",
+  "version" : "4.1.0",
+  "name" : "Base FHIR Capability Statement (Full)",
+  "status" : "draft",
+  "experimental" : true,
+  "date" : "2019-06-01T11:22:02+10:00",
+  "publisher" : "FHIR Project Team",
+  "contact" : [{
+    "telecom" : [{
+      "system" : "url",
+      "value" : "http://hl7.org/fhir"
+    }]
+  }],
+  "description" : "This is the base Capability Statement for FHIR. It represents a server that provides the full set of functionality defined by FHIR. It is provided to use as a template for system designers to build their own Capability Statements from",
+  "kind" : "capability",
+  "software" : {
+    "name" : "Insert your software name here..."
+  },
+  "fhirVersion" : "4.1.0",
+  "format" : ["xml",
+  "json"],
+  "rest" : [{
+    "mode" : "server",
+    "documentation" : "All the functionality defined in FHIR",
+    "security" : {
+      "cors" : true,
+      "service" : [{
+        "coding" : [{
+          "system" : "http://terminology.hl7.org/CodeSystem/restful-security-service",
+          "code" : "SMART-on-FHIR",
+          "display" : "SMART-on-FHIR"
+        }],
+        "text" : "See http://docs.smarthealthit.org/"
+      }],
+      "description" : "This is the Capability Statement to declare that the server supports SMART-on-FHIR. See the SMART-on-FHIR docs for the extension that would go with such a server"
+    },
+    "resource" : [{
+      "type" : "Account",
+      "profile" : "http://hl7.org/fhir/StructureDefinition/Account",
+      "interaction" : [{
+        "code" : "read",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "vread",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "update",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "delete",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "history-instance",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "history-type",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "create",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      },
+      {
+        "code" : "search-type",
+        "documentation" : "Implemented per the specification (or Insert other doco here)"
+      }],
+      "conditionalCreate" : true,
+      "conditionalUpdate" : true,
+      "conditionalDelete" : "multiple",
+      "referencePolicy" : ["literal",
+      "logical"],
+      "searchInclude" : ["Account.owner",
+      "Account.subject",
+      "Account.patient"],
+      "searchRevInclude" : ["ChargeItem.account",
+      "Encounter.account",
+      "Invoice.account"],
+      "searchParam" : [{
+        "name" : "owner",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-owner",
+        "type" : "reference",
+        "documentation" : "Entity managing the Account"
+      },
+      {
+        "name" : "identifier",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-identifier",
+        "type" : "token",
+        "documentation" : "Account number"
+      },
+      {
+        "name" : "period",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-period",
+        "type" : "date",
+        "documentation" : "Transaction window"
+      },
+      {
+        "name" : "subject",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-subject",
+        "type" : "reference",
+        "documentation" : "The entity that caused the expenses"
+      },
+      {
+        "name" : "patient",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-patient",
+        "type" : "reference",
+        "documentation" : "The entity that caused the expenses"
+      },
+      {
+        "name" : "name",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-name",
+        "type" : "string",
+        "documentation" : "Human-readable label"
+      },
+      {
+        "name" : "type",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-type",
+        "type" : "token",
+        "documentation" : "E.g. patient, expense, depreciation"
+      },
+      {
+        "name" : "status",
+        "definition" : "http://hl7.org/fhir/SearchParameter/Account-status",
+        "type" : "token",
+        "documentation" : "active | inactive | entered-in-error | on-hold | unknown"
+      }]
+    }],
+    "interaction" : [{
+      "code" : "transaction",
+      "documentation" : "Implemented per the specification (or Insert other doco here)"
+    },
+    {
+      "code" : "batch",
+      "documentation" : "Implemented per the specification (or Insert other doco here)"
+    },
+    {
+      "code" : "history-system",
+      "documentation" : "Implemented per the specification (or Insert other doco here)"
+    },
+    {
+      "code" : "search-system",
+      "documentation" : "Implemented per the specification (or Insert other doco here)"
+    }],
+    "searchParam" : [{
+      "name" : "_text",
+      "definition" : "http://hl7.org/fhir/SearchParameter/DomainResource-text",
+      "type" : "string",
+      "documentation" : "Search on the narrative of the resource"
+    },
+    {
+      "name" : "something",
+      "definition" : "http://hl7.org/fhir/SearchParameter/id",
+      "type" : "string",
+      "documentation" : "some doco"
+    },
+    {
+      "name" : "_list",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-list",
+      "type" : "token",
+      "documentation" : "Retrieval of resources that are referenced by a List resource"
+    },
+    {
+      "name" : "_has",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-has",
+      "type" : "composite",
+      "documentation" : "Provides support for reverse chaining"
+    },
+    {
+      "name" : "_type",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-type",
+      "type" : "token",
+      "documentation" : "Type of resource (when doing cross-resource search"
+    },
+    {
+      "name" : "_sort",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-source",
+      "type" : "token",
+      "documentation" : "How to sort the resources when returning"
+    },
+    {
+      "name" : "_count",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-count",
+      "type" : "number",
+      "documentation" : "How many resources to return"
+    },
+    {
+      "name" : "_include",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-include",
+      "type" : "token",
+      "documentation" : "Control over returning additional resources (see spec)"
+    },
+    {
+      "name" : "_revinclude",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-revinclude",
+      "type" : "token",
+      "documentation" : "Control over returning additional resources (see spec)"
+    },
+    {
+      "name" : "_summary",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-summary",
+      "type" : "token",
+      "documentation" : "What kind of information to return"
+    },
+    {
+      "name" : "_elements",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-elements",
+      "type" : "string",
+      "documentation" : "What kind of information to return"
+    },
+    {
+      "name" : "_contained",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-contained",
+      "type" : "token",
+      "documentation" : "Managing search into contained resources"
+    },
+    {
+      "name" : "_containedType",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-containedType",
+      "type" : "token",
+      "documentation" : "Managing search into contained resources"
+    },
+    {
+      "name" : "something",
+      "definition" : "http://hl7.org/fhir/SearchParameter/id",
+      "type" : "string",
+      "documentation" : "some doco"
+    },
+    {
+      "name" : "_list",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-list",
+      "type" : "token",
+      "documentation" : "Retrieval of resources that are referenced by a List resource"
+    },
+    {
+      "name" : "_has",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-has",
+      "type" : "composite",
+      "documentation" : "Provides support for reverse chaining"
+    },
+    {
+      "name" : "_type",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-type",
+      "type" : "token",
+      "documentation" : "Type of resource (when doing cross-resource search"
+    },
+    {
+      "name" : "_sort",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-source",
+      "type" : "token",
+      "documentation" : "How to sort the resources when returning"
+    },
+    {
+      "name" : "_count",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-count",
+      "type" : "number",
+      "documentation" : "How many resources to return"
+    },
+    {
+      "name" : "_include",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-include",
+      "type" : "token",
+      "documentation" : "Control over returning additional resources (see spec)"
+    },
+    {
+      "name" : "_revinclude",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-revinclude",
+      "type" : "token",
+      "documentation" : "Control over returning additional resources (see spec)"
+    },
+    {
+      "name" : "_summary",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-summary",
+      "type" : "token",
+      "documentation" : "What kind of information to return"
+    },
+    {
+      "name" : "_elements",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-elements",
+      "type" : "string",
+      "documentation" : "What kind of information to return"
+    },
+    {
+      "name" : "_contained",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-contained",
+      "type" : "token",
+      "documentation" : "Managing search into contained resources"
+    },
+    {
+      "name" : "_containedType",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-containedType",
+      "type" : "token",
+      "documentation" : "Managing search into contained resources"
+    },
+    {
+      "name" : "_query",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-query",
+      "type" : "token",
+      "documentation" : "A custom search profile that describes a specific defined query operation"
+    },
+    {
+      "name" : "_profile",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-profile",
+      "type" : "reference",
+      "documentation" : "Profiles this resource claims to conform to"
+    },
+    {
+      "name" : "_lastUpdated",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
+      "type" : "date",
+      "documentation" : "When the resource version last changed"
+    },
+    {
+      "name" : "_tag",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-tag",
+      "type" : "token",
+      "documentation" : "Tags applied to this resource"
+    },
+    {
+      "name" : "_security",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-security",
+      "type" : "token",
+      "documentation" : "Security Labels applied to this resource"
+    },
+    {
+      "name" : "_source",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-source",
+      "type" : "uri",
+      "documentation" : "Identifies where the resource comes from"
+    },
+    {
+      "name" : "_id",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-id",
+      "type" : "token",
+      "documentation" : "Logical id of this artifact"
+    },
+    {
+      "name" : "_content",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-content",
+      "type" : "string",
+      "documentation" : "Search on the entire content of the resource"
+    },
+    {
+      "name" : "something",
+      "definition" : "http://hl7.org/fhir/SearchParameter/id",
+      "type" : "string",
+      "documentation" : "some doco"
+    },
+    {
+      "name" : "_list",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-list",
+      "type" : "token",
+      "documentation" : "Retrieval of resources that are referenced by a List resource"
+    },
+    {
+      "name" : "_has",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-has",
+      "type" : "composite",
+      "documentation" : "Provides support for reverse chaining"
+    },
+    {
+      "name" : "_type",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-type",
+      "type" : "token",
+      "documentation" : "Type of resource (when doing cross-resource search"
+    },
+    {
+      "name" : "_sort",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-source",
+      "type" : "token",
+      "documentation" : "How to sort the resources when returning"
+    },
+    {
+      "name" : "_count",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-count",
+      "type" : "number",
+      "documentation" : "How many resources to return"
+    },
+    {
+      "name" : "_include",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-include",
+      "type" : "token",
+      "documentation" : "Control over returning additional resources (see spec)"
+    },
+    {
+      "name" : "_revinclude",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-revinclude",
+      "type" : "token",
+      "documentation" : "Control over returning additional resources (see spec)"
+    },
+    {
+      "name" : "_summary",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-summary",
+      "type" : "token",
+      "documentation" : "What kind of information to return"
+    },
+    {
+      "name" : "_elements",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-elements",
+      "type" : "string",
+      "documentation" : "What kind of information to return"
+    },
+    {
+      "name" : "_contained",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-contained",
+      "type" : "token",
+      "documentation" : "Managing search into contained resources"
+    },
+    {
+      "name" : "_containedType",
+      "definition" : "http://hl7.org/fhir/SearchParameter/Resource-containedType",
+      "type" : "token",
+      "documentation" : "Managing search into contained resources"
+    }],
+    "operation" : [{
+      "name" : "validate",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-validate"
+    },
+    {
+      "name" : "meta",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-meta"
+    },
+    {
+      "name" : "meta-add",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-meta-add"
+    },
+    {
+      "name" : "meta-delete",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-meta-delete"
+    },
+    {
+      "name" : "convert",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-convert"
+    },
+    {
+      "name" : "graphql",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-graphql"
+    },
+    {
+      "name" : "graph",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/resource-graph"
+    },
+    {
+      "name" : "apply",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/activitydefinition-apply"
+    },
+    {
+      "name" : "data-requirements",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/activitydefinition-data-requirements"
+    },
+    {
+      "name" : "subset",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement-subset"
+    },
+    {
+      "name" : "implements",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement-implements"
+    },
+    {
+      "name" : "conforms",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement-conforms"
+    },
+    {
+      "name" : "versions",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement-versions"
+    },
+    {
+      "name" : "subset",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement2-subset"
+    },
+    {
+      "name" : "implements",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement2-implements"
+    },
+    {
+      "name" : "conforms",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement2-conforms"
+    },
+    {
+      "name" : "versions",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/capabilitystatement2-versions"
+    },
+    {
+      "name" : "apply",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/chargeitemdefinition-apply"
+    },
+    {
+      "name" : "submit",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/claim-submit"
+    },
+    {
+      "name" : "lookup",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/codesystem-lookup"
+    },
+    {
+      "name" : "validate-code",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/codesystem-validate-code"
+    },
+    {
+      "name" : "subsumes",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/codesystem-subsumes"
+    },
+    {
+      "name" : "find-matches",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/codesystem-find-matches"
+    },
+    {
+      "name" : "document",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/composition-document"
+    },
+    {
+      "name" : "translate",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/conceptmap-translate"
+    },
+    {
+      "name" : "closure",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/conceptmap-closure"
+    },
+    {
+      "name" : "submit",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/coverageeligibilityrequest-submit"
+    },
+    {
+      "name" : "everything",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/encounter-everything"
+    },
+    {
+      "name" : "everything",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/group-everything"
+    },
+    {
+      "name" : "data-requirements",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/library-data-requirements"
+    },
+    {
+      "name" : "find",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/list-find"
+    },
+    {
+      "name" : "evaluate-measure",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/measure-evaluate-measure"
+    },
+    {
+      "name" : "data-requirements",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/measure-data-requirements"
+    },
+    {
+      "name" : "submit-data",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/measure-submit-data"
+    },
+    {
+      "name" : "collect-data",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/measure-collect-data"
+    },
+    {
+      "name" : "care-gaps",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/measure-care-gaps"
+    },
+    {
+      "name" : "process-message",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/messageheader-process-message"
+    },
+    {
+      "name" : "preferred-id",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/namingsystem-preferred-id"
+    },
+    {
+      "name" : "stats",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/observation-stats"
+    },
+    {
+      "name" : "lastn",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/observation-lastn"
+    },
+    {
+      "name" : "match",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/patient-match"
+    },
+    {
+      "name" : "everything",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/patient-everything"
+    },
+    {
+      "name" : "apply",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/plandefinition-apply"
+    },
+    {
+      "name" : "data-requirements",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/plandefinition-data-requirements"
+    },
+    {
+      "name" : "everything",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/regulatedmedicinalproduct-everything"
+    },
+    {
+      "name" : "questionnaire",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/structuredefinition-questionnaire"
+    },
+    {
+      "name" : "snapshot",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/structuredefinition-snapshot"
+    },
+    {
+      "name" : "transform",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/structuremap-transform"
+    },
+    {
+      "name" : "expand",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/valueset-expand"
+    },
+    {
+      "name" : "validate-code",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/valueset-validate-code"
+    }]
+  }]
+}

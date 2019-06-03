@@ -432,6 +432,7 @@ public class Validator {
           System.out.println("  .. validate "+sources+" against "+profiles.toString());
         else
           System.out.println("  .. validate "+sources);
+        validator.prepare(); // generate any missing snapshots
         Resource r = validator.validate(sources, profiles);
         if (output == null) {
           if (r instanceof Bundle)
