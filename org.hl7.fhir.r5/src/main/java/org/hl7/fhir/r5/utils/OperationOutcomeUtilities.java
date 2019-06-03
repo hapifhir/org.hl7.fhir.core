@@ -22,6 +22,7 @@ package org.hl7.fhir.r5.utils;
 
 
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
@@ -40,6 +41,10 @@ public class OperationOutcomeUtilities {
       s.setValue(message.getLocation()+(message.getLine()>= 0 && message.getCol() >= 0 ? " (line "+Integer.toString(message.getLine())+", col"+Integer.toString(message.getCol())+")" : "") );
       issue.getLocation().add(s);
     }
+    if (message.getLine() != 0)
+      issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_LINE).setValue(new IntegerType(message.getLine()));
+    if (message.getCol() != 0)
+      issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_COL).setValue(new IntegerType(message.getCol()));
     issue.setSeverity(convert(message.getLevel()));
     CodeableConcept c = new CodeableConcept();
     c.setText(message.getMessage());

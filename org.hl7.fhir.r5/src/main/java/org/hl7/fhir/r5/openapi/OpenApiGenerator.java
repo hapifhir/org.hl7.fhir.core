@@ -10,6 +10,8 @@ import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResource
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceVersionPolicy;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
+import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ContactDetail;
@@ -41,12 +43,12 @@ public class OpenApiGenerator {
     }
     if (source.hasPublisher())
       dest.info().contact(source.getPublisher(), null, null);
-   
+
     if (source.hasImplementation()) {
       dest.server(source.getImplementation().getUrl()).description(source.getImplementation().getDescription());
     }
     dest.externalDocs().url(source.getUrl()).description("FHIR CapabilityStatement");
-    
+
     for (CapabilityStatementRestComponent csr : source.getRest()) {
       if (csr.getMode() == RestfulCapabilityMode.SERVER) {
         generatePaths(csr);
@@ -54,37 +56,71 @@ public class OpenApiGenerator {
     }
     writeBaseParameters(dest.components());
   }
-  
+
   private void writeBaseParameters(ComponentsWriter components) {
     components.parameter("summary").name("_summary").in(ParameterLocation.query).description("Requests the server to return a designated subset of the resource").allowEmptyValue().style(ParameterStyle.matrix)
-        .schema().type(SchemaType.string).enums("true", "text", "data", "count", "false");
-    
+    .schema().type(SchemaType.string).enums("true", "text", "data", "count", "false");
+
     components.parameter("format").name("_format").in(ParameterLocation.query).description("Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)").allowEmptyValue().style(ParameterStyle.matrix)
-        .schema().type(SchemaType.string).format("mime-type");
-    
+    .schema().type(SchemaType.string).format("mime-type");
+
     components.parameter("pretty").name("_pretty").in(ParameterLocation.query).description("Ask for a pretty printed response for human convenience").allowEmptyValue().style(ParameterStyle.matrix)
-        .schema().type(SchemaType.bool);
-  
+    .schema().type(SchemaType.bool);
+
     components.parameter("elements").name("_elements").in(ParameterLocation.query).description("Requests the server to return a collection of elements from the resource").allowEmptyValue().style(ParameterStyle.matrix).explode(false)
-        .schema().type(SchemaType.array).format("string");    
+    .schema().type(SchemaType.array).format("string");    
   }
 
   private void generatePaths(CapabilityStatementRestComponent csr) {
+    generateMetadata();
     for (CapabilityStatementRestResourceComponent r : csr.getResource())
       generateResource(r);
+    if (hasOp(csr, SystemRestfulInteraction.HISTORYSYSTEM))
+      generateHistorySystem(csr);
+    if (hasOp(csr, SystemRestfulInteraction.SEARCHSYSTEM))
+      generateSearchSystem(csr);
+    if (hasOp(csr, SystemRestfulInteraction.BATCH) || hasOp(csr, SystemRestfulInteraction.TRANSACTION) )
+      generateBatchTransaction(csr);
   }
-  
+
   private void generateResource(CapabilityStatementRestResourceComponent r) {
     if (hasOp(r, TypeRestfulInteraction.SEARCHTYPE)) 
       generateSearch(r);
     if (hasOp(r, TypeRestfulInteraction.READ))
       generateRead(r);
-    if (hasOp(r, TypeRestfulInteraction.VREAD)) 
-      generateVRead(r);
-    if (hasOp(r, TypeRestfulInteraction.UPDATE)) 
-      generateUpdate(r);
     if (hasOp(r, TypeRestfulInteraction.CREATE)) 
       generateCreate(r);
+    if (hasOp(r, TypeRestfulInteraction.UPDATE)) 
+      generateUpdate(r);
+    if (hasOp(r, TypeRestfulInteraction.PATCH)) 
+      generatePatch(r);
+    if (hasOp(r, TypeRestfulInteraction.DELETE)) 
+      generateDelete(r);
+    if (hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE)) 
+      generateHistoryInstance(r);
+    if (hasOp(r, TypeRestfulInteraction.VREAD)) 
+      generateVRead(r);
+    if (hasOp(r, TypeRestfulInteraction.HISTORYTYPE)) 
+      generateHistoryType(r);
+  }
+
+  private void generateMetadata() {
+    OperationWriter op = makePathMetadata().operation("get");
+    op.summary("Return the server's capability statement");
+    op.operationId("metadata");
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the capbility statement");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/CapabilityStatement");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/CapabilityStatement.xsd");
+
+    // parameters - but do they apply?
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/elements");
   }
 
   private void generateRead(CapabilityStatementRestResourceComponent r) {
@@ -100,7 +136,7 @@ public class OpenApiGenerator {
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
     if (isXml())
       resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
-    
+
     // parameters:
     op.paramRef("#/Components/parameters/summary");
     op.paramRef("#/Components/parameters/format");
@@ -110,22 +146,50 @@ public class OpenApiGenerator {
 
   private void generateSearch(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResType(r).operation("get");
-    op.summary("Search all resources based on a set of criteria");
+    op.summary("Search all resources of type "+r.getType()+" based on a set of criteria");
     op.operationId("search"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned");
-    if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag");
     if (isJson())
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
     if (isXml())
       resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
-    op.paramRef("#/Components/parameters/summary");
+    // todo: how do we know that these apply? 
     op.paramRef("#/Components/parameters/format");
     op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/summary");
     op.paramRef("#/Components/parameters/elements");
     for (CapabilityStatementRestResourceSearchParamComponent spc : r.getSearchParam()) {
+      ParameterWriter p = op.parameter(spc.getName());
+      p.in(ParameterLocation.query).description(spc.getDocumentation());
+      p.schema().type(getSchemaType(spc.getType()));
+      if (spc.hasDefinition()) {
+        SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition());
+        if (sp != null) {
+          p.description(sp.getDescription());
+        }
+      }
+    }
+  }
+
+  private void generateSearchSystem(CapabilityStatementRestComponent csr) {
+    OperationWriter op = makePathSystem().operation("get");
+    op.summary("Search all resources of all types based on a set of criteria");
+    op.operationId("searchAll");
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the resource being returned");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    // todo: how do we know that these apply? 
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/elements");
+    for (CapabilityStatementRestResourceSearchParamComponent spc : csr.getSearchParam()) {
       ParameterWriter p = op.parameter(spc.getName());
       p.in(ParameterLocation.query).description(spc.getDocumentation());
       p.schema().type(getSchemaType(spc.getType()));
@@ -150,6 +214,72 @@ public class OpenApiGenerator {
     case URI: return SchemaType.string;
     }
     return null;
+  }
+
+  private void generateHistoryType(CapabilityStatementRestResourceComponent r) {
+    OperationWriter op = makePathResHistListType(r).operation("get");
+    op.summary("Read the past states of the resource");
+    op.operationId("histinst"+r.getType());
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the resources being returned");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
+
+    op.parameter("_count").in(ParameterLocation.query).description("The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more").schema().type(SchemaType.number);
+    op.parameter("_since").in(ParameterLocation.query).description("Only include resource versions that were created at or after the given instant in time").schema().type(SchemaType.dateTime);
+    op.parameter("_at").in(ParameterLocation.query).description("Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)").schema().type(SchemaType.dateTime);
+    op.parameter("_list").in(ParameterLocation.query).description("Only include resource versions that are referenced in the specified list (current list references are allowed)").schema().type(SchemaType.string);
+  }
+
+  private void generateHistoryInstance(CapabilityStatementRestResourceComponent r) {
+    OperationWriter op = makePathResHistListId(r).operation("get");
+    op.summary("Read the past states of the resource");
+    op.operationId("histinst"+r.getType());
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the resources being returned");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
+
+    op.parameter("_count").in(ParameterLocation.query).description("The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more").schema().type(SchemaType.number);
+    op.parameter("_since").in(ParameterLocation.query).description("Only include resource versions that were created at or after the given instant in time").schema().type(SchemaType.dateTime);
+    op.parameter("_at").in(ParameterLocation.query).description("Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)").schema().type(SchemaType.dateTime);
+    op.parameter("_list").in(ParameterLocation.query).description("Only include resource versions that are referenced in the specified list (current list references are allowed)").schema().type(SchemaType.string);
+  }
+
+  private void generateHistorySystem(CapabilityStatementRestComponent csr) {
+    OperationWriter op = makePathHistListSystem().operation("get");
+    op.summary("Read the past states of all resources");
+    op.operationId("histinstAll");
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the resources being returned");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
+
+    op.parameter("_count").in(ParameterLocation.query).description("The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more").schema().type(SchemaType.number);
+    op.parameter("_since").in(ParameterLocation.query).description("Only include resource versions that were created at or after the given instant in time").schema().type(SchemaType.dateTime);
+    op.parameter("_at").in(ParameterLocation.query).description("Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)").schema().type(SchemaType.dateTime);
+    op.parameter("_list").in(ParameterLocation.query).description("Only include resource versions that are referenced in the specified list (current list references are allowed)").schema().type(SchemaType.string);
   }
 
   private void generateVRead(CapabilityStatementRestResourceComponent r) {
@@ -185,7 +315,7 @@ public class OpenApiGenerator {
       req.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
     if (isXml())
       req.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
-    
+
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned after being updated");
@@ -201,6 +331,47 @@ public class OpenApiGenerator {
     op.paramRef("#/Components/parameters/elements");
   }
 
+  private void generatePatch(CapabilityStatementRestResourceComponent r) {
+    OperationWriter op = makePathResId(r).operation("patch");
+    op.summary("Change the current state of the resource by providing a patch - a series of change commands");
+    op.operationId("patch"+r.getType());
+    RequestBodyWriter req = op.request();
+    req.description("The new state of the resource").required(true);
+    if (isJson()) {
+      req.content("application/json-patch+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Parameters");
+    }
+    if (isXml()) {
+      req.content("application/xml-patch+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+      req.content("application/fhir+xml").schemaRef(specRef()+"/Parameters.xsd");
+    }
+
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("the resource being returned after being patched");
+    if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+    op.paramRef("#/Components/parameters/summary");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
+    op.paramRef("#/Components/parameters/elements");
+  }
+
+  private void generateDelete(CapabilityStatementRestResourceComponent r) {
+    OperationWriter op = makePathResId(r).operation("delete");
+    op.summary("Delete the resource so that it no exists (no read, search etc)");
+    op.operationId("delete"+r.getType());
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("204");
+    resp.description("If the resource is deleted - no content is returned");
+    if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag");
+  }
+
   private void generateCreate(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathRes(r).operation("put");
     op.summary("Create a new resource");
@@ -211,7 +382,7 @@ public class OpenApiGenerator {
       req.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/"+r.getType());
     if (isXml())
       req.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
-    
+
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned after being updated");
@@ -225,6 +396,28 @@ public class OpenApiGenerator {
     op.paramRef("#/Components/parameters/format");
     op.paramRef("#/Components/parameters/pretty");
     op.paramRef("#/Components/parameters/elements");
+  }
+
+  private void generateBatchTransaction(CapabilityStatementRestComponent csr) {
+    OperationWriter op = makePathSystem().operation("post");
+    op.summary("Batch or Transaction");
+    op.operationId("transaction");
+    RequestBodyWriter req = op.request();
+    req.description("The batch or transaction").required(true);
+    if (isJson())
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
+    if (isXml())
+      req.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("Batch or Transaction response");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.json.schema#/definitions/Bundle");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    op.paramRef("#/Components/parameters/format");
+    op.paramRef("#/Components/parameters/pretty");
   }
 
   private void opOutcome(ResponseObjectWriter resp) {
@@ -256,6 +449,20 @@ public class OpenApiGenerator {
     return false;
   }
 
+  public PathItemWriter makePathSystem() {
+    PathItemWriter p = dest.path("/");
+    p.summary("System level operations");
+    p.description("System level operations");
+    return p;
+  }
+
+  public PathItemWriter makePathMetadata() {
+    PathItemWriter p = dest.path("/metadata");
+    p.summary("Access to the Server's Capability Statement");
+    p.description("All FHIR Servers return a CapabilityStatement that describes what services they perform");
+    return p;
+  }
+
   public PathItemWriter makePathRes(CapabilityStatementRestResourceComponent r) {
     PathItemWriter p = dest.path("/"+r.getType());
     p.summary("Manager for resources of type "+r.getType());
@@ -277,11 +484,40 @@ public class OpenApiGenerator {
     return p;
   }
 
-  public PathItemWriter makePathResHistId(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}/_history/{hid}");
+  public PathItemWriter makePathResHistListType(CapabilityStatementRestResourceComponent r) {
+    PathItemWriter p = dest.path("/"+r.getType()+"/_history");
+    p.summary("Read past versions of resources of type "+r.getType());
+    p.description("Access to previous versions of resourcez of type "+r.getType());
+    return p;
+  }
+
+  public PathItemWriter makePathResHistListId(CapabilityStatementRestResourceComponent r) {
+    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}/_history");
     p.summary("Read past versions of resource instance of type "+r.getType());
     p.description("Access to previous versions of a single resource of type "+r.getType());
     return p;
+  }
+
+  public PathItemWriter makePathResHistId(CapabilityStatementRestResourceComponent r) {
+    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}/_history/{hid}");
+    p.summary("Read a past version of resource instance of type "+r.getType());
+    p.description("Access a to specified previous version of a single resource of type "+r.getType());
+    return p;
+  }
+
+  public PathItemWriter makePathHistListSystem() {
+    PathItemWriter p = dest.path("/_history");
+    p.summary("Read a past version of resource instance of all types");
+    p.description("Access a previous versions of all types");
+    return p;
+  }
+
+  private boolean hasOp(CapabilityStatementRestComponent r, SystemRestfulInteraction opCode) {
+    for (SystemInteractionComponent op : r.getInteraction()) {
+      if (op.getCode() == opCode) 
+        return true;
+    }
+    return false;
   }
 
   private boolean hasOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction opCode) {

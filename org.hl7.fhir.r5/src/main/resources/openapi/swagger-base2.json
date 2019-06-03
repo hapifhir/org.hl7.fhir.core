@@ -1,0 +1,136 @@
+﻿{
+  "openapi": "3.0.2",
+  "info": {
+    "description": "This is the base Capability Statement for FHIR. It represents a server that provides the none of the functionality defined by FHIR. It is provided to use as a template for system designers to build their own Capability Statements from. A capability statement has to contain something, so this contains a read of a Capability Statement",
+    "license": {
+      "name": "test-lic",
+      "url": "http://spdx.org/licenses/test-lic.html"
+    },
+    "version": "4.1.0",
+    "contact": {
+      "name": "FHIR Project Team"
+    }
+  },
+  "externalDocs": {
+    "url": "http://hl7.org/fhir/CapabilityStatement/base2",
+    "description": "FHIR CapabilityStatement"
+  },
+  "paths": {
+    "/metadata": {
+      "summary": "Access to the Server\u0027s Capability Statement",
+      "description": "All FHIR Servers return a CapabilityStatement that describes what services they perform",
+      "get": {
+        "summary": "Return the server\u0027s capability statement",
+        "operationId": "metadata",
+        "responses": {
+          "default": {
+            "description": "Error, with details",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the capbility statement",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/CapabilityStatement"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "$ref": "http://hl7.org/fhir/STU3/CapabilityStatement.xsd"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/Components/parameters/format"
+          },
+          {
+            "$ref": "#/Components/parameters/pretty"
+          },
+          {
+            "$ref": "#/Components/parameters/summary"
+          },
+          {
+            "$ref": "#/Components/parameters/elements"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "summary": {
+        "summary": {
+          "name": "_summary",
+          "in": "query",
+          "description": "Requests the server to return a designated subset of the resource",
+          "allowEmptyValue": true,
+          "style": "matrix",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "true",
+              "text",
+              "data",
+              "count",
+              "false"
+            ]
+          }
+        }
+      },
+      "format": {
+        "format": {
+          "name": "_format",
+          "in": "query",
+          "description": "Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)",
+          "allowEmptyValue": true,
+          "style": "matrix",
+          "schema": {
+            "type": "string",
+            "format": "mime-type"
+          }
+        }
+      },
+      "pretty": {
+        "pretty": {
+          "name": "_pretty",
+          "in": "query",
+          "description": "Ask for a pretty printed response for human convenience",
+          "allowEmptyValue": true,
+          "style": "matrix",
+          "schema": {
+            "type": "boolean"
+          }
+        }
+      },
+      "elements": {
+        "elements": {
+          "name": "_elements",
+          "in": "query",
+          "description": "Requests the server to return a collection of elements from the resource",
+          "allowEmptyValue": true,
+          "style": "matrix",
+          "explode": false,
+          "schema": {
+            "type": "array",
+            "format": "string"
+          }
+        }
+      }
+    }
+  }
+}

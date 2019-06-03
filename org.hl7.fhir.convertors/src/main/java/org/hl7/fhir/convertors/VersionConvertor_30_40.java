@@ -17965,7 +17965,7 @@ public class VersionConvertor_30_40 {
     if (src.hasStandardSequence())
       tgt.setStandardSequence(convertCodeableConcept(src.getStandardSequence()));
     if (src.hasStart())
-      tgt.setStart(src.getStart()));
+      tgt.setStart(src.getStart());
     if (src.hasEnd())
       tgt.setEnd(src.getEnd());
     if (src.hasScore())
