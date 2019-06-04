@@ -1,6 +1,7 @@
 ﻿{
   "openapi": "3.0.2",
   "info": {
+    "title": "Base FHIR Capability Statement (Empty)",
     "description": "This is the base Capability Statement for FHIR. It represents a server that provides the none of the functionality defined by FHIR. It is provided to use as a template for system designers to build their own Capability Statements from. A capability statement has to contain something, so this contains a read of a Capability Statement",
     "license": {
       "name": "test-lic",
@@ -28,12 +29,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -43,12 +44,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/CapabilityStatement"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/CapabilityStatement"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/CapabilityStatement.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/CapabilityStatement.xsd"
                 }
               }
             }
@@ -56,16 +57,16 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           }
         ]
       }
@@ -73,62 +74,87 @@
   },
   "components": {
     "parameters": {
+      "rid": {
+        "name": "rid",
+        "in": "path",
+        "description": "id of the resource (\u003dResource.id)",
+        "required": true,
+        "allowEmptyValue": false,
+        "style": "simple",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "hid": {
+        "name": "hid",
+        "in": "path",
+        "description": "id of the history entry (\u003dResource.meta.versionId)",
+        "required": true,
+        "allowEmptyValue": false,
+        "style": "simple",
+        "schema": {
+          "type": "string"
+        }
+      },
       "summary": {
-        "summary": {
-          "name": "_summary",
-          "in": "query",
-          "description": "Requests the server to return a designated subset of the resource",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "schema": {
-            "type": "string",
-            "enum": [
-              "true",
-              "text",
-              "data",
-              "count",
-              "false"
-            ]
-          }
+        "name": "_summary",
+        "in": "query",
+        "description": "Requests the server to return a designated subset of the resource",
+        "allowEmptyValue": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "true",
+            "text",
+            "data",
+            "count",
+            "false"
+          ]
         }
       },
       "format": {
-        "format": {
-          "name": "_format",
-          "in": "query",
-          "description": "Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "schema": {
-            "type": "string",
-            "format": "mime-type"
-          }
+        "name": "_format",
+        "in": "query",
+        "description": "Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)",
+        "allowEmptyValue": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "format": "mime-type"
         }
       },
       "pretty": {
-        "pretty": {
-          "name": "_pretty",
-          "in": "query",
-          "description": "Ask for a pretty printed response for human convenience",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "schema": {
-            "type": "boolean"
-          }
+        "name": "_pretty",
+        "in": "query",
+        "description": "Ask for a pretty printed response for human convenience",
+        "allowEmptyValue": true,
+        "style": "form",
+        "schema": {
+          "type": "boolean"
         }
       },
       "elements": {
-        "elements": {
-          "name": "_elements",
-          "in": "query",
-          "description": "Requests the server to return a collection of elements from the resource",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "explode": false,
-          "schema": {
-            "type": "array",
+        "name": "_elements",
+        "in": "query",
+        "description": "Requests the server to return a collection of elements from the resource",
+        "allowEmptyValue": true,
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "array",
+          "format": "string",
+          "items": {
             "format": "string"
           }
+        }
+      },
+      "count": {
+        "name": "_count",
+        "in": "query",
+        "description": "The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more",
+        "schema": {
+          "type": "number"
         }
       }
     }
