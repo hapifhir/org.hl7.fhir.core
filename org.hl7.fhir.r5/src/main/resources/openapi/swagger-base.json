@@ -1,6 +1,7 @@
 ﻿{
   "openapi": "3.0.2",
   "info": {
+    "title": "Base FHIR Capability Statement (Full)",
     "description": "This is the base Capability Statement for FHIR. It represents a server that provides the full set of functionality defined by FHIR. It is provided to use as a template for system designers to build their own Capability Statements from",
     "license": {
       "name": "test-lic",
@@ -28,12 +29,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -43,12 +44,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/CapabilityStatement"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/CapabilityStatement"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/CapabilityStatement.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/CapabilityStatement.xsd"
                 }
               }
             }
@@ -56,16 +57,16 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           }
         ]
       }
@@ -82,12 +83,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -97,12 +98,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
                 }
               }
             }
@@ -110,16 +111,16 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           },
           {
             "name": "owner",
@@ -142,7 +143,8 @@
             "in": "query",
             "description": "Transaction window",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -196,12 +198,12 @@
           "content": {
             "application/fhir+json": {
               "schema": {
-                "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Account"
+                "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Account"
               }
             },
             "application/fhir+xml": {
               "schema": {
-                "$ref": "http://hl7.org/fhir/STU3/Account.xsd"
+                "$ref": "https://hl7.org/fhir/STU3/Account.xsd"
               }
             }
           }
@@ -212,12 +214,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -226,18 +228,21 @@
             "description": "the resource being returned after being updated",
             "headers": {
               "ETag": {
-                "description": "Version from Resource.meta.version as a weak ETag"
+                "description": "Version from Resource.meta.version as a weak ETag",
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Account"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Account"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Account.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Account.xsd"
                 }
               }
             }
@@ -245,16 +250,16 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           }
         ]
       }
@@ -271,12 +276,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -285,18 +290,21 @@
             "description": "the resource being returned",
             "headers": {
               "ETag": {
-                "description": "Version from Resource.meta.version as a weak ETag"
+                "description": "Version from Resource.meta.version as a weak ETag",
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Account"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Account"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Account.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Account.xsd"
                 }
               }
             }
@@ -304,16 +312,19 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/rid"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "$ref": "#/components/parameters/elements"
           }
         ]
       },
@@ -326,12 +337,12 @@
           "content": {
             "application/fhir+json": {
               "schema": {
-                "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Account"
+                "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Account"
               }
             },
             "application/fhir+xml": {
               "schema": {
-                "$ref": "http://hl7.org/fhir/STU3/Account.xsd"
+                "$ref": "https://hl7.org/fhir/STU3/Account.xsd"
               }
             }
           }
@@ -342,12 +353,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -356,18 +367,21 @@
             "description": "the resource being returned after being updated",
             "headers": {
               "ETag": {
-                "description": "Version from Resource.meta.version as a weak ETag"
+                "description": "Version from Resource.meta.version as a weak ETag",
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Account"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Account"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Account.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Account.xsd"
                 }
               }
             }
@@ -375,16 +389,19 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/rid"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "$ref": "#/components/parameters/elements"
           }
         ]
       },
@@ -397,12 +414,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -411,11 +428,19 @@
             "description": "If the resource is deleted - no content is returned",
             "headers": {
               "ETag": {
-                "description": "Version from Resource.meta.version as a weak ETag"
+                "description": "Version from Resource.meta.version as a weak ETag",
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/rid"
+          }
+        ]
       }
     },
     "/Account/{rid}/_history": {
@@ -430,12 +455,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -445,12 +470,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
                 }
               }
             }
@@ -458,31 +483,30 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/rid"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "name": "_count",
-            "in": "query",
-            "description": "The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more",
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/elements"
+          },
+          {
+            "$ref": "#/components/parameters/count"
           },
           {
             "name": "_since",
             "in": "query",
             "description": "Only include resource versions that were created at or after the given instant in time",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -490,7 +514,8 @@
             "in": "query",
             "description": "Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -516,12 +541,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -530,18 +555,21 @@
             "description": "the resource being returned",
             "headers": {
               "ETag": {
-                "description": "Version from Resource.meta.version as a weak ETag for that version"
+                "description": "Version from Resource.meta.version as a weak ETag for that version",
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Account"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Account"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Account.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Account.xsd"
                 }
               }
             }
@@ -549,16 +577,22 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/rid"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/hid"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/format"
+          },
+          {
+            "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "$ref": "#/components/parameters/elements"
           }
         ]
       }
@@ -568,19 +602,19 @@
       "description": "Access to previous versions of resourcez of type Account",
       "get": {
         "summary": "Read the past states of the resource",
-        "operationId": "histinstAccount",
+        "operationId": "histtypeAccount",
         "responses": {
           "default": {
             "description": "Error, with details",
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -590,12 +624,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
                 }
               }
             }
@@ -603,31 +637,27 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           },
           {
-            "name": "_count",
-            "in": "query",
-            "description": "The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more",
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/count"
           },
           {
             "name": "_since",
             "in": "query",
             "description": "Only include resource versions that were created at or after the given instant in time",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -635,7 +665,8 @@
             "in": "query",
             "description": "Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -654,19 +685,19 @@
       "description": "Access a previous versions of all types",
       "get": {
         "summary": "Read the past states of all resources",
-        "operationId": "histinstAll",
+        "operationId": "histAll",
         "responses": {
           "default": {
             "description": "Error, with details",
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -676,12 +707,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
                 }
               }
             }
@@ -689,31 +720,27 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           },
           {
-            "name": "_count",
-            "in": "query",
-            "description": "The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more",
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/count"
           },
           {
             "name": "_since",
             "in": "query",
             "description": "Only include resource versions that were created at or after the given instant in time",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -721,7 +748,8 @@
             "in": "query",
             "description": "Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -747,12 +775,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -762,12 +790,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
                 }
               }
             }
@@ -775,16 +803,16 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           },
           {
-            "$ref": "#/Components/parameters/summary"
+            "$ref": "#/components/parameters/summary"
           },
           {
-            "$ref": "#/Components/parameters/elements"
+            "$ref": "#/components/parameters/elements"
           },
           {
             "name": "_text",
@@ -857,116 +885,6 @@
             }
           },
           {
-            "name": "_summary",
-            "in": "query",
-            "description": "What kind of information to return",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_elements",
-            "in": "query",
-            "description": "What kind of information to return",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_contained",
-            "in": "query",
-            "description": "Managing search into contained resources",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_containedType",
-            "in": "query",
-            "description": "Managing search into contained resources",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "something",
-            "in": "query",
-            "description": "some doco",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_list",
-            "in": "query",
-            "description": "Retrieval of resources that are referenced by a List resource",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_has",
-            "in": "query",
-            "description": "Provides support for reverse chaining",
-            "schema": {}
-          },
-          {
-            "name": "_type",
-            "in": "query",
-            "description": "Type of resource (when doing cross-resource search",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_sort",
-            "in": "query",
-            "description": "Identifies where the resource comes from",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_count",
-            "in": "query",
-            "description": "How many resources to return",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "_include",
-            "in": "query",
-            "description": "Control over returning additional resources (see spec)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_revinclude",
-            "in": "query",
-            "description": "Control over returning additional resources (see spec)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_summary",
-            "in": "query",
-            "description": "What kind of information to return",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_elements",
-            "in": "query",
-            "description": "What kind of information to return",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "_contained",
             "in": "query",
             "description": "Managing search into contained resources",
@@ -1003,7 +921,8 @@
             "in": "query",
             "description": "When the resource version last changed",
             "schema": {
-              "type": "dateTime"
+              "type": "string",
+              "pattern": "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
             }
           },
           {
@@ -1045,100 +964,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "something",
-            "in": "query",
-            "description": "some doco",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_list",
-            "in": "query",
-            "description": "Retrieval of resources that are referenced by a List resource",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_has",
-            "in": "query",
-            "description": "Provides support for reverse chaining",
-            "schema": {}
-          },
-          {
-            "name": "_type",
-            "in": "query",
-            "description": "Type of resource (when doing cross-resource search",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_sort",
-            "in": "query",
-            "description": "Identifies where the resource comes from",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_count",
-            "in": "query",
-            "description": "How many resources to return",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "_include",
-            "in": "query",
-            "description": "Control over returning additional resources (see spec)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_revinclude",
-            "in": "query",
-            "description": "Control over returning additional resources (see spec)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_summary",
-            "in": "query",
-            "description": "What kind of information to return",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_elements",
-            "in": "query",
-            "description": "What kind of information to return",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_contained",
-            "in": "query",
-            "description": "Managing search into contained resources",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_containedType",
-            "in": "query",
-            "description": "Managing search into contained resources",
-            "schema": {
-              "type": "string"
-            }
           }
         ]
       },
@@ -1151,12 +976,12 @@
           "content": {
             "application/fhir+json": {
               "schema": {
-                "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
               }
             },
             "application/fhir+xml": {
               "schema": {
-                "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
               }
             }
           }
@@ -1167,12 +992,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/OperationOutcome"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/OperationOutcome"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/OperationOutcome.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/OperationOutcome.xsd"
                 }
               }
             }
@@ -1182,12 +1007,12 @@
             "content": {
               "application/fhir+json": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/fhir.json.schema#/definitions/Bundle"
+                  "$ref": "https://hl7.org/fhir/STU3/fhir.schema.json#/definitions/Bundle"
                 }
               },
               "application/fhir+xml": {
                 "schema": {
-                  "$ref": "http://hl7.org/fhir/STU3/Bundle.xsd"
+                  "$ref": "https://hl7.org/fhir/STU3/Bundle.xsd"
                 }
               }
             }
@@ -1195,10 +1020,10 @@
         },
         "parameters": [
           {
-            "$ref": "#/Components/parameters/format"
+            "$ref": "#/components/parameters/format"
           },
           {
-            "$ref": "#/Components/parameters/pretty"
+            "$ref": "#/components/parameters/pretty"
           }
         ]
       }
@@ -1206,62 +1031,87 @@
   },
   "components": {
     "parameters": {
+      "rid": {
+        "name": "rid",
+        "in": "path",
+        "description": "id of the resource (\u003dResource.id)",
+        "required": true,
+        "allowEmptyValue": false,
+        "style": "simple",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "hid": {
+        "name": "hid",
+        "in": "path",
+        "description": "id of the history entry (\u003dResource.meta.versionId)",
+        "required": true,
+        "allowEmptyValue": false,
+        "style": "simple",
+        "schema": {
+          "type": "string"
+        }
+      },
       "summary": {
-        "summary": {
-          "name": "_summary",
-          "in": "query",
-          "description": "Requests the server to return a designated subset of the resource",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "schema": {
-            "type": "string",
-            "enum": [
-              "true",
-              "text",
-              "data",
-              "count",
-              "false"
-            ]
-          }
+        "name": "_summary",
+        "in": "query",
+        "description": "Requests the server to return a designated subset of the resource",
+        "allowEmptyValue": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "true",
+            "text",
+            "data",
+            "count",
+            "false"
+          ]
         }
       },
       "format": {
-        "format": {
-          "name": "_format",
-          "in": "query",
-          "description": "Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "schema": {
-            "type": "string",
-            "format": "mime-type"
-          }
+        "name": "_format",
+        "in": "query",
+        "description": "Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)",
+        "allowEmptyValue": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "format": "mime-type"
         }
       },
       "pretty": {
-        "pretty": {
-          "name": "_pretty",
-          "in": "query",
-          "description": "Ask for a pretty printed response for human convenience",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "schema": {
-            "type": "boolean"
-          }
+        "name": "_pretty",
+        "in": "query",
+        "description": "Ask for a pretty printed response for human convenience",
+        "allowEmptyValue": true,
+        "style": "form",
+        "schema": {
+          "type": "boolean"
         }
       },
       "elements": {
-        "elements": {
-          "name": "_elements",
-          "in": "query",
-          "description": "Requests the server to return a collection of elements from the resource",
-          "allowEmptyValue": true,
-          "style": "matrix",
-          "explode": false,
-          "schema": {
-            "type": "array",
+        "name": "_elements",
+        "in": "query",
+        "description": "Requests the server to return a collection of elements from the resource",
+        "allowEmptyValue": true,
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "array",
+          "format": "string",
+          "items": {
             "format": "string"
           }
+        }
+      },
+      "count": {
+        "name": "_count",
+        "in": "query",
+        "description": "The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more",
+        "schema": {
+          "type": "number"
         }
       }
     }
