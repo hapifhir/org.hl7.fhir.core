@@ -405,7 +405,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       StructureDefinition sd = null;
       if (profile.startsWith("#")) {
-        if (!rule(errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" is local, but there is not local context", profile)) {
+        if (!rule(errors, IssueType.INVALID, element.line(), element.col(), path, containingProfile != null, "StructureDefinition reference \"{0}\" is local, but there is not local context", profile)) {
           return false;
         }
           
@@ -1863,33 +1863,62 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             // we validate as much as we can. First, can we infer a type from the profile?
             if (!type.hasTargetProfile() || type.hasTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource"))
               ok = true;
-            else for (UriType u : type.getTargetProfile()) {              
-              String pr = u.getValue();
-
-              String bt = getBaseType(profile, pr);
-              StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + bt);
-              if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, bt != null, "Unable to resolve the profile reference '" + pr + "'")) {
-                b.append(bt);
-                ok = bt.equals(ft);
-                if (ok && we!=null && pol.checkValid()) {
-                  doResourceProfile(hostContext, we, pr, errors, stack.push(we, -1, null, null), path, element, profile);
+            else {
+              List<StructureDefinition> candidateProfiles = new ArrayList<StructureDefinition>();
+              for (UriType u : type.getTargetProfile()) {              
+                String pr = u.getValue();
+  
+                String bt = getBaseType(profile, pr);
+                StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + bt);
+                if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, bt != null, "Unable to resolve the profile reference '" + pr + "'")) {
+                  b.append(bt);
+                  if (bt.equals(ft)) {
+                    ok = true;
+                    if (we!=null && pol.checkValid())
+                      candidateProfiles.add(sd);
+                  }
                 }
-              } else
-                ok = true; // suppress following check
-              if (ok && type.hasAggregation()) {
-                boolean modeOk;
-                for (Enumeration<AggregationMode> mode : type.getAggregation()) {
-                  if (mode.getValue().equals(AggregationMode.CONTAINED) && refType.equals("contained"))
-                    ok = true;
-                  else if (mode.getValue().equals(AggregationMode.BUNDLED) && refType.equals("bundled"))
-                    ok = true;
-                  else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType.equals("bundled")||refType.equals("remote")))
-                    ok = true;
-                }
-                rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, ok, "Reference is " + refType + " which isn't supported by the specified aggregation mode(s) for the reference");
               }
-              if (ok)
-                break;
+              HashMap<String, List<ValidationMessage>> goodProfiles = new HashMap<String, List<ValidationMessage>>();
+              List<List<ValidationMessage>> badProfiles = new ArrayList<List<ValidationMessage>>();
+              List<String> profiles = new ArrayList<String>();
+              if (!candidateProfiles.isEmpty()) {
+                for (StructureDefinition sd: candidateProfiles) {
+                  profiles.add(sd.getUrl());
+                  List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
+                  doResourceProfile(hostContext, we, sd.getUrl(), profileErrors, stack.push(we, -1, null, null), path, element, profile);
+  
+                  if (hasErrors(profileErrors))
+                    badProfiles.add(profileErrors);
+                  else
+                    goodProfiles.put(sd.getUrl(), profileErrors);
+                    if (type.hasAggregation()) {
+                      boolean modeOk = false;
+                      for (Enumeration<AggregationMode> mode : type.getAggregation()) {
+                        if (mode.getValue().equals(AggregationMode.CONTAINED) && refType.equals("contained"))
+                          modeOk = true;
+                        else if (mode.getValue().equals(AggregationMode.BUNDLED) && refType.equals("bundled"))
+                          modeOk = true;
+                        else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType.equals("bundled")||refType.equals("remote")))
+                          modeOk = true;
+                      }
+                      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk, "Reference is " + refType + " which isn't supported by the specified aggregation mode(s) for the reference");
+                    }
+                }
+                if (goodProfiles.size()==1) {
+                  errors.addAll(goodProfiles.values().iterator().next());
+                } else if (goodProfiles.size()==0) {
+                  rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
+                  for (List<ValidationMessage> messages : badProfiles) {
+                    errors.addAll(messages);
+                  }
+                } else {
+                  warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
+                  for (List<ValidationMessage> messages : goodProfiles.values()) {
+                    errors.addAll(messages);
+                  }                    
+                }
+              }
             }
           }
           if (!ok && type.getCode().equals("*")) {
@@ -4001,14 +4030,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + typeProfile)) {
               List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
               validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
-              boolean hasError = false;
-              for (ValidationMessage msg : profileErrors) {
-                if (msg.getLevel()==ValidationMessage.IssueSeverity.ERROR || msg.getLevel()==ValidationMessage.IssueSeverity.FATAL) {
-                  hasError = true;
-                  break;
-                }
-              }
-              if (hasError)
+              if (hasErrors(profileErrors))
                 badProfiles.add(profileErrors);
               else
                 goodProfiles.put(typeProfile, profileErrors);
