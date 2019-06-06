@@ -1864,7 +1864,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (!type.hasTargetProfile() || type.hasTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource"))
               ok = true;
             else {
-              List<StructureDefinition> candidateProfiles = new ArrayList<StructureDefinition>();
+              List<String> candidateProfiles = new ArrayList<String>();
               for (UriType u : type.getTargetProfile()) {              
                 String pr = u.getValue();
   
@@ -1875,7 +1875,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (bt.equals(ft)) {
                     ok = true;
                     if (we!=null && pol.checkValid())
-                      candidateProfiles.add(sd);
+                      candidateProfiles.add(pr);
                   }
                 }
               }
@@ -1883,15 +1883,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               List<List<ValidationMessage>> badProfiles = new ArrayList<List<ValidationMessage>>();
               List<String> profiles = new ArrayList<String>();
               if (!candidateProfiles.isEmpty()) {
-                for (StructureDefinition sd: candidateProfiles) {
-                  profiles.add(sd.getUrl());
+                for (String pr: candidateProfiles) {
+                  profiles.add(pr);
                   List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
-                  doResourceProfile(hostContext, we, sd.getUrl(), profileErrors, stack.push(we, -1, null, null), path, element, profile);
+                  doResourceProfile(hostContext, we, pr, profileErrors, stack.push(we, -1, null, null), path, element, profile);
   
                   if (hasErrors(profileErrors))
                     badProfiles.add(profileErrors);
                   else
-                    goodProfiles.put(sd.getUrl(), profileErrors);
+                    goodProfiles.put(pr, profileErrors);
                     if (type.hasAggregation()) {
                       boolean modeOk = false;
                       for (Enumeration<AggregationMode> mode : type.getAggregation()) {
@@ -1908,7 +1908,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 if (goodProfiles.size()==1) {
                   errors.addAll(goodProfiles.values().iterator().next());
                 } else if (goodProfiles.size()==0) {
-                  rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
+                  rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size()==1, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
                   for (List<ValidationMessage> messages : badProfiles) {
                     errors.addAll(messages);
                   }
