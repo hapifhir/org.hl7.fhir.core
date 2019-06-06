@@ -1810,10 +1810,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (we == null) {
         refType = "remote";
       } else {
-        refType = "bundle";
+        refType = "bundled";
       }
     }
-    ReferenceValidationPolicy pol = refType.equals("contained") || refType.equals("bundle") ? ReferenceValidationPolicy.CHECK_VALID : fetcher == null ? ReferenceValidationPolicy.IGNORE : fetcher.validationPolicy(hostContext.appContext, path, ref);
+    ReferenceValidationPolicy pol = refType.equals("contained") || refType.equals("bundled") ? ReferenceValidationPolicy.CHECK_VALID : fetcher == null ? ReferenceValidationPolicy.IGNORE : fetcher.validationPolicy(hostContext.appContext, path, ref);
 
     if (pol.checkExists()) {
       if (we == null) {
@@ -2182,6 +2182,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private Element getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type) {
     String targetUrl = null;
     String version = "";
+    String resourceType = null;
     if (ref.startsWith("http") || ref.startsWith("urn")) {
       // We've got an absolute reference, no need to calculate
       if (ref.contains("/_history/")) {
@@ -2218,10 +2219,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String id = null;
       if (ref.contains("/_history/")) {
         version = ref.substring(ref.indexOf("/_history/") + 10);
-        id = ref.substring(0, ref.indexOf("/_history/")).split("/")[1];
-      } else if (base.startsWith("urn"))
+        String[] refBaseParts = ref.substring(0, ref.indexOf("/_history/")).split("/"); 
+        resourceType = refBaseParts[0];
+        id = refBaseParts[1];
+      } else if (base.startsWith("urn")) {
+        resourceType = ref.split("/")[0];
         id = ref.split("/")[1];
-      else
+      } else
         id = ref;
 
       targetUrl = base + id;
@@ -2250,6 +2254,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
+    if (match!=null && resourceType!=null)
+      rule(errors, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), "Matching reference for reference " + ref + " has resourceType " + match.getType());
     if (match == null)
       warning(errors, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), "URN reference is not locally contained within the bundle " + ref);
     return match;
