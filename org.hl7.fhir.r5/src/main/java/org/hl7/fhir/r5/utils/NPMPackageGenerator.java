@@ -76,14 +76,13 @@ public class NPMPackageGenerator {
     }
   }
 
- 
-
   private String destFile;
   private Set<String> created = new HashSet<String>();
   private TarArchiveOutputStream tar;
   private ByteArrayOutputStream OutputStream;
   private BufferedOutputStream bufferedOutputStream;
   private GzipCompressorOutputStream gzipOutputStream;
+  private JsonObject packageJ;
   
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate) throws FHIRException, IOException {
     super();
@@ -94,6 +93,17 @@ public class NPMPackageGenerator {
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
       fhirVersion.add(v.asStringValue());
     buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
+  }
+  
+  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name) throws FHIRException, IOException {
+    JsonObject p = master.packageJ.deepCopy();
+    p.remove("name");
+    p.addProperty("name", id);
+    p.remove("type");
+    p.addProperty("type", PackageType.SUBSET.getCode());    
+    p.remove("title");
+    p.addProperty("title", name);    
+    return new NPMPackageGenerator(destFile, p);
   }
   
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate, List<String> fhirVersion) throws FHIRException, IOException {
@@ -115,6 +125,7 @@ public class NPMPackageGenerator {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
     }
+    packageJ = npm;
   }
  
   private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
@@ -182,6 +193,7 @@ public class NPMPackageGenerator {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
     }
+    packageJ = npm;
   }
 
 
