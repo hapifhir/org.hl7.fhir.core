@@ -360,6 +360,7 @@
 				]
 			},
 			"slice-by-polymorphic-type.xml": {
+			  "version": "4.0",
 				"errorCount": 0,
 				"profile": {
 					"source": "slice-by-polymorphic-type-profile.xml",
@@ -411,6 +412,7 @@
 				}
 			},
 			"slicing-types-by-string.xml": {
+			  "version": "4.0",
 				"errorCount": 0,
 				"profile": {
 					"source": "slicing-types-by-string-profile.xml",
@@ -729,13 +731,20 @@
 					"source": "patient-translated-codes.profile.xml",
 					"errorCount": 0,
 					"warningCount": 0
-				},
-				"patient-contained-org.xml": {
-					"errorCount": 0,
-					"profile": {
-						"source": "patient-contained-org-profile.xml",
-						"errorCount": 1
-					}
+				}
+      },
+      "patient-contained-org.xml": {
+        "errorCount": 0,
+        "profile": {
+          "source": "patient-contained-org-profile.xml",
+          "errorCount": 1
+        }
+			},
+			"multi-profile-same-resource.xml": {
+				"errorCount": 0,
+				"profile": {
+					"source": "multi-profile-same-resource-profile.xml",
+					"errorCount": 0
 				}
 			}
 		}
