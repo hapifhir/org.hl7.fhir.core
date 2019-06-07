@@ -40,7 +40,7 @@ import com.google.gson.JsonSyntaxException;
 public class PackageGenerator {
 
   public enum PackageType {
-    CORE, IG, TOOL, TEMPLATE;
+    CORE, IG, TOOL, TEMPLATE, SUBSET;
 
     public String getCode() {
       switch (this) {
@@ -48,7 +48,7 @@ public class PackageGenerator {
       case IG: return "fhir.ig";
       case TOOL: return "fhir.tool";
       case TEMPLATE: return "fhir.template";
-        
+      case SUBSET: return "fhir.subset";  
       }
       throw new Error("Unknown Type");
     }

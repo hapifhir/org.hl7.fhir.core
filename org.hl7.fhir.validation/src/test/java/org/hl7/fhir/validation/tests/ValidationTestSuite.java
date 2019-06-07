@@ -101,7 +101,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-    System.out.println("Name: " + name);
+    System.out.println("Name: " + name+" - base");
     String v = "5.0";
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (content.has("version")) 
@@ -156,6 +156,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       JsonObject profile = content.getAsJsonObject("profile");
       String filename = TestUtilities.resourceNameToFile("validation-examples", profile.get("source").getAsString());
+      System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, v, messages);
       if (name.startsWith("Json."))

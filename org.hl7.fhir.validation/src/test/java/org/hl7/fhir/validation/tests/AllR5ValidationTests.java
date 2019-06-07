@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
   ValidationTestSuite.class, 
   ValidationEngineTests.class,
   JsonSchemaTests.class,
+  ProfileComparisonTests.class,
   CDAValidationTestCase.class})
 public class AllR5ValidationTests {
 
