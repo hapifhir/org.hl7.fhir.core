@@ -746,6 +746,9 @@
 					"source": "multi-profile-same-resource-profile.xml",
 					"errorCount": 0
 				}
+			},
+			"bad-bundle-reference-type.xml": {
+				"errorCount": 1
 			}
 		}
 	}
