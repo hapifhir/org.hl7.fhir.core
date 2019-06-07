@@ -101,7 +101,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
+    System.out.println("Name: " + name);
     String v = "5.0";
+    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (content.has("version")) 
       v = content.get("version").getAsString();
       
@@ -138,8 +140,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String p = je.getAsString();
+        System.out.println("Profile: " + p);
         String filename = TestUtilities.resourceNameToFile("validation-examples", p);
-        StructureDefinition sd = loadProfile(filename, v);
+        StructureDefinition sd = loadProfile(filename, v, messages);
         val.getContext().cacheResource(sd);
       }
     }
@@ -154,7 +157,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       JsonObject profile = content.getAsJsonObject("profile");
       String filename = TestUtilities.resourceNameToFile("validation-examples", profile.get("source").getAsString());
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
-      StructureDefinition sd = loadProfile(filename, v);
+      StructureDefinition sd = loadProfile(filename, v, messages);
       if (name.startsWith("Json."))
         val.validate(null, errorsProfile, new FileInputStream(path), FhirFormat.JSON, sd);
       else
@@ -163,13 +166,22 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } 
   }
 
-  public StructureDefinition loadProfile(String filename, String v)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+  public StructureDefinition loadProfile(String filename, String v, List<ValidationMessage> messages)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     StructureDefinition sd = (StructureDefinition) loadResource(filename, v);
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, null);
     if (!sd.hasSnapshot()) {
-      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());
 // (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
+    }
+    for (Resource r: sd.getContained()) {
+      if (r instanceof StructureDefinition) {
+        StructureDefinition childSd = (StructureDefinition)r;
+        if (!childSd.hasSnapshot()) {
+          StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, childSd.getBaseDefinition());
+          pu.generateSnapshot(base, childSd, childSd.getUrl(), null, childSd.getTitle());          
+        }
+      }
     }
     return sd;
   }
