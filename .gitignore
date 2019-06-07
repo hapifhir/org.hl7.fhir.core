@@ -158,3 +158,4 @@ local.properties
 /release_batch_template.txt
 /org.hl7.fhir.r5/src/main/resources/graphql/*.out
 /zuliprc
+/org.hl7.fhir.validation/src/test/resources/comparison/output/*.html
