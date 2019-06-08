@@ -6,7 +6,7 @@
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.7.0-SNAPSHOT/hapi-fhir-base-3.7.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.7.0-SNAPSHOT/hapi-fhir-base-3.7.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.8.0-SNAPSHOT/hapi-fhir-base-3.8.0-SNAPSHOT.jar" sourcepath="M2_REPO/ca/uhn/hapi/fhir/hapi-fhir-base/3.8.0-SNAPSHOT/hapi-fhir-base-3.8.0-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar" sourcepath="M2_REPO/com/google/code/gson/gson/2.8.5/gson-2.8.5-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1.jar" sourcepath="M2_REPO/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-text/1.6/commons-text-1.6.jar" sourcepath="M2_REPO/org/apache/commons/commons-text/1.6/commons-text-1.6-sources.jar"/>
