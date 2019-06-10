@@ -74,6 +74,7 @@ import org.hl7.fhir.r5.model.Factory;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
@@ -83,6 +84,9 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 
@@ -659,6 +663,15 @@ public class ToolingExtensions {
     throw new Error("Unable to read extension "+uri+" as an integer");
   }
 
+  public static int readIntegerExtension(Element e, String uri, int defaultValue) {
+    Extension ex = ExtensionHelper.getExtension(e, uri);
+    if (ex == null)
+      return defaultValue;
+    if (ex.getValue() instanceof IntegerType)
+      return ((IntegerType) ex.getValue()).getValue();
+    throw new Error("Unable to read extension "+uri+" as an integer");
+  }
+
   public static Map<String, String> getLanguageTranslations(Element e) {
     Map<String, String> res = new HashMap<String, String>();
     for (Extension ext : e.getExtension()) {
@@ -695,6 +708,71 @@ public class ToolingExtensions {
       ToolingExtensions.removeExtension(dr, ToolingExtensions.EXT_NORMATIVE_VERSION);
     else
       ToolingExtensions.setCodeExtension(dr, ToolingExtensions.EXT_NORMATIVE_VERSION, normativeVersion);
+  }
+
+  public static ValidationMessage readValidationMessage(OperationOutcomeIssueComponent issue, Source source) {
+    ValidationMessage vm = new ValidationMessage();
+    vm.setSource(source);
+    vm.setLevel(mapSeverity(issue.getSeverity()));
+    vm.setType(mapType(issue.getCode()));
+    if (issue.hasExtension(ToolingExtensions.EXT_ISSUE_LINE))
+      vm.setLine(ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, 0));
+    if (issue.hasExtension(ToolingExtensions.EXT_ISSUE_COL))
+      vm.setCol(ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, 0));
+    if (issue.hasExpression())
+      vm.setLocation(issue.getExpression().get(0).asStringValue());
+    vm.setMessage(issue.getDetails().getText());
+    if (issue.hasExtension("http://hl7.org/fhir/StructureDefinition/rendering-xhtml"))
+      vm.setHtml(ToolingExtensions.readStringExtension(issue, "http://hl7.org/fhir/StructureDefinition/rendering-xhtml"));
+    return vm;
+  }
+
+  private static IssueType mapType(org.hl7.fhir.r5.model.OperationOutcome.IssueType code) {
+    switch (code) {
+    case BUSINESSRULE: return IssueType.BUSINESSRULE;
+    case CODEINVALID: return IssueType.CODEINVALID;
+    case CONFLICT: return IssueType.CONFLICT;
+    case DELETED: return IssueType.DELETED;
+    case DUPLICATE: return IssueType.DUPLICATE;
+    case EXCEPTION: return IssueType.EXCEPTION;
+    case EXPIRED: return IssueType.EXPIRED;
+    case EXTENSION: return IssueType.EXTENSION;
+    case FORBIDDEN: return IssueType.FORBIDDEN;
+    case INCOMPLETE: return IssueType.INCOMPLETE;
+    case INFORMATIONAL: return IssueType.INFORMATIONAL;
+    case INVALID: return IssueType.INVALID;
+    case INVARIANT: return IssueType.INVARIANT;
+    case LOCKERROR: return IssueType.LOCKERROR;
+    case LOGIN: return IssueType.LOGIN;
+    case MULTIPLEMATCHES: return IssueType.MULTIPLEMATCHES;
+    case NOSTORE: return IssueType.NOSTORE;
+    case NOTFOUND: return IssueType.NOTFOUND;
+    case NOTSUPPORTED: return IssueType.NOTSUPPORTED;
+    case NULL: return IssueType.NULL;
+    case PROCESSING: return IssueType.PROCESSING;
+    case REQUIRED: return IssueType.REQUIRED;
+    case SECURITY: return IssueType.SECURITY;
+    case STRUCTURE: return IssueType.STRUCTURE;
+    case SUPPRESSED: return IssueType.SUPPRESSED;
+    case THROTTLED: return IssueType.THROTTLED;
+    case TIMEOUT: return IssueType.TIMEOUT;
+    case TOOCOSTLY: return IssueType.TOOCOSTLY;
+    case TOOLONG: return IssueType.TOOLONG;
+    case TRANSIENT: return IssueType.TRANSIENT;
+    case UNKNOWN: return IssueType.UNKNOWN;
+    case VALUE: return IssueType.VALUE;
+    default: return null;
+    }
+  }
+
+  private static IssueSeverity mapSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity severity) {
+    switch (severity) {
+    case ERROR: return IssueSeverity.ERROR;
+    case FATAL: return IssueSeverity.FATAL;
+    case INFORMATION: return IssueSeverity.INFORMATION;
+    case WARNING: return IssueSeverity.WARNING;
+    default: return null;
+    }
   }
 
 //  public static boolean hasOID(ValueSet vs) {
