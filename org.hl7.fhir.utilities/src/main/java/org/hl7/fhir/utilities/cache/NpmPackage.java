@@ -271,7 +271,7 @@ import com.google.gson.JsonObject;
     }
 
     public String canonical() {
-      return npm.get("canonical").getAsString();
+      return npm.has("canonical") ? npm.get("canonical").getAsString() : null;
     }
 
     /**

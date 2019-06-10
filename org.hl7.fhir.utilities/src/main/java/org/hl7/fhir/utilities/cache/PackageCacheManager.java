@@ -245,6 +245,9 @@ public class PackageCacheManager {
 
 
   public void recordMap(String url, String id) throws IOException {
+    if (url == null)
+      return;
+    
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
         throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" not found #1");
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
