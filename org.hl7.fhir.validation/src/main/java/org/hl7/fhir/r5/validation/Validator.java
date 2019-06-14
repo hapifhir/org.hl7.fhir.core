@@ -404,6 +404,7 @@ public class Validator {
           }
         } catch (Exception e) {
           System.out.println(" ...Failure: "+e.getMessage());
+          e.printStackTrace();
         }
       } else if (mode == EngineMode.NARRATIVE) {
         DomainResource r = validator.generate(sources.get(0));
