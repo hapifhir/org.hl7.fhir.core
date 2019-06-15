@@ -96,6 +96,7 @@ public class GraphQLSchemaGenerator {
   public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters, EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
     writer.write("# FHIR GraphQL Schema. Version "+Constants.VERSION+"\r\n\r\n");
+    writer.write("# import the types from 'types.graphql'\r\n\r\n");
     generateType(writer, sd);
     if (operations.contains(FHIROperationType.READ))
       generateIdAccess(writer, sd.getName());
@@ -382,7 +383,7 @@ public class GraphQLSchemaGenerator {
   private void generatePrimitive(BufferedWriter writer, StructureDefinition sd) throws IOException, FHIRException {
     String gqlName = getGqlname(sd.getName());
     if (gqlName.equals(sd.getName())) { 
-      writer.write("Scalar ");
+      writer.write("scalar ");
       writer.write(sd.getName());
       writer.write(" # JSON Format: ");
       writer.write(getJsonFormat(sd));
