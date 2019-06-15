@@ -1,0 +1,22 @@
+{
+  "@type" : "graphql-server-tests",
+  "tests" : {
+    "simple" : {
+      "description" : "Just a simple test of the basic graphQL engine: a simple query on a known patient (example, from the spec)",
+      "url" : "/Patient/example/$graphql?query={identifier{system,value}active,name{text,given,family}",
+      "output" : {
+        "data" : { 
+          "name":[{
+            "given":["Peter","James"],
+            "family":"Chalmers"
+          },{
+            "given":["Jim"]
+          },{
+            "given":["Peter","James"],
+            "family":"Windsor"
+          }]
+        }
+      }
+    }
+  }
+}
