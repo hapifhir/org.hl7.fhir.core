@@ -94,8 +94,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     this.content = content;
   }
 
-  private static final String DEF_TX = "http://tx.fhir.org";
-  private static final String DBG_TX = "http://local.fhir.org:960";
+//  private static final String DEF_TX = "http://tx.fhir.org";
+  private static final String DEF_TX = "http://local.fhir.org:960";
   private static ValidationEngine ve;
   
   @SuppressWarnings("deprecation")
@@ -133,6 +133,10 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("allowed-extension-domains"))
       for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
+    if (content.has("language"))
+      val.setValidationLanguage(content.get("language").getAsString());
+    else
+      val.setValidationLanguage(null);
     val.setFetcher(this);
     if (content.has("questionnaire")) {
       ve.getContext().cacheResource(loadResource(TestUtilities.resourceNameToFile("validation-examples", content.get("questionnaire").getAsString()), v));

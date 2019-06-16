@@ -165,6 +165,10 @@ public class Validator {
       System.out.println("     * JSON: json.schema");
       System.out.println("     * RDF: SHEX");
       System.out.println("     Default: false");
+      System.out.println("-language: [lang]");
+      System.out.println("     The language to use when validating coding displays - same value as for xml:lang");
+      System.out.println("     Not used if the resource specifies language");
+      System.out.println("     Default: no specified language");
       System.out.println("-strictExtensions: If present, treat extensions not defined within the specified FHIR version and any");
       System.out.println("     referenced implementation guides or profiles as errors.  (Default is to only raise information messages.)");
       System.out.println("-hintAboutNonMustSupport: If present, raise hints if the instance contains data elements that are not");
@@ -269,6 +273,7 @@ public class Validator {
       String sv = null;
       String txLog = null;
       String mapLog = null;
+      String lang = null;
 
         // load the parameters - so order doesn't matter
       for (int i = 0; i < args.length; i++) {
@@ -337,6 +342,11 @@ public class Validator {
             throw new Error("Specified -log without indicating file");
           else
             mapLog = args[++i];
+        else if (args[i].equals("-language"))
+          if (i+1 == args.length)
+            throw new Error("Specified -language without indicating language");
+          else
+            lang = args[++i];
         else if (args[i].equals("-ig"))
           if (i+1 == args.length)
             throw new Error("Specified -ig without indicating ig file");
@@ -378,6 +388,7 @@ public class Validator {
       validator.setNative(doNative);
       validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
+      validator.setLanguage(lang);
 
       IParser x;
       if (output != null && output.endsWith(".json"))

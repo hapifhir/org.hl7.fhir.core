@@ -51,10 +51,12 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private ValueSet valueset;
   private IWorkerContext context;
   private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
+  private TerminologyServiceOptions options;
 
-  public ValueSetCheckerSimple(ValueSet source, IWorkerContext context) {
+  public ValueSetCheckerSimple(TerminologyServiceOptions options, ValueSet source, IWorkerContext context) {
     this.valueset = source;
     this.context = context;
+    this.options = options;
   }
 
   public ValidationResult validateCode(CodeableConcept code) throws FHIRException {
@@ -425,7 +427,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       return inner.get(url);
     }
     ValueSet vs = context.fetchResource(ValueSet.class, url);
-    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(vs, context);
+    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context);
     inner.put(url, vsc);
     return vsc;
   }

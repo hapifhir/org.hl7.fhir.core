@@ -244,6 +244,7 @@ public class ValidationEngine {
   private boolean hintAboutNonMustSupport;
   private boolean anyExtensionsAllowed = false;
   private String version;
+  private String language;
   private PackageCacheManager pcm;
   private PrintWriter mapLog;
 
@@ -323,6 +324,14 @@ public class ValidationEngine {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
   
+  public String getLanguage() {
+    return language;
+  }
+
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
   private void loadDefinitions(String src) throws Exception {
     Map<String, byte[]> source = loadIgSource(src);   
     if (version == null)
@@ -1062,6 +1071,7 @@ public class ValidationEngine {
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
+    validator.setValidationLanguage(language);
     return validator;
   }
 

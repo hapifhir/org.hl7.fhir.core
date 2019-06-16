@@ -82,6 +82,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -215,6 +216,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private ProfileKnowledgeProvider pkp;
   private boolean igmode;
   private boolean exception;
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
@@ -2787,13 +2789,13 @@ public class ProfileUtilities extends TranslatingUtilities {
   private Piece describeCoded(HierarchicalTableGenerator gen, Type fixed) {
     if (fixed instanceof Coding) {
       Coding c = (Coding) fixed;
-      ValidationResult vr = context.validateCode(c.getSystem(), c.getCode(), c.getDisplay());
+      ValidationResult vr = context.validateCode(terminologyServiceOptions , c.getSystem(), c.getCode(), c.getDisplay());
       if (vr.getDisplay() != null)
         return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen");
     } else if (fixed instanceof CodeableConcept) {
       CodeableConcept cc = (CodeableConcept) fixed;
       for (Coding c : cc.getCoding()) {
-        ValidationResult vr = context.validateCode(c.getSystem(), c.getCode(), c.getDisplay());
+        ValidationResult vr = context.validateCode(terminologyServiceOptions, c.getSystem(), c.getCode(), c.getDisplay());
         if (vr.getDisplay() != null)
           return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen");
       }
@@ -4236,4 +4238,16 @@ public class ProfileUtilities extends TranslatingUtilities {
   public void setThrowException(boolean exception) {
     this.exception = exception;
   }
+
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
+  }
+
+
+  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+    this.terminologyServiceOptions = terminologyServiceOptions;
+  }
+  
+  
 }
