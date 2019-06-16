@@ -175,6 +175,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
@@ -999,6 +1000,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
   private boolean pretty;
   private boolean canonicalUrlsAsLinks;
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
 
   public NarrativeGenerator(String prefix, String basePath, IWorkerContext context) {
     super();
@@ -1836,7 +1838,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private String lookupCode(String system, String code) {
-    ValidationResult t = context.validateCode(system, code, null);
+    ValidationResult t = context.validateCode(terminologyServiceOptions , system, code, null);
 
     if (t != null && t.getDisplay() != null)
         return t.getDisplay();
@@ -2568,7 +2570,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private String getDisplayForConcept(String system, String value) {
     if (value == null || system == null)
       return null;
-    ValidationResult cl = context.validateCode(system, value, null);
+    ValidationResult cl = context.validateCode(terminologyServiceOptions, system, value, null);
     return cl == null ? null : cl.getDisplay();
   }
 
@@ -3765,7 +3767,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
             li.ah(href).addText(f.getValue());
           } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
             li.addText(f.getValue());
-            ValidationResult vr = context.validateCode(inc.getSystem(), f.getValue(), null);
+            ValidationResult vr = context.validateCode(terminologyServiceOptions, inc.getSystem(), f.getValue(), null);
             if (vr.isOk()) {
               li.tx(" ("+vr.getDisplay()+")");
             }
@@ -3847,7 +3849,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     }
 
-    return context.validateCode(inc.getSystem(), code, null).asConceptDefinition();
+    return context.validateCode(terminologyServiceOptions, inc.getSystem(), code, null).asConceptDefinition();
   }
 
 
@@ -4750,6 +4752,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
   public NarrativeGenerator setSnomedEdition(String snomedEdition) {
     this.snomedEdition = snomedEdition;
     return this;
+  }
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
+  }
+
+  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+    this.terminologyServiceOptions = terminologyServiceOptions;
   }
 
   

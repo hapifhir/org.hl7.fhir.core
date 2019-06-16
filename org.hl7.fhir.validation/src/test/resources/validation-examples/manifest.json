@@ -176,7 +176,7 @@
 				}
 			},
 			"medication-atc.json": {
-				"errorCount": 1,
+				"errorCount": 0,
 				"allowed-extension-domain": "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open"
 			},
 			"bp.json": {
@@ -768,7 +768,20 @@
 			},
 			"bad-bundle-reference-type.xml": {
 				"errorCount": 1
-			}
+			},
+      "loinc-lang-nl-1.xml" : {
+				"errorCount": 0,
+				"warningCount": 1
+      },
+      "loinc-lang-nl-2.xml" : {
+        "language" : "nl-NL",
+				"errorCount": 0,
+				"warningCount": 0
+      },
+      "loinc-lang-nl-3.xml" : {
+				"errorCount": 0,
+				"warningCount": 0
+      }
 		}
 	}
 }

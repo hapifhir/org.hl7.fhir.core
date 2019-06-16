@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.UUID;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -121,6 +122,7 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -264,6 +266,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noTerminologyChecks;
   private boolean hintAboutNonMustSupport;
   private BestPracticeWarningLevel bpWarnings;
+  private String validationLanguage;
 
   private List<String> extensionDomains = new ArrayList<String>();
 
@@ -821,13 +824,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // public API
-  private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display, boolean checkDisplay) throws TerminologyServiceException {
+  private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     long t = System.nanoTime();
     boolean ss = context.supportsSystem(system);
     txTime = txTime + (System.nanoTime() - t);
     if (ss) {
       t = System.nanoTime();
-      ValidationResult s = context.validateCode(system, code, checkDisplay ? display : null);
+      ValidationResult s = context.validateCode(new TerminologyServiceOptions(stack.workingLang), system, code, checkDisplay ? display : null);
       txTime = txTime + (System.nanoTime() - t);
       if (s == null)
         return true;
@@ -935,7 +938,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private boolean checkCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext)  {
+  private boolean checkCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack)  {
     boolean res = true;
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
@@ -968,7 +971,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
-                    ValidationResult vr = context.validateCode(cc, valueset);
+                    ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), cc, valueset);
                     res = false;
                     if (!vr.isOk()) {
                       bindingsOk = false;
@@ -977,7 +980,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " and a code from this value set is required (class = "+vr.getErrorClass().toString()+")");
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
-                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc);
+                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           else if (!noExtensibleWarnings)
                             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " and a code should come from this value set unless it has no suitable code (class = "+vr.getErrorClass().toString()+")");
                         } else if (binding.getStrength() == BindingStrength.PREFERRED)
@@ -987,7 +990,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl()+", and a code from this value set is required) (codes = "+ccSummary(cc)+")");
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
-                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc);
+                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           else if (!noExtensibleWarnings)
                             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code) (codes = "+ccSummary(cc)+")");
                         } else if (binding.getStrength() == BindingStrength.PREFERRED)
@@ -1003,7 +1006,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       String nextCode = nextCoding.getCode();
                       String nextSystem = nextCoding.getSystem();
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
-                        ValidationResult vr = context.validateCode(nextSystem, nextCode, null);
+                        ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), nextSystem, nextCode, null);
                         if (!vr.isOk()) {
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Code {0} is not a valid code in code system {1}", nextCode, nextSystem);
                         }
@@ -1027,13 +1030,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return res;
   }
 
-  private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc) {
+  private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc, NodeStack stack) {
     // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(cc, valueset);
+        ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), cc, valueset);
         txTime = txTime + (System.nanoTime() - t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1047,13 +1050,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c) {
+  private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c, NodeStack stack) {
     // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(c, valueset);
+        ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), c, valueset);
         txTime = txTime + (System.nanoTime() - t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1067,13 +1070,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value) {
+  private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value, NodeStack stack) {
     // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(value, valueset);
+        ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), value, valueset);
         txTime = txTime + (System.nanoTime() - t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1101,7 +1104,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".userSelected", focus.getNamedChild("userSelected"), fixed.getUserSelectedElement(), "userSelected", focus);
   }
 
-  private void checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay)  {
+  private void checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack)  {
     String code = element.getNamedChildValue("code");
     String system = element.getNamedChildValue("system");
     String display = element.getNamedChildValue("display");
@@ -1110,7 +1113,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (system != null && code != null && !noTerminologyChecks) {
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system (\""+system+"\")");
       try {
-        if (checkCode(errors, element, path, code, system, display, checkDisplay))
+        if (checkCode(errors, element, path, code, system, display, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing")) {
@@ -1122,7 +1125,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     long t = System.nanoTime();
                     ValidationResult vr = null;
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                      vr = context.validateCode(c, valueset);
+                      vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), c, valueset);
 						        }
                     txTime = txTime + (System.nanoTime() - t);
                     if (vr != null && !vr.isOk()) {
@@ -1133,7 +1136,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl()+", and a code from this value set is required)");
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
-                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c);
+                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
                           else if (!noExtensibleWarnings)
                             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code)");
                         } else if (binding.getStrength() == BindingStrength.PREFERRED)
@@ -1142,7 +1145,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "The Coding provided is not in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code is required from this value set)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
                       else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                         if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
-                          checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c);
+                          checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
                         else
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "The Coding provided is not in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
                       } else if (binding.getStrength() == BindingStrength.PREFERRED)
@@ -1495,7 +1498,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".end", focus.getNamedChild("end"), fixed.getEndElement(), "end", focus);
   }
 
-  private void checkPrimitive(Object appContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile) throws FHIRException, IOException {
+  private void checkPrimitive(Object appContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile, NodeStack node) throws FHIRException, IOException {
     if (isBlank(e.primitiveValue())) {
       if (e.primitiveValue() == null)
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), "Primitive types must have a value or must have child extensions");
@@ -1663,7 +1666,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (context.hasBinding() && e.primitiveValue() != null) {
-      checkPrimitiveBinding(errors, path, type, context, e, profile);
+      checkPrimitiveBinding(errors, path, type, context, e, profile, node);
     }
 
     if (type.equals("xhtml")) {
@@ -1730,7 +1733,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkPrimitiveBinding(List<ValidationMessage> errors, String path, String type, ElementDefinition elementContext, Element element, StructureDefinition profile) {
+  private void checkPrimitiveBinding(List<ValidationMessage> errors, String path, String type, ElementDefinition elementContext, Element element, StructureDefinition profile, NodeStack stack) {
     // We ignore bindings that aren't on string, uri or code
     if (!element.hasPrimitiveValue() || !("code".equals(type) || "string".equals(type) || "uri".equals(type) || "url".equals(type) || "canonical".equals(type))) {
       return;
@@ -1749,7 +1752,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         long t = System.nanoTime();
         ValidationResult vr = null;
 		  if (binding.getStrength() != BindingStrength.EXAMPLE) {
-          vr = context.validateCode(value, vs);
+          vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), value, vs);
 		  }
         txTime = txTime + (System.nanoTime() - t);
         if (vr != null && !vr.isOk()) {
@@ -1759,7 +1762,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "The value provided ('"+value+"') is not in the value set " + describeReference(binding.getValueSet()) + " (" + vs.getUrl() + ", and a code is required from this value set)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
           else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
             if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
-              checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), value);
+              checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), value, stack);
             else if (!noExtensibleWarnings) 
               txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "The value provided ('"+value+"') is not in the value set " + describeReference(binding.getValueSet()) + " (" + vs.getUrl() + ", and a code should come from this value set unless it has no suitable code)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
           } else if (binding.getStrength() == BindingStrength.PREFERRED)
@@ -2862,6 +2865,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // the instance at root is valid against the schema and schematron
   // the instance validator had no issues against the base resource profile
   private void start(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack) throws FHIRException, FHIRException, IOException {
+    checkLang(resource, stack);
+    
     // profile is valid, and matches the resource name
     ResourceProfiles resourceProfiles = getResourceProfiles(element, stack);
     if (!resourceProfiles.isProcessed())
@@ -2894,6 +2899,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //        throw new FHIRException("Profile type mismatch - resource is "+resource.fhirType()+", and profile is for "+profileUsage.getProfile().getType());
       validateElement(hostContext, errors, profileUsage.getProfile(), profileUsage.getProfile().getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true);
     }
+  }
+
+  private void checkLang(Element resource, NodeStack stack) {
+    String lang = resource.getNamedChildValue("language");
+    if (!Utilities.noString(lang))
+      stack.workingLang = lang;
   }
 
   private void validateResourceRules(List<ValidationMessage> errors, Element element, NodeStack stack) {
@@ -3256,7 +3267,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
 
         long t = System.nanoTime();
-        ValidationResult res = context.validateCode(c, vs);
+        ValidationResult res = context.validateCode(new TerminologyServiceOptions(stack.workingLang), c, vs);
         txTime = txTime + (System.nanoTime() - t);
         if (!res.isOk()) {
 			  txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, "The value provided (" + c.getSystem() + "::" + c.getCode() + ") is not in the options value set in the questionnaire");
@@ -3968,7 +3979,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         ei.element.markValidation(profile, ei.definition);
         if (type != null) {
           if (isPrimitiveType(type)) {
-            checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile);
+            checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile, stack);
           } else {
             if (ei.definition.hasFixed()) {
               checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
@@ -3980,9 +3991,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (type.equals("Identifier")) {
             checkIdentifier(errors, ei.path, ei.element, ei.definition);
           } else if (type.equals("Coding")) {
-            checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext);
+            checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
           } else if (type.equals("CodeableConcept")) {
-            checkDisplay = checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition);
+            checkDisplay = checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition, stack);
             thisIsCodeableConcept = true;
           } else if (type.equals("Reference")) {
             checkReference(hostContext, errors, ei.path, ei.element, profile, ei.definition, actualType, localStack);
@@ -4423,13 +4434,16 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     private List<String> logicalPaths; // dotted format, various entry points
     private NodeStack parent;
     private ElementDefinition type;
+    private String workingLang;
 
     public NodeStack() {
+      workingLang = validationLanguage;
     }	  
 
     public NodeStack(Element element) {
       this.element = element;
       literalPath = element.getName();
+      workingLang = validationLanguage;
     }	  
 
     public String addToLiteralPath(String... path) {
@@ -4471,6 +4485,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     private NodeStack push(Element element, int count, ElementDefinition definition, ElementDefinition type) {
       NodeStack res = new NodeStack();
       res.parent = this;
+      res.workingLang = this.workingLang;
       res.element = element;
       res.definition = definition;
       res.literalPath = getLiteralPath() + "." + element.getName();
@@ -4630,6 +4645,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   public IEvaluationContext getExternalHostServices() {
     return externalHostServices;
+  }
+
+  public String getValidationLanguage() {
+    return validationLanguage;
+  }
+
+  public void setValidationLanguage(String validationLanguage) {
+    this.validationLanguage = validationLanguage;
   }
 
 

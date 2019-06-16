@@ -47,6 +47,7 @@ import org.hl7.fhir.r5.model.TemporalPrecisionEnum;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
+import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
@@ -175,6 +176,7 @@ public class FHIRPathEngine {
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -1893,13 +1895,13 @@ public class FHIRPathEngine {
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (l.fhirType().equals("code")) {
-          if (worker.validateCode(l.castToCoding(l), vs).isOk())
+          if (worker.validateCode(terminologyServiceOptions , l.castToCoding(l), vs).isOk())
             ans = true;
 	      } else if (l.fhirType().equals("Coding")) {
-	        if (worker.validateCode(l.castToCoding(l), vs).isOk())
+	        if (worker.validateCode(terminologyServiceOptions, l.castToCoding(l), vs).isOk())
 	          ans = true;
 	      } else if (l.fhirType().equals("CodeableConcept")) {
-	        if (worker.validateCode(l.castToCodeableConcept(l), vs).isOk())
+	        if (worker.validateCode(terminologyServiceOptions, l.castToCodeableConcept(l), vs).isOk())
 	          ans = true;
 	      }
 	    }
@@ -4305,6 +4307,11 @@ public class FHIRPathEngine {
           
   private Equality boolToTriState(boolean b) {
     return b ? Equality.True : Equality.False;
+  }
+
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
   }
   
 }

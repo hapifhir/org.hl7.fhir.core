@@ -102,6 +102,7 @@ import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -221,7 +222,8 @@ public class StructureMapUtilities {
 	private FHIRPathEngine fpe;
 	private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
-  private Map<String, Integer> ids = new HashMap<String, Integer>(); 
+  private Map<String, Integer> ids = new HashMap<String, Integer>();
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions(); 
 
 	public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
 		super();
@@ -1965,7 +1967,7 @@ public class StructureMapUtilities {
 	      throw new FHIRException("The code '"+code+"' is not in the value set '"+uri+"' (valid codes: "+b.toString()+"; also checked displays)");
 	  } else
 	    system = uri;
-	  ValidationResult vr = worker.validateCode(system, code, null);
+	  ValidationResult vr = worker.validateCode(terminologyServiceOptions, system, code, null);
 	  if (vr != null && vr.getDisplay() != null)
 	    display = vr.getDisplay();
    return new Coding().setSystem(system).setCode(code).setDisplay(display);
@@ -2957,6 +2959,14 @@ public class StructureMapUtilities {
         return map.getIdentity();
     }
     return null;
+  }
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
+  }
+
+  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+    this.terminologyServiceOptions = terminologyServiceOptions;
   }
 	
 }
