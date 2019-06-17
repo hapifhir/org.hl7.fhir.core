@@ -1,22 +1,49 @@
 {
   "@type" : "graphql-server-tests",
-  "tests" : {
+  "instance-tests" : {
     "simple" : {
       "description" : "Just a simple test of the basic graphQL engine: a simple query on a known patient (example, from the spec)",
-      "url" : "/Patient/example/$graphql?query={identifier{system,value}active,name{text,given,family}",
+      "url" : "/Patient/example/$graphql?query={identifier{system,value}active,name{text,given,family}}",
       "output" : {
-        "data" : { 
-          "name":[{
-            "given":["Peter","James"],
-            "family":"Chalmers"
-          },{
-            "given":["Jim"]
-          },{
-            "given":["Peter","James"],
-            "family":"Windsor"
-          }]
-        }
-      }
+        "data" : {
+        "identifier":[{
+          "system":"urn:oid:1.2.36.146.595.217.0.1",
+          "value":"12345"
+        }],
+        "active":true,
+        "name":[{
+          "given":["Peter","James"],
+          "family":"Chalmers"
+        },{
+          "given":["Jim"]
+        },{
+          "given":["Peter","James"],
+          "family":"Windsor"
+        }]
+      }}
+    }
+  },
+  "root-tests" : {
+    "simple" : {
+      "description" : "Just a simple test of the basic graphQL engine: a simple query on a known patient (example, from the spec)",
+      "url" : "/$graphql?query={Patient(id:example){identifier{system,value}active,name{text,given,family}}}",
+      "output" : {
+        "data" : {
+        "identifier":[{
+          "system":"urn:oid:1.2.36.146.595.217.0.1",
+          "value":"12345"
+        }],
+        "active":true,
+        "name":[{
+          "given":["Peter","James"],
+          "family":"Chalmers"
+        },{
+          "given":["Jim"]
+        },{
+          "given":["Peter","James"],
+          "family":"Windsor"
+        }]
+      }}
     }
   }
 }
