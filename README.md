@@ -16,3 +16,7 @@ To skip unit tests:
 ```
 mvn -Dmaven.test.skip install
 ```
+
+== Maintenance
+
+This project is maintained by Grahame Grieve and James Agnew on behalf of the FHIR community.
