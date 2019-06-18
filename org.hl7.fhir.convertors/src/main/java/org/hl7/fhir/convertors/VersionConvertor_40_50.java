@@ -54,6 +54,22 @@ public class VersionConvertor_40_50 {
     }
   }
 
+  protected static void copyEnumeration(org.hl7.fhir.r4.model.Enumeration<?> src, org.hl7.fhir.r5.model.Enumeration<?> tgt) throws FHIRException {
+    if (src.hasId())
+      tgt.setId(src.getId());
+    for (org.hl7.fhir.r4.model.Extension  e : src.getExtension()) {
+      tgt.addExtension(convertExtension(e));
+    }
+  }
+
+  protected static void copyEnumeration(org.hl7.fhir.r5.model.Enumeration<?> src, org.hl7.fhir.r4.model.Enumeration<?> tgt) throws FHIRException {
+    if (src.hasId())
+      tgt.setId(src.getId());
+    for (org.hl7.fhir.r5.model.Extension  e : src.getExtension()) {
+      tgt.addExtension(convertExtension(e));
+    }
+  }
+
   protected static void copyBackboneElement(org.hl7.fhir.r4.model.BackboneElement src, org.hl7.fhir.r5.model.BackboneElement tgt) throws FHIRException {
     copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.Extension  e : src.getModifierExtension()) {

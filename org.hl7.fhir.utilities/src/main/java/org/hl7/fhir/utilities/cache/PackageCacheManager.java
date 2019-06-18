@@ -745,4 +745,14 @@ public class PackageCacheManager {
     return res;
   }
 
+
+  public void clear() throws IOException {
+    for (File f : new File(cacheFolder).listFiles()) {
+      if (f.isDirectory()) {
+        Utilities.clearDirectory(f.getAbsolutePath());
+        f.delete();
+      }
+    }
+  }
+
 }
