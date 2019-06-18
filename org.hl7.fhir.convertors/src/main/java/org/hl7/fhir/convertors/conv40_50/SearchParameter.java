@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.SearchParameter.SearchModifierCodeEnumFactory;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -222,7 +222,7 @@ public class SearchParameter extends VersionConvertor_40_50 {
   public static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> convertSearchModifierCode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode>();
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode>(new org.hl7.fhir.r5.model.SearchParameter.SearchModifierCodeEnumFactory());
     copyEnumeration(src, tgt);
     switch (src.getValue()) {
     case MISSING: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.MISSING);
@@ -245,7 +245,7 @@ public class SearchParameter extends VersionConvertor_40_50 {
   public static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> convertSearchModifierCode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode>();
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode>(new org.hl7.fhir.r4.model.SearchParameter.SearchModifierCodeEnumFactory());
     copyEnumeration(src, tgt);
     switch (src.getValue()) {
     case MISSING: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.MISSING);

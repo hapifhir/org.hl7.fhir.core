@@ -374,8 +374,10 @@ public class ExpressionNode {
         b.append(" '");
         b.append(Utilities.escapeJson(q.getUnit()));
         b.append("'");
-		  } else
+		  } else if (constant.primitiveValue() != null)
 		    b.append(Utilities.escapeJson(constant.primitiveValue()));
+		  else 
+        b.append(Utilities.escapeJson(constant.toString()));
 			break;
 		case Group:
 			b.append("(");

@@ -114,6 +114,11 @@ public class FHIRPathEngine {
     public String getValue() {
       return value;
     }
+    
+    @Override
+    public String primitiveValue() {
+      return value;
+    }
   }
   
   private class ClassTypeInfo extends Base {

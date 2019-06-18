@@ -14,8 +14,8 @@ pause
 call mvn versions:set -DnewVersion=%newver%-SNAPSHOT
 call git commit -a -m "Release new version"
 call git push origin master
-call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.java" --includeSubDirectories --find "%oldver%-SNAPSHOT" --replace "%newver%-SNAPSHOT"
 call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.xml" --find "%oldver%-SNAPSHOT" --replace "%newver%-SNAPSHOT"
+call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\fhir-ig-publisher" --fileMask "*.xml" --find "%oldver%-SNAPSHOT" --replace "%newver%-SNAPSHOT"
 call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\latest-ig-publisher" --fileMask "*.html" --find "%oldver%" --replace "%newver%"
 call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\latest-ig-publisher" --fileMask "*.json" --find "%oldver%" --replace "%newver%"
 call mvn deploy
