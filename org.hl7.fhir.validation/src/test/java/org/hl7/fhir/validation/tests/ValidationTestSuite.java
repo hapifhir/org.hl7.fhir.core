@@ -94,8 +94,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     this.content = content;
   }
 
-//  private static final String DEF_TX = "http://tx.fhir.org";
-  private static final String DEF_TX = "http://local.fhir.org:960";
+  private static final String DEF_TX = "http://tx.fhir.org";
+//  private static final String DEF_TX = "http://local.fhir.org:960";
   private static ValidationEngine ve;
   
   @SuppressWarnings("deprecation")

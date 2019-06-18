@@ -3734,15 +3734,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
     //		System.out.println("  "+stack.getLiteralPath()+" "+Long.toString((System.nanoTime() - time) / 1000000));
     //		time = System.nanoTime();
-    if (resource.getName().equals("contained")) {
-      NodeStack ancestor = stack;
-      while (!ancestor.element.isResource() || ancestor.element.getName().equals("contained"))
-        ancestor = ancestor.parent;
-      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
-    } else
-      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
-    if (definition.getFixed()!=null)
-      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), definition.getSliceName(), null);
+    checkInvariants(hostContext, errors, profile, definition, resource, element, stack);
 
 
     // get the list of direct defined children, including slices
@@ -3750,7 +3742,6 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     if (childDefinitions.isEmpty()) {
       if (actualType == null)
         return; // there'll be an error elsewhere in this case, and we're going to stop.
-
       StructureDefinition dt = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + actualType);
       if (dt == null)
         throw new DefinitionException("Unable to resolve actual type " + actualType);
@@ -3758,12 +3749,259 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       childDefinitions = ProfileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
     }
 
-    // 1. List the children, and remember their exact path (convenience)
-    List<ElementInfo> children = new ArrayList<InstanceValidator.ElementInfo>();
-    ChildIterator iter = new ChildIterator(stack.getLiteralPath(), element);
-    while (iter.next())
-      children.add(new ElementInfo(iter.name(), iter.element(), iter.path(), iter.count()));
+    List<ElementInfo> children = listChildren(element, stack);
+    List<String> problematicPaths = assignChildren(hostContext, errors, profile, resource, stack, childDefinitions, children);
 
+    checkCardinalities(errors, profile, element, stack, childDefinitions, children, problematicPaths);
+    // 4. check order if any slices are ordered. (todo)
+
+    // 5. inspect each child for validity
+    for (ElementInfo ei : children) {
+      checkChild(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei);
+    }
+  }
+
+  public void checkChild(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
+      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei)
+      throws FHIRException, IOException, DefinitionException {
+    List<String> profiles = new ArrayList<String>();
+    if (ei.definition != null) {
+      String type = null;
+      ElementDefinition typeDefn = null;
+
+      String usesMustSupport = profile.getUserString("usesMustSupport");
+      if (usesMustSupport == null) {
+        usesMustSupport = "N";
+        for (ElementDefinition pe: profile.getSnapshot().getElement()) {
+          if (pe.getMustSupport()) {
+            usesMustSupport = "Y";
+            break;
+          }
+        }
+        profile.setUserData("usesMustSupport", usesMustSupport);
+      }
+      if (usesMustSupport.equals("Y")) {
+        String elementSupported = ei.element.getUserString("elementSupported");
+        if (elementSupported==null || ei.definition.getMustSupport())
+          if (ei.definition.getMustSupport())
+            ei.element.setUserData("elementSupported", "Y");
+          else
+            ei.element.setUserData("elementSupported", "N");
+      }
+
+      if (ei.definition.getType().size() == 1 && !"*".equals(ei.definition.getType().get(0).getCode()) && !"Element".equals(ei.definition.getType().get(0).getCode())
+          && !"BackboneElement".equals(ei.definition.getType().get(0).getCode())) {
+        type = ei.definition.getType().get(0).getCode();
+        // Excluding reference is a kludge to get around versioning issues
+        if (ei.definition.getType().get(0).hasProfile())
+          profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
+
+      } else if (ei.definition.getType().size() == 1 && "*".equals(ei.definition.getType().get(0).getCode())) {
+        String prefix = tail(ei.definition.getPath());
+        assert prefix.endsWith("[x]");
+        type = ei.name.substring(prefix.length() - 3);
+        if (isPrimitiveType(type))
+          type = Utilities.uncapitalize(type);
+        // Excluding reference is a kludge to get around versioning issues
+        if (ei.definition.getType().get(0).hasProfile() && !type.equals("Reference"))
+          profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
+      } else if (ei.definition.getType().size() > 1) {
+
+        String prefix = tail(ei.definition.getPath());
+        assert typesAreAllReference(ei.definition.getType()) || ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") : prefix;
+
+        if (ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR))
+          type = ei.element.getType();
+        else {
+        prefix = prefix.substring(0, prefix.length() - 3);
+        for (TypeRefComponent t : ei.definition.getType())
+          if ((prefix + Utilities.capitalize(t.getCode())).equals(ei.name)) {
+            type = t.getCode();
+            // Excluding reference is a kludge to get around versioning issues
+            if (t.hasProfile() && !type.equals("Reference"))
+              profiles.add(t.getProfile().get(0).getValue());
+          }
+        }
+        if (type == null) {
+          TypeRefComponent trc = ei.definition.getType().get(0);
+          if (trc.getCode().equals("Reference"))
+            type = "Reference";
+          else
+            rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false,
+                "The type of element " + ei.name + " is not known, which is illegal. Valid types at this point are " + describeTypes(ei.definition.getType()));
+        }
+      } else if (ei.definition.getContentReference() != null) {
+        typeDefn = resolveNameReference(profile.getSnapshot(), ei.definition.getContentReference());
+      } else if (ei.definition.getType().size() == 1 && ("Element".equals(ei.definition.getType().get(0).getCode()) || "BackboneElement".equals(ei.definition.getType().get(0).getCode()))) {
+        if (ei.definition.getType().get(0).hasProfile()) {
+          CanonicalType pu = ei.definition.getType().get(0).getProfile().get(0);
+          if (pu.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT))
+            profiles.add(pu.getValue()+"#"+pu.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT));
+          else
+            profiles.add(pu.getValue());
+        }
+      }
+
+      if (type != null) {
+        if (type.startsWith("@")) {
+          ei.definition = findElement(profile, type.substring(1));
+          type = null;
+        }
+      }
+      NodeStack localStack = stack.push(ei.element, ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
+      String localStackLiterapPath = localStack.getLiteralPath();
+      String eiPath = ei.path;
+      assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
+      boolean thisIsCodeableConcept = false;
+      boolean checkDisplay = true;
+
+      ei.element.markValidation(profile, ei.definition);
+      if (type != null) {
+        if (isPrimitiveType(type)) {
+          checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile, stack);
+        } else {
+          if (ei.definition.hasFixed()) {
+            checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
+          }
+          if (ei.definition.hasPattern()) {
+              checkFixedValue(errors,ei.path, ei.element, ei.definition.getPattern(), ei.definition.getSliceName(), null, true);
+          }
+        }
+        if (type.equals("Identifier")) {
+          checkIdentifier(errors, ei.path, ei.element, ei.definition);
+        } else if (type.equals("Coding")) {
+          checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
+        } else if (type.equals("CodeableConcept")) {
+          checkDisplay = checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition, stack);
+          thisIsCodeableConcept = true;
+        } else if (type.equals("Reference")) {
+          checkReference(hostContext, errors, ei.path, ei.element, profile, ei.definition, actualType, localStack);
+        // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
+        } else if (type.equals("Extension") && ei.element.getChildValue("url") != null && ei.element.getChildValue("url").contains("/")) {
+          checkExtension(hostContext, errors, ei.path, resource, ei.element, ei.definition, profile, localStack);
+        } else if (type.equals("Resource")) {
+          validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
+        // (str.matches(".*([.,/])work\\1$"))
+        } 
+      } else {
+        if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
+          validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true);
+      }
+      StructureDefinition p = null;
+      boolean elementValidated = false;
+      String tail = null;
+      if (profiles.isEmpty()) {
+        if (type != null) {
+          p = getProfileForType(type, ei.definition.getType());
+
+          // If dealing with a primitive type, then we need to check the current child against
+          // the invariants (constraints) on the current element, because otherwise it only gets
+          // checked against the primary type's invariants: LLoyd
+          //if (p.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+          //  checkInvariants(hostContext, errors, ei.path, profile, ei.definition, null, null, resource, ei.element);
+          //}
+
+          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown type " + type);
+        }
+      } else if (profiles.size()==1) {
+        String url = profiles.get(0);
+        if (url.contains("#")) {
+          tail = url.substring(url.indexOf("#")+1);
+          url = url.substring(0, url.indexOf("#"));
+        }
+        p = this.context.fetchResource(StructureDefinition.class, url);
+        rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + profiles.get(0));
+      } else {
+        elementValidated = true;
+        HashMap<String, List<ValidationMessage>> goodProfiles = new HashMap<String, List<ValidationMessage>>();
+        List<List<ValidationMessage>> badProfiles = new ArrayList<List<ValidationMessage>>();
+        for (String typeProfile : profiles) {
+          String url = typeProfile;
+          tail = null;
+          if (url.contains("#")) {
+            tail = url.substring(url.indexOf("#")+1);
+            url = url.substring(0, url.indexOf("#"));
+          }
+          p = this.context.fetchResource(StructureDefinition.class, typeProfile);
+          if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + typeProfile)) {
+            List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
+            validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+            if (hasErrors(profileErrors))
+              badProfiles.add(profileErrors);
+            else
+              goodProfiles.put(typeProfile, profileErrors);
+          }
+          if (goodProfiles.size()==1) {
+            errors.addAll(goodProfiles.values().iterator().next());
+          } else if (goodProfiles.size()==0) {
+            rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
+            for (List<ValidationMessage> messages : badProfiles) {
+              errors.addAll(messages);
+            }
+          } else {
+            warning(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
+            for (List<ValidationMessage> messages : goodProfiles.values()) {
+              errors.addAll(messages);
+            }                    
+          }
+        }
+      }
+      if (p!=null) {
+        if (!elementValidated) {
+          if (ei.element.getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.element.getSpecial() == SpecialElement.PARAMETER )
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.element, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+          else
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+        }
+        int index = profile.getSnapshot().getElement().indexOf(ei.definition);
+        if (index < profile.getSnapshot().getElement().size() - 1) {
+          String nextPath = profile.getSnapshot().getElement().get(index+1).getPath();
+          if (!nextPath.equals(ei.definition.getPath()) && nextPath.startsWith(ei.definition.getPath()))
+            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+        }
+      }
+    }
+  }
+
+  public void checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
+      List<ElementDefinition> childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException {
+    // 3. report any definitions that have a cardinality problem
+    for (ElementDefinition ed : childDefinitions) {
+      if (ed.getRepresentation().isEmpty()) { // ignore xml attributes
+        int count = 0;
+        List<ElementDefinition> slices = null;
+        if (ed.hasSlicing())
+          slices = ProfileUtilities.getSliceList(profile, ed);
+        for (ElementInfo ei : children)
+          if (ei.definition == ed)
+            count++;
+          else if (slices!=null) {
+            for (ElementDefinition sed : slices) {
+              if (ei.definition == sed) {
+                count++;
+                break;
+              }
+            }
+          }
+        String location = "Profile " + profile.getUrl() + ", Element '" + stack.getLiteralPath() + "." + tail(ed.getPath()) + (ed.hasSliceName()? "[" + ed.getSliceName() + (ed.hasLabel() ? " ("+ed.getLabel()+")" : "")+"]": "") + "'";
+        if (ed.getMin() > 0) {
+          if (problematicPaths.contains(ed.getPath()))
+            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), location + "': Unable to check minimum required (" + Integer.toString(ed.getMin()) + ") due to lack of slicing validation");
+          else
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), location + ": minimum required = " + Integer.toString(ed.getMin()) + ", but only found " + Integer.toString(count));
+        }
+        if (ed.hasMax() && !ed.getMax().equals("*")) {
+          if (problematicPaths.contains(ed.getPath()))
+            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), location + ": Unable to check max allowed (" + ed.getMax() + ") due to lack of slicing validation");
+          else
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), location + ": max allowed = " + ed.getMax() + ", but found " + Integer.toString(count));
+        }
+      }
+    }
+  }
+
+  public List<String> assignChildren(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, Element resource,
+      NodeStack stack, List<ElementDefinition> childDefinitions, List<ElementInfo> children) throws DefinitionException, IOException {
     // 2. assign children to a definition
     // for each definition, for each child, check whether it belongs in the slice
     ElementDefinition slicer = null;
@@ -3847,239 +4085,29 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       else
         lastSlice = -1;
     }
+    return problematicPaths;
+  }
 
-    // 3. report any definitions that have a cardinality problem
-    for (ElementDefinition ed : childDefinitions) {
-      if (ed.getRepresentation().isEmpty()) { // ignore xml attributes
-        int count = 0;
-        List<ElementDefinition> slices = null;
-        if (ed.hasSlicing())
-          slices = ProfileUtilities.getSliceList(profile, ed);
-        for (ElementInfo ei : children)
-          if (ei.definition == ed)
-            count++;
-          else if (slices!=null) {
-            for (ElementDefinition sed : slices) {
-              if (ei.definition == sed) {
-                count++;
-                break;
-              }
-            }
-          }
-        String location = "Profile " + profile.getUrl() + ", Element '" + stack.getLiteralPath() + "." + tail(ed.getPath()) + (ed.hasSliceName()? "[" + ed.getSliceName() + (ed.hasLabel() ? " ("+ed.getLabel()+")" : "")+"]": "") + "'";
-        if (ed.getMin() > 0) {
-          if (problematicPaths.contains(ed.getPath()))
-            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), location + "': Unable to check minimum required (" + Integer.toString(ed.getMin()) + ") due to lack of slicing validation");
-          else
-            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), location + ": minimum required = " + Integer.toString(ed.getMin()) + ", but only found " + Integer.toString(count));
-        }
-        if (ed.hasMax() && !ed.getMax().equals("*")) {
-          if (problematicPaths.contains(ed.getPath()))
-            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), location + ": Unable to check max allowed (" + ed.getMax() + ") due to lack of slicing validation");
-          else
-            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), location + ": max allowed = " + ed.getMax() + ", but found " + Integer.toString(count));
-        }
-      }
-    }
-    // 4. check order if any slices are ordered. (todo)
+  public List<ElementInfo> listChildren(Element element, NodeStack stack) {
+    // 1. List the children, and remember their exact path (convenience)
+    List<ElementInfo> children = new ArrayList<InstanceValidator.ElementInfo>();
+    ChildIterator iter = new ChildIterator(stack.getLiteralPath(), element);
+    while (iter.next())
+      children.add(new ElementInfo(iter.name(), iter.element(), iter.path(), iter.count()));
+    return children;
+  }
 
-    // 5. inspect each child for validity
-    for (ElementInfo ei : children) {
-      List<String> profiles = new ArrayList<String>();
-      if (ei.definition != null) {
-        String type = null;
-        ElementDefinition typeDefn = null;
-
-        String usesMustSupport = profile.getUserString("usesMustSupport");
-        if (usesMustSupport == null) {
-          usesMustSupport = "N";
-          for (ElementDefinition pe: profile.getSnapshot().getElement()) {
-            if (pe.getMustSupport()) {
-              usesMustSupport = "Y";
-              break;
-            }
-          }
-          profile.setUserData("usesMustSupport", usesMustSupport);
-        }
-        if (usesMustSupport.equals("Y")) {
-          String elementSupported = ei.element.getUserString("elementSupported");
-          if (elementSupported==null || ei.definition.getMustSupport())
-            if (ei.definition.getMustSupport())
-              ei.element.setUserData("elementSupported", "Y");
-            else
-              ei.element.setUserData("elementSupported", "N");
-        }
-
-        if (ei.definition.getType().size() == 1 && !"*".equals(ei.definition.getType().get(0).getCode()) && !"Element".equals(ei.definition.getType().get(0).getCode())
-            && !"BackboneElement".equals(ei.definition.getType().get(0).getCode())) {
-          type = ei.definition.getType().get(0).getCode();
-          // Excluding reference is a kludge to get around versioning issues
-          if (ei.definition.getType().get(0).hasProfile())
-            profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
-
-        } else if (ei.definition.getType().size() == 1 && "*".equals(ei.definition.getType().get(0).getCode())) {
-          String prefix = tail(ei.definition.getPath());
-          assert prefix.endsWith("[x]");
-          type = ei.name.substring(prefix.length() - 3);
-          if (isPrimitiveType(type))
-            type = Utilities.uncapitalize(type);
-          // Excluding reference is a kludge to get around versioning issues
-          if (ei.definition.getType().get(0).hasProfile() && !type.equals("Reference"))
-            profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
-        } else if (ei.definition.getType().size() > 1) {
-
-          String prefix = tail(ei.definition.getPath());
-          assert typesAreAllReference(ei.definition.getType()) || ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") : prefix;
-
-          if (ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR))
-            type = ei.element.getType();
-          else {
-          prefix = prefix.substring(0, prefix.length() - 3);
-          for (TypeRefComponent t : ei.definition.getType())
-            if ((prefix + Utilities.capitalize(t.getCode())).equals(ei.name)) {
-              type = t.getCode();
-              // Excluding reference is a kludge to get around versioning issues
-              if (t.hasProfile() && !type.equals("Reference"))
-                profiles.add(t.getProfile().get(0).getValue());
-            }
-          }
-          if (type == null) {
-            TypeRefComponent trc = ei.definition.getType().get(0);
-            if (trc.getCode().equals("Reference"))
-              type = "Reference";
-            else
-              rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false,
-                  "The type of element " + ei.name + " is not known, which is illegal. Valid types at this point are " + describeTypes(ei.definition.getType()));
-          }
-        } else if (ei.definition.getContentReference() != null) {
-          typeDefn = resolveNameReference(profile.getSnapshot(), ei.definition.getContentReference());
-        } else if (ei.definition.getType().size() == 1 && ("Element".equals(ei.definition.getType().get(0).getCode()) || "BackboneElement".equals(ei.definition.getType().get(0).getCode()))) {
-          if (ei.definition.getType().get(0).hasProfile()) {
-            CanonicalType pu = ei.definition.getType().get(0).getProfile().get(0);
-            if (pu.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT))
-              profiles.add(pu.getValue()+"#"+pu.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT));
-            else
-              profiles.add(pu.getValue());
-          }
-        }
-
-        if (type != null) {
-          if (type.startsWith("@")) {
-            ei.definition = findElement(profile, type.substring(1));
-            type = null;
-          }
-        }
-        NodeStack localStack = stack.push(ei.element, ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
-        String localStackLiterapPath = localStack.getLiteralPath();
-        String eiPath = ei.path;
-        assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
-        boolean thisIsCodeableConcept = false;
-        boolean checkDisplay = true;
-
-        ei.element.markValidation(profile, ei.definition);
-        if (type != null) {
-          if (isPrimitiveType(type)) {
-            checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile, stack);
-          } else {
-            if (ei.definition.hasFixed()) {
-              checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), ei.definition.getSliceName(), null);
-            }
-            if (ei.definition.hasPattern()) {
-                checkFixedValue(errors,ei.path, ei.element, ei.definition.getPattern(), ei.definition.getSliceName(), null, true);
-            }
-          }
-          if (type.equals("Identifier")) {
-            checkIdentifier(errors, ei.path, ei.element, ei.definition);
-          } else if (type.equals("Coding")) {
-            checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
-          } else if (type.equals("CodeableConcept")) {
-            checkDisplay = checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition, stack);
-            thisIsCodeableConcept = true;
-          } else if (type.equals("Reference")) {
-            checkReference(hostContext, errors, ei.path, ei.element, profile, ei.definition, actualType, localStack);
-          // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
-          } else if (type.equals("Extension") && ei.element.getChildValue("url") != null && ei.element.getChildValue("url").contains("/")) {
-            checkExtension(hostContext, errors, ei.path, resource, ei.element, ei.definition, profile, localStack);
-          } else if (type.equals("Resource")) {
-            validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
-          // (str.matches(".*([.,/])work\\1$"))
-          } 
-        } else {
-          if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
-            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true);
-        }
-        StructureDefinition p = null;
-        boolean elementValidated = false;
-        String tail = null;
-        if (profiles.isEmpty()) {
-          if (type != null) {
-            p = getProfileForType(type, ei.definition.getType());
-
-            // If dealing with a primitive type, then we need to check the current child against
-            // the invariants (constraints) on the current element, because otherwise it only gets
-            // checked against the primary type's invariants: LLoyd
-            //if (p.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
-            //  checkInvariants(hostContext, errors, ei.path, profile, ei.definition, null, null, resource, ei.element);
-            //}
-
-            rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown type " + type);
-          }
-        } else if (profiles.size()==1) {
-          String url = profiles.get(0);
-          if (url.contains("#")) {
-            tail = url.substring(url.indexOf("#")+1);
-            url = url.substring(0, url.indexOf("#"));
-          }
-          p = this.context.fetchResource(StructureDefinition.class, url);
-          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + profiles.get(0));
-        } else {
-          elementValidated = true;
-          HashMap<String, List<ValidationMessage>> goodProfiles = new HashMap<String, List<ValidationMessage>>();
-          List<List<ValidationMessage>> badProfiles = new ArrayList<List<ValidationMessage>>();
-          for (String typeProfile : profiles) {
-            String url = typeProfile;
-            tail = null;
-            if (url.contains("#")) {
-              tail = url.substring(url.indexOf("#")+1);
-              url = url.substring(0, url.indexOf("#"));
-            }
-            p = this.context.fetchResource(StructureDefinition.class, typeProfile);
-            if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + typeProfile)) {
-              List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
-              validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
-              if (hasErrors(profileErrors))
-                badProfiles.add(profileErrors);
-              else
-                goodProfiles.put(typeProfile, profileErrors);
-            }
-            if (goodProfiles.size()==1) {
-              errors.addAll(goodProfiles.values().iterator().next());
-            } else if (goodProfiles.size()==0) {
-              rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
-              for (List<ValidationMessage> messages : badProfiles) {
-                errors.addAll(messages);
-              }
-            } else {
-              warning(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
-              for (List<ValidationMessage> messages : goodProfiles.values()) {
-                errors.addAll(messages);
-              }                    
-            }
-          }
-        }
-        if (p!=null) {
-          if (!elementValidated) {
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
-          }
-          int index = profile.getSnapshot().getElement().indexOf(ei.definition);
-          if (index < profile.getSnapshot().getElement().size() - 1) {
-            String nextPath = profile.getSnapshot().getElement().get(index+1).getPath();
-            if (!nextPath.equals(ei.definition.getPath()) && nextPath.startsWith(ei.definition.getPath()))
-              validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
-          }
-        }
-      }
-    }
+  public void checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
+      Element resource, Element element, NodeStack stack) throws FHIRException {
+    if (resource.getName().equals("contained")) {
+      NodeStack ancestor = stack;
+      while (!ancestor.element.isResource() || ancestor.element.getName().equals("contained"))
+        ancestor = ancestor.parent;
+      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
+    } else
+      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
+    if (definition.getFixed()!=null)
+      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), definition.getSliceName(), null);
   }
 
   public boolean matchSlice(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, NodeStack stack,

@@ -176,7 +176,8 @@
 				}
 			},
 			"medication-atc.json": {
-				"errorCount": 0,
+				"errorCount": 1,
+        "errors-for-debugging" : ["ERROR: Medication.extension[2].valueCodeableConcept.coding: The code \"N02AA\" is not valid in the system http://www.whocc.no/atc; The code provided (http://www.whocc.no/atc#N02AA) is not  valid in the value set All codes known to the system"],
 				"allowed-extension-domain": "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open"
 			},
 			"bp.json": {
@@ -781,6 +782,14 @@
       "loinc-lang-nl-3.xml" : {
 				"errorCount": 0,
 				"warningCount": 0
+      },
+      "azatadha/example-params-1.xml" : {
+				"errorCount": 0,
+				"warningCount": 1,
+				"profile": {
+					"source": "azatadha/param-profile.xml",
+					"errorCount": 0
+				}
       }
 		}
 	}
