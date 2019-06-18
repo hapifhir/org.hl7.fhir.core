@@ -1016,7 +1016,11 @@ public class StructureMapUtilities {
 		}
 		if (newFmt) {
 		  if (lexer.isConstant()) {
-		    rule.setName(lexer.take());
+		    if (lexer.isStringConstant()) {
+		      rule.setName(lexer.readConstant("ruleName"));
+		    } else {
+		      rule.setName(lexer.take());
+		    }
 		  } else {
 		    if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement())
 		      throw lexer.error("Complex rules must have an explicit name");
