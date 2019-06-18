@@ -191,4 +191,21 @@ public class CSVReader extends InputStreamReader {
 	}
 
 
+  public void checkColumn(int i, String name, String desc) throws FHIRException {
+    if (cols.length < i)
+      throw new FHIRException("Error parsing "+desc+": expected column "+name+" at col "+i+" but only found "+cols.length+" cols");
+    if (!cols[i-1].equals(name))
+      throw new FHIRException("Error parsing "+desc+": expected column "+name+" at col "+i+" but found '"+cols[i-1]+"'");
+  }
+
+
+  public String value(int i) {
+    if (i > cells.length)
+      return null;
+    if (Utilities.noString(cells[i-1]))
+      return null;
+    return cells[i-1];
+  }
+
+
 }
