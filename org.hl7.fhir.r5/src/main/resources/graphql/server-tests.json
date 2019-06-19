@@ -41,7 +41,7 @@
   "root-tests" : {
     "simple" : {
       "description" : "Just a simple test of the basic graphQL engine: a simple query on a known patient (example, from the spec)",
-      "url" : "/$graphql?query={Patient(_id:example){identifier{system,value}active,name{text,given,family}}}",
+      "url" : "/$graphql?query={Patient(_id:\"example\"){identifier{system,value}active,name{text,given,family}}}",
       "output" : {
         "data" : {
           "Patient" : {
