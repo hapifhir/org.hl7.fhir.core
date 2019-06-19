@@ -76,6 +76,17 @@ public class JSONUtil {
     return e == null ? null : e.getAsString();
   }
 
+  public static String str(JsonObject json, String name1, String name2) {
+    JsonElement e = json.get(name1);
+    if (e == null)
+      e = json.get(name2);
+    return e == null ? null : e.getAsString();
+  }
+
+  public static boolean has(JsonObject json, String name1, String name2) {
+    return json.has(name1) || json.has(name2);
+  }
+
   public static List<JsonObject> objects(JsonObject json, String name) {
     List<JsonObject> res = new ArrayList<>();
     if (json.has(name))
