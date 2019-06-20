@@ -8244,6 +8244,7 @@ public class VersionConvertor_30_40 {
   }
   
   private static final String VALUE_SET_CONDITION_CLINICAL_URL = "http://hl7.org/fhir/ValueSet/condition-clinical";
+  private static final String CODE_SYSTEM_CONDITION_CLINICAL_URL = "https://terminology.hl7.org/CodeSystem/condition-clinical";
 
   private static org.hl7.fhir.r4.model.CodeableConcept convertConditionClinicalStatus(org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus src) throws FHIRException {
     if (src == null)
@@ -8272,15 +8273,21 @@ public class VersionConvertor_30_40 {
   private static org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus convertConditionClinicalStatus(org.hl7.fhir.r4.model.CodeableConcept src) throws FHIRException {
     if (src == null)
       return null;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "active")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.ACTIVE;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "recurrence")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.RECURRENCE;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "inactive")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.INACTIVE;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "remission")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.REMISSION;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "resolved")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.RESOLVED;
+    if (src.hasCoding(VALUE_SET_CONDITION_CLINICAL_URL, "active")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_CLINICAL_URL, "active")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.ACTIVE;
+    if (src.hasCoding(VALUE_SET_CONDITION_CLINICAL_URL, "recurrence")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_CLINICAL_URL, "recurrence")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.RECURRENCE;
+    if (src.hasCoding(VALUE_SET_CONDITION_CLINICAL_URL, "inactive")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_CLINICAL_URL, "inactive")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.INACTIVE;
+    if (src.hasCoding(VALUE_SET_CONDITION_CLINICAL_URL, "remission")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_CLINICAL_URL, "remission")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.REMISSION;
+    if (src.hasCoding(VALUE_SET_CONDITION_CLINICAL_URL, "resolved")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_CLINICAL_URL, "resolved")) return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.RESOLVED;
     return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.NULL;
   }
 
-  private static final String VALUE_SET_CONDITION_VER_CLINICAL = "http://hl7.org/fhir/ValueSet/condition-ver-status";
+  private static final String VALUE_SET_CONDITION_VER_CLINICAL_URL = "http://hl7.org/fhir/ValueSet/condition-ver-status";
+  private static final String CODE_SYSTEM_CONDITION_VER_CLINICAL_URL = "http://terminology.hl7.org/CodeSystem/condition-ver-status";
   
   private static org.hl7.fhir.r4.model.CodeableConcept convertConditionVerificationStatus(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus src) throws FHIRException {
     if (src == null)
@@ -8288,19 +8295,19 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.CodeableConcept cc = new org.hl7.fhir.r4.model.CodeableConcept();
     switch (src) {
     case PROVISIONAL: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("provisional");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("provisional");
       return cc;
     case DIFFERENTIAL: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("differential");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("differential");
       return cc;
     case CONFIRMED: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("confirmed");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("confirmed");
       return cc;
     case REFUTED: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("refuted");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("refuted");
       return cc;
     case ENTEREDINERROR:
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("entered-in-error");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("entered-in-error");
       return cc;
     default: return null;
     }
@@ -8309,11 +8316,16 @@ public class VersionConvertor_30_40 {
   private static org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus convertConditionVerificationStatus(org.hl7.fhir.r4.model.CodeableConcept src) throws FHIRException {
     if (src == null)
       return null;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "provisional")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.PROVISIONAL;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "differential")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.DIFFERENTIAL;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "confirmed")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.CONFIRMED;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "refuted")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.REFUTED;
-    if (src.hasCoding("http://hl7.org/fhir/condition-clinical", "entered-in-error")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.ENTEREDINERROR;
+    if (src.hasCoding(VALUE_SET_CONDITION_VER_CLINICAL_URL, "provisional")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL, "provisional")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.PROVISIONAL;
+    if (src.hasCoding(VALUE_SET_CONDITION_VER_CLINICAL_URL, "differential")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL, "differential")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.DIFFERENTIAL;
+    if (src.hasCoding(VALUE_SET_CONDITION_VER_CLINICAL_URL, "confirmed")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL, "confirmed")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.CONFIRMED;
+    if (src.hasCoding(VALUE_SET_CONDITION_VER_CLINICAL_URL, "refuted")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL, "refuted")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.REFUTED;
+    if (src.hasCoding(VALUE_SET_CONDITION_VER_CLINICAL_URL, "entered-in-error")
+        ||src.hasCoding(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL, "entered-in-error")) return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.ENTEREDINERROR;
     return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.NULL;
   }
 
