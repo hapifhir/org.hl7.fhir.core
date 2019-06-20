@@ -8242,6 +8242,8 @@ public class VersionConvertor_30_40 {
       tgt.addNote(convertAnnotation(t));
     return tgt;
   }
+  
+  private static final String VALUE_SET_CONDITION_CLINICAL_URL = "http://hl7.org/fhir/ValueSet/condition-clinical";
 
   private static org.hl7.fhir.r4.model.CodeableConcept convertConditionClinicalStatus(org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus src) throws FHIRException {
     if (src == null)
@@ -8249,19 +8251,19 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.CodeableConcept cc = new org.hl7.fhir.r4.model.CodeableConcept();
     switch (src) {
       case ACTIVE: 
-        cc.addCoding().setSystem("http://hl7.org/fhir/condition-clinical").setCode("active");
+        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("active");
         return cc;
       case RECURRENCE: 
-        cc.addCoding().setSystem("http://hl7.org/fhir/condition-clinical").setCode("recurrence");
+        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("recurrence");
         return cc;
       case INACTIVE: 
-        cc.addCoding().setSystem("http://hl7.org/fhir/condition-clinical").setCode("inactive");
+        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("inactive");
         return cc;
       case REMISSION: 
-        cc.addCoding().setSystem("http://hl7.org/fhir/condition-clinical").setCode("remission");
+        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("remission");
         return cc;
       case RESOLVED:
-        cc.addCoding().setSystem("http://hl7.org/fhir/condition-clinical").setCode("resolved");
+        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("resolved");
         return cc;
       default: return null;
       }
@@ -8278,25 +8280,27 @@ public class VersionConvertor_30_40 {
     return org.hl7.fhir.dstu3.model.Condition.ConditionClinicalStatus.NULL;
   }
 
+  private static final String VALUE_SET_CONDITION_VER_CLINICAL = "http://hl7.org/fhir/ValueSet/condition-ver-status";
+  
   private static org.hl7.fhir.r4.model.CodeableConcept convertConditionVerificationStatus(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CodeableConcept cc = new org.hl7.fhir.r4.model.CodeableConcept();
     switch (src) {
     case PROVISIONAL: 
-      cc.addCoding().setSystem("http://hl7.org/fhir/condition-ver-status").setCode("provisional");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("provisional");
       return cc;
     case DIFFERENTIAL: 
-      cc.addCoding().setSystem("http://hl7.org/fhir/condition-ver-status").setCode("differential");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("differential");
       return cc;
     case CONFIRMED: 
-      cc.addCoding().setSystem("http://hl7.org/fhir/condition-ver-status").setCode("confirmed");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("confirmed");
       return cc;
     case REFUTED: 
-      cc.addCoding().setSystem("http://hl7.org/fhir/condition-ver-status").setCode("refuted");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("refuted");
       return cc;
     case ENTEREDINERROR:
-      cc.addCoding().setSystem("http://hl7.org/fhir/condition-ver-status").setCode("entered-in-error");
+      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL).setCode("entered-in-error");
       return cc;
     default: return null;
     }
