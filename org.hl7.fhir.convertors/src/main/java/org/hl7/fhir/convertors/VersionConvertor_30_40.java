@@ -1421,7 +1421,7 @@ public class VersionConvertor_30_40 {
     if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasDose()) {
       // We need to manually make sure that the convertSimpleQuantity method is
       // called. Otherwise (if we would simply forward to the convertType method), this would lead
-      // to a conversion to another Quantity object, that would be invalid for the DSTU3 Dosage resource, 
+      // to a conversion to another Quantity object, that would be invalid for the DSTU3 Dosage resource. 
       if (src.getDoseAndRate().get(0).getDose() instanceof org.hl7.fhir.r4.model.Quantity) {
         tgt.setDose(convertSimpleQuantity((org.hl7.fhir.r4.model.Quantity) src.getDoseAndRate().get(0).getDose()));
       } else {
@@ -1437,7 +1437,7 @@ public class VersionConvertor_30_40 {
     if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasRate()) {
       // We need to manually make sure that the convertSimpleQuantity method is
       // called. Otherwise (if we would simply forward to the convertType method), this would lead
-      // to a conversion to another Quantity object, that would be invalid for the DSTU3 Dosage resource,
+      // to a conversion to another Quantity object, that would be invalid for the DSTU3 Dosage resource.
       if (src.getDoseAndRate().get(0).getRate() instanceof org.hl7.fhir.r4.model.Quantity) {
         tgt.setRate(convertSimpleQuantity((org.hl7.fhir.r4.model.Quantity) src.getDoseAndRate().get(0).getRate()));
       } else {
