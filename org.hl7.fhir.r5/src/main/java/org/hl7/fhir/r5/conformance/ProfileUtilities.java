@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -1920,7 +1921,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker) throws IOException, FHIRException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false);
+    TableModel model = gen.initNormalTable(corePath, false, true);
 
     boolean deep = false;
     String m = "";
@@ -2280,7 +2281,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     assert(diff != snapshot);// check it's ok to get rid of one of these
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false);
+    TableModel model = gen.initNormalTable(corePath, false, true);
     List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();
     List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
     profiles.add(profile);
@@ -2370,6 +2371,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       String ref = defPath == null ? null : defPath + element.getId();
       UnusedTracker used = new UnusedTracker();
       used.used = true;
+      if (logicalModel && element.hasRepresentation(PropertyRepresentation.XMLATTR))
+        s = "@"+s;
       Cell left = gen.new Cell(null, ref, s, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : "")+(hasDef && element.hasSliceName() ? ": " : "")+(!hasDef ? null : gt(element.getDefinitionElement())), null);
       row.getCells().add(left);
       Cell gc = gen.new Cell();

@@ -28,6 +28,7 @@ public class IGHelper {
   
   public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;
   public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
+  public static final String EXT_RESOURCE_INFO = ToolingExtensions.EXT_IGP_RESOURCE_INFO;
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, String name) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
