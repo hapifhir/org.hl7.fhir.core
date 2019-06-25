@@ -8253,19 +8253,19 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.CodeableConcept cc = new org.hl7.fhir.r4.model.CodeableConcept();
     switch (src) {
       case ACTIVE: 
-        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("active");
+        cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_CLINICAL_URL).setCode("active");
         return cc;
       case RECURRENCE: 
-        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("recurrence");
+        cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_CLINICAL_URL).setCode("recurrence");
         return cc;
       case INACTIVE: 
-        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("inactive");
+        cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_CLINICAL_URL).setCode("inactive");
         return cc;
       case REMISSION: 
-        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("remission");
+        cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_CLINICAL_URL).setCode("remission");
         return cc;
       case RESOLVED:
-        cc.addCoding().setSystem(VALUE_SET_CONDITION_CLINICAL_URL).setCode("resolved");
+        cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_CLINICAL_URL).setCode("resolved");
         return cc;
       default: return null;
       }
@@ -8302,19 +8302,19 @@ public class VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.CodeableConcept cc = new org.hl7.fhir.r4.model.CodeableConcept();
     switch (src) {
     case PROVISIONAL: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("provisional");
+      cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL).setCode("provisional");
       return cc;
     case DIFFERENTIAL: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("differential");
+      cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL).setCode("differential");
       return cc;
     case CONFIRMED: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("confirmed");
+      cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL).setCode("confirmed");
       return cc;
     case REFUTED: 
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("refuted");
+      cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL).setCode("refuted");
       return cc;
     case ENTEREDINERROR:
-      cc.addCoding().setSystem(VALUE_SET_CONDITION_VER_CLINICAL_URL).setCode("entered-in-error");
+      cc.addCoding().setSystem(CODE_SYSTEM_CONDITION_VER_CLINICAL_URL).setCode("entered-in-error");
       return cc;
     default: return null;
     }
