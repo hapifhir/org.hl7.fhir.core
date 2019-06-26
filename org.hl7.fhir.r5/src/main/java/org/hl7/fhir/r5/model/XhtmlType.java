@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -72,7 +73,12 @@ public class XhtmlType extends Element {
   @Override
   public Base setProperty(int hash, String name, Base value) throws FHIRException {
     if ("value".equals(name)) {
-      place.setDiv(castToXhtml(value));
+      if (value instanceof StringType) {
+        // div is already generated with getValue, we cannot just overwrite it
+        place.getDiv().setValueAsString(((StringType) value).asStringValue());
+      } else {
+        place.setDiv(castToXhtml(value));
+      }
       return value;
     } else
       return super.setProperty(hash, name, value);
