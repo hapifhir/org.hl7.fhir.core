@@ -2896,7 +2896,7 @@ public class FHIRPathEngine {
 
       if (!Utilities.noString(f)) {
 
-        if (exp.getParameters().size() != 2) {
+        if (exp.getParameters().size() == 2) {
 
           String t = convertToString(execute(context, focus, exp.getParameters().get(0), true));
           String r = convertToString(execute(context, focus, exp.getParameters().get(1), true));
