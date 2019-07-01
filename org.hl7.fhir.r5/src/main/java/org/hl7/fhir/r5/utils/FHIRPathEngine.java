@@ -1,16 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.util.ElementUtil;
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
@@ -20,38 +11,19 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BaseDateTimeType;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DateType;
-import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.model.ExpressionNode.Function;
-import org.hl7.fhir.r5.model.ExpressionNode.Kind;
-import org.hl7.fhir.r5.model.ExpressionNode.Operation;
-import org.hl7.fhir.r5.model.ExpressionNode.SourceLocation;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ExpressionNode.*;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.TemporalPrecisionEnum;
-import org.hl7.fhir.r5.model.TimeType;
-import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /*-
  * #%L
@@ -62,9 +34,9 @@ import org.hl7.fhir.utilities.Utilities;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -72,9 +44,6 @@ import org.hl7.fhir.utilities.Utilities;
  * limitations under the License.
  * #L%
  */
-
-//import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import ca.uhn.fhir.util.ElementUtil;
 
 /**
  * 

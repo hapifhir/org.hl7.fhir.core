@@ -52,7 +52,7 @@ package org.hl7.fhir.dstu2.model;
 
 // Generated on Wed, Jul 13, 2016 05:32+1000 for FHIR v1.0.2
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.
  */

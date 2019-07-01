@@ -9,9 +9,9 @@ package org.hl7.fhir.dstu3.terminologies;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,18 +21,33 @@ package org.hl7.fhir.dstu3.terminologies;
  */
 
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.dstu3.context.IWorkerContext;
+import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode;
+import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.dstu3.model.ValueSet.*;
+import org.hl7.fhir.dstu3.utils.ToolingExtensions;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.utilities.Utilities;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /*
  * Copyright (c) 2011+, HL7, Inc
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice, this
  * list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice,
@@ -41,7 +56,7 @@ import java.io.IOException;
  * Neither the name of HL7 nor the names of its contributors may be used to
  * endorse or promote products derived from this software without specific
  * prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -52,45 +67,8 @@ import java.io.IOException;
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  */
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.dstu3.context.IWorkerContext;
-import org.hl7.fhir.dstu3.model.CodeSystem;
-import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode;
-import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.ExpansionProfile;
-import org.hl7.fhir.dstu3.model.Factory;
-import org.hl7.fhir.dstu3.model.PrimitiveType;
-import org.hl7.fhir.dstu3.model.Type;
-import org.hl7.fhir.dstu3.model.UriType;
-import org.hl7.fhir.dstu3.model.ValueSet;
-import org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceDesignationComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.FilterOperator;
-import org.hl7.fhir.dstu3.model.ValueSet.ValueSetComposeComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.dstu3.utils.ToolingExtensions;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.NoTerminologyServiceException;
-import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.utilities.Utilities;
 
 public class ValueSetExpanderSimple implements ValueSetExpander {
 
@@ -118,7 +96,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   }
 
   private ValueSetExpansionContainsComponent addCode(String system, String code, String display, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations,
-      ExpansionProfile profile, boolean isAbstract, boolean inactive, List<ValueSet> filters) {
+                                                     ExpansionProfile profile, boolean isAbstract, boolean inactive, List<ValueSet> filters) {
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code))
       return null;
     ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
@@ -184,7 +162,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   }
 
   private void addCodeAndDescendents(CodeSystem cs, String system, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, ExpansionProfile profile, List<ValueSet> filters)
-      throws FHIRException {
+    throws FHIRException {
     if (!CodeSystemUtilities.isDeprecated(cs, def)) {
       ValueSetExpansionContainsComponent np = null;
       boolean abs = CodeSystemUtilities.isNotSelectable(cs, def);
@@ -289,14 +267,14 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       }
 
       return new ValueSetExpansionOutcome(focus);
-    } catch (RuntimeException e) {
-      // TODO: we should put something more specific instead of just Exception below, since
-      // it swallows bugs.. what would be expected to be caught there?
-      throw e;
     } catch (NoTerminologyServiceException e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(new ValueSetCheckerSimple(source, factory, context), e.getMessage(), TerminologyServiceErrorClass.NOSERVICE);
+    } catch (RuntimeException e) {
+      // TODO: we should put something more specific instead of just Exception below, since
+      // it swallows bugs.. what would be expected to be caught there?
+      throw e;
     } catch (Exception e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
@@ -337,7 +315,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   }
 
   private void handleCompose(ValueSetComposeComponent compose, List<ValueSetExpansionParameterComponent> params, ExpansionProfile profile)
-      throws ETooCostly, FileNotFoundException, IOException, FHIRException {
+    throws ETooCostly, FileNotFoundException, IOException, FHIRException {
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
       excludeCodes(inc, params);
@@ -354,7 +332,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   }
 
   private ValueSet importValueSet(String value, List<ValueSetExpansionParameterComponent> params, ExpansionProfile profile)
-      throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+    throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw new TerminologyServiceException("unable to find value set with no identity");
     ValueSet vs = context.fetchResource(ValueSet.class, value);
@@ -424,7 +402,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
         canBeHeirarchy = false;
         for (ConceptReferenceComponent c : inc.getConcept()) {
           addCode(inc.getSystem(), c.getCode(), Utilities.noString(c.getDisplay()) ? getCodeDisplay(cs, c.getCode()) : c.getDisplay(), null, convertDesignations(c.getDesignation()), profile, false,
-              CodeSystemUtilities.isInactive(cs, c.getCode()), imports);
+            CodeSystemUtilities.isInactive(cs, c.getCode()), imports);
         }
       }
       if (inc.getFilter().size() > 1) {
@@ -454,7 +432,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
             if (isNotBlank(def.getDisplay()) && isNotBlank(fc.getValue())) {
               if (def.getDisplay().contains(fc.getValue())) {
                 addCode(inc.getSystem(), def.getCode(), def.getDisplay(), null, def.getDesignation(), profile, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
-                    imports);
+                  imports);
               }
             }
           }
