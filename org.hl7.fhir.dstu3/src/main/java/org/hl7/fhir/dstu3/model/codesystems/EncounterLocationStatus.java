@@ -1,5 +1,26 @@
 package org.hl7.fhir.dstu3.model.codesystems;
 
+/*-
+ * #%L
+ * org.hl7.fhir.dstu3
+ * %%
+ * Copyright (C) 2014 - 2019 Health Level 7
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -41,7 +62,9 @@ public enum EncounterLocationStatus {
          */
         PLANNED, 
         /**
-         * The patient is currently at this location, or was between the period specified.A system may update these records when the patient leaves the location to either reserved, or completed
+         * The patient is currently at this location, or was between the period specified.
+
+A system may update these records when the patient leaves the location to either reserved, or completed
          */
         ACTIVE, 
         /**
@@ -49,7 +72,9 @@ public enum EncounterLocationStatus {
          */
         RESERVED, 
         /**
-         * The patient was at this location during the period specified.Not to be used when the patient is currently at the location
+         * The patient was at this location during the period specified.
+
+Not to be used when the patient is currently at the location
          */
         COMPLETED, 
         /**

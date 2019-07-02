@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>org.hl7.fhir.dstu3</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <dependencies>
 

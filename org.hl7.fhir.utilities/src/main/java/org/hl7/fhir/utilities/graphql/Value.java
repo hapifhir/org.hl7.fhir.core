@@ -26,4 +26,5 @@ public abstract class Value {
   public boolean isValue(String v) {
     return false;
   }
+  public abstract String getValue();
 }
