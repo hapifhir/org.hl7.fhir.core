@@ -736,7 +736,7 @@ public class ValidationEngine {
             throw new Exception("Unsupported version "+version);
 
         } catch (Exception e) {
-          throw new Exception("Error parsing "+fn+": "+e.getMessage(), e);
+          System.out.println(" - ignored due to error: "+e.getMessage());
         }
         if (r != null) {
           context.cacheResource(r);
