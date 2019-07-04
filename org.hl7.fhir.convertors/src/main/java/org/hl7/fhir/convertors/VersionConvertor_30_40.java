@@ -8329,7 +8329,6 @@ public class VersionConvertor_30_40 {
     return org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.NULL;
   }
 
-
   public static org.hl7.fhir.r4.model.Condition.ConditionStageComponent convertConditionStageComponent(org.hl7.fhir.dstu3.model.Condition.ConditionStageComponent src) throws FHIRException {
     if (src == null)
       return null;
