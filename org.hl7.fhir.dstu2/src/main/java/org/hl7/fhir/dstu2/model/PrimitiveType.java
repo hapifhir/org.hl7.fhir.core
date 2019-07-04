@@ -160,4 +160,5 @@ public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>
 		return b.isEquals();
 	}
 
+
 }
