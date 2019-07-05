@@ -4416,7 +4416,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       String nb = cursor == 0 ? "--" : parent.getChildren().get(cursor-1).getName();
       String na = cursor >= parent.getChildren().size() - 1 ? "--" : parent.getChildren().get(cursor+1).getName();
       if (name().equals(nb) || name().equals(na) ) {
-        return lastCount + 1;
+        return lastCount;
       } else
         return -1;
     }
@@ -4447,10 +4447,21 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     public String path() {
       int i = count();
       String sfx = "";
-      if (i > -1) {
-        sfx = "[" + Integer.toString(lastCount + 1) + "]";
+      String n = name();
+      String fn = "";
+      if (element().getProperty().isChoice()) {
+        String en = element().getProperty().getName();
+        en = en.substring(0, en.length()-3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        n = en;
+        fn = ".ofType("+t+")";       
       }
-      return basePath + "." + name() + sfx;
+      if (i > -1 || element().isList()) {
+        sfx = "[" + Integer.toString(lastCount) + "]";
+      }
+      return basePath + "." + n + sfx+fn;
     }
   }
 
