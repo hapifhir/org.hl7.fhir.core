@@ -22,6 +22,7 @@ package org.hl7.fhir.r5.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -4458,7 +4459,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         n = en;
         fn = ".ofType("+t+")";       
       }
-      if (i > -1 || element().isList()) {
+      if (i > -1 || (element().getSpecial() == null && element().isList())) {
         sfx = "[" + Integer.toString(lastCount) + "]";
       }
       return basePath + "." + n + sfx+fn;
@@ -4530,6 +4531,17 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       res.literalPath = getLiteralPath() + "." + element.getName();
       if (count > -1)
         res.literalPath = res.literalPath + "[" + Integer.toString(count) + "]";
+      else if (element.getSpecial() == null && element.getProperty().isList())
+        res.literalPath = res.literalPath + "[0]";
+      else if (element.getProperty().isChoice()) {
+        String n = res.literalPath.substring(res.literalPath.lastIndexOf(".")+1);
+        String en = element.getProperty().getName();
+        en = en.substring(0, en.length()-3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf("."))+"."+en+".ofType("+t+")";
+      }
       res.logicalPaths = new ArrayList<String>();
       if (type != null) {
         // type will be bull if we on a stitching point of a contained resource, or if....
