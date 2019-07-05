@@ -479,7 +479,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private Source source;
   private int line;
   private int col;
-  private String location;
+  private String location; // fhirPath
   private String message;
   private IssueType type;
   private IssueSeverity level;

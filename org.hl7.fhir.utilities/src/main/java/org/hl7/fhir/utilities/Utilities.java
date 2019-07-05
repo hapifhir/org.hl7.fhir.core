@@ -1195,6 +1195,32 @@ public class Utilities {
     
   }
 
+  /**
+   * Only handles simple FHIRPath expressions of the type produced by the validator
+   * 
+   * @param path
+   * @return
+   */
+  public static String fhirPathToXPath(String path) {
+    String[] p = path.split("\\.");
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
+    int i = 0;
+    while (i < p.length) {
+      String s = p[i];
+      if (s.contains("[")) {
+        String si = s.substring(s.indexOf("[")+1, s.length()-1);
+        s = s.substring(0, s.indexOf("["))+"["+Integer.toString(Integer.parseInt(si)+1)+"]";
+      }
+      if (i < p.length - 1 && p[i+1].startsWith(".ofType(")) {
+        i++;
+        s = s + capitalize(p[i].substring(8, p.length-1));
+      }
+      b.append(s); 
+      i++;
+    }
+    return b.toString();
+  }
+
 
 
 }

@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
@@ -527,7 +528,19 @@ public class Validator {
   }
 
   private static String getIssueSummary(OperationOutcomeIssueComponent issue) {
-    return "  " + issue.getSeverity().getDisplay() + " @ " + issue.getLocation().get(0).asStringValue() + " : " + issue.getDetails().getText();
+    String loc = null;
+    if (issue.hasExpression()) {
+      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
+      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
+      loc = issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+")" : ""); 
+    } else if (issue.hasLocation()) {
+      loc = issue.getLocation().get(0).asStringValue();
+    } else {
+      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
+      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
+      loc = (line >= 0 && col >= 0 ? "line "+Integer.toString(line)+", col"+Integer.toString(col) : "??"); 
+    }
+    return "  " + issue.getSeverity().getDisplay() + " @ " + loc + " : " + issue.getDetails().getText();
   }
 
 
