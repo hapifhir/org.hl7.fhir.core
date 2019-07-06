@@ -1110,6 +1110,7 @@ public class FHIRPathEngine {
     case Descendants: return checkParamCount(lexer, location, exp, 0);
     case MemberOf: return checkParamCount(lexer, location, exp, 1);
     case Trace: return checkParamCount(lexer, location, exp, 1, 2);
+    case Check: return checkParamCount(lexer, location, exp, 2);
     case Today: return checkParamCount(lexer, location, exp, 0);
     case Now: return checkParamCount(lexer, location, exp, 0);
     case Resolve: return checkParamCount(lexer, location, exp, 0);
@@ -2549,6 +2550,10 @@ public class FHIRPathEngine {
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     }
+    case Check : {
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return focus; 
+    }
     case Today : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Now : 
@@ -2741,6 +2746,7 @@ public class FHIRPathEngine {
     case Descendants : return funcDescendants(context, focus, exp);
     case MemberOf : return funcMemberOf(context, focus, exp);
     case Trace : return funcTrace(context, focus, exp);
+    case Check : return funcCheck(context, focus, exp);
     case Today : return funcToday(context, focus, exp);
     case Now : return funcNow(context, focus, exp);
     case Resolve : return funcResolve(context, focus, exp);
@@ -3481,6 +3487,16 @@ public class FHIRPathEngine {
       log(name, n2);
     } else 
       log(name, focus);
+    return focus;
+  }
+
+  private List<Base> funcCheck(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (!convertToBoolean(n1)) {
+      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      String name = n2.get(0).primitiveValue();
+      throw new FHIRException("check failed: "+name);
+    }
     return focus;
   }
 

@@ -277,6 +277,7 @@ public class SnapShotGenerationTests {
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
+    System.out.println("Snapshot tests using "+TestingUtilities.resourceNameToFile("snapshot-generation-tests.xml"));
     context.tests = (TestScript) new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation-tests.xml")));
 
     context.checkTestsDetails();
