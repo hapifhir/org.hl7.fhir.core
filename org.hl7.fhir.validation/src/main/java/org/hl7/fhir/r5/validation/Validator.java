@@ -288,6 +288,7 @@ public class Validator {
           if ("1.0".equals(sv)) sv = "1.0.2";
           if ("1.4".equals(sv)) sv = "1.4.0";
           if ("3.0".equals(sv)) sv = "3.0.1";
+          if ("4.0".equals(sv)) sv = "4.0.0";
           if (sv.startsWith(Constants.VERSION)) sv = Constants.VERSION;
           definitions = "hl7.fhir.core#"+sv;
         } else if (args[i].equals("-output"))
