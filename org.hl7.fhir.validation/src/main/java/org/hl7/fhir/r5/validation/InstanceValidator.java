@@ -2923,6 +2923,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+    // security tags are a set (system|code)
+    Element meta = element.getNamedChild("meta");
+    if (meta != null) {
+      Set<String> tags = new HashSet<>();
+      List<Element> list = new ArrayList<>();
+      meta.getNamedChildren("security", list);
+      int i = 0;
+      for (Element e : list) {
+        String s = e.getNamedChildValue("system") + "#" + e.getNamedChildValue("code");
+        rule(errors, IssueType.BUSINESSRULE, e.line(), e.col(), stack.getLiteralPath()+".meta.profile["+Integer.toString(i)+"]", !tags.contains(s), "Duplicate Security Label "+s);
+        tags.add(s);
+        i++;
+      }
+    }
   }
 
   private void validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
