@@ -244,7 +244,11 @@ public class XmlParser extends ParserBase {
     if (!Utilities.noString(text)) {
     	Property property = getTextProp(properties);
     	if (property != null) {
-  	    context.getChildren().add(new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));
+    	  if (property.getDefinition().getType().size()>1 && "ED.data[x]".equals(property.getDefinition().getId())) {
+          context.getChildren().add(new Element(property.getName(), property, property.getDefinition().getType().get(0).getCode(), text).markLocation(line(node), col(node)));
+    	  } else {
+    	    context.getChildren().add(new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));
+    	  }
     	} else {
         logError(line(node), col(node), path, IssueType.STRUCTURE, "Text should not be present", IssueSeverity.ERROR);
     	}    		
