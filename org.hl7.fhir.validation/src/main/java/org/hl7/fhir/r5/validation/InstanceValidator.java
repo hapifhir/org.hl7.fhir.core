@@ -22,7 +22,7 @@ package org.hl7.fhir.r5.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.junit.Assert.assertNotNull;
+//import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
