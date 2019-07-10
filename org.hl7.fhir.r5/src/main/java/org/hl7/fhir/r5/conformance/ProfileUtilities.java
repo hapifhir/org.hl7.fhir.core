@@ -4210,14 +4210,25 @@ public class ProfileUtilities extends TranslatingUtilities {
     sd.getSnapshot().getElement().add(sd.getDifferential().getElementFirstRep().copy());
     
     if (sd.hasBaseDefinition()) {
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-    if (base == null)
-      throw new FHIRException("Unable to find base definition for logical model: "+sd.getBaseDefinition()+" from "+sd.getUrl());
-    copyElements(sd, base.getSnapshot().getElement());
+      StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      if (base == null)
+        throw new FHIRException("Unable to find base definition for logical model: "+sd.getBaseDefinition()+" from "+sd.getUrl());
+      copyElementsNotMaxZero(sd, base.getSnapshot().getElement());
     }
     copyElements(sd, sd.getDifferential().getElement());
   }
 
+  private void copyElementsNotMaxZero(StructureDefinition sd, List<ElementDefinition> list) {
+    for (ElementDefinition ed : list) {
+      if (ed.getPath().contains(".")) {
+        if (!(ed.hasMax() && "0".equals(ed.getMax()))) {
+          ElementDefinition n = ed.copy();
+          n.setPath(sd.getSnapshot().getElementFirstRep().getPath()+"."+ed.getPath().substring(ed.getPath().indexOf(".")+1));
+          sd.getSnapshot().addElement(n);
+        }
+      }
+    }
+  }
 
   private void copyElements(StructureDefinition sd, List<ElementDefinition> list) {
     for (ElementDefinition ed : list) {

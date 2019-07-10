@@ -245,7 +245,11 @@ public class XmlParser extends ParserBase {
     	Property property = getTextProp(properties);
     	if (property != null) {
     	  if (property.getDefinition().getType().size()>1 && "ED.data[x]".equals(property.getDefinition().getId())) {
-          context.getChildren().add(new Element(property.getName(), property, property.getDefinition().getType().get(0).getCode(), text).markLocation(line(node), col(node)));
+    	    if ("B64".equals(node.getAttribute("representation"))) {
+    	      context.getChildren().add(new Element(property.getName(), property, "base64Binary", text).markLocation(line(node), col(node)));
+    	    } else {
+            context.getChildren().add(new Element(property.getName(), property, "string", text).markLocation(line(node), col(node)));    	      
+    	    }
     	  } else {
     	    context.getChildren().add(new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));
     	  }

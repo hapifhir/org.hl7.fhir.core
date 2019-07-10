@@ -108,6 +108,7 @@ public class XhtmlNode implements IBaseXhtml {
     super();
     this.nodeType = nodeType;
     this.name = name;
+    this.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
   }
 
   public XhtmlNode(NodeType nodeType) {

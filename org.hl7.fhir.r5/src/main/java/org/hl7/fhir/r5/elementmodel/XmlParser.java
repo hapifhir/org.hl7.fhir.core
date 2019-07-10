@@ -40,6 +40,7 @@ import javax.xml.transform.sax.SAXSource;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
@@ -245,9 +246,11 @@ public class XmlParser extends ParserBase {
     	Property property = getTextProp(properties);
     	if (property != null) {
         if (property.getDefinition().getType().size() > 1 && "ED.data[x]".equals(property.getDefinition().getId())) {
-          context.getChildren()
-              .add(new Element(property.getName(), property, property.getDefinition().getType().get(0).getCode(), text)
-                  .markLocation(line(node), col(node)));
+          if ("B64".equals(node.getAttribute("representation"))) {
+            context.getChildren().add(new Element(property.getName(), property, "base64Binary", text).markLocation(line(node), col(node)));
+          } else {
+            context.getChildren().add(new Element(property.getName(), property, "string", text).markLocation(line(node), col(node)));           
+          }
         } else {
           context.getChildren().add(
               new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));

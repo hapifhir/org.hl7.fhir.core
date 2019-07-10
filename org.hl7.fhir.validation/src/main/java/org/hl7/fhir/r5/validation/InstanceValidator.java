@@ -2298,7 +2298,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
       sdTime = sdTime + (System.nanoTime() - t);
-      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/" + type)) && sd.hasSnapshot())
+      if (sd != null && (sd.getType().equals(type) || (sd.getUrl().equals(type)) || sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/" + type)) && sd.hasSnapshot())
         return sd;
     }
     return null;
@@ -3941,10 +3941,17 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       } else if (ei.definition.getType().size() > 1) {
 
         String prefix = tail(ei.definition.getPath());
-        assert typesAreAllReference(ei.definition.getType()) || ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") : prefix;
+        assert typesAreAllReference(ei.definition.getType()) || ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR) || ("ED.data[x]".equals(ei.definition.getId())) || prefix.endsWith("[x]") : prefix;
 
         if (ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR))
           type = ei.element.getType();
+        else if ("ED.data[x]".equals(ei.definition.getId())) {
+          if ("B64".equals(element.getNamedChildValue("representation"))) {
+            type = "base64Binary";
+          } else {
+           type = "string";
+          }
+        }
         else {
         prefix = prefix.substring(0, prefix.length() - 3);
         for (TypeRefComponent t : ei.definition.getType())
@@ -3985,6 +3992,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       String localStackLiterapPath = localStack.getLiteralPath();
       String eiPath = ei.path;
       assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
+      
       boolean thisIsCodeableConcept = false;
       boolean checkDisplay = true;
 
@@ -4583,7 +4591,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       String sfx = "";
       String n = name();
       String fn = "";
-      if (element().getProperty().isChoice()) {
+      if (element().getProperty().isChoice()  && !element().getProperty().getDefinition().hasRepresentation(PropertyRepresentation.TYPEATTR) && !("ED.data[x]".equals(element().getProperty().getDefinition().getId()))) {
         String en = element().getProperty().getName();
         en = en.substring(0, en.length()-3);
         String t = n.substring(en.length());
@@ -4666,7 +4674,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         res.literalPath = res.literalPath + "[" + Integer.toString(count) + "]";
       else if (element.getSpecial() == null && element.getProperty().isList())
         res.literalPath = res.literalPath + "[0]";
-      else if (element.getProperty().isChoice()) {
+      else if (element.getProperty().isChoice() && !element.getProperty().getDefinition().hasRepresentation(PropertyRepresentation.TYPEATTR) && !("ED.data[x]".equals(element.getProperty().getDefinition().getId()))) {
         String n = res.literalPath.substring(res.literalPath.lastIndexOf(".")+1);
         String en = element.getProperty().getName();
         en = en.substring(0, en.length()-3);
