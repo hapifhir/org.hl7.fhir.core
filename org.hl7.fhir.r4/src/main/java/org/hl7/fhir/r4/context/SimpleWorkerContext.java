@@ -289,6 +289,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	      }
 	    }
 	  }
+	  this.version = pi.version();
 	}
 
   public void loadFromFile(String file, IContextResourceLoader loader) throws IOException, FHIRException {

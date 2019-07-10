@@ -70,7 +70,7 @@ public class CSVProcessor {
 
   public class DataReader extends CSVReader {
 
-    public DataReader(InputStream data) throws UnsupportedEncodingException {
+    public DataReader(InputStream data) throws FHIRException, IOException {
       super(data);
     }
 
@@ -125,7 +125,7 @@ public class CSVProcessor {
     this.source = source;
   }
 
-  public void setData(InputStream data) {
+  public void setData(InputStream data) throws FHIRException, IOException {
     try {
       this.data = new DataReader(data);
     } catch (UnsupportedEncodingException e) {
