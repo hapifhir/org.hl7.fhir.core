@@ -22,6 +22,7 @@ package org.hl7.fhir.r5.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -2922,6 +2923,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+    // security tags are a set (system|code)
+    Element meta = element.getNamedChild("meta");
+    if (meta != null) {
+      Set<String> tags = new HashSet<>();
+      List<Element> list = new ArrayList<>();
+      meta.getNamedChildren("security", list);
+      int i = 0;
+      for (Element e : list) {
+        String s = e.getNamedChildValue("system") + "#" + e.getNamedChildValue("code");
+        rule(errors, IssueType.BUSINESSRULE, e.line(), e.col(), stack.getLiteralPath()+".meta.profile["+Integer.toString(i)+"]", !tags.contains(s), "Duplicate Security Label "+s);
+        tags.add(s);
+        i++;
+      }
+    }
   }
 
   private void validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
@@ -4416,7 +4431,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       String nb = cursor == 0 ? "--" : parent.getChildren().get(cursor-1).getName();
       String na = cursor >= parent.getChildren().size() - 1 ? "--" : parent.getChildren().get(cursor+1).getName();
       if (name().equals(nb) || name().equals(na) ) {
-        return lastCount + 1;
+        return lastCount;
       } else
         return -1;
     }
@@ -4447,10 +4462,21 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     public String path() {
       int i = count();
       String sfx = "";
-      if (i > -1) {
-        sfx = "[" + Integer.toString(lastCount + 1) + "]";
+      String n = name();
+      String fn = "";
+      if (element().getProperty().isChoice()) {
+        String en = element().getProperty().getName();
+        en = en.substring(0, en.length()-3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        n = en;
+        fn = ".ofType("+t+")";       
       }
-      return basePath + "." + name() + sfx;
+      if (i > -1 || (element().getSpecial() == null && element().isList())) {
+        sfx = "[" + Integer.toString(lastCount) + "]";
+      }
+      return basePath + "." + n + sfx+fn;
     }
   }
 
@@ -4519,6 +4545,17 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       res.literalPath = getLiteralPath() + "." + element.getName();
       if (count > -1)
         res.literalPath = res.literalPath + "[" + Integer.toString(count) + "]";
+      else if (element.getSpecial() == null && element.getProperty().isList())
+        res.literalPath = res.literalPath + "[0]";
+      else if (element.getProperty().isChoice()) {
+        String n = res.literalPath.substring(res.literalPath.lastIndexOf(".")+1);
+        String en = element.getProperty().getName();
+        en = en.substring(0, en.length()-3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf("."))+"."+en+".ofType("+t+")";
+      }
       res.logicalPaths = new ArrayList<String>();
       if (type != null) {
         // type will be bull if we on a stitching point of a contained resource, or if....

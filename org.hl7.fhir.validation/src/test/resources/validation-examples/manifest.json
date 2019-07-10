@@ -783,6 +783,10 @@
 				"errorCount": 0,
 				"warningCount": 0
       },
+      "duplicate-security-tags.xml" : {
+				"errorCount": 1,
+				"warningCount": 3
+      },
       "azatadha/example-params-1.xml" : {
 				"errorCount": 0,
 				"warningCount": 1,

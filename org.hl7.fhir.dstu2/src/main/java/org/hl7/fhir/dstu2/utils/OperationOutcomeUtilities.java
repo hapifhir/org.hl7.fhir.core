@@ -27,6 +27,7 @@ import org.hl7.fhir.dstu2.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.dstu2.model.OperationOutcome.IssueType;
 import org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.dstu2.model.StringType;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class OperationOutcomeUtilities {
@@ -37,7 +38,7 @@ public class OperationOutcomeUtilities {
     issue.setCode(convert(message.getType()));
     if (message.getLocation() != null) {
       StringType s = new StringType();
-      s.setValue(message.getLocation()+(message.getLine()>= 0 && message.getCol() >= 0 ? " (line "+Integer.toString(message.getLine())+", col"+Integer.toString(message.getCol())+")" : "") );
+      s.setValue(Utilities.fhirPathToXPath(message.getLocation())+(message.getLine()>= 0 && message.getCol() >= 0 ? " (line "+Integer.toString(message.getLine())+", col"+Integer.toString(message.getCol())+")" : "") );
       issue.getLocation().add(s);
     }
     issue.setSeverity(convert(message.getLevel()));

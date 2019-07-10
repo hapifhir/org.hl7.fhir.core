@@ -331,8 +331,8 @@ public class BaseValidator {
   protected boolean warning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       msg = formatMessage(msg, theMessageArguments);
-		 IssueSeverity severity = IssueSeverity.WARNING;
-		 addValidationMessage(errors, type, line, col, path, msg, severity);
+		  IssueSeverity severity = IssueSeverity.WARNING;
+		  addValidationMessage(errors, type, line, col, path, msg, severity);
 	 }
     return thePass;
 
