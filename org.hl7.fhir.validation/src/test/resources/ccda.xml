@@ -534,7 +534,7 @@ Immunizations Narrative
               <templateId root="2.16.840.1.113883.10.20.22.4.52"/>
               <id nullFlavor="NA"/>
               <statusCode code="completed"/>
-              <effectiveTime/>
+<!-- TODO?              <effectiveTime/> -->
               <consumable>
                 <manufacturedProduct classCode="MANU">
                 <!--   Immunization Medication Information template   -->

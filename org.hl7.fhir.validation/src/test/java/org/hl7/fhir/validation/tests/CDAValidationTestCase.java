@@ -11,7 +11,7 @@ public class CDAValidationTestCase {
 
   @Test
   public void test() throws Exception {
-    Validator.main(new String[] {TestUtilities.resourceNameToFile("ccda.xml"), "-ig", "hl7.fhir.cda"});
+    Validator.main(new String[] {TestUtilities.resourceNameToFile("ccda.xml"), "-ig", "hl7.fhir.cda#dev"});
   }
 
 }
