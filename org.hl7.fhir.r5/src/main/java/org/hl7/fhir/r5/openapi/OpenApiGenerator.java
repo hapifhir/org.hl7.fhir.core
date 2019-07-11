@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterLocation;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterStyle;
 import org.hl7.fhir.r5.openapi.SchemaWriter.SchemaType;
+import org.hl7.fhir.utilities.Utilities;
 
 
 public class OpenApiGenerator {
@@ -461,8 +462,18 @@ public class OpenApiGenerator {
   }
 
   private String specRef() {
-    // todo: figure out which version we are running against
-    return "https://hl7.org/fhir/STU3";
+    String ver = context.getVersion();
+    if (Utilities.noString(ver))
+      return "https://hl7.org/fhir/STU3";
+    if (ver.startsWith("4.0"))
+      return "https://hl7.org/fhir/R4";
+    if (ver.startsWith("3.0"))
+      return "https://hl7.org/fhir/STU3";
+    if (ver.startsWith("1.0"))
+      return "https://hl7.org/fhir/DSTU2";
+    if (ver.startsWith("1.4"))
+      return "https://hl7.org/fhir/2016May";
+    return "https://build.fhir.org";    
   }
 
   private boolean isJson() {
