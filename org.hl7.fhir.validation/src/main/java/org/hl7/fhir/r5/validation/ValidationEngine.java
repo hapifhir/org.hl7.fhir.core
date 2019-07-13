@@ -313,6 +313,13 @@ public class ValidationEngine {
     this.anyExtensionsAllowed = anyExtensionsAllowed;
   }
 
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer) throws Exception {
+    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    loadInitialDefinitions(src);
+    context.setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
+    setTerminologyServer(txsrvr, txLog, version);    
+  }
+  
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version) throws Exception {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadInitialDefinitions(src);
@@ -649,8 +656,16 @@ public class ValidationEngine {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
-    } else 
-      context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+    } else {
+      try {
+        context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+      } catch (Exception e) {
+        if (context.isCanRunWithoutTerminology()) {
+          System.out.println("Running without Terminology Server (error: "+e.getMessage()+")");
+        } else 
+          throw e;
+      }
+    }
 	}
 
   public void loadProfile(String src) throws Exception {
