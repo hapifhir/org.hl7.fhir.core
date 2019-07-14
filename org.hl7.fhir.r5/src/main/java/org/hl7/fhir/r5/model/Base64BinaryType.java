@@ -49,17 +49,26 @@ package org.hl7.fhir.r5.model;
  */
 
 
+import ca.uhn.fhir.model.api.IElement;
 import org.apache.commons.codec.binary.Base64;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
-@DatatypeDef(name="base64Binary")
-public class Base64BinaryType extends PrimitiveType<byte[]> {
+@DatatypeDef(name = "base64Binary")
+public class Base64BinaryType extends Type implements IPrimitiveType<byte[]>, IBaseHasExtensions, IElement, Externalizable {
 
   private static final long serialVersionUID = 3L;
+  private byte[] myValue;
 
   /**
    * Constructor
@@ -94,7 +103,43 @@ public class Base64BinaryType extends PrimitiveType<byte[]> {
     return new Base64BinaryType(getValue());
   }
 
+  @Override
+  protected Type typedCopy() {
+    return null;
+  }
+
   public String fhirType() {
     return "base64Binary";
+  }
+
+  @Override
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(getValue());
+  }
+
+  @Override
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    setValue((byte[]) in.readObject());
+  }
+
+  @Override
+  public String getValueAsString() {
+    return encode(myValue);
+  }
+
+  @Override
+  public void setValueAsString(String theValue) throws IllegalArgumentException {
+    setValue(parse(theValue));
+  }
+
+  @Override
+  public byte[] getValue() {
+    return myValue;
+  }
+
+  @Override
+  public IPrimitiveType<byte[]> setValue(byte[] theValue) throws IllegalArgumentException {
+    myValue = theValue;
+    return this;
   }
 }
