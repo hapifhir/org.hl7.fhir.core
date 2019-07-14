@@ -65,11 +65,18 @@ import org.hl7.fhir.exceptions.FHIRException;
  */
 public class CSVReader extends InputStreamReader {
 	
-	public CSVReader(InputStream in) throws UnsupportedEncodingException {
+	public CSVReader(InputStream in) throws FHIRException, IOException {
 		super(in, "UTF-8");
+		checkBOM();
 	}
 
-	private String[] cols;
+	private void checkBOM() throws FHIRException, IOException {
+    if (peek() == '\uFEFF')
+      next();
+    
+  }
+
+  private String[] cols;
   private String[] cells;
   
 	public void readHeaders() throws IOException, FHIRException {
@@ -92,7 +99,7 @@ public class CSVReader extends InputStreamReader {
   public String cell(String name) {
     int index = -1;
     for (int i = 0; i < cols.length; i++) {
-      if (name.equals(cols[i]))
+      if (name.equals(cols[i].trim()))
         index = i;
     }
     if (index == -1)

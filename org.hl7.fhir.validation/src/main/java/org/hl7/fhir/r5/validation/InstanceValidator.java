@@ -132,6 +132,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.r5.utils.ValidationProfileSet.ProfileRegistration;
 import org.hl7.fhir.r5.utils.Version;
+import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -292,7 +293,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noExtensibleWarnings;
   private String serverBase;
   
-  private IEnableWhenEvaluator myEnableWhenEvaluator = new DefaultEnableWhenEvaluator();
+  private EnableWhenEvaluator myEnableWhenEvaluator = new EnableWhenEvaluator();
 
   /*
    * Keeps track of whether a particular profile has been checked or not yet
@@ -2620,10 +2621,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.allowXsiLocation = allowXsiLocation;
   }
   
-  public void setEnableWhenEvaluator(IEnableWhenEvaluator myEnableWhenEvaluator) {
-	this.myEnableWhenEvaluator = myEnableWhenEvaluator;
-  }
-
   /**
    *
    * @param element
@@ -2886,6 +2883,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         validateBundle(errors, element, stack);
       else if (element.getType().equals("Observation"))
         validateObservation(errors, element, stack);
+      else if (element.getType().equals("Questionnaire"))
+        validateQuestionannaire(errors, element, stack);
       else if (element.getType().equals("QuestionnaireResponse"))
         validateQuestionannaireResponse(errors, element, stack);
       else if (element.getType().equals("CodeSystem"))
@@ -2899,6 +2898,88 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //        throw new FHIRException("Profile type mismatch - resource is "+resource.fhirType()+", and profile is for "+profileUsage.getProfile().getType());
       validateElement(hostContext, errors, profileUsage.getProfile(), profileUsage.getProfile().getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true);
     }
+  }
+
+  private void validateQuestionannaire(List<ValidationMessage> errors, Element element, NodeStack stack) {
+    List<Element> list = getItems(element);
+    for (int i = 0; i < list.size(); i++) {
+      Element e = list.get(i);
+      NodeStack ns = stack.push(element, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
+      validateQuestionnaireElement(errors, ns, element, e, new ArrayList<>());
+    }
+    
+  }
+
+  private void validateQuestionnaireElement(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, List<Element> parents) {
+    // R4+
+    if (FHIRVersion.isR4Plus(context.getVersion())) {
+      if (item.hasChild("enableWhen")) {
+        Element ew = item.getNamedChild("enableWhen");
+        String ql = ew.getNamedChildValue("question");
+        if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, ql != null, "Questions with an enableWhen must have a value for the question link")) {
+          Element tgt = getQuestionById(item, ql);
+          if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt == null, "Questions with an enableWhen cannot refer to an inner question for it's enableWhen condition")) {
+            tgt = getQuestionById(questionnaire, ql);
+            if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != null, "Unable to find "+ql+" target for this question enableWhen")) {
+              if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != item, "Target for this question enableWhen can't reference itself")) {
+                warning(errors, IssueType.BUSINESSRULE, ns.literalPath, isBefore(item, tgt, parents), "The target of this enableWhen rule ("+ql+") comes after the question itself");
+              }
+            }
+          }  
+        }
+      }
+    }
+  }
+
+  private boolean isBefore(Element item, Element tgt, List<Element> parents) {
+    // we work up the list, looking for tgt in the children of the parents 
+    for (Element p : parents) {
+      int i = findIndex(p, item);
+      int t = findIndex(p, tgt);
+      if (i > -1 && t > -1) {
+        return i > t;
+      }
+    }
+    return false; // unsure... shouldn't ever get to this point;
+  }
+  
+
+  private int findIndex(Element parent, Element descendant) {
+    for (int i = 0; i < parent.getChildren().size(); i++) {
+      if (parent.getChildren().get(i) == descendant || isChild(parent.getChildren().get(i), descendant))
+        return i;
+    }
+    return -1;
+  }
+
+  private boolean isChild(Element element, Element descendant) {
+    for (Element e : element.getChildren()) {
+      if (e == descendant)
+        return true;
+      if (isChild(element, descendant))
+        return true;
+    }
+    return false;
+  }
+
+  private Element getQuestionById(Element focus, String ql) {
+    List<Element> list = getItems(focus);
+    for (Element item : list) {
+      String v = item.getNamedChildValue("linkId");
+      if (ql.equals(v))
+        return item;
+      Element tgt = getQuestionById(item, ql);
+      if (tgt != null)
+        return tgt;
+    }
+    return null;
+    
+  }
+
+  private List<Element> getItems(Element element) {
+    List<Element> list = new ArrayList<>();
+    element.getNamedChildren("item", list);
+    return list;
   }
 
   private void checkLang(Element resource, NodeStack stack) {
@@ -2920,6 +3001,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else if (!xl.equals(lang)) {
           warning(errors, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, "Resource has a language ("+lang+"), and the XHTML has a language ("+xl+"), but they differ ");           
         }
+      }
+    }
+    // security tags are a set (system|code)
+    Element meta = element.getNamedChild("meta");
+    if (meta != null) {
+      Set<String> tags = new HashSet<>();
+      List<Element> list = new ArrayList<>();
+      meta.getNamedChildren("security", list);
+      int i = 0;
+      for (Element e : list) {
+        String s = e.getNamedChildValue("system") + "#" + e.getNamedChildValue("code");
+        rule(errors, IssueType.BUSINESSRULE, e.line(), e.col(), stack.getLiteralPath()+".meta.profile["+Integer.toString(i)+"]", !tags.contains(s), "Duplicate Security Label "+s);
+        tags.add(s);
+        i++;
       }
     }
   }
@@ -2967,7 +3062,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       sdTime = sdTime + (System.nanoTime() - t);
       if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire \""+questionnaire+"\" could not be resolved, so no validation can be performed against the base questionnaire")) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
-        validateQuestionannaireResponseItems(qsrc, qsrc.getItem(), errors, element, stack, inProgress, element);
+        validateQuestionannaireResponseItems(qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
       }
     }
   }
@@ -3021,7 +3116,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot) {
+  private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     String text = element.getNamedChildValue("text");
     rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), "If text exists, it must match the questionnaire definition for linkId "+qItem.getLinkId());
 
@@ -3029,10 +3124,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     element.getNamedChildren("answer", answers);
     if (inProgress)
       warning(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), "No response answer found for required item "+qItem.getLinkId());
-    else if (myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot))
-      rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), "No response answer found for required item "+qItem.getLinkId());
-    else if (!answers.isEmpty()) // items without answers should be allowed, but not items with answers to questions that are disabled
-      rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), !isAnswerRequirementFulfilled(qItem, answers), "Item has answer, even though it is not enabled "+qItem.getLinkId());
+    else if (myEnableWhenEvaluator.isQuestionEnabled(qItem, qstack)) {
+       rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), "No response answer found for required item "+qItem.getLinkId());
+    } else if (!answers.isEmpty()) { // items without answers should be allowed, but not items with answers to questions that are disabled
+      // it appears that this is always a duplicate error - it will always already have beeb reported, so no need to report it again?
+      // GDG 2019-07-13
+//      rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), !isAnswerRequirementFulfilled(qItem, answers), "Item has answer (2), even though it is not enabled "+qItem.getLinkId());
+    }
 
     if (answers.size() > 1)
       rule(errors, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), "Only one response answer item with this linkId allowed");
@@ -3108,7 +3206,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 				// no validation
 				break;
       }
-      validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot);
+      validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
     }
     if (qItem.getType() == null) {
       fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "Definition for item "+qItem.getLinkId() + " does not contain a type");
@@ -3117,7 +3215,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       element.getNamedChildren("item", items);
       rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), "Items not of type DISPLAY should not have items - linkId {0}", qItem.getLinkId());
     } else {
-      validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot);
+      validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack);
     }
   }
 
@@ -3125,12 +3223,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 	return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
 }
 
-  private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot) {
+  private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     if (elements.size() > 1)
       rule(errors, IssueType.INVALID, elements.get(1).line(), elements.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), "Only one response item with this linkId allowed - " + qItem.getLinkId());
+    int i = 0;
     for (Element element : elements) {
-      NodeStack ns = stack.push(element, -1, null, null);
-      validateQuestionannaireResponseItem(qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot);
+      NodeStack ns = stack.push(element, i, null, null);
+      validateQuestionannaireResponseItem(qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
+      i++;
     }
   }
 
@@ -3142,7 +3242,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     return -1;
   }
   
-  private void validateQuestionannaireResponseItems(Questionnaire qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot) {
+  private void validateQuestionannaireResponseItems(Questionnaire qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     List<Element> items = new ArrayList<Element>();
     element.getNamedChildren("item", items);
     // now, sort into stacks
@@ -3157,7 +3257,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (qItem != null) {
             rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem));
             NodeStack ns = stack.push(item, -1, null, null);
-            validateQuestionannaireResponseItem(qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot);
+            validateQuestionannaireResponseItem(qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           }
           else
             rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId \""+linkId+"\" not found in questionnaire");
@@ -3177,20 +3277,26 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // ok, now we have a list of known items, grouped by linkId. We"ve made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<Element> mapItem = map.get(qItem.getLinkId());
-      validateQuestionannaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem);
+      validateQuestionannaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
     }
   }
 
-  public void validateQuestionannaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem) {
-    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(qItem, questionnaireResponseRoot);
+  public void validateQuestionannaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
+    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(qItem, qstack);
     if (mapItem != null){
-      if (!enabled)
-        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), enabled, "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
-      validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot);
+      if (!enabled) {
+        int i = 0;
+        for (Element e : mapItem) {
+          NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
+          rule(errors, IssueType.INVALID, e.line(), e.col(), ns.getLiteralPath(), enabled, "Item has answer, even though it is not enabled (item id = '"+qItem.getLinkId()+"')");
+          i++;
+        }
+      }
+      validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot, qstack);
     } else { 
       //item is missing, is the question enabled?
       if (enabled && qItem.getRequired()) {    	  
-        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "No response found for required item (item id = '"+qItem.getLinkId()+"')");
+        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "No response found for required item with id = '"+qItem.getLinkId()+"'");
       }
     }
   }
@@ -4416,7 +4522,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       String nb = cursor == 0 ? "--" : parent.getChildren().get(cursor-1).getName();
       String na = cursor >= parent.getChildren().size() - 1 ? "--" : parent.getChildren().get(cursor+1).getName();
       if (name().equals(nb) || name().equals(na) ) {
-        return lastCount + 1;
+        return lastCount;
       } else
         return -1;
     }
@@ -4447,10 +4553,21 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     public String path() {
       int i = count();
       String sfx = "";
-      if (i > -1) {
-        sfx = "[" + Integer.toString(lastCount + 1) + "]";
+      String n = name();
+      String fn = "";
+      if (element().getProperty().isChoice()) {
+        String en = element().getProperty().getName();
+        en = en.substring(0, en.length()-3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        n = en;
+        fn = ".ofType("+t+")";       
       }
-      return basePath + "." + name() + sfx;
+      if (i > -1 || (element().getSpecial() == null && element().isList())) {
+        sfx = "[" + Integer.toString(lastCount) + "]";
+      }
+      return basePath + "." + n + sfx+fn;
     }
   }
 
@@ -4519,6 +4636,17 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       res.literalPath = getLiteralPath() + "." + element.getName();
       if (count > -1)
         res.literalPath = res.literalPath + "[" + Integer.toString(count) + "]";
+      else if (element.getSpecial() == null && element.getProperty().isList())
+        res.literalPath = res.literalPath + "[0]";
+      else if (element.getProperty().isChoice()) {
+        String n = res.literalPath.substring(res.literalPath.lastIndexOf(".")+1);
+        String en = element.getProperty().getName();
+        en = en.substring(0, en.length()-3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf("."))+"."+en+".ofType("+t+")";
+      }
       res.logicalPaths = new ArrayList<String>();
       if (type != null) {
         // type will be bull if we on a stitching point of a contained resource, or if....

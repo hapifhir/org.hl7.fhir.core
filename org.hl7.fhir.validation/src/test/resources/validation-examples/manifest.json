@@ -614,9 +614,21 @@
 					"errorCount": 0
 				}
 			},
+			"questionnaire-enableWhen-test-invalid.xml": {
+				"errorCount": 1,
+        "warningCount" : 0
+			},
+			"questionnaire-enableWhen-test-order.xml": {
+				"errorCount": 0,
+        "warningCount" : 1
+			},
 			"questionnaireResponse-enableWhen-test.xml": {
 				"questionnaire": "questionnaire-enableWhen-test.xml",
 				"errorCount": 0
+			},
+			"questionnaireResponse-enableWhen-test-nested.xml": {
+				"questionnaire": "questionnaire-enableWhen-test-nested.xml",
+				"errorCount": 2
 			},
 			"questionnaireResponse-enableWhen-test3.xml": {
 				"version": "3.0",
@@ -782,6 +794,10 @@
       "loinc-lang-nl-3.xml" : {
 				"errorCount": 0,
 				"warningCount": 0
+      },
+      "duplicate-security-tags.xml" : {
+				"errorCount": 1,
+				"warningCount": 3
       },
       "azatadha/example-params-1.xml" : {
 				"errorCount": 0,

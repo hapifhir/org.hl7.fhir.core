@@ -416,14 +416,16 @@ public class StructureMapUtilities {
       b.append(g.getExtends());
     }
 
-    switch (g.getTypeMode()) {
-    case TYPES: 
-      b.append(" <<types>>");
-      break;
-    case TYPEANDTYPES: 
-      b.append(" <<type+>>");
-      break;
-    default: // NONE, NULL
+    if (g.hasTypeMode()) {
+      switch (g.getTypeMode()) {
+      case TYPES: 
+        b.append(" <<types>>");
+        break;
+      case TYPEANDTYPES: 
+        b.append(" <<type+>>");
+        break;
+      default: // NONE, NULL
+      }
     }
     b.append(" {\r\n");
     for (StructureMapGroupRuleComponent r : g.getRule()) {

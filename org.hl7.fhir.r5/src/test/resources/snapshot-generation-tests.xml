@@ -47,8 +47,8 @@
  42. Choice Types: constrain list of choices to 1
  43. Choice Types: constrain list of choices to 1 and constrain the type (slicing)
  44. Choice Types: constrain list of choices to 1 and constrain the type (shortcut)
- 43. Choice Types: constrain list of choices to 2 and constrain the types (slicing)
- 44. Choice Types: constrain list of choices to 2 and constrain the types (shortcut)
+ 45. Choice Types: constrain list of choices to 2 and constrain the types (slicing)
+ 46. Choice Types: constrain list of choices to 2 and constrain the types (shortcut)
 -->
   <contained>
     <StructureDefinition>
@@ -1948,7 +1948,7 @@
   <contained>
     <StructureDefinition>
       <id value="t39"/>
-      <url value="urn:uuid:"/>
+      <url value="urn:uuid:9756f0c4-6818-4549-ad46-dfad96c371b1"/>
       <name value="t39"/>
       <status value="draft"/>
       <description value="fixture for #39: Choice types: no constraint"/>
@@ -1973,7 +1973,7 @@
   <contained>
     <StructureDefinition>
       <id value="t40"/>
-      <url value="urn:uuid:"/>
+      <url value="urn:uuid:9"/>
       <name value="t40"/>
       <status value="draft"/>
       <description value="fixture for #40: Choice Types: constrain minimum cardinality"/>
@@ -1999,7 +1999,7 @@
   <contained>
     <StructureDefinition>
       <id value="t41"/>
-      <url value="urn:uuid:"/>
+      <url value="urn:uuid:4485cada-4667-4460-937d-f2dbe6e73f1d"/>
       <name value="t41"/>
       <status value="draft"/>
       <description value="fixture for #41: Choice Types: constrain list of choices to 2"/>
@@ -2030,7 +2030,7 @@
   <contained>
     <StructureDefinition>
       <id value="t42"/>
-      <url value="urn:uuid:"/>
+      <url value="urn:uuid:5eb149bd-b2f3-4d63-80d2-4d7fccbd76db"/>
       <name value="t42"/>
       <status value="draft"/>
       <description value="fixture for #42: Choice Types: constrain list of choices to 1"/>
@@ -2058,7 +2058,7 @@
   <contained>
     <StructureDefinition>
       <id value="t43"/>
-      <url value="urn:uuid:"/>
+      <url value="urn:uuid:4caab1de-9278-4783-810c-472c3071f7fd"/>
       <name value="t43"/>
       <status value="draft"/>
       <description value="fixture for #43: Choice Types: constrain list of choices to 1 and constrain the type (slicing)"/>
@@ -2086,7 +2086,7 @@
         </element>
         <element>
           <path value="Observation.value[x]"/>
-          <sliceName value="quantity"/>
+          <sliceName value="Quantity"/>
           <short value="some text for quantity"/>
           <type>
             <code value="Quantity"/>
@@ -2104,7 +2104,7 @@
   <contained>
     <StructureDefinition>
       <id value="t44"/>
-      <url value="urn:uuid:"/>
+      <url value="urn:uuid:ecb6f563-2957-4da8-832e-cb6d94329a93"/>
       <name value="t44"/>
       <status value="draft"/>
       <description value="fixture for #44: Choice Types: constrain list of choices to 1 and constrain the type (shortcut)"/>
@@ -2136,14 +2136,14 @@
     </StructureDefinition>
   </contained>
 
-  <!-- 43. Choice Types: constrain list of choices to 2 and constrain the types (slicing) -->
+  <!-- 45. Choice Types: constrain list of choices to 2 and constrain the types (slicing) -->
   <contained>
     <StructureDefinition>
-      <id value="t43"/>
-      <url value="urn:uuid:"/>
-      <name value="t43"/>
+      <id value="t45"/>
+      <url value="urn:uuid:48b311a6-060c-44f8-8c62-d0abdf39ccb5"/>
+      <name value="t45"/>
       <status value="draft"/>
-      <description value="fixture for #43: Choice Types: constrain list of choices to 2 and constrain the types (slicing)"/>
+      <description value="fixture for #45: Choice Types: constrain list of choices to 2 and constrain the types (slicing)"/>
       <kind value="resource"/>
       <abstract value="false"/>
       <type value="Observation"/>
@@ -2168,7 +2168,7 @@
         </element>
         <element>
           <path value="Observation.value[x]"/>
-          <sliceName value="quantity"/>
+          <sliceName value="Quantity"/>
           <short value="some text for quantity"/>
           <type>
             <code value="Quantity"/>
@@ -2180,7 +2180,7 @@
         </element>
         <element>
           <path value="Observation.value[x]"/>
-          <sliceName value="codeable"/>
+          <sliceName value="CodeableConcept"/>
           <short value="some text for CodeableConcept"/>
           <type>
             <code value="CodeableConcept"/>
@@ -2194,14 +2194,14 @@
     </StructureDefinition>
   </contained>
 
-  <!-- 44. Choice Types: constrain list of choices to 2 and constrain the types (shortcut) -->
+  <!-- 46. Choice Types: constrain list of choices to 2 and constrain the types (shortcut) -->
   <contained>
     <StructureDefinition>
-      <id value="t44"/>
-      <url value="urn:uuid:"/>
-      <name value="t44"/>
+      <id value="t46"/>
+      <url value="urn:uuid:1fd72ec3-baa8-4cc9-b8d4-13f4f5fdb2af"/>
+      <name value="t46"/>
       <status value="draft"/>
-      <description value="fixture for #44: Choice Types: constrain list of choices to 2 and constrain the types (shortcut)"/>
+      <description value="fixture for #46: Choice Types: constrain list of choices to 2 and constrain the types (shortcut)"/>
       <kind value="resource"/>
       <abstract value="false"/>
       <type value="Observation"/>
@@ -4310,4 +4310,288 @@
       </assert>
     </action>
   </test>
+
+  <test>
+    <name value="Test40"/>
+    <description value="40. Choice Types: constrain minimum cardinality"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t40o"/>
+        <sourceId value="t40"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test40-1"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test40-2"/>
+        <description value="There should only be one element definition for value[x]"/>
+        <direction value="response"/>
+        <expression value="fixture('t40o').snapshot.element.where(path.startsWith('Observation.value')).count() = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test40-3"/>
+        <description value="The element definition for value[x] should have min = 1"/>
+        <direction value="response"/>
+        <expression value="fixture('t40o').snapshot.element.where(path.startsWith('Observation.value')).min = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
+  
+  <test>
+    <name value="Test41"/>
+    <description value="41. Choice Types: constrain list of choices to 2"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t41o"/>
+        <sourceId value="t41"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test41-1"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test41-2"/>
+        <description value="There should only be one element definition for value[x]"/>
+        <direction value="response"/>
+        <expression value="fixture('t41o').snapshot.element.where(path.startsWith('Observation.value')).count() = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test41-3"/>
+        <description value="The element definition for value[x] should have 2 types"/>
+        <direction value="response"/>
+        <expression value="fixture('t41o').snapshot.element.where(path.startsWith('Observation.value')).type.count() = 2"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
+  
+  <test>
+    <name value="Test42"/>
+    <description value="Choice Types: constrain list of choices to 1"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t42o"/>
+        <sourceId value="t42"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test42-1"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test42-2"/>
+        <description value="There should only be one element definition for value[x]"/>
+        <direction value="response"/>
+        <expression value="fixture('t42o').snapshot.element.where(path.startsWith('Observation.value')).count() = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test42-3"/>
+        <description value="The element definition for value[x] should have 1 type"/>
+        <direction value="response"/>
+        <expression value="fixture('t42o').snapshot.element.where(path.startsWith('Observation.value')).type.count() = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test42-4"/>
+        <description value="The element definition for value[x] should have short = 'some text'"/>
+        <direction value="response"/>
+        <expression value="fixture('t42o').snapshot.element.where(path.startsWith('Observation.value')).short = 'some text'"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
+
+  <test>
+    <name value="Test43"/>
+    <description value="Choice Types: constrain list of choices to 1 and constrain the type (slicing)"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t43o"/>
+        <sourceId value="t43"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test43-1"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test43-2"/>
+        <description value="There should be 9 element definitions for value[x] (base + quantity + walking into quantity"/>
+        <direction value="response"/>
+        <expression value="fixture('t43o').snapshot.element.where(path.startsWith('Observation.value')).count() = 9"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test43-3"/>
+        <description value="The element definition for value[x] should have 1 type"/>
+        <direction value="response"/>
+        <expression value="fixture('t43o').snapshot.element.where(id = 'Observation.value[x]').type.count().trace('count') = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test43-4"/>
+        <description value="The element definition for value[x] should have short = 'some text'"/>
+        <direction value="response"/>
+        <expression value="fixture('t43o').snapshot.element.where(id = 'Observation.value[x]').short = 'some text'"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test43-5"/>
+        <description value="The element definition for value[x] quantity slice should have sliceName = 'Quantity'"/>
+        <direction value="response"/>
+        <expression value="fixture('t43o').snapshot.element.where(id = 'Observation.value[x]:Quantity').check(exists(), 'no slice').sliceName = 'Quantity'"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test43-6"/>
+        <description value="The element definition for value[x].value quantity slice should have sliceName = 'Quantity'"/>
+        <direction value="response"/>
+        <expression value="fixture('t43o').snapshot.element.where(id = 'Observation.value[x]:Quantity.value').check(exists(), 'no slice').min = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
+  
+  <test>
+    <name value="Test44"/>
+    <description value="Choice Types: constrain list of choices to 1 and constrain the type (shortcut)"/>
+    <action>
+      <operation>
+        <type>
+          <system value="http://hl7.org/fhir/testscript-operation-codes"/>
+          <code value="snapshot"/>
+        </type>
+        <resource value="StructureDefinition"/>
+        <encodeRequestUrl value="false"/>
+        <params value="sort=true"/>
+        <responseId value="t44o"/>
+        <sourceId value="t44"/>
+      </operation>
+    </action>
+    <action>
+      <assert>
+        <label value="test44-1"/>
+        <description value="Snapshot must generate ok"/>
+        <response value="okay"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test44-2"/>
+        <description value="There should be 9 element definitions for value[x] (base + quantity + walking into quantity"/>
+        <direction value="response"/>
+        <expression value="fixture('t44o').snapshot.element.where(path.startsWith('Observation.value')).count() = 9"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test44-3"/>
+        <description value="The element definition for value[x] should have 1 type"/>
+        <direction value="response"/>
+        <expression value="fixture('t44o').snapshot.element.where(id = 'Observation.value[x]').type.count().trace('count') = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test44-4"/>
+        <description value="The element definition for value[x] should have short = 'some text'"/>
+        <direction value="response"/>
+        <expression value="fixture('t44o').snapshot.element.where(id = 'Observation.value[x]').short = 'some text'"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test44-5"/>
+        <description value="The element definition for value[x] quantity slice should have sliceName = 'Quantity'"/>
+        <direction value="response"/>
+        <expression value="fixture('t44o').snapshot.element.where(id = 'Observation.value[x]:Quantity').check(exists(), 'no slice').sliceName = 'Quantity'"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+    <action>
+      <assert>
+        <label value="test44-6"/>
+        <description value="The element definition for value[x].value quantity slice should have sliceName = 'Quantity'"/>
+        <direction value="response"/>
+        <expression value="fixture('t44o').snapshot.element.where(id = 'Observation.value[x]:Quantity.value').check(exists(), 'no slice').min = 1"/>
+        <warningOnly value="false"/>
+      </assert>
+    </action>
+  </test>
+  
 </TestScript>

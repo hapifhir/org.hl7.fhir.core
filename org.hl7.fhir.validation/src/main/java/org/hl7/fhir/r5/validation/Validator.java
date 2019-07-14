@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
@@ -287,6 +288,7 @@ public class Validator {
           if ("1.0".equals(sv)) sv = "1.0.2";
           if ("1.4".equals(sv)) sv = "1.4.0";
           if ("3.0".equals(sv)) sv = "3.0.1";
+          if ("4.0".equals(sv)) sv = "4.0.0";
           if (sv.startsWith(Constants.VERSION)) sv = Constants.VERSION;
           definitions = "hl7.fhir.core#"+sv;
         } else if (args[i].equals("-output"))
@@ -527,7 +529,19 @@ public class Validator {
   }
 
   private static String getIssueSummary(OperationOutcomeIssueComponent issue) {
-    return "  " + issue.getSeverity().getDisplay() + " @ " + issue.getLocation().get(0).asStringValue() + " : " + issue.getDetails().getText();
+    String loc = null;
+    if (issue.hasExpression()) {
+      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
+      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
+      loc = issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+")" : ""); 
+    } else if (issue.hasLocation()) {
+      loc = issue.getLocation().get(0).asStringValue();
+    } else {
+      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
+      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
+      loc = (line >= 0 && col >= 0 ? "line "+Integer.toString(line)+", col"+Integer.toString(col) : "??"); 
+    }
+    return "  " + issue.getSeverity().getDisplay() + " @ " + loc + " : " + issue.getDetails().getText();
   }
 
 
