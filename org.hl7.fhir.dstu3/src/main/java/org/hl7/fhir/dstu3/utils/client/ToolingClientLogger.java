@@ -2,7 +2,7 @@ package org.hl7.fhir.dstu3.utils.client;
 
 /*-
  * #%L
- * org.hl7.fhir.r4
+ * org.hl7.fhir.dstu3
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%

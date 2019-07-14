@@ -56,44 +56,45 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
-@DatatypeDef(name="base64binary")
+@DatatypeDef(name="base64Binary")
 public class Base64BinaryType extends PrimitiveType<byte[]> {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public Base64BinaryType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public Base64BinaryType() {
+    super();
+  }
 
-	public Base64BinaryType(byte[] theBytes) {
-		super();
-		setValue(theBytes);
-	}
+  public Base64BinaryType(byte[] theBytes) {
+    super();
+    setValue(theBytes);
+  }
 
-	public Base64BinaryType(String theValue) {
-		super();
-		setValueAsString(theValue);
-	}
+  public Base64BinaryType(String theValue) {
+    super();
+    setValueAsString(theValue);
+  }
 
-	protected byte[] parse(String theValue) {
-		return Base64.decodeBase64(theValue);
-	}
+  protected byte[] parse(String theValue) {
+    return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+  }
 
-	protected String encode(byte[] theValue) {
-		return Base64.encodeBase64String(theValue);
-	}
+  protected String encode(byte[] theValue) {
+    if (theValue == null) {
+      return null;
+    }
+    return new String(Base64.encodeBase64(theValue), ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8);
+  }
 
-	@Override
-	public Base64BinaryType copy() {
-		Base64BinaryType ret = new Base64BinaryType(getValue());
-    copyValues(ret);
-    return ret;
-	}
+  @Override
+  public Base64BinaryType copy() {
+    return new Base64BinaryType(getValue());
+  }
 
-	public String fhirType() {
-		return "base64Binary";
-	}
+  public String fhirType() {
+    return "base64Binary";
+  }
 }

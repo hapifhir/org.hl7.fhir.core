@@ -50,12 +50,12 @@ package org.hl7.fhir.dstu2.model;
 
 
 import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
-@DatatypeDef(name="base64binary")
+@DatatypeDef(name="base64Binary")
 public class Base64BinaryType extends PrimitiveType<byte[]> {
 
 	private static final long serialVersionUID = 3L;
@@ -77,13 +77,16 @@ public class Base64BinaryType extends PrimitiveType<byte[]> {
 		setValueAsString(theValue);
 	}
 
-	protected byte[] parse(String theValue) {
-		return Base64.decodeBase64(theValue);
-	}
+  protected byte[] parse(String theValue) {
+    return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+  }
 
-	protected String encode(byte[] theValue) {
-		return Base64.encodeBase64String(theValue);
-	}
+  protected String encode(byte[] theValue) {
+    if (theValue == null) {
+      return null;
+    }
+    return new String(Base64.encodeBase64(theValue), ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8);
+  }
 
 	@Override
 	public Base64BinaryType copy() {

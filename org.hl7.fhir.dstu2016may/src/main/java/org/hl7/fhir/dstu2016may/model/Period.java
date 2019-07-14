@@ -54,6 +54,7 @@ package org.hl7.fhir.dstu2016may.model;
 import java.util.Date;
 import java.util.List;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 

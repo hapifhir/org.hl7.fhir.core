@@ -48,6 +48,6 @@ public abstract class BaseResource extends Base implements IAnyResource, IElemen
     
 	@Override
   public FhirVersionEnum getStructureFhirVersionEnum() {
-    return FhirVersionEnum.DSTU2_HL7ORG;
+    return FhirVersionEnum.DSTU2_1;
   }
 }

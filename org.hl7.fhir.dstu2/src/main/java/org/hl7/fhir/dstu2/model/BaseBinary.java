@@ -20,7 +20,7 @@ package org.hl7.fhir.dstu2.model;
  * #L%
  */
 
-import org.hl7.fhir.dstu2.model.api.IBaseBinary;
+import org.hl7.fhir.instance.model.api.IBaseBinary;
 
 public abstract class BaseBinary extends Resource implements IBaseBinary {
 
