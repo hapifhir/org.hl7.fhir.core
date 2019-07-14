@@ -4,7 +4,7 @@ import java.io.File;
 
 /*-
  * #%L
- * org.hl7.fhir.r5
+ * org.hl7.fhir.utilities
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%

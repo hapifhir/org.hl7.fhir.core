@@ -52,8 +52,8 @@ package org.hl7.fhir.dstu2.model;
  */
 
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
-import org.hl7.fhir.dstu2.model.api.IBaseBooleanDatatype;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
 
 /**
  * Primitive type "boolean" in FHIR "true" or "false"

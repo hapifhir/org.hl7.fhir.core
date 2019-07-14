@@ -56,8 +56,8 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
-import org.hl7.fhir.dstu2.model.api.IBaseDecimalDatatype;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.hl7.fhir.instance.model.api.IBaseDecimalDatatype;
 
 /**
  * Primitive type "decimal" in FHIR: A rational number

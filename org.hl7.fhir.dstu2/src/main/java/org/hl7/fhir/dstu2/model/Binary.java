@@ -53,11 +53,11 @@ package org.hl7.fhir.dstu2.model;
 // Generated on Wed, Jul 13, 2016 05:32+1000 for FHIR v1.0.2
 import java.util.List;
 
-import org.hl7.fhir.dstu2.model.annotations.Child;
-import org.hl7.fhir.dstu2.model.annotations.Description;
-import org.hl7.fhir.dstu2.model.annotations.ResourceDef;
-import org.hl7.fhir.dstu2.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.dstu2.model.api.IBaseBinary;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBinary;
 import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A binary resource can contain any content, whether text, image, pdf, zip archive, etc.

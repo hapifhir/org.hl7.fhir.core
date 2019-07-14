@@ -54,10 +54,10 @@ package org.hl7.fhir.dstu2.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.dstu2.model.annotations.Child;
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
-import org.hl7.fhir.dstu2.model.annotations.Description;
-import org.hl7.fhir.dstu2.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Base definition for all elements that are defined inside a resource - but not those in a data type.
@@ -150,6 +150,7 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
       public abstract BackboneElement copy();
 
       public void copyValues(BackboneElement dst) {
+        super.copyValues(dst);
         if (modifierExtension != null) {
           dst.modifierExtension = new ArrayList<Extension>();
           for (Extension i : modifierExtension)

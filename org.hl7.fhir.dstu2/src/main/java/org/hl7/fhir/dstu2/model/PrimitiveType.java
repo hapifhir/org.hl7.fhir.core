@@ -24,8 +24,8 @@ package org.hl7.fhir.dstu2.model;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hl7.fhir.dstu2.model.api.IBaseHasExtensions;
-import org.hl7.fhir.dstu2.model.api.IPrimitiveType;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
 public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>, IBaseHasExtensions {
 
