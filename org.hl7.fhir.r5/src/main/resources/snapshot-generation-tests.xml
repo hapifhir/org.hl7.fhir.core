@@ -146,7 +146,7 @@
       <url value="urn:uuid:977f7fee-448e-4090-8c3a-441b3b3cca7a"/>
       <name value="t6"/>
       <status value="draft"/>
-      <description value="fixture for #6: type narrowing #2 - this renames  the type element"/>
+      <description value="fixture for #6: type narrowing #2 - this makes a comment about the use of date, but doesn't constrain"/>
       <kind value="resource"/>
       <abstract value="false"/>
       <type value="Patient"/>
@@ -155,13 +155,14 @@
       <differential>
         <element>
           <path value="Patient.deceasedDateTime"/>
+          <comment value="New Comment"/>
           <type>
             <code value="dateTime"/>
           </type>
         </element>
       </differential>
     </StructureDefinition>
-  </contained>
+  </contained> 
   <contained>
     <StructureDefinition>
       <id value="t7"/>
@@ -2076,7 +2077,7 @@
           <slicing>
             <discriminator>
                <type value="type"/>
-               <path value="@this"/>
+               <path value="$this"/>
             </discriminator>
           </slicing>
           <short value="some text"/>
@@ -2514,9 +2515,9 @@
     <action>
       <assert>
         <label value="test5-2"/>
-        <description value="The patient.deceased type must be right"/>
+        <description value="The patient.deceased path must be right"/>
         <direction value="response"/>
-        <expression value="fixture('t5o').snapshot.element.where(base.path = 'Patient.deceased[x]').path = 'Patient.deceasedDateTime'"/>
+        <expression value="fixture('t5o').snapshot.element.where(base.path = 'Patient.deceased[x]').path = 'Patient.deceased[x]'"/>
         <warningOnly value="false"/>
       </assert>
     </action>
@@ -3947,7 +3948,7 @@
         <label value="test28-1"/>
         <description value="Element count must be increased by 16"/>
         <direction value="response"/>
-        <expression value="fixture('t28o').snapshot.element.count().trace('t28o') = fixture('operationoutcome').snapshot.element.count().trace('t28') + 16"/>
+        <expression value="fixture('t28o').snapshot.element.count().trace('t28o') = fixture('operationoutcome').snapshot.element.count().trace('t28') + 17"/>
         <warningOnly value="false"/>
       </assert>
     </action>
@@ -3981,7 +3982,7 @@
         <label value="test29-1"/>
         <description value="Element count must be increased by 15"/>
         <direction value="response"/>
-        <expression value="fixture('t29o').snapshot.element.count().trace('t29o') = fixture('parameters').snapshot.element.count().trace('t29') + 15"/>
+        <expression value="fixture('t29o').snapshot.element.count().trace('t29o') = fixture('parameters').snapshot.element.count().trace('t29') + 16"/>
         <warningOnly value="false"/>
       </assert>
     </action>
