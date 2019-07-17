@@ -62,7 +62,7 @@ import org.hl7.fhir.dstu2.model.IdType;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.model.Type;
-import org.hl7.fhir.dstu2.model.api.IIdType;
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;

@@ -53,6 +53,7 @@ package org.hl7.fhir.r4.model;
 import java.util.Date;
 import java.util.List;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 

@@ -20,9 +20,9 @@ package org.hl7.fhir.dstu2.model;
  * #L%
  */
 
-import org.hl7.fhir.dstu2.model.api.IBaseDatatype;
-import org.hl7.fhir.dstu2.model.api.IBaseExtension;
-import org.hl7.fhir.dstu2.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
+import org.hl7.fhir.instance.model.api.IBaseExtension;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 
 public abstract class BaseExtension extends Type implements IBaseExtension<Extension, Type>, IBaseHasExtensions {
 

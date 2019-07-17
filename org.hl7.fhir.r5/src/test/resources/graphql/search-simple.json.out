@@ -1,0 +1,9 @@
+﻿{
+  "PatientList":[{
+    "id":"example",
+    "active":true
+  },{
+    "id":"xds",
+    "active":true
+  }]
+}
