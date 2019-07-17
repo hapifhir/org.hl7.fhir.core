@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.Test;
@@ -291,9 +292,45 @@ public class SnapShotGenerationTests {
 
     List<Object[]> objects = new ArrayList<Object[]>(context.tests.getTest().size());
 
+    StringBuilder b = new StringBuilder();
+    b.append("<snapshot-generation-tests>\r\n");
     for (TestScriptTestComponent e : context.tests.getTest()) {
       objects.add(new Object[] { e.getName(), e, context });
+      boolean isGen = false;
+      String src = null;
+      List<SetupActionAssertComponent> assertions = new ArrayList<>();
+      for (TestActionComponent a : e.getAction()) {
+        if ("snapshot".equals(a.getOperation().getType().getCode()) || "sortDifferential".equals(a.getOperation().getType().getCode()) ) {
+          Resource res = context.tests.getContained(a.getOperation().getSourceId());
+          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5\\src\\main\\resources\\snapshot-generation",
+              res.getId()+"-input.xml")), res);
+          if ("snapshot".equals(a.getOperation().getType().getCode()))
+            isGen = true;
+          src = a.getOperation().getSourceId(); 
+        }
+        if (a.hasAssert() && a.getAssert().hasExpression()) 
+          assertions.add(a.getAssert());
+      }
+      b.append("  <test type=\"");
+      b.append(isGen ? "generate" : "sort");
+      b.append("\" id=\"");
+      b.append(src);
+      if (assertions.size() == 0)
+        b.append("\"/>\r\n");
+      else {
+        b.append("\">\r\n");
+        for (SetupActionAssertComponent a : assertions) {
+          b.append("    <rule text=\"");
+          b.append(Utilities.escapeXml(a.getDescription()));
+          b.append("\" fhirpath=\"");
+          b.append(Utilities.escapeXml(a.getExpression()));
+          b.append("\"/>\r\n");          
+        }
+        b.append("  </test>\r\n");
+      }
     }
+    b.append("</snapshot-generation-tests>\r\n");
+    TextFile.stringToFile(b.toString(), Utilities.path("C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5\\src\\main\\resources\\snapshot-generation", "manifest.xml"));
     return objects;
   }
 
@@ -361,7 +398,7 @@ public class SnapShotGenerationTests {
               context.fixtures.put(op.getResponseId(), output);
               context.snapshots.put(output.getUrl(), output);
 
-              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5\\src\\main\\resources\\snapshot-generation", op.getResponseId().replace("o", "-expected")+".xml")), output);
               if (output.getDifferential().hasElement())
                 new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
               new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+"-d.xml")), output);
@@ -378,9 +415,7 @@ public class SnapShotGenerationTests {
               context.fixtures.put(op.getResponseId(), output);
               context.snapshots.put(output.getUrl(), output);
 
-              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
-
-              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(System.getProperty("java.io.tmpdir"), op.getResponseId()+".xml")), output);
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5\\src\\main\\resources\\snapshot-generation", op.getResponseId().replace("o", "-expected")+".xml")), output);
             } else if (action.hasAssert()) {
               SetupActionAssertComponent a = action.getAssert();
               if (a.hasResponse() && a.getResponse().equals(TestScript.AssertionResponseTypes.BAD))
