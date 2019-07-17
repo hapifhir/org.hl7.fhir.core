@@ -55,12 +55,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hl7.fhir.dstu2.model.annotations.Block;
-import org.hl7.fhir.dstu2.model.annotations.Child;
-import org.hl7.fhir.dstu2.model.annotations.Description;
-import org.hl7.fhir.dstu2.model.annotations.ResourceDef;
-import org.hl7.fhir.dstu2.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.dstu2.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 /**
@@ -857,7 +857,7 @@ public class QuestionnaireResponse extends DomainResource {
         /**
          * The answer (or one of the answers) provided by the respondent to the question.
          */
-        @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, InstantType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, InstantType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Single-valued answer to the question", formalDefinition="The answer (or one of the answers) provided by the respondent to the question." )
         protected Type value;
 

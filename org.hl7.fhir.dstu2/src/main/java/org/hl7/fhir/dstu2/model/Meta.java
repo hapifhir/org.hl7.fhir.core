@@ -55,10 +55,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hl7.fhir.dstu2.model.annotations.Child;
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
-import org.hl7.fhir.dstu2.model.annotations.Description;
-import org.hl7.fhir.dstu2.model.api.IBaseMetaType;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseMetaType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 /**
@@ -272,7 +272,20 @@ public class Meta extends Type implements IBaseMetaType {
       return this.security;
     }
 
-    public boolean hasSecurity() { 
+  /**
+   * Returns the first security label (if any) that has the given system and code, or returns
+   * <code>null</code> if none
+   */
+  public Coding getSecurity(String theSystem, String theCode) {
+    for (Coding next : getTag()) {
+      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) {
+        return next;
+      }
+    }
+    return null;
+  }
+
+  public boolean hasSecurity() {
       if (this.security == null)
         return false;
       for (Coding item : this.security)
@@ -312,7 +325,20 @@ public class Meta extends Type implements IBaseMetaType {
       return this.tag;
     }
 
-    public boolean hasTag() { 
+  /**
+   * Returns the first tag (if any) that has the given system and code, or returns
+   * <code>null</code> if none
+   */
+  public Coding getTag(String theSystem, String theCode) {
+    for (Coding next : getTag()) {
+      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) {
+        return next;
+      }
+    }
+    return null;
+  }
+
+  public boolean hasTag() {
       if (this.tag == null)
         return false;
       for (Coding item : this.tag)

@@ -50,17 +50,17 @@ package org.hl7.fhir.dstu2016may.model;
  */
 
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+
 import java.util.Calendar;
-
-/**
- * Primitive type "date" in FHIR: any day in a gregorian calendar
- */
-
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+/**
+ * Primitive type "date" in FHIR: any day in a gregorian calendar
+ */
 
 /**
  * Represents a FHIR date datatype. Valid precisions values for this type are:

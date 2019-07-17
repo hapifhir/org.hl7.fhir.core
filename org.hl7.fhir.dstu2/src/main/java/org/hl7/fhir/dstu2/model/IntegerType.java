@@ -52,8 +52,8 @@ package org.hl7.fhir.dstu2.model;
  */
 
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
-import org.hl7.fhir.dstu2.model.api.IBaseIntegerDatatype;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
 
 /**
  * Primitive type "integer" in FHIR: A signed 32-bit integer

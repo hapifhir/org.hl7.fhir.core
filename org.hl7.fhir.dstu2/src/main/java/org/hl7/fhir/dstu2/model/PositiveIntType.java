@@ -52,7 +52,7 @@ package org.hl7.fhir.dstu2.model;
  */
 
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Primitive type "integer" in FHIR: A signed 32-bit integer

@@ -1,0 +1,9 @@
+﻿{
+  "subject":{
+    "reference":"Patient/example"
+  },
+  "valueQuantity":{
+    "value":185,
+    "unit":"lbs"
+  }
+}

@@ -54,15 +54,16 @@ package org.hl7.fhir.dstu2.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.dstu2.model.annotations.Child;
-import org.hl7.fhir.dstu2.model.annotations.Description;
-import org.hl7.fhir.dstu2.model.api.IBaseHasExtensions;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseElement;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 /**
  * Base definition for all elements in a resource.
  */
-public abstract class Element extends Base implements IBaseHasExtensions {
+public abstract class Element extends Base implements IBaseHasExtensions, IBaseElement {
 
     /**
      * unique id for the element within a resource (for internal references).
