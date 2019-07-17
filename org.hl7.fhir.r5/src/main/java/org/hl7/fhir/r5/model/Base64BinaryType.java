@@ -50,9 +50,9 @@ package org.hl7.fhir.r5.model;
 
 
 import ca.uhn.fhir.model.api.IElement;
-import org.apache.commons.codec.binary.Base64;
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
@@ -65,7 +65,7 @@ import java.io.ObjectOutput;
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
 @DatatypeDef(name = "base64Binary")
-public class Base64BinaryType extends Type implements IPrimitiveType<byte[]>, IBaseHasExtensions, IElement, Externalizable {
+public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiveType<byte[]>, IBaseHasExtensions, IElement, Externalizable {
 
   private static final long serialVersionUID = 3L;
   private byte[] myValue;
@@ -138,8 +138,14 @@ public class Base64BinaryType extends Type implements IPrimitiveType<byte[]>, IB
   }
 
   @Override
-  public IPrimitiveType<byte[]> setValue(byte[] theValue) throws IllegalArgumentException {
+  public Base64BinaryType setValue(byte[] theValue) throws IllegalArgumentException {
     myValue = theValue;
     return this;
   }
+
+  @Override
+  public boolean hasValue() {
+    return myValue != null && myValue.length > 0;
+  }
+
 }
