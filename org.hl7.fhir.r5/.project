@@ -2,9 +2,7 @@
 <projectDescription>
   <name>org.hl7.fhir.r5</name>
   <comment>An open-source implementation of the FHIR specification in Java. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects>
-    <project>org.hl7.fhir.utilities</project>
-  </projects>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
