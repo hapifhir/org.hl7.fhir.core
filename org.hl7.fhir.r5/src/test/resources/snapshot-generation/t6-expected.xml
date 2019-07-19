@@ -577,6 +577,9 @@
         <max value="1"/>
       </base>
       <type>
+        <code value="boolean"/>
+      </type>
+      <type>
         <code value="dateTime"/>
       </type>
       <isModifier value="true"/>
