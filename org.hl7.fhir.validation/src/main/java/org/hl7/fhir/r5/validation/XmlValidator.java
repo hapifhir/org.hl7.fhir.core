@@ -137,8 +137,8 @@ public class XmlValidator {
     Document doc;
     byte[] out = null;
     try {
-      out = XmlUtilities.saxonTransform(transforms, schemas.get(sch), transforms.get("iso_svrl_for_xslt2.xsl"));
-      out = XmlUtilities.saxonTransform(transforms, TextFile.fileToBytes(filename), out);
+      out = XsltUtilities.saxonTransform(transforms, schemas.get(sch), transforms.get("iso_svrl_for_xslt2.xsl"));
+      out = XsltUtilities.saxonTransform(transforms, TextFile.fileToBytes(filename), out);
     } catch (Throwable e) {
       errors.add(new ValidationMessage(Source.InstanceValidator, IssueType.STRUCTURE, -1, -1, filename + ":" + sch, e.getMessage(), IssueSeverity.ERROR));
       if (wantThrow)
