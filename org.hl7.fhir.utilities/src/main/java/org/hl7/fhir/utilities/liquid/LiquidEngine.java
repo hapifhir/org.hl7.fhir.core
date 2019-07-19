@@ -1,21 +1,27 @@
 package org.hl7.fhir.utilities.liquid;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.fluentpath.*;
+import ca.uhn.fhir.fluentpath.IExpressionNode;
+import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
+import ca.uhn.fhir.fluentpath.IFluentPath;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.*;
 
-public class LiquidEngine implements INarrativeConstantResolver {
-  public interface ILiquidEngineIncludeResolver {
+public class LiquidEngine {
+
+  private final FhirContext fhirContext;
+
+  public interface ILiquidEngineIcludeResolver {
     public String fetchInclude(String name);
   }
 
   private IFluentPath engine;
-  private ILiquidEngineIncludeResolver includeResolver;
+  private ILiquidEngineIcludeResolver includeResolver;
 
   private class LiquidEngineContext {
     private Object externalContext;
@@ -35,15 +41,15 @@ public class LiquidEngine implements INarrativeConstantResolver {
 
   public LiquidEngine(FhirContext fhirContext) {
     super();
+    this.fhirContext = fhirContext;
     engine = fhirContext.newFluentPath();
-    engine.setHostServices(this);
   }
 
-  public ILiquidEngineIncludeResolver getIncludeResolver() {
+  public ILiquidEngineIcludeResolver getIncludeResolver() {
     return includeResolver;
   }
 
-  public void setIncludeResolver(ILiquidEngineIncludeResolver includeResolver) {
+  public void setIncludeResolver(ILiquidEngineIcludeResolver includeResolver) {
     this.includeResolver = includeResolver;
   }
 
@@ -148,10 +154,10 @@ public class LiquidEngine implements INarrativeConstantResolver {
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);
       LiquidEngineContext nctxt = new LiquidEngineContext(ctxt.externalContext);
-      INarrativeConstantMap incl = engine.createLiquidIncludeMap();
+      LiquidIncludeMap incl = new LiquidIncludeMap();
       nctxt.vars.put("include", incl);
       for (String s : params.keySet()) {
-        incl.addConstant(s, engine.evaluate(ctxt, resource, resource, params.get(s)));
+        incl.addProperty(s, engine.evaluate(ctxt, resource, resource, params.get(s)));
       }
       for (LiquidNode n : doc.body) {
         n.evaluate(b, resource, nctxt);
@@ -324,14 +330,10 @@ public class LiquidEngine implements INarrativeConstantResolver {
 
   }
 
-  public IBase resolveConstant(Object appContext, String name, boolean beforeContext) {
+  public IBase resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (ctxt.vars.containsKey(name))
       return ctxt.vars.get(name);
     return null;
-  }
-
-  public void setEnvironmentVariable(String key, String value) {
-    engine.setEnvironmentVariable(key, value);
   }
 }
