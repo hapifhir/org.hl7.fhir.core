@@ -38,7 +38,7 @@ import java.util.Map;
  * dependency on Saxon for anyone using just the structures
  * </p>
  */
-public class XmlUtilities {
+public class XsltUtilities {
 
   public static byte[] saxonTransform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException {
     TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
