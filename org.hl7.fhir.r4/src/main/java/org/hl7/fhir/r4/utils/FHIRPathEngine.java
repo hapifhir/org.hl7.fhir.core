@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4.utils;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.util.ElementUtil;
 import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
 import ca.uhn.fhir.util.ElementUtil;
 import org.apache.commons.lang3.NotImplementedException;
@@ -43,7 +45,6 @@ import java.util.*;
  * limitations under the License.
  * #L%
  */
-//import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 /**
  * 
@@ -1406,13 +1407,15 @@ public class FHIRPathEngine {
   }
 
   private List<Base> opAs(List<Base> left, List<Base> right) {
-    List<Base> result = new ArrayList<Base>();
-    if (left.size() != 1 || right.size() != 1)
+    List<Base> result = new ArrayList<>();
+    if (right.size() != 1)
       return result;
     else {
       String tn = convertToString(right);
-      if (tn.equals(left.get(0).fhirType()))
-        result.add(left.get(0));
+      for (Base nextLeft : left) {
+        if (tn.equals(nextLeft.fhirType()))
+          result.add(nextLeft);
+      }
     }
     return result;
   }
@@ -2857,7 +2860,7 @@ public class FHIRPathEngine {
 
       if (!Utilities.noString(f)) {
 
-        if (exp.getParameters().size() != 2) {
+        if (exp.getParameters().size() == 2) {
 
           String t = convertToString(execute(context, focus, exp.getParameters().get(0), true));
           String r = convertToString(execute(context, focus, exp.getParameters().get(1), true));
@@ -3268,7 +3271,7 @@ public class FHIRPathEngine {
         if (s.startsWith("#")) {
           Property p = context.resource.getChildByName("contained");
           for (Base c : p.getValues()) {
-            if (s.substring(1).equals(c.getIdBase())) {
+            if (chompHash(s).equals(chompHash(c.getIdBase()))) {
               res = c;
               break;
             }
@@ -3284,7 +3287,18 @@ public class FHIRPathEngine {
     return result;
   }
 
-	private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  /**
+   * Strips a leading hashmark (#) if present at the start of a string
+   */
+  private String chompHash(String theId) {
+    String retVal = theId;
+    while (retVal.startsWith("#")) {
+      retVal = retVal.substring(1);
+    }
+    return retVal;
+  }
+
+  private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String url = nl.get(0).primitiveValue();

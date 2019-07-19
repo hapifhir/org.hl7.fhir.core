@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -37,11 +38,17 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.gson.JsonObject;
 
@@ -90,6 +97,39 @@ import com.google.gson.JsonObject;
       Collections.sort(names);
       return names;
     }
+
+    private static final int BUFFER_SIZE = 1024;
+    public static NpmPackage fromPackage(InputStream tgz) throws IOException {
+      NpmPackage res = new NpmPackage(null);
+      GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
+      try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+        TarArchiveEntry entry;
+
+        int i = 0;
+        int c = 12;
+        while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+          i++;
+          if (entry.isDirectory()) {
+            res.folders.add(entry.getName());
+          } else {
+            int count;
+            byte data[] = new byte[BUFFER_SIZE];
+            
+            ByteArrayOutputStream fos = new ByteArrayOutputStream();
+            try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
+              while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
+                dest.write(data, 0, count);
+              }
+            }
+            fos.close();
+            res.content.put(entry.getName(), fos.toByteArray());
+          }
+        }
+      }
+      res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
+      return res;
+    }
+
 
     public static NpmPackage fromZip(InputStream stream, boolean dropRootFolder) throws IOException {
       NpmPackage res = new NpmPackage(null);
@@ -144,6 +184,17 @@ import com.google.gson.JsonObject;
       return res;
     }
 
+    public List<String> listResources(String... types) throws IOException {
+      List<String> files = list("package");
+      List<String> res = new ArrayList<String>();
+      for (String s : files) {
+        String[] n = s.split("\\-");
+        if (Utilities.existsInList(n[0], types))
+          res.add(s);
+      }
+      return res;
+    }
+    
     /** 
      * Copies all the files in the package folder [folder] to the nominated dest, 
      * and returns a list of all the file names copied
@@ -220,7 +271,7 @@ import com.google.gson.JsonObject;
     }
 
     public String canonical() {
-      return npm.get("canonical").getAsString();
+      return npm.has("canonical") ? npm.get("canonical").getAsString() : null;
     }
 
     /**
@@ -281,5 +332,59 @@ import com.google.gson.JsonObject;
         return npm.get("canonical").getAsString();
     }
 
+    public InputStream loadResource(String type, String id) throws IOException {
+      String file = type+"-"+id+".json";
+      if (content.containsKey("package/"+file))
+        return new ByteArrayInputStream(content.get("package/"+file));
+      else {
+        File f = new File(Utilities.path(path, "package", file));
+        if (f.exists())
+          return new FileInputStream(f);
+        else
+          return null;
+      }
+    }
 
+    /** special case when playing around inside the package **/
+    public Map<String, byte[]> getContent() {
+      return content;
+    }
+
+    public static NpmPackage fromFolder(String folder, String... exemptions) throws IOException {
+      return fromFolder(folder, null, exemptions);
+    }
+    
+    public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
+      NpmPackage res = new NpmPackage(null);
+      loadFiles(res, folder, new File(folder), exemptions);
+      if (!res.content.containsKey("package/package.json") && defType != null)
+        res.content.put("package/package.json", TextFile.stringToBytes("{ \"type\" : \""+defType.getCode()+"\"}", false));
+      res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/package.json")));
+      return res;
+    }
+
+    private static void loadFiles(NpmPackage res, String base, File folder, String... exemptions) throws FileNotFoundException, IOException {
+      for (File f : folder.listFiles()) {
+        if (!f.getName().equals(".git") || !Utilities.existsInList(f.getName(), exemptions)) {
+          if (f.isDirectory()) 
+            loadFiles(res, base, f);
+          else {
+            String name = f.getAbsolutePath().substring(base.length()+1).replace("\\",  "/");
+            byte[] cnt = TextFile.fileToBytes(f);
+            res.content.put(name, cnt);
+          }
+        }
+      }
+    }
+
+    public void unPack(String dir) throws IOException {
+      for (String s : content.keySet()) {
+        String fn = Utilities.path(dir, s);
+        String dn = Utilities.getDirectoryForFile(fn);
+        Utilities.createDirectory(dn);
+        TextFile.bytesToFile(content.get(s), fn);
+      }
+      if (path != null)
+        FileUtils.copyDirectory(new File(path), new File(dir));      
+    }
   }

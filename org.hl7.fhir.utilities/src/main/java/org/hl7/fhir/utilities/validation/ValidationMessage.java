@@ -63,7 +63,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     ExampleValidator, 
     ProfileValidator, 
     ResourceValidator, 
-    InstanceValidator, 
+    InstanceValidator,
+    Template,
     Schema, 
     Schematron, 
     Publisher, 
@@ -154,6 +155,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
      * Content invalid against the specification or a profile.
      */
     INVALID, 
+    DELETED,
     /**
      * A structural issue in the content such as wrong namespace, or unable to parse the content completely, or invalid json syntax.
      */
@@ -181,6 +183,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     /**
      * The user or system was not able to be authenticated (either there is no process, or the proferred token is unacceptable).
      */
+    MULTIPLEMATCHES,
     UNKNOWN, 
     /**
      * User session expired; a login may be required.
@@ -476,7 +479,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private Source source;
   private int line;
   private int col;
-  private String location;
+  private String location; // fhirPath
   private String message;
   private IssueType type;
   private IssueSeverity level;
@@ -736,6 +739,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public ValidationMessage setTxLink(String txLink) {
     this.txLink = txLink;
     return this;
+  }
+
+  public void setHtml(String html) {
+    this.html = html;
   }
 
   

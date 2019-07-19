@@ -21,31 +21,9 @@ package org.hl7.fhir.r4.validation;
  */
 
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.CSFile;
-import org.hl7.fhir.utilities.CSFileInputStream;
-import org.hl7.fhir.utilities.Logger;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.Logger.LogMessageType;
-import org.hl7.fhir.utilities.SchemaInputSource;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -58,6 +36,22 @@ import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class XmlValidator {
   
@@ -205,8 +199,8 @@ public class XmlValidator {
     Document doc;
     byte[] out = null;
     try {
-      out = Utilities.saxonTransform(transforms, schemas.get(sch), transforms.get("iso_svrl_for_xslt2.xsl"));
-      out = Utilities.saxonTransform(transforms, TextFile.fileToBytes(filename), out);
+      out = XsltUtilities.saxonTransform(transforms, schemas.get(sch), transforms.get("iso_svrl_for_xslt2.xsl"));
+      out = XsltUtilities.saxonTransform(transforms, TextFile.fileToBytes(filename), out);
     } catch (Throwable e) {
       errors.add(new ValidationMessage(Source.InstanceValidator, IssueType.STRUCTURE, -1, -1, filename+":"+sch, e.getMessage(), IssueSeverity.ERROR));
       if (wantThrow)

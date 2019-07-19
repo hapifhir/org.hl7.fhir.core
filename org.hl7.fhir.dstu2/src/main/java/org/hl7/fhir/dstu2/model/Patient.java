@@ -57,12 +57,12 @@ import java.util.List;
 
 import org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGenderEnumFactory;
-import org.hl7.fhir.dstu2.model.annotations.Block;
-import org.hl7.fhir.dstu2.model.annotations.Child;
-import org.hl7.fhir.dstu2.model.annotations.Description;
-import org.hl7.fhir.dstu2.model.annotations.ResourceDef;
-import org.hl7.fhir.dstu2.model.annotations.SearchParamDefinition;
-import org.hl7.fhir.dstu2.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Demographics and other administrative information about an individual or animal receiving care or other health-related services.

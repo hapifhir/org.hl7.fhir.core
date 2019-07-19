@@ -43,7 +43,7 @@ public class ProfileUtilitiesTests {
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org/test", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -57,6 +57,8 @@ public class ProfileUtilitiesTests {
         else {
           b.setBase(null);
           f.setBase(null);
+          b.setRequirements(null);
+          f.setRequirements(null);
           ok = Base.compareDeep(b, f, true);
         }
       }
@@ -86,7 +88,7 @@ public class ProfileUtilitiesTests {
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -98,6 +100,12 @@ public class ProfileUtilitiesTests {
         else {
           f.setBase(null);
           b.setBase(null);
+          b.setRequirements(null);
+          f.setRequirements(null);
+          b.setComment(null);
+          f.setComment(null);
+          b.setDefinition(null);
+          f.setDefinition(null);
           ok = Base.compareDeep(b, f, true);
         }
       }

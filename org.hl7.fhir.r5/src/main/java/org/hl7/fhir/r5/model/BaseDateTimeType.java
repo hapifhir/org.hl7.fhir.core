@@ -9,9 +9,9 @@ package org.hl7.fhir.r5.model;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,19 +20,19 @@ package org.hl7.fhir.r5.model;
  * #L%
  */
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.parser.DataFormatException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
-
-import ca.uhn.fhir.parser.DataFormatException;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
@@ -860,52 +860,34 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     return (myPrecision == TemporalPrecisionEnum.MINUTE || myPrecision == TemporalPrecisionEnum.SECOND || myPrecision == TemporalPrecisionEnum.MILLI);
   }
 
-	/**
-	 * This method implements a datetime equality check using the rules as defined by FHIRPath.
-	 *
-	 * This method returns:
-	 * <ul>
-	 *     <li>true if the given datetimes represent the exact same instant with the same precision (irrespective of the timezone)</li>
-	 *     <li>true if the given datetimes represent the exact same instant but one includes milliseconds of <code>.[0]+</code> while the other includes only SECONDS precision (irrespecitve of the timezone)</li>
-	 *     <li>true if the given datetimes represent the exact same year/year-month/year-month-date (if both operands have the same precision)</li>
-     *     <li>false if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could not represent the same instant in any timezone</li>
-     *     <li>null if both datetimes have equal precision of MINUTE or greater, one has no timezone specified but the other does, and could potentially represent the same instant in any timezone</li>
-     *     <li>false if the given datetimes have the same precision but do not represent the same instant (irrespective of timezone)</li>
-	 *     <li>null otherwise (since these datetimes are not comparable)</li>
-	 * </ul>
-	 */
-	public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
+  /**
+   * This method implements a datetime equality check using the rules as defined by FHIRPath (R2)
+   *
+   * Caveat: this implementation assumes local timezone for unspecified timezones 
+   */
+  public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
+    TemporalPrecisionEnum mp = this.myPrecision == TemporalPrecisionEnum.MILLI ? TemporalPrecisionEnum.SECOND : this.myPrecision;
+    TemporalPrecisionEnum op = theOther.myPrecision == TemporalPrecisionEnum.MILLI ? TemporalPrecisionEnum.SECOND : theOther.myPrecision;
+    TemporalPrecisionEnum cp = (mp.compareTo(op) < 0) ? mp : op;
+    FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    String ms = df.format(this.getValue());
+    String os = df.format(theOther.getValue());
+    if (!sub(ms, cp.stringLength()).equals(sub(os, cp.stringLength())))
+      return false;
+    if (mp != op)
+      return null;
+    if (this.myPrecision == TemporalPrecisionEnum.MILLI || theOther.myPrecision == TemporalPrecisionEnum.MILLI) {
+      float mf = Float.parseFloat(ms.substring(17)); 
+      float of = Float.parseFloat(os.substring(17));
+      if (mf != of)
+        return false;
+    }
+    return true;
+  }
 
-		if (hasTimezoneIfRequired() != theOther.hasTimezoneIfRequired()) {
-			if (getPrecision() == theOther.getPrecision()) {
-				if (getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal() && theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
-                    boolean couldBeTheSameTime = couldBeTheSameTime(this, theOther) || couldBeTheSameTime(theOther, this);
-                    if (!couldBeTheSameTime) {
-                        return false;
-                    }
-				}
-			}
-			return null;
-		}
-
-		// Same precision
-		if (getPrecision() == theOther.getPrecision()) {
-			return getValue().getTime() == theOther.getValue().getTime();
-		}
-
-		// Both represent 0 millis but the millis are optional
-		if (((Integer)0).equals(getMillis())) {
-			if (((Integer)0).equals(theOther.getMillis())) {
-				if (getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
-					if (theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
-						return getValue().getTime() == theOther.getValue().getTime();
-					}
-				}
-			}
-		}
-
-		return false;
-	}
+  private String sub(String ms, int i) {
+    return ms.length() < i ? ms : ms.substring(0,  i);
+  }
 
     private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
         boolean theCouldBeTheSameTime = false;
@@ -921,9 +903,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     }
 
     boolean hasTimezoneIfRequired() {
-		return getPrecision().ordinal() <= TemporalPrecisionEnum.DAY.ordinal() ||
-				getTimeZone() != null;
-	}
+      return getPrecision().ordinal() <= TemporalPrecisionEnum.DAY.ordinal() ||
+          getTimeZone() != null;
+    }
 
+
+    boolean hasTimezone() {
+      return getTimeZone() != null;
+    }
 
 }

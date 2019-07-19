@@ -65,11 +65,18 @@ import org.hl7.fhir.exceptions.FHIRException;
  */
 public class CSVReader extends InputStreamReader {
 	
-	public CSVReader(InputStream in) throws UnsupportedEncodingException {
+	public CSVReader(InputStream in) throws FHIRException, IOException {
 		super(in, "UTF-8");
+		checkBOM();
 	}
 
-	private String[] cols;
+	private void checkBOM() throws FHIRException, IOException {
+    if (peek() == '\uFEFF')
+      next();
+    
+  }
+
+  private String[] cols;
   private String[] cells;
   
 	public void readHeaders() throws IOException, FHIRException {
@@ -92,7 +99,7 @@ public class CSVReader extends InputStreamReader {
   public String cell(String name) {
     int index = -1;
     for (int i = 0; i < cols.length; i++) {
-      if (name.equals(cols[i]))
+      if (name.equals(cols[i].trim()))
         index = i;
     }
     if (index == -1)
@@ -189,6 +196,23 @@ public class CSVReader extends InputStreamReader {
 		  else 
 			  pc = (char) i;
 	}
+
+
+  public void checkColumn(int i, String name, String desc) throws FHIRException {
+    if (cols.length < i)
+      throw new FHIRException("Error parsing "+desc+": expected column "+name+" at col "+i+" but only found "+cols.length+" cols");
+    if (!cols[i-1].equals(name))
+      throw new FHIRException("Error parsing "+desc+": expected column "+name+" at col "+i+" but found '"+cols[i-1]+"'");
+  }
+
+
+  public String value(int i) {
+    if (i > cells.length)
+      return null;
+    if (Utilities.noString(cells[i-1]))
+      return null;
+    return cells[i-1];
+  }
 
 
 }

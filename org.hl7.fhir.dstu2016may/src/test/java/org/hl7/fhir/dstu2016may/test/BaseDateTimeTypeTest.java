@@ -1,17 +1,17 @@
 package org.hl7.fhir.dstu2016may.test;
 
 
-import static org.junit.Assert.assertEquals;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import org.hl7.fhir.dstu2016may.model.DateType;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.hl7.fhir.dstu2016may.model.DateType;
-import org.hl7.fhir.dstu2016may.model.TemporalPrecisionEnum;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class BaseDateTimeTypeTest {
 	private SimpleDateFormat myDateInstantParser;

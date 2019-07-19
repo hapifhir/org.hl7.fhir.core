@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>3.7.5-SNAPSHOT</version>
+        <version>3.8.12-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -87,7 +87,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.hl7.fhir.r4.validation.Validator</mainClass>
+                            <mainClass>org.hl7.fhir.r5.validation.Validator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

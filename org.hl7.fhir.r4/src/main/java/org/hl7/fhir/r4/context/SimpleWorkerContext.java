@@ -289,6 +289,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	      }
 	    }
 	  }
+	  this.version = pi.version();
 	}
 
   public void loadFromFile(String file, IContextResourceLoader loader) throws IOException, FHIRException {
@@ -599,6 +600,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void setIgnoreProfileErrors(boolean ignoreProfileErrors) {
     this.ignoreProfileErrors = ignoreProfileErrors;
+  }
+
+  public String listMapUrls() {
+    return Utilities.listCanonicalUrls(transforms.keySet());
   }
 
 

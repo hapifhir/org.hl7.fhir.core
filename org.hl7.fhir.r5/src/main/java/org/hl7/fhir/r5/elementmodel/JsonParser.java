@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -44,10 +45,10 @@ import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorGson;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.formats.JsonTrackingParser;
-import org.hl7.fhir.r5.utils.formats.JsonTrackingParser.LocationData;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -86,7 +87,7 @@ public class JsonParser extends ParserBase {
 	@Override
 	public Element parse(InputStream stream) throws IOException, FHIRException {
 		// if we're parsing at this point, then we're going to use the custom parser
-		map = new HashMap<JsonElement, LocationData>();
+		map = new IdentityHashMap<JsonElement, LocationData>();
 		String source = TextFile.streamToString(stream);
 		if (policy == ValidationPolicy.EVERYTHING) {
 			JsonObject obj = null; 

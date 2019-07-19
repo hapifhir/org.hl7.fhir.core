@@ -34,27 +34,27 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.formats.XmlParser;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.CanonicalType;
-import org.hl7.fhir.r4.model.ElementDefinition;
-import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r4.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r4.model.PrimitiveType;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.model.Type;
-import org.hl7.fhir.r4.model.UriType;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
@@ -117,10 +117,11 @@ public class SpecDifferenceEvaluator {
   
   
   public void loadFromIni(IniFile ini) {
-    String[] names = ini.getPropertyNames("r3-renames");
-    for (String n : names)
-      // note reverse of order
-      renames.put(ini.getStringProperty("r3-renames", n), n);
+    String[] names = ini.getPropertyNames("r5-renames");
+    if (names != null)
+      for (String n : names)
+        // note reverse of order
+        renames.put(ini.getStringProperty("r5-renames", n), n);
   }
   
   public SpecPackage getOriginal() {
@@ -137,13 +138,13 @@ public class SpecDifferenceEvaluator {
 //    loadVS2(self.original.valuesets, "C:\\work\\org.hl7.fhir.dstu2.original\\build\\publish\\valuesets.xml");
 //    loadVS(self.revision.valuesets, "C:\\work\\org.hl7.fhir.dstu2.original\\build\\publish\\valuesets.xml");
 
-    loadSD3(self.original.types, "C:\\work\\org.hl7.fhir\\build\\source\\release3\\profiles-types.xml");
+    loadSD4(self.original.types, "C:\\work\\org.hl7.fhir\\build\\source\\release4\\profiles-types.xml");
     loadSD(self.revision.types, "C:\\work\\org.hl7.fhir\\build\\publish\\profiles-types.xml");
-    loadSD3(self.original.resources, "C:\\work\\org.hl7.fhir\\build\\source\\release3\\profiles-resources.xml");
+    loadSD4(self.original.resources, "C:\\work\\org.hl7.fhir\\build\\source\\release4\\profiles-resources.xml");
     loadSD(self.revision.resources, "C:\\work\\org.hl7.fhir\\build\\publish\\profiles-resources.xml");
-    loadVS3(self.original.expansions, "C:\\work\\org.hl7.fhir\\build\\source\\release3\\expansions.xml");
+    loadVS4(self.original.expansions, "C:\\work\\org.hl7.fhir\\build\\source\\release4\\expansions.xml");
     loadVS(self.revision.expansions, "C:\\work\\org.hl7.fhir\\build\\publish\\expansions.xml");
-    loadVS3(self.original.valuesets, "C:\\work\\org.hl7.fhir\\build\\source\\release3\\valuesets.xml");
+    loadVS4(self.original.valuesets, "C:\\work\\org.hl7.fhir\\build\\source\\release4\\valuesets.xml");
     loadVS(self.revision.valuesets, "C:\\work\\org.hl7.fhir\\build\\publish\\valuesets.xml");
     StringBuilder b = new StringBuilder();
     b.append("<html>\r\n");
@@ -158,12 +159,12 @@ public class SpecDifferenceEvaluator {
     System.out.println("done");
   }
   
-  private static void loadSD3(Map<String, StructureDefinition> map, String fn) throws FHIRException, FileNotFoundException, IOException {
-    org.hl7.fhir.dstu3.model.Bundle bundle = (org.hl7.fhir.dstu3.model.Bundle) new org.hl7.fhir.dstu3.formats.XmlParser().parse(new FileInputStream(fn));
-    for (org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
-      if (be.getResource() instanceof org.hl7.fhir.dstu3.model.StructureDefinition) {
-        org.hl7.fhir.dstu3.model.StructureDefinition sd = (org.hl7.fhir.dstu3.model.StructureDefinition) be.getResource();
-        map.put(sd.getName(), VersionConvertor_30_40.convertStructureDefinition(sd));
+  private static void loadSD4(Map<String, StructureDefinition> map, String fn) throws FHIRException, FileNotFoundException, IOException {
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(fn));
+    for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
+      if (be.getResource() instanceof org.hl7.fhir.r4.model.StructureDefinition) {
+        org.hl7.fhir.r4.model.StructureDefinition sd = (org.hl7.fhir.r4.model.StructureDefinition) be.getResource();
+        map.put(sd.getName(), org.hl7.fhir.convertors.conv40_50.StructureDefinition.convertStructureDefinition(sd));
       }
     }
     
@@ -178,12 +179,12 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  private static void loadVS3(Map<String, ValueSet> map, String fn) throws FHIRException, FileNotFoundException, IOException {
-    org.hl7.fhir.dstu3.model.Bundle bundle = (org.hl7.fhir.dstu3.model.Bundle) new org.hl7.fhir.dstu3.formats.XmlParser().parse(new FileInputStream(fn));
-    for (org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
-      if (be.getResource() instanceof org.hl7.fhir.dstu3.model.ValueSet) {
-        org.hl7.fhir.dstu3.model.ValueSet sd = (org.hl7.fhir.dstu3.model.ValueSet) be.getResource();
-        map.put(sd.getName(), VersionConvertor_30_40.convertValueSet(sd));
+  private static void loadVS4(Map<String, ValueSet> map, String fn) throws FHIRException, FileNotFoundException, IOException {
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(fn));
+    for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
+      if (be.getResource() instanceof org.hl7.fhir.r4.model.ValueSet) {
+        org.hl7.fhir.r4.model.ValueSet sd = (org.hl7.fhir.r4.model.ValueSet) be.getResource();
+        map.put(sd.getName(), org.hl7.fhir.convertors.conv40_50.ValueSet.convertValueSet(sd));
       }
     }    
   }
@@ -540,11 +541,11 @@ public class SpecDifferenceEvaluator {
     // now, look for matches by name (ignoring slicing for now)
     String tp = mapPath(tn, target.getPath());
     if (tp.endsWith("[x]"))
-      tp = tp.substring(0, tp.length()-3);
+      tp = tp.substring(0, tp.length()-4);
     for (ElementDefinition ed : list) {
       String p = ed.getPath();
       if (p.endsWith("[x]"))
-        p = p.substring(0, p.length()-3);
+        p = p.substring(0, p.length()-4);
       if (p.equals(tp))
         return ed;
     }
@@ -966,7 +967,7 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  public void saveR2AsR3(ZipGenerator zip, FhirFormat fmt) throws IOException {
+  public void saveR4AsR5(ZipGenerator zip, FhirFormat fmt) throws IOException {
     for (StructureDefinition t : original.types.values()) 
       saveResource(zip, t, fmt);
     for (StructureDefinition t : original.resources.values()) 
@@ -1242,6 +1243,8 @@ public class SpecDifferenceEvaluator {
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Element.id", "Extension.url"))
         r = "string";        
       String o = describeType(orig.getType().get(0));
+      if (Utilities.noString(o) && Utilities.existsInList(orig.getId(), "Element.id", "Extension.url"))
+        o = "string";        
       if (!o.equals(r)) {
         oa.add(new JsonPrimitive(o));
         ra.add(new JsonPrimitive(r));
@@ -1297,6 +1300,8 @@ public class SpecDifferenceEvaluator {
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Element.id", "Extension.url"))
         r = "string";        
       String o = describeType(orig.getType().get(0));
+      if (Utilities.noString(o) && Utilities.existsInList(orig.getId(), "Element.id", "Extension.url"))
+        o = "string";        
       if (!o.equals(r)) {
         element.appendChild(makeElementWithAttribute(doc, "removed-type", "name", o));
         element.appendChild(makeElementWithAttribute(doc, "added-type", "name", r));

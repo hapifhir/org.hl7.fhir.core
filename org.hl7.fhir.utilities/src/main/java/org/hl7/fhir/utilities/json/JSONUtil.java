@@ -1,5 +1,10 @@
 package org.hl7.fhir.utilities.json;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
 /*-
  * #%L
  * org.hl7.fhir.utilities
@@ -22,12 +27,13 @@ package org.hl7.fhir.utilities.json;
 
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class JSONUtil {
 
-  public static JsonObject parse(String json) {
-    return (JsonObject) new com.google.gson.JsonParser().parse(json);    
+  public static JsonObject parse(String json) throws IOException {
+    return JsonTrackingParser.parseJson(json);    
     
   }
 
@@ -54,6 +60,56 @@ public class JSONUtil {
     JsonObject res = new JsonObject();
     arr.add(res);
     return res;
+  }
+
+  public static JsonObject findByStringProp(JsonArray arr, String prop, String value) {
+    for (JsonElement e : arr) {
+      JsonObject obj = (JsonObject) e;
+      if (obj.has(prop) && obj.get(prop).getAsString().equals(value)) 
+        return obj;
+    }
+    return null;
+  }
+
+  public static String str(JsonObject json, String name) {
+    JsonElement e = json.get(name);
+    return e == null ? null : e.getAsString();
+  }
+
+  public static String str(JsonObject json, String name1, String name2) {
+    JsonElement e = json.get(name1);
+    if (e == null)
+      e = json.get(name2);
+    return e == null ? null : e.getAsString();
+  }
+
+  public static boolean has(JsonObject json, String name1, String name2) {
+    return json.has(name1) || json.has(name2);
+  }
+
+  public static List<JsonObject> objects(JsonObject json, String name) {
+    List<JsonObject> res = new ArrayList<>();
+    if (json.has(name))
+      for (JsonElement e : json.getAsJsonArray(name))
+        if (e instanceof JsonObject)
+          res.add((JsonObject) e);
+    return res;
+  }
+
+  public static void merge(JsonObject source, JsonObject target) {
+    for (Entry<String, JsonElement> pp : source.entrySet()) {
+      if (target.has(pp.getKey())) {
+        JsonElement te = target.get(pp.getKey());
+        if (te.isJsonObject() && pp.getValue().isJsonObject()) {
+          merge(te.getAsJsonObject(), pp.getValue().getAsJsonObject());
+        } else {
+          target.remove(pp.getKey());
+          target.add(pp.getKey(), pp.getValue());
+        }
+      } else {
+        target.add(pp.getKey(), pp.getValue());
+      }
+    }
   }
 
 }

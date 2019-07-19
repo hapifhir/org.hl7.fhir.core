@@ -63,6 +63,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.LinkedTransferQueue;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -150,6 +151,7 @@ import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.RelatedArtifact;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.Signature;
@@ -173,7 +175,11 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.r5.utils.NarrativeGenerator.ILiquidTemplateProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -187,6 +193,12 @@ import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
 
 public class NarrativeGenerator implements INarrativeGenerator {
+
+  public interface ILiquidTemplateProvider {
+
+    String findTemplate(ResourceContext rcontext, DomainResource r);
+
+  }
 
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
@@ -271,15 +283,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
       }
       return null;
     }
-
   }
 
   private static final String ABSTRACT_CODE_HINT = "This code is not selectable ('Abstract')";
 
   public interface IReferenceResolver {
-
     ResourceWithReference resolve(String url);
-
   }
 
   private Bundle bundle;
@@ -290,6 +299,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private ProfileKnowledgeProvider pkp;
   private MarkDownProcessor markdown = new MarkDownProcessor(Dialect.COMMON_MARK);
   private ITypeParser parser; // when generating for an element model
+  private ILiquidTemplateProvider templateProvider;
+  private IEvaluationContext services;
   
   public boolean generate(Bundle b, boolean evenIfAlreadyHasNarrative, Set<String> outputTracker) throws EOperationOutcome, FHIRException, IOException {
     boolean res = false;
@@ -312,6 +323,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (rcontext == null)
       rcontext = new ResourceContext(null, r);
     
+    if (templateProvider != null) {
+      String liquidTemplate = templateProvider.findTemplate(rcontext, r);
+      if (liquidTemplate != null) {
+        return generateByLiquid(rcontext, r, liquidTemplate, outputTracker);
+      }
+    }
     if (r instanceof ConceptMap) {
       return generate(rcontext, (ConceptMap) r); // Maintainer = Grahame
     } else if (r instanceof ValueSet) {
@@ -348,6 +365,24 @@ public class NarrativeGenerator implements INarrativeGenerator {
       else
         return false;
     }
+  }
+
+  private boolean generateByLiquid(ResourceContext rcontext, DomainResource r, String liquidTemplate, Set<String> outputTracker) {
+
+    LiquidEngine engine = new LiquidEngine(context, services);
+    XhtmlNode x;
+    try {
+      LiquidDocument doc = engine.parse(liquidTemplate, "template");
+      String html = engine.evaluate(doc, r, rcontext);
+      x = new XhtmlParser().parseFragment(html);
+      if (!x.getName().equals("div"))
+        throw new FHIRException("Error in template: Root element is not 'div'");
+    } catch (FHIRException | IOException e) {
+      x = new XhtmlNode(NodeType.Element, "div");
+      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+    }
+    inject(r, x,  NarrativeStatus.GENERATED);
+    return true;
   }
 
   private interface PropertyWrapper {
@@ -965,6 +1000,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
   private boolean pretty;
   private boolean canonicalUrlsAsLinks;
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
 
   public NarrativeGenerator(String prefix, String basePath, IWorkerContext context) {
     super();
@@ -972,6 +1008,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
     this.context = context;
     this.basePath = basePath;
     init();
+  }
+  
+  public NarrativeGenerator setLiquidServices(ILiquidTemplateProvider templateProvider, IEvaluationContext services) {
+    this.templateProvider = templateProvider;
+    this.services = services;
+    return this;
   }
 
   public Base parseType(String xml, String type) throws IOException, FHIRException {
@@ -1352,9 +1394,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return;
     else if (e instanceof InstantType)
       x.addText(((InstantType) e).toHumanDisplay());
-    else if (e instanceof DateTimeType)
-      x.addText(((DateTimeType) e).toHumanDisplay());
-    else if (e instanceof Base64BinaryType)
+    else if (e instanceof DateTimeType) {
+      if (e.hasPrimitiveValue())
+        x.addText(((DateTimeType) e).toHumanDisplay());
+    } else if (e instanceof Base64BinaryType)
       x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
     else if (e instanceof org.hl7.fhir.r5.model.DateType)
       x.addText(((org.hl7.fhir.r5.model.DateType) e).toHumanDisplay());
@@ -1560,6 +1603,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     } else if (e instanceof Signature) {
       return false;
     } else if (e instanceof UsageContext) {
+      return false;
+    } else if (e instanceof RelatedArtifact) {
       return false;
     } else if (e instanceof ElementDefinition) {
       return false;
@@ -1793,7 +1838,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private String lookupCode(String system, String code) {
-    ValidationResult t = context.validateCode(system, code, null);
+    ValidationResult t = context.validateCode(terminologyServiceOptions , system, code, null);
 
     if (t != null && t.getDisplay() != null)
         return t.getDisplay();
@@ -1936,6 +1981,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
     StructureDefinition sd = context.fetchTypeDefinition(path.substring(0, path.length()-4));
     if (sd == null)
       return false;
+    if (Utilities.existsInList(path.substring(0, path.length()-4), "CapabilityStatement", "StructureDefinition", "ImplementationGuide", "SearchParameter", "MessageDefinition", "OperationDefinition", "CompartmentDefinition", "StructureMap", "GraphDefinition", 
+        "ExampleScenario", "CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", "TerminologyCapabilities"))
+      return true;
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
 
@@ -2522,7 +2570,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private String getDisplayForConcept(String system, String value) {
     if (value == null || system == null)
       return null;
-    ValidationResult cl = context.validateCode(system, value, null);
+    ValidationResult cl = context.validateCode(terminologyServiceOptions, system, value, null);
     return cl == null ? null : cl.getDisplay();
   }
 
@@ -2785,7 +2833,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private boolean isSource(ValueSet vs, Type source) {
-    return vs.hasUrl() && vs.getUrl().equals(source.primitiveValue());
+    return vs.hasUrl() && source != null && vs.getUrl().equals(source.primitiveValue());
   }
 
   private Integer countMembership(ValueSet vs) {
@@ -3323,7 +3371,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return "??Lang";
   }
  
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang) {
+  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
@@ -3371,7 +3419,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (c != null && 
         c.hasDefinitionElement()) {
       if (lang == null) {
-        td.addText(c.getDefinition());
+        if (hasMarkdownInDefinitions(cs))
+          addMarkdown(td, c.getDefinition());
+        else
+          td.addText(c.getDefinition());
       } else if (lang.equals("*")) {
         boolean sl = false;
         for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
@@ -3487,6 +3538,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return hasExtensions;
   }
 
+
+  private boolean hasMarkdownInDefinitions(CodeSystem cs) {
+    return ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
+  }
 
   private String makeAnchor(String codeSystem, String code) {
     String s = codeSystem+'-'+code;
@@ -3712,7 +3767,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
             li.ah(href).addText(f.getValue());
           } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
             li.addText(f.getValue());
-            ValidationResult vr = context.validateCode(inc.getSystem(), f.getValue(), null);
+            ValidationResult vr = context.validateCode(terminologyServiceOptions, inc.getSystem(), f.getValue(), null);
             if (vr.isOk()) {
               li.tx(" ("+vr.getDisplay()+")");
             }
@@ -3794,7 +3849,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     }
 
-    return context.validateCode(inc.getSystem(), code, null).asConceptDefinition();
+    return context.validateCode(terminologyServiceOptions, inc.getSystem(), code, null).asConceptDefinition();
   }
 
 
@@ -4021,7 +4076,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     inject(ig, x, NarrativeStatus.GENERATED);
     return true;
   }
-	public boolean generate(ResourceContext rcontext, OperationDefinition opd) throws EOperationOutcome, FHIRException, IOException {
+
+  public boolean generate(ResourceContext rcontext, OperationDefinition opd) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     x.h2().addText(opd.getName());
     x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());
@@ -4171,18 +4227,37 @@ public class NarrativeGenerator implements INarrativeGenerator {
       addTableRow(t, "System History", showOp(rest, SystemRestfulInteraction.HISTORYSYSTEM));
       addTableRow(t, "System Search", showOp(rest, SystemRestfulInteraction.SEARCHSYSTEM));
 
+      boolean hasVRead = false;
+      boolean hasPatch = false;
+      boolean hasDelete = false;
+      boolean hasHistory = false;
+      boolean hasUpdates = false;
+      for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
+        hasVRead = hasVRead || hasOp(r, TypeRestfulInteraction.VREAD);
+        hasPatch = hasPatch || hasOp(r, TypeRestfulInteraction.PATCH);
+        hasDelete = hasDelete || hasOp(r, TypeRestfulInteraction.DELETE);
+        hasHistory = hasHistory || hasOp(r, TypeRestfulInteraction.HISTORYTYPE);
+        hasUpdates = hasUpdates || hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE);
+      }
+      
       t = x.table(null);
       XhtmlNode tr = t.tr();
       tr.th().b().tx("Resource Type");
       tr.th().b().tx("Profile");
-      tr.th().b().tx("Read");
-      tr.th().b().tx("V-Read");
-      tr.th().b().tx("Search");
-      tr.th().b().tx("Update");
-      tr.th().b().tx("Updates");
-      tr.th().b().tx("Create");
-      tr.th().b().tx("Delete");
-      tr.th().b().tx("History");
+      tr.th().b().attribute("title", "GET a resource (read interaction)").tx("Read");
+      if (hasVRead)
+        tr.th().b().attribute("title", "GET past versions of resources (vread interaction)").tx("V-Read");
+      tr.th().b().attribute("title", "GET all set of resources of the type (search interaction)").tx("Search");
+      tr.th().b().attribute("title", "PUT a new resource version (update interaction)").tx("Update");
+      if (hasPatch)
+        tr.th().b().attribute("title", "PATCH a new resource version (patch interaction)").tx("Patch");
+      tr.th().b().attribute("title", "POST a new resource (create interaction)").tx("Create");
+      if (hasDelete)
+        tr.th().b().attribute("title", "DELETE a resource (delete interaction)").tx("Delete");
+      if (hasUpdates)
+        tr.th().b().attribute("title", "GET changes to a resource (history interaction on instance)").tx("Updates");
+      if (hasHistory)
+        tr.th().b().attribute("title", "GET changes for all resources of the type (history interaction on type)").tx("History");
 
       for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
         tr = t.tr();
@@ -4191,13 +4266,19 @@ public class NarrativeGenerator implements INarrativeGenerator {
           tr.td().ah(prefix+r.getProfile()).addText(r.getProfile());
         }
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.VREAD));
+        if (hasVRead)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.VREAD));
         tr.td().addText(showOp(r, TypeRestfulInteraction.SEARCHTYPE));
         tr.td().addText(showOp(r, TypeRestfulInteraction.UPDATE));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYINSTANCE));
+        if (hasPatch)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.PATCH));
         tr.td().addText(showOp(r, TypeRestfulInteraction.CREATE));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.DELETE));
-        tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYTYPE));
+        if (hasDelete)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.DELETE));
+        if (hasUpdates)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYINSTANCE));
+        if (hasHistory)
+          tr.td().addText(showOp(r, TypeRestfulInteraction.HISTORYTYPE));
       }
     }
 
@@ -4205,6 +4286,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return true;
   }
 
+  private boolean hasOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
+    for (ResourceInteractionComponent op : r.getInteraction()) {
+      if (op.getCode() == on)
+        return true;
+    }
+    return false;
+  }
+  
   private String showOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
     for (ResourceInteractionComponent op : r.getInteraction()) {
       if (op.getCode() == on)
@@ -4664,6 +4753,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
   public NarrativeGenerator setSnomedEdition(String snomedEdition) {
     this.snomedEdition = snomedEdition;
     return this;
+  }
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
+  }
+
+  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+    this.terminologyServiceOptions = terminologyServiceOptions;
   }
 
   

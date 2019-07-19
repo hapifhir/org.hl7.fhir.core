@@ -60,6 +60,8 @@ import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.primitive.XhtmlDt;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
 public class XhtmlNode implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
@@ -421,6 +423,10 @@ public class XhtmlNode implements IBaseXhtml {
   @Override
   public String getValue() {
     return getValueAsString();
+  }
+
+  public boolean hasValue() {
+    return isNotBlank(getValueAsString());
   }
 
   @Override

@@ -208,5 +208,9 @@ public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>
     } else
       return super.getProperty(hash, name, checkValid);
   }
+  @Override
+  public boolean hasPrimitiveValue() {
+    return StringUtils.isNotBlank(getValueAsString());
+  }
 
 }

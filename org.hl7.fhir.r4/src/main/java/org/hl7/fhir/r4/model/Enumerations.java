@@ -9963,6 +9963,7 @@ The primary difference between a medication statement and a medication administr
         /**
          * added to help the parsers
          */
+        _4_1_0, 
         NULL;
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
@@ -10009,6 +10010,8 @@ The primary difference between a medication statement and a medication administr
           return _3_5_0;
         if ("4.0.0".equals(codeString))
           return _4_0_0;
+        if ("4.1.0".equals(codeString))
+          return _4_1_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         @Override
@@ -10038,6 +10041,7 @@ The primary difference between a medication statement and a medication administr
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
+            case _4_1_0: return "4.1.0";
             default: return "?";
           }
         }
@@ -10064,6 +10068,7 @@ The primary difference between a medication statement and a medication administr
             case _3_3_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_5_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
             default: return "?";
           }
         }

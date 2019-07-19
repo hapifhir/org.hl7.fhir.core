@@ -64,24 +64,18 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.SourceDataLine;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import net.sf.saxon.TransformerFactoryImpl;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Utilities {
 
@@ -126,12 +120,15 @@ public class Utilities {
   
   
     public static boolean isInteger(String string) {
-      try {
-        int i = Integer.parseInt(string);
-        return i != i+1;
-      } catch (Exception e) {
+      if (isBlank(string)) {
         return false;
       }
+      for (char next : string.toCharArray()) {
+        if (!Character.isDigit(next)) {
+          return false;
+        }
+      }
+      return true;
     }
     
     public static boolean isHex(String string) {
@@ -143,26 +140,22 @@ public class Utilities {
       }
     }
     
-    public static boolean isFloat(String string) {
-      if (Utilities.noString(string))
-        return false;
-      try {
-        float r = Float.parseFloat(string);
-        return r != r + 1; // just to suppress the hint
-      } catch (Exception e) {
-        return false;
-      }
-    }
-    
     public static boolean isDecimal(String string) {
-      if (Utilities.noString(string))
-        return false;
-      try {
-        BigDecimal bd = new BigDecimal(string);
-        return bd != null;
-      } catch (Exception e) {
+      if (isBlank(string)) {
         return false;
       }
+      boolean havePeriod = false;
+      for (char next : string.toCharArray()) {
+        if (next == '.') {
+          if (havePeriod) {
+            return false;
+          }
+          havePeriod = true;
+        } else if (!Character.isDigit(next)) {
+          return false;
+        }
+      }
+      return true;
     }
     
 	public static String camelCase(String value) {
@@ -308,23 +301,30 @@ public class Utilities {
     return s.toString();
   }
 
-  public static void clearDirectory(String folder) throws IOException {
+  public static void clearDirectory(String folder, String... exemptions) throws IOException {
     File dir = new File(folder);
-    if (dir.exists())
-      FileUtils.cleanDirectory(dir);
-//	  String[] files = new CSFile(folder).list();
-//	  if (files != null) {
-//		  for (String f : files) {
-//			  File fh = new CSFile(folder+File.separatorChar+f);
-//			  if (fh.isDirectory()) 
-//				  clearDirectory(fh.getAbsolutePath());
-//			  fh.delete();
-//		  }
-//	  }
+    if (dir.exists()) {
+      if (exemptions.length == 0)
+        FileUtils.cleanDirectory(dir);
+      else {
+        String[] files = new CSFile(folder).list();
+        if (files != null) {
+          for (String f : files) {
+            if (!existsInList(f, exemptions)) {
+              File fh = new CSFile(folder+File.separatorChar+f);
+              if (fh.isDirectory()) 
+                clearDirectory(fh.getAbsolutePath());
+              fh.delete();
+            }
+          }
+        }
+      }
+    }
   }
 
-  public static void createDirectory(String path) throws IOException{
-    new CSFile(path).mkdirs();    
+  public static File createDirectory(String path) throws IOException{
+    new CSFile(path).mkdirs();
+    return new File(path);
   }
 
   public static String changeFileExt(String name, String ext) {
@@ -348,35 +348,7 @@ public class Utilities {
   }
 
 
-  public static byte[] saxonTransform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException  {
-    TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
-    Transformer t = f.newTransformer(xsrc);
- 
-    t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
-    return out.toByteArray();    
-  }
-  
-  public static byte[] transform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException  {
-    TransformerFactory f = TransformerFactory.newInstance();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
-    Transformer t = f.newTransformer(xsrc);
 
-    t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
-    return out.toByteArray();    
-  }
   
   public static void bytesToFile(byte[] content, String filename) throws IOException  {
     FileOutputStream out = new FileOutputStream(filename);
@@ -385,52 +357,6 @@ public class Utilities {
     
   }
 
-  public static String saxonTransform(String source, String xslt) throws TransformerException, FileNotFoundException  {
-    TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
-    Transformer t = f.newTransformer(xsrc);
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new ByteArrayOutputStream());
-    t.transform(src, res);
-    return res.getOutputStream().toString();   
-  }
-
-  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException  {
-  	saxonTransform(xsltDir, source, xslt, dest, alt, null);
-  }
-
-  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws FileNotFoundException, TransformerException  {
-    TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
-    Transformer t = f.newTransformer(xsrc);
- 		if (params != null) {
- 			for (Map.Entry<String, String> entry : params.entrySet()) {
- 				t.setParameter(entry.getKey(), entry.getValue());
- 			}
-  	}
-    
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new FileOutputStream(dest));
-    t.transform(src, res);    
-  }
-  
-  public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException  {
-
-    TransformerFactory f = TransformerFactory.newInstance();
-    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
-    Transformer t = f.newTransformer(xsrc);
-
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new FileOutputStream(dest));
-    t.transform(src, res);
-    
-  }
 
 
   public static String appendSlash(String definitions) {
@@ -566,7 +492,7 @@ public class Utilities {
     for(String arg: args) {
       if (!d)
         d = !noString(arg);
-      else if (!s.toString().endsWith("/"))
+      else if (!s.toString().endsWith("/") && !arg.startsWith("/"))
         s.append("/");
       s.append(arg);
     }
@@ -830,6 +756,10 @@ public class Utilities {
   }
 
 
+  public static String makeUuidLC() {
+    return UUID.randomUUID().toString().toLowerCase();
+  }
+
   public static String makeUuidUrn() {
     return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
   }
@@ -907,38 +837,6 @@ public class Utilities {
   }
 
 
-  // http://stackoverflow.com/questions/3780406/how-to-play-a-sound-alert-in-a-java-application
-  public static float SAMPLE_RATE = 8000f;
-  
-  public static void tone(int hz, int msecs) {
-      tone(hz, msecs, 1.0);
-   }
-
-  public static void tone(int hz, int msecs, double vol) {
-    try {
-      byte[] buf = new byte[1];
-      AudioFormat af = 
-          new AudioFormat(
-              SAMPLE_RATE, // sampleRate
-              8,           // sampleSizeInBits
-              1,           // channels
-              true,        // signed
-              false);      // bigEndian
-      SourceDataLine sdl;
-      sdl = AudioSystem.getSourceDataLine(af);
-      sdl.open(af);
-      sdl.start();
-      for (int i=0; i < msecs*8; i++) {
-        double angle = i / (SAMPLE_RATE / hz) * 2.0 * Math.PI;
-        buf[0] = (byte)(Math.sin(angle) * 127.0 * vol);
-        sdl.write(buf,0,1);
-      }
-      sdl.drain();
-      sdl.stop();
-      sdl.close();
-    } catch (Exception e) {
-    }
-  }
 
 
   public static boolean isOid(String cc) {
@@ -1147,6 +1045,67 @@ public class Utilities {
         visitor.visitFile(file);
     }    
   }
+
+  public static String extractBaseUrl(String url) {
+	if (url == null)
+		return null;
+	else if (url.contains("/"))
+      return url.substring(0,  url.lastIndexOf("/"));
+    else
+      return url;
+	}
+
+  public static String listCanonicalUrls(Set<String> keys) {
+    return keys.toString();
+  }
+
+  public static boolean isValidId(String id) {
+    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
+  }
+
+  public static List<String> sorted(Set<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list);
+    return list;
+  }
+
+  public static void analyseStringDiffs(Set<String> source, Set<String> target, Set<String> missed, Set<String> extra) {
+    for (String s : source)
+      if (!target.contains(s))
+        missed.add(s);
+    for (String s : target)
+      if (!source.contains(s))
+        extra.add(s);
+    
+  }
+
+  /**
+   * Only handles simple FHIRPath expressions of the type produced by the validator
+   * 
+   * @param path
+   * @return
+   */
+  public static String fhirPathToXPath(String path) {
+    String[] p = path.split("\\.");
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
+    int i = 0;
+    while (i < p.length) {
+      String s = p[i];
+      if (s.contains("[")) {
+        String si = s.substring(s.indexOf("[")+1, s.length()-1);
+        s = s.substring(0, s.indexOf("["))+"["+Integer.toString(Integer.parseInt(si)+1)+"]";
+      }
+      if (i < p.length - 1 && p[i+1].startsWith(".ofType(")) {
+        i++;
+        s = s + capitalize(p[i].substring(8, p.length-1));
+      }
+      b.append(s); 
+      i++;
+    }
+    return b.toString();
+  }
+
 
 
 }

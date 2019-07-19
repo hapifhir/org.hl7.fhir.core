@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>hapi-deployable-pom</artifactId>
-		<version>3.7.0-SNAPSHOT</version>
+		<version>3.8.0-SNAPSHOT</version>
 	</parent>
 
 	<!--
@@ -13,10 +13,10 @@
 	each other. It is fine to bump the point version of this POM without affecting
 	HAPI FHIR.
 	-->
-	<version>3.7.5-SNAPSHOT</version>
+	<version>3.8.12-SNAPSHOT</version>
 
 	<properties>
-		<hapi_fhir_version>3.8.0-SNAPSHOT</hapi_fhir_version>
+		<hapi_fhir_version>4.0.0-SNAPSHOT</hapi_fhir_version>
 	</properties>
 
 	<artifactId>org.hl7.fhir.core</artifactId>
@@ -127,6 +127,7 @@
 		<module>org.hl7.fhir.dstu2016may</module>
 		<module>org.hl7.fhir.dstu3</module>
 		<module>org.hl7.fhir.r4</module>
+		<module>org.hl7.fhir.r5</module>
 		<!--<module>org.hl7.fhir.rdf</module>-->
 		<module>org.hl7.fhir.convertors</module>
 		<module>org.hl7.fhir.validation</module>
@@ -243,6 +244,18 @@
 						<ignoredResource>about.html</ignoredResource>
 						<ignoredResource>changelog.xml</ignoredResource>
 					</ignoredResourcePatterns>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Fragment-Host>
+							ca.uhn.hapi.fhir.hapi-fhir-base
+						</Fragment-Host>
+					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>

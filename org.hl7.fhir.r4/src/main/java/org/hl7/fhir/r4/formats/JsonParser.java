@@ -55,8 +55,8 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.utils.formats.JsonTrackingParser.PresentedBigDecimal;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonTrackingParser.PresentedBigDecimal;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import com.google.gson.JsonArray;
@@ -14198,7 +14198,7 @@ public class JsonParser extends JsonParserBase {
   protected void parseImplementationGuideImplementationGuideDefinitionParameterComponentProperties(JsonObject json, ImplementationGuide owner, ImplementationGuide.ImplementationGuideDefinitionParameterComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
-      res.setCodeElement(parseEnumeration(json.get("code").getAsString(), ImplementationGuide.GuideParameterCode.NULL, new ImplementationGuide.GuideParameterCodeEnumFactory()));
+      res.setCodeElement(parseString(json.get("code").getAsString()));
     if (json.has("_code"))
       parseElementProperties(json.getAsJsonObject("_code"), res.getCodeElement());
     if (json.has("value"))
@@ -43754,8 +43754,8 @@ public class JsonParser extends JsonParserBase {
   protected void composeImplementationGuideImplementationGuideDefinitionParameterComponentInner(ImplementationGuide.ImplementationGuideDefinitionParameterComponent element) throws IOException {
       composeBackbone(element);
       if (element.hasCodeElement()) {
-        composeEnumerationCore("code", element.getCodeElement(), new ImplementationGuide.GuideParameterCodeEnumFactory(), false);
-        composeEnumerationExtras("code", element.getCodeElement(), new ImplementationGuide.GuideParameterCodeEnumFactory(), false);
+        composeStringCore("code", element.getCodeElement(), false);
+        composeStringExtras("code", element.getCodeElement(), false);
       }
       if (element.hasValueElement()) {
         composeStringCore("value", element.getValueElement(), false);

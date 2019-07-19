@@ -57,7 +57,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Represents a FHIR instant datatype. Valid precisions values for this type are:
@@ -218,7 +219,9 @@ public class InstantType extends BaseDateTimeType {
 
 	@Override
 	public InstantType copy() {
-		return new InstantType(getValue());
+    InstantType ret = new InstantType();
+    ret.setValueAsString(getValueAsString());
+    return ret;
 	}
 
 	/**

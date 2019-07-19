@@ -21,6 +21,9 @@ package org.hl7.fhir.dstu3.utils;
  */
 
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
+import ca.uhn.fhir.util.ElementUtil;
 import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.util.ElementUtil;
@@ -128,7 +131,6 @@ public class FHIRPathEngine {
 
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
-     * @param appInfo
      * @param url
      * @return
      */
@@ -245,7 +247,6 @@ public class FHIRPathEngine {
   /**
    * Parse a path that is part of some other syntax
    *
-   * @param path
    * @return
    * @throws PathEngineException
    * @throws Exception
@@ -264,7 +265,6 @@ public class FHIRPathEngine {
    * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
    *
    * @param context - the logical type against which this path is applied
-   * @param path - the FHIR Path statement to check
    * @throws DefinitionException
    * @throws PathEngineException
    * @if the path is not valid
@@ -440,7 +440,6 @@ public class FHIRPathEngine {
    * evaluate a path and return true or false (e.g. for an invariant)
    *
    * @param base - the object against which the path is being evaluated
-   * @param path - the FHIR Path statement to use
    * @return
    * @throws FHIRException
    * @
@@ -452,9 +451,7 @@ public class FHIRPathEngine {
   /**
    * evaluate a path and return true or false (e.g. for an invariant)
    *
-   * @param appinfo - application context
    * @param base - the object against which the path is being evaluated
-   * @param path - the FHIR Path statement to use
    * @return
    * @throws FHIRException
    * @
@@ -467,7 +464,6 @@ public class FHIRPathEngine {
    * evaluate a path and return true or false (e.g. for an invariant)
    *
    * @param base - the object against which the path is being evaluated
-   * @param path - the FHIR Path statement to use
    * @return
    * @throws FHIRException
    * @
@@ -2471,33 +2467,25 @@ public class FHIRPathEngine {
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
-      if (hostServices != null) {
         String s = convertToString(item);
         if (item.fhirType().equals("Reference")) {
           Property p = item.getChildByName("reference");
-          if (p != null && p.hasValues())
+        if (p.hasValues())
             s = convertToString(p.getValues().get(0));
-          else
-            s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
         }
-        if (s != null) {
         Base res = null;
         if (s.startsWith("#")) {
-          String id = s.substring(1);
           Property p = context.resource.getChildByName("contained");
           for (Base c : p.getValues()) {
-              if (id.equals(c.getIdBase())) {
+          if (s.equals(c.getIdBase()))
               res = c;
-                break;
-              }
-          }
-        } else
+        }
+      } else if (hostServices != null) {
          res = hostServices.resolveReference(context.appInfo, s);
+      }
         if (res != null)
           result.add(res);
       }
-    }
-    }
     return result;
   }
 
