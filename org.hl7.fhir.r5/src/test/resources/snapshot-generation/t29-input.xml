@@ -40,7 +40,20 @@
       <mustSupport value="true"/>
     </element>
     <element>
+      <path value="Parameters.parameter.part.value[x]"/>      
+      <slicing>
+        <discriminator>
+          <type value="type"/>
+          <path value="$this"/>
+        </discriminator>
+      </slicing>
+      <type>
+        <code value="Coding"/>
+      </type>
+    </element>
+    <element>
       <path value="Parameters.parameter.part.valueCoding"/>
+      <sliceName value="Coding"/>
       <min value="1"/>
       <type>
         <code value="Coding"/>
