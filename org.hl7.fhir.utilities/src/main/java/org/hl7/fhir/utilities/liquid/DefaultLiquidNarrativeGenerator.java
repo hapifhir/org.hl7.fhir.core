@@ -28,18 +28,6 @@ public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
 		myLiquidEngine = new LiquidEngine(theFhirContext);
 	}
 
-	/* FIXME KHS
-	@Override
-	protected String processNamedTemplate(FhirContext theFhirContext, String theName, IBaseResource theResource) throws Exception {
-		String template = getNarrativeTemplate(theName);
-		return processTemplate(theFhirContext, theName, theResource, template);
-	}
-
-	private String processTemplate(FhirContext theFhirContext, String theName, IBaseResource theResource, String theTemplate) throws Exception {
-		LiquidEngine.LiquidDocument doc = myLiquidEngine.parse(theTemplate, theName);
-		return myLiquidEngine.evaluate(doc, theResource, null);
-	}
-*/
 	@Override
 	protected List<String> getPropertyFile() {
 		List<String> retVal = new ArrayList<String>();
