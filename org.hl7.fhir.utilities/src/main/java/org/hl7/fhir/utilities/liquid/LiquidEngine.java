@@ -17,12 +17,12 @@ public class LiquidEngine implements INarrativeConstantResolver {
 
   private final FhirContext fhirContext;
 
-  public interface ILiquidEngineIcludeResolver {
+  public interface ILiquidEngineIncludeResolver {
     public String fetchInclude(String name);
   }
 
   private IFluentPath engine;
-  private ILiquidEngineIcludeResolver includeResolver;
+  private ILiquidEngineIncludeResolver includeResolver;
 
   private class LiquidEngineContext {
     private Object externalContext;
@@ -47,11 +47,11 @@ public class LiquidEngine implements INarrativeConstantResolver {
     engine.setHostServices(this);
   }
 
-  public ILiquidEngineIcludeResolver getIncludeResolver() {
+  public ILiquidEngineIncludeResolver getIncludeResolver() {
     return includeResolver;
   }
 
-  public void setIncludeResolver(ILiquidEngineIcludeResolver includeResolver) {
+  public void setIncludeResolver(ILiquidEngineIncludeResolver includeResolver) {
     this.includeResolver = includeResolver;
   }
 

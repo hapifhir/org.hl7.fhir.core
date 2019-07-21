@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(Parameterized.class)
-public class UtilitiesLiquidEngineTests implements LiquidEngine.ILiquidEngineIcludeResolver {
+public class UtilitiesLiquidEngineTests implements LiquidEngine.ILiquidEngineIncludeResolver {
 
   private static Map<String, Resource> resources = new HashedMap<>();
   private static JsonObject testdoc = null;
