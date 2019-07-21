@@ -4,6 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fluentpath.IExpressionNode;
 import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
 import ca.uhn.fhir.fluentpath.IFluentPath;
+import ca.uhn.fhir.fluentpath.INarrativeConstantResolver;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
@@ -12,7 +13,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 import java.util.*;
 
-public class LiquidEngine {
+public class LiquidEngine implements INarrativeConstantResolver {
 
   private final FhirContext fhirContext;
 
@@ -43,6 +44,7 @@ public class LiquidEngine {
     super();
     this.fhirContext = fhirContext;
     engine = fhirContext.newFluentPath();
+    engine.setHostServices(this);
   }
 
   public ILiquidEngineIcludeResolver getIncludeResolver() {
@@ -335,5 +337,9 @@ public class LiquidEngine {
     if (ctxt.vars.containsKey(name))
       return ctxt.vars.get(name);
     return null;
+  }
+
+  public void setEnvironmentVariable(String key, String value) {
+    engine.setEnvironmentVariable(key, value);
   }
 }

@@ -1,12 +1,16 @@
 package org.hl7.fhir.utilities.liquid;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.narrative.BaseNarrativeGenerator;
+import ca.uhn.fhir.narrative2.BaseNarrativeGenerator;
+import ca.uhn.fhir.narrative2.INarrativeTemplate;
+import ca.uhn.fhir.narrative2.TemplateTypeEnum;
+import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
@@ -20,11 +24,11 @@ public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
 
 	private LiquidEngine myLiquidEngine;
 
-	@Override
-	protected void initializeNarrativeEngine(FhirContext theFhirContext) {
+	private void initializeNarrativeEngine(FhirContext theFhirContext) {
 		myLiquidEngine = new LiquidEngine(theFhirContext);
 	}
 
+	/* FIXME KHS
 	@Override
 	protected String processNamedTemplate(FhirContext theFhirContext, String theName, IBaseResource theResource) throws Exception {
 		String template = getNarrativeTemplate(theName);
@@ -35,7 +39,7 @@ public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
 		LiquidEngine.LiquidDocument doc = myLiquidEngine.parse(theTemplate, theName);
 		return myLiquidEngine.evaluate(doc, theResource, null);
 	}
-
+*/
 	@Override
 	protected List<String> getPropertyFile() {
 		List<String> retVal = new ArrayList<String>();
@@ -67,8 +71,34 @@ public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
 	}
 
   @Override
-  public boolean populateResourceNarrative(FhirContext theFhirContext, IBaseResource theIBaseResource) {
+  protected String applyTemplate(FhirContext theFhirContext, INarrativeTemplate theTemplate, IBase theTargetContext) {
+
 	  // FIXME KHS
-    return false;
+//    Context context = new Context();
+//    context.setVariable("resource", theTargetContext);
+//    context.setVariable("context", theTargetContext);
+//    context.setVariable("fhirVersion", theFhirContext.getVersion().getVersion().name());
+
+    // FIXME KHS expand support to IBase
+    if (!(theTargetContext instanceof IBaseResource)) {
+      return "";
+    }
+    IBaseResource resource = (IBaseResource)theTargetContext;
+    if (myLiquidEngine == null) {
+      initializeNarrativeEngine(theFhirContext);
+    }
+    LiquidEngine.LiquidDocument doc = null;
+    try {
+      doc = myLiquidEngine.parse(theTemplate.getTemplateText(), theTemplate.getTemplateName());
+    } catch (Exception e) {
+      ourLog.error(e.getMessage(), e);
+    }
+    return myLiquidEngine.evaluate(doc, resource, null);
   }
+
+  @Override
+  protected EnumSet<TemplateTypeEnum> getStyle() {
+    return EnumSet.of(TemplateTypeEnum.LIQUID);
+  }
+
 }
