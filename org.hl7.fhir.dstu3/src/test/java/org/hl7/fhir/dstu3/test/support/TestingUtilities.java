@@ -265,6 +265,6 @@ public class TestingUtilities {
 	}
 
   public static String resourceNameToFile(String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "main", "resources", name);
+    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
   }
 }

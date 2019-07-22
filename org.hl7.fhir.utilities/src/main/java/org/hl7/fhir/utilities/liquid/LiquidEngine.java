@@ -1,10 +1,7 @@
 package org.hl7.fhir.utilities.liquid;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.fluentpath.IExpressionNode;
-import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
-import ca.uhn.fhir.fluentpath.IFluentPath;
-import ca.uhn.fhir.fluentpath.INarrativeConstantResolver;
+import ca.uhn.fhir.fluentpath.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
@@ -156,10 +153,10 @@ public class LiquidEngine implements INarrativeConstantResolver {
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);
       LiquidEngineContext nctxt = new LiquidEngineContext(ctxt.externalContext);
-      LiquidIncludeMap incl = new LiquidIncludeMap();
+      INarrativeConstantMap incl = engine.createLiquidIncludeMap();
       nctxt.vars.put("include", incl);
       for (String s : params.keySet()) {
-        incl.addProperty(s, engine.evaluate(ctxt, resource, resource, params.get(s)));
+        incl.addConstant(s, engine.evaluate(ctxt, resource, resource, params.get(s)));
       }
       for (LiquidNode n : doc.body) {
         n.evaluate(b, resource, nctxt);
