@@ -778,7 +778,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           // fix the slice names too while we're at it...
           for (TypeSlice ts : typeList)
             if (ts.type != null)
-              ts.defn.setSliceName(ts.type);
+              ts.defn.setSliceName(rootName(cpath)+Utilities.capitalize(ts.type));
 
           // ok passed the checks. 
           // copy the root diff, and then process any children it has
@@ -1069,6 +1069,12 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error("null min");
     }
     return res;
+  }
+
+
+  private String rootName(String cpath) {
+    String t = tail(cpath);
+    return t.replace("[x]", "");
   }
 
 
