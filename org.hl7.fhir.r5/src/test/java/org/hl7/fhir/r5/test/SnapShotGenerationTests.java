@@ -41,7 +41,6 @@ import org.hl7.fhir.r5.model.TestScript.TestActionComponent;
 import org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent;
 import org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent;
 import org.hl7.fhir.r5.test.SnapShotGenerationTests.TestFetchMode;
-import org.hl7.fhir.r5.test.SnapShotGenerationTests2.TestPKP;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.utils.CodingUtilities;
@@ -425,6 +424,7 @@ public class SnapShotGenerationTests {
   private void testGen() throws DefinitionException, FHIRException, IOException, EOperationOutcome {
     if (!Utilities.noString(test.register)) {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
+      pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();          
       pu.setIds(test.included, false);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
@@ -434,6 +434,7 @@ public class SnapShotGenerationTests {
     StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
     StructureDefinition output = test.getSource().copy();
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
+    pu.setNewSlicingProcessing(true);
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
@@ -462,6 +463,7 @@ public class SnapShotGenerationTests {
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition());
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
+      pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();          
       pu.sortDifferential(base, sd, url, errors);
       if (!errors.isEmpty())

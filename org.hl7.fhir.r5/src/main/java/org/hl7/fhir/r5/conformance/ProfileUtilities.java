@@ -64,6 +64,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -234,6 +235,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean igmode;
   private boolean exception;
   private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
+  private boolean newSlicingProcessing;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
@@ -422,7 +424,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw new DefinitionException("Circular snapshot references detected; cannot generate snapshot (stack = "+snapshotStack.toString()+")");
     snapshotStack.add(derived.getUrl());
 
-    if (webUrl != null && !webUrl.endsWith("/"))
+    if (!Utilities.noString(webUrl) && !webUrl.endsWith("/"))
       webUrl = webUrl + '/';
 
     derived.setSnapshot(new StructureDefinitionSnapshotComponent());
@@ -729,17 +731,33 @@ public class ProfileUtilities extends TranslatingUtilities {
           // we come here whether they are sliced in the diff, or whether the short cut is used. 
           if (typeList.get(0).type != null) {
             // this is the short cut method, we've just dived in and specified a type slice. 
-            // we insert a cloned element with the right types at the start of the diffMatches
-            ElementDefinition ed = new ElementDefinition();
-            ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
-            for (TypeSlice ts : typeList) 
-              ed.addType().setCode(ts.type);
-            ed.setSlicing(new ElementDefinitionSlicingComponent());
-            ed.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
-            ed.getSlicing().setRules(SlicingRules.CLOSED);
-            ed.getSlicing().setOrdered(false);
-            diffMatches.add(0, ed);
-            differential.getElement().add(ndc, ed);
+            // in R3 (and unpatched R4, as a workaround right now...
+            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+              // we insert a cloned element with the right types at the start of the diffMatches
+              ElementDefinition ed = new ElementDefinition();
+              ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
+              for (TypeSlice ts : typeList) 
+                ed.addType().setCode(ts.type);
+              ed.setSlicing(new ElementDefinitionSlicingComponent());
+              ed.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+              ed.getSlicing().setRules(SlicingRules.CLOSED);
+              ed.getSlicing().setOrdered(false);
+              diffMatches.add(0, ed);
+              differential.getElement().add(ndc, ed);
+            } else {
+              // as of R4, this changed; if there's no slice, there's no constraint on the slice types, only one the type. 
+              // so the element we insert specifies no types (= all types) allowed in the base, not just the listed type. 
+              // see also discussion here: https://chat.fhir.org/#narrow/stream/179177-conformance/topic/Slicing.20a.20non-repeating.20element             
+              ElementDefinition ed = new ElementDefinition();
+              ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
+              ed.setSlicing(new ElementDefinitionSlicingComponent());
+              ed.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+              ed.getSlicing().setRules(SlicingRules.CLOSED);
+              ed.getSlicing().setOrdered(false);
+              diffMatches.add(0, ed);
+              differential.getElement().add(ndc, ed);
+              
+            }
           }
           int ndl = findEndOfElement(differential, ndc);
           // the first element is setting up the slicing
@@ -4344,6 +4362,18 @@ public class ProfileUtilities extends TranslatingUtilities {
   public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
   }
-  
+
+
+  public boolean isNewSlicingProcessing() {
+    return newSlicingProcessing;
+  }
+
+
+  public void setNewSlicingProcessing(boolean newSlicingProcessing) {
+    this.newSlicingProcessing = newSlicingProcessing;
+  }
+
+
+
   
 }

@@ -248,7 +248,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }    
   }
 
-  public class ResourceContext {
+  public static class ResourceContext {
     Bundle bundleResource;
     
     DomainResource resourceResource;
