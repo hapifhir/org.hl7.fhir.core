@@ -773,9 +773,9 @@
       <isModifier value="false"/>
       <isSummary value="true"/>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding">
       <path value="Parameters.parameter.part.value[x]"/>
-      <sliceName value="Coding"/>
+      <sliceName value="valueCoding"/>
       <short value="If parameter is a data type"/>
       <definition value="If the parameter is a data type."/>
       <min value="1"/>
@@ -792,7 +792,7 @@
       <isModifier value="false"/>
       <isSummary value="true"/>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.id">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.id">
       <path value="Parameters.parameter.part.value[x].id"/>
       <representation value="xmlAttr"/>
       <short value="Unique id for inter-element referencing"/>
@@ -814,7 +814,7 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.extension">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.extension">
       <path value="Parameters.parameter.part.value[x].extension"/>
       <slicing>
         <discriminator>
@@ -846,7 +846,7 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.system">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.system">
       <path value="Parameters.parameter.part.value[x].system"/>
       <short value="Identity of the terminology system"/>
       <definition value="The identification of the code system that defines the meaning of the symbol in the code."/>
@@ -877,7 +877,7 @@
         <map value="fhir:Coding.system rdfs:subPropertyOf dt:CDCoding.codeSystem"/>
       </mapping>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.version">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.version">
       <path value="Parameters.parameter.part.value[x].version"/>
       <short value="Version of the system - if relevant"/>
       <definition value="The version of the code system which was used when choosing this code. Note that a well-maintained code system does not need the version reported, because the meaning of codes is consistent across versions. However this cannot consistently be assured, and when the meaning is not guaranteed to be consistent, the version SHOULD be exchanged."/>
@@ -907,7 +907,7 @@
         <map value="fhir:Coding.version rdfs:subPropertyOf dt:CDCoding.codeSystemVersion"/>
       </mapping>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.code">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.code">
       <path value="Parameters.parameter.part.value[x].code"/>
       <short value="Symbol in syntax defined by the system"/>
       <definition value="A symbol in syntax defined by the system. The symbol may be a predefined code or an expression in a syntax defined by the coding system (e.g. post-coordination)."/>
@@ -937,7 +937,7 @@
         <map value="fhir:Coding.code rdfs:subPropertyOf dt:CDCoding.code"/>
       </mapping>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.display">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.display">
       <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable">
         <valueBoolean value="true"/>
       </extension>
@@ -970,7 +970,7 @@
         <map value="fhir:Coding.display rdfs:subPropertyOf dt:CDCoding.displayName"/>
       </mapping>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.userSelected">
+    <element id="Parameters.parameter.part:foo.value[x]:valueCoding.userSelected">
       <path value="Parameters.parameter.part.value[x].userSelected"/>
       <short value="If this coding was chosen directly by the user"/>
       <definition value="Indicates that this coding was chosen by a user directly - e.g. off a pick list of available items (codes or displays)."/>

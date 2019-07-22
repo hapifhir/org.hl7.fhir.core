@@ -598,9 +598,9 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="Patient.deceased[x]:dateTime">
+    <element id="Patient.deceased[x]:deceasedDateTime">
       <path value="Patient.deceased[x]"/>
-      <sliceName value="dateTime"/>
+      <sliceName value="deceasedDateTime"/>
       <short value="Indicates if the individual is deceased or not"/>
       <definition value="Indicates if the individual is deceased or not."/>
       <comment value="New Comment"/>
