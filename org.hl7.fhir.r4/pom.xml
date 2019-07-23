@@ -104,4 +104,15 @@
 
 	</dependencies>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/*.out</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
+
 </project>
