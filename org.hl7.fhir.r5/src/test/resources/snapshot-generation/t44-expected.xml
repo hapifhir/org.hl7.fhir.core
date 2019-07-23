@@ -948,9 +948,9 @@
         <map value="363714003 |Interprets|"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity">
+    <element id="Observation.value[x]:valueQuantity">
       <path value="Observation.value[x]"/>
-      <sliceName value="Quantity"/>
+      <sliceName value="valueQuantity"/>
       <short value="some text for quantity"/>
       <definition value="The information determined as a result of making the observation, if the information has a simple value."/>
       <comment value="An observation may have; 1)  a single value here, 2)  both a value and a set of related or component values,  or 3)  only a set of related or component values. If a value is present, the datatype for this element should be determined by Observation.code.  A CodeableConcept with just a text would be used instead of a string if the field was usually coded, or if the type associated with the Observation.code defines a coded value.  For additional guidance, see the [Notes section](http://test.org/profile/observation.html#notes) below."/>
@@ -985,7 +985,7 @@
         <map value="363714003 |Interprets|"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.id">
+    <element id="Observation.value[x]:valueQuantity.id">
       <path value="Observation.value[x].id"/>
       <representation value="xmlAttr"/>
       <short value="Unique id for inter-element referencing"/>
@@ -1007,7 +1007,7 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.extension">
+    <element id="Observation.value[x]:valueQuantity.extension">
       <path value="Observation.value[x].extension"/>
       <slicing>
         <discriminator>
@@ -1039,7 +1039,7 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.value">
+    <element id="Observation.value[x]:valueQuantity.value">
       <path value="Observation.value[x].value"/>
       <short value="Numerical value (with implicit precision)"/>
       <definition value="The value of the measured amount. The value includes an implicit precision in the presentation of the value."/>
@@ -1066,7 +1066,7 @@
         <map value="PQ.value, CO.value, MO.value, IVL.high or IVL.low depending on the value"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.comparator">
+    <element id="Observation.value[x]:valueQuantity.comparator">
       <path value="Observation.value[x].comparator"/>
       <short value="&lt; | &lt;= | &gt;= | &gt; - how to understand the value"/>
       <definition value="How the value should be understood and represented - whether the actual value is greater or less than the stated value due to measurement issues; e.g. if the comparator is &quot;&lt;&quot; , then the real value is &lt; stated value."/>
@@ -1102,7 +1102,7 @@
         <map value="IVL properties"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.unit">
+    <element id="Observation.value[x]:valueQuantity.unit">
       <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable">
         <valueBoolean value="true"/>
       </extension>
@@ -1131,7 +1131,7 @@
         <map value="PQ.unit"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.system">
+    <element id="Observation.value[x]:valueQuantity.system">
       <path value="Observation.value[x].system"/>
       <short value="System that defines coded unit form"/>
       <definition value="The identification of the system that provides the coded form of the unit."/>
@@ -1158,7 +1158,7 @@
         <map value="CO.codeSystem, PQ.translation.codeSystem"/>
       </mapping>
     </element>
-    <element id="Observation.value[x]:Quantity.code">
+    <element id="Observation.value[x]:valueQuantity.code">
       <path value="Observation.value[x].code"/>
       <short value="Coded form of the unit"/>
       <definition value="A computer processable form of the unit in some unit representation system."/>

@@ -404,7 +404,8 @@ public class SnapShotGenerationTests {
   private void testGen() throws DefinitionException, FHIRException, IOException, EOperationOutcome {
     if (!Utilities.noString(test.register)) {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
-      List<String> errors = new ArrayList<String>();          
+      pu.setNewSlicingProcessing(true);
+      List<String> errors = new ArrayList<String>();
       pu.setIds(test.included, false);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
       pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
@@ -413,6 +414,7 @@ public class SnapShotGenerationTests {
     StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
     StructureDefinition output = test.getSource().copy();
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
+    pu.setNewSlicingProcessing(true);
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
@@ -441,7 +443,8 @@ public class SnapShotGenerationTests {
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition());
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
-      List<String> errors = new ArrayList<String>();          
+      pu.setNewSlicingProcessing(true);
+      List<String> errors = new ArrayList<String>();
       pu.sortDifferential(base, sd, url, errors);
       if (!errors.isEmpty())
         throw new FHIRException(errors.get(0));
