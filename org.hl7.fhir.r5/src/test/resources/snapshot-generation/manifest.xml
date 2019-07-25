@@ -18,6 +18,9 @@
   <test gen="true" id="t4">
     <rule text="The patient.identifier documentation must be right" fhirpath="fixture('t4-output').snapshot.element.where(path = 'Patient.identifier').definition.trace('definition') != '... some more doco'"/>
   </test>
+  <test gen="true" id="t4a">
+    <rule text="The patient.contact.identifier documentation must be right" fhirpath="fixture('t4a-output').snapshot.element.where(path = 'Patient.contact.telecom').definition.trace('definition') != '... some more doco'"/>
+  </test>
   <test gen="true" id="t5">
     <rule text="The patient.deceased type must be right" fhirpath="fixture('t5-output').snapshot.element.where(base.path = 'Patient.deceased[x]').type.code = 'dateTime'"/>
     <rule text="The patient.deceased path must be right" fhirpath="fixture('t5-output').snapshot.element.where(base.path = 'Patient.deceased[x]').path = 'Patient.deceased[x]'"/>
@@ -160,6 +163,7 @@
     <rule text="Element count must be increased by 15" fhirpath="fixture('t29-output').snapshot.element.count().trace('t29o') = fixture('parameters').snapshot.element.count().trace('t29') + 16"/>
     <rule text="There is an element with id 'Parameters.parameter.part:foo.id'" fhirpath="fixture('t29-output').snapshot.element.where(id = 'Parameters.parameter.part:foo.id').count()=1"/>
   </test>
+  <test gen="true" sort="true" id="t29a" fail="true"/>
   <test gen="true" sort="true" id="t30b" include="t30a">
     <rule text="Snapshot doesn't result in an error'" fhirpath="fixture('t30b-output').snapshot.element.count().trace('t30bo')&gt;1"/>
   </test>
@@ -207,6 +211,7 @@
     <rule text="The element definition for value[x] quantity slice should have sliceName = 'Quantity'" fhirpath="fixture('t43-output').snapshot.element.where(id = 'Observation.value[x]:valueQuantity').check(exists(), 'no slice').sliceName = 'valueQuantity'"/>
     <rule text="The element definition for value[x].value quantity slice should have sliceName = 'Quantity'" fhirpath="fixture('t43-output').snapshot.element.where(id = 'Observation.value[x]:valueQuantity.value').check(exists(), 'no slice').min = 1"/>
   </test>
+  <test gen="true" sort="true" id="t43a" fail="true"/>
   <test gen="true" sort="true" id="t44">
     <rule text="There should be 9 element definitions for value[x] (base + quantity + walking into quantity" fhirpath="fixture('t44-output').snapshot.element.where(path.startsWith('Observation.value')).count() = 9"/>
     <rule text="The element definition for value[x] should have 1 type" fhirpath="fixture('t44-output').snapshot.element.where(id = 'Observation.value[x]').type.count().trace('count') = 1"/>
