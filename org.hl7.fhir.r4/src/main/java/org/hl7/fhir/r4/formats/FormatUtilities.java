@@ -145,7 +145,7 @@ public abstract class FormatUtilities {
   }
 
   private static int firstIndexOf(byte[] source, char c, int scanLength) {
-    for (int i = 0; i < Math.max(source.length, scanLength); i++) {
+    for (int i = 0; i < Math.min(source.length, scanLength); i++) {
       if (source[i] == c)
         return i;
     }
