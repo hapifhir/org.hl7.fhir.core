@@ -909,7 +909,7 @@
     </element>
     <element id="Patient.address.extension:Geolocation.extension:latitude.valueDecimal.extension">
       <path value="Patient.address.extension.extension.valueDecimal.extension"/>
-      <slicing id="3">
+      <slicing>
         <discriminator>
           <type value="value"/>
           <path value="url"/>
@@ -1229,7 +1229,7 @@
     </element>
     <element id="Patient.address.extension:Geolocation.extension:longitude.valueDecimal.extension">
       <path value="Patient.address.extension.extension.valueDecimal.extension"/>
-      <slicing id="4">
+      <slicing>
         <discriminator>
           <type value="value"/>
           <path value="url"/>

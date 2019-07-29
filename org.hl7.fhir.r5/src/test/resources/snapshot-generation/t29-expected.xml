@@ -1077,16 +1077,16 @@
         <code value="Coding"/>
       </type>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:valueCoding">
-      <path value="Parameters.parameter.part.value[x]"/>
+    <element id="Parameters.parameter.part:foo.valueCoding:valueCoding">
+      <path value="Parameters.parameter.part.valueCoding"/>
       <sliceName value="valueCoding"/>
       <min value="1"/>
       <type>
         <code value="Coding"/>
       </type>
     </element>
-    <element id="Parameters.parameter.part:foo.value[x]:Coding.code">
-      <path value="Parameters.parameter.part.value[x].code"/>
+    <element id="Parameters.parameter.part:foo.valueCoding:valueCoding.code">
+      <path value="Parameters.parameter.part.valueCoding.code"/>
       <min value="1"/>
     </element>
   </differential>

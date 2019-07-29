@@ -142,9 +142,10 @@
   <test gen="true" id="t22">
     <rule text="element count increased by 76" fhirpath="fixture('t22-output').snapshot.element.count().trace('t22o') = fixture('patient').snapshot.element.count().trace('t22patient') + 76"/>
   </test>
-  <test gen="true" id="t23">
+  <test gen="true" sort="true" id="t23">
     <rule text="element count increased by ??" fhirpath="fixture('t23-output').snapshot.element.count().trace('t23o') = fixture('patient').snapshot.element.count().trace('t23patient') + 11"/>
   </test>
+  <test gen="true" id="t23a" fail="true"/>
   <test gen="true" id="t24b" register="t24a">
     <rule text="Element count of profile a is increased by 22 from base Patient" fhirpath="fixture('t24b-output').snapshot.element.count().trace('t24ao') = fixture('patient').snapshot.element.count().trace('t24Patient') + 22"/>
     <rule text="Element count of profile b is identical to profile a" fhirpath="fixture('t24b-output').snapshot.element.count().trace('t24bo') = fixture('t24b-include').snapshot.element.count().trace('t24ao')"/>
@@ -218,5 +219,7 @@
     <rule text="The element definition for value[x] should have short = 'some text'" fhirpath="fixture('t44-output').snapshot.element.where(id = 'Observation.value[x]').short = 'some text'"/>
     <rule text="The element definition for value[x] quantity slice should have sliceName = 'Quantity'" fhirpath="fixture('t44-output').snapshot.element.where(id = 'Observation.value[x]:valueQuantity').check(exists(), 'no slice').sliceName = 'valueQuantity'"/>
     <rule text="The element definition for value[x].value quantity slice should have sliceName = 'Quantity'" fhirpath="fixture('t44-output').snapshot.element.where(id = 'Observation.value[x]:valueQuantity.value').check(exists(), 'no slice').min = 1"/>
+  </test>
+  <test gen="true" id="samply1">
   </test>
 </snapshot-generation-tests>

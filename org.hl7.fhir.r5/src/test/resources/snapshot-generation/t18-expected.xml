@@ -325,7 +325,7 @@
     </element>
     <element id="Patient.modifierExtension">
       <path value="Patient.modifierExtension"/>
-      <slicing id="5">
+      <slicing>
         <discriminator>
           <type value="value"/>
           <path value="url"/>

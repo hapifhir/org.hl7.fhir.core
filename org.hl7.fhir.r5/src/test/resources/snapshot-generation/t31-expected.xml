@@ -805,7 +805,7 @@
     </element>
     <element id="Parameters.parameter:string.value[x].extension">
       <path value="Parameters.parameter.value[x].extension"/>
-      <slicing id="9">
+      <slicing>
         <discriminator>
           <type value="value"/>
           <path value="url"/>

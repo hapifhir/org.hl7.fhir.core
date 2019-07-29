@@ -304,7 +304,7 @@
     </element>
     <element id="Patient.extension">
       <path value="Patient.extension"/>
-      <slicing id="1">
+      <slicing>
         <discriminator>
           <type value="value"/>
           <path value="url"/>

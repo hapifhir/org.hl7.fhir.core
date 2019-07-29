@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
@@ -161,12 +162,16 @@ public class SnapShotGenerationTests {
       this.output = output;
     }
     public void load() throws FHIRFormatError, FileNotFoundException, IOException {
-      source = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("snapshot-generation", id+"-input.xml"))));
-      expected = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("snapshot-generation", id+"-expected.xml"))));
+      if (new File(TestingUtilities.resourceNameToFile("snapshot-generation", id+"-input.json")).exists())
+        source = (StructureDefinition) new JsonParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation", id+"-input.json")));
+      else
+        source = (StructureDefinition) new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation", id+"-input.xml")));
+      if (!fail)
+        expected = (StructureDefinition) new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation", id+"-expected.xml")));
       if (!Utilities.noString(include))
-        included = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("snapshot-generation", include+".xml"))));
+        included = (StructureDefinition) new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation", include+".xml")));
       if (!Utilities.noString(register)) {
-        included = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("snapshot-generation", register+".xml"))));
+        included = (StructureDefinition) new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("snapshot-generation", register+".xml")));
       }
     }
   }
@@ -338,7 +343,7 @@ public class SnapShotGenerationTests {
       if (url == null)
         return null;
       for (TestDetails t : tests) {
-        if (url.equals(t.expected.getUrl()))
+        if (t.expected != null && url.equals(t.expected.getUrl()))
           return t.expected;
         if (t.included != null && url.equals(t.included.getUrl()))
           return t.expected;
@@ -417,7 +422,7 @@ public class SnapShotGenerationTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId()+"-output.xml")), test.getOutput());
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId()+"-actual.xml")), test.getOutput());
     Assert.assertTrue("Output does not match expected", test.expected.equalsDeep(test.output));
   }
 
@@ -435,6 +440,8 @@ public class SnapShotGenerationTests {
     StructureDefinition output = test.getSource().copy();
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
     pu.setNewSlicingProcessing(true);
+    pu.setThrowException(true);
+    pu.setDebug(true);
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
@@ -443,12 +450,17 @@ public class SnapShotGenerationTests {
       if (errors.size() > 0)
         throw new FHIRException("Sort failed: "+errors.toString());
     }
-    pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile", test.getSource().getName());
+    try {
+      pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile", test.getSource().getName());
+    } catch (Throwable e) {
+      System.out.println("\r\nException: "+e.getMessage());
+      throw e;
+    }
     if (output.getDifferential().hasElement())
       new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
     test.output = output;
     TestingUtilities.context().cacheResource(output);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId()+"-output.xml")), output);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId()+"-actual.xml")), output);
     StructureDefinition t1 = test.expected.copy();
     t1.setText(null);
     StructureDefinition t2 = test.output.copy();
