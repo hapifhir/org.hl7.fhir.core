@@ -806,7 +806,27 @@
 					"source": "azatadha/param-profile.xml",
 					"errorCount": 0
 				}
-      }
+      },
+			"profile-slicing-ok-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "profile-slicing-profile-open.xml",
+					"errorCount": 0
+				}
+			},
+			"profile-slicing-bad-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "profile-slicing-profile-open.xml",
+					"errorCount": 1
+				}
+			}      
 		}
 	}
 }

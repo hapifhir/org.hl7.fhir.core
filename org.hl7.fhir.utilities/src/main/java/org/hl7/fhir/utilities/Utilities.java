@@ -123,12 +123,21 @@ public class Utilities {
       if (isBlank(string)) {
         return false;
       }
-      if (string.startsWith("-"))
-        string = string.substring(1);
-      for (char next : string.toCharArray()) {
+      String value = string.startsWith("-") ? string.substring(1) : string;
+      for (char next : value.toCharArray()) {
         if (!Character.isDigit(next)) {
           return false;
         }
+      }
+      // check bounds -2,147,483,648..2,147,483,647
+      if (value.length() > 10)
+        return false;
+      if (string.startsWith("-")) {
+        if (value.length() == 10 && string.compareTo("2147483648") > 0)
+          return false;       
+      } else {
+        if (value.length() == 10 && string.compareTo("2147483647") > 0)
+          return false;
       }
       return true;
     }
@@ -142,25 +151,71 @@ public class Utilities {
       }
     }
     
-    public static boolean isDecimal(String string) {
-      if (isBlank(string)) {
-        return false;
+    public enum DecimalStatus {
+      BLANK, SYNTAX, RANGE, OK
+    }
+    
+    public static boolean isDecimal(String value, boolean exponent) {
+      DecimalStatus ds = checkDecimal(value, exponent);
+      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+    }
+     
+    public static DecimalStatus checkDecimal(String value, boolean exponent) {
+      if (isBlank(value)) {
+        return DecimalStatus.BLANK;
       }
-      if (string.startsWith("-"))
-        string = string.substring(1);
       
       boolean havePeriod = false;
-      for (char next : string.toCharArray()) {
+      boolean haveExponent = false;
+      boolean haveMinus = false;
+      boolean haveDigits = false;
+      int preDecLength = 0;
+      int postDecLength = 0;
+      int exponentLength = 0;
+      int length = 0;
+      for (char next : value.toCharArray()) {
         if (next == '.') {
-          if (havePeriod) {
-            return false;
-          }
+          if (!haveDigits || havePeriod || haveExponent) 
+            return DecimalStatus.SYNTAX;
           havePeriod = true;
+          preDecLength = length;
+          length = 0;
+        } else if (next == '-') {
+          if (haveDigits || haveMinus)
+            return DecimalStatus.SYNTAX;
+          haveMinus = true;
+        } else if (next == 'e') {
+          if (!haveDigits || haveExponent || !exponent) 
+            return DecimalStatus.SYNTAX;
+          haveExponent = true;
+          haveMinus = false;
+          haveDigits = false;
+          if (havePeriod)
+            postDecLength = length;
+          else 
+            preDecLength = length;
+          length = 0;
         } else if (!Character.isDigit(next)) {
-          return false;
+          return DecimalStatus.SYNTAX;
+        } else {
+          haveDigits = true;
+          length++;
         }
       }
-      return true;
+      if (haveExponent) 
+        exponentLength = length;
+      else if (havePeriod)
+        postDecLength = length;
+      else
+        preDecLength = length;
+      
+      // now, bounds checking - these are arbitrary
+      if (exponentLength > 4)
+        return DecimalStatus.RANGE;
+      if (preDecLength + postDecLength > 18)
+        return DecimalStatus.RANGE;
+      
+      return DecimalStatus.OK;
     }
     
 	public static String camelCase(String value) {
