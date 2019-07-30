@@ -165,6 +165,12 @@ public class Utilities {
         return DecimalStatus.BLANK;
       }
       
+      // check for leading zeros
+      if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
+        return DecimalStatus.SYNTAX;
+      if (value.startsWith("-0")  && !"-0".equals(value) && !value.startsWith("-0."))
+        return DecimalStatus.SYNTAX;
+      
       boolean havePeriod = false;
       boolean haveExponent = false;
       boolean haveMinus = false;

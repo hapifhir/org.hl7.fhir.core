@@ -799,7 +799,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean check(String v1, String v2) {
-    return v1 == null ? Utilities.noString(v2) : v1.equals(v2);
+    return v1 == null ? Utilities.noString(v1) : v1.equals(v2);
   }
 
   private void checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed) {
@@ -1641,17 +1641,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true);
         if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is not a valid decimal")) 
           warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is outside the range of commonly/reasonably supported decimals");
-        if (e.primitiveValue().contains(".")) {
-          String head = e.primitiveValue().substring(0, e.primitiveValue().indexOf("."));
-          if (head.startsWith("-"))
-            head = head.substring(1);
-          int i = 0;
-          while (head.startsWith("0")) {
-            i++;
-            head = head.substring(1);
-          }
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, i <= 1, "The value '" + e.primitiveValue() + "' is not a valid decimal (leading 0s)");
-        }
       }
     }
     if (type.equals("instant")) {

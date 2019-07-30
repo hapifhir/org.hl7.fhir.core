@@ -222,4 +222,6 @@
   </test>
   <test gen="true" id="samply1">
   </test>
+  <test gen="true" id="au1" include="au1a">
+  </test>
 </snapshot-generation-tests>
