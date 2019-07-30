@@ -196,7 +196,8 @@
 				"errorCount": 0
 			},
 			"primitive-bad.xml": {
-				"errorCount": 47
+				"errorCount": 47,
+				"warningCount": 2
 			},
 			"primitive-bad-empty.xml": {
 				"errorCount": 3
