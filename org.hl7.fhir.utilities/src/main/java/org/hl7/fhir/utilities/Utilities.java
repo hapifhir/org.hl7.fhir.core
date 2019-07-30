@@ -123,6 +123,8 @@ public class Utilities {
       if (isBlank(string)) {
         return false;
       }
+      if (string.startsWith("-"))
+        string = string.substring(1);
       for (char next : string.toCharArray()) {
         if (!Character.isDigit(next)) {
           return false;
