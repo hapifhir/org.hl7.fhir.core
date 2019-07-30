@@ -1097,6 +1097,8 @@ public class Utilities {
       String s = p[i];
       if (s.contains("[")) {
         String si = s.substring(s.indexOf("[")+1, s.length()-1);
+        if (!Utilities.isInteger(si))
+          throw new FHIRException("The FHIRPath expression '"+path+"' is not valid");
         s = s.substring(0, s.indexOf("["))+"["+Integer.toString(Integer.parseInt(si)+1)+"]";
       }
       if (i < p.length - 1 && p[i+1].startsWith(".ofType(")) {
