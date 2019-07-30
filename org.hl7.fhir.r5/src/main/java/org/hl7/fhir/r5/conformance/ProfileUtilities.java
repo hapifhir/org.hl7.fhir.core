@@ -1876,7 +1876,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 if (tt == null && td.getCodeElement().hasExtension(ToolingExtensions.EXT_JSON_TYPE))
                   tt = "*"; // 
                 b.append(tt);
-                if (td.hasCode() && (t.equals(tt) || "Extension".equals(tt) ||
+                if (td.hasCode() && (tt.equals(t) || "Extension".equals(tt) ||
                     "Element".equals(tt) || "*".equals(tt) ||
                     (("Resource".equals(tt) || ("DomainResource".equals(tt)) && pkp.isResource(t)))))
                   ok = true;

@@ -135,6 +135,7 @@ import org.hl7.fhir.r5.utils.Version;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -251,6 +252,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean ok = true;
       for (ValidationMessage v : valerrors)
         ok = ok && !v.getLevel().isError();
+      if(item instanceof Element) {
+        Element e = (Element) item;
+        System.out.println("Conforms to: resource "+(e.getIdBase() != null ? item.getIdBase() : e.getChildValue("id"))+", url = "+url+", outcome = "+Boolean.toString(ok));
+      }
       return ok;
     }
 
@@ -332,7 +337,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     public ResourceProfiles(Element resource, NodeStack stack) {
       this.resource = resource;
-      if (this.resource.getName().equals("contained"))
+      if (this.resource.getName().equals("contained") && stack.parent != null)
         this.owner = stack.parent.element;
       else
         this.owner = resource;
@@ -794,7 +799,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean check(String v1, String v2) {
-    return v1 == null ? Utilities.noString(v1) : v1.equals(v2);
+    return v1 == null ? Utilities.noString(v2) : v1.equals(v2);
   }
 
   private void checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed) {
@@ -1379,6 +1384,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.InstantType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.InstantType) fixed).getValue().toString(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.InstantType) fixed).asStringValue() + "'");
+      else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
+        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value),
+            "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.CodeType) fixed).getValue() + "'");
       else if (fixed instanceof org.hl7.fhir.r5.model.StringType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.StringType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.StringType) fixed).getValue() + "'");
@@ -1397,9 +1405,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.UuidType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UuidType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.UuidType) fixed).getValue() + "'");
-      else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
-        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value),
-            "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.CodeType) fixed).getValue() + "'");
       else if (fixed instanceof org.hl7.fhir.r5.model.IdType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IdType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.IdType) fixed).getValue() + "'");
@@ -1633,7 +1638,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isDecimal(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is not a valid decimal");
+        DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true);
+        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is not a valid decimal")) 
+          warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is outside the range of commonly/reasonably supported decimals");
         if (e.primitiveValue().contains(".")) {
           String head = e.primitiveValue().substring(0, e.primitiveValue().indexOf("."));
           if (head.startsWith("-"))
@@ -4207,9 +4214,10 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       Element resource, Element element, NodeStack stack) throws FHIRException {
     if (resource.getName().equals("contained")) {
       NodeStack ancestor = stack;
-      while (!ancestor.element.isResource() || ancestor.element.getName().equals("contained"))
+      while (ancestor != null && ancestor.element != null && (!ancestor.element.isResource() || "contained".equals(ancestor.element.getName())))
         ancestor = ancestor.parent;
-      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
+      if (ancestor != null && ancestor.element != null)
+        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
     } else
       checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
     if (definition.getFixed()!=null)
