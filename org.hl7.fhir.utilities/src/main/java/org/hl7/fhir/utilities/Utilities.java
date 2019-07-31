@@ -70,20 +70,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.SourceDataLine;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import net.sf.saxon.TransformerFactoryImpl;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Utilities {
 
@@ -128,12 +120,26 @@ public class Utilities {
   
   
     public static boolean isInteger(String string) {
-      try {
-        int i = Integer.parseInt(string);
-        return i != i+1;
-      } catch (Exception e) {
+      if (isBlank(string)) {
         return false;
       }
+      String value = string.startsWith("-") ? string.substring(1) : string;
+      for (char next : value.toCharArray()) {
+        if (!Character.isDigit(next)) {
+          return false;
+        }
+      }
+      // check bounds -2,147,483,648..2,147,483,647
+      if (value.length() > 10)
+        return false;
+      if (string.startsWith("-")) {
+        if (value.length() == 10 && string.compareTo("2147483648") > 0)
+          return false;       
+      } else {
+        if (value.length() == 10 && string.compareTo("2147483647") > 0)
+          return false;
+      }
+      return true;
     }
     
     public static boolean isHex(String string) {
@@ -145,26 +151,77 @@ public class Utilities {
       }
     }
     
-    public static boolean isFloat(String string) {
-      if (Utilities.noString(string))
-        return false;
-      try {
-        float r = Float.parseFloat(string);
-        return r != r + 1; // just to suppress the hint
-      } catch (Exception e) {
-        return false;
-      }
+    public enum DecimalStatus {
+      BLANK, SYNTAX, RANGE, OK
     }
     
-    public static boolean isDecimal(String string) {
-      if (Utilities.noString(string))
-        return false;
-      try {
-        BigDecimal bd = new BigDecimal(string);
-        return bd != null;
-      } catch (Exception e) {
-        return false;
+    public static boolean isDecimal(String value, boolean exponent) {
+      DecimalStatus ds = checkDecimal(value, exponent);
+      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+    }
+     
+    public static DecimalStatus checkDecimal(String value, boolean exponent) {
+      if (isBlank(value)) {
+        return DecimalStatus.BLANK;
       }
+      
+      // check for leading zeros
+      if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
+        return DecimalStatus.SYNTAX;
+      if (value.startsWith("-0")  && !"-0".equals(value) && !value.startsWith("-0."))
+        return DecimalStatus.SYNTAX;
+      
+      boolean havePeriod = false;
+      boolean haveExponent = false;
+      boolean haveMinus = false;
+      boolean haveDigits = false;
+      int preDecLength = 0;
+      int postDecLength = 0;
+      int exponentLength = 0;
+      int length = 0;
+      for (char next : value.toCharArray()) {
+        if (next == '.') {
+          if (!haveDigits || havePeriod || haveExponent) 
+            return DecimalStatus.SYNTAX;
+          havePeriod = true;
+          preDecLength = length;
+          length = 0;
+        } else if (next == '-') {
+          if (haveDigits || haveMinus)
+            return DecimalStatus.SYNTAX;
+          haveMinus = true;
+        } else if (next == 'e') {
+          if (!haveDigits || haveExponent || !exponent) 
+            return DecimalStatus.SYNTAX;
+          haveExponent = true;
+          haveMinus = false;
+          haveDigits = false;
+          if (havePeriod)
+            postDecLength = length;
+          else 
+            preDecLength = length;
+          length = 0;
+        } else if (!Character.isDigit(next)) {
+          return DecimalStatus.SYNTAX;
+        } else {
+          haveDigits = true;
+          length++;
+        }
+      }
+      if (haveExponent) 
+        exponentLength = length;
+      else if (havePeriod)
+        postDecLength = length;
+      else
+        preDecLength = length;
+      
+      // now, bounds checking - these are arbitrary
+      if (exponentLength > 4)
+        return DecimalStatus.RANGE;
+      if (preDecLength + postDecLength > 18)
+        return DecimalStatus.RANGE;
+      
+      return DecimalStatus.OK;
     }
     
 	public static String camelCase(String value) {
@@ -357,35 +414,7 @@ public class Utilities {
   }
 
 
-  public static byte[] saxonTransform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException  {
-    TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
-    Transformer t = f.newTransformer(xsrc);
- 
-    t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
-    return out.toByteArray();    
-  }
-  
-  public static byte[] transform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException  {
-    TransformerFactory f = TransformerFactory.newInstance();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
-    Transformer t = f.newTransformer(xsrc);
 
-    t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
-    return out.toByteArray();    
-  }
   
   public static void bytesToFile(byte[] content, String filename) throws IOException  {
     FileOutputStream out = new FileOutputStream(filename);
@@ -394,52 +423,6 @@ public class Utilities {
     
   }
 
-  public static String saxonTransform(String source, String xslt) throws TransformerException, FileNotFoundException  {
-    TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
-    Transformer t = f.newTransformer(xsrc);
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new ByteArrayOutputStream());
-    t.transform(src, res);
-    return res.getOutputStream().toString();   
-  }
-
-  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException  {
-  	saxonTransform(xsltDir, source, xslt, dest, alt, null);
-  }
-
-  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws FileNotFoundException, TransformerException  {
-    TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
-    Transformer t = f.newTransformer(xsrc);
- 		if (params != null) {
- 			for (Map.Entry<String, String> entry : params.entrySet()) {
- 				t.setParameter(entry.getKey(), entry.getValue());
- 			}
-  	}
-    
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new FileOutputStream(dest));
-    t.transform(src, res);    
-  }
-  
-  public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException  {
-
-    TransformerFactory f = TransformerFactory.newInstance();
-    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
-    Transformer t = f.newTransformer(xsrc);
-
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new FileOutputStream(dest));
-    t.transform(src, res);
-    
-  }
 
 
   public static String appendSlash(String definitions) {
@@ -920,38 +903,6 @@ public class Utilities {
   }
 
 
-  // http://stackoverflow.com/questions/3780406/how-to-play-a-sound-alert-in-a-java-application
-  public static float SAMPLE_RATE = 8000f;
-  
-  public static void tone(int hz, int msecs) {
-      tone(hz, msecs, 1.0);
-   }
-
-  public static void tone(int hz, int msecs, double vol) {
-    try {
-      byte[] buf = new byte[1];
-      AudioFormat af = 
-          new AudioFormat(
-              SAMPLE_RATE, // sampleRate
-              8,           // sampleSizeInBits
-              1,           // channels
-              true,        // signed
-              false);      // bigEndian
-      SourceDataLine sdl;
-      sdl = AudioSystem.getSourceDataLine(af);
-      sdl.open(af);
-      sdl.start();
-      for (int i=0; i < msecs*8; i++) {
-        double angle = i / (SAMPLE_RATE / hz) * 2.0 * Math.PI;
-        buf[0] = (byte)(Math.sin(angle) * 127.0 * vol);
-        sdl.write(buf,0,1);
-      }
-      sdl.drain();
-      sdl.stop();
-      sdl.close();
-    } catch (Exception e) {
-    }
-  }
 
 
   public static boolean isOid(String cc) {
@@ -1193,6 +1144,34 @@ public class Utilities {
       if (!source.contains(s))
         extra.add(s);
     
+  }
+
+  /**
+   * Only handles simple FHIRPath expressions of the type produced by the validator
+   * 
+   * @param path
+   * @return
+   */
+  public static String fhirPathToXPath(String path) {
+    String[] p = path.split("\\.");
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
+    int i = 0;
+    while (i < p.length) {
+      String s = p[i];
+      if (s.contains("[")) {
+        String si = s.substring(s.indexOf("[")+1, s.length()-1);
+        if (!Utilities.isInteger(si))
+          throw new FHIRException("The FHIRPath expression '"+path+"' is not valid");
+        s = s.substring(0, s.indexOf("["))+"["+Integer.toString(Integer.parseInt(si)+1)+"]";
+      }
+      if (i < p.length - 1 && p[i+1].startsWith(".ofType(")) {
+        i++;
+        s = s + capitalize(p[i].substring(8, p.length-1));
+      }
+      b.append(s); 
+      i++;
+    }
+    return b.toString();
   }
 
 

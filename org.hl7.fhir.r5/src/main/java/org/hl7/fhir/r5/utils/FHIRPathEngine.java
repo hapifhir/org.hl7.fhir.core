@@ -1,16 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.util.ElementUtil;
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
@@ -20,38 +11,19 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BaseDateTimeType;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DateType;
-import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.model.ExpressionNode.Function;
-import org.hl7.fhir.r5.model.ExpressionNode.Kind;
-import org.hl7.fhir.r5.model.ExpressionNode.Operation;
-import org.hl7.fhir.r5.model.ExpressionNode.SourceLocation;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ExpressionNode.*;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.TemporalPrecisionEnum;
-import org.hl7.fhir.r5.model.TimeType;
-import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /*-
  * #%L
@@ -72,9 +44,6 @@ import org.hl7.fhir.utilities.Utilities;
  * limitations under the License.
  * #L%
  */
-
-//import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import ca.uhn.fhir.util.ElementUtil;
 
 /**
  * 
@@ -1033,7 +1002,7 @@ public class FHIRPathEngine {
       return new StringType(processConstantString(lexer.take(), lexer)).noExtensions();
     } else if (Utilities.isInteger(lexer.getCurrent())) {
       return new IntegerType(lexer.take()).noExtensions();
-    } else if (Utilities.isDecimal(lexer.getCurrent())) {
+    } else if (Utilities.isDecimal(lexer.getCurrent(), false)) {
       return new DecimalType(lexer.take()).noExtensions();
     } else if (Utilities.existsInList(lexer.getCurrent(), "true", "false")) {
       return new BooleanType(lexer.take()).noExtensions();
@@ -1110,6 +1079,7 @@ public class FHIRPathEngine {
     case Descendants: return checkParamCount(lexer, location, exp, 0);
     case MemberOf: return checkParamCount(lexer, location, exp, 1);
     case Trace: return checkParamCount(lexer, location, exp, 1, 2);
+    case Check: return checkParamCount(lexer, location, exp, 2);
     case Today: return checkParamCount(lexer, location, exp, 0);
     case Now: return checkParamCount(lexer, location, exp, 0);
     case Resolve: return checkParamCount(lexer, location, exp, 0);
@@ -2549,6 +2519,10 @@ public class FHIRPathEngine {
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     }
+    case Check : {
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return focus; 
+    }
     case Today : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Now : 
@@ -2741,6 +2715,7 @@ public class FHIRPathEngine {
     case Descendants : return funcDescendants(context, focus, exp);
     case MemberOf : return funcMemberOf(context, focus, exp);
     case Trace : return funcTrace(context, focus, exp);
+    case Check : return funcCheck(context, focus, exp);
     case Today : return funcToday(context, focus, exp);
     case Now : return funcNow(context, focus, exp);
     case Resolve : return funcResolve(context, focus, exp);
@@ -2896,7 +2871,7 @@ public class FHIRPathEngine {
 
       if (!Utilities.noString(f)) {
 
-        if (exp.getParameters().size() != 2) {
+        if (exp.getParameters().size() == 2) {
 
           String t = convertToString(execute(context, focus, exp.getParameters().get(0), true));
           String r = convertToString(execute(context, focus, exp.getParameters().get(1), true));
@@ -3018,7 +2993,7 @@ public class FHIRPathEngine {
   private List<Base> funcToDecimal(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     String s = convertToString(focus);
     List<Base> result = new ArrayList<Base>();
-    if (Utilities.isDecimal(s))
+    if (Utilities.isDecimal(s, true))
       result.add(new DecimalType(s).noExtensions());
     if ("true".equals(s))
       result.add(new DecimalType(1).noExtensions());
@@ -3484,6 +3459,16 @@ public class FHIRPathEngine {
     return focus;
   }
 
+  private List<Base> funcCheck(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (!convertToBoolean(n1)) {
+      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      String name = n2.get(0).primitiveValue();
+      throw new FHIRException("check failed: "+name);
+    }
+    return focus;
+  }
+
   private List<Base> funcDistinct(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     if (focus.size() <= 1)
       return focus;
@@ -3754,7 +3739,7 @@ public class FHIRPathEngine {
     if (s.contains(" ")) {
       String v = s.substring(0, s.indexOf(" ")).trim();
       s = s.substring(s.indexOf(" ")).trim();
-      if (!Utilities.isDecimal(v))
+      if (!Utilities.isDecimal(v, false))
         return null;
       if (s.startsWith("'") && s.endsWith("'"))
         return Quantity.fromUcum(v, s.substring(1, s.length()-1));
@@ -3777,7 +3762,7 @@ public class FHIRPathEngine {
       else
         return null;      
     } else {
-      if (Utilities.isDecimal(s))
+      if (Utilities.isDecimal(s, true))
         return new Quantity().setValue(new BigDecimal(s)).setSystem("http://unitsofmeasure.org").setCode("1");
       else
         return null;
@@ -3796,7 +3781,7 @@ public class FHIRPathEngine {
     else if (focus.get(0) instanceof DecimalType)
       result.add(new BooleanType(true).noExtensions());
     else if (focus.get(0) instanceof StringType)
-      result.add(new BooleanType(Utilities.isDecimal(convertToString(focus.get(0)))).noExtensions());
+      result.add(new BooleanType(Utilities.isDecimal(convertToString(focus.get(0)), true)).noExtensions());
     else 
       result.add(new BooleanType(false).noExtensions());
     return result;
@@ -4197,7 +4182,7 @@ public class FHIRPathEngine {
     }
 
     if (focus == null)
-      throw new DefinitionException("Unable to resolve discriminator: "+expr.toString());      
+      throw new DefinitionException("Unable to resolve discriminator in definitions: "+expr.toString());      
     else if (expr.getInner() == null)
       return focus;
     else {
@@ -4237,7 +4222,8 @@ public class FHIRPathEngine {
       return true;
     else if (t.getType().size() == 1 && t.getType().get(0).getCode() != null && t.getPath() != null && t.getPath().toUpperCase().endsWith(t.getType().get(0).getCode().toUpperCase()))
       return tail.startsWith(d);
-    
+    else if (t.getPath().endsWith("[x]") && tail.startsWith(d))
+      return true;
     return false;
   }
 
@@ -4302,7 +4288,7 @@ public class FHIRPathEngine {
         return Equality.False;
       else if (Utilities.isInteger(item.primitiveValue()))
         return asBoolFromInt(item.primitiveValue());
-      else if (Utilities.isDecimal(item.primitiveValue()))
+      else if (Utilities.isDecimal(item.primitiveValue(), true))
         return asBoolFromDec(item.primitiveValue());
       else
         return Equality.Null;

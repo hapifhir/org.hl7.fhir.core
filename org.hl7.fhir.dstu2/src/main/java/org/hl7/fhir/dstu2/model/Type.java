@@ -49,7 +49,7 @@ package org.hl7.fhir.dstu2.model;
  */
 
 
-import org.hl7.fhir.dstu2.model.api.IBaseDatatype;
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
 
 /**
  * An element that is a type. Used when the element type in FHIR is a choice of more than one data type

@@ -1,16 +1,7 @@
 package org.hl7.fhir.r4.utils;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.util.ElementUtil;
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
@@ -20,37 +11,18 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.BaseDateTimeType;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.DecimalType;
-import org.hl7.fhir.r4.model.Element;
-import org.hl7.fhir.r4.model.ElementDefinition;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r4.model.ExpressionNode;
-import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r4.model.ExpressionNode.Function;
-import org.hl7.fhir.r4.model.ExpressionNode.Kind;
-import org.hl7.fhir.r4.model.ExpressionNode.Operation;
-import org.hl7.fhir.r4.model.ExpressionNode.SourceLocation;
-import org.hl7.fhir.r4.model.IntegerType;
-import org.hl7.fhir.r4.model.Property;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.StructureDefinition;
+import org.hl7.fhir.r4.model.ExpressionNode.*;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r4.model.TemporalPrecisionEnum;
-import org.hl7.fhir.r4.model.TimeType;
-import org.hl7.fhir.r4.model.TypeDetails;
 import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
-import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /*-
  * #%L
@@ -71,9 +43,6 @@ import org.hl7.fhir.utilities.Utilities;
  * limitations under the License.
  * #L%
  */
-
-//import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import ca.uhn.fhir.util.ElementUtil;
 
 /**
  * 
@@ -1026,7 +995,7 @@ public class FHIRPathEngine {
       return new StringType(processConstantString(lexer.take(), lexer)).noExtensions();
     } else if (Utilities.isInteger(lexer.getCurrent())) {
       return new IntegerType(lexer.take()).noExtensions();
-    } else if (Utilities.isDecimal(lexer.getCurrent())) {
+    } else if (Utilities.isDecimal(lexer.getCurrent(), false)) {
       return new DecimalType(lexer.take()).noExtensions();
     } else if (Utilities.existsInList(lexer.getCurrent(), "true", "false")) {
       return new BooleanType(lexer.take()).noExtensions();
@@ -2889,7 +2858,7 @@ public class FHIRPathEngine {
 
       if (!Utilities.noString(f)) {
 
-        if (exp.getParameters().size() != 2) {
+        if (exp.getParameters().size() == 2) {
 
           String t = convertToString(execute(context, focus, exp.getParameters().get(0), true));
           String r = convertToString(execute(context, focus, exp.getParameters().get(1), true));
@@ -3011,7 +2980,7 @@ public class FHIRPathEngine {
   private List<Base> funcToDecimal(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     String s = convertToString(focus);
     List<Base> result = new ArrayList<Base>();
-    if (Utilities.isDecimal(s))
+    if (Utilities.isDecimal(s, true))
       result.add(new DecimalType(s).noExtensions());
     if ("true".equals(s))
       result.add(new DecimalType(1).noExtensions());
@@ -3747,7 +3716,7 @@ public class FHIRPathEngine {
     if (s.contains(" ")) {
       String v = s.substring(0, s.indexOf(" ")).trim();
       s = s.substring(s.indexOf(" ")).trim();
-      if (!Utilities.isDecimal(v))
+      if (!Utilities.isDecimal(v, false))
         return null;
       if (s.startsWith("'") && s.endsWith("'"))
         return Quantity.fromUcum(v, s.substring(1, s.length()-1));
@@ -3770,7 +3739,7 @@ public class FHIRPathEngine {
       else
         return null;      
     } else {
-      if (Utilities.isDecimal(s))
+      if (Utilities.isDecimal(s, false))
         return new Quantity().setValue(new BigDecimal(s)).setSystem("http://unitsofmeasure.org").setCode("1");
       else
         return null;
@@ -3789,7 +3758,7 @@ public class FHIRPathEngine {
     else if (focus.get(0) instanceof DecimalType)
       result.add(new BooleanType(true).noExtensions());
     else if (focus.get(0) instanceof StringType)
-      result.add(new BooleanType(Utilities.isDecimal(convertToString(focus.get(0)))).noExtensions());
+      result.add(new BooleanType(Utilities.isDecimal(convertToString(focus.get(0)), true)).noExtensions());
     else 
       result.add(new BooleanType(false).noExtensions());
     return result;
@@ -4272,7 +4241,7 @@ public class FHIRPathEngine {
         return Equality.False;
       else if (Utilities.isInteger(item.primitiveValue()))
         return asBoolFromInt(item.primitiveValue());
-      else if (Utilities.isDecimal(item.primitiveValue()))
+      else if (Utilities.isDecimal(item.primitiveValue(), false))
         return asBoolFromDec(item.primitiveValue());
       else
         return Equality.Null;

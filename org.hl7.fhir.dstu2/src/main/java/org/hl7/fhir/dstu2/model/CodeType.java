@@ -51,7 +51,7 @@ package org.hl7.fhir.dstu2.model;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Primitive type "code" in FHIR, when not bound to an enumerated list of codes

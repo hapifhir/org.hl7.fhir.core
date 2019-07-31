@@ -57,7 +57,8 @@ package org.hl7.fhir.dstu2.model;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.hl7.fhir.dstu2.model.annotations.DatatypeDef;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Represents a FHIR date datatype. Valid precisions values for this type are:

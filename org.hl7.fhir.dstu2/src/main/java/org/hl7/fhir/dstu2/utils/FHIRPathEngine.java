@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu2.model.Base;
@@ -51,7 +52,6 @@ import org.hl7.fhir.dstu2.model.IntegerType;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.model.StructureDefinition;
-import org.hl7.fhir.dstu2.model.TemporalPrecisionEnum;
 import org.hl7.fhir.dstu2.model.TimeType;
 import org.hl7.fhir.dstu2.model.Type;
 import org.hl7.fhir.dstu2.utils.FHIRLexer.FHIRLexerException;
@@ -210,7 +210,6 @@ public class FHIRPathEngine {
   /**
    * Parse a path that is part of some other syntax
    *  
-   * @param path
    * @return
    * @throws PathEngineException 
    * @throws Exception
@@ -229,8 +228,7 @@ public class FHIRPathEngine {
 	 * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
 	 * 
 	 * @param context - the logical type against which this path is applied
-	 * @param path - the FHIR Path statement to check
-	 * @throws DefinitionException 
+	 * @throws DefinitionException
 	 * @throws PathEngineException 
 	 * @if the path is not valid
 	 */
@@ -377,7 +375,6 @@ public class FHIRPathEngine {
    * evaluate a path and return true or false (e.g. for an invariant)
    * 
    * @param base - the object against which the path is being evaluated
-   * @param path - the FHIR Path statement to use
    * @return
 	 * @throws PathEngineException 
    * @ 
@@ -391,7 +388,6 @@ public class FHIRPathEngine {
    * evaluate a path and return true or false (e.g. for an invariant)
    * 
    * @param base - the object against which the path is being evaluated
-   * @param path - the FHIR Path statement to use
    * @return
    * @throws PathEngineException 
    * @ 
@@ -949,7 +945,7 @@ public class FHIRPathEngine {
       return null;
 		} else if (Utilities.isInteger(constant)) {
 			return new IntegerType(constant);
-    } else if (Utilities.isDecimal(constant)) {
+    } else if (Utilities.isDecimal(constant, false)) {
 			return new DecimalType(constant);
     } else if (constant.startsWith("\'")) {
 			return new StringType(processConstantString(constant));
@@ -1667,7 +1663,7 @@ public class FHIRPathEngine {
 			return "boolean";
 		else if (Utilities.isInteger(constant))
 			return "integer";
-		else if (Utilities.isDecimal(constant))
+		else if (Utilities.isDecimal(constant, false))
 			return "decimal";
 		else if (constant.startsWith("%"))
       return resolveConstantType(context, constant);
@@ -2138,7 +2134,7 @@ public class FHIRPathEngine {
   private List<Base> funcToDecimal(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     String s = convertToString(focus);
     List<Base> result = new ArrayList<Base>();
-    if (Utilities.isDecimal(s))
+    if (Utilities.isDecimal(s, true))
       result.add(new DecimalType(s));
     return result;
   }

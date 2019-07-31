@@ -71,7 +71,6 @@
 			<display
 				value="Cholesterol [Moles/​volume] in Serum or Plasma" />
 		</coding>
-		<text value="Cholesterol" />
 	</code>
 	<subject>
 		<reference value="Patient/pat2" />

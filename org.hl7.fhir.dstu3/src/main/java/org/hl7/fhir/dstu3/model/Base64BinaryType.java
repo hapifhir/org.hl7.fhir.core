@@ -37,9 +37,9 @@ package org.hl7.fhir.dstu3.model;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,49 +49,102 @@ package org.hl7.fhir.dstu3.model;
  */
 
 
-import org.apache.commons.codec.binary.Base64;
-
+import ca.uhn.fhir.model.api.IElement;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.apache.commons.codec.binary.Base64;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
-@DatatypeDef(name="base64binary")
-public class Base64BinaryType extends PrimitiveType<byte[]> {
+@DatatypeDef(name = "base64Binary")
+public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiveType<byte[]>, IBaseHasExtensions, IElement, Externalizable {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
+  private byte[] myValue;
 
-	/**
-	 * Constructor
-	 */
-	public Base64BinaryType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public Base64BinaryType() {
+    super();
+  }
 
-	public Base64BinaryType(byte[] theBytes) {
-		super();
-		setValue(theBytes);
-	}
+  public Base64BinaryType(byte[] theBytes) {
+    super();
+    setValue(theBytes);
+  }
 
-	public Base64BinaryType(String theValue) {
-		super();
-		setValueAsString(theValue);
-	}
+  public Base64BinaryType(String theValue) {
+    super();
+    setValueAsString(theValue);
+  }
 
-	protected byte[] parse(String theValue) {
-		return Base64.decodeBase64(theValue);
-	}
+  protected byte[] parse(String theValue) {
+    return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+  }
 
-	protected String encode(byte[] theValue) {
-		return Base64.encodeBase64String(theValue);
-	}
+  protected String encode(byte[] theValue) {
+    if (theValue == null) {
+      return null;
+    }
+    return new String(Base64.encodeBase64(theValue), ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8);
+  }
 
-	@Override
-	public Base64BinaryType copy() {
-		return new Base64BinaryType(getValue());
-	}
+  @Override
+  public Base64BinaryType copy() {
+    return new Base64BinaryType(getValue());
+  }
 
-	public String fhirType() {
-		return "base64Binary";
-	}
+  @Override
+  protected Type typedCopy() {
+    return null;
+  }
+
+  public String fhirType() {
+    return "base64Binary";
+  }
+
+  @Override
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(getValue());
+  }
+
+  @Override
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    setValue((byte[]) in.readObject());
+  }
+
+  @Override
+  public String getValueAsString() {
+    return encode(myValue);
+  }
+
+  @Override
+  public void setValueAsString(String theValue) throws IllegalArgumentException {
+    setValue(parse(theValue));
+  }
+
+  @Override
+  public byte[] getValue() {
+    return myValue;
+  }
+
+  @Override
+  public Base64BinaryType setValue(byte[] theValue) throws IllegalArgumentException {
+    myValue = theValue;
+    return this;
+  }
+
+  @Override
+  public boolean hasValue() {
+    return myValue != null && myValue.length > 0;
+  }
+
 }

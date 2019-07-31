@@ -32,6 +32,26 @@
     <valueDecimal value="121233786234234234234234.12323"/>
   </parameter>
   <parameter>
+    <name value="paramDecimal4"/>
+    <valueDecimal value="1e1"/>
+  </parameter>
+  <parameter>
+    <name value="paramDecimal5"/>
+    <valueDecimal value="1.0e-1"/>
+  </parameter>
+  <parameter>
+    <name value="paramDecimal6"/>
+    <valueDecimal value="0.1e11"/>
+  </parameter>
+  <parameter> 
+    <name value="paramDecimal7"/>
+    <valueDecimal value="1e09"/>
+  </parameter>
+  <parameter> 
+    <name value="paramDecimal8"/>
+    <valueDecimal value="0.12e3"/>
+  </parameter>
+  <parameter>
     <name value="paramBase64Binary"/>
     <valueBase64Binary value="YXNhc2Rhc2Q="/>
   </parameter>

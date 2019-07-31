@@ -21,9 +21,6 @@ package org.hl7.fhir.dstu2.model;
  */
 
 
-import org.hl7.fhir.dstu2.model.api.IBaseEnumFactory;
-
-
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -52,6 +49,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 */
+
+import org.hl7.fhir.instance.model.api.IBaseEnumFactory;
 
 /**
  * Helper class to help manage generic enumerated types

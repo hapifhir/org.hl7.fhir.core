@@ -21,7 +21,7 @@ package org.hl7.fhir.dstu2.model;
  */
 
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.dstu2.model.api.INarrative;
+import org.hl7.fhir.instance.model.api.INarrative;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class BaseNarrative extends Type implements INarrative {
@@ -54,6 +54,17 @@ public abstract class BaseNarrative extends Type implements INarrative {
 		}
 	}
 
-	protected abstract XhtmlNode getDiv();
+  public abstract Enumeration<?> getStatusElement();
+
+  public INarrative setStatusAsString(String theString) {
+    getStatusElement().setValueAsString(theString);
+    return this;
+  }
+
+  public String getStatusAsString() {
+    return getStatusElement().getValueAsString();
+  }
+
+  protected abstract XhtmlNode getDiv();
 
 }

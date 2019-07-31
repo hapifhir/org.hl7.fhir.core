@@ -248,7 +248,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }    
   }
 
-  public class ResourceContext {
+  public static class ResourceContext {
     Bundle bundleResource;
     
     DomainResource resourceResource;
@@ -2833,7 +2833,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private boolean isSource(ValueSet vs, Type source) {
-    return vs.hasUrl() && vs.getUrl().equals(source.primitiveValue());
+    return vs.hasUrl() && source != null && vs.getUrl().equals(source.primitiveValue());
   }
 
   private Integer countMembership(ValueSet vs) {
@@ -4076,7 +4076,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     inject(ig, x, NarrativeStatus.GENERATED);
     return true;
   }
-	public boolean generate(ResourceContext rcontext, OperationDefinition opd) throws EOperationOutcome, FHIRException, IOException {
+
+  public boolean generate(ResourceContext rcontext, OperationDefinition opd) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     x.h2().addText(opd.getName());
     x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());
