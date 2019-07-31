@@ -196,10 +196,11 @@
 				"errorCount": 0
 			},
 			"primitive-bad.xml": {
-				"errorCount": 47
+				"errorCount": 45,
+				"warningCount": 2
 			},
 			"primitive-bad-empty.xml": {
-				"errorCount": 3
+				"errorCount": 2
 			},
 			"group-choice-bad1.xml": {
 				"errorCount": 2,
@@ -614,9 +615,21 @@
 					"errorCount": 0
 				}
 			},
+			"questionnaire-enableWhen-test-invalid.xml": {
+				"errorCount": 1,
+        "warningCount" : 0
+			},
+			"questionnaire-enableWhen-test-order.xml": {
+				"errorCount": 0,
+        "warningCount" : 1
+			},
 			"questionnaireResponse-enableWhen-test.xml": {
 				"questionnaire": "questionnaire-enableWhen-test.xml",
 				"errorCount": 0
+			},
+			"questionnaireResponse-enableWhen-test-nested.xml": {
+				"questionnaire": "questionnaire-enableWhen-test-nested.xml",
+				"errorCount": 2
 			},
 			"questionnaireResponse-enableWhen-test3.xml": {
 				"version": "3.0",
@@ -783,6 +796,10 @@
 				"errorCount": 0,
 				"warningCount": 0
       },
+      "duplicate-security-tags.xml" : {
+				"errorCount": 1,
+				"warningCount": 3
+      },
       "azatadha/example-params-1.xml" : {
 				"errorCount": 0,
 				"warningCount": 1,
@@ -791,6 +808,26 @@
 					"errorCount": 0
 				}
       },
+			"profile-slicing-ok-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "profile-slicing-profile-open.xml",
+					"errorCount": 0
+				}
+			},
+			"profile-slicing-bad-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "profile-slicing-profile-open.xml",
+					"errorCount": 1
+				}
+			},
       "bundle-local-refs.xml" : {
 				"errorCount": 0,
 				"warningCount": 0

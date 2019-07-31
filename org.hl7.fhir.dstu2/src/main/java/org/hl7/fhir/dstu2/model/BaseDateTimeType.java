@@ -20,24 +20,17 @@ package org.hl7.fhir.dstu2.model;
  * #L%
  */
 
-import static org.hl7.fhir.dstu2.model.TemporalPrecisionEnum.DAY;
-import static org.hl7.fhir.dstu2.model.TemporalPrecisionEnum.MONTH;
-import static org.hl7.fhir.dstu2.model.TemporalPrecisionEnum.YEAR;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.regex.Pattern;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.text.ParseException;
+import java.util.*;
+import java.util.regex.Pattern;
+
+import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.*;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 

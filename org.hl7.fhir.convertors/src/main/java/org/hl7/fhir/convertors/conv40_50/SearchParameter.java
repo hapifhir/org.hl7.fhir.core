@@ -1,5 +1,26 @@
 package org.hl7.fhir.convertors.conv40_50;
 
+/*-
+ * #%L
+ * org.hl7.fhir.convertors
+ * %%
+ * Copyright (C) 2014 - 2019 Health Level 7
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.SearchParameter.SearchModifierCodeEnumFactory;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
@@ -224,20 +245,22 @@ public class SearchParameter extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode>(new org.hl7.fhir.r5.model.SearchParameter.SearchModifierCodeEnumFactory());
     copyEnumeration(src, tgt);
-    switch (src.getValue()) {
-    case MISSING: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.MISSING); break;
-    case EXACT: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.EXACT); break;
-    case CONTAINS: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.CONTAINS); break;
-    case NOT: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NOT); break;
-    case TEXT: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.TEXT); break;
-    case IN: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.IN); break;
-    case NOTIN: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NOTIN); break;
-    case BELOW: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.BELOW); break;
-    case ABOVE: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.ABOVE); break;
-    case TYPE: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.TYPE); break;
-    case IDENTIFIER: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.IDENTIFIER); break;
-    case OFTYPE: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.OFTYPE); break;
-    default: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NULL); break;
+    if (src.hasValue()) {
+      switch (src.getValue()) {
+      case MISSING: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.MISSING); break;
+      case EXACT: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.EXACT); break;
+      case CONTAINS: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.CONTAINS); break;
+      case NOT: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NOT); break;
+      case TEXT: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.TEXT); break;
+      case IN: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.IN); break;
+      case NOTIN: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NOTIN); break;
+      case BELOW: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.BELOW); break;
+      case ABOVE: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.ABOVE); break;
+      case TYPE: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.TYPE); break;
+      case IDENTIFIER: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.IDENTIFIER); break;
+      case OFTYPE: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.OFTYPE); break;
+      default: tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NULL); break;
+      }
     }
     return tgt;
   }
@@ -247,20 +270,22 @@ public class SearchParameter extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode>(new org.hl7.fhir.r4.model.SearchParameter.SearchModifierCodeEnumFactory());
     copyEnumeration(src, tgt);
-    switch (src.getValue()) {
-    case MISSING: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.MISSING); break;
-    case EXACT: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.EXACT); break;
-    case CONTAINS: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.CONTAINS); break;
-    case NOT: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NOT); break;
-    case TEXT: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.TEXT); break;
-    case IN: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.IN); break;
-    case NOTIN: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NOTIN); break;
-    case BELOW: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.BELOW); break;
-    case ABOVE: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.ABOVE); break;
-    case TYPE: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.TYPE); break;
-    case IDENTIFIER: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.IDENTIFIER); break;
-    case OFTYPE: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.OFTYPE); break;
-    default: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NULL); break;
+    if (src.hasValue()) {
+      switch (src.getValue()) {
+      case MISSING: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.MISSING); break;
+      case EXACT: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.EXACT); break;
+      case CONTAINS: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.CONTAINS); break;
+      case NOT: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NOT); break;
+      case TEXT: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.TEXT); break;
+      case IN: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.IN); break;
+      case NOTIN: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NOTIN); break;
+      case BELOW: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.BELOW); break;
+      case ABOVE: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.ABOVE); break;
+      case TYPE: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.TYPE); break;
+      case IDENTIFIER: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.IDENTIFIER); break;
+      case OFTYPE: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.OFTYPE); break;
+      default: tgt.setValue( org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NULL); break;
+      }
     }
     return tgt;
   }

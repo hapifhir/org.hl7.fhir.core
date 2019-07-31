@@ -446,7 +446,7 @@ public class TestingUtilities {
 
 
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "main", "resources", subFolder, name);
+    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
   }
 
 }

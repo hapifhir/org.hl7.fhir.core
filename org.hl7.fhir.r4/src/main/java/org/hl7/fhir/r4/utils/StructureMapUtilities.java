@@ -1194,7 +1194,7 @@ public class StructureMapUtilities {
 	private Type readConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
 		if (Utilities.isInteger(s))
 			return new IntegerType(s);
-		else if (Utilities.isDecimal(s))
+		else if (Utilities.isDecimal(s, true))
 			return new DecimalType(s);
 		else if (Utilities.existsInList(s, "true", "false"))
 			return new BooleanType(s.equals("true"));
@@ -1402,7 +1402,7 @@ public class StructureMapUtilities {
 					}
 				} else if (rule.getSource().size() == 1 && rule.getSourceFirstRep().hasVariable() && rule.getTarget().size() == 1 && rule.getTargetFirstRep().hasVariable() && rule.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE && !rule.getTargetFirstRep().hasParameter()) {
 				  // simple inferred, map by type
-				  System.out.println(v.summary());
+				  log(v.summary());
 				  Base src = v.get(VariableMode.INPUT, rule.getSourceFirstRep().getVariable());
 				  Base tgt = v.get(VariableMode.OUTPUT, rule.getTargetFirstRep().getVariable());
 				  String srcType = src.fhirType();
@@ -1493,7 +1493,9 @@ public class StructureMapUtilities {
     if (value.contains("*")) {
       for (StructureMap sm : worker.listTransforms()) {
         if (urlMatches(value, sm.getUrl())) {
-          res.add(sm); 
+          if (!res.contains(sm)) {
+            res.add(sm); 
+          }
         }
       }
     } else {

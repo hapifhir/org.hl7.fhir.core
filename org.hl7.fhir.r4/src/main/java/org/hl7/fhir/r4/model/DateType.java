@@ -60,6 +60,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.apache.commons.lang3.Validate;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;

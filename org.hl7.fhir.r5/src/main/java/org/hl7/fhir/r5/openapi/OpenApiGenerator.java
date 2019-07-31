@@ -1,5 +1,25 @@
 package org.hl7.fhir.r5.openapi;
 
+/*-
+ * #%L
+ * org.hl7.fhir.r5
+ * %%
+ * Copyright (C) 2014 - 2019 Health Level 7
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +44,7 @@ import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterLocation;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterStyle;
 import org.hl7.fhir.r5.openapi.SchemaWriter.SchemaType;
+import org.hl7.fhir.utilities.Utilities;
 
 
 public class OpenApiGenerator {
@@ -461,8 +482,18 @@ public class OpenApiGenerator {
   }
 
   private String specRef() {
-    // todo: figure out which version we are running against
-    return "https://hl7.org/fhir/STU3";
+    String ver = context.getVersion();
+    if (Utilities.noString(ver))
+      return "https://hl7.org/fhir/STU3";
+    if (ver.startsWith("4.0"))
+      return "https://hl7.org/fhir/R4";
+    if (ver.startsWith("3.0"))
+      return "https://hl7.org/fhir/STU3";
+    if (ver.startsWith("1.0"))
+      return "https://hl7.org/fhir/DSTU2";
+    if (ver.startsWith("1.4"))
+      return "https://hl7.org/fhir/2016May";
+    return "https://build.fhir.org";    
   }
 
   private boolean isJson() {

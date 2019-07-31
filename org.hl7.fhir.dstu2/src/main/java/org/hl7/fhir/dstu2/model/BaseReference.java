@@ -20,11 +20,11 @@ package org.hl7.fhir.dstu2.model;
  * #L%
  */
 
-import org.hl7.fhir.dstu2.model.api.IAnyResource;
-import org.hl7.fhir.dstu2.model.api.IBaseReference;
-import org.hl7.fhir.dstu2.model.api.IBaseResource;
-import org.hl7.fhir.dstu2.model.api.ICompositeType;
-import org.hl7.fhir.dstu2.model.api.IIdType;
+import org.hl7.fhir.instance.model.api.IAnyResource;
+import org.hl7.fhir.instance.model.api.IBaseReference;
+import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IIdType;
 
 public abstract class BaseReference extends Type implements IBaseReference, ICompositeType {
 
@@ -73,8 +73,9 @@ public abstract class BaseReference extends Type implements IBaseReference, ICom
      * a part of the FHIR "wire format" and is never transmitted or receieved inline, but this property
      * may be changed/accessed by parsers.
      */
-    public void setResource(IBaseResource theResource) {
+    public IBaseReference setResource(IBaseResource theResource) {
         resource = theResource;
+        return this;
     }
 
     @Override

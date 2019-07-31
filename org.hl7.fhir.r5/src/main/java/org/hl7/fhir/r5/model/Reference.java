@@ -485,6 +485,17 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(reference, type, identifier
           , display);
       }
+      
+      @Override
+      public String toString() {
+        if (hasReference())
+          return "Reference["+getReference()+"]";
+        if (hasIdentifier())
+          return "Reference[id:"+getIdentifier()+"]";
+        if (hasDisplay())
+          return "Reference['"+getDisplay()+"']";
+        return "Reference[??]";
+      }
 
 
 }
