@@ -21,7 +21,7 @@
           <type value="profile"/>
           <path value="item.resolve()"/>
         </discriminator>
-        <ordered vale="true"/>
+        <ordered value="true"/>
         <rules value="open"/>
       </slicing>
     </element>

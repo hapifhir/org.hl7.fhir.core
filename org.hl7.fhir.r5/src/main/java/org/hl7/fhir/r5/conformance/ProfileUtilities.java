@@ -582,7 +582,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       ElementDefinition currentBase = base.getElement().get(baseCursor);
       String cpath = fixedPathSource(contextPathSrc, currentBase.getPath(), redirector);
       if (debug) 
-        System.out.println(indent+" - "+cpath+": base = "+baseCursor+" to "+baseLimit+", diff = "+diffCursor+" to "+diffLimit+" (slicingDone = "+slicingDone+") (diffpath= "+(differential.getElement().size() > diffCursor ? differential.getElement().get(diffCursor).getPath() : "n/a")+")");
+        System.out.println(indent+" - "+cpath+": base = "+baseCursor+" ("+descED(base.getElement(),baseCursor)+") to "+baseLimit+" ("+descED(base.getElement(),baseLimit)+"), diff = "+diffCursor+" ("+descED(differential.getElement(),diffCursor)+") to "+diffLimit+" ("+descED(differential.getElement(),diffLimit)+") "+
+           "(slicingDone = "+slicingDone+") (diffpath= "+(differential.getElement().size() > diffCursor ? differential.getElement().get(diffCursor).getPath() : "n/a")+")");
       List<ElementDefinition> diffMatches = getDiffMatches(differential, cpath, diffCursor, diffLimit, profileName); // get a list of matching elements in scope
 
       // in the simple case, source is not sliced.
@@ -737,6 +738,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           int start = 0;
           int nbl = findEndOfElement(base, baseCursor);
           int ndc = differential.getElement().indexOf(diffMatches.get(0));
+          ElementDefinition elementToRemove = null;
           // we come here whether they are sliced in the diff, or whether the short cut is used. 
           if (typeList.get(0).type != null) {
             // this is the short cut method, we've just dived in and specified a type slice. 
@@ -753,6 +755,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               ed.getSlicing().setOrdered(false);
               diffMatches.add(0, ed);
               differential.getElement().add(ndc, ed);
+              elementToRemove = ed;
             } else {
               // as of R4, this changed; if there's no slice, there's no constraint on the slice types, only one the type. 
               // so the element we insert specifies no types (= all types) allowed in the base, not just the listed type. 
@@ -765,7 +768,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               ed.getSlicing().setOrdered(false);
               diffMatches.add(0, ed);
               differential.getElement().add(ndc, ed);
-              
+              elementToRemove = ed;
             }
           }
           int ndl = findEndOfElement(differential, ndc);
@@ -815,6 +818,11 @@ public class ProfileUtilities extends TranslatingUtilities {
             ndl = findEndOfElement(differential, ndc);
             processPaths(indent+"  ", result, base, differential, baseCursor, ndc, nbl, ndl, url, webUrl, profileName+pathTail(diffMatches, i), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, redirector, srcSD);
           }
+          if (elementToRemove != null) {
+            differential.getElement().remove(elementToRemove);
+            ndl--;
+          }
+          
           // ok, done with that - next in the base list
           baseCursor = nbl+1;
           diffCursor = ndl+1;
@@ -1083,6 +1091,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error("null min");
     }
     return res;
+  }
+
+
+  private String descED(List<ElementDefinition> list, int index) {
+    return index >=0 && index < list.size() ? list.get(index).present() : "X";
   }
 
 
@@ -1551,17 +1564,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     for (int i = start; i <= end; i++) {
       String statedPath = context.getElement().get(i).getPath();
       if (statedPath.startsWith(path+".")) {
-        boolean found = false;
-        // GG - I don't know what this code is doing....
-//        for (ElementDefinition ed : base) {
-//          String ep = ed.getPath();
-//          if (ep.equals(statedPath) || (ep.endsWith("[x]") && statedPath.length() > ep.length() - 2 && statedPath.substring(0, ep.length()-3).equals(ep.substring(0, ep.length()-3)) && !statedPath.substring(ep.length()).contains("."))) {
-//            found = true;
-//            break;
-//          }
-//        }
-        if (!found)
-          return true;
+        return true;
       }
     }
     return false;
@@ -2196,6 +2199,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final int AGG_NONE = 0;
   private static final int AGG_IND = 1;
   private static final int AGG_GR = 2;
+  private static final boolean TABLE_FORMAT_FOR_FIXED_VALUES = false;
+  
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath) {
     Cell c = gen.new Cell();
     r.getCells().add(c);
@@ -2898,7 +2903,13 @@ public class ProfileUtilities extends TranslatingUtilities {
           } else if (definition.hasPattern()) {
             if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, translate("sd.table", "Required Pattern")+": ", null).addStyle("font-weight:bold")));
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
+            if (!TABLE_FORMAT_FOR_FIXED_VALUES || definition.getPattern().isPrimitive())
+              c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
+            else {
+              c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, "TODO", null).addStyle("color: darkgreen")));
+              genFixedValue(gen, row, definition.getPattern());
+              
+            }
           } else if (definition.hasExample()) {
             for (ElementDefinitionExampleComponent ex : definition.getExample()) {
               if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
@@ -2932,6 +2943,44 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     return c;
   }
+
+  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, Type value) {
+    for (org.hl7.fhir.r5.model.Property t : value.children()) {
+      if (t.hasValues()) {
+        for (Base b : t.getValues()) {
+          Row row = gen.new Row();
+          erow.getSubRows().add(row);
+
+          Cell c = gen.new Cell();
+          row.getCells().add(c);
+          c.addPiece(gen.new Piece(t.getName()));
+          
+          c = gen.new Cell();
+          row.getCells().add(c);
+          c.addPiece(gen.new Piece("P"));
+
+          c = gen.new Cell();
+          row.getCells().add(c);
+          c.addPiece(gen.new Piece("1..1"));
+
+          c = gen.new Cell();
+          row.getCells().add(c);
+          c.addPiece(gen.new Piece(b.fhirType()));
+
+          if (b.isPrimitive()) {
+            c = gen.new Cell();
+            row.getCells().add(c);
+            c.addPiece(gen.new Piece(b.primitiveValue()));
+          } else {
+            c = gen.new Cell();
+            row.getCells().add(c);
+          }
+        }
+      }
+    }
+    
+  }
+
 
   private String getFixedUrl(StructureDefinition sd) {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
