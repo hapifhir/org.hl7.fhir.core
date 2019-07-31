@@ -220,8 +220,8 @@
     <rule text="The element definition for value[x] quantity slice should have sliceName = 'Quantity'" fhirpath="fixture('t44-output').snapshot.element.where(id = 'Observation.value[x]:valueQuantity').check(exists(), 'no slice').sliceName = 'valueQuantity'"/>
     <rule text="The element definition for value[x].value quantity slice should have sliceName = 'Quantity'" fhirpath="fixture('t44-output').snapshot.element.where(id = 'Observation.value[x]:valueQuantity.value').check(exists(), 'no slice').min = 1"/>
   </test>
-  <test gen="true" id="samply1">
-  </test>
-  <test gen="true" id="au1" include="au1a">
-  </test>
+  <test gen="true" id="samply1"/>
+  <test gen="true" id="au1" include="au1a"/>
+  <test gen="true" id="au2"/>
+  <test gen="true" id="au3"/>
 </snapshot-generation-tests>

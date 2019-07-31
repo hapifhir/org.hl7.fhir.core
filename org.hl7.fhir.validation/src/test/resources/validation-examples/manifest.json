@@ -196,11 +196,11 @@
 				"errorCount": 0
 			},
 			"primitive-bad.xml": {
-				"errorCount": 47,
+				"errorCount": 45,
 				"warningCount": 2
 			},
 			"primitive-bad-empty.xml": {
-				"errorCount": 3
+				"errorCount": 2
 			},
 			"group-choice-bad1.xml": {
 				"errorCount": 2,
