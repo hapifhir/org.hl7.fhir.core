@@ -827,7 +827,11 @@
 					"source": "profile-slicing-profile-open.xml",
 					"errorCount": 1
 				}
-			}      
+			},
+      "bundle-local-refs.xml" : {
+				"errorCount": 0,
+				"warningCount": 0
+      }
 		}
 	}
 }
