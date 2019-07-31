@@ -794,7 +794,13 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!ts.defn.hasSliceName())
                 ts.defn.setSliceName(tn);
               else if (!ts.defn.getSliceName().equals(tn))
-                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice name must be '"+tn+"' but is '"+ts.defn.getSliceName()+"'");                
+                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice name must be '"+tn+"' but is '"+ts.defn.getSliceName()+"'"); 
+              if (!ts.defn.hasType())
+                ts.defn.addType().setCode(ts.type);
+              else if (ts.defn.getType().size() > 1)
+                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice for type '"+tn+"' has more than one type '"+ts.defn.typeSummary()+"'"); 
+              else if (!ts.defn.getType().get(0).getCode().equals(ts.type))
+                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice for type '"+tn+"' has wrong type '"+ts.defn.typeSummary()+"'"); 
             }
 
           // ok passed the checks. 

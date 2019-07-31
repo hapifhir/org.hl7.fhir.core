@@ -2665,9 +2665,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (discriminator.contains("["))
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
               type = criteriaElement.getType().get(0).getCode();
-            }
-            if (type==null)
-              throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " does not declare a type");
+            } else if (criteriaElement.getType().size() > 1) {
+              throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " in "+profile.getUrl()+" has multiple types: "+criteriaElement.typeSummary());
+            } else
+              throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " in "+profile.getUrl()+" has no types");
             if (discriminator.isEmpty())
               expression.append(" and this is " + type);
             else

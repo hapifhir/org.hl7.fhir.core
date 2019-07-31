@@ -119,6 +119,7 @@ import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.IResourceValidator.IdStatus;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.StructureMapUtilities;
@@ -992,6 +993,12 @@ public class ValidationEngine {
   private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws DefinitionException {
     OperationOutcome op = new OperationOutcome();
     for (ValidationMessage vm : filterMessages(messages)) {
+      FHIRPathEngine fpe = new FHIRPathEngine(context);
+      try {
+        fpe.parse(vm.getLocation());
+      } catch (Exception e) {
+        System.out.println("Internal error in location for message: '"+e.getMessage()+"', loc = '"+vm.getLocation()+"', err = '"+vm.getMessage()+"'");
+      }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
     new NarrativeGenerator("", "", context).generate(null, op);

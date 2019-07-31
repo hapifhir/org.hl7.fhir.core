@@ -41,10 +41,6 @@ public class OperationOutcomeUtilities {
     if (message.getLocation() != null) {
       // message location has a fhirPath in it. We need to populate the expression
       issue.addExpression(message.getLocation());
-      // also, populate the XPath variant
-      StringType s = new StringType();
-      s.setValue(Utilities.fhirPathToXPath(message.getLocation())+(message.getLine()>= 0 && message.getCol() >= 0 ? " (line "+Integer.toString(message.getLine())+", col"+Integer.toString(message.getCol())+")" : "") );
-      issue.getLocation().add(s);
     }
     // pass through line/col if they're present
     if (message.getLine() != 0)
