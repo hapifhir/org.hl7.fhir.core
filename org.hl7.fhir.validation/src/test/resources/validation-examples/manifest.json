@@ -790,6 +790,10 @@
 					"source": "azatadha/param-profile.xml",
 					"errorCount": 0
 				}
+      },
+      "bundle-local-refs.xml" : {
+				"errorCount": 0,
+				"warningCount": 0
       }
 		}
 	}

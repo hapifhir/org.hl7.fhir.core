@@ -2527,14 +2527,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String u = null;
       if (fullUrl != null && fullUrl.endsWith(type+"/"+id))
         // fullUrl = complex
-        u = fullUrl.substring((type+"/"+id).length())+ref;
+        u = fullUrl.substring(0, fullUrl.length() - (type+"/"+id).length())+ref;
+//        u = fullUrl.substring((type+"/"+id).length())+ref;
       String[] parts = ref.split("\\/");
       if (parts.length >= 2) {
         String t = parts[0];
         String i = parts[1];
         for (Element entry : entries) {
           String fu = entry.getNamedChildValue("fullUrl");
-          if (u != null && fullUrl.equals(u))
+          if (u != null && fu.equals(u))
             return entry;
           if (u == null) {
             Element resource = entry.getNamedChild("resource");
