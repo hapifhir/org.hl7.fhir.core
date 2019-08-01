@@ -287,3 +287,5 @@ local.properties
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/t7-actual.xml
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/t8-actual.xml
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/t9-actual.xml
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/dv1-actual.xml
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/t45-actual.xml
