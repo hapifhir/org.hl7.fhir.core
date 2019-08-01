@@ -346,7 +346,7 @@ public class SnapShotGenerationTests {
         if (t.expected != null && url.equals(t.expected.getUrl()))
           return t.expected;
         if (t.included != null && url.equals(t.included.getUrl()))
-          return t.expected;
+          return t.included;
       }
       return null;
     }
@@ -385,7 +385,7 @@ public class SnapShotGenerationTests {
 
   @SuppressWarnings("deprecation")
   @Test
-  public void test() throws FHIRException, IOException, EOperationOutcome {
+  public void test() throws Exception {
     if (fp == null)
       fp = new FHIRPathEngine(TestingUtilities.context());
     fp.setHostServices(context);
@@ -426,7 +426,7 @@ public class SnapShotGenerationTests {
     Assert.assertTrue("Output does not match expected", test.expected.equalsDeep(test.output));
   }
 
-  private void testGen() throws DefinitionException, FHIRException, IOException, EOperationOutcome {
+  private void testGen() throws Exception {
     if (!Utilities.noString(test.register)) {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
       pu.setNewSlicingProcessing(true);
@@ -437,6 +437,9 @@ public class SnapShotGenerationTests {
       TestingUtilities.context().cacheResource(test.included);
     }
     StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
+    if (!base.getUrl().equals(test.getSource().getBaseDefinition()))
+      throw new Exception("URL mismatch on base: "+base.getUrl()+" wanting "+test.getSource().getBaseDefinition());
+    
     StructureDefinition output = test.getSource().copy();
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
     pu.setNewSlicingProcessing(true);
