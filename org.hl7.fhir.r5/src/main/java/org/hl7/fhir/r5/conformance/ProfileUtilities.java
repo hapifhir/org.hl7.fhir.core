@@ -2217,7 +2217,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     return null;
   }
 
-
   private static final int AGG_NONE = 0;
   private static final int AGG_IND = 1;
   private static final int AGG_GR = 2;
@@ -2311,10 +2310,15 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
         } else
           c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().get(0).getValue().startsWith(corePath)? corePath: "")+ref, t.getCode(), null)));
-      } else if (pkp != null && pkp.hasLinkFor(t.getCode())) {
-        c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, t.getCode()), t.getCode(), null)));
-      } else
-        c.addPiece(checkForNoChange(t, gen.new Piece(null, t.getCode(), null)));
+      } else {
+        String tc = t.getCode();
+        if (Utilities.noString(tc) && t.getCodeElement().hasExtension(ToolingExtensions.EXT_JSON_TYPE))
+          tc = "string";
+        if (pkp != null && pkp.hasLinkFor(tc)) {
+          c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), tc, null)));
+        } else
+          c.addPiece(checkForNoChange(t, gen.new Piece(null, tc, null)));
+      }
     }
     return c;
   }
