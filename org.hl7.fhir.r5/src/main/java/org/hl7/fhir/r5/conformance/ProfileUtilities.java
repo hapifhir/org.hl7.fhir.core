@@ -3037,8 +3037,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (!useTableForFixedValues || definition.getFixed().isPrimitive())
               c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, buildJson(definition.getFixed()), null).addStyle("color: darkgreen")));
             else {
-              c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, "As shown", null).addStyle("color: darkgreen")));
-              genFixedValue(gen, row, definition.getPattern(), snapshot, false, corePath);              
+              c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "As shown", null).addStyle("color: darkgreen")));
+              genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath);              
             }
             if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
               Piece p = describeCoded(gen, definition.getFixed());
