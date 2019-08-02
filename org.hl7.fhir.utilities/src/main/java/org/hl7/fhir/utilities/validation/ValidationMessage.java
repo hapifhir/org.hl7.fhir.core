@@ -68,6 +68,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     Schema, 
     Schematron, 
     Publisher, 
+    LinkChecker,
     Ontology, 
     ProfileComparer, 
     TerminologyEngine,
