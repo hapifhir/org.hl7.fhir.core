@@ -720,6 +720,15 @@ public abstract class BaseWorkerContext implements IWorkerContext {
             return (T) transforms.get(uri);
           if (questionnaires.containsKey(uri))
             return (T) questionnaires.get(uri);
+          for (Map<String, Resource> rt : allResourcesById.values()) {
+            for (Resource r : rt.values()) {
+              if (r instanceof MetadataResource) {
+                MetadataResource mr = (MetadataResource) r;
+                if (uri.equals(mr.getUrl()))
+                  return (T) mr;
+              }
+            }            
+          }
           return null;      
         } else if (class_ == ImplementationGuide.class) {
           return (T) guides.get(uri);
