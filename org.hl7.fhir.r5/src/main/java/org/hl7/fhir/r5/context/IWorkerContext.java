@@ -22,9 +22,11 @@ package org.hl7.fhir.r5.context;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.fhir.ucum.UcumService;
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.formats.IParser;
@@ -210,8 +212,10 @@ public interface IWorkerContext {
   public List<String> getResourceNames();
   public Set<String> getResourceNamesAsSet();
   public List<String> getTypeNames();
-  public List<StructureDefinition> allStructures();
+  public List<StructureDefinition> allStructures(); // ensure snapshot exists...
+  public List<StructureDefinition> getStructures();
   public List<MetadataResource> allConformanceResources();
+  public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException;
   
   // -- Terminology services ------------------------------------------------------
 

@@ -1115,5 +1115,15 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public void setUcumService(UcumService ucumService) {
     this.ucumService = ucumService;
   }
+
+  @Override
+  public List<StructureDefinition> getStructures() {
+    List<StructureDefinition> res = new ArrayList<>();
+    synchronized (lock) { // tricky, because you need to lock this as well, but it's really not in use yet
+      res.addAll(structures.values());
+    }
+    return res;
+  }
+  
   
 }
