@@ -933,12 +933,6 @@
       <isSummary value="false"/>
     </element>
     <element id="Patient.address.extension:Geolocation.extension:latitude.valueDecimal.extension:Geolocation.latitude.rendered">
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
-        <valueCode value="normative"/>
-      </extension>
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
-        <valueCode value="4.0.0"/>
-      </extension>
       <path value="Patient.address.extension.extension.valueDecimal.extension"/>
       <sliceName value="Geolocation.latitude.rendered"/>
       <short value="What should be displayed to human (if default is not appropriate)"/>
@@ -1253,12 +1247,6 @@
       <isSummary value="false"/>
     </element>
     <element id="Patient.address.extension:Geolocation.extension:longitude.valueDecimal.extension:Geolocation.longitude.rendered">
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
-        <valueCode value="normative"/>
-      </extension>
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
-        <valueCode value="4.0.0"/>
-      </extension>
       <path value="Patient.address.extension.extension.valueDecimal.extension"/>
       <sliceName value="Geolocation.longitude.rendered"/>
       <short value="What should be displayed to human (if default is not appropriate)"/>

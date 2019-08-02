@@ -117,13 +117,15 @@ public abstract class ParserBase {
       return null;
   	}
     // first pass: only look at base definitions
-	  for (StructureDefinition sd : context.allStructures()) {
+	  for (StructureDefinition sd : context.getStructures()) {
 	    if (sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/"+name)) {
+	      context.generateSnapshot(sd); 
 	      return sd;
 	    }
 	  }
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : context.getStructures()) {
       if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        context.generateSnapshot(sd); 
         return sd;
       }
     }

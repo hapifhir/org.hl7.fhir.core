@@ -226,7 +226,8 @@ public class FHIRPathEngine {
     
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
-     * @param url
+     * @appContext - passed in by the host to the FHIRPathEngine
+     * @param url the reference (Reference.reference or the value of the canonical
      * @return
      * @throws FHIRException 
      */
