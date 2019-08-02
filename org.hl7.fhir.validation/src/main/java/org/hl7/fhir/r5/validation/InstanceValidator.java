@@ -180,6 +180,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public ValidatorHostContext forContained(Element element) {
       ValidatorHostContext res = new ValidatorHostContext(appContext);
       res.resource = element;
+      res.container = resource;
       return res;
     }
   }
@@ -230,13 +231,45 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     @Override
     public Base resolveReference(Object appContext, String url) throws FHIRException {
       ValidatorHostContext c = (ValidatorHostContext) appContext;
-      if (c.container != null)
-        throw new Error("Not done yet - resolve "+url+" locally (1)");
-      else if (externalHostServices == null)
+      
+      if (c.appContext instanceof Element)  {
+        Element bnd = (Element) c.appContext;
+        Base res = resolveInBundle(url, bnd);
+        if (res != null)
+          return res;
+      }
+      Base res = resolveInBundle(url, c.resource);
+      if (res != null)
+        return res;
+      res = resolveInBundle(url, c.container);
+      if (res != null)
+        return res;
+      
+      if (externalHostServices == null)
         throw new Error("Not done yet - resolve "+url+" locally (2)");
       else 
         return externalHostServices.resolveReference(c.appContext, url);
           
+    }
+
+    public Base resolveInBundle(String url, Element bnd) {
+      if (bnd == null)
+        return null;
+      if (bnd.fhirType().equals("Bundle")) {
+        for (Element be : bnd.getChildrenByName("entry")) {
+          Element res = be.getNamedChild("resource");
+          if (res != null) { 
+            String fullUrl = be.getChildValue("fullUrl");
+            String rt = res.fhirType();
+            String id = res.getChildValue("id");
+            if (url.equals(fullUrl))
+              return res;
+            if (url.equals(rt+"/"+id))
+              return res;
+          }
+        }
+      }
+      return null;
     }
 
     @Override
@@ -252,10 +285,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean ok = true;
       for (ValidationMessage v : valerrors)
         ok = ok && !v.getLevel().isError();
-      if(item instanceof Element) {
-        Element e = (Element) item;
-        System.out.println("Conforms to: resource "+(e.getIdBase() != null ? item.getIdBase() : e.getChildValue("id"))+", url = "+url+", outcome = "+Boolean.toString(ok));
-      }
       return ok;
     }
 
