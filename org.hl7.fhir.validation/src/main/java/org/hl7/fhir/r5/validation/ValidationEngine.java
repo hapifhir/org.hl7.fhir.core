@@ -634,7 +634,8 @@ public class ValidationEngine {
       return FhirFormat.TEXT;
     } catch (Exception e) {
     }
-    System.out.println("     .. not a resource: "+filename);
+    if (debug)
+      System.out.println("     .. not a resource: "+filename);
     return null;    
   }
 

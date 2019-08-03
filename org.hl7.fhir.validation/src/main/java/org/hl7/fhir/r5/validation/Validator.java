@@ -384,6 +384,7 @@ public class Validator {
       System.out.println("  .. connect to tx server @ "+txServer);
       System.out.println("  .. definitions from "+definitions);
       ValidationEngine validator = new ValidationEngine(definitions, txServer, txLog, FhirPublication.fromCode(sv));
+      validator.setDebug(doDebug);
       System.out.println("    (v"+validator.getContext().getVersion()+")");
       if (sv != null)
         validator.setVersion(sv);
@@ -396,7 +397,6 @@ public class Validator {
       validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
       validator.setLanguage(lang);
-      validator.setDebug(doDebug);
 
       IParser x;
       if (output != null && output.endsWith(".json"))
