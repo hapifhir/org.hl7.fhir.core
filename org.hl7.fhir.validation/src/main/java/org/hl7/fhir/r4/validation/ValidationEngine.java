@@ -246,6 +246,7 @@ public class ValidationEngine {
   private String version;
   private PackageCacheManager pcm;
   private PrintWriter mapLog;
+  private boolean debug;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -666,7 +667,8 @@ public class ValidationEngine {
     for (Entry<String, byte[]> t : source.entrySet()) {
       String fn = t.getKey();
       if (!exemptFile(fn)) {
-        System.out.print(" ..file: "+fn);
+        if (debug)
+          System.out.print("* load file: "+fn);
         Resource r = null;
         try { 
           if (version.equals("3.0.1") || version.equals("3.0.0")) {
@@ -712,8 +714,11 @@ public class ValidationEngine {
               throw new Exception("Unsupported format for "+fn);
           } else
             throw new Exception("Unsupported version "+version);
-
+          if (debug)
+            System.out.println(" .. success");
         } catch (Exception e) {
+          if (debug)
+            System.out.println(" .. failed: "+e.getMessage());
           throw new Exception("Error parsing "+fn+": "+e.getMessage(), e);
         }
         if (r != null) {
@@ -1022,7 +1027,7 @@ public class ValidationEngine {
     StructureDefinition sd = (StructureDefinition) res;
     StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     
-    new ProfileUtilities(context, null, null).generateSnapshot(base, sd, sd.getUrl(), sd.getName());
+    new ProfileUtilities(context, null, null).generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4", sd.getName());
     return sd;
   }
 
@@ -1053,6 +1058,14 @@ public class ValidationEngine {
 
   public void setMapLog(String mapLog) throws FileNotFoundException {
     this.mapLog = new PrintWriter(mapLog);
+  }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
   }
 
   

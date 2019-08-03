@@ -22,6 +22,7 @@ package org.hl7.fhir.r4.utils;
 
 
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
@@ -36,14 +37,16 @@ public class OperationOutcomeUtilities {
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
     issue.setCode(convert(message.getType()));
+    
     if (message.getLocation() != null) {
       // message location has a fhirPath in it. We need to populate the expression
       issue.addExpression(message.getLocation());
-      // also, populate the XPath variant
-      StringType s = new StringType();
-      s.setValue(Utilities.fhirPathToXPath(message.getLocation())+(message.getLine()>= 0 && message.getCol() >= 0 ? " (line "+Integer.toString(message.getLine())+", col"+Integer.toString(message.getCol())+")" : "") );
-      issue.getLocation().add(s);
     }
+    // pass through line/col if they're present
+    if (message.getLine() != 0)
+      issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_LINE).setValue(new IntegerType(message.getLine()));
+    if (message.getCol() != 0)
+      issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_COL).setValue(new IntegerType(message.getCol()));
     issue.setSeverity(convert(message.getLevel()));
     CodeableConcept c = new CodeableConcept();
     c.setText(message.getMessage());

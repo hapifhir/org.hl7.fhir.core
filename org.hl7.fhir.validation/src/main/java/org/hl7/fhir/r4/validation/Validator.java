@@ -158,6 +158,8 @@ public class Validator {
       System.out.println("     no default value. This parameter can appear any number of times");
       System.out.println("-output [file]: a filename for the results (OperationOutcome)");
       System.out.println("     Default: results are sent to the std out.");
+      System.out.println("-debug");
+      System.out.println("     Produce additional information about the loading/validation process");
       System.out.println("-native: use schema for validation as well");
       System.out.println("     * XML: w3c schema+schematron");
       System.out.println("     * JSON: json.schema");
@@ -267,6 +269,7 @@ public class Validator {
       String sv = null;
       String txLog = null;
       String mapLog = null;
+      boolean doDebug = false;
 
         // load the parameters - so order doesn't matter
       for (int i = 0; i < args.length; i++) {
@@ -309,6 +312,8 @@ public class Validator {
             questionnaires.add(args[++i]);
         else if (args[i].equals("-native"))
             doNative = true;
+        else if (args[i].equals("-debug"))
+          doDebug = true;
         else if (args[i].equals("-strictExtensions"))
           anyExtensionsAllowed = false;
         else if (args[i].equals("-hintAboutNonMustSupport"))
@@ -376,6 +381,7 @@ public class Validator {
       validator.setNative(doNative);
       validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
+      validator.setDebug(doDebug);
 
       XmlParser x = new XmlParser();
       if (mode == EngineMode.TRANSFORM) {

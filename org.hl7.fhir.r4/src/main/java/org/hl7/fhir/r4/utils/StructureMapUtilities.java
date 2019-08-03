@@ -34,6 +34,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4.context.IWorkerContext;
@@ -86,10 +91,10 @@ import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleTargetComponent;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode;
-import org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode;
-import org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode;
+import org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapStructureComponent;
+import org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.TypeDetails;
@@ -97,14 +102,10 @@ import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -222,6 +223,7 @@ public class StructureMapUtilities {
 	private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private Map<String, Integer> ids = new HashMap<String, Integer>(); 
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions(); 
 
 	public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
 		super();
@@ -414,6 +416,7 @@ public class StructureMapUtilities {
       b.append(g.getExtends());
     }
 
+    if (g.hasTypeMode()) {
     switch (g.getTypeMode()) {
     case TYPES: 
       b.append(" <<types>>");
@@ -422,6 +425,7 @@ public class StructureMapUtilities {
       b.append(" <<type+>>");
       break;
     default: // NONE, NULL
+    }
     }
     b.append(" {\r\n");
     for (StructureMapGroupRuleComponent r : g.getRule()) {
@@ -1014,7 +1018,11 @@ public class StructureMapUtilities {
 		}
 		if (newFmt) {
 		  if (lexer.isConstant()) {
+		    if (lexer.isStringConstant()) {
+		      rule.setName(lexer.readConstant("ruleName"));
+		    } else {
 		    rule.setName(lexer.take());
+		    }
 		  } else {
 		    if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement())
 		      throw lexer.error("Complex rules must have an explicit name");
@@ -1194,7 +1202,7 @@ public class StructureMapUtilities {
 	private Type readConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
 		if (Utilities.isInteger(s))
 			return new IntegerType(s);
-		else if (Utilities.isDecimal(s, true))
+		else if (Utilities.isDecimal(s, false))
 			return new DecimalType(s);
 		else if (Utilities.existsInList(s, "true", "false"))
 			return new BooleanType(s.equals("true"));
@@ -1402,7 +1410,7 @@ public class StructureMapUtilities {
 					}
 				} else if (rule.getSource().size() == 1 && rule.getSourceFirstRep().hasVariable() && rule.getTarget().size() == 1 && rule.getTargetFirstRep().hasVariable() && rule.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE && !rule.getTargetFirstRep().hasParameter()) {
 				  // simple inferred, map by type
-				  log(v.summary());
+				  System.out.println(v.summary());
 				  Base src = v.get(VariableMode.INPUT, rule.getSourceFirstRep().getVariable());
 				  Base tgt = v.get(VariableMode.OUTPUT, rule.getTargetFirstRep().getVariable());
 				  String srcType = src.fhirType();
@@ -1493,11 +1501,9 @@ public class StructureMapUtilities {
     if (value.contains("*")) {
       for (StructureMap sm : worker.listTransforms()) {
         if (urlMatches(value, sm.getUrl())) {
-          if (!res.contains(sm)) {
             res.add(sm); 
           }
         }
-      }
     } else {
       StructureMap sm = worker.getTransform(value);
       if (sm != null)
@@ -1967,7 +1973,7 @@ public class StructureMapUtilities {
 	      throw new FHIRException("The code '"+code+"' is not in the value set '"+uri+"' (valid codes: "+b.toString()+"; also checked displays)");
 	  } else
 	    system = uri;
-	  ValidationResult vr = worker.validateCode(system, code, null);
+	  ValidationResult vr = worker.validateCode(terminologyServiceOptions, system, code, null);
 	  if (vr != null && vr.getDisplay() != null)
 	    display = vr.getDisplay();
    return new Coding().setSystem(system).setCode(code).setDisplay(display);
@@ -2291,7 +2297,7 @@ public class StructureMapUtilities {
 	 * @return
 	 * @throws Exception
 	 */
-  public StructureMapAnalysis analyse(Object appInfo, StructureMap map) throws Exception {
+  public StructureMapAnalysis analyse(Object appInfo, StructureMap map) throws FHIRException {
     ids.clear();
     StructureMapAnalysis result = new StructureMapAnalysis(); 
     TransformContext context = new TransformContext(appInfo);
@@ -2319,7 +2325,7 @@ public class StructureMapUtilities {
   }
 
 
-  private void analyseGroup(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapAnalysis result) throws Exception {
+  private void analyseGroup(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapAnalysis result) throws FHIRException {
     log(indent+"Analyse Group : "+group.getName());
     // todo: extends
     // todo: check inputs
@@ -2344,7 +2350,7 @@ public class StructureMapUtilities {
       xs.addText("Input: "+v.property.getPath());
   }
 
-  private void analyseRule(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapGroupRuleComponent rule, StructureMapAnalysis result) throws Exception {
+  private void analyseRule(String indent, TransformContext context, StructureMap map, VariablesForProfiling vars, StructureMapGroupComponent group, StructureMapGroupRuleComponent rule, StructureMapAnalysis result) throws FHIRException {
     log(indent+"Analyse rule : "+rule.getName());
     XhtmlNode tr = result.summary.addTag("tr");
     XhtmlNode xs = tr.addTag("td");
@@ -2352,7 +2358,7 @@ public class StructureMapUtilities {
 
     VariablesForProfiling srcVars = vars.copy();
     if (rule.getSource().size() != 1)
-      throw new Exception("Rule \""+rule.getName()+"\": not handled yet");
+      throw new FHIRException("Rule \""+rule.getName()+"\": not handled yet");
     VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
 
     TargetWriter tw = new TargetWriter();
@@ -2415,7 +2421,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private VariablesForProfiling analyseSource(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMapGroupRuleSourceComponent src, XhtmlNode td) throws Exception {
+  private VariablesForProfiling analyseSource(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMapGroupRuleSourceComponent src, XhtmlNode td) throws FHIRException {
     VariableForProfiling var = vars.get(VariableMode.INPUT, src.getContext());
     if (var == null)
       throw new FHIRException("Rule \""+ruleId+"\": Unknown input variable "+src.getContext());
@@ -2431,7 +2437,7 @@ public class StructureMapUtilities {
     if (src.hasElement()) {
       Property element = prop.getBaseProperty().getChild(prop.types.getType(), src.getElement());
       if (element == null)
-        throw new Exception("Rule \""+ruleId+"\": Unknown element name "+src.getElement());
+        throw new FHIRException("Rule \""+ruleId+"\": Unknown element name "+src.getElement());
       if (element.getDefinition().getMin() == 0)
         optional = true;
       if (element.getDefinition().getMax().equals("*"))
@@ -2459,14 +2465,14 @@ public class StructureMapUtilities {
   }
 
 
-  private void analyseTarget(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMap map, StructureMapGroupRuleTargetComponent tgt, String tv, TargetWriter tw, List<StructureDefinition> profiles, String sliceName) throws Exception {
+  private void analyseTarget(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMap map, StructureMapGroupRuleTargetComponent tgt, String tv, TargetWriter tw, List<StructureDefinition> profiles, String sliceName) throws FHIRException {
     VariableForProfiling var = null;
     if (tgt.hasContext()) {
       var = vars.get(VariableMode.OUTPUT, tgt.getContext());
       if (var == null)
-        throw new Exception("Rule \""+ruleId+"\": target context not known: "+tgt.getContext());
+        throw new FHIRException("Rule \""+ruleId+"\": target context not known: "+tgt.getContext());
       if (!tgt.hasElement())
-        throw new Exception("Rule \""+ruleId+"\": Not supported yet");
+        throw new FHIRException("Rule \""+ruleId+"\": Not supported yet");
     }
 
     
@@ -2477,7 +2483,7 @@ public class StructureMapUtilities {
     } else {
       Property vp = var.property.baseProperty.getChild(tgt.getElement(),  tgt.getElement());
       if (vp == null)
-        throw new Exception("Unknown Property "+tgt.getElement()+" on "+var.property.path);
+        throw new FHIRException("Unknown Property "+tgt.getElement()+" on "+var.property.path);
       
       type = new TypeDetails(CollectionStatus.SINGLETON, vp.getType(tgt.getElement()));
     }
@@ -2871,19 +2877,19 @@ public class StructureMapUtilities {
     return prop;
   }
 
-  private PropertyWithType resolveType(StructureMap map, String type, StructureMapInputMode mode) throws Exception {
+  private PropertyWithType resolveType(StructureMap map, String type, StructureMapInputMode mode) throws FHIRException {
     for (StructureMapStructureComponent imp : map.getStructure()) {
       if ((imp.getMode() == StructureMapModelMode.SOURCE && mode == StructureMapInputMode.SOURCE) || 
           (imp.getMode() == StructureMapModelMode.TARGET && mode == StructureMapInputMode.TARGET)) {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl());
         if (sd == null)
-          throw new Exception("Import "+imp.getUrl()+" cannot be resolved");
+          throw new FHIRException("Import "+imp.getUrl()+" cannot be resolved");
         if (sd.getId().equals(type)) {
           return new PropertyWithType(sd.getType(), new Property(worker, sd.getSnapshot().getElement().get(0), sd), null, new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl()));
         }
       }
     }
-    throw new Exception("Unable to find structure definition for "+type+" in imports");
+    throw new FHIRException("Unable to find structure definition for "+type+" in imports");
   }
 
 
@@ -2959,6 +2965,14 @@ public class StructureMapUtilities {
         return map.getIdentity();
     }
     return null;
+  }
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
+  }
+
+  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+    this.terminologyServiceOptions = terminologyServiceOptions;
   }
 	
 }

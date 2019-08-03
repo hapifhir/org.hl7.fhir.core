@@ -22,9 +22,11 @@ package org.hl7.fhir.r4.context;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.fhir.ucum.UcumService;
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4.formats.IParser;
@@ -42,6 +44,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureMap;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
@@ -209,8 +212,10 @@ public interface IWorkerContext {
   public List<String> getResourceNames();
   public Set<String> getResourceNamesAsSet();
   public List<String> getTypeNames();
-  public List<StructureDefinition> allStructures();
+  public List<StructureDefinition> allStructures(); // ensure snapshot exists...
+  public List<StructureDefinition> getStructures();
   public List<MetadataResource> allConformanceResources();
+  public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException;
   
   // -- Terminology services ------------------------------------------------------
 
@@ -371,7 +376,7 @@ public interface IWorkerContext {
    * @param display
    * @return
    */
-  public ValidationResult validateCode(String system, String code, String display);
+  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display);
 
   /**
    * Validation of a code - consult the terminology service 
@@ -387,10 +392,10 @@ public interface IWorkerContext {
    * @param display
    * @return
    */
-  public ValidationResult validateCode(String system, String code, String display, ValueSet vs);
-  public ValidationResult validateCode(String code, ValueSet vs);
-  public ValidationResult validateCode(Coding code, ValueSet vs);
-  public ValidationResult validateCode(CodeableConcept code, ValueSet vs);
+  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ValueSet vs);
+  public ValidationResult validateCode(TerminologyServiceOptions options, String code, ValueSet vs);
+  public ValidationResult validateCode(TerminologyServiceOptions options, Coding code, ValueSet vs);
+  public ValidationResult validateCode(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs);
   
   /**
    * Validation of a code - consult the terminology service 
@@ -406,7 +411,7 @@ public interface IWorkerContext {
    * @param display
    * @return
    */
-  public ValidationResult validateCode(String system, String code, String display, ConceptSetComponent vsi);
+  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ConceptSetComponent vsi);
 
   /**
    * returns the recommended tla for the type 

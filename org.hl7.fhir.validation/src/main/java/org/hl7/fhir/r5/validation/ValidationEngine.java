@@ -248,6 +248,7 @@ public class ValidationEngine {
   private String language;
   private PackageCacheManager pcm;
   private PrintWriter mapLog;
+  private boolean debug;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -693,7 +694,8 @@ public class ValidationEngine {
     for (Entry<String, byte[]> t : source.entrySet()) {
       String fn = t.getKey();
       if (!exemptFile(fn)) {
-        System.out.print(" ..file: "+fn);
+        if (debug)
+          System.out.print("* load file: "+fn);
         Resource r = null;
         try { 
           if (version.equals("3.0.1") || version.equals("3.0.0")) {
@@ -750,7 +752,8 @@ public class ValidationEngine {
               throw new Exception("Unsupported format for "+fn);
           } else
             throw new Exception("Unsupported version "+version);
-
+          if (debug)
+            System.out.println(" .. success");
         } catch (Exception e) {
           System.out.println(" - ignored due to error: "+e.getMessage());
         }
@@ -1122,5 +1125,12 @@ public class ValidationEngine {
     
   }
 
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
   
 }
