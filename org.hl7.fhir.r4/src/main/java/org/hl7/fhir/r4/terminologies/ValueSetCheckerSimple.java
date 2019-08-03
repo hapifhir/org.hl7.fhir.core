@@ -22,11 +22,14 @@ package org.hl7.fhir.r4.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
@@ -36,7 +39,9 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r4.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -45,10 +50,13 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private ValueSet valueset;
   private IWorkerContext context;
+  private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
+  private TerminologyServiceOptions options;
 
-  public ValueSetCheckerSimple(ValueSet source, IWorkerContext context) {
+  public ValueSetCheckerSimple(TerminologyServiceOptions options, ValueSet source, IWorkerContext context) {
     this.valueset = source;
     this.context = context;
+    this.options = options;
   }
 
   public ValidationResult validateCode(CodeableConcept code) throws FHIRException {
@@ -145,7 +153,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private ValidationResult validateCode(Coding code, CodeSystem cs) {
     ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code.getCode());
     if (cc == null)
-      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+code+" in "+cs.getUrl());
+      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+gen(code)+" in "+cs.getUrl());
     if (code.getDisplay() == null)
       return new ValidationResult(cc);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -159,7 +167,56 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (code.getDisplay().equalsIgnoreCase(ds.getValue()))
         return new ValidationResult(cc);
     }
-    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" must be one of '"+b.toString()+"'", cc);
+    // also check to see if the value set has another display
+    ConceptReferenceComponent vs = findValueSetRef(code.getSystem(), code.getCode());
+    if (vs != null && (vs.hasDisplay() ||vs.hasDesignation())) {
+      if (vs.hasDisplay()) {
+        b.append(vs.getDisplay());
+        if (code.getDisplay().equalsIgnoreCase(vs.getDisplay()))
+          return new ValidationResult(cc);
+      }
+      for (ConceptReferenceDesignationComponent ds : vs.getDesignation()) {
+        b.append(ds.getValue());
+        if (code.getDisplay().equalsIgnoreCase(ds.getValue()))
+          return new ValidationResult(cc);
+      }
+    }
+    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" should be one of '"+b.toString()+"'", cc);
+  }
+
+  private ConceptReferenceComponent findValueSetRef(String system, String code) {
+    if (valueset == null)
+      return null;
+    // if it has an expansion
+    for (ValueSetExpansionContainsComponent exp : valueset.getExpansion().getContains()) {
+      if (system.equals(exp.getSystem()) && code.equals(exp.getCode())) {
+        ConceptReferenceComponent cc = new ConceptReferenceComponent();
+        cc.setDisplay(exp.getDisplay());
+        cc.setDesignation(exp.getDesignation());
+        return cc;
+      }
+    }
+    for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+      if (system.equals(inc.getSystem())) {
+        for (ConceptReferenceComponent cc : inc.getConcept()) {
+          if (cc.getCode().equals(code))
+            return cc;
+        }
+      }
+      for (CanonicalType url : inc.getValueSet()) {
+        ConceptReferenceComponent cc = getVs(url.asStringValue()).findValueSetRef(system, code);
+        if (cc != null)
+          return cc;
+      }
+    }
+    return null;
+  }
+
+  private String gen(Coding code) {
+    if (code.hasSystem())
+      return code.getSystem()+"#"+code.getCode();
+    else
+      return null;
   }
 
   private String getValueSetSystem() throws FHIRException {
@@ -288,15 +345,62 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     
     if (!system.equals(vsi.getSystem()))
       return false;
-    if (vsi.hasFilter())
-      throw new FHIRException("Filters - not done yet");
+    if (vsi.hasFilter()) {
+      boolean ok = true;
+      for (ConceptSetFilterComponent f : vsi.getFilter())
+        if (!codeInFilter(system, f, code)) {
+          ok = false;
+          break;
+        }
+      if (ok)
+        return true;
+    }
     
     CodeSystem def = context.fetchCodeSystem(system);
     if (def.getContent() != CodeSystemContentMode.COMPLETE) 
       throw new FHIRException("Unable to resolve system "+vsi.getSystem()+" - system is not complete");
     
     List<ConceptDefinitionComponent> list = def.getConcept();
-    return validateCodeInConceptList(code, def, list);
+    boolean ok = validateCodeInConceptList(code, def, list);
+    if (ok && vsi.hasConcept()) {
+      for (ConceptReferenceComponent cc : vsi.getConcept())
+        if (cc.getCode().equals(code)) 
+          return true;
+      return false;
+    } else
+      return ok;
+  }
+
+  private boolean codeInFilter(String system, ConceptSetFilterComponent f, String code) throws FHIRException {
+    CodeSystem cs = context.fetchCodeSystem(system);
+    if (cs == null)
+      throw new FHIRException("Unable to evaluate filters on unknown code system '"+system+"'");
+    if ("concept".equals(f.getProperty()))
+      return codeInConceptFilter(cs, f, code);
+    else {
+      System.out.println("todo: handle filters with property = "+f.getProperty()); 
+      throw new FHIRException("Unable to handle system "+cs.getUrl()+" filter with property = "+f.getProperty());
+    }
+  }
+
+  private boolean codeInConceptFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
+    switch (f.getOp()) {
+    case ISA: return codeInConceptIsAFilter(cs, f, code);
+    case ISNOTA: return !codeInConceptIsAFilter(cs, f, code);
+    default:
+      System.out.println("todo: handle concept filters with op = "+f.getOp()); 
+      throw new FHIRException("Unable to handle system "+cs.getUrl()+" concept filter with op = "+f.getOp());
+    }
+  }
+
+  private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
+    if (code.equals(f.getProperty()))
+      return true;
+   ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue());
+   if (cc == null)
+     return false;
+   cc = findCodeInConcept(cc.getConcept(), code);
+   return cc != null;
   }
 
   public boolean validateCodeInConceptList(String code, CodeSystem def, List<ConceptDefinitionComponent> list) {
@@ -318,10 +422,18 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     return false;
   }
   
+  private ValueSetCheckerSimple getVs(String url) {
+    if (inner.containsKey(url)) {
+      return inner.get(url);
+    }
+    ValueSet vs = context.fetchResource(ValueSet.class, url);
+    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context);
+    inner.put(url, vsc);
+    return vsc;
+  }
+  
   private boolean inImport(String uri, String system, String code) throws FHIRException {
-    ValueSet vs = context.fetchResource(ValueSet.class, uri);
-    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(vs, context);
-    return vsc.codeInValueSet(system, code);
+    return getVs(uri).codeInValueSet(system, code);
   }
 
 }

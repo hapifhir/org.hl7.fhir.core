@@ -17,6 +17,7 @@ import org.hl7.fhir.r4.model.ExpressionNode.*;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
+import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
@@ -82,6 +83,11 @@ public class FHIRPathEngine {
     public String getValue() {
       return value;
     }
+    
+    @Override
+    public String primitiveValue() {
+      return value;
+    }
   }
   
   private class ClassTypeInfo extends Base {
@@ -144,6 +150,7 @@ public class FHIRPathEngine {
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -219,7 +226,8 @@ public class FHIRPathEngine {
     
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
-     * @param url
+     * @appContext - passed in by the host to the FHIRPathEngine
+     * @param url the reference (Reference.reference or the value of the canonical
      * @return
      * @throws FHIRException 
      */
@@ -1072,6 +1080,7 @@ public class FHIRPathEngine {
     case Descendants: return checkParamCount(lexer, location, exp, 0);
     case MemberOf: return checkParamCount(lexer, location, exp, 1);
     case Trace: return checkParamCount(lexer, location, exp, 1, 2);
+    case Check: return checkParamCount(lexer, location, exp, 2);
     case Today: return checkParamCount(lexer, location, exp, 0);
     case Now: return checkParamCount(lexer, location, exp, 0);
     case Resolve: return checkParamCount(lexer, location, exp, 0);
@@ -1862,13 +1871,13 @@ public class FHIRPathEngine {
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (l.fhirType().equals("code")) {
-          if (worker.validateCode(l.castToCoding(l), vs).isOk())
+          if (worker.validateCode(terminologyServiceOptions , l.castToCoding(l), vs).isOk())
             ans = true;
 	      } else if (l.fhirType().equals("Coding")) {
-	        if (worker.validateCode(l.castToCoding(l), vs).isOk())
+	        if (worker.validateCode(terminologyServiceOptions, l.castToCoding(l), vs).isOk())
 	          ans = true;
 	      } else if (l.fhirType().equals("CodeableConcept")) {
-	        if (worker.validateCode(l.castToCodeableConcept(l), vs).isOk())
+	        if (worker.validateCode(terminologyServiceOptions, l.castToCodeableConcept(l), vs).isOk())
 	          ans = true;
 	      }
 	    }
@@ -2511,6 +2520,10 @@ public class FHIRPathEngine {
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     }
+    case Check : {
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return focus; 
+    }
     case Today : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Now : 
@@ -2703,6 +2716,7 @@ public class FHIRPathEngine {
     case Descendants : return funcDescendants(context, focus, exp);
     case MemberOf : return funcMemberOf(context, focus, exp);
     case Trace : return funcTrace(context, focus, exp);
+    case Check : return funcCheck(context, focus, exp);
     case Today : return funcToday(context, focus, exp);
     case Now : return funcNow(context, focus, exp);
     case Resolve : return funcResolve(context, focus, exp);
@@ -3446,6 +3460,16 @@ public class FHIRPathEngine {
     return focus;
   }
 
+  private List<Base> funcCheck(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (!convertToBoolean(n1)) {
+      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      String name = n2.get(0).primitiveValue();
+      throw new FHIRException("check failed: "+name);
+    }
+    return focus;
+  }
+
   private List<Base> funcDistinct(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     if (focus.size() <= 1)
       return focus;
@@ -3739,7 +3763,7 @@ public class FHIRPathEngine {
       else
         return null;      
     } else {
-      if (Utilities.isDecimal(s, false))
+      if (Utilities.isDecimal(s, true))
         return new Quantity().setValue(new BigDecimal(s)).setSystem("http://unitsofmeasure.org").setCode("1");
       else
         return null;
@@ -4092,6 +4116,16 @@ public class FHIRPathEngine {
     ElementDefinition focus = null;
 
     if (expr.getKind() == Kind.Name) {
+      if (element.hasSlicing()) {
+        ElementDefinition slice = pickMandatorySlice(sd, element);
+        if (slice == null)
+          throw new DefinitionException("Error in discriminator at "+element.getId()+": found a sliced element while resolving the fixed value for one of the slices");
+        element = slice;
+      }
+      
+      if (expr.getName().equals("$this")) {
+        focus = element;
+      } else { 
       List<ElementDefinition> childDefinitions;
       childDefinitions = ProfileUtilities.getChildMap(sd, element);
       // if that's empty, get the children of the type
@@ -4106,6 +4140,7 @@ public class FHIRPathEngine {
           focus = t;
           break;
         }
+      }
       }
     } else if (expr.getKind() == Kind.Function) {
       if ("resolve".equals(expr.getName())) {
@@ -4127,10 +4162,12 @@ public class FHIRPathEngine {
         List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-           sd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
-           while (sd!=null && !sd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
-             sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-           if (sd.getUrl().equals(targetUrl)) {
+           StructureDefinition exsd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
+           while (exsd!=null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
+             exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
+           if (exsd.getUrl().equals(targetUrl)) {
+             if (ProfileUtilities.getChildMap(sd, t).isEmpty())
+               sd = exsd;
              focus = t;
              break;
            }
@@ -4145,12 +4182,23 @@ public class FHIRPathEngine {
     }
 
     if (focus == null)
-      throw new DefinitionException("Unable to resolve discriminator");      
+      throw new DefinitionException("Unable to resolve discriminator in definitions: "+expr.toString());      
     else if (expr.getInner() == null)
       return focus;
-    else
+    else {
       return evaluateDefinition(expr.getInner(), sd, focus);
   }
+  }
+
+  private ElementDefinition pickMandatorySlice(StructureDefinition sd, ElementDefinition element) throws DefinitionException {
+    List<ElementDefinition> list = ProfileUtilities.getSliceList(sd, element);
+    for (ElementDefinition ed : list) {
+      if (ed.getMin() > 0)
+        return ed;
+    }
+    return null;
+  }
+
 
   private StructureDefinition fetchStructureByType(ElementDefinition ed) throws DefinitionException {
     if (ed.getType().size() == 0)
@@ -4159,8 +4207,6 @@ public class FHIRPathEngine {
       throw new DefinitionException("Error in discriminator at "+ed.getId()+": no children, multiple types");
     if (ed.getType().get(0).getProfile().size() > 1)
       throw new DefinitionException("Error in discriminator at "+ed.getId()+": no children, multiple type profiles");
-    if (ed.hasSlicing()) 
-      throw new DefinitionException("Error in discriminator at "+ed.getId()+": slicing found");
     if (ed.getType().get(0).hasProfile()) 
       return worker.fetchResource(StructureDefinition.class, ed.getType().get(0).getProfile().get(0).getValue());
     else
@@ -4176,7 +4222,8 @@ public class FHIRPathEngine {
       return true;
     else if (t.getType().size() == 1 && t.getType().get(0).getCode() != null && t.getPath() != null && t.getPath().toUpperCase().endsWith(t.getType().get(0).getCode().toUpperCase()))
       return tail.startsWith(d);
-    
+    else if (t.getPath().endsWith("[x]") && tail.startsWith(d))
+      return true;
     return false;
   }
 
@@ -4241,7 +4288,7 @@ public class FHIRPathEngine {
         return Equality.False;
       else if (Utilities.isInteger(item.primitiveValue()))
         return asBoolFromInt(item.primitiveValue());
-      else if (Utilities.isDecimal(item.primitiveValue(), false))
+      else if (Utilities.isDecimal(item.primitiveValue(), true))
         return asBoolFromDec(item.primitiveValue());
       else
         return Equality.Null;
@@ -4251,6 +4298,11 @@ public class FHIRPathEngine {
           
   private Equality boolToTriState(boolean b) {
     return b ? Equality.True : Equality.False;
+  }
+
+
+  public TerminologyServiceOptions getTerminologyServiceOptions() {
+    return terminologyServiceOptions;
   }
   
 }

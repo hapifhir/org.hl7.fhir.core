@@ -1,0 +1,493 @@
+<StructureDefinition xmlns="http://hl7.org/fhir">
+    <id value="zib-Product" />
+    <url value="http://nictiz.nl/fhir/StructureDefinition/zib-Product" />
+    <version value="2.0.3" />
+    <name value="Zib PharmaceuticalProduct" />
+    <title value="HCIM PharmaceuticalProduct" />
+    <status value="active" />
+    <publisher value="Nictiz" />
+    <contact>
+        <name value="Nictiz" />
+        <telecom>
+            <system value="email" />
+            <value value="info@nictiz.nl" />
+            <use value="work" />
+        </telecom>
+    </contact>
+    <description value="This profile is based on Medicatieproces V9.0.7 and the related Dutch Health and Care Information models (Dutch: Zorginformatiebouwsteen or ZIB) nl.zorg.part.PharmacauticalProduct version 2.0, year 2017. It was first modeled after nl.zorg.part.Product from the prerelease version 1.0 of 2017 (https://zibs.nl/wiki/Product-v1.0(2017EN)) which is why the canonical uri is different. This will updated in the next iteration of the HCIMs/profiles" />
+    <purpose value="The purpose of PharmaceuticalProduct is to unambiguously describe the medication to be used." />
+    <copyright value="CC0" />
+    <fhirVersion value="3.0.1" />
+    <mapping>
+        <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+        <uri value="https://zibs.nl/wiki/PharmaceuticalProduct-v2.0(2017EN)" />
+        <name value="HCIM PharmaceuticalProduct-v2.0(2017EN)" />
+    </mapping>
+    <kind value="resource" />
+    <abstract value="false" />
+    <type value="Medication" />
+    <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Medication" />
+    <derivation value="constraint" />
+    <differential>
+        <element id="Medication">
+            <path value="Medication" />
+            <short value="Product" />
+            <definition value="Root concept of the Product partial information model. This root concept contains all data elements of the  Product partial information model.
+
+The prescribed product is usually a medicine. However, medical aids and bandages can also be prescribed and supplied via the pharmacy. Strictly speaking, food and blood products do not belong in the medication category, but can be prescribed and supplied by a pharmacy as well. 
+
+A type of medication can be indicated with a single codeThat code can be chosen from several possible coding systems (concretely: GPK, PRK, HPK or article numbers). Correct use of these codes in the software systems will sufficiently record the composition of the product used, making a complete product specification unnecessary. 
+
+In addition to a primary code, alternative codes from other coding systems can also be entered (so that the GPK can be sent along in the event that the patient was registered based on PRK, for example).  
+
+Entering multiple ingredients will enable you to display a compound product. If one of the composite parts is liquid, the dosage will be given in milliliters; otherwise it will be given in ‘units’. 
+
+In that case, the composition of the medicationcan be specified implicitly (with the use of a medication code) or explicitly, for example by listing the (active) substance(s) of the medication. 
+Prescriptions to be prepared by the pharmacy can be entered as well. This can be done by means of the option listed above to enter coded ingredients and/or by entering the composition and preparation method as free text." />
+            <alias value="Geneesmiddel" />
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19926" />
+                <comment value="FarmaceuticalProduct" />
+            </mapping>
+        </element>
+        <element id="Medication.extension">
+            <path value="Medication.extension" />
+            <slicing>
+                <discriminator>
+                    <type value="value" />
+                    <path value="url" />
+                </discriminator>
+                <rules value="open" />
+            </slicing>
+        </element>
+        <element id="Medication.extension:description">
+            <path value="Medication.extension" />
+            <sliceName value="description" />
+            <short value="Description" />
+            <definition value="A textual description of the type of medication (including relevant properties of the composition and preparation method if possible), which is only used if no coded indication from the G Standard is available (magistral preparation)." />
+            <alias value="Omschrijving" />
+            <max value="1" />
+            <type>
+                <code value="Extension" />
+                <profile value="http://nictiz.nl/fhir/StructureDefinition/zib-Product-Description" />
+            </type>
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19784" />
+                <comment value="Description" />
+            </mapping>
+        </element>
+        <element id="Medication.code">
+            <path value="Medication.code" />
+            <example>
+                <label value="Example of Medication code" />
+                <valueCodeableConcept>
+                    <coding>
+                        <system value="urn:oid:2.16.840.1.113883.2.4.4.8" />
+                        <code value="13610554" />
+                        <display value="Carbasalaatcalcium Sandoz 600 30 sac" />
+                    </coding>
+                </valueCodeableConcept>
+            </example>
+        </element>
+        <element id="Medication.code.coding">
+            <path value="Medication.code.coding" />
+            <slicing>
+                <discriminator>
+                    <type value="value" />
+                    <path value="system" />
+                </discriminator>
+                <rules value="open" />
+            </slicing>
+            <short value="MedicationCode" />
+            <definition value="Coding medication in the Netherlands is done on the basis of the G standard (issued by Z-index), which is filled under the direction of KNMP. 
+
+The coded medication can be expressed as: 
+
+ - GTIN International Article Number
+ - KNMP article number = ATKODE (2.16.840.1.113883.2.4.4.8)
+ - Trade product code (HPK)
+ - Prescription code (PRK)
+ - Generic product code (GPK)
+ - Anatomic Therapeutic Classification code (ATC)
+ - SNOMED CT code
+ - Substance Name Code (SNK)
+ - Substance Name Code, in combination with Route of Administration (SSK)
+ - 90.000.000 number (individual code setting) (or similar from the facility)
+
+The GTIN enables identification of the product including its origin with a barcode. 
+The ATKODE is the number with which wholesalers link the article to pharmacy systems (e.g. a box with 3 strips of 10 tablets). 
+The HPK is the code for the trade product (with the brand name) as used per dose/per time the medication is taken (1 pill, 1 puff, 1ml) 
+The PRK codes for the same product as the HPK does, but is not linked to a manufacturer (no brand name, no characteristics such as color, geometrical shape etc.). This code will enable a generic prescription, while still defining which trade product can be taken (e.g. a 200ml bag). 
+The generic product code defines the composition of a product, and is sufficient for recording the prescription, but not the order. 
+The prescription code (PRK) was developed and added to the older generic (GPK) and supplier-specific (HPK, ATKODE) coding to enable a generic product to be entered without listing a specific brand on the one hand, and to enable providing enough information to support the pharmacy supplying it on the other.  
+
+The Substance Name Code (SNK) and the Substance Name Code, in combination with Route of Administration (SSK) are used to prescribe at a more generic level. 
+
+The GTIN coding is used for the implementation of a barcode scanning standard and to be able to trace the origin of the product. 
+
+The 90.000.000 number is used in accordance with national agreements." />
+            <comment value="It is possible to capture multiple product codes with .coding elements. These product codes need to be related to each other. It should not be possible that two different product codes result in two medication products: only more generic product codes are allowed next to the original product code." />
+            <alias value="ProductCode" />
+            <alias value="Geneesmiddel code" />
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19927" />
+                <comment value="MedicationCode" />
+            </mapping>
+        </element>
+        <element id="Medication.code.coding:productCodeZICodelijst">
+            <path value="Medication.code.coding" />
+            <sliceName value="productCodeZICodelijst" />
+            <max value="1" />
+            <binding>
+                <strength value="required" />
+                <description value="ProductCodeZICodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.1--20171231000000" />
+                    <display value="ProductCodeZICodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.code.coding:productCodeHPKCodelijst">
+            <path value="Medication.code.coding" />
+            <sliceName value="productCodeHPKCodelijst" />
+            <max value="1" />
+            <binding>
+                <strength value="required" />
+                <description value="ProductCodeHPKCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.5--20171231000000" />
+                    <display value="ProductCodeHPKCodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.code.coding:productCodeGTINCodelijst">
+            <path value="Medication.code.coding" />
+            <sliceName value="productCodeGTINCodelijst" />
+            <max value="1" />
+            <binding>
+                <strength value="required" />
+                <description value="ProductCodeGTINCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.2--20171231000000" />
+                    <display value="ProductCodeGTINCodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.code.coding:productCodeGPKCodelijst">
+            <path value="Medication.code.coding" />
+            <sliceName value="productCodeGPKCodelijst" />
+            <max value="1" />
+            <binding>
+                <strength value="required" />
+                <description value="ProductCodeGPKCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.6--20171231000000" />
+                    <display value="ProductCodeGPKCodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.code.coding:productCodePRKCodelijst">
+            <path value="Medication.code.coding" />
+            <sliceName value="productCodePRKCodelijst" />
+            <max value="1" />
+            <binding>
+                <strength value="required" />
+                <description value="ProductCodePRKCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.3--20171231000000" />
+                    <display value="ProductCodePRKCodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.code.coding:productCodeATCCodelijst">
+            <path value="Medication.code.coding" />
+            <sliceName value="productCodeATCCodelijst" />
+            <max value="1" />
+            <binding>
+                <strength value="required" />
+                <description value="ProductCodeATCCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.7--20171231000000" />
+                    <display value="ProductCodeATCCodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.code.text">
+            <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable">
+                <valueBoolean value="true" />
+            </extension>
+            <path value="Medication.code.text" />
+            <short value="Medication" />
+            <definition value="There is no code for medication entered in free text. In these cases, enter the complete description." />
+            <alias value="ProductNaam" />
+            <alias value="Geneesmiddel" />
+            <example>
+                <label value="Example of Medication as free text" />
+                <valueString value="PARACETAMOL 500MG TABLET" />
+            </example>
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19929" />
+                <comment value="Medication" />
+            </mapping>
+        </element>
+        <element id="Medication.form">
+            <path value="Medication.form" />
+            <short value="PharmaceuticalForm" />
+            <definition value="The pharmaceutical form indicates the form of the medication in accordance with the route of administration. Examples include: tablet, suppository, infusion liquid, ointment. If the product has a generic code in the G standard, the form will be known in the G standard. For products without a code (free text, preparation by the pharmacy), the means of administration can be entered." />
+            <alias value="FarmaceutischeVorm" />
+            <example>
+                <label value="Example of Pharmaceutical form" />
+                <valueCodeableConcept>
+                    <coding>
+                        <system value="urn:oid:2.16.840.1.113883.2.4.4.11" />
+                        <code value="230" />
+                        <display value="TABLET" />
+                    </coding>
+                </valueCodeableConcept>
+            </example>
+            <binding>
+                <strength value="required" />
+                <description value="FarmaceutischeVormCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.8--20171231000000" />
+                    <display value="FarmaceutischeVormCodelijst" />
+                </valueSetReference>
+            </binding>
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19931" />
+                <comment value="PharmaceuticalForm" />
+            </mapping>
+        </element>
+        <element id="Medication.ingredient">
+            <path value="Medication.ingredient" />
+            <short value="Ingredient" />
+            <definition value="Container of the Ingredient concept. This container contains all data elements of the Ingredient concept. 
+
+A product contains one or more active substances and excipients. These are usually determined by the product code. For medication prepared or compounded by the local pharmacy, each ingredient must be entered separately. 
+
+The active substances play an important role, as they: 
+
+a) determine the pharmacotherapeutic effect of the medication and 
+b) serve as the basis for the indication of the strength of the medication (e.g. 200mg)." />
+            <alias value="Ingredient" />
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19932" />
+                <comment value="Ingredient" />
+            </mapping>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept">
+            <path value="Medication.ingredient.itemCodeableConcept" />
+            <sliceName value="itemCodeableConcept" />
+            <short value="Substance" />
+            <definition value="Active substance or excipient. 
+Here, the same codes can be used as for the ProductCode (for dilutions and compounds in particular), but now, the ATC, SSK and SNK codes can also be used to indicate a substance (to list ingredients of local products prepared by the pharmacy). 
+- GTIN International Article Number
+- KNMP article number
+- Trade product code (HPK)
+- Prescription code (PRK)
+- Generic product code (GPK)
+- ATC (anatomic therapeutic classification)
+- SSK (substance name code with route of administration)
+- SNK (substance name code)
+
+
+The ATC is an international classification of pharmaceutical substances without a reference to specific products on the market. Therefore, the ATC code of a generic product will not contain a reference to a certain dose, pharmaceutical form or route of administration; it will only contain a reference to the ingredients (not the amount/concentration/strength)." />
+            <alias value="IngredientCode" />
+            <type>
+                <code value="CodeableConcept" />
+            </type>
+            <example>
+                <label value="Example of Ingredient substance" />
+                <valueCodeableConcept>
+                    <coding>
+                        <system value="http://www.whocc.no/atc" />
+                        <code value="B01AC08" />
+                        <display value="carbasalate calcium" />
+                    </coding>
+                </valueCodeableConcept>
+            </example>
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19934" />
+                <comment value="SubstanceCode" />
+            </mapping>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <slicing>
+                <discriminator>
+                    <type value="value" />
+                    <path value="system" />
+                </discriminator>
+                <rules value="open" />
+            </slicing>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeZICodelijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeZICodelijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeZICodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.12--20171231000000" />
+                    <display value="IngredientCodeZICodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeGTINCodeLijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeGTINCodeLijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeGTINCodeLijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.16--20171231000000" />
+                    <display value="IngredientCodeGTINCodeLijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeATCCodelijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeATCCodelijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeATCCodelijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.13--20171231000000" />
+                    <display value="IngredientCodeATCCodelijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeHPKLijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeHPKLijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeHPKLijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.10--20171231000000" />
+                    <display value="IngredientCodeHPKLijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeGPKLijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeGPKLijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeGPKLijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.9--20171231000000" />
+                    <display value="IngredientCodeGPKLijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeSNKLijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeSNKLijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeSNKLijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.14--20171231000000" />
+                    <display value="IngredientCodeSNKLijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodePRKLijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodePRKLijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodePRKLijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.11--20171231000000" />
+                    <display value="IngredientCodePRKLijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.item[x]:itemCodeableConcept.coding:ingredientCodeSSKLijst">
+            <path value="Medication.ingredient.itemCodeableConcept.coding" />
+            <sliceName value="ingredientCodeSSKLijst" />
+            <binding>
+                <strength value="required" />
+                <description value="IngredientCodeSSKLijst" />
+                <valueSetReference>
+                    <reference value="http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.9.7.15--20171231000000" />
+                    <display value="IngredientCodeSSKLijst" />
+                </valueSetReference>
+            </binding>
+        </element>
+        <element id="Medication.ingredient.amount">
+            <path value="Medication.ingredient.amount" />
+            <short value="Concentration" />
+            <definition value="The relative amount of this ingredient in this product.  
+Calculation of Concentration = Ingredient Amount ÷ Product Amount. 
+ 
+This could be a concentration if the medication is dissolved in liquid, for example: 25mg/tablet or 50IE/ml of 200mg/500ml." />
+            <alias value="Sterkte" />
+            <alias value="Concentratie" />
+            <alias value="Hoeveelheid" />
+            <example>
+                <label value="Example of Concentration" />
+                <valueRatio>
+                    <numerator>
+                        <value value="5" />
+                        <unit value="ml" />
+                        <system value="http://unitsofmeasure.org" />
+                        <code value="mL" />
+                    </numerator>
+                    <denominator>
+                        <value value="200" />
+                        <unit value="ml" />
+                        <system value="http://unitsofmeasure.org" />
+                        <code value="mL" />
+                    </denominator>
+                </valueRatio>
+            </example>
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.19933" />
+                <comment value="Concentration" />
+            </mapping>
+        </element>
+        <element id="Medication.ingredient.amount.numerator">
+            <path value="Medication.ingredient.amount.numerator" />
+            <short value="IngredientAmount" />
+            <definition value="The amount of this ingredient. This is the numerator for the calculation of the concentration. The unit should be selected from the G-Standard (Table 902)" />
+            <alias value="IngredientHoeveelheid" />
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.22277" />
+                <comment value="IngredientAmount" />
+            </mapping>
+        </element>
+        <element id="Medication.ingredient.amount.denominator">
+            <path value="Medication.ingredient.amount.denominator" />
+            <short value="ProductAmount" />
+            <definition value="Amount of the product. This is the denominator for the calculation of the concentration" />
+            <alias value="ProductHoeveelheid" />
+            <mapping>
+                <identity value="hcim-pharmaceuticalproduct-v2.0-2017EN" />
+                <map value="NL-CM:9.7.22278" />
+                <comment value="ProductAmount" />
+            </mapping>
+        </element>
+        <element id="Medication.package.content.item[x]">
+            <path value="Medication.package.content.item[x]" />
+            <type>
+                <code value="CodeableConcept" />
+            </type>
+            <type>
+                <code value="Reference" />
+                <targetProfile value="http://nictiz.nl/fhir/StructureDefinition/zib-Product" />
+            </type>
+        </element>
+    </differential>
+</StructureDefinition>

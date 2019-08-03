@@ -701,7 +701,6 @@ public class PackageCacheManager {
       for (String s : ini.getPropertyNames("urls"))
         allUrls.add(ini.getStringProperty("urls", s));
       try {
-        System.out.println("Listing known Implementation Guides");
         URL url = new URL("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -715,7 +714,7 @@ public class PackageCacheManager {
               allUrls.add(gi.get("canonical").getAsString());
         }
       } catch (Exception e) {
-        System.out.println("   .. failed: "+e.getMessage());
+        System.out.println("Listing known Implementation Guides failed: "+e.getMessage());
       }
     }
     return allUrls;    

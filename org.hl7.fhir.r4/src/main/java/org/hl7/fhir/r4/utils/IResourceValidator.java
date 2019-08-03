@@ -133,6 +133,9 @@ public interface IResourceValidator {
   public boolean isErrorForUnknownProfiles();
   public void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
 
+  public String getValidationLanguage();
+  public void setValidationLanguage(String value);
+  
   /**
    * Validate suite
    *  

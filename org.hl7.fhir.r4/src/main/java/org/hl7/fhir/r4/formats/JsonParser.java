@@ -58836,7 +58836,7 @@ public class JsonParser extends JsonParserBase {
     else if (type instanceof ParameterDefinition)
        composeParameterDefinitionInner((ParameterDefinition) type);
     else
-      throw new Error("Unhandled type");
+      throw new Error("Unhandled type: "+type.fhirType());
   }
 
 }

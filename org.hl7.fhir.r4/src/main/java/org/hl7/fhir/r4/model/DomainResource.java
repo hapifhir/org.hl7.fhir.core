@@ -488,6 +488,18 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
    }
   
 
+      public Resource getContained(String ref) {
+        if (ref == null)
+          return null;
+        
+        if (ref.startsWith("#"))
+          ref = ref.substring(1);
+        for (Resource r : getContained()) {
+          if (r.getId().equals(ref)) 
+            return r;
+        }
+        return null;
+      }
 
 // end addition
 

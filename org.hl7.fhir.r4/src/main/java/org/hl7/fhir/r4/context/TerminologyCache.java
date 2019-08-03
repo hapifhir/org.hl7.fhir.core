@@ -43,6 +43,7 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -111,7 +112,7 @@ public class TerminologyCache {
       load();
   }
   
-  public CacheToken generateValidationToken(Coding code, ValueSet vs) {
+  public CacheToken generateValidationToken(TerminologyServiceOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
       ct.name = getNameForSystem(code.getSystem());
@@ -121,7 +122,7 @@ public class TerminologyCache {
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
     try {
-      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : json.composeString(vsc))+"}";
+      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : json.composeString(vsc))+(options == null ? "" : ", "+options.toJson())+"}";
     } catch (IOException e) {
       throw new Error(e);
     }
@@ -129,7 +130,7 @@ public class TerminologyCache {
     return ct;
   }
 
-  public CacheToken generateValidationToken(CodeableConcept code, ValueSet vs) {
+  public CacheToken generateValidationToken(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     for (Coding c : code.getCoding()) {
       if (c.hasSystem())
@@ -139,7 +140,7 @@ public class TerminologyCache {
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
     try {
-      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+json.composeString(vsc)+"}";
+      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+json.composeString(vsc)+(options == null ? "" : ", "+options.toJson())+"}";
     } catch (IOException e) {
       throw new Error(e);
     }
@@ -327,12 +328,14 @@ public class TerminologyCache {
           NamedCache nc = new NamedCache();
           nc.name = title;
           caches.put(title, nc);
+          System.out.print(" - load "+title+".cache");
           String src = TextFile.fileToString(Utilities.path(folder, fn));
           if (src.startsWith("?"))
             src = src.substring(1);
           int i = src.indexOf(ENTRY_MARKER); 
           while (i > -1) {
             String s = src.substring(0, i);
+            System.out.print(".");
             src = src.substring(i+ENTRY_MARKER.length()+1);
             i = src.indexOf(ENTRY_MARKER);
             if (!Utilities.noString(s)) {
@@ -360,6 +363,7 @@ public class TerminologyCache {
               nc.list.add(ce);
             }
           }        
+          System.out.println("done");
         } catch (Exception e) {
           throw new FHIRException("Error loading "+fn+": "+e.getMessage(), e);
         }

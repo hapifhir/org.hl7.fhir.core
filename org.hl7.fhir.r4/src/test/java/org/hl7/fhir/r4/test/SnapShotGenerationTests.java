@@ -104,6 +104,12 @@ public class SnapShotGenerationTests {
       return false;
     }
 
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {
@@ -312,7 +318,7 @@ public class SnapShotGenerationTests {
             if (TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getUrl()) == null) {
               sd.setUserData("path", "test-"+sd.getId()+".html");
               StructureDefinition extd = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-              new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), sd.getName());
+              new ProfileUtilities(TestingUtilities.context(), null, null).generateSnapshot(extd, sd, sd.getUrl(), "http://hl7.org/fhir/R4", sd.getName());
               TestingUtilities.context().cacheResource(sd);
               debugSaveResource(sd);
             }
@@ -347,7 +353,7 @@ public class SnapShotGenerationTests {
                   throw new FHIRException("Sort failed: "+errors.toString());
                 
               }
-              pu.generateSnapshot(base, output, source.getUrl(), source.getName());
+              pu.generateSnapshot(base, output, source.getUrl(), "http://hl7.org/fhir/R4", source.getName());
               debugSaveResource(output);
               context.fixtures.put(op.getResponseId(), output);
               context.snapshots.put(output.getUrl(), output);
@@ -440,7 +446,7 @@ public class SnapShotGenerationTests {
           pu.sortDifferential(getSD(p.getBaseDefinition()), p, url, errors);
           if (!errors.isEmpty())
             throw new FHIRException(errors.get(0));
-          pu.generateSnapshot(getSD(p.getBaseDefinition()), p, p.getUrl(), p.getName());
+          pu.generateSnapshot(getSD(p.getBaseDefinition()), p, p.getUrl(), "http://hl7.org/fhir/R4", p.getName());
           debugSaveResource(p);
           return p;
         }

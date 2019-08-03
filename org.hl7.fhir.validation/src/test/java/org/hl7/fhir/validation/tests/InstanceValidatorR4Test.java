@@ -221,7 +221,7 @@ public class InstanceValidatorR4Test {
 			}
 		});
 
-		when(myWorkerContext.validateCode(nullable(String.class), nullable(String.class), nullable(String.class))).thenAnswer(new Answer<CodeValidationResult>() {
+		when(myWorkerContext.validateCode(null, nullable(String.class), nullable(String.class), nullable(String.class))).thenAnswer(new Answer<CodeValidationResult>() {
 			@Override
 			public CodeValidationResult answer(InvocationOnMock theInvocation) throws Throwable {
 				String system = (String) theInvocation.getArguments()[0];
@@ -276,7 +276,7 @@ public class InstanceValidatorR4Test {
 		IWorkerContext worker = new HapiWorkerContext(ourCtx, myDefaultProfileValidationSupport);
 		List<ValidationMessage> issues = new ArrayList<>();
 		ProfileUtilities profileUtilities = new ProfileUtilities(worker, issues, null);
-		profileUtilities.generateSnapshot(base, derived, "", "");
+		profileUtilities.generateSnapshot(base, derived, "", "", "");
 
 		return derived;
 	}
@@ -500,7 +500,7 @@ public class InstanceValidatorR4Test {
 
 	@Test
 	public void testLargeBase64() throws IOException {
-		when(myWorkerContext.validateCode(nullable(CodeableConcept.class), nullable(ValueSet.class))).thenReturn(
+		when(myWorkerContext.validateCode(null, nullable(CodeableConcept.class), nullable(ValueSet.class))).thenReturn(
 			new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "Code http://loinc.org/1-8 was not validated because the code system is not present")
 		);
 

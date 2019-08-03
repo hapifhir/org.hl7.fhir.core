@@ -43,7 +43,7 @@ public class ProfileUtilitiesTests {
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://hl7.org/fhir/R4", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -86,7 +86,7 @@ public class ProfileUtilitiesTests {
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://hl7.org/fhir/R4", "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {

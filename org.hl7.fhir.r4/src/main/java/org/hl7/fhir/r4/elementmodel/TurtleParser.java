@@ -501,7 +501,7 @@ public class TurtleParser extends ParserBase {
     String system = coding.getChildValue("system");
     String code = coding.getChildValue("code");
     
-    if (system == null)
+    if (system == null || code == null)
       return;
     if ("http://snomed.info/sct".equals(system)) {
       t.prefix("sct", "http://snomed.info/id/");

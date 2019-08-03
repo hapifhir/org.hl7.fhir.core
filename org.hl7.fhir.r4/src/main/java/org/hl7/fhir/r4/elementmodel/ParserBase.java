@@ -99,11 +99,11 @@ public abstract class ParserBase {
       return null;
   	}
 	  for (StructureDefinition sd : context.allStructures()) {
-	    if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
-	      if((ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
+	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
+	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;
 	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-	      if (ns != null && ns.equals(sns))
+	      if (name.equals(sd.getType()) && ns != null && ns.equals(sns))
 	        return sd;
 	    }
 	  }
@@ -117,13 +117,15 @@ public abstract class ParserBase {
       return null;
   	}
     // first pass: only look at base definitions
-	  for (StructureDefinition sd : context.allStructures()) {
+	  for (StructureDefinition sd : context.getStructures()) {
 	    if (sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/"+name)) {
+	      context.generateSnapshot(sd); 
 	      return sd;
 	    }
 	  }
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : context.getStructures()) {
       if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        context.generateSnapshot(sd); 
         return sd;
       }
     }

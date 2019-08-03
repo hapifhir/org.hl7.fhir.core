@@ -853,6 +853,17 @@
       "bundle-local-refs.xml" : {
 				"errorCount": 0,
 				"warningCount": 0
+      },
+      "nictiz-med.xml" : {
+        "version" : "3.0",
+				"profiles": [
+					"nictiz-med-extension.xml"
+				],
+				"errorCount": 0,
+				"profile": {
+					"source": "nictiz-med-profile.xml",
+					"errorCount": 1
+				}
       }
 		}
 	}
