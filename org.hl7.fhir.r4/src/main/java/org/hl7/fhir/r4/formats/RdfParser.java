@@ -1004,7 +1004,7 @@ public class RdfParser extends RdfParserBase {
     if (element.hasNameElement())
       composeId(t, "Expression", "name", element.getNameElement(), -1);
     if (element.hasLanguageElement())
-      composeEnum(t, "Expression", "language", element.getLanguageElement(), -1);
+      composeCode(t, "Expression", "language", element.getLanguageElement(), -1);
     if (element.hasExpressionElement())
       composeString(t, "Expression", "expression", element.getExpressionElement(), -1);
     if (element.hasReferenceElement())
