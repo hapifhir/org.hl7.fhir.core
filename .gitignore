@@ -290,3 +290,5 @@ local.properties
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/dv1-actual.xml
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/t45-actual.xml
 /org.hl7.fhir.r4b
+/org.hl7.fhir.r5/src/test/resources/gen/gen.xml
+/org.hl7.fhir.r5/src/test/resources/graphql/*.out

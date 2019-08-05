@@ -854,15 +854,26 @@
 				"errorCount": 0,
 				"warningCount": 0
       },
-      "valueset-slicing-med.xml" : {
+      "valueset-slicing-meds.xml" : {
         "version" : "3.0",
-				"profiles": [
+				"codesystems": [
 					"valueset-slicing-med-cs.xml"
 				],
 				"errorCount": 0,
 				"profile": {
 					"source": "valueset-slicing-med-profile.xml",
 					"errorCount": 0
+				}
+      },
+      "valueset-slicing-meds-bad.xml" : {
+        "version" : "3.0",
+				"codesystems": [
+					"valueset-slicing-med-cs.xml"
+				],
+				"errorCount": 0,
+				"profile": {
+					"source": "valueset-slicing-med-profile.xml",
+					"errorCount": 1
 				}
       }
 		}
