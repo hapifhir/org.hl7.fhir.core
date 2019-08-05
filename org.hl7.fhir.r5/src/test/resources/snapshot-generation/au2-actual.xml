@@ -62,7 +62,7 @@
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vjoin.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_extension_simple.png" alt="." style="background-color: white; background-color: inherit" title="Simple Extension" class="hierarchy"/> 
-            <span title="Slice namespace-id: null">extension</span>
+            <span title="Slice namespace-id: null">namespace-id</span>
             <a name="Extension.extension"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
@@ -112,7 +112,7 @@
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vjoin.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_extension_simple.png" alt="." style="background-color: #F7F7F7; background-color: inherit" title="Simple Extension" class="hierarchy"/> 
-            <span title="Slice universal-id: Identifier values follwing the universal-id-type defined scheme.">extension</span>
+            <span title="Slice universal-id: Identifier values follwing the universal-id-type defined scheme.">universal-id</span>
             <a name="Extension.extension"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
@@ -162,7 +162,7 @@
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vjoin.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_extension_simple.png" alt="." style="background-color: white; background-color: inherit" title="Simple Extension" class="hierarchy"/> 
-            <span title="Slice universal-id-type: Provides scheme to use to interpret the universal-id value .e.g. GUID, ISO etc. see HL7 V2 Table 0301 - Universal ID type.">extension</span>
+            <span title="Slice universal-id-type: Provides scheme to use to interpret the universal-id value .e.g. GUID, ISO etc. see HL7 V2 Table 0301 - Universal ID type.">universal-id-type</span>
             <a name="Extension.extension"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
