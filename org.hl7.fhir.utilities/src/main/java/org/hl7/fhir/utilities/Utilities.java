@@ -155,25 +155,34 @@ public class Utilities {
       BLANK, SYNTAX, RANGE, OK
     }
     
-    public static boolean isDecimal(String value, boolean exponent) {
-      DecimalStatus ds = checkDecimal(value, exponent);
+    public static boolean isDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
+      DecimalStatus ds = checkDecimal(value, allowExponent, true);
       return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
     }
      
-    public static DecimalStatus checkDecimal(String value, boolean exponent) {
+    public static boolean isDecimal(String value, boolean allowExponent) {
+      DecimalStatus ds = checkDecimal(value, allowExponent, false);
+      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+    }
+     
+    public static DecimalStatus checkDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
       if (isBlank(value)) {
         return DecimalStatus.BLANK;
       }
       
       // check for leading zeros
-      if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
-        return DecimalStatus.SYNTAX;
-      if (value.startsWith("-0")  && !"-0".equals(value) && !value.startsWith("-0."))
-        return DecimalStatus.SYNTAX;
+      if (!allowLeadingZero) {
+        if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
+         return DecimalStatus.SYNTAX;
+        if (value.startsWith("-0")  && !"-0".equals(value) && !value.startsWith("-0."))
+          return DecimalStatus.SYNTAX;
+        if (value.startsWith("+0")  && !"+0".equals(value) && !value.startsWith("+0."))
+          return DecimalStatus.SYNTAX;
+      }
       
       boolean havePeriod = false;
       boolean haveExponent = false;
-      boolean haveMinus = false;
+      boolean haveSign = false;
       boolean haveDigits = false;
       int preDecLength = 0;
       int postDecLength = 0;
@@ -186,15 +195,15 @@ public class Utilities {
           havePeriod = true;
           preDecLength = length;
           length = 0;
-        } else if (next == '-') {
-          if (haveDigits || haveMinus)
+        } else if (next == '-' || next == '+' ) {
+          if (haveDigits || haveSign)
             return DecimalStatus.SYNTAX;
-          haveMinus = true;
-        } else if (next == 'e') {
-          if (!haveDigits || haveExponent || !exponent) 
+          haveSign = true;
+        } else if (next == 'e' || next == 'E' ) {
+          if (!haveDigits || haveExponent || !allowExponent) 
             return DecimalStatus.SYNTAX;
           haveExponent = true;
-          haveMinus = false;
+          haveSign = false;
           haveDigits = false;
           if (havePeriod)
             postDecLength = length;
@@ -208,6 +217,8 @@ public class Utilities {
           length++;
         }
       }
+      if (haveExponent && !haveDigits)
+        return DecimalStatus.SYNTAX;
       if (haveExponent) 
         exponentLength = length;
       else if (havePeriod)
