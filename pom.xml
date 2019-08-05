@@ -151,6 +151,28 @@
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
 					<includes>
+          
+          <!-- R5: SnomedExpressionsTests.class, 
+    GraphQLParserTests.class,
+    TurtleTests.class,
+    ProfileUtilitiesTests.class,
+    ResourceRoundTripTests.class, 
+    GraphQLEngineTests.class,
+    LiquidEngineTests.class,
+    FHIRPathTests.class,
+    NarrativeGeneratorTests.class,
+    ShexGeneratorTests.class,
+    BaseDateTimeTypeTest.class,
+    OpenApiGeneratorTest.class,
+    SnapShotGenerationTests.class  -->
+    
+    <!-- validator
+     ValidationTestSuite.class, 
+  ValidationEngineTests.class,
+  JsonSchemaTests.class,
+  ProfileComparisonTests.class,
+  CDAValidationTestCase.class})
+  -->
 					</includes>
 					<excludes>
 						<exclude>*</exclude>
