@@ -2533,13 +2533,13 @@ public class ProfileUtilities extends TranslatingUtilities {
         row.setLineColor(0);
       boolean hasDef = element != null;
       boolean ext = false;
-      if (s.equals("extension")) {
+      if (tail(element.getPath()).equals("extension")) {
         if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()))
           row.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
         else
           row.setIcon("icon_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
         ext = true;
-      } else if (s.equals("modifierExtension")) {
+      } else if (tail(element.getPath()).equals("modifierExtension")) {
         if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()))
           row.setIcon("icon_modifier_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
         else
