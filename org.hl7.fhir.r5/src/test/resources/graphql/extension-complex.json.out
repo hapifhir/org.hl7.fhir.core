@@ -1,7 +1,0 @@
-﻿{
-  "id":"glossy",
-  "extension":[{
-    "url":"http://example.org/StructureDefinition/trials",
-    "valueCode":"renal"
-  }]
-}
