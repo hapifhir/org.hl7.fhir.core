@@ -3885,5 +3885,18 @@ public class StructureDefinition extends MetadataResource {
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_BASE = new ca.uhn.fhir.model.api.Include("StructureDefinition:base").toLocked();
 
+public String describeType() {
+  if ("Extension".equals(getType()))
+    return "Extension" ;
+  switch (getKind()) {
+  case COMPLEXTYPE: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "DataType Constraint" : "DataType" ;
+  case LOGICAL: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "Logical Model" : "Logical Model Profile";
+  case PRIMITIVETYPE: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "Type Constraint" : "Type";
+  case RESOURCE: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "Resource Profile" : "Resource";
+  default:
+    return "Definition";
+  }
+}
+
 }
 
