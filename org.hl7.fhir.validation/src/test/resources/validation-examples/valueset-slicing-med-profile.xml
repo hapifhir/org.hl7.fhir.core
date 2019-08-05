@@ -6,6 +6,7 @@
       <status value="draft"/>
       <compose>
         <include>
+          <system value="http://tst.org/fhir/CodeSystem/test-meds"/>
           <concept>
             <code value="s1"/>
           </concept>
@@ -22,6 +23,7 @@
       <status value="draft"/>
       <compose>
         <include>
+          <system value="http://tst.org/fhir/CodeSystem/test-meds"/>
           <concept>
             <code value="s2"/>
           </concept>
@@ -38,6 +40,7 @@
       <status value="draft"/>
       <compose>
         <include>
+          <system value="http://tst.org/fhir/CodeSystem/test-meds"/>
           <concept>
             <code value="s3"/>
           </concept>
@@ -54,6 +57,7 @@
       <status value="draft"/>
       <compose>
         <include>
+          <system value="http://tst.org/fhir/CodeSystem/test-meds"/>
           <concept>
             <code value="s4"/>
           </concept>
