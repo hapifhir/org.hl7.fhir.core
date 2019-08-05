@@ -119,7 +119,7 @@
         </tr>
 
         <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: #F7F7F7;">
-          <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck12.png)" class="hierarchy">
+          <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck13.png)" class="hierarchy">
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vjoin.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_slice.png" alt="." style="background-color: #F7F7F7; background-color: inherit" title="Slice Definition" class="hierarchy"/> 
@@ -129,10 +129,7 @@
           <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
           <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
           <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
-            <a style="font-style: italic" href="nullreferences.html">Reference</a>
-            <span style="font-style: italic">(</span>
-            <span style="font-style: italic">http://hl7.org.au/fhir/StructureDefinition/au-practitioner</span>
-            <span style="font-style: italic">)</span>
+            <a style="font-style: italic" href="nullprofiling.html#slicing">(Slice Definition)</a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
             <span style="font-weight:bold; font-style: italic">Slice: </span>
@@ -141,11 +138,12 @@
         </tr>
 
         <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck15.png)" class="hierarchy">
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck135.png)" class="hierarchy">
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
-            <img src="tbl_vjoin.png" alt="." style="background-color: inherit" class="hierarchy"/>
+            <img src="tbl_vline.png" alt="." style="background-color: inherit" class="hierarchy"/>
+            <img src="tbl_vjoin_slicer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_reference.png" alt="." style="background-color: white; background-color: inherit" title="Reference to another Resource" class="hierarchy"/> 
-            <span title="Slice Examiner: null">performer</span>
+            <span title="Slice Examiner: null">Examiner</span>
             <a name="Observation.performer"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
@@ -157,9 +155,10 @@
         </tr>
 
         <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: #F7F7F7;">
-          <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck140.png)" class="hierarchy">
+          <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck1340.png)" class="hierarchy">
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vline.png" alt="." style="background-color: inherit" class="hierarchy"/>
+            <img src="tbl_vline_slicer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vjoin_end_slice.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_element.gif" alt="." style="background-color: #F7F7F7; background-color: inherit" title="Element" class="hierarchy"/> 
             <span title="null">display</span>
@@ -175,11 +174,12 @@
         </tr>
 
         <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck15.png)" class="hierarchy">
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck125.png)" class="hierarchy">
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
-            <img src="tbl_vjoin.png" alt="." style="background-color: inherit" class="hierarchy"/>
+            <img src="tbl_vline.png" alt="." style="background-color: inherit" class="hierarchy"/>
+            <img src="tbl_vjoin_end_slicer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_reference.png" alt="." style="background-color: white; background-color: inherit" title="Reference to another Resource" class="hierarchy"/> 
-            <span title="Slice Organisation: null">performer</span>
+            <span title="Slice Organisation: null">Organisation</span>
             <a name="Observation.performer"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
@@ -191,9 +191,10 @@
         </tr>
 
         <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: #F7F7F7;">
-          <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck140.png)" class="hierarchy">
+          <td style="vertical-align: top; text-align : left; background-color: #F7F7F7; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck1240.png)" class="hierarchy">
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vline.png" alt="." style="background-color: inherit" class="hierarchy"/>
+            <img src="tbl_blank.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="tbl_vjoin_end_slice.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_element.gif" alt="." style="background-color: #F7F7F7; background-color: inherit" title="Element" class="hierarchy"/> 
             <span title="null">display</span>
