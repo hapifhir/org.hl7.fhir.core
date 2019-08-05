@@ -69,13 +69,13 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -526,8 +526,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       pIn.addParameter().setName("coding").setValue(code);
       if (implySystem)
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
-      if (options != null)
-        options.updateParameters(pIn);
+      setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -535,6 +534,13 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     if (txCache != null)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  private void setTerminologyOptions(TerminologyServiceOptions options, Parameters pIn) {
+    if (options != null) {
+      if (!Utilities.noString(options.getLanguage()))
+        pIn.addParameter("displayLanguage", options.getLanguage());
+     } 
   }
 
   @Override
@@ -560,8 +566,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     try {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
-      if (options != null)
-        options.updateParameters(pIn);
+      setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
