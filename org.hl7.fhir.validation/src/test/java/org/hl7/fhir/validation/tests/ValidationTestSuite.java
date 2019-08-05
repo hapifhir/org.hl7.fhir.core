@@ -30,12 +30,14 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
@@ -139,6 +141,15 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     val.setFetcher(this);
     if (content.has("questionnaire")) {
       ve.getContext().cacheResource(loadResource(TestUtilities.resourceNameToFile("validation-examples", content.get("questionnaire").getAsString()), v));
+    }
+    if (content.has("codesystems")) {
+      for (JsonElement je : content.getAsJsonArray("codesystems")) {
+        String p = je.getAsString();
+        System.out.println("CodeSystem: " + p);
+        String filename = TestUtilities.resourceNameToFile("validation-examples", p);
+        CodeSystem sd = (CodeSystem) loadResource(filename, v);
+        val.getContext().cacheResource(sd);
+      }
     }
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {
@@ -301,6 +312,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       return ok;
     }
     throw new NotImplementedException("Not done yet (IGPublisherHostServices.conformsToProfile), when item is element");
+  }
+
+  @Override
+  public ValueSet resolveValueSet(Object appContext, String url) {
+    return ve.getContext().fetchResource(ValueSet.class, url);
   }
 
 }
