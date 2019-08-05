@@ -448,7 +448,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         e.clearUserData(GENERATED_IN_SNAPSHOT);
 
       // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
-      StructureDefinitionDifferentialComponent diff = derived.getDifferential().copy(); // we make a copy here because we're sometimes going to hack the differential while processing it.
+      StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
 
       processPaths("", derived.getSnapshot(), base.getSnapshot(), diff, baseCursor, diffCursor, base.getSnapshot().getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, new ArrayList<ElementRedirection>(), base);
@@ -467,6 +467,14 @@ public class ProfileUtilities extends TranslatingUtilities {
       setIds(derived, false);
       //Check that all differential elements have a corresponding snapshot element
       for (ElementDefinition e : diff.getElement()) {
+        if (!e.hasUserData("diff-source"))
+          throw new Error("Unxpected internal condition - no source on diff element");
+        else {
+          if (e.hasUserData(DERIVATION_EQUALS))
+            ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_EQUALS, e.getUserData(DERIVATION_EQUALS));
+          if (e.hasUserData(DERIVATION_POINTER))
+            ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_POINTER, e.getUserData(DERIVATION_POINTER));
+        }
         if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
           System.out.println("Error in snapshot generation: Differential for "+derived.getUrl()+" with " + (e.hasId() ? "id: "+e.getId() : "path: "+e.getPath())+" has an element that is not marked with a snapshot match");
           if (exception)
@@ -488,6 +496,17 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw e;
     }
   }
+
+  private StructureDefinitionDifferentialComponent cloneDiff(StructureDefinitionDifferentialComponent source) {
+    StructureDefinitionDifferentialComponent diff = new StructureDefinitionDifferentialComponent();
+    for (ElementDefinition sed : source.getElement()) {
+      ElementDefinition ted = sed.copy();
+      diff.getElement().add(ted);
+      ted.setUserData("diff-source", sed);
+    }
+    return diff;
+  }
+
 
   private String constraintSummary(ElementDefinition ed) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
