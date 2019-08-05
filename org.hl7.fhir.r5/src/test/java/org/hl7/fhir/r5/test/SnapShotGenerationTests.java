@@ -44,6 +44,7 @@ import org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent;
 import org.hl7.fhir.r5.test.SnapShotGenerationTests.TestFetchMode;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -349,6 +350,11 @@ public class SnapShotGenerationTests {
           return t.included;
       }
       return null;
+    }
+
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      throw new Error("Not implemented yet");
     }
 
   }

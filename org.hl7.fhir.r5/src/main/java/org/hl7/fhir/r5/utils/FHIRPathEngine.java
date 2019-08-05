@@ -234,6 +234,11 @@ public class FHIRPathEngine {
     public Base resolveReference(Object appContext, String url) throws FHIRException;
     
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
+    
+    /* 
+     * return the value set referenced by the url, which has been used in memberOf()
+     */
+    public ValueSet resolveValueSet(Object appContext, String url);
   }
 
 
@@ -1159,10 +1164,10 @@ public class FHIRPathEngine {
           work = work2;
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
-          work = operate(work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2);
         } else {
           work2 = execute(context, focus, next, true);
-          work = operate(work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2);
 //          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
@@ -1381,7 +1386,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> operate(List<Base> left, Operation operation, List<Base> right) throws FHIRException {
+  private List<Base> operate(ExecutionContext context, List<Base> left, Operation operation, List<Base> right) throws FHIRException {
     switch (operation) {
     case Equals: return opEquals(left, right);
     case Equivalent: return opEquivalent(left, right);
@@ -1393,7 +1398,7 @@ public class FHIRPathEngine {
     case GreaterOrEqual: return opGreaterOrEqual(left, right);
     case Union: return opUnion(left, right);
     case In: return opIn(left, right);
-    case MemberOf: return opMemberOf(left, right);
+    case MemberOf: return opMemberOf(context, left, right);
     case Contains: return opContains(left, right);
     case Or:  return opOr(left, right);
     case And:  return opAnd(left, right);
@@ -1865,9 +1870,9 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opMemberOf(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right) throws FHIRException {
 	  boolean ans = false;
-	  ValueSet vs = worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
+	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, right.get(0).primitiveValue()) : worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (l.fhirType().equals("code")) {
@@ -4304,6 +4309,11 @@ public class FHIRPathEngine {
 
   public TerminologyServiceOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
+  }
+
+
+  public IWorkerContext getWorker() {
+    return worker;
   }
   
 }

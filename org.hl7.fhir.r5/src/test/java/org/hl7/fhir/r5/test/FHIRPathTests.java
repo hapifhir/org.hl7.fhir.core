@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -88,6 +89,11 @@ public class FHIRPathTests {
         return false;
       throw new FHIRException("unknown profile "+url);
       
+    }
+
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      return TestingUtilities.context().fetchResource(ValueSet.class, url);
     }
 
   }

@@ -216,6 +216,11 @@ public class StructureMapUtilities {
       }
       throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
     }
+
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      throw new Error("Not Implemented Yet");
+    }
 	  
 	}
 	private IWorkerContext worker;

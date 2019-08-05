@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.Utilities;
@@ -415,6 +416,15 @@ public class LiquidEngine implements IEvaluationContext {
       return false;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     return conformsToProfile(ctxt.externalContext, item, url);
+  }
+
+  @Override
+  public ValueSet resolveValueSet(Object appContext, String url) {
+    LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
+    if (externalHostServices != null)
+      return externalHostServices.resolveValueSet(ctxt.externalContext, url);
+    else
+      return engine.getWorker().fetchResource(ValueSet.class, url);
   }
 
 }
