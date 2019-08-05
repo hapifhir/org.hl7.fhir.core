@@ -169,6 +169,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     private Object appContext;
     private Element container; // bundle, or parameters
     private Element resource;
+    private StructureDefinition profile; // the profile that contains the content being validated
     public ValidatorHostContext(Object appContext) {
       this.appContext = appContext;
     }
@@ -181,6 +182,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ValidatorHostContext res = new ValidatorHostContext(appContext);
       res.resource = element;
       res.container = resource;
+      res.profile = profile;
+      return res;
+    }
+
+    public ValidatorHostContext forProfile(StructureDefinition profile) {
+      ValidatorHostContext res = new ValidatorHostContext(appContext);
+      res.resource = resource;
+      res.container = container;
+      res.profile = profile;
       return res;
     }
   }
@@ -286,6 +296,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       for (ValidationMessage v : valerrors)
         ok = ok && !v.getLevel().isError();
       return ok;
+    }
+
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      ValidatorHostContext c = (ValidatorHostContext) appContext;
+      if (c.profile != null && url.startsWith("#")) {
+        for (Resource r : c.profile.getContained()) {
+          if (r.getId().equals(url.substring(1))) {
+            if (r instanceof ValueSet)
+              return (ValueSet) r;
+            else
+              throw new FHIRException("Reference "+url+" refers to a "+r.fhirType()+" not a ValueSet");
+          }
+        }
+        return null;
+      }
+      return context.fetchResource(ValueSet.class, url);
     }
 
   }
@@ -1667,7 +1694,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
-        DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true);
+        DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);
         if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is not a valid decimal")) 
           warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is outside the range of commonly/reasonably supported decimals");
       }
@@ -2760,7 +2787,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok;
     try {
       long t = System.nanoTime();
-      ok = fpe.evaluateToBoolean(hostContext, hostContext.resource, element, n);
+      ok = fpe.evaluateToBoolean(hostContext.forProfile(profile), hostContext.resource, element, n);
       fpeTime = fpeTime + (System.nanoTime() - t);
       msg = fpe.forLog();
     } catch (Exception ex) {
