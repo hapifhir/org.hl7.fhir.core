@@ -216,6 +216,11 @@ public class StructureMapUtilities {
       }
       throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
     }
+
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      throw new Error("Not Implemented Yet");
+    }
 	  
 	}
 	private IWorkerContext worker;
@@ -1202,7 +1207,7 @@ public class StructureMapUtilities {
 	private Type readConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
 		if (Utilities.isInteger(s))
 			return new IntegerType(s);
-		else if (Utilities.isDecimal(s))
+		else if (Utilities.isDecimal(s, false))
 			return new DecimalType(s);
 		else if (Utilities.existsInList(s, "true", "false"))
 			return new BooleanType(s.equals("true"));

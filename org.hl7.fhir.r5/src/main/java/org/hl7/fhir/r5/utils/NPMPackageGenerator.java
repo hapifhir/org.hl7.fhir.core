@@ -59,11 +59,12 @@ import com.google.gson.JsonObject;
 public class NPMPackageGenerator {
 
   public enum Category {
-    RESOURCE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL;
+    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL;
     
     private String getDirectory() {
       switch (this) {
       case RESOURCE: return "/package/";
+      case EXAMPLE: return "/example/";
       case OPENAPI: return "/openapi/";
       case SCHEMATRON: return "/xml/";
       case RDF: return "/rdf/";      
@@ -187,6 +188,10 @@ public class NPMPackageGenerator {
       npm.add("maintainers", m);
     if (ig.getManifest().hasRendering())
       npm.addProperty("homepage", ig.getManifest().getRendering());
+    JsonObject dir = new JsonObject();
+    npm.add("directories", dir);
+    dir.addProperty("lib", "package");
+    dir.addProperty("example", "example");
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(npm);
     try {

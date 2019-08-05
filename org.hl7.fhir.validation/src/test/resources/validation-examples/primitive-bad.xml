@@ -27,14 +27,6 @@
     <name value="paramDecimal0"/>
     <valueDecimal value="00.1"/>
   </parameter>
-  <parameter> <!-- 8 -->
-    <name value="paramDecimal1"/>
-    <valueDecimal value="1e09"/>
-  </parameter>
-  <parameter> <!-- 9 -->
-    <name value="paramDecimal2"/>
-    <valueDecimal value="0.12e3"/>
-  </parameter>
   <parameter> <!-- 10 -->
     <name value="paramBase64Binary"/>
     <valueBase64Binary value="YXNhcs2Rhc2Q="/>

@@ -13,7 +13,7 @@
 	each other. It is fine to bump the point version of this POM without affecting
 	HAPI FHIR.
 	-->
-	<version>3.8.12-SNAPSHOT</version>
+	<version>3.8.22-SNAPSHOT</version>
 
 	<properties>
 		<hapi_fhir_version>4.0.0-SNAPSHOT</hapi_fhir_version>
@@ -155,6 +155,33 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
+					<includes>
+          
+          <!-- R5: SnomedExpressionsTests.class, 
+    GraphQLParserTests.class,
+    TurtleTests.class,
+    ProfileUtilitiesTests.class,
+    ResourceRoundTripTests.class, 
+    GraphQLEngineTests.class,
+    LiquidEngineTests.class,
+    FHIRPathTests.class,
+    NarrativeGeneratorTests.class,
+    ShexGeneratorTests.class,
+    BaseDateTimeTypeTest.class,
+    OpenApiGeneratorTest.class,
+    SnapShotGenerationTests.class  -->
+    
+    <!-- validator
+     ValidationTestSuite.class, 
+  ValidationEngineTests.class,
+  JsonSchemaTests.class,
+  ProfileComparisonTests.class,
+  CDAValidationTestCase.class})
+  -->
+					</includes>
+					<excludes>
+						<exclude>*</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>

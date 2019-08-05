@@ -1246,7 +1246,7 @@ public class ProfileComparer {
 //    // then we produce value set pages for each value set
 //
 //    // TODO Auto-generated method stub
-    return null;
+    return Utilities.path(dest, getId()+".html");
   }
 
   private void producePage(String src, String path, Map<String, String> vars) throws IOException {

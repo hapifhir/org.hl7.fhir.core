@@ -1200,7 +1200,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_name"))
       parseElementProperties(json.getAsJsonObject("_name"), res.getNameElement());
     if (json.has("language"))
-      res.setLanguageElement(parseEnumeration(json.get("language").getAsString(), Expression.ExpressionLanguage.NULL, new Expression.ExpressionLanguageEnumFactory()));
+      res.setLanguageElement(parseCode(json.get("language").getAsString()));
     if (json.has("_language"))
       parseElementProperties(json.getAsJsonObject("_language"), res.getLanguageElement());
     if (json.has("expression"))
@@ -30075,8 +30075,8 @@ public class JsonParser extends JsonParserBase {
         composeIdExtras("name", element.getNameElement(), false);
       }
       if (element.hasLanguageElement()) {
-        composeEnumerationCore("language", element.getLanguageElement(), new Expression.ExpressionLanguageEnumFactory(), false);
-        composeEnumerationExtras("language", element.getLanguageElement(), new Expression.ExpressionLanguageEnumFactory(), false);
+        composeCodeCore("language", element.getLanguageElement(), false);
+        composeCodeExtras("language", element.getLanguageElement(), false);
       }
       if (element.hasExpressionElement()) {
         composeStringCore("expression", element.getExpressionElement(), false);
@@ -58836,7 +58836,7 @@ public class JsonParser extends JsonParserBase {
     else if (type instanceof ParameterDefinition)
        composeParameterDefinitionInner((ParameterDefinition) type);
     else
-      throw new Error("Unhandled type");
+      throw new Error("Unhandled type: "+type.fhirType());
   }
 
 }

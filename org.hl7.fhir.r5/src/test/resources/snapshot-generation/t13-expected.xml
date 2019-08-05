@@ -325,12 +325,6 @@
       <isSummary value="false"/>
     </element>
     <element id="Patient.extension:t">
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
-        <valueCode value="normative"/>
-      </extension>
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
-        <valueCode value="4.0.0"/>
-      </extension>
       <path value="Patient.extension"/>
       <sliceName value="t"/>
       <short value="Time of day of birth"/>
@@ -366,12 +360,6 @@
       <isModifier value="false"/>
     </element>
     <element id="Patient.extension:complex">
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
-        <valueCode value="normative"/>
-      </extension>
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
-        <valueCode value="4.0.0"/>
-      </extension>
       <path value="Patient.extension"/>
       <sliceName value="complex"/>
       <short value="Nationality"/>
@@ -455,12 +443,6 @@
       <isSummary value="false"/>
     </element>
     <element id="Patient.extension:complex.extension:code">
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
-        <valueCode value="normative"/>
-      </extension>
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
-        <valueCode value="4.0.0"/>
-      </extension>
       <path value="Patient.extension.extension"/>
       <sliceName value="code"/>
       <short value="Nationality"/>
@@ -589,12 +571,6 @@
       </mapping>
     </element>
     <element id="Patient.extension:complex.extension:period">
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
-        <valueCode value="normative"/>
-      </extension>
-      <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
-        <valueCode value="4.0.0"/>
-      </extension>
       <path value="Patient.extension.extension"/>
       <sliceName value="period"/>
       <short value="Nationality"/>

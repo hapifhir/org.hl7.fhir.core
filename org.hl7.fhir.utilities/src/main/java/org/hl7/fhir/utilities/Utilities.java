@@ -123,10 +123,21 @@ public class Utilities {
       if (isBlank(string)) {
         return false;
       }
-      for (char next : string.toCharArray()) {
+      String value = string.startsWith("-") ? string.substring(1) : string;
+      for (char next : value.toCharArray()) {
         if (!Character.isDigit(next)) {
           return false;
         }
+      }
+      // check bounds -2,147,483,648..2,147,483,647
+      if (value.length() > 10)
+        return false;
+      if (string.startsWith("-")) {
+        if (value.length() == 10 && string.compareTo("2147483648") > 0)
+          return false;       
+      } else {
+        if (value.length() == 10 && string.compareTo("2147483647") > 0)
+          return false;
       }
       return true;
     }
@@ -140,22 +151,88 @@ public class Utilities {
       }
     }
     
-    public static boolean isDecimal(String string) {
-      if (isBlank(string)) {
-        return false;
+    public enum DecimalStatus {
+      BLANK, SYNTAX, RANGE, OK
+    }
+    
+    public static boolean isDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
+      DecimalStatus ds = checkDecimal(value, allowExponent, true);
+      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+    }
+     
+    public static boolean isDecimal(String value, boolean allowExponent) {
+      DecimalStatus ds = checkDecimal(value, allowExponent, false);
+      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+    }
+     
+    public static DecimalStatus checkDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
+      if (isBlank(value)) {
+        return DecimalStatus.BLANK;
       }
+      
+      // check for leading zeros
+      if (!allowLeadingZero) {
+        if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
+         return DecimalStatus.SYNTAX;
+        if (value.startsWith("-0")  && !"-0".equals(value) && !value.startsWith("-0."))
+          return DecimalStatus.SYNTAX;
+        if (value.startsWith("+0")  && !"+0".equals(value) && !value.startsWith("+0."))
+          return DecimalStatus.SYNTAX;
+      }
+      
       boolean havePeriod = false;
-      for (char next : string.toCharArray()) {
+      boolean haveExponent = false;
+      boolean haveSign = false;
+      boolean haveDigits = false;
+      int preDecLength = 0;
+      int postDecLength = 0;
+      int exponentLength = 0;
+      int length = 0;
+      for (char next : value.toCharArray()) {
         if (next == '.') {
-          if (havePeriod) {
-            return false;
-          }
+          if (!haveDigits || havePeriod || haveExponent) 
+            return DecimalStatus.SYNTAX;
           havePeriod = true;
+          preDecLength = length;
+          length = 0;
+        } else if (next == '-' || next == '+' ) {
+          if (haveDigits || haveSign)
+            return DecimalStatus.SYNTAX;
+          haveSign = true;
+        } else if (next == 'e' || next == 'E' ) {
+          if (!haveDigits || haveExponent || !allowExponent) 
+            return DecimalStatus.SYNTAX;
+          haveExponent = true;
+          haveSign = false;
+          haveDigits = false;
+          if (havePeriod)
+            postDecLength = length;
+          else 
+            preDecLength = length;
+          length = 0;
         } else if (!Character.isDigit(next)) {
-          return false;
+          return DecimalStatus.SYNTAX;
+        } else {
+          haveDigits = true;
+          length++;
         }
       }
-      return true;
+      if (haveExponent && !haveDigits)
+        return DecimalStatus.SYNTAX;
+      if (haveExponent) 
+        exponentLength = length;
+      else if (havePeriod)
+        postDecLength = length;
+      else
+        preDecLength = length;
+      
+      // now, bounds checking - these are arbitrary
+      if (exponentLength > 4)
+        return DecimalStatus.RANGE;
+      if (preDecLength + postDecLength > 18)
+        return DecimalStatus.RANGE;
+      
+      return DecimalStatus.OK;
     }
     
 	public static String camelCase(String value) {
@@ -1094,6 +1171,8 @@ public class Utilities {
       String s = p[i];
       if (s.contains("[")) {
         String si = s.substring(s.indexOf("[")+1, s.length()-1);
+        if (!Utilities.isInteger(si))
+          throw new FHIRException("The FHIRPath expression '"+path+"' is not valid");
         s = s.substring(0, s.indexOf("["))+"["+Integer.toString(Integer.parseInt(si)+1)+"]";
       }
       if (i < p.length - 1 && p[i+1].startsWith(".ofType(")) {

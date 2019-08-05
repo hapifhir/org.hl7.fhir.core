@@ -1496,7 +1496,7 @@ public class XmlParser extends XmlParserBase {
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
         res.setNameElement(parseId(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("language")) {
-        res.setLanguageElement(parseEnumeration(xpp, Expression.ExpressionLanguage.NULL, new Expression.ExpressionLanguageEnumFactory()));
+        res.setLanguageElement(parseCode(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expression")) {
         res.setExpressionElement(parseString(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("reference")) {
@@ -26490,7 +26490,7 @@ public class XmlParser extends XmlParserBase {
         composeId("name", element.getNameElement());
       }
       if (element.hasLanguageElement())
-        composeEnumeration("language", element.getLanguageElement(), new Expression.ExpressionLanguageEnumFactory());
+        composeCode("language", element.getLanguageElement());
       if (element.hasExpressionElement()) {
         composeString("expression", element.getExpressionElement());
       }

@@ -7527,6 +7527,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       setIsModifier(modifier);
       setIsSummary(inSummary);
     }
+  }
+
+  public String present() {
+    return hasId() ? getId() : getPath();
   }  
 
 

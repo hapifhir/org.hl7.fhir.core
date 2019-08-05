@@ -1153,7 +1153,7 @@ public class VersionConvertor_40_50 {
     if (src.hasName())
       tgt.setNameElement(convertId(src.getNameElement()));
     if (src.hasLanguage())
-      tgt.setLanguage(convertExpressionLanguage(src.getLanguage()));
+      tgt.setLanguageElement(convertCode(src.getLanguageElement()));
     if (src.hasExpression())
       tgt.setExpressionElement(convertString(src.getExpressionElement()));
     if (src.hasReference())
@@ -1171,7 +1171,7 @@ public class VersionConvertor_40_50 {
     if (src.hasName())
       tgt.setNameElement(convertId(src.getNameElement()));
     if (src.hasLanguage())
-      tgt.setLanguage(convertExpressionLanguage(src.getLanguage()));
+      tgt.setLanguageElement(convertCode(src.getLanguageElement()));
     if (src.hasExpression())
       tgt.setExpressionElement(convertString(src.getExpressionElement()));
     if (src.hasReference())

@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -86,7 +87,7 @@ public class JsonParser extends ParserBase {
 	@Override
 	public Element parse(InputStream stream) throws IOException, FHIRException {
 		// if we're parsing at this point, then we're going to use the custom parser
-		map = new HashMap<JsonElement, LocationData>();
+		map = new IdentityHashMap<JsonElement, LocationData>();
 		String source = TextFile.streamToString(stream);
 		if (policy == ValidationPolicy.EVERYTHING) {
 			JsonObject obj = null; 

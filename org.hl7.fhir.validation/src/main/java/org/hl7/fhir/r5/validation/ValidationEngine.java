@@ -119,6 +119,7 @@ import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.IResourceValidator.IdStatus;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.StructureMapUtilities;
@@ -247,6 +248,7 @@ public class ValidationEngine {
   private String language;
   private PackageCacheManager pcm;
   private PrintWriter mapLog;
+  private boolean debug;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -632,7 +634,8 @@ public class ValidationEngine {
       return FhirFormat.TEXT;
     } catch (Exception e) {
     }
-    System.out.println("     .. not a resource: "+filename);
+    if (debug)
+      System.out.println("     .. not a resource: "+filename);
     return null;    
   }
 
@@ -692,7 +695,8 @@ public class ValidationEngine {
     for (Entry<String, byte[]> t : source.entrySet()) {
       String fn = t.getKey();
       if (!exemptFile(fn)) {
-        System.out.print(" ..file: "+fn);
+        if (debug)
+          System.out.print("* load file: "+fn);
         Resource r = null;
         try { 
           if (version.equals("3.0.1") || version.equals("3.0.0")) {
@@ -749,7 +753,8 @@ public class ValidationEngine {
               throw new Exception("Unsupported format for "+fn);
           } else
             throw new Exception("Unsupported version "+version);
-
+          if (debug)
+            System.out.println(" .. success");
         } catch (Exception e) {
           System.out.println(" - ignored due to error: "+e.getMessage());
         }
@@ -992,6 +997,12 @@ public class ValidationEngine {
   private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws DefinitionException {
     OperationOutcome op = new OperationOutcome();
     for (ValidationMessage vm : filterMessages(messages)) {
+      FHIRPathEngine fpe = new FHIRPathEngine(context);
+      try {
+        fpe.parse(vm.getLocation());
+      } catch (Exception e) {
+        System.out.println("Internal error in location for message: '"+e.getMessage()+"', loc = '"+vm.getLocation()+"', err = '"+vm.getMessage()+"'");
+      }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
     new NarrativeGenerator("", "", context).generate(null, op);
@@ -1115,5 +1126,12 @@ public class ValidationEngine {
     
   }
 
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
   
 }

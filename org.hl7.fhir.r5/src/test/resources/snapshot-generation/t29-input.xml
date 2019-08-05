@@ -53,7 +53,7 @@
     </element>
     <element>
       <path value="Parameters.parameter.part.valueCoding"/>
-      <sliceName value="Coding"/>
+      <sliceName value="valueCoding"/>
       <min value="1"/>
       <type>
         <code value="Coding"/>

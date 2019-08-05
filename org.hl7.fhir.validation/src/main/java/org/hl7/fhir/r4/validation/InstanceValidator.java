@@ -120,6 +120,7 @@ import org.hl7.fhir.r4.utils.IResourceValidator;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.utils.ValidationProfileSet;
 import org.hl7.fhir.r4.utils.ValidationProfileSet.ProfileRegistration;
+import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -807,7 +808,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     txTime = txTime + (System.nanoTime() - t);
     if (ss) {
       t = System.nanoTime();
-      ValidationResult s = context.validateCode(system, code, display);
+      ValidationResult s = context.validateCode(new TerminologyServiceOptions("en"), system, code, display);
       txTime = txTime + (System.nanoTime() - t);
       if (s == null)
         return true;
@@ -908,7 +909,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
-                    ValidationResult vr = context.validateCode(cc, valueset);
+                    ValidationResult vr = context.validateCode(new TerminologyServiceOptions("en"), cc, valueset);
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -942,7 +943,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       String nextCode = nextCoding.getCode();
                       String nextSystem = nextCoding.getSystem();
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
-                        ValidationResult vr = context.validateCode(nextSystem, nextCode, null);
+                        ValidationResult vr = context.validateCode(new TerminologyServiceOptions("en"), nextSystem, nextCode, null);
                         if (!vr.isOk()) {
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Code {0} is not a valid code in code system {1}", nextCode, nextSystem);
                         }
@@ -971,7 +972,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(cc, valueset);
+        ValidationResult vr = context.validateCode(new TerminologyServiceOptions("en"), cc, valueset);
         txTime = txTime + (System.nanoTime() - t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -991,7 +992,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(c, valueset);
+        ValidationResult vr = context.validateCode(new TerminologyServiceOptions("en"), c, valueset);
         txTime = txTime + (System.nanoTime() - t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1011,7 +1012,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(value, valueset);
+        ValidationResult vr = context.validateCode(new TerminologyServiceOptions("en"), value, valueset);
         txTime = txTime + (System.nanoTime() - t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1060,7 +1061,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     long t = System.nanoTime();
                     ValidationResult vr = null;
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                      vr = context.validateCode(c, valueset);
+                      vr = context.validateCode(new TerminologyServiceOptions("en"), c, valueset);
 						        }
                     txTime = txTime + (System.nanoTime() - t);
                     if (vr != null && !vr.isOk()) {
@@ -1562,7 +1563,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isDecimal(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is not a valid decimal");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isDecimal(e.primitiveValue(), true), "The value '" + e.primitiveValue() + "' is not a valid decimal");
         if (e.primitiveValue().contains(".")) {
           String head = e.primitiveValue().substring(0, e.primitiveValue().indexOf("."));
           if (head.startsWith("-"))
@@ -1678,7 +1679,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         long t = System.nanoTime();
         ValidationResult vr = null;
 		  if (binding.getStrength() != BindingStrength.EXAMPLE) {
-          vr = context.validateCode(value, vs);
+          vr = context.validateCode(new TerminologyServiceOptions("en"), value, vs);
 		  }
         txTime = txTime + (System.nanoTime() - t);
         if (vr != null && !vr.isOk()) {
@@ -3037,7 +3038,7 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
         }
 
         long t = System.nanoTime();
-        ValidationResult res = context.validateCode(c, vs);
+        ValidationResult res = context.validateCode(new TerminologyServiceOptions("en"), c, vs);
         txTime = txTime + (System.nanoTime() - t);
         if (!res.isOk()) {
 			  txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, "The value provided (" + c.getSystem() + "::" + c.getCode() + ") is not in the options value set in the questionnaire");
@@ -4412,6 +4413,18 @@ private String misplacedItemError(QuestionnaireItemComponent qItem) {
 
   public IEvaluationContext getExternalHostServices() {
     return externalHostServices;
+  }
+
+  @Override
+  public String getValidationLanguage() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setValidationLanguage(String value) {
+    // TODO Auto-generated method stub
+    
   }
 
 

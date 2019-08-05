@@ -135,6 +135,7 @@ import org.hl7.fhir.r5.utils.Version;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -168,6 +169,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     private Object appContext;
     private Element container; // bundle, or parameters
     private Element resource;
+    private StructureDefinition profile; // the profile that contains the content being validated
     public ValidatorHostContext(Object appContext) {
       this.appContext = appContext;
     }
@@ -179,6 +181,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public ValidatorHostContext forContained(Element element) {
       ValidatorHostContext res = new ValidatorHostContext(appContext);
       res.resource = element;
+      res.container = resource;
+      res.profile = profile;
+      return res;
+    }
+
+    public ValidatorHostContext forProfile(StructureDefinition profile) {
+      ValidatorHostContext res = new ValidatorHostContext(appContext);
+      res.resource = resource;
+      res.container = container;
+      res.profile = profile;
       return res;
     }
   }
@@ -229,13 +241,45 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     @Override
     public Base resolveReference(Object appContext, String url) throws FHIRException {
       ValidatorHostContext c = (ValidatorHostContext) appContext;
-      if (c.container != null)
-        throw new Error("Not done yet - resolve "+url+" locally (1)");
-      else if (externalHostServices == null)
+      
+      if (c.appContext instanceof Element)  {
+        Element bnd = (Element) c.appContext;
+        Base res = resolveInBundle(url, bnd);
+        if (res != null)
+          return res;
+      }
+      Base res = resolveInBundle(url, c.resource);
+      if (res != null)
+        return res;
+      res = resolveInBundle(url, c.container);
+      if (res != null)
+        return res;
+      
+      if (externalHostServices == null)
         throw new Error("Not done yet - resolve "+url+" locally (2)");
       else 
         return externalHostServices.resolveReference(c.appContext, url);
           
+    }
+
+    public Base resolveInBundle(String url, Element bnd) {
+      if (bnd == null)
+        return null;
+      if (bnd.fhirType().equals("Bundle")) {
+        for (Element be : bnd.getChildrenByName("entry")) {
+          Element res = be.getNamedChild("resource");
+          if (res != null) { 
+            String fullUrl = be.getChildValue("fullUrl");
+            String rt = res.fhirType();
+            String id = res.getChildValue("id");
+            if (url.equals(fullUrl))
+              return res;
+            if (url.equals(rt+"/"+id))
+              return res;
+          }
+        }
+      }
+      return null;
     }
 
     @Override
@@ -252,6 +296,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       for (ValidationMessage v : valerrors)
         ok = ok && !v.getLevel().isError();
       return ok;
+    }
+
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      ValidatorHostContext c = (ValidatorHostContext) appContext;
+      if (c.profile != null && url.startsWith("#")) {
+        for (Resource r : c.profile.getContained()) {
+          if (r.getId().equals(url.substring(1))) {
+            if (r instanceof ValueSet)
+              return (ValueSet) r;
+            else
+              throw new FHIRException("Reference "+url+" refers to a "+r.fhirType()+" not a ValueSet");
+          }
+        }
+        return null;
+      }
+      return context.fetchResource(ValueSet.class, url);
     }
 
   }
@@ -332,7 +393,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     public ResourceProfiles(Element resource, NodeStack stack) {
       this.resource = resource;
-      if (this.resource.getName().equals("contained"))
+      if (this.resource.getName().equals("contained") && stack.parent != null)
         this.owner = stack.parent.element;
       else
         this.owner = resource;
@@ -847,7 +908,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (s.getSeverity() == IssueSeverity.WARNING)
         txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
       else
-        return txRule(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
+        return txRule(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage()+" for '"+system+"#"+code+"'");
       return true;
     } else if (system.startsWith("http://hl7.org/fhir")) {
       if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10-cm","http://hl7.org/fhir/sid/icd-9","http://hl7.org/fhir/sid/ndc","http://hl7.org/fhir/sid/srt"))
@@ -1379,6 +1440,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.InstantType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.InstantType) fixed).getValue().toString(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.InstantType) fixed).asStringValue() + "'");
+      else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
+        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value),
+            "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.CodeType) fixed).getValue() + "'");
       else if (fixed instanceof org.hl7.fhir.r5.model.StringType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.StringType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.StringType) fixed).getValue() + "'");
@@ -1397,9 +1461,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.UuidType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UuidType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.UuidType) fixed).getValue() + "'");
-      else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
-        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value),
-            "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.CodeType) fixed).getValue() + "'");
       else if (fixed instanceof org.hl7.fhir.r5.model.IdType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IdType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.IdType) fixed).getValue() + "'");
@@ -1633,18 +1694,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isDecimal(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is not a valid decimal");
-        if (e.primitiveValue().contains(".")) {
-          String head = e.primitiveValue().substring(0, e.primitiveValue().indexOf("."));
-          if (head.startsWith("-"))
-            head = head.substring(1);
-          int i = 0;
-          while (head.startsWith("0")) {
-            i++;
-            head = head.substring(1);
-          }
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, i <= 1, "The value '" + e.primitiveValue() + "' is not a valid decimal (leading 0s)");
-        }
+        DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);
+        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is not a valid decimal")) 
+          warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, "The value '" + e.primitiveValue() + "' is outside the range of commonly/reasonably supported decimals");
       }
     }
     if (type.equals("instant")) {
@@ -2528,14 +2580,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String u = null;
       if (fullUrl != null && fullUrl.endsWith(type+"/"+id))
         // fullUrl = complex
-        u = fullUrl.substring((type+"/"+id).length())+ref;
+        u = fullUrl.substring(0, fullUrl.length() - (type+"/"+id).length())+ref;
+//        u = fullUrl.substring((type+"/"+id).length())+ref;
       String[] parts = ref.split("\\/");
       if (parts.length >= 2) {
         String t = parts[0];
         String i = parts[1];
         for (Element entry : entries) {
           String fu = entry.getNamedChildValue("fullUrl");
-          if (u != null && fullUrl.equals(u))
+          if (u != null && fu.equals(u))
             return entry;
           if (u == null) {
             Element resource = entry.getNamedChild("resource");
@@ -2669,9 +2722,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (discriminator.contains("["))
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
               type = criteriaElement.getType().get(0).getCode();
-            }
-            if (type==null)
-              throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " does not declare a type");
+            } else if (criteriaElement.getType().size() > 1) {
+              throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " in "+profile.getUrl()+" has multiple types: "+criteriaElement.typeSummary());
+            } else
+              throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " in "+profile.getUrl()+" has no types");
             if (discriminator.isEmpty())
               expression.append(" and this is " + type);
             else
@@ -2711,9 +2765,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!anyFound) {
         if (slicer.getSlicing().getDiscriminator().size() > 1)
-          throw new DefinitionException("Could not match any discriminators (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions for any of the discriminators");
+          throw new DefinitionException("Could not match any discriminators (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - None of the discriminator " + discriminators + " have fixed value, binding or existence assertions");
         else 
-          throw new DefinitionException("Could not match discriminator (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - does not have fixed value, binding or existence assertions");
+          throw new DefinitionException("Could not match discriminator (" + discriminators + ") for slice " + ed.getId() + " in profile " + profile.getUrl() + " - the discriminator " + discriminators + " does not have fixed value, binding or existence assertions");
       }
 
       try {
@@ -2733,7 +2787,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok;
     try {
       long t = System.nanoTime();
-      ok = fpe.evaluateToBoolean(hostContext, hostContext.resource, element, n);
+      ok = fpe.evaluateToBoolean(hostContext.forProfile(profile), hostContext.resource, element, n);
       fpeTime = fpeTime + (System.nanoTime() - t);
       msg = fpe.forLog();
     } catch (Exception ex) {
@@ -4207,9 +4261,10 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       Element resource, Element element, NodeStack stack) throws FHIRException {
     if (resource.getName().equals("contained")) {
       NodeStack ancestor = stack;
-      while (!ancestor.element.isResource() || ancestor.element.getName().equals("contained"))
+      while (ancestor != null && ancestor.element != null && (!ancestor.element.isResource() || "contained".equals(ancestor.element.getName())))
         ancestor = ancestor.parent;
-      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
+      if (ancestor != null && ancestor.element != null)
+        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
     } else
       checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
     if (definition.getFixed()!=null)

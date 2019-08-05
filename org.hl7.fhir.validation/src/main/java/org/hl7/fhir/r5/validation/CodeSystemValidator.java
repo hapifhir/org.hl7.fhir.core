@@ -43,17 +43,15 @@ public class CodeSystemValidator extends BaseValidator {
 
   private void checkCodesUnique(CodeSystem cs, List<ValidationMessage> errors) {
     Set<String> codes = new HashSet<String>();
-    checkCodes(codes, cs.getConcept(), "CodeSystem["+cs.getId()+"]", errors);
+    checkCodes(codes, cs.getConcept(), "CodeSystem.where(id = '"+cs.getId()+"')", errors);
   }
 
   private void checkCodes(Set<String> codes, List<ConceptDefinitionComponent> list, String path, List<ValidationMessage> errors) {
     for (ConceptDefinitionComponent cc : list) {
-      String npath = path+".concept["+cc.getCode()+"]";
+      String npath = path+".concept.descendents().where(code = '"+cc.getCode()+"')";
       rule(errors, IssueType.BUSINESSRULE, npath, !codes.contains(cc.getCode()), "Duplicate Code "+cc.getCode());
       codes.add(cc.getCode());
       checkCodes(codes, cc.getConcept(), npath, errors);
     }
   }
-
-
 }

@@ -226,13 +226,19 @@ public class FHIRPathEngine {
     
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
-     * @param url
+     * @appContext - passed in by the host to the FHIRPathEngine
+     * @param url the reference (Reference.reference or the value of the canonical
      * @return
      * @throws FHIRException 
      */
     public Base resolveReference(Object appContext, String url) throws FHIRException;
     
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
+    
+    /* 
+     * return the value set referenced by the url, which has been used in memberOf()
+     */
+    public ValueSet resolveValueSet(Object appContext, String url);
   }
 
 
@@ -1002,7 +1008,7 @@ public class FHIRPathEngine {
       return new StringType(processConstantString(lexer.take(), lexer)).noExtensions();
     } else if (Utilities.isInteger(lexer.getCurrent())) {
       return new IntegerType(lexer.take()).noExtensions();
-    } else if (Utilities.isDecimal(lexer.getCurrent())) {
+    } else if (Utilities.isDecimal(lexer.getCurrent(), false)) {
       return new DecimalType(lexer.take()).noExtensions();
     } else if (Utilities.existsInList(lexer.getCurrent(), "true", "false")) {
       return new BooleanType(lexer.take()).noExtensions();
@@ -1158,10 +1164,10 @@ public class FHIRPathEngine {
           work = work2;
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
-          work = operate(work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2);
         } else {
           work2 = execute(context, focus, next, true);
-          work = operate(work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2);
 //          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
@@ -1380,7 +1386,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> operate(List<Base> left, Operation operation, List<Base> right) throws FHIRException {
+  private List<Base> operate(ExecutionContext context, List<Base> left, Operation operation, List<Base> right) throws FHIRException {
     switch (operation) {
     case Equals: return opEquals(left, right);
     case Equivalent: return opEquivalent(left, right);
@@ -1392,7 +1398,7 @@ public class FHIRPathEngine {
     case GreaterOrEqual: return opGreaterOrEqual(left, right);
     case Union: return opUnion(left, right);
     case In: return opIn(left, right);
-    case MemberOf: return opMemberOf(left, right);
+    case MemberOf: return opMemberOf(context, left, right);
     case Contains: return opContains(left, right);
     case Or:  return opOr(left, right);
     case And:  return opAnd(left, right);
@@ -1864,9 +1870,9 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opMemberOf(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right) throws FHIRException {
 	  boolean ans = false;
-	  ValueSet vs = worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
+	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, right.get(0).primitiveValue()) : worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (l.fhirType().equals("code")) {
@@ -2993,7 +2999,7 @@ public class FHIRPathEngine {
   private List<Base> funcToDecimal(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     String s = convertToString(focus);
     List<Base> result = new ArrayList<Base>();
-    if (Utilities.isDecimal(s))
+    if (Utilities.isDecimal(s, true))
       result.add(new DecimalType(s).noExtensions());
     if ("true".equals(s))
       result.add(new DecimalType(1).noExtensions());
@@ -3739,7 +3745,7 @@ public class FHIRPathEngine {
     if (s.contains(" ")) {
       String v = s.substring(0, s.indexOf(" ")).trim();
       s = s.substring(s.indexOf(" ")).trim();
-      if (!Utilities.isDecimal(v))
+      if (!Utilities.isDecimal(v, false))
         return null;
       if (s.startsWith("'") && s.endsWith("'"))
         return Quantity.fromUcum(v, s.substring(1, s.length()-1));
@@ -3762,7 +3768,7 @@ public class FHIRPathEngine {
       else
         return null;      
     } else {
-      if (Utilities.isDecimal(s))
+      if (Utilities.isDecimal(s, true))
         return new Quantity().setValue(new BigDecimal(s)).setSystem("http://unitsofmeasure.org").setCode("1");
       else
         return null;
@@ -3781,7 +3787,7 @@ public class FHIRPathEngine {
     else if (focus.get(0) instanceof DecimalType)
       result.add(new BooleanType(true).noExtensions());
     else if (focus.get(0) instanceof StringType)
-      result.add(new BooleanType(Utilities.isDecimal(convertToString(focus.get(0)))).noExtensions());
+      result.add(new BooleanType(Utilities.isDecimal(convertToString(focus.get(0)), true)).noExtensions());
     else 
       result.add(new BooleanType(false).noExtensions());
     return result;
@@ -4182,7 +4188,7 @@ public class FHIRPathEngine {
     }
 
     if (focus == null)
-      throw new DefinitionException("Unable to resolve discriminator: "+expr.toString());      
+      throw new DefinitionException("Unable to resolve discriminator in definitions: "+expr.toString());      
     else if (expr.getInner() == null)
       return focus;
     else {
@@ -4222,7 +4228,8 @@ public class FHIRPathEngine {
       return true;
     else if (t.getType().size() == 1 && t.getType().get(0).getCode() != null && t.getPath() != null && t.getPath().toUpperCase().endsWith(t.getType().get(0).getCode().toUpperCase()))
       return tail.startsWith(d);
-    
+    else if (t.getPath().endsWith("[x]") && tail.startsWith(d))
+      return true;
     return false;
   }
 
@@ -4287,7 +4294,7 @@ public class FHIRPathEngine {
         return Equality.False;
       else if (Utilities.isInteger(item.primitiveValue()))
         return asBoolFromInt(item.primitiveValue());
-      else if (Utilities.isDecimal(item.primitiveValue()))
+      else if (Utilities.isDecimal(item.primitiveValue(), true))
         return asBoolFromDec(item.primitiveValue());
       else
         return Equality.Null;
@@ -4302,6 +4309,11 @@ public class FHIRPathEngine {
 
   public TerminologyServiceOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
+  }
+
+
+  public IWorkerContext getWorker() {
+    return worker;
   }
   
 }

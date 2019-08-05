@@ -149,7 +149,9 @@
 				]
 			},
 			"synthea.json": {
-				"errorCount": 1
+			  "version": "4.0",
+				"errorCount": 2,
+        "errors-for-debugging" : ["ERROR: /Encounter/reasonCode: This property must be an Array, not an Object", "ERROR: Encounter.status: The value provided ('completed') is not in the value set http://hl7.org/fhir/ValueSet/encounter-status|4.1.0 (http://hl7.org/fhir/ValueSet/encounter-status, and a code is required from this value set) (error message = Unknown Code http://hl7.org/fhir/encounter-status#completed in http://hl7.org/fhir/encounter-status)"]
 			},
 			"patient-good.json": {
 				"errorCount": 0,
@@ -196,10 +198,11 @@
 				"errorCount": 0
 			},
 			"primitive-bad.xml": {
-				"errorCount": 47
+				"errorCount": 45,
+				"warningCount": 2
 			},
 			"primitive-bad-empty.xml": {
-				"errorCount": 3
+				"errorCount": 2
 			},
 			"group-choice-bad1.xml": {
 				"errorCount": 2,
@@ -805,6 +808,72 @@
 				"profile": {
 					"source": "azatadha/param-profile.xml",
 					"errorCount": 0
+				}
+      },
+			"profile-slicing-ok-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "profile-slicing-profile-open.xml",
+					"errorCount": 0
+				}
+			},
+			"profile-slicing-bad-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "profile-slicing-profile-open.xml",
+					"errorCount": 1
+				}
+			},
+			"value-slicing-ok-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "value-slicing-profile-open.xml",
+					"errorCount": 0
+				}
+			},
+			"value-slicing-bad-1.xml": {
+				"errorCount": 0,
+				"profiles": [
+					"profile-slicing-profile-1.xml", "profile-slicing-profile-2.xml", "profile-slicing-profile-3.xml"
+				],
+				"profile": {
+					"source": "value-slicing-profile-open.xml",
+					"errorCount": 1
+				}
+			},
+      "bundle-local-refs.xml" : {
+				"errorCount": 0,
+				"warningCount": 0
+      },
+      "valueset-slicing-meds.xml" : {
+        "version" : "3.0",
+				"codesystems": [
+					"valueset-slicing-med-cs.xml"
+				],
+				"errorCount": 0,
+				"profile": {
+					"source": "valueset-slicing-med-profile.xml",
+					"errorCount": 0
+				}
+      },
+      "valueset-slicing-meds-bad.xml" : {
+        "version" : "3.0",
+				"codesystems": [
+					"valueset-slicing-med-cs.xml"
+				],
+				"errorCount": 0,
+				"profile": {
+					"source": "valueset-slicing-med-profile.xml",
+					"errorCount": 1
 				}
       }
 		}

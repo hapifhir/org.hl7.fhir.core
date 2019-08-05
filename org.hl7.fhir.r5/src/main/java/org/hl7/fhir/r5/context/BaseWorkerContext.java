@@ -38,6 +38,7 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -95,6 +96,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   protected Map<String, StructureMap> transforms = new HashMap<String, StructureMap>();
   private Map<String, StructureDefinition> structures = new HashMap<String, StructureDefinition>();
   private Map<String, ImplementationGuide> guides = new HashMap<String, ImplementationGuide>();
+  private Map<String, CapabilityStatement> capstmts = new HashMap<String, CapabilityStatement>();
   private Map<String, SearchParameter> searchParameters = new HashMap<String, SearchParameter>();
   private Map<String, Questionnaire> questionnaires = new HashMap<String, Questionnaire>();
   private Map<String, OperationDefinition> operations = new HashMap<String, OperationDefinition>();
@@ -151,6 +153,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       operations.putAll(other.operations);
       systems.addAll(other.systems);
       guides.putAll(other.guides);
+      capstmts.putAll(other.capstmts);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       tsServer = other.tsServer;
@@ -190,6 +193,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           seeMetadataResource((CodeSystem) m, codeSystems, false);
         else if (r instanceof ImplementationGuide)
           seeMetadataResource((ImplementationGuide) m, guides, false);
+        else if (r instanceof CapabilityStatement)
+          seeMetadataResource((CapabilityStatement) m, capstmts, false);
         else if (r instanceof SearchParameter)
           seeMetadataResource((SearchParameter) m, searchParameters, false);
         else if (r instanceof PlanDefinition)
@@ -697,6 +702,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
             return (T) structures.get(uri);
           if (guides.containsKey(uri))
             return (T) guides.get(uri);
+          if (capstmts.containsKey(uri))
+            return (T) capstmts.get(uri);
           if (valueSets.containsKey(uri))
             return (T) valueSets.get(uri);
           if (codeSystems.containsKey(uri))
@@ -713,9 +720,20 @@ public abstract class BaseWorkerContext implements IWorkerContext {
             return (T) transforms.get(uri);
           if (questionnaires.containsKey(uri))
             return (T) questionnaires.get(uri);
+          for (Map<String, Resource> rt : allResourcesById.values()) {
+            for (Resource r : rt.values()) {
+              if (r instanceof MetadataResource) {
+                MetadataResource mr = (MetadataResource) r;
+                if (uri.equals(mr.getUrl()))
+                  return (T) mr;
+              }
+            }            
+          }
           return null;      
         } else if (class_ == ImplementationGuide.class) {
           return (T) guides.get(uri);
+        } else if (class_ == CapabilityStatement.class) {
+          return (T) capstmts.get(uri);
         } else if (class_ == StructureDefinition.class) {
           return (T) structures.get(uri);
         } else if (class_ == StructureMap.class) {
@@ -896,6 +914,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       json.addProperty("transforms-count", transforms.size());
       json.addProperty("structures-count", structures.size());
       json.addProperty("guides-count", guides.size());
+      json.addProperty("statements-count", capstmts.size());
     }
   }
 
@@ -919,6 +938,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         dropMetadataResource(structures, id);
       else if (fhirType.equals("ImplementationGuide"))
         dropMetadataResource(guides, id);
+      else if (fhirType.equals("CapabilityStatement"))
+        dropMetadataResource(capstmts, id);
       else if (fhirType.equals("ValueSet"))
         dropMetadataResource(valueSets, id);
       else if (fhirType.equals("CodeSystem"))
@@ -957,6 +978,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       List<MetadataResource> result = new ArrayList<MetadataResource>();
       result.addAll(structures.values());
       result.addAll(guides.values());
+      result.addAll(capstmts.values());
       result.addAll(codeSystems.values());
       result.addAll(valueSets.values());
       result.addAll(maps.values());
@@ -1102,5 +1124,15 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public void setUcumService(UcumService ucumService) {
     this.ucumService = ucumService;
   }
+
+  @Override
+  public List<StructureDefinition> getStructures() {
+    List<StructureDefinition> res = new ArrayList<>();
+    synchronized (lock) { // tricky, because you need to lock this as well, but it's really not in use yet
+      res.addAll(structures.values());
+    }
+    return res;
+  }
+  
   
 }

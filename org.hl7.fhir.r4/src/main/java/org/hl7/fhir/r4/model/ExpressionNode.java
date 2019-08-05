@@ -62,7 +62,7 @@ public class ExpressionNode implements IExpressionNode {
     
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
-    Children, Descendants, MemberOf, Trace, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
+    Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
     ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo;
 
@@ -109,6 +109,7 @@ public class ExpressionNode implements IExpressionNode {
       if (name.equals("descendants")) return Function.Descendants;
       if (name.equals("memberOf")) return Function.MemberOf;
       if (name.equals("trace")) return Function.Trace;
+      if (name.equals("check")) return Function.Check;
       if (name.equals("today")) return Function.Today;
       if (name.equals("now")) return Function.Now;
       if (name.equals("resolve")) return Function.Resolve;
@@ -184,6 +185,7 @@ public class ExpressionNode implements IExpressionNode {
       case Descendants : return "descendants";
       case MemberOf : return "memberOf";
       case Trace : return "trace";
+      case Check : return "check";
       case Today : return "today";
       case Now : return "now";
       case Resolve : return "resolve";
@@ -375,8 +377,10 @@ public class ExpressionNode implements IExpressionNode {
         b.append(" '");
         b.append(Utilities.escapeJson(q.getUnit()));
         b.append("'");
-		  } else
+		  } else if (constant.primitiveValue() != null)
 		    b.append(Utilities.escapeJson(constant.primitiveValue()));
+		  else 
+        b.append(Utilities.escapeJson(constant.toString()));
 			break;
 		case Group:
 			b.append("(");
