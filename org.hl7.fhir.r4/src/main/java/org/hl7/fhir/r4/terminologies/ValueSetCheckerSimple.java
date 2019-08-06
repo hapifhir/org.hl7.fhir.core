@@ -21,30 +21,22 @@ package org.hl7.fhir.r4.terminologies;
  */
 
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.context.IWorkerContext;
+import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
+import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.r4.model.ValueSet.*;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r4.model.CanonicalType;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
-import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.UriType;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent;
-import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceDesignationComponent;
-import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r4.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValueSetCheckerSimple implements ValueSetChecker {
 

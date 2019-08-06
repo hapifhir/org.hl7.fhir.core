@@ -21,10 +21,65 @@ package org.hl7.fhir.r4.utils;
  */
 
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r4.conformance.ProfileUtilities;
+import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r4.context.IWorkerContext;
+import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r4.formats.FormatUtilities;
+import org.hl7.fhir.r4.formats.IParser.OutputStyle;
+import org.hl7.fhir.r4.formats.XmlParser;
+import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Bundle.*;
+import org.hl7.fhir.r4.model.CapabilityStatement.*;
+import org.hl7.fhir.r4.model.CodeSystem.*;
+import org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
+import org.hl7.fhir.r4.model.Composition.SectionComponent;
+import org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent;
+import org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent;
+import org.hl7.fhir.r4.model.Enumeration;
+import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r4.model.HumanName.NameUse;
+import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r4.model.Timing.EventTiming;
+import org.hl7.fhir.r4.model.Timing.TimingRepeatComponent;
+import org.hl7.fhir.r4.model.Timing.UnitsOfTime;
+import org.hl7.fhir.r4.model.ValueSet.FilterOperator;
+import org.hl7.fhir.r4.model.ValueSet.*;
+import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.hl7.fhir.utilities.xml.XmlGenerator;
+import org.w3c.dom.Element;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 /*
 Copyright (c) 2011+, HL7, Inc
@@ -55,143 +110,6 @@ Copyright (c) 2011+, HL7, Inc
 
 */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.LinkedTransferQueue;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r4.conformance.ProfileUtilities;
-import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r4.formats.FormatUtilities;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.XmlParser;
-import org.hl7.fhir.r4.model.Address;
-import org.hl7.fhir.r4.model.Annotation;
-import org.hl7.fhir.r4.model.Attachment;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Base64BinaryType;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent;
-import org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent;
-import org.hl7.fhir.r4.model.Bundle.BundleType;
-import org.hl7.fhir.r4.model.CapabilityStatement;
-import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent;
-import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
-import org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent;
-import org.hl7.fhir.r4.model.CapabilityStatement.SystemInteractionComponent;
-import org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction;
-import org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
-import org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent;
-import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.r4.model.CodeSystem.PropertyComponent;
-import org.hl7.fhir.r4.model.CodeType;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.CompartmentDefinition;
-import org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
-import org.hl7.fhir.r4.model.Composition;
-import org.hl7.fhir.r4.model.Composition.SectionComponent;
-import org.hl7.fhir.r4.model.ConceptMap;
-import org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent;
-import org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r4.model.ContactDetail;
-import org.hl7.fhir.r4.model.ContactPoint;
-import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DiagnosticReport;
-import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.model.Dosage;
-import org.hl7.fhir.r4.model.ElementDefinition;
-import org.hl7.fhir.r4.model.Enumeration;
-import org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.ExtensionHelper;
-import org.hl7.fhir.r4.model.HumanName;
-import org.hl7.fhir.r4.model.HumanName.NameUse;
-import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.ImplementationGuide;
-import org.hl7.fhir.r4.model.InstantType;
-import org.hl7.fhir.r4.model.Meta;
-import org.hl7.fhir.r4.model.MetadataResource;
-import org.hl7.fhir.r4.model.Narrative;
-import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r4.model.OperationDefinition;
-import org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent;
-import org.hl7.fhir.r4.model.OperationOutcome;
-import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.PrimitiveType;
-import org.hl7.fhir.r4.model.Property;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Questionnaire;
-import org.hl7.fhir.r4.model.Range;
-import org.hl7.fhir.r4.model.Ratio;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.RelatedArtifact;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.SampledData;
-import org.hl7.fhir.r4.model.Signature;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.model.Timing;
-import org.hl7.fhir.r4.model.Timing.EventTiming;
-import org.hl7.fhir.r4.model.Timing.TimingRepeatComponent;
-import org.hl7.fhir.r4.model.Timing.UnitsOfTime;
-import org.hl7.fhir.r4.model.Type;
-import org.hl7.fhir.r4.model.UriType;
-import org.hl7.fhir.r4.model.UsageContext;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent;
-import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceDesignationComponent;
-import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r4.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r4.model.ValueSet.FilterOperator;
-import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
-import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
-import org.hl7.fhir.r4.utils.NarrativeGenerator.ILiquidTemplateProvider;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
-import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.hl7.fhir.utilities.xml.XmlGenerator;
-import org.w3c.dom.Element;
-
 public class NarrativeGenerator implements INarrativeGenerator {
 
   public interface ILiquidTemplateProvider {
@@ -201,7 +119,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   public interface ITypeParser {
-    Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
+    Base parseType(String xml, String type) throws IOException, FHIRException ;
   }
 
   public class ConceptMapRenderInstructions {
@@ -389,29 +307,29 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private interface PropertyWrapper {
-    public String getName();
-    public boolean hasValues();
-    public List<BaseWrapper> getValues();
-    public String getTypeCode();
-    public String getDefinition();
-    public int getMinCardinality();
-    public int getMaxCardinality();
-    public StructureDefinition getStructure();
-    public BaseWrapper value();
+    String getName();
+    boolean hasValues();
+    List<BaseWrapper> getValues();
+    String getTypeCode();
+    String getDefinition();
+    int getMinCardinality();
+    int getMaxCardinality();
+    StructureDefinition getStructure();
+    BaseWrapper value();
   }
 
   private interface ResourceWrapper {
-    public List<ResourceWrapper> getContained();
-    public String getId();
-    public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException;
-    public String getName();
-    public List<PropertyWrapper> children();
+    List<ResourceWrapper> getContained();
+    String getId();
+    XhtmlNode getNarrative() throws IOException, FHIRException;
+    String getName();
+    List<PropertyWrapper> children();
   }
 
   private interface BaseWrapper {
-    public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException;
-    public List<PropertyWrapper> children();
-    public PropertyWrapper getChildByName(String tail);
+    Base getBase() throws IOException, FHIRException;
+    List<PropertyWrapper> children();
+    PropertyWrapper getChildByName(String tail);
   }
 
   private class BaseWrapperElement implements BaseWrapper {
@@ -430,7 +348,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
     @Override
-    public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException {
+    public Base getBase() throws IOException, FHIRException {
       if (type == null || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
         return null;
 
@@ -578,7 +496,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
     @Override
-    public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException {
+    public Base getBase() throws IOException, FHIRException {
       if (type == null || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
         return null;
 
@@ -648,7 +566,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
     @Override
-    public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException {
+    public XhtmlNode getNarrative() throws IOException, FHIRException {
       org.hl7.fhir.r4.elementmodel.Element txt = wrapped.getNamedChild("text");
       if (txt == null)
         return null;
@@ -781,7 +699,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
     @Override
-    public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException {
+    public XhtmlNode getNarrative() throws IOException, FHIRException {
       Element txt = XMLUtil.getNamedChild(wrapped, "text");
       if (txt == null)
         return null;
@@ -1140,7 +1058,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return b;
   }
 
-  private void generateByProfile(Element eres, StructureDefinition profile, Element ee, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void generateByProfile(Element eres, StructureDefinition profile, Element ee, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, IOException {
 
     ResourceWrapperElement resw = new ResourceWrapperElement(eres, profile);
     BaseWrapperElement base = new BaseWrapperElement(ee, null, profile, profile.getSnapshot().getElement().get(0));
@@ -1148,11 +1066,11 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
 
-  private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, ResourceContext rc) throws FHIRException, IOException {
     generateByProfile(new ResourceWrapperDirect(res), profile, new BaseWrapperDirect(e), allElements, defn, children, x, path, showCodeDetails, 0, rc);
   }
 
-  private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent, ResourceContext rc) throws FHIRException, IOException {
     if (children.isEmpty()) {
       renderLeaf(res, e, defn, x, false, showCodeDetails, readDisplayHints(defn), path, indent, rc);
     } else {
@@ -1224,7 +1142,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       i++;
     if (i > 6)
       i = 6;
-    return "h"+Integer.toString(i);
+    return "h"+ i;
   }
 
   private void filterGrandChildren(List<ElementDefinition> grandChildren,  String string, PropertyWrapper prop) {
@@ -1242,7 +1160,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   	grandChildren.removeAll(toRemove);
   }
 
-  private List<PropertyWrapper> splitExtensions(StructureDefinition profile, List<PropertyWrapper> children) throws UnsupportedEncodingException, IOException, FHIRException {
+  private List<PropertyWrapper> splitExtensions(StructureDefinition profile, List<PropertyWrapper> children) throws IOException, FHIRException {
     List<PropertyWrapper> results = new ArrayList<PropertyWrapper>();
     Map<String, PropertyWrapper> map = new HashMap<String, PropertyWrapper>();
     for (PropertyWrapper p : children)
@@ -1278,7 +1196,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   @SuppressWarnings("rawtypes")
-  private boolean isDefaultValue(Map<String, String> displayHints, List<BaseWrapper> list) throws UnsupportedEncodingException, IOException, FHIRException {
+  private boolean isDefaultValue(Map<String, String> displayHints, List<BaseWrapper> list) throws IOException, FHIRException {
     if (list.size() != 1)
       return false;
     if (list.get(0).getBase() instanceof PrimitiveType)
@@ -1289,9 +1207,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean isDefault(Map<String, String> displayHints, PrimitiveType primitiveType) {
     String v = primitiveType.asStringValue();
-    if (!Utilities.noString(v) && displayHints.containsKey("default") && v.equals(displayHints.get("default")))
-        return true;
-    return false;
+    return !Utilities.noString(v) && displayHints.containsKey("default") && v.equals(displayHints.get("default"));
   }
 
   private boolean exemptFromRendering(ElementDefinition child) {
@@ -1299,16 +1215,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return false;
     if ("Composition.subject".equals(child.getPath()))
       return true;
-    if ("Composition.section".equals(child.getPath()))
-      return true;
-    return false;
+    return "Composition.section".equals(child.getPath());
   }
 
   private boolean renderAsList(ElementDefinition child) {
     if (child.getType().size() == 1) {
       String t = child.getType().get(0).getCode();
-      if (t.equals("Address") || t.equals("Reference"))
-        return true;
+      return t.equals("Address") || t.equals("Reference");
     }
     return false;
   }
@@ -1318,7 +1231,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().b().addText(Utilities.capitalize(tail(e.getPath())));
   }
 
-  private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent, ResourceContext rc) throws FHIRException, IOException {
     for (ElementDefinition e : grandChildren) {
       PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
       if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
@@ -1361,9 +1274,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     //we can tell if e is a primitive because it has types
     if (e.getType().isEmpty())
       return false;
-    if (e.getType().size() == 1 && isBase(e.getType().get(0).getCode()))
-      return false;
-    return true;
+    return e.getType().size() != 1 || !isBase(e.getType().get(0).getCode());
 //    return !e.getType().isEmpty()
   }
 
@@ -1380,7 +1291,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return null;
   }
 
-  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent, ResourceContext rc) throws FHIRException, IOException {
     if (ew == null)
       return;
 
@@ -1486,7 +1397,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
   }
 
-  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
+  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails, ResourceContext rc) throws FHIRException, IOException {
     if (ew == null)
       return false;
     Base e = ew.getBase();
@@ -1640,7 +1551,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return s + (!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
   }
 
-  private void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails, ResourceContext rc) throws FHIRException, IOException {
     if (!textAlready) {
       XhtmlNode div = res.getNarrative();
       if (div != null) {
@@ -1687,8 +1598,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return true;
     if (child.getType().size() == 1) {
       String t = child.getType().get(0).getCode();
-      if (t.equals("Address") || t.equals("Contact") || t.equals("Reference") || t.equals("Uri") || t.equals("Url") || t.equals("Canonical"))
-        return false;
+      return !t.equals("Address") && !t.equals("Contact") && !t.equals("Reference") && !t.equals("Uri") && !t.equals("Url") && !t.equals("Canonical");
     }
     return true;
   }
@@ -2048,14 +1958,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasStart())
         b.append("Starting "+rep.getBoundsPeriod().getStartElement().toHumanDisplay());
       if (rep.hasCount())
-        b.append("Count "+Integer.toString(rep.getCount())+" times");
+        b.append("Count "+ rep.getCount() +" times");
       if (rep.hasDuration())
         b.append("Duration "+rep.getDuration().toPlainString()+displayTimeUnits(rep.getPeriodUnit()));
 
       if (rep.hasWhen()) {
         String st = "";
         if (rep.hasOffset()) {
-          st = Integer.toString(rep.getOffset())+"min ";
+          st = rep.getOffset() +"min ";
         }
         b.append("Do "+st);
         for (Enumeration<EventTiming> wh : rep.getWhen())
@@ -2067,7 +1977,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         else {
           st = Integer.toString(rep.getFrequency());
           if (rep.hasFrequencyMax())
-            st = st + "-"+Integer.toString(rep.getFrequency());
+            st = st + "-"+ rep.getFrequency();
         }
         if (rep.hasPeriod()) {
         st = st + " per "+rep.getPeriod().toPlainString();
@@ -3046,7 +2956,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
           String l = ToolingExtensions.readStringExtension(ext, "lang");
           if (lang.equals(l))
-            d = ToolingExtensions.readStringExtension(ext, "content");;
+            d = ToolingExtensions.readStringExtension(ext, "content");
         }
       }
       tr.td().addText(d == null ? "" : d);
@@ -3130,9 +3040,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private boolean checkDoSystem(ValueSet vs, ValueSet src) {
     if (src != null)
       vs = src;
-    if (vs.hasCompose())
-      return true;
-    return false;
+    return vs.hasCompose();
   }
 
   private boolean IsNotFixedExpansion(ValueSet vs) {
@@ -4118,7 +4026,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr = tbl.tr();
       tr.td().addText(p.getUse().toString());
       tr.td().addText(path+p.getName());
-      tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
+      tr.td().addText(p.getMin() +".."+p.getMax());
       XhtmlNode td = tr.td();
       StructureDefinition sd = context.fetchTypeDefinition(p.getType());
       if (sd != null)
@@ -4342,7 +4250,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     for (SectionComponent section : sections) {
       node.hr();
       if (section.hasTitleElement())
-        node.addTag("h"+Integer.toString(level)).addText(section.getTitle());
+        node.addTag("h"+ level).addText(section.getTitle());
 //      else if (section.hasCode())
 //        node.addTag("h"+Integer.toString(level)).addText(displayCodeableConcept(section.getCode()));
 
@@ -4611,7 +4519,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         if (be.hasResource() && be.getResource().hasId())
           root.an(be.getResource().getResourceType().name().toLowerCase() + "_" + be.getResource().getId());
         root.hr();
-        root.para().addText("Entry "+Integer.toString(i)+(be.hasFullUrl() ? " - Full URL = " + be.getFullUrl() : ""));
+        root.para().addText("Entry "+ i +(be.hasFullUrl() ? " - Full URL = " + be.getFullUrl() : ""));
         if (be.hasRequest())
           renderRequest(root, be.getRequest());
         if (be.hasSearch())
