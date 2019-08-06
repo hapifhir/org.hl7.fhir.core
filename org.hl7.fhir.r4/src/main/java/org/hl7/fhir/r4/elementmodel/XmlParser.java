@@ -189,6 +189,8 @@ public class XmlParser extends ParserBase {
       return "h:";
     if (ns.equals("urn:hl7-org:v3"))
       return "v3:";
+    if (ns.equals("urn:ihe:pharm"))
+      return "pharm:";
     return "?:";
   }
 
@@ -302,19 +304,19 @@ public class XmlParser extends ParserBase {
     				Element n = new Element(child.getLocalName(), property).markLocation(line(child), col(child));
     				checkElement((org.w3c.dom.Element) child, npath, n.getProperty());
     				boolean ok = true;
-    				if (property.isChoice()) {
-    					if (property.getDefinition().hasRepresentation(PropertyRepresentation.TYPEATTR)) {
-    						String xsiType = ((org.w3c.dom.Element) child).getAttributeNS(FormatUtilities.NS_XSI, "type");
-    						if (Utilities.noString(xsiType)) {
-    		          logError(line(child), col(child), path, IssueType.STRUCTURE, "No type found on '"+child.getLocalName()+'"', IssueSeverity.ERROR);
-    		          ok = false;
-    						} else {
-    							if (xsiType.contains(":"))
-    								xsiType = xsiType.substring(xsiType.indexOf(":")+1);
-    							n.setType(xsiType);
-    							n.setExplicitType(xsiType);
-    						}
-    					} else
+  					if (property.getDefinition().hasRepresentation(PropertyRepresentation.TYPEATTR)) {
+  						String xsiType = ((org.w3c.dom.Element) child).getAttributeNS(FormatUtilities.NS_XSI, "type");
+  						if (Utilities.noString(xsiType)) {
+  		          logError(line(child), col(child), path, IssueType.STRUCTURE, "No type found on '"+child.getLocalName()+'"', IssueSeverity.ERROR);
+  		          ok = false;
+  						} else {
+  							if (xsiType.contains(":"))
+  								xsiType = xsiType.substring(xsiType.indexOf(":")+1);
+  							n.setType(xsiType);
+  							n.setExplicitType(xsiType);
+  						}
+  					}
+    				if (property.isChoice() && !property.getDefinition().hasRepresentation(PropertyRepresentation.TYPEATTR)) {
     					  n.setType(n.getType());
     				}
     				context.getChildren().add(n);
@@ -460,9 +462,29 @@ public class XmlParser extends ParserBase {
     xml.setDefaultNamespace(e.getProperty().getNamespace());
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    addNamespaces(xml, e);
     composeElement(xml, e, e.getType(), true);
     xml.end();
+  }
 
+  private void addNamespaces(IXMLWriter xml, Element e) throws IOException {
+    String ns = e.getProperty().getNamespace();
+    if (ns!=null && !xml.getDefaultNamespace().equals(ns)){
+      if (!xml.namespaceDefined(ns)) {
+        String prefix = pathPrefix(ns);
+        if (prefix.endsWith(":")) {
+          prefix = prefix.substring(0, prefix.length()-1);
+        }
+        if ("?".equals(prefix)) {
+          xml.namespace(ns);
+        } else {
+          xml.namespace(ns, prefix);
+        }
+      }
+    }
+    for (Element c : e.getChildren()) {
+      addNamespaces(xml, c);
+    }
   }
 
   private boolean hasTypeAttr(Element e) {
@@ -475,10 +497,13 @@ public class XmlParser extends ParserBase {
     return false;
   }
 
-
+  
   public void compose(Element e, IXMLWriter xml) throws Exception {
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getNamespace());
+    if (hasTypeAttr(e))
+      xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    addNamespaces(xml, e);
     composeElement(xml, e, e.getType(), true);
     xml.end();
   }
@@ -550,7 +575,7 @@ public class XmlParser extends ParserBase {
       }
       if (linkResolver != null)
         xml.link(linkResolver.resolveProperty(element.getProperty()));
-      xml.enter(elementName);
+      xml.enter(element.getProperty().getNamespace(), elementName);
       if (!root && element.getSpecial() != null) {
         if (linkResolver != null)
           xml.link(linkResolver.resolveProperty(element.getProperty()));
@@ -566,7 +591,7 @@ public class XmlParser extends ParserBase {
       }
 	    if (!root && element.getSpecial() != null)
         xml.exit(element.getType());
-      xml.exit(elementName);
+      xml.exit(element.getProperty().getNamespace(), elementName);
     }
   }
 
