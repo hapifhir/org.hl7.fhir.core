@@ -296,6 +296,16 @@ public class EnableWhenEvaluator {
       }
       retVal.addAll(findOnItem(item, question));
     }
+
+    // In case the question with the enableWhen is a direct child of the question with
+    // the answer that it depends on. There is an example of this in the
+    // "BO_ConsDrop" question in this test case:
+    // https://github.com/jamesagnew/hapi-fhir/blob/master/hapi-fhir-validation/src/test/resources/dstu3/fmc03-questionnaire.json
+    if (hasLinkId(focus, question)) {
+      List<Element> answers = extractAnswer(focus);
+      retVal.addAll(answers);
+    }
+
     return retVal;
   }
 
