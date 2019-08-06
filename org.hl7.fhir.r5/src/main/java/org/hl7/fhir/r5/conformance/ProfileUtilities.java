@@ -1206,6 +1206,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         } else if (!ed.hasSliceName() && !s.equals("[x]")) {
           if (isDataType(s))
             typeList.add(new TypeSlice(ed, s));
+          else if (isConstrainedDataType(s))
+            typeList.add(new TypeSlice(ed, baseType(s)));
           else if (isPrimitive(Utilities.uncapitalize(s)))
             typeList.add(new TypeSlice(ed, Utilities.uncapitalize(s)));
         } else if (!ed.hasSliceName() && s.equals("[x]"))
@@ -3446,13 +3448,37 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean isDataType(String value) {
     StructureDefinition sd = context.fetchTypeDefinition(value);
-    return sd != null && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE;
+    if (sd == null) // might be running before all SDs are available
+      return Utilities.existsInList(value, "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", 
+            "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext");
+    else 
+      return sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION;
+  }
+
+  private boolean isConstrainedDataType(String value) {
+    StructureDefinition sd = context.fetchTypeDefinition(value);
+    if (sd == null) // might be running before all SDs are available
+      return Utilities.existsInList(value, "SimpleQuantity", "MoneyQuantity");
+    else 
+      return sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.CONSTRAINT;
+  }
+
+  private String baseType(String value) {
+    StructureDefinition sd = context.fetchTypeDefinition(value);
+    if (sd != null) // might be running before all SDs are available
+      return sd.getType();
+    if (Utilities.existsInList(value, "SimpleQuantity", "MoneyQuantity"))
+      return "Quantity";
+     throw new Error("Internal error -  type not known "+value);
   }
 
 
   public boolean isPrimitive(String value) {
     StructureDefinition sd = context.fetchTypeDefinition(value);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+    if (sd == null) // might be running before all SDs are available
+      return Utilities.existsInList(value, "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid");
+    else 
+      return sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
 //  private static String listStructures(StructureDefinition p) {
