@@ -452,11 +452,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!ok)
             errors.add(new ValidationMessage(Source.InstanceValidator, IssueType.UNKNOWN, path, "Profile mismatch on type for "+profile.getProfile()+": the profile constrains "+sd.getType()+" but the element is "+element.fhirType(), IssueSeverity.ERROR));
         } else 
-          addProfile(errors, profile.getProfile(), profile.isError(), path, element, sd);          
+          addProfile(errors, profile.getProfile(), profile.isErrorOnMissing(), path, element, sd);
       }
     }
     
-    public boolean addProfile(List<ValidationMessage> errors, String profile, boolean error, String path, Element element, StructureDefinition containingProfile) {
+    public boolean addProfile(List<ValidationMessage> errors, String profile, boolean errorOnMissing, String path, Element element, StructureDefinition containingProfile) {
       String effectiveProfile = profile;
       String version = null;
       if (profile.contains("|")) {
@@ -481,7 +481,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           sd = context.fetchResource(StructureDefinition.class, effectiveProfile);
       }
       
-      if (warningOrError(error, errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" could not be resolved", profile)) {
+      if (warningOrError(errorOnMissing, errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" could not be resolved", profile)) {
         if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, version==null || (sd.getVersion()!=null && sd.getVersion().equals(version)), 
              "Referenced version " + version + " does not match found version " + sd.getVersion() + " for profile " + sd.getUrl(), profile)) {
           if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, sd.hasSnapshot(),
