@@ -17,9 +17,9 @@ import org.hl7.fhir.r4.model.ExpressionNode.*;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
-import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.math.BigDecimal;

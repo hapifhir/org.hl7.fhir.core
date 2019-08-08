@@ -20,16 +20,7 @@ package org.hl7.fhir.r4.context;
  * #L%
  */
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -37,51 +28,34 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.TerminologyCache.CacheToken;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.CapabilityStatement;
-import org.hl7.fhir.r4.model.CodeSystem;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.ConceptMap;
-import org.hl7.fhir.r4.model.Constants;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4.model.ImplementationGuide;
-import org.hl7.fhir.r4.model.MetadataResource;
-import org.hl7.fhir.r4.model.NamingSystem;
 import org.hl7.fhir.r4.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent;
-import org.hl7.fhir.r4.model.OperationDefinition;
-import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r4.model.PlanDefinition;
-import org.hl7.fhir.r4.model.Questionnaire;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.SearchParameter;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.model.StructureMap;
-import org.hl7.fhir.r4.model.TerminologyCapabilities;
 import org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r4.terminologies.TerminologyClient;
-import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
-import com.google.gson.JsonObject;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
 
@@ -527,7 +501,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       if (implySystem)
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
       if (options != null)
-        options.updateParameters(pIn);
+        updateParameters(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -535,6 +509,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     if (txCache != null)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  public void updateParameters(TerminologyServiceOptions options, Parameters pIn) {
+    if (isNotBlank(options.getLanguage())) {
+      pIn.addParameter("displayLanguage", options.getLanguage());
+    }
   }
 
   @Override
@@ -561,7 +541,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
       if (options != null)
-        options.updateParameters(pIn);
+        updateParameters(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());

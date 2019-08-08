@@ -102,11 +102,11 @@ import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -120,7 +120,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * getTargetType(map) - return the definition for the type to create to hand in 
  * transform(appInfo, source, map, target) - transform from source to target following the map
  * analyse(appInfo, map) - generate profiles and other analysis artifacts for the targets of the transform
- * map generateMapFromMappings(StructureDefinition) - build a mapping from a structure definition with loigcal mappings
+ * map generateMapFromMappings(StructureDefinition) - build a mapping from a structure definition with logical mappings
  *  
  * @author Grahame Grieve
  *
@@ -223,7 +223,7 @@ public class StructureMapUtilities {
 	private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private Map<String, Integer> ids = new HashMap<String, Integer>(); 
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions(); 
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
 
 	public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
 		super();
