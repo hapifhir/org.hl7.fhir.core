@@ -34,7 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import ca.uhn.fhir.context.FhirContext;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.model.Reference;
@@ -968,20 +970,32 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (int i = 0; i < fixed.getCoding().size(); i++) {
           Coding fixedCoding = fixed.getCoding().get(i);
           boolean found = false;
-          List<ValidationMessage> errorsFixed = null;
+          List<ValidationMessage> allErrorsFixed = new ArrayList<>();
+          List<ValidationMessage> errorsFixed;
           for (int j = 0; j < codings.size() && !found; ++j) {
-            errorsFixed = new ArrayList<ValidationMessage>();
+            errorsFixed = new ArrayList<>();
             checkFixedValue(errorsFixed, path + ".coding", codings.get(j), fixedCoding, "coding", focus);
             if (!hasErrors(errorsFixed)) {
               found = true;
+            } else {
+              errorsFixed
+                .stream()
+                .filter(t->t.getLevel().ordinal() >= IssueSeverity.ERROR.ordinal())
+                .forEach(t->allErrorsFixed.add(t));
             }
           }
           if (!found) {
-            rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false,
-                "Expected patternCodeableConcept not found for"+
-                    " system: " + fixedCoding.getSystemElement().asStringValue() +
-                    " code: " + fixedCoding.getCodeElement().asStringValue() +
-                    " display: " + fixedCoding.getDisplayElement().asStringValue());
+            // The argonaut DSTU2 labs profile requires userSelected=false on the category.coding and this
+            // needs to produce an understandable error message
+            String message = "Expected fixed CodeableConcept not found for" +
+              " system: " + fixedCoding.getSystemElement().asStringValue() +
+              " code: " + fixedCoding.getCodeElement().asStringValue() +
+              " display: " + fixedCoding.getDisplayElement().asStringValue();
+            if (fixedCoding.hasUserSelected()) {
+              message += " userSelected: " + fixedCoding.getUserSelected();
+            }
+            message += " - Issues: " + allErrorsFixed;
+            rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, message);
           }
         }
       }
