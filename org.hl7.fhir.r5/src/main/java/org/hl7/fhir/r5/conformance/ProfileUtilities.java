@@ -687,7 +687,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           result.getElement().add(outcome);
           baseCursor++;
           diffCursor = differential.getElement().indexOf(diffMatches.get(0))+1;
-          if (differential.getElement().size() > diffCursor && outcome.getPath().contains(".") && (isDataType(outcome.getType()) || outcome.hasContentReference())) {  // don't want to do this for the root, since that's base, and we're already processing it
+          if (differential.getElement().size() > diffCursor && outcome.getPath().contains(".") && (isDataTypeOrLogical(outcome.getType()) || outcome.hasContentReference())) {  // don't want to do this for the root, since that's base, and we're already processing it
             if (pathStartsWith(differential.getElement().get(diffCursor).getPath(), diffMatches.get(0).getPath()+".") && !baseWalksInto(base.getElement(), baseCursor)) {
               if (outcome.getType().size() > 1) {
                 if (outcome.getPath().endsWith("[x]") && !diffMatches.get(0).getPath().endsWith("[x]")) {
@@ -1037,7 +1037,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               removeStatusExtensions(outcome);
               // --- LM Added this
               diffCursor = differential.getElement().indexOf(diffItem)+1;
-              if (!outcome.getType().isEmpty() && (/*outcome.getType().get(0).getCode().equals("Extension") || */differential.getElement().size() > diffCursor) && outcome.getPath().contains(".") && isDataType(outcome.getType())) {  // don't want to do this for the root, since that's base, and we're already processing it
+              if (!outcome.getType().isEmpty() && (/*outcome.getType().get(0).getCode().equals("Extension") || */differential.getElement().size() > diffCursor) && outcome.getPath().contains(".") && isDataTypeOrLogical(outcome.getType())) {  // don't want to do this for the root, since that's base, and we're already processing it
                 if (!baseWalksInto(base.getElement(), baseCursor)) {
                   if (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), diffMatches.get(0).getPath()+".")) {
                     if (outcome.getType().size() > 1)
@@ -1431,12 +1431,15 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isDataType(List<TypeRefComponent> types) {
+  private boolean isDataTypeOrLogical(List<TypeRefComponent> types) {
     if (types.isEmpty())
       return false;
     for (TypeRefComponent type : types) {
       String t = type.getCode();
-      if (!isDataType(t) && !isPrimitive(t))
+      if (type.getProfile()!=null && type.getProfile().size()==1 && type.getProfile().get(0).getValue()!=null) {
+        t = type.getProfile().get(0).getValue();        
+      }
+      if (!isDataType(t) && !isPrimitive(t) && !isLogical(t))
         return false;
     }
     return true;
@@ -3435,6 +3438,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     StructureDefinition sd = context.fetchTypeDefinition(value);
     return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
+  
+  public boolean isLogical(String value) {
+    StructureDefinition sd = context.fetchTypeDefinition(value);
+    return sd != null && sd.getKind() == StructureDefinitionKind.LOGICAL;
+  }
+
 
 //  private static String listStructures(StructureDefinition p) {
 //    StringBuilder b = new StringBuilder();
@@ -3701,10 +3710,21 @@ public class ProfileUtilities extends TranslatingUtilities {
       else
       ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), ed.getType().get(0).getCode(), child.getSelf().getPath().length(), cmp.name);
     } else if (ed.getType().size() == 1 && !ed.getType().get(0).getCode().equals("*")) {
-      StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getCode()));
-      if (profile==null)
-        throw new FHIRException("Unable to resolve profile " + sdNs(ed.getType().get(0).getCode()) + " in element " + ed.getPath());
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getCode(), child.getSelf().getPath().length(), cmp.name);
+      StructureDefinition profile = null;
+      String code = ed.getType().get(0).getCode();
+      if (ed.getType().get(0).getProfile() != null && ed.getType().get(0).getProfile().size()==1) {
+        profile = context.fetchResource(StructureDefinition.class, ed.getType().get(0).getProfile().get(0).getValue());
+        if (profile==null)
+          throw new FHIRException("Unable to resolve profile " + ed.getType().get(0).getProfile().get(0).getValue() + " in element " + ed.getPath());
+      } else {
+        profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getCode()));
+        if (profile==null)
+          throw new FHIRException("Unable to resolve profile " + sdNs(ed.getType().get(0).getCode()) + " in element " + ed.getPath());
+      }
+      if (Utilities.isAbsoluteUrl(code)) {
+        code = code.substring(code.lastIndexOf("/")+1);
+      }
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), code, child.getSelf().getPath().length(), cmp.name);
     } else if (child.getSelf().getType().size() == 1) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(child.getSelf().getType().get(0).getCode()));
       if (profile==null)
