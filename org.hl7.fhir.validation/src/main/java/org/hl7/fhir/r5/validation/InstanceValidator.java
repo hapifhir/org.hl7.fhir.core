@@ -169,6 +169,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     private Object appContext;
     private Element container; // bundle, or parameters
     private Element resource;
+    private Element rootResource;
     private StructureDefinition profile; // the profile that contains the content being validated
     public ValidatorHostContext(Object appContext) {
       this.appContext = appContext;
@@ -176,10 +177,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public ValidatorHostContext(Object appContext, Element element) {
       this.appContext = appContext;
       this.resource = element;
+      this.rootResource = element;
     }
     
     public ValidatorHostContext forContained(Element element) {
       ValidatorHostContext res = new ValidatorHostContext(appContext);
+      res.rootResource = resource;
       res.resource = element;
       res.container = resource;
       res.profile = profile;
@@ -189,6 +192,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public ValidatorHostContext forProfile(StructureDefinition profile) {
       ValidatorHostContext res = new ValidatorHostContext(appContext);
       res.resource = resource;
+      res.rootResource = rootResource;
       res.container = container;
       res.profile = profile;
       return res;
@@ -2787,7 +2791,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok;
     try {
       long t = System.nanoTime();
-      ok = fpe.evaluateToBoolean(hostContext.forProfile(profile), hostContext.resource, element, n);
+      ok = fpe.evaluateToBoolean(hostContext.forProfile(profile), hostContext.resource, hostContext.rootResource, element, n);
       fpeTime = fpeTime + (System.nanoTime() - t);
       msg = fpe.forLog();
     } catch (Exception ex) {
@@ -4389,7 +4393,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     boolean ok;
     try {
       long t = System.nanoTime();
-      ok = fpe.evaluateToBoolean(hostContext, resource, element, n);
+      ok = fpe.evaluateToBoolean(hostContext, resource, hostContext.rootResource, element, n);
       fpeTime = fpeTime + (System.nanoTime() - t);
       msg = fpe.forLog();
     } catch (Exception ex) {

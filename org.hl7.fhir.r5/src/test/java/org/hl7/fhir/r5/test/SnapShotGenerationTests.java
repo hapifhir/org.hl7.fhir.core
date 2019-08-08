@@ -413,7 +413,8 @@ public class SnapShotGenerationTests {
     else
       testSort();
     for (Rule r : test.getRules()) {
-      boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), r.expression);
+      StructureDefinition sdn = new StructureDefinition();
+      boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
       Assert.assertTrue(r.description, ok);
     }
   }
