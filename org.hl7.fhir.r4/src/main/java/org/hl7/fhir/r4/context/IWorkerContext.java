@@ -44,11 +44,11 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureMap;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.IResourceValidator;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -160,11 +160,6 @@ public interface IWorkerContext {
    * It's an error if the second form doesn't agree with class_. It's an 
    * error if class_ is null for the last form
    * 
-   * @param resource
-   * @param Reference
-   * @return
-   * @throws FHIRException 
-   * @throws Exception
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
@@ -267,7 +262,6 @@ public interface IWorkerContext {
   /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
-   * @param source
    * @return
    * @throws FHIRException 
    */

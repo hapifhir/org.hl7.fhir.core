@@ -33,13 +33,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import ca.uhn.fhir.context.FhirContext;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.exceptions.*;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
@@ -107,7 +107,6 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
-import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
@@ -122,7 +121,6 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -130,7 +128,6 @@ import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.r5.utils.ValidationProfileSet.ProfileRegistration;
-import org.hl7.fhir.r5.utils.Version;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
@@ -461,11 +458,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!ok)
             errors.add(new ValidationMessage(Source.InstanceValidator, IssueType.UNKNOWN, path, "Profile mismatch on type for "+profile.getProfile()+": the profile constrains "+sd.getType()+" but the element is "+element.fhirType(), IssueSeverity.ERROR));
         } else 
-          addProfile(errors, profile.getProfile(), profile.isError(), path, element, sd);          
+          addProfile(errors, profile.getProfile(), profile.isErrorOnMissing(), path, element, sd);
       }
     }
     
-    public boolean addProfile(List<ValidationMessage> errors, String profile, boolean error, String path, Element element, StructureDefinition containingProfile) {
+    public boolean addProfile(List<ValidationMessage> errors, String profile, boolean errorOnMissing, String path, Element element, StructureDefinition containingProfile) {
       String effectiveProfile = profile;
       String version = null;
       if (profile.contains("|")) {
@@ -490,7 +487,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           sd = context.fetchResource(StructureDefinition.class, effectiveProfile);
       }
       
-      if (warningOrError(error, errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" could not be resolved", profile)) {
+      if (warningOrError(errorOnMissing, errors, IssueType.INVALID, element.line(), element.col(), path, sd != null, "StructureDefinition reference \"{0}\" could not be resolved", profile)) {
         if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, version==null || (sd.getVersion()!=null && sd.getVersion().equals(version)), 
              "Referenced version " + version + " does not match found version " + sd.getVersion() + " for profile " + sd.getUrl(), profile)) {
           if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, sd.hasSnapshot(),
@@ -977,20 +974,32 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (int i = 0; i < fixed.getCoding().size(); i++) {
           Coding fixedCoding = fixed.getCoding().get(i);
           boolean found = false;
-          List<ValidationMessage> errorsFixed = null;
+          List<ValidationMessage> allErrorsFixed = new ArrayList<>();
+          List<ValidationMessage> errorsFixed;
           for (int j = 0; j < codings.size() && !found; ++j) {
-            errorsFixed = new ArrayList<ValidationMessage>();
+            errorsFixed = new ArrayList<>();
             checkFixedValue(errorsFixed, path + ".coding", codings.get(j), fixedCoding, "coding", focus);
             if (!hasErrors(errorsFixed)) {
               found = true;
+            } else {
+              errorsFixed
+                .stream()
+                .filter(t->t.getLevel().ordinal() >= IssueSeverity.ERROR.ordinal())
+                .forEach(t->allErrorsFixed.add(t));
             }
           }
           if (!found) {
-            rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false,
-                "Expected patternCodeableConcept not found for"+
-                    " system: " + fixedCoding.getSystemElement().asStringValue() +
-                    " code: " + fixedCoding.getCodeElement().asStringValue() +
-                    " display: " + fixedCoding.getDisplayElement().asStringValue());
+            // The argonaut DSTU2 labs profile requires userSelected=false on the category.coding and this
+            // needs to produce an understandable error message
+            String message = "Expected fixed CodeableConcept not found for" +
+              " system: " + fixedCoding.getSystemElement().asStringValue() +
+              " code: " + fixedCoding.getCodeElement().asStringValue() +
+              " display: " + fixedCoding.getDisplayElement().asStringValue();
+            if (fixedCoding.hasUserSelected()) {
+              message += " userSelected: " + fixedCoding.getUserSelected();
+            }
+            message += " - Issues: " + allErrorsFixed;
+            rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, message);
           }
         }
       }
@@ -3174,7 +3183,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionnaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     String text = element.getNamedChildValue("text");
     rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), "If text exists, it must match the questionnaire definition for linkId "+qItem.getLinkId());
 
@@ -3195,74 +3204,76 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     for (Element answer : answers) {
       NodeStack ns = stack.push(answer, -1, null, null);
-      switch (qItem.getType()) {
-      case GROUP:
-        rule(errors, IssueType.STRUCTURE, answer.line(), answer.col(), stack.getLiteralPath(), false, "Items of type group should not have answers");
-        break;
-      case DISPLAY:  // nothing
-        break;
-      case BOOLEAN:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "boolean");
-        break;
-      case DECIMAL:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "decimal");
-        break;
-      case INTEGER:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "integer");
-        break;
-      case DATE:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "date");
-        break;
-      case DATETIME:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "dateTime");
-        break;
-      case TIME:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "time");
-        break;
-      case STRING:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "string");
-        break;
-      case TEXT:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "text");
-        break;
-      case URL:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "uri");
-        break;
-      case ATTACHMENT:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "Attachment");
-        break;
-      case REFERENCE:
-        validateQuestionnaireResponseItemType(errors, answer, ns, "Reference");
-        break;
-      case QUANTITY:
-        if ("Quantity".equals(validateQuestionnaireResponseItemType(errors, answer, ns, "Quantity")))
-          if (qItem.hasExtension("???"))
-            validateQuestionnaireResponseItemQuantity(errors, answer, ns);
-        break;
-      case CHOICE:
-        String itemType=validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
-        if (itemType != null) {
-			  if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, false);
-			  else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
-			  else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
-			  else if (itemType.equals("integer")) checkOption(errors, answer, ns, qsrc, qItem, "integer");
-			  else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string");
-		  }
-        break;
-      case OPENCHOICE:
-        itemType=validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
-        if (itemType != null) {
-			  if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, true);
-			  else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
-			  else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
-			  else if (itemType.equals("integer")) checkOption(errors, answer, ns, qsrc, qItem, "integer");
-			  else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string", true);
-		  }
-        break;
-			case QUESTION:
-			case NULL:
-				// no validation
-				break;
+      if (qItem.getType() != null) {
+        switch (qItem.getType()) {
+          case GROUP:
+            rule(errors, IssueType.STRUCTURE, answer.line(), answer.col(), stack.getLiteralPath(), false, "Items of type group should not have answers");
+            break;
+          case DISPLAY:  // nothing
+            break;
+          case BOOLEAN:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "boolean");
+            break;
+          case DECIMAL:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "decimal");
+            break;
+          case INTEGER:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "integer");
+            break;
+          case DATE:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "date");
+            break;
+          case DATETIME:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "dateTime");
+            break;
+          case TIME:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "time");
+            break;
+          case STRING:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "string");
+            break;
+          case TEXT:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "text");
+            break;
+          case URL:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "uri");
+            break;
+          case ATTACHMENT:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "Attachment");
+            break;
+          case REFERENCE:
+            validateQuestionnaireResponseItemType(errors, answer, ns, "Reference");
+            break;
+          case QUANTITY:
+            if ("Quantity".equals(validateQuestionnaireResponseItemType(errors, answer, ns, "Quantity")))
+              if (qItem.hasExtension("???"))
+                validateQuestionnaireResponseItemQuantity(errors, answer, ns);
+            break;
+          case CHOICE:
+            String itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
+            if (itemType != null) {
+              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, false);
+              else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
+              else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
+              else if (itemType.equals("integer")) checkOption(errors, answer, ns, qsrc, qItem, "integer");
+              else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string");
+            }
+            break;
+          case OPENCHOICE:
+            itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
+            if (itemType != null) {
+              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, true);
+              else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
+              else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
+              else if (itemType.equals("integer")) checkOption(errors, answer, ns, qsrc, qItem, "integer");
+              else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string", true);
+            }
+            break;
+          case QUESTION:
+          case NULL:
+            // no validation
+            break;
+        }
       }
       validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
     }
@@ -3281,13 +3292,13 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 	return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
 }
 
-  private void validateQuestionannaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionnaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     if (elements.size() > 1)
       rule(errors, IssueType.INVALID, elements.get(1).line(), elements.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), "Only one response item with this linkId allowed - " + qItem.getLinkId());
     int i = 0;
     for (Element element : elements) {
       NodeStack ns = stack.push(element, i, null, null);
-      validateQuestionannaireResponseItem(qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
+      validateQuestionnaireResponseItem(qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
       i++;
     }
   }
@@ -3315,7 +3326,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (qItem != null) {
             rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem));
             NodeStack ns = stack.push(item, -1, null, null);
-            validateQuestionannaireResponseItem(qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
+            validateQuestionnaireResponseItem(qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           }
           else
             rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId \""+linkId+"\" not found in questionnaire");
@@ -3324,22 +3335,25 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         {
           rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index >= lastIndex, "Structural Error: items are out of order");
           lastIndex = index;
-          
-          List<Element> mapItem = map.computeIfAbsent(linkId, key -> new ArrayList<>());
-          
-          mapItem.add(item);
+
+          // If an item has a child called "linkId" but no child called "answer",
+          // we'll treat it as not existing for the purposes of enableWhen validation
+          if (item.hasChildren("answer") || item.hasChildren("item")) {
+            List<Element> mapItem = map.computeIfAbsent(linkId, key -> new ArrayList<>());
+            mapItem.add(item);
+          }
         }
       }
     }
 
-    // ok, now we have a list of known items, grouped by linkId. We"ve made an error for anything out of order
+    // ok, now we have a list of known items, grouped by linkId. We've made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<Element> mapItem = map.get(qItem.getLinkId());
-      validateQuestionannaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
+      validateQuestionnaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
     }
   }
 
-  public void validateQuestionannaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
+  public void validateQuestionnaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
     boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(qItem, qstack);
     if (mapItem != null){
       if (!enabled) {
@@ -3350,13 +3364,24 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           i++;
         }
       }
-      validateQuestionannaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot, qstack);
-    } else { 
-      //item is missing, is the question enabled?
-      if (enabled && qItem.getRequired()) {    	  
-        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "No response found for required item with id = '"+qItem.getLinkId()+"'");
+
+      // Recursively validate child items
+      validateQuestionnaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot, qstack);
+
+    } else {
+
+      // item is missing, is the question enabled?
+      if (enabled && qItem.getRequired()) {
+        String message = "No response found for required item with id = '" + qItem.getLinkId() + "'";
+        if (inProgress) {
+          warning(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message);
+        } else {
+          rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message);
+        }
       }
+
     }
+
   }
 
   private String misplacedItemError(QuestionnaireItemComponent qItem) {

@@ -120,8 +120,8 @@ import org.hl7.fhir.r4.utils.IResourceValidator;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.utils.ValidationProfileSet;
 import org.hl7.fhir.r4.utils.ValidationProfileSet.ProfileRegistration;
-import org.hl7.fhir.r4.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -813,7 +813,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (ss) {
       t = System.nanoTime();
       ValidationResult s = context.validateCode(new TerminologyServiceOptions("en"), system, code, display);
-      txTime = txTime + (System.nanoTime() - t);
+      txTime += (System.nanoTime() - t);
       if (s == null)
         return true;
       if (s.isOk()) {
