@@ -334,6 +334,7 @@ public class SnapShotGenerationTests {
       TestScript.AssertionResponseTypes lastOpOutcome = null;
       for (int i = 0; i < test.getAction().size(); i++) {
         TestActionComponent action = test.getAction().get(i);
+        StructureDefinition sdn = new StructureDefinition();
         if (action.hasOperation()) {
           lastOpOutcome = AssertionResponseTypes.OKAY;
           try {
@@ -383,7 +384,7 @@ public class SnapShotGenerationTests {
               if (a.hasResponse() && a.getResponse().equals(TestScript.AssertionResponseTypes.BAD))
                 Assert.fail(action.getAssert().getLabel()+": "+action.getAssert().getDescription());
               else {
-                boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
+                boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, a.getExpression());
                 Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
               }
             } else {
@@ -405,7 +406,7 @@ public class SnapShotGenerationTests {
             Assert.assertTrue(a.getLabel()+" (response): "+a.getDescription(), a.getResponse() == lastOpOutcome);         
           }
           if (a.hasExpression()) {
-            boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), a.getExpression());
+            boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, a.getExpression());
             Assert.assertTrue(a.getLabel()+": "+a.getDescription(), ok);
           }
         }
