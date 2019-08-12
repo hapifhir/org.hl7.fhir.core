@@ -1,32 +1,21 @@
 package org.hl7.fhir.r5.test;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.instance.model.api.IBaseReference;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
 import org.hl7.fhir.r5.model.Bundle.SearchEntryMode;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.GraphQLEngine;
-import org.hl7.fhir.r5.utils.GraphQLEngine.IGraphQLStorageServices;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
+import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
 import org.hl7.fhir.utilities.graphql.NameValue;
 import org.hl7.fhir.utilities.graphql.Parser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -37,6 +26,16 @@ import org.junit.runners.Parameterized.Parameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class GraphQLEngineTests implements IGraphQLStorageServices {
@@ -127,18 +126,18 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Override
-  public ReferenceResolution lookup(Object appInfo, Resource context, Reference reference) throws FHIRException {
+  public ReferenceResolution lookup(Object appInfo, IBaseResource context, IBaseReference reference) throws FHIRException {
     try {
-      if (reference.getReference().startsWith("#")) {
+      if (reference.getReferenceElement().isLocal()) {
         if (!(context instanceof DomainResource)) 
           return null;
         for (Resource r : ((DomainResource)context).getContained()) {
-          if (('#'+r.getId()).equals(reference.getReference())) {
+          if (('#'+r.getId()).equals(reference.getReferenceElement().getValue())) {
             return new ReferenceResolution(context, r);
           }
         }
       } else {
-        String[] parts = reference.getReference().split("/");
+        String[] parts = reference.getReferenceElement().getValue().split("/");
         String filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase()+'-'+parts[1].toLowerCase()+".xml");
         if (new File(filename).exists())
           return new ReferenceResolution(null, new XmlParser().parse(new FileInputStream(filename)));
@@ -150,7 +149,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Override
-  public void listResources(Object appInfo, String type, List<Argument> searchParams, List<Resource> matches) throws FHIRException {
+  public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches) throws FHIRException {
     try {
       if (type.equals("Condition")) 
         matches.add(new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
