@@ -1,8 +1,8 @@
-package org.hl7.fhir.r5.utils;
+package org.hl7.fhir.dstu3.utils;
 
 /*-
  * #%L
- * org.hl7.fhir.r5
+ * org.hl7.fhir.dstu3
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
@@ -21,12 +21,12 @@ package org.hl7.fhir.r5.utils;
  */
 
 
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
+import org.hl7.fhir.dstu3.context.IWorkerContext;
+import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.*;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
@@ -211,8 +211,7 @@ public class GraphQLEngine implements IGraphQLEngine {
   private FHIRPathEngine fpe;
 
   private ExpressionNode magicExpression;
-
-  @Override
+  
   public void execute() throws EGraphEngine, EGraphQLException, FHIRException {
     if (graphQL == null)
       throw new EGraphEngine("Unable to process graphql - graphql document missing");
@@ -389,7 +388,7 @@ public class GraphQLEngine implements IGraphQLEngine {
   }
 
   private List<Resource> filterResources(Argument fhirpath, List<IBaseResource> list) throws EGraphQLException, FHIRException {
-    List<Resource> result = new ArrayList<Resource>();
+    List<Resource> result = new ArrayList<>();
     if (list.size() > 0) {
       if ((fhirpath == null))
         for (IBaseResource v : list)
@@ -398,7 +397,7 @@ public class GraphQLEngine implements IGraphQLEngine {
         FHIRPathEngine fpe = new FHIRPathEngine(context);
         ExpressionNode node = fpe.parse(getSingleValue(fhirpath));
         for (IBaseResource v : list)
-          if (fpe.evaluateToBoolean(null, (Resource)v, (Base) v, node))
+          if (fpe.evaluateToBoolean(null, (Resource)v, (Resource)v, node))
             result.add((Resource) v);
       }
     }
@@ -441,7 +440,7 @@ public class GraphQLEngine implements IGraphQLEngine {
         if (expression == magicExpression)
           ss = suffix+'.'+Integer.toString(index);
         else
-          ss = suffix+'.'+fpe.evaluateToString(null, null, null, value, expression);
+          ss = suffix+'.'+fpe.evaluateToString(null, null, value, expression);
         if (!sel.getField().hasDirective("flatten"))
           arg = target.addField(sel.getField().getAlias()+suffix, listStatus(sel.getField(), prop.isList() || inheritedList));
       }
@@ -573,8 +572,6 @@ public class GraphQLEngine implements IGraphQLEngine {
   }
 
   private void processCanonicalReference(Resource context, Base source, Field field, ObjectValue target, boolean inheritedList, String suffix) throws EGraphQLException, FHIRException {
-    if (!(source instanceof CanonicalType))
-      throw new EGraphQLException("Not done yet");
     if (services == null)
       throw new EGraphQLException("Resource Referencing services not provided");
 
@@ -782,7 +779,6 @@ public class GraphQLEngine implements IGraphQLEngine {
     return appInfo;
   }
 
-  @Override
   public void setAppInfo(Object appInfo) {
     this.appInfo = appInfo;
   }
@@ -805,7 +801,6 @@ public class GraphQLEngine implements IGraphQLEngine {
     this.graphQL = graphQL;
   }
 
-  @Override
   public ObjectValue getOutput() {
     return output;
   }
