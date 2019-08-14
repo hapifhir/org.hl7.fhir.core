@@ -454,17 +454,19 @@ public class Validator {
           System.out.println("  .. validate "+sources);
         validator.prepare(); // generate any missing snapshots
         Resource r = validator.validate(sources, profiles);
+        int ec = 0;
         if (output == null) {
           if (r instanceof Bundle)
             for (BundleEntryComponent e : ((Bundle)r).getEntry())
-              displayOO((OperationOutcome)e.getResource());
+              ec  = displayOO((OperationOutcome)e.getResource()) + ec;
           else
-            displayOO((OperationOutcome)r);
+            ec = displayOO((OperationOutcome)r);
         } else {
           FileOutputStream s = new FileOutputStream(output);
           x.compose(s, r);
           s.close();
         }
+        System.exit(ec);
       }
     }
   }
@@ -512,7 +514,7 @@ public class Validator {
     s.close();
   }
 
-  private static void displayOO(OperationOutcome oo) {
+  private static int displayOO(OperationOutcome oo) {
     int error = 0;
     int warn = 0;
     int info = 0;
@@ -532,6 +534,7 @@ public class Validator {
       System.out.println(getIssueSummary(issue));
     }
     System.out.println();
+    return error;
   }
 
   private static String getIssueSummary(OperationOutcomeIssueComponent issue) {
