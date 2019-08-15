@@ -3913,6 +3913,9 @@ public class FHIRPathEngine {
       throw new PathEngineException("No type provided in BuildToolPathEvaluator.getChildTypesByName");
     if (type.equals("http://hl7.org/fhir/StructureDefinition/xhtml"))
       return;
+    if (type.startsWith("http://hl7.org/fhir/StructureDefinition/System."))
+      return;
+    
     if (type.equals(TypeDetails.FP_SimpleTypeInfo)) { 
       getSimpleTypeChildTypesByName(name, result);
     } else if (type.equals(TypeDetails.FP_ClassInfo)) { 
@@ -4004,7 +4007,7 @@ public class FHIRPathEngine {
           else
             for (TypeRefComponent t : ed.getDefinition().getType()) {
               if (Utilities.noString(t.getCode())) {
-                if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url")) 
+                if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url") || Utilities.existsInList(ed.getDefinition().getBase().getPath(), "Resource.id", "Element.id", "Extension.url")) 
                   result.addType(TypeDetails.FP_NS, "string");
                 break; // throw new PathEngineException("Illegal reference to primitive value attribute @ "+path);
               }
