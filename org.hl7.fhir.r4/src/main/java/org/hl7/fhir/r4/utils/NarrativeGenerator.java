@@ -119,7 +119,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   public interface ITypeParser {
-    Base parseType(String xml, String type) throws IOException, FHIRException ;
+    Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
   }
 
   public class ConceptMapRenderInstructions {
@@ -1142,7 +1142,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       i++;
     if (i > 6)
       i = 6;
-    return "h"+ i;
+    return "h"+Integer.toString(i);
   }
 
   private void filterGrandChildren(List<ElementDefinition> grandChildren,  String string, PropertyWrapper prop) {
@@ -1958,14 +1958,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasStart())
         b.append("Starting "+rep.getBoundsPeriod().getStartElement().toHumanDisplay());
       if (rep.hasCount())
-        b.append("Count "+ rep.getCount() +" times");
+        b.append("Count "+Integer.toString(rep.getCount())+" times");
       if (rep.hasDuration())
         b.append("Duration "+rep.getDuration().toPlainString()+displayTimeUnits(rep.getPeriodUnit()));
 
       if (rep.hasWhen()) {
         String st = "";
         if (rep.hasOffset()) {
-          st = rep.getOffset() +"min ";
+          st = Integer.toString(rep.getOffset())+"min ";
         }
         b.append("Do "+st);
         for (Enumeration<EventTiming> wh : rep.getWhen())
@@ -1977,7 +1977,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         else {
           st = Integer.toString(rep.getFrequency());
           if (rep.hasFrequencyMax())
-            st = st + "-"+ rep.getFrequency();
+            st = st + "-"+Integer.toString(rep.getFrequency());
         }
         if (rep.hasPeriod()) {
         st = st + " per "+rep.getPeriod().toPlainString();
@@ -4029,10 +4029,23 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().addText(p.getMin() +".."+p.getMax());
       XhtmlNode td = tr.td();
       StructureDefinition sd = context.fetchTypeDefinition(p.getType());
-      if (sd != null)
-        td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType() : "");
-      else
+      if (sd == null)
         td.tx(p.hasType() ? p.getType() : "");
+        else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {
+          boolean first = true;
+          for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {
+            if (first) first = false; else td.tx(" | ");
+            String s = ex.getValue().primitiveValue();
+            StructureDefinition sdt = context.fetchTypeDefinition(s);
+            if (sdt == null)
+              td.tx(p.hasType() ? p.getType() : "");
+            else
+              td.ah(sdt.getUserString("path")).tx(s);         
+          }
+        } else
+          td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType() : "");
+      
+
       if (p.hasSearchType()) {
         td.br();
         td.tx("(");
