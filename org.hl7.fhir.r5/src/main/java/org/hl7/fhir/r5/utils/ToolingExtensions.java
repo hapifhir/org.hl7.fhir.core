@@ -162,6 +162,7 @@ public class ToolingExtensions {
   public static final String EXT_MAPPING_TGTTYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-type";
   public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
+  public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
 
   // specific extension helpers
 

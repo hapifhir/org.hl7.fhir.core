@@ -466,7 +466,7 @@ public class Validator {
           x.compose(s, r);
           s.close();
         }
-        System.exit(ec);
+        System.exit(ec > 0 ? 1 : 0);
       }
     }
   }
