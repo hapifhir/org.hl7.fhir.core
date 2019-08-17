@@ -8,6 +8,7 @@
     <project>org.hl7.fhir.dstu2016may</project>
     <project>org.hl7.fhir.dstu3</project>
     <project>org.hl7.fhir.r4</project>
+    <project>org.hl7.fhir.r5</project>
   </projects>
   <buildSpec>
     <buildCommand>
