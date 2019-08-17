@@ -62,6 +62,16 @@ import com.google.gson.JsonObject;
 
 public class JsonParser extends JsonParserBase {
 
+  public JsonParser() {
+    super();
+  }
+
+  public JsonParser(boolean allowUnknownContent) {
+    super();
+    setAllowUnknownContent(allowUnknownContent);
+  }
+
+
   protected void parseElementProperties(JsonObject json, Element element) throws IOException, FHIRFormatError {
     super.parseElementProperties(json, element);
     if (json.has("extension")) {
