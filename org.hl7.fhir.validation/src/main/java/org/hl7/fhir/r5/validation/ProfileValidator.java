@@ -99,14 +99,18 @@ public class ProfileValidator extends BaseValidator {
           }
         }
       }
-      for (ElementDefinition diffElement : profile.getDifferential().getElement()) {
-        ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
-        if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
-          warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
-          if (checkAggregation) {
-            for (TypeRefComponent type : snapElement.getType()) {
-              if ("http://hl7.org/fhir/Reference".equals(type.getCode()) || "http://hl7.org/fhir/canonical".equals(type.getCode())) {
-                warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
+      if (snapshotElements != null) {
+        for (ElementDefinition diffElement : profile.getDifferential().getElement()) {
+          if (diffElement == null)
+            throw new Error("What?");
+          ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
+          if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
+            warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
+            if (checkAggregation) {
+              for (TypeRefComponent type : snapElement.getType()) {
+                if ("http://hl7.org/fhir/Reference".equals(type.getCode()) || "http://hl7.org/fhir/canonical".equals(type.getCode())) {
+                  warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
+                }
               }
             }
           }
