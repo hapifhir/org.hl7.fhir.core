@@ -163,6 +163,8 @@ public class Validator {
       System.out.println("     Default: results are sent to the std out.");
       System.out.println("-debug");
       System.out.println("     Produce additional information about the loading/validation process");
+      System.out.println("-recurse");
+      System.out.println("     Look in subfolders when -ig refers to a folder");
       System.out.println("-native: use schema for validation as well");
       System.out.println("     * XML: w3c schema+schematron");
       System.out.println("     * JSON: json.schema");
@@ -228,7 +230,7 @@ public class Validator {
               String s = args[++i];
               if (!s.startsWith("hl7.fhir.core-")) {
                 System.out.println("Load Package: "+s);
-                validator.loadIg(s);
+                validator.loadIg(s, true);
               }
             }
           }
@@ -268,6 +270,7 @@ public class Validator {
       boolean doNative = false;
       boolean anyExtensionsAllowed = true;
       boolean hintAboutNonMustSupport = false;
+      boolean recursive = false;
       List<String> profiles = new ArrayList<String>();
       EngineMode mode = EngineMode.VALIDATION;
       String output = null;
@@ -323,6 +326,8 @@ public class Validator {
           doNative = true;          
         else if (args[i].equals("-debug"))
           doDebug = true;
+        else if (args[i].equals("-recurse"))
+          recursive = true;
         else if (args[i].equals("-strictExtensions"))
           anyExtensionsAllowed = false;
         else if (args[i].equals("-hintAboutNonMustSupport"))
@@ -390,7 +395,7 @@ public class Validator {
         validator.setVersion(sv);
       for (String src : igs) {
         System.out.println("+  .. load IG from "+src);
-          validator.loadIg(src);
+          validator.loadIg(src, recursive);
       }
       validator.setQuestionnaires(questionnaires);
       validator.setNative(doNative);
