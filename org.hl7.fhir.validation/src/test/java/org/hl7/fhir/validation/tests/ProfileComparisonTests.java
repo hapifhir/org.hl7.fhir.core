@@ -22,8 +22,8 @@ public class ProfileComparisonTests {
     if (!TestUtilities.silent) 
       System.out.println("Compare US Patient Core with AU Patient Base");
     ValidationEngine ve = new ValidationEngine("hl7.fhir.core#3.0.1", DEF_TX, null, FhirPublication.R4);
-    ve.loadIg("hl7.fhir.us.core#1.0.1");
-    ve.loadIg("hl7.fhir.au.base#dev");
+    ve.loadIg("hl7.fhir.us.core#1.0.1", false);
+    ve.loadIg("hl7.fhir.au.base#dev", false);
 
 
     String left = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";

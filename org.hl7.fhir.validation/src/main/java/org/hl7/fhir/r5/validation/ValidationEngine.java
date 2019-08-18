@@ -292,7 +292,7 @@ public class ValidationEngine {
   }
   
   public void loadInitialDefinitions(String src) throws Exception {
-    loadDefinitions(src);   
+    loadDefinitions(src, false);   
   }
   
   public void setTerminologyServer(String src, String log, FhirPublication version) throws Exception {
@@ -329,7 +329,7 @@ public class ValidationEngine {
   }
   
   public ValidationEngine(String src) throws Exception {
-    loadDefinitions(src);
+    loadDefinitions(src, false);
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
   
@@ -341,8 +341,8 @@ public class ValidationEngine {
     this.language = language;
   }
 
-  private void loadDefinitions(String src) throws Exception {
-    Map<String, byte[]> source = loadIgSource(src);   
+  private void loadDefinitions(String src, boolean recursive) throws Exception {
+    Map<String, byte[]> source = loadIgSource(src, recursive);   
     if (version == null)
       version = getVersionFromPack(source);
     context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion());
@@ -417,7 +417,7 @@ public class ValidationEngine {
     return TextFile.fileToBytes(src);
   }
 
-  private Map<String, byte[]> loadIgSource(String src) throws Exception {
+  private Map<String, byte[]> loadIgSource(String src, boolean recursive) throws Exception {
     // src can be one of the following:
     // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
     // - a package id for an ig - this will be loaded into the cache
@@ -445,7 +445,7 @@ public class ValidationEngine {
       if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists())
         return readZip(new FileInputStream(Utilities.path(src, "validator.pack")));
       if (f.isDirectory())
-        return scanDirectory(f);
+        return scanDirectory(f, recursive);
       if (src.endsWith(".tgz"))
         return loadPackage(new FileInputStream(src), src);
       if (src.endsWith(".pack"))
@@ -505,11 +505,12 @@ public class ValidationEngine {
     }
   }
 
-  private Map<String, byte[]> scanDirectory(File f) throws FileNotFoundException, IOException {
+  private Map<String, byte[]> scanDirectory(File f, boolean recursive) throws FileNotFoundException, IOException {
     Map<String, byte[]> res = new HashMap<>();
     for (File ff : f.listFiles()) {
       if (ff.isDirectory()){
-        res.putAll(scanDirectory(ff));
+        if (recursive)
+          res.putAll(scanDirectory(ff, true));
       }
       else if (!isIgnoreFile(ff)) {
         FhirFormat fmt = checkIsResource(ff.getAbsolutePath());
@@ -685,9 +686,9 @@ public class ValidationEngine {
     context.cacheResource(r);
   }
   
-  public void loadIg(String src) throws IOException, FHIRException, Exception {
+  public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
     String canonical = null;
-    Map<String, byte[]> source = loadIgSource(src);
+    Map<String, byte[]> source = loadIgSource(src, recursive);
     String version = Constants.VERSION;
     if (this.version != null)
       version = this.version;
@@ -808,7 +809,7 @@ public class ValidationEngine {
   }
   
   public Content loadContent(String source, String opName) throws Exception {
-    Map<String, byte[]> s = loadIgSource(source);
+    Map<String, byte[]> s = loadIgSource(source, false);
     Content res = new Content();
     if (s.size() != 1)
       throw new Exception("Unable to find resource " + source + " to "+opName);

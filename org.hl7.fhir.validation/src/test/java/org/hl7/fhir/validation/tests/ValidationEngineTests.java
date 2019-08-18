@@ -159,7 +159,7 @@ public class ValidationEngineTests {
     ValidationEngine ve = new ValidationEngine("hl7.fhir.core#3.0.1", DEF_TX, null, FhirPublication.STU3);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
-    ve.loadIg("hl7.fhir.us.core#1.0.1");
+    ve.loadIg("hl7.fhir.us.core#1.0.1", false);
     List<String> profiles = new ArrayList<>();
     profiles.add("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
     OperationOutcome op = ve.validate(TestUtilities.resourceNameToFile("validation-examples", "patient301.xml"), profiles);
