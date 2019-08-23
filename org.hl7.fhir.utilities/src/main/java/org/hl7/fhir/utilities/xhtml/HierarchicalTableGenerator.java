@@ -85,6 +85,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   public static final String TEXT_ICON_EXTENSION = "Extension";
   public static final String TEXT_ICON_CHOICE = "Choice of Types";
   public static final String TEXT_ICON_SLICE = "Slice Definition";
+  public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
   public static final String TEXT_ICON_FIXED = "Fixed Value";
   public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
   public static final String TEXT_ICON_PROFILE = "Profile";
