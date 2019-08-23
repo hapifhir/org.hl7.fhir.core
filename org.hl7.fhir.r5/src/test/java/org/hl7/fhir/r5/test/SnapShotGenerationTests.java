@@ -231,6 +231,12 @@ public class SnapShotGenerationTests {
       return false;
     }
 
+    @Override
+    public String getLinkForUrl(String corePath, String s) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {

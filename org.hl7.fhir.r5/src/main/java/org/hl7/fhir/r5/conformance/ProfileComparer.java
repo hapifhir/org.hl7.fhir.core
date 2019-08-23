@@ -891,7 +891,7 @@ public class ProfileComparer {
     if (nw.hasAggregation())
       throw new DefinitionException("Aggregation not supported: "+path);
     for (TypeRefComponent ex : results) {
-      if (Utilities.equals(ex.getCode(), nw.getCode())) {
+      if (Utilities.equals(ex.getWorkingCode(), nw.getWorkingCode())) {
         if (!ex.hasProfile() && !nw.hasProfile())
           pfound = true;
         else if (!ex.hasProfile()) {
@@ -1070,7 +1070,7 @@ public class ProfileComparer {
   private String typeCode(DefinitionNavigator defn) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (TypeRefComponent t : defn.current().getType())
-      b.append(t.getCode()+(t.hasProfile() ? "("+t.getProfile()+")" : "")+(t.hasTargetProfile() ? "("+t.getTargetProfile()+")" : "")); // todo: other properties
+      b.append(t.getWorkingCode()+(t.hasProfile() ? "("+t.getProfile()+")" : "")+(t.hasTargetProfile() ? "("+t.getTargetProfile()+")" : "")); // todo: other properties
     return b.toString();
   }
 

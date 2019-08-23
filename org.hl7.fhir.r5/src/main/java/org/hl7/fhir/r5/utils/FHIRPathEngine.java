@@ -3518,8 +3518,10 @@ public class FHIRPathEngine {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st))
         result.add(new BooleanType(false).noExtensions());
-      else
-        result.add(new BooleanType(st.matches(sw)).noExtensions());
+      else {
+        boolean ok = st.matches(sw);
+        result.add(new BooleanType(ok).noExtensions());
+      }
     } else
       result.add(new BooleanType(false).noExtensions());
     return result;
@@ -3913,7 +3915,7 @@ public class FHIRPathEngine {
       throw new PathEngineException("No type provided in BuildToolPathEvaluator.getChildTypesByName");
     if (type.equals("http://hl7.org/fhir/StructureDefinition/xhtml"))
       return;
-    if (type.startsWith("http://hl7.org/fhir/StructureDefinition/System."))
+    if (type.startsWith(Constants.NS_SYSTEM_TYPE))
       return;
     
     if (type.equals(TypeDetails.FP_SimpleTypeInfo)) { 

@@ -500,9 +500,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (definition.getType().isEmpty())
         return null;
       if (definition.getType().size() == 1) {
-        if (definition.getType().get(0).getCode().equals("Element") || definition.getType().get(0).getCode().equals("BackboneElement"))
+        if (definition.getType().get(0).getWorkingCode().equals("Element") || definition.getType().get(0).getWorkingCode().equals("BackboneElement"))
           return null;
-        return definition.getType().get(0).getCode();
+        return definition.getType().get(0).getWorkingCode();
       }
       String t = e.getNodeName().substring(tail(definition.getPath()).length()-3);
 
@@ -521,7 +521,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     public String getTypeCode() {
       if (definition == null || definition.getType().size() != 1)
         throw new Error("not handled");
-      return definition.getType().get(0).getCode();
+      return definition.getType().get(0).getWorkingCode();
     }
 
     @Override
@@ -1303,7 +1303,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean renderAsList(ElementDefinition child) {
     if (child.getType().size() == 1) {
-      String t = child.getType().get(0).getCode();
+      String t = child.getType().get(0).getWorkingCode();
       if (t.equals("Address") || t.equals("Reference"))
         return true;
     }
@@ -1358,7 +1358,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     //we can tell if e is a primitive because it has types
     if (e.getType().isEmpty())
       return false;
-    if (e.getType().size() == 1 && isBase(e.getType().get(0).getCode()))
+    if (e.getType().size() == 1 && isBase(e.getType().get(0).getWorkingCode()))
       return false;
     return true;
 //    return !e.getType().isEmpty()
@@ -1683,7 +1683,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (child.getMustSupport())
       return true;
     if (child.getType().size() == 1) {
-      String t = child.getType().get(0).getCode();
+      String t = child.getType().get(0).getWorkingCode();
       if (t.equals("Address") || t.equals("Contact") || t.equals("Reference") || t.equals("Uri") || t.equals("Url") || t.equals("Canonical"))
         return false;
     }
@@ -3043,7 +3043,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
           String l = ToolingExtensions.readStringExtension(ext, "lang");
           if (lang.equals(l))
-            d = ToolingExtensions.readStringExtension(ext, "content");;
+            d = ToolingExtensions.readStringExtension(ext, "content");
         }
       }
       tr.td().addText(d == null ? "" : d);
@@ -3127,9 +3127,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private boolean checkDoSystem(ValueSet vs, ValueSet src) {
     if (src != null)
       vs = src;
-    if (vs.hasCompose())
-      return true;
-    return false;
+    return vs.hasCompose();
   }
 
   private boolean IsNotFixedExpansion(ValueSet vs) {
