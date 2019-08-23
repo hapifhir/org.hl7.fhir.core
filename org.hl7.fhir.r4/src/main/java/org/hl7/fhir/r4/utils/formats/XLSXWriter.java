@@ -53,8 +53,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
+import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.ElementDefinition;
+import org.hl7.fhir.r4.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
@@ -65,6 +67,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.UriType;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextStreamWriter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTAutoFilter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCustomFilter;
@@ -84,6 +87,7 @@ public class XLSXWriter  extends TextStreamWriter  {
   private XmlParser xml = new XmlParser();
   private JsonParser json = new JsonParser();
   private boolean asXml;
+  private boolean hideMustSupportFalse;
 
   private static String[] titles = {
       "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?", "Is Modifier?", "Is Summary?", "Type(s)", "Short", 
@@ -92,11 +96,12 @@ public class XLSXWriter  extends TextStreamWriter  {
       "Slicing Discriminator", "Slicing Description", "Slicing Ordered", "Slicing Rules", "Base Path", "Base Min", "Base Max",
       "Condition(s)", "Constraint(s)"};
 
-  public XLSXWriter(OutputStream out, StructureDefinition def, boolean asXml) throws UnsupportedEncodingException {
+  public XLSXWriter(OutputStream out, StructureDefinition def, boolean asXml, boolean hideMustSupportFalse) throws UnsupportedEncodingException {
     super(out);
     outStream = out;
     this.asXml = asXml;
     this.def = def;
+    this.hideMustSupportFalse = hideMustSupportFalse;
     sheet = wb.createSheet("Elements");
     styles = createStyles(wb);
     Row headerRow = sheet.createRow(0);
@@ -155,7 +160,7 @@ public class XLSXWriter  extends TextStreamWriter  {
 
   private static CellStyle createBorderedStyle(Workbook wb){
     BorderStyle thin = BorderStyle.THIN;
-    short black = IndexedColors.BLACK.getIndex();
+    short black = IndexedColors.GREY_50_PERCENT.getIndex();
     
     CellStyle style = wb.createCellStyle();
     style.setBorderRight(thin);
@@ -262,7 +267,17 @@ public class XLSXWriter  extends TextStreamWriter  {
         val = o.toString();
       } else if (o instanceof TypeRefComponent) {
         TypeRefComponent t = (TypeRefComponent)o;
-    	  val = t.getCode() + (t.getProfile() == null ? "" : " {" + t.getProfile() + "}") +(t.getTargetProfile() == null ? "" : " {" + t.getTargetProfile() + "}")  + (t.getAggregation() == null || t.getAggregation().isEmpty() ? "" : " (" + itemList(t.getAggregation()) + ")");
+    	  val = t.getWorkingCode();
+    	  if (val == null)
+    	    val = "";
+        if (val.startsWith("http://hl7.org/fhir/StructureDefinition/"))
+          val = val.substring(40);
+        if (t.hasTargetProfile()) 
+          val = val+ "(" + canonicalList(t.getTargetProfile()) + ")";
+    	  if (t.hasProfile())
+    	    val = val + " {" + canonicalList(t.getProfile()) + "}";
+    	  if (t.hasAggregation()) 
+          val = val + " <<" + aggList(t.getAggregation()) + ">>";
       } else if (o instanceof Coding) {
         Coding t = (Coding)o;
         val = (t.getSystem()==null ? "" : t.getSystem()) + (t.getCode()==null ? "" : "#" + t.getCode()) + (t.getDisplay()==null ? "" : " (" + t.getDisplay() + ")");
@@ -285,7 +300,30 @@ public class XLSXWriter  extends TextStreamWriter  {
     return s.toString();
   }
   
+  private String aggList(List<org.hl7.fhir.r4.model.Enumeration<AggregationMode>> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (org.hl7.fhir.r4.model.Enumeration<AggregationMode> c : list)
+      b.append(c.getValue().toCode());
+    return b.toString();
+  }
+
+  private String canonicalList(List<CanonicalType> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
+    for (CanonicalType c : list) {
+      String v = c.getValue();
+      if (v.startsWith("http://hl7.org/fhir/StructureDefinition/"))
+        v = v.substring(40);
+      b.append(v);
+    }
+    return b.toString();
+  }
+
   private String renderType(Type value) throws Exception {
+    if (value == null)
+      return "";
+    if (value.isPrimitive())
+      return value.primitiveValue();
+    
     String s = null;
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     if (asXml) {
@@ -339,6 +377,7 @@ public class XLSXWriter  extends TextStreamWriter  {
     }    
     sheet.createFreezePane(2,1);
     
+    if (hideMustSupportFalse) {
     SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
     String address = "A2:AI" + Math.max(Integer.valueOf(sheet.getLastRowNum()), 2);
     CellRangeAddress[] regions = {
@@ -378,6 +417,7 @@ public class XLSXWriter  extends TextStreamWriter  {
     for (Row row : sheet) {
       if (row.getRowNum()>0 && (!row.getCell(6).getStringCellValue().equals("Y") || !row.getCell(26).getStringCellValue().isEmpty())) {
         ((XSSFRow) row).getCTRow().setHidden(true);
+        }
       }
     }
     sheet.setActiveCell(new CellAddress(sheet.getRow(1).getCell(0)));

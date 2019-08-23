@@ -160,6 +160,11 @@ public interface IWorkerContext {
    * It's an error if the second form doesn't agree with class_. It's an 
    * error if class_ is null for the last form
    * 
+   * @param resource
+   * @param Reference
+   * @return
+   * @throws FHIRException 
+   * @throws Exception
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
@@ -262,6 +267,7 @@ public interface IWorkerContext {
   /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
+   * @param source
    * @return
    * @throws FHIRException 
    */
@@ -445,4 +451,6 @@ public interface IWorkerContext {
   public StructureDefinition fetchTypeDefinition(String typeName);
 
   public void setUcumService(UcumService ucumService);
+
+  public String getLinkForUrl(String corePath, String s);
 }

@@ -234,6 +234,11 @@ public class FHIRPathEngine {
     public Base resolveReference(Object appContext, String url) throws FHIRException;
     
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
+    
+    /* 
+     * return the value set referenced by the url, which has been used in memberOf()
+     */
+    public ValueSet resolveValueSet(Object appContext, String url);
   }
 
 
@@ -1164,10 +1169,10 @@ public class FHIRPathEngine {
           work = work2;
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
-          work = operate(work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2);
         } else {
           work2 = execute(context, focus, next, true);
-          work = operate(work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2);
 //          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
@@ -1390,7 +1395,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> operate(List<Base> left, Operation operation, List<Base> right) throws FHIRException {
+  private List<Base> operate(ExecutionContext context, List<Base> left, Operation operation, List<Base> right) throws FHIRException {
     switch (operation) {
     case Equals: return opEquals(left, right);
     case Equivalent: return opEquivalent(left, right);
@@ -1402,7 +1407,7 @@ public class FHIRPathEngine {
     case GreaterOrEqual: return opGreaterOrEqual(left, right);
     case Union: return opUnion(left, right);
     case In: return opIn(left, right);
-    case MemberOf: return opMemberOf(left, right);
+    case MemberOf: return opMemberOf(context, left, right);
     case Contains: return opContains(left, right);
     case Or:  return opOr(left, right);
     case And:  return opAnd(left, right);
@@ -1874,9 +1879,9 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opMemberOf(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right) throws FHIRException {
 	  boolean ans = false;
-	  ValueSet vs = worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
+	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, right.get(0).primitiveValue()) : worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (l.fhirType().equals("code")) {
@@ -3513,8 +3518,10 @@ public class FHIRPathEngine {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st))
         result.add(new BooleanType(false).noExtensions());
-      else
-        result.add(new BooleanType(st.matches(sw)).noExtensions());
+      else {
+        boolean ok = st.matches(sw);
+        result.add(new BooleanType(ok).noExtensions());
+      }
     } else
       result.add(new BooleanType(false).noExtensions());
     return result;
@@ -3908,6 +3915,9 @@ public class FHIRPathEngine {
       throw new PathEngineException("No type provided in BuildToolPathEvaluator.getChildTypesByName");
     if (type.equals("http://hl7.org/fhir/StructureDefinition/xhtml"))
       return;
+    if (type.startsWith(Constants.NS_SYSTEM_TYPE))
+      return;
+    
     if (type.equals(TypeDetails.FP_SimpleTypeInfo)) { 
       getSimpleTypeChildTypesByName(name, result);
     } else if (type.equals(TypeDetails.FP_ClassInfo)) { 
@@ -3999,7 +4009,7 @@ public class FHIRPathEngine {
           else
             for (TypeRefComponent t : ed.getDefinition().getType()) {
               if (Utilities.noString(t.getCode())) {
-                if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url")) 
+                if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url") || Utilities.existsInList(ed.getDefinition().getBase().getPath(), "Resource.id", "Element.id", "Extension.url")) 
                   result.addType(TypeDetails.FP_NS, "string");
                 break; // throw new PathEngineException("Illegal reference to primitive value attribute @ "+path);
               }
@@ -4316,6 +4326,11 @@ public class FHIRPathEngine {
 
   public TerminologyServiceOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
+  }
+
+
+  public IWorkerContext getWorker() {
+    return worker;
   }
   
 }

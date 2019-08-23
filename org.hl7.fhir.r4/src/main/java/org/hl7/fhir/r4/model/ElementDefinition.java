@@ -58,6 +58,7 @@ import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 import org.hl7.fhir.r4.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r4.model.Enumerations.BindingStrengthEnumFactory;
+import org.hl7.fhir.r4.utils.ToolingExtensions;
 // added from java-adornments.txt:
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -2254,6 +2255,50 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public boolean hasTarget() {
     return Utilities.existsInList(getCode(), "Reference", "canonical");
+  }
+
+  /**
+   * This code checks for the system prefix and returns the FHIR type
+   * 
+   * @return
+   */
+  public String getWorkingCode() {
+    if (hasExtension(ToolingExtensions.EXT_FHIR_TYPE))
+      return getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
+    if (!hasCodeElement()) 
+      return null;
+    if (getCodeElement().hasExtension(ToolingExtensions.EXT_XML_TYPE)) {
+      String s = getCodeElement().getExtensionString(ToolingExtensions.EXT_XML_TYPE);
+      if ("xsd:gYear OR xsd:gYearMonth OR xsd:date OR xsd:dateTime".equals(s))
+        return "dateTime";
+      if ("xsd:gYear OR xsd:gYearMonth OR xsd:date".equals(s))
+        return "date";
+      if ("xsd:dateTime".equals(s))
+        return "instant";
+      if ("xsd:token".equals(s))
+        return "code";
+      if ("xsd:boolean".equals(s))
+        return "boolean";
+      if ("xsd:string".equals(s))
+        return "string";
+      if ("xsd:time".equals(s))
+        return "time";
+      if ("xsd:int".equals(s))
+        return "integer";
+      if ("xsd:decimal OR xsd:double".equals(s))
+        return "decimal";
+      if ("xsd:base64Binary".equals(s))
+        return "base64Binary";
+      if ("xsd:positiveInteger".equals(s))
+        return "positiveInt";
+      if ("xsd:nonNegativeInteger".equals(s))
+        return "unsignedInt";
+      if ("xsd:anyURI".equals(s))
+        return "uri";
+    
+      throw new Error("Unknown xml type '"+s+"'");
+    }
+    return getCode();
   }
 
 // end addition

@@ -604,6 +604,14 @@ public class Element extends Base {
     return getNamedChild(name) != null;
   }
 
+  public boolean hasChildren(String name) {
+    if (children != null)
+      for (Element child : children) 
+        if (child.getName().equals(name))
+          return true;
+    return false;
+  }
+
   @Override
   public String toString() {
     return name+"="+fhirType() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";

@@ -34,6 +34,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
+import org.hl7.fhir.r4.model.Constants;
 import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.Enumerations;
@@ -568,7 +569,7 @@ public class ShExGenerator {
   private String genTypeRef(StructureDefinition sd, ElementDefinition ed, String id, ElementDefinition.TypeRefComponent typ) {
 
     if(typ.hasProfile()) {
-      if(typ.getCode().equals("Reference"))
+      if(typ.getWorkingCode().equals("Reference"))
         return genReference("", typ);
       else if(ProfileUtilities.getChildList(sd, ed).size() > 0) {
         // inline anonymous type - give it a name and factor it out
@@ -581,13 +582,8 @@ public class ShExGenerator {
         return simpleElement(sd, ed, ref);
       }
 
-    } else if (typ.getCodeElement().getExtensionsByUrl(ToolingExtensions.EXT_RDF_TYPE).size() > 0) {
-      String xt = null;
-      try {
-        xt = typ.getCodeElement().getExtensionString(ToolingExtensions.EXT_RDF_TYPE);
-      } catch (FHIRException e) {
-        e.printStackTrace();
-      }
+    } else if (typ.getWorkingCode().startsWith(Constants.NS_SYSTEM_TYPE)) {
+      String xt = typ.getWorkingCode();
       // TODO: Remove the next line when the type of token gets switched to string
       // TODO: Add a rdf-type entry for valueInteger to xsd:integer (instead of int)
       ST td_entry = tmplt(PRIMITIVE_ELEMENT_DEFN_TEMPLATE).add("typ",
@@ -612,16 +608,16 @@ public class ShExGenerator {
       td_entry.add("facets", facets.toString());
       return td_entry.render();
 
-    } else if (typ.getCode() == null) {
+    } else if (typ.getWorkingCode() == null) {
       ST primitive_entry = tmplt(PRIMITIVE_ELEMENT_DEFN_TEMPLATE);
       primitive_entry.add("typ", "xsd:string");
       return primitive_entry.render();
 
-    } else if(typ.getCode().equals("xhtml")) {
+    } else if(typ.getWorkingCode().equals("xhtml")) {
       return tmplt(XHTML_TYPE_TEMPLATE).render();
     } else {
-      datatypes.add(typ.getCode());
-      return simpleElement(sd, ed, typ.getCode());
+      datatypes.add(typ.getWorkingCode());
+      return simpleElement(sd, ed, typ.getWorkingCode());
     }
   }
 
@@ -653,8 +649,8 @@ public class ShExGenerator {
    * @return ShEx equivalent
    */
   private String genAltEntry(String id, ElementDefinition.TypeRefComponent typ) {
-    if(!typ.getCode().equals("Reference"))
-      throw new AssertionError("We do not handle " + typ.getCode() + " alternatives");
+    if(!typ.getWorkingCode().equals("Reference"))
+      throw new AssertionError("We do not handle " + typ.getWorkingCode() + " alternatives");
 
     return genReference(id, typ);
   }
@@ -685,7 +681,7 @@ public class ShExGenerator {
   private String genChoiceEntry(StructureDefinition sd, ElementDefinition ed, String id, String base, ElementDefinition.TypeRefComponent typ) {
     ST shex_choice_entry = tmplt(ELEMENT_TEMPLATE);
 
-    String ext = typ.getCode();
+    String ext = typ.getWorkingCode();
     shex_choice_entry.add("id", "fhir:" + base+Character.toUpperCase(ext.charAt(0)) + ext.substring(1) + " ");
     shex_choice_entry.add("card", "");
     shex_choice_entry.add("defn", genTypeRef(sd, ed, id, typ));
@@ -745,7 +741,7 @@ public class ShExGenerator {
       String[] els = typ.getProfile().get(0).getValue().split("/");
       return els[els.length - 1];
     } else {
-      return typ.getCode();
+      return typ.getWorkingCode();
     }
   }
 
