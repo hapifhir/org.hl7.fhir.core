@@ -24,6 +24,7 @@ import org.hl7.fhir.r4.model.PrimitiveType;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.TypeDetails;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
@@ -90,6 +91,10 @@ public class FHIRPathTests {
       
     }
 
+    @Override
+    public ValueSet resolveValueSet(Object appContext, String url) {
+      return TestingUtilities.context().fetchResource(ValueSet.class, url);
+    }
   }
 
   private static FHIRPathEngine fp;

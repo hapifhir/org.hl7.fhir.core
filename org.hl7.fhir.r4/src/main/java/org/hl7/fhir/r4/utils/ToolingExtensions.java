@@ -105,9 +105,6 @@ public class ToolingExtensions {
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; 
   public static final String EXT_REPLACED_BY = "http://hl7.org/fhir/StructureDefinition/valueset-replacedby";
-  public static final String EXT_JSON_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"; 
-  public static final String EXT_RDF_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-rdf-type"; 
-  public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type"; 
   public static final String EXT_REGEX = "http://hl7.org/fhir/StructureDefinition/regex"; 
   public static final String EXT_CONTROL = "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl"; 
   public static final String EXT_MINOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs"; 
@@ -163,6 +160,8 @@ public class ToolingExtensions {
   public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
+  public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
+  public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
 
   // specific extension helpers
 
@@ -211,6 +210,16 @@ public class ToolingExtensions {
         ex.setValue(new StringType(content));
       else
         e.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
+    }
+  }
+
+  public static void addCodeExtension(Element e, String url, String content) {
+    if (!StringUtils.isBlank(content)) {
+      Extension ex = getExtension(e, url);
+      if (ex != null)
+        ex.setValue(new CodeType(content));
+      else
+        e.getExtension().add(Factory.newExtension(url, new CodeType(content), true));   
     }
   }
 

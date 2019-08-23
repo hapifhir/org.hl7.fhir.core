@@ -526,7 +526,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       pIn.addParameter().setName("coding").setValue(code);
       if (implySystem)
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
-      setTerminologyOptions(options, pIn);
+      if (options != null)
+        setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -566,7 +567,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     try {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
-      setTerminologyOptions(options, pIn);
+      if (options != null)
+        setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());

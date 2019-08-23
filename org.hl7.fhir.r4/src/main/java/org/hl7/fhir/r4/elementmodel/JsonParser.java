@@ -159,22 +159,7 @@ public class JsonParser extends ParserBase {
 		// note that we do not trouble ourselves to maintain the wire format order here - we don't even know what it was anyway
 		// first pass: process the properties
 		for (Property property : properties) {
-			if (property.isChoice()) {
-				for (TypeRefComponent type : property.getDefinition().getType()) {
-					String eName = property.getName().substring(0, property.getName().length()-3) + Utilities.capitalize(type.getCode());
-					if (!isPrimitive(type.getCode()) && object.has(eName)) {
-						parseChildComplex(path, object, context, processed, property, eName);
-						break;
-					} else if (isPrimitive(type.getCode()) && (object.has(eName) || object.has("_"+eName))) {
-						parseChildPrimitive(object, context, processed, property, path, eName);
-						break;
-					}
-				}
-			} else if (property.isPrimitive(property.getType(null))) {
-				parseChildPrimitive(object, context, processed, property, path, property.getName());
-			} else if (object.has(property.getName())) {
-				parseChildComplex(path, object, context, processed, property, property.getName());
-			}
+			parseChildItem(path, object, context, processed, property);
 		}
 
 		// second pass: check for things not processed
@@ -186,6 +171,25 @@ public class JsonParser extends ParserBase {
 			}
 		}
 	}
+
+  public void parseChildItem(String path, JsonObject object, Element context, Set<String> processed, Property property) {
+			if (property.isChoice()) {
+				for (TypeRefComponent type : property.getDefinition().getType()) {
+					String eName = property.getName().substring(0, property.getName().length()-3) + Utilities.capitalize(type.getWorkingCode());
+					if (!isPrimitive(type.getWorkingCode()) && object.has(eName)) {
+						parseChildComplex(path, object, context, processed, property, eName);
+						break;
+					} else if (isPrimitive(type.getWorkingCode()) && (object.has(eName) || object.has("_"+eName))) {
+						parseChildPrimitive(object, context, processed, property, path, eName);
+						break;
+					}
+				}
+			} else if (property.isPrimitive(property.getType(null))) {
+				parseChildPrimitive(object, context, processed, property, path, property.getName());
+			} else if (object.has(property.getName())) {
+				parseChildComplex(path, object, context, processed, property, property.getName());
+			}
+		}
 
 	private void parseChildComplex(String path, JsonObject object, Element context, Set<String> processed, Property property, String name) throws FHIRException {
 		processed.add(name);
