@@ -157,6 +157,10 @@
 				"errorCount": 0,
 				"warningCount": 0
 			},
+			"patient-duplicate.json": {
+				"errorCount": 1,
+				"warningCount": 0
+			},
 			"patient-lang1.json": {
 				"errorCount": 0,
 				"warningCount": 1
