@@ -989,6 +989,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       result.addAll(maps.values());
       result.addAll(transforms.values());
       result.addAll(plans.values());
+      result.addAll(questionnaires.values());
       return result;
     }
   }
@@ -1139,5 +1140,59 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return res;
   }
   
+  public String getLinkForUrl(String corePath, String url) {
+    for (CodeSystem r : codeSystems.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+
+    for (ValueSet r : valueSets.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (ConceptMap r : maps.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (StructureMap r : transforms.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (StructureDefinition r : structures.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (ImplementationGuide r : guides.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (CapabilityStatement r : capstmts.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (SearchParameter r : searchParameters.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (Questionnaire r : questionnaires.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (OperationDefinition r : operations.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (PlanDefinition r : plans.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+
+    if (url.equals("http://loinc.org"))
+      return corePath+"loinc.html";
+    if (url.equals("http://unitsofmeasure.org"))
+      return corePath+"ucum.html";
+    if (url.equals("http://snomed.info/sct"))
+      return corePath+"snomed.html";
+    return null;
+  }
+
   
 }

@@ -451,4 +451,6 @@ public interface IWorkerContext {
   public StructureDefinition fetchTypeDefinition(String typeName);
 
   public void setUcumService(UcumService ucumService);
+
+  public String getLinkForUrl(String corePath, String s);
 }
