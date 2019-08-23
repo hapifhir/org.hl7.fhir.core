@@ -64,14 +64,14 @@ public class Property {
 		if (definition.getType().size() == 0)
 			return null;
 		else if (definition.getType().size() > 1) {
-			String tn = definition.getType().get(0).getCode();
+			String tn = definition.getType().get(0).getWorkingCode();
 			for (int i = 1; i < definition.getType().size(); i++) {
-				if (!tn.equals(definition.getType().get(i).getCode()))
+				if (!tn.equals(definition.getType().get(i).getWorkingCode()))
 					throw new Error("logic error, gettype when types > 1");
 			}
 			return tn;
 		} else
-			return definition.getType().get(0).getCode();
+			return definition.getType().get(0).getWorkingCode();
 	}
 
 	public String getType(String elementName) {
@@ -114,7 +114,7 @@ public class Property {
       else
         return structure.getId();
 		} else
-      return ed.getType().get(0).getCode();
+      return ed.getType().get(0).getWorkingCode();
 	}
 
   public boolean hasType(String elementName) {
@@ -251,14 +251,14 @@ public class Property {
       // ok, find the right definitions
       String t = null;
       if (ed.getType().size() == 1)
-        t = ed.getType().get(0).getCode();
+        t = ed.getType().get(0).getWorkingCode();
       else if (ed.getType().size() == 0)
         throw new Error("types == 0, and no children found on "+getDefinition().getPath());
       else {
-        t = ed.getType().get(0).getCode();
+        t = ed.getType().get(0).getWorkingCode();
         boolean all = true;
         for (TypeRefComponent tr : ed.getType()) {
-          if (!tr.getCode().equals(t)) {
+          if (!tr.getWorkingCode().equals(t)) {
             all = false;
             break;
           }
@@ -271,12 +271,12 @@ public class Property {
               t = ToolingExtensions.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
             boolean ok = false;
             for (TypeRefComponent tr : ed.getType()) { 
-              if (tr.getCode().equals(t)) 
+              if (tr.getWorkingCode().equals(t)) 
                 ok = true;
-              if (Utilities.isAbsoluteUrl(tr.getCode())) {
-                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, tr.getCode());
+              if (Utilities.isAbsoluteUrl(tr.getWorkingCode())) {
+                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, tr.getWorkingCode());
                 if (sdt != null && sdt.getType().equals(t)) {
-                  url = tr.getCode();
+                  url = tr.getWorkingCode();
                   ok = true;
                 }
               }
@@ -295,7 +295,7 @@ public class Property {
       }
       if (!"xhtml".equals(t)) {
         for (TypeRefComponent aType: ed.getType()) {
-          if (aType.getCode().equals(t)) {
+          if (aType.getWorkingCode().equals(t)) {
             if (aType.hasProfile()) {
               assert aType.getProfile().size() == 1; 
               url = aType.getProfile().get(0).getValue();

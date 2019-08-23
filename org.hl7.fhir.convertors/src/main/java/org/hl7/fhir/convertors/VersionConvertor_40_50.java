@@ -20,7 +20,12 @@ package org.hl7.fhir.convertors;
  * #L%
  */
 
+/*
+ *   public static final String EXT_JSON_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"; 
+  public static final String EXT_RDF_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-rdf-type"; 
+  public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type"; 
 
+ */
 import org.hl7.fhir.convertors.conv40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
 

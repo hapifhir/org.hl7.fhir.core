@@ -31,7 +31,7 @@ public class ElementDefinitionUtilities {
       return false;
     
     for (TypeRefComponent tr : ed.getType()) {
-      if (name.equals(tr.getCode()))
+      if (name.equals(tr.getWorkingCode()))
         return true;
     }
     return false;

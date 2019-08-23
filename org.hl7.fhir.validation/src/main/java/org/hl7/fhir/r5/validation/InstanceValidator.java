@@ -1348,7 +1348,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Set<String> res = new HashSet<String>();
     if (vd != null && !"0".equals(vd.getMax())) {
       for (TypeRefComponent tr : vd.getType()) {
-        res.add(tr.getCode());
+        res.add(tr.getWorkingCode());
       }
     }
     return res;
@@ -1928,7 +1928,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean ok = false;
         CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
         for (TypeRefComponent type : container.getType()) {
-          if (!ok && type.getCode().equals("Reference")) {
+          if (!ok && type.getWorkingCode().equals("Reference")) {
             // we validate as much as we can. First, can we infer a type from the profile?
             if (!type.hasTargetProfile() || type.hasTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource"))
               ok = true;
@@ -2105,7 +2105,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String describeTypes(List<TypeRefComponent> types) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (TypeRefComponent t : types) {
-      b.append(t.getCode());
+      b.append(t.getWorkingCode());
     }
     return b.toString();
   }
@@ -2332,7 +2332,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list) {
     for (TypeRefComponent tr : list) {
-      String url = tr.getCode();
+      String url = tr.getWorkingCode();
       if (!Utilities.isAbsoluteUrl(url))
         url = "http://hl7.org/fhir/StructureDefinition/" + url;
       long t = System.nanoTime();
@@ -2640,7 +2640,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private ElementDefinition resolveType(String type, List<TypeRefComponent> list)  {
     for (TypeRefComponent tr : list) {
-      String url = tr.getCode();
+      String url = tr.getWorkingCode();
       if (!Utilities.isAbsoluteUrl(url))
         url = "http://hl7.org/fhir/StructureDefinition/" + url;
       long t = System.nanoTime();
@@ -2734,7 +2734,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else if (!criteriaElement.hasType() || criteriaElement.getType().size()==1) {
               if (discriminator.contains("["))
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
-              type = criteriaElement.getType().get(0).getCode();
+              type = criteriaElement.getType().get(0).getWorkingCode();
             } else if (criteriaElement.getType().size() > 1) {
               throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " in "+profile.getUrl()+" has multiple types: "+criteriaElement.typeSummary());
             } else
@@ -3978,14 +3978,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             ei.element.setUserData("elementSupported", "N");
       }
 
-      if (ei.definition.getType().size() == 1 && !"*".equals(ei.definition.getType().get(0).getCode()) && !"Element".equals(ei.definition.getType().get(0).getCode())
-          && !"BackboneElement".equals(ei.definition.getType().get(0).getCode())) {
-        type = ei.definition.getType().get(0).getCode();
+      if (ei.definition.getType().size() == 1 && !"*".equals(ei.definition.getType().get(0).getWorkingCode()) && !"Element".equals(ei.definition.getType().get(0).getWorkingCode())
+          && !"BackboneElement".equals(ei.definition.getType().get(0).getWorkingCode())) {
+        type = ei.definition.getType().get(0).getWorkingCode();
         // Excluding reference is a kludge to get around versioning issues
         if (ei.definition.getType().get(0).hasProfile())
           profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
 
-      } else if (ei.definition.getType().size() == 1 && "*".equals(ei.definition.getType().get(0).getCode())) {
+      } else if (ei.definition.getType().size() == 1 && "*".equals(ei.definition.getType().get(0).getWorkingCode())) {
         String prefix = tail(ei.definition.getPath());
         assert prefix.endsWith("[x]");
         type = ei.name.substring(prefix.length() - 3);
@@ -4004,8 +4004,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         else {
         prefix = prefix.substring(0, prefix.length() - 3);
         for (TypeRefComponent t : ei.definition.getType())
-          if ((prefix + Utilities.capitalize(t.getCode())).equals(ei.name)) {
-            type = t.getCode();
+          if ((prefix + Utilities.capitalize(t.getWorkingCode())).equals(ei.name)) {
+            type = t.getWorkingCode();
             // Excluding reference is a kludge to get around versioning issues
             if (t.hasProfile() && !type.equals("Reference"))
               profiles.add(t.getProfile().get(0).getValue());
@@ -4013,7 +4013,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
         if (type == null) {
           TypeRefComponent trc = ei.definition.getType().get(0);
-          if (trc.getCode().equals("Reference"))
+          if (trc.getWorkingCode().equals("Reference"))
             type = "Reference";
           else
             rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false,
@@ -4021,7 +4021,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
       } else if (ei.definition.getContentReference() != null) {
         typeDefn = resolveNameReference(profile.getSnapshot(), ei.definition.getContentReference());
-      } else if (ei.definition.getType().size() == 1 && ("Element".equals(ei.definition.getType().get(0).getCode()) || "BackboneElement".equals(ei.definition.getType().get(0).getCode()))) {
+      } else if (ei.definition.getType().size() == 1 && ("Element".equals(ei.definition.getType().get(0).getWorkingCode()) || "BackboneElement".equals(ei.definition.getType().get(0).getWorkingCode()))) {
         if (ei.definition.getType().get(0).hasProfile()) {
           CanonicalType pu = ei.definition.getType().get(0).getProfile().get(0);
           if (pu.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT))
