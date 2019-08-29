@@ -2337,7 +2337,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (sd != null) {
         String disp = sd.hasTitle() ? sd.getTitle() : sd.getName();
         String ref = pkp.getLinkForProfile(null, sd.getUrl());
-        if (ref.contains("|"))
+        if (ref != null && ref.contains("|"))
           ref = ref.substring(0,  ref.indexOf("|"));
         c.addPiece(checkForNoChange(t, gen.new Piece(ref, disp, null)));
       } else
