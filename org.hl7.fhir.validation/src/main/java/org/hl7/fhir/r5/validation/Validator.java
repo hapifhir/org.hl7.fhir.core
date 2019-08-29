@@ -61,6 +61,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind;
+import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -68,18 +70,23 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.MetadataResource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 /**
@@ -218,6 +225,7 @@ public class Validator {
         else if ("1.0".equals(v)) v = "1.0.2";
         else if ("1.4".equals(v)) v = "1.4.0";
         else if ("3.0".equals(v)) v = "3.0.1";
+        else if ("4.0".equals(v)) v = "4.0.0";
         else if (v.startsWith(Constants.VERSION)) v = Constants.VERSION;
         String definitions = "hl7.fhir.core#"+v;
         System.out.println("Loading (v = "+v+", tx server http://tx.fhir.org)");
@@ -236,24 +244,53 @@ public class Validator {
           }
         }
         // ok now set up the comparison
-        ProfileComparer pc = new ProfileComparer(validator.getContext());
         String left = getParam(args, "-left");
         String right = getParam(args, "-right");
-        StructureDefinition sdL = validator.getContext().fetchResource(StructureDefinition.class, left);
-        if (sdL == null) {
-          System.out.println("Unable to locate left profile " +left);
-        } else {
-          StructureDefinition sdR = validator.getContext().fetchResource(StructureDefinition.class, right);
-          if (sdR == null) {
-            System.out.println("Unable to locate right profile " +right);
-          } else {
-            System.out.println("Comparing "+left+" to "+right);
+        Resource resLeft =  validator.getContext().fetchResource(Resource.class, left);
+        Resource resRight = validator.getContext().fetchResource(Resource.class, right);
+        if (resLeft == null) {
+          System.out.println("Unable to locate left resource " +left);
+        }
+        if (resRight == null) {
+          System.out.println("Unable to locate right resource " +right);
+        }
+        if (resLeft != null && resRight != null) {
+          if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
+            System.out.println("Comparing StructureDefinitions "+left+" to "+right);
+            ProfileComparer pc = new ProfileComparer(validator.getContext());
+            StructureDefinition sdL = (StructureDefinition) resLeft;
+            StructureDefinition sdR = (StructureDefinition) resRight;
             pc.compareProfiles(sdL, sdR);
-            System.out.println("Generating output...");
+            System.out.println("Generating output to "+dest+"...");
             File htmlFile = new File(pc.generate(dest));
             Desktop.getDesktop().browse(htmlFile.toURI());
             System.out.println("Done");
-          }
+          } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
+            String nameLeft = chooseName(args, "leftName", (MetadataResource) resLeft);
+            String nameRight = chooseName(args, "rightName", (MetadataResource) resRight);
+            System.out.println("Comparing CapabilityStatements "+left+" to "+right);
+            CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest);
+            CapabilityStatement capL = (CapabilityStatement) resLeft;
+            CapabilityStatement capR = (CapabilityStatement) resRight;
+            List<ValidationMessage> msgs = pc.isCompatible(nameLeft, nameRight, capL, capR);
+            
+            String destTxt = Utilities.path(dest, "output.txt");
+            System.out.println("Generating output to "+destTxt+"...");
+            StringBuilder b = new StringBuilder();
+            for (ValidationMessage msg : msgs) {
+              b.append(msg.summary());
+              b.append("\r\n");
+            }
+            TextFile.stringToFile(b.toString(), destTxt);
+            File txtFile = new File(destTxt);
+            Desktop.getDesktop().browse(txtFile.toURI());
+            
+            String destHtml = Utilities.path(dest, "index.html");
+            File htmlFile = new File(destHtml);
+            Desktop.getDesktop().browse(htmlFile.toURI());
+            System.out.println("Done");
+          } else 
+            System.out.println("Unable to compare left resource " +left+" ("+resLeft.fhirType()+") with right resource "+right+" ("+resRight.fhirType()+")");
         }
       }
     } else {
@@ -474,6 +511,13 @@ public class Validator {
         System.exit(ec > 0 ? 1 : 0);
       }
     }
+  }
+
+  private static String chooseName(String[] args, String name, MetadataResource mr) {
+    String s = getParam(args, "-"+name);
+    if (Utilities.noString(s))
+      s = mr.present();
+    return s;
   }
 
   private static String getGitBuild() {

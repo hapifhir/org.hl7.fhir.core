@@ -558,8 +558,12 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
 
-  public void code(String text) {
-    addTag("code").tx(text);
+  public XhtmlNode code(String text) {
+    return addTag("code").tx(text);
+  }
+
+  public XhtmlNode code() {
+    return addTag("code");
   }
 
 
@@ -611,6 +615,30 @@ public class XhtmlNode implements IBaseXhtml {
 
   public boolean isNoPretty() {
     return notPretty;
+  }
+
+
+  public XhtmlNode style(String style) {
+    setAttribute("style", style);
+    return this;
+  }
+
+
+  public XhtmlNode nbsp() {
+    return addText(NBSP);    
+  }
+
+
+  public XhtmlNode para(String text) {
+    XhtmlNode p = para();
+    p.addText(text);
+    return p;
+    
+  }
+
+  public XhtmlNode add(XhtmlNode n) {
+    getChildNodes().add(n);
+    return this;
   }
 
 }
