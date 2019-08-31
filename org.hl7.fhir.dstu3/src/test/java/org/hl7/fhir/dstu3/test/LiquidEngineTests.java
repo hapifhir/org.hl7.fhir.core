@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.test;
+package org.hl7.fhir.dstu3.test;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.google.gson.JsonArray;
@@ -6,10 +6,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import junit.framework.Assert;
 import org.apache.commons.collections4.map.HashedMap;
+import org.hl7.fhir.dstu3.formats.XmlParser;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.liquid.LiquidEngine;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,24 +21,26 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RunWith(Parameterized.class)
-public class UtilitiesLiquidEngineTests implements LiquidEngine.ILiquidEngineIncludeResolver {
+public class LiquidEngineTests implements LiquidEngine.ILiquidEngineIncludeResolver {
 
   private static Map<String, Resource> resources = new HashedMap<>();
   private static JsonObject testdoc = null;
-  private static final FhirContext fhirContext = FhirContext.forR5();
+  private static final FhirContext fhirContext = FhirContext.forDstu3();
 
   private JsonObject test;
   private LiquidEngine engine;
 
   @Parameters(name = "{index}: file{0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(new InputStreamReader(UtilitiesLiquidEngineTests.class.getResourceAsStream("/liquid/liquid-tests.json")));
+    InputStream resourceAsStream = LiquidEngineTests.class.getResourceAsStream("/liquid/liquid-tests.json");
+    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(new InputStreamReader(resourceAsStream));
     JsonArray tests = testdoc.getAsJsonArray("tests");
     List<Object[]> objects = new ArrayList<Object[]>(tests.size());
     for (JsonElement n : tests) {
@@ -47,7 +49,7 @@ public class UtilitiesLiquidEngineTests implements LiquidEngine.ILiquidEngineInc
     return objects;
   }
 
-  public UtilitiesLiquidEngineTests(JsonObject test) {
+  public LiquidEngineTests(JsonObject test) {
     super();
     this.test = test;
   }
@@ -55,6 +57,7 @@ public class UtilitiesLiquidEngineTests implements LiquidEngine.ILiquidEngineInc
   @Before
   public void setUp() throws Exception {
     engine = new LiquidEngine(fhirContext);
+    engine.setEnvironmentVariable("PROFILE", "dev");
     engine.setIncludeResolver(this);
   }
 

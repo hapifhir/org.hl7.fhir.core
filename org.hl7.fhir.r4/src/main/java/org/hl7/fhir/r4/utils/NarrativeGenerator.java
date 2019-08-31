@@ -21,6 +21,7 @@ package org.hl7.fhir.r4.utils;
  */
 
 
+import ca.uhn.fhir.context.FhirContext;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.NotImplementedException;
@@ -62,12 +63,12 @@ import org.hl7.fhir.r4.model.ValueSet.*;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.liquid.LiquidEngine;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -291,10 +292,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean generateByLiquid(ResourceContext rcontext, DomainResource r, String liquidTemplate, Set<String> outputTracker) {
 
-    LiquidEngine engine = new LiquidEngine(context, services);
+    LiquidEngine engine = new LiquidEngine(FhirContext.forR4());
     XhtmlNode x;
     try {
-      LiquidDocument doc = engine.parse(liquidTemplate, "template");
+      LiquidEngine.LiquidDocument doc = engine.parse(liquidTemplate, "template");
       String html = engine.evaluate(doc, r, rcontext);
       x = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))

@@ -52,7 +52,7 @@ public class LiquidEngine implements INarrativeConstantResolver {
     this.includeResolver = includeResolver;
   }
 
-  public LiquidDocument parse(String source, String sourceName) throws Exception {
+  public LiquidDocument parse(String source, String sourceName) throws FHIRException {
     return new LiquidParser(source).parse(sourceName);
   }
 

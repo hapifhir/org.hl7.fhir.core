@@ -21,10 +21,67 @@ package org.hl7.fhir.r5.utils;
  */
 
 
+import ca.uhn.fhir.context.FhirContext;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r5.formats.FormatUtilities;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle.*;
+import org.hl7.fhir.r5.model.CapabilityStatement.*;
+import org.hl7.fhir.r5.model.CodeSystem.*;
+import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
+import org.hl7.fhir.r5.model.Composition.SectionComponent;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.model.HumanName.NameUse;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.Timing.EventTiming;
+import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
+import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
+import org.hl7.fhir.r5.model.ValueSet.FilterOperator;
+import org.hl7.fhir.r5.model.ValueSet.*;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.liquid.LiquidEngine;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.hl7.fhir.utilities.xml.XmlGenerator;
+import org.w3c.dom.Element;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 /*
 Copyright (c) 2011+, HL7, Inc
@@ -54,143 +111,6 @@ Copyright (c) 2011+, HL7, Inc
   POSSIBILITY OF SUCH DAMAGE.
 
 */
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.LinkedTransferQueue;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r5.formats.FormatUtilities;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Address;
-import org.hl7.fhir.r5.model.Annotation;
-import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Base64BinaryType;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
-import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.CompartmentDefinition;
-import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
-import org.hl7.fhir.r5.model.Composition;
-import org.hl7.fhir.r5.model.Composition.SectionComponent;
-import org.hl7.fhir.r5.model.ConceptMap;
-import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
-import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DiagnosticReport;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Dosage;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.ExtensionHelper;
-import org.hl7.fhir.r5.model.HumanName;
-import org.hl7.fhir.r5.model.HumanName.NameUse;
-import org.hl7.fhir.r5.model.IdType;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.InstantType;
-import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.MetadataResource;
-import org.hl7.fhir.r5.model.Narrative;
-import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r5.model.OperationDefinition;
-import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Period;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Questionnaire;
-import org.hl7.fhir.r5.model.Range;
-import org.hl7.fhir.r5.model.Ratio;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.RelatedArtifact;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SampledData;
-import org.hl7.fhir.r5.model.Signature;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.Timing;
-import org.hl7.fhir.r5.model.Timing.EventTiming;
-import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
-import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
-import org.hl7.fhir.r5.model.Type;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r5.model.ValueSet.FilterOperator;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
-import org.hl7.fhir.r5.utils.NarrativeGenerator.ILiquidTemplateProvider;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
-import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.hl7.fhir.utilities.xml.XmlGenerator;
-import org.w3c.dom.Element;
 
 public class NarrativeGenerator implements INarrativeGenerator {
 
@@ -369,10 +289,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean generateByLiquid(ResourceContext rcontext, DomainResource r, String liquidTemplate, Set<String> outputTracker) {
 
-    LiquidEngine engine = new LiquidEngine(context, services);
+    LiquidEngine engine = new LiquidEngine(FhirContext.forR5());
     XhtmlNode x;
     try {
-      LiquidDocument doc = engine.parse(liquidTemplate, "template");
+      LiquidEngine.LiquidDocument doc = engine.parse(liquidTemplate, "template");
       String html = engine.evaluate(doc, r, rcontext);
       x = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))
@@ -2613,12 +2533,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
    * generates hyperlinks in the narrative that are only going to be correct for
    * the purposes of the build. This is to be reviewed in the future.
    *
-   * @param vs
-   * @param codeSystems
-   * @throws IOException
-   * @throws DefinitionException
-   * @throws FHIRFormatError
-   * @throws Exception
    */
   public boolean generate(ResourceContext rcontext, CodeSystem cs, boolean header, String lang) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
