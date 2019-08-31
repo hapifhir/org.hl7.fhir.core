@@ -175,13 +175,13 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.r5.utils.NarrativeGenerator.ILiquidTemplateProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -500,9 +500,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (definition.getType().isEmpty())
         return null;
       if (definition.getType().size() == 1) {
-        if (definition.getType().get(0).getCode().equals("Element") || definition.getType().get(0).getCode().equals("BackboneElement"))
+        if (definition.getType().get(0).getWorkingCode().equals("Element") || definition.getType().get(0).getWorkingCode().equals("BackboneElement"))
           return null;
-        return definition.getType().get(0).getCode();
+        return definition.getType().get(0).getWorkingCode();
       }
       String t = e.getNodeName().substring(tail(definition.getPath()).length()-3);
 
@@ -521,7 +521,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     public String getTypeCode() {
       if (definition == null || definition.getType().size() != 1)
         throw new Error("not handled");
-      return definition.getType().get(0).getCode();
+      return definition.getType().get(0).getWorkingCode();
     }
 
     @Override
@@ -1303,7 +1303,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean renderAsList(ElementDefinition child) {
     if (child.getType().size() == 1) {
-      String t = child.getType().get(0).getCode();
+      String t = child.getType().get(0).getWorkingCode();
       if (t.equals("Address") || t.equals("Reference"))
         return true;
     }
@@ -1358,7 +1358,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     //we can tell if e is a primitive because it has types
     if (e.getType().isEmpty())
       return false;
-    if (e.getType().size() == 1 && isBase(e.getType().get(0).getCode()))
+    if (e.getType().size() == 1 && isBase(e.getType().get(0).getWorkingCode()))
       return false;
     return true;
 //    return !e.getType().isEmpty()
@@ -1683,7 +1683,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (child.getMustSupport())
       return true;
     if (child.getType().size() == 1) {
-      String t = child.getType().get(0).getCode();
+      String t = child.getType().get(0).getWorkingCode();
       if (t.equals("Address") || t.equals("Contact") || t.equals("Reference") || t.equals("Uri") || t.equals("Url") || t.equals("Canonical"))
         return false;
     }
@@ -3043,7 +3043,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
           String l = ToolingExtensions.readStringExtension(ext, "lang");
           if (lang.equals(l))
-            d = ToolingExtensions.readStringExtension(ext, "content");;
+            d = ToolingExtensions.readStringExtension(ext, "content");
         }
       }
       tr.td().addText(d == null ? "" : d);
@@ -3127,9 +3127,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private boolean checkDoSystem(ValueSet vs, ValueSet src) {
     if (src != null)
       vs = src;
-    if (vs.hasCompose())
-      return true;
-    return false;
+    return vs.hasCompose();
   }
 
   private boolean IsNotFixedExpansion(ValueSet vs) {
@@ -4119,10 +4117,21 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
       XhtmlNode td = tr.td();
       StructureDefinition sd = context.fetchTypeDefinition(p.getType());
-      if (sd != null)
-        td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType() : "");
-      else
+      if (sd == null)
         td.tx(p.hasType() ? p.getType() : "");
+      else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {
+        boolean first = true;
+        for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {
+          if (first) first = false; else td.tx(" | ");
+          String s = ex.getValue().primitiveValue();
+          StructureDefinition sdt = context.fetchTypeDefinition(s);
+          if (sdt == null)
+            td.tx(p.hasType() ? p.getType() : "");
+          else
+            td.ah(sdt.getUserString("path")).tx(s);         
+        }
+      } else
+        td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType() : "");
       if (p.hasSearchType()) {
         td.br();
         td.tx("(");

@@ -1,8 +1,8 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.utilities;
 
 /*-
  * #%L
- * org.hl7.fhir.r5
+ * org.hl7.fhir.utilities
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
@@ -19,10 +19,6 @@ package org.hl7.fhir.r5.terminologies;
  * limitations under the License.
  * #L%
  */
-
-
-import org.fhir.ucum.Utilities;
-import org.hl7.fhir.r5.model.Parameters;
 
 public class TerminologyServiceOptions {
   private String language;
@@ -47,11 +43,5 @@ public class TerminologyServiceOptions {
   public String toJson() {
     return "\"lang\":\""+language+"\"";
   }
-
-  public void updateParameters(Parameters pIn) {
-   if (!Utilities.noString(language))
-     pIn.addParameter("displayLanguage", language);
-    
-  } 
 
 }

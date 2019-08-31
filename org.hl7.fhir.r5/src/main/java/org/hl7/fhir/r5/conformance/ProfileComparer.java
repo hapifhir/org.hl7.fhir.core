@@ -33,7 +33,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileComparer.ProfileComparison;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Base;
@@ -58,12 +61,16 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.Logger.LogMessageType;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 /**
  * A engine that generates difference analysis between two sets of structure 
@@ -83,7 +90,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
  * @author Grahame Grieve
  *
  */
-public class ProfileComparer {
+public class ProfileComparer implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
   
@@ -223,28 +230,28 @@ public class ProfileComparer {
       return jp.composeString(val, "value");
     }
     
-    public String getErrorCount() {
+    public int getErrorCount() {
       int c = 0;
       for (ValidationMessage vm : messages)
         if (vm.getLevel() == ValidationMessage.IssueSeverity.ERROR)
           c++;
-      return Integer.toString(c);
+      return c;
     }
 
-    public String getWarningCount() {
+    public int getWarningCount() {
       int c = 0;
       for (ValidationMessage vm : messages)
         if (vm.getLevel() == ValidationMessage.IssueSeverity.WARNING)
           c++;
-      return Integer.toString(c);
+      return c;
     }
     
-    public String getHintCount() {
+    public int getHintCount() {
       int c = 0;
       for (ValidationMessage vm : messages)
         if (vm.getLevel() == ValidationMessage.IssueSeverity.INFORMATION)
           c++;
-      return Integer.toString(c);
+      return c;
     }
   }
   
@@ -644,7 +651,7 @@ public class ProfileComparer {
             re = context.expandVS(rvs, true, false);
             if (!closed(le.getValueset()) || !closed(re.getValueset())) 
               throw new DefinitionException("unclosed value sets are not handled yet");
-            cvs = intersectByExpansion(lvs, rvs);
+            cvs = intersectByExpansion(path, le.getValueset(), re.getValueset());
             if (!cvs.getCompose().hasInclude()) {
               outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value sets "+lvs.getUrl()+" and "+rvs.getUrl()+" do not intersect", ValidationMessage.IssueSeverity.ERROR));
               status(subset, ProfileUtilities.STATUS_ERROR);
@@ -688,6 +695,7 @@ public class ProfileComparer {
   
   private ValueSet unite(ElementDefinition ed, ProfileComparison outcome, String path, ValueSet lvs, ValueSet rvs) {
     ValueSet vs = new ValueSet();
+    vs.setName(path);
     if (lvs.hasCompose()) {
       for (ConceptSetComponent inc : lvs.getCompose().getInclude()) 
         vs.getCompose().getInclude().add(inc);
@@ -712,7 +720,7 @@ public class ProfileComparer {
     for (ConceptSetComponent dst : include) {
       if (Base.compareDeep(dst,  inc, false))
         return true; // they're actually the same
-      if (dst.getSystem().equals(inc.getSystem())) {
+      if (dst.hasSystem() && dst.getSystem().equals(inc.getSystem())) {
         if (inc.hasFilter() || dst.hasFilter()) {
           return false; // just add the new one as a a parallel
         } else if (inc.hasConcept() && dst.hasConcept()) {
@@ -749,9 +757,10 @@ public class ProfileComparer {
     return null;
   }
 
-  private ValueSet intersectByExpansion(ValueSet lvs, ValueSet rvs) {
+  private ValueSet intersectByExpansion(String path, ValueSet lvs, ValueSet rvs) {
     // this is pretty straight forward - we intersect the lists, and build a compose out of the intersection
     ValueSet vs = new ValueSet();
+    vs.setName(path);
     vs.setStatus(PublicationStatus.DRAFT);
     
     Map<String, ValueSetExpansionContainsComponent> left = new HashMap<String, ValueSetExpansionContainsComponent>();
@@ -840,8 +849,8 @@ public class ProfileComparer {
           tfound = true;
           c.setTargetProfile(r.getTargetProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(ed, outcome, path, l.getProfile().get(0).getValue(), outcome.leftName());
-          StructureDefinition sdr = resolveProfile(ed, outcome, path, r.getProfile().get(0).getValue(), outcome.rightName());
+          StructureDefinition sdl = resolveProfile(ed, outcome, path, l.getTargetProfile().get(0).getValue(), outcome.leftName());
+          StructureDefinition sdr = resolveProfile(ed, outcome, path, r.getTargetProfile().get(0).getValue(), outcome.rightName());
           if (sdl != null && sdr != null) {
             if (sdl == sdr) {
               tfound = true;
@@ -891,7 +900,7 @@ public class ProfileComparer {
     if (nw.hasAggregation())
       throw new DefinitionException("Aggregation not supported: "+path);
     for (TypeRefComponent ex : results) {
-      if (Utilities.equals(ex.getCode(), nw.getCode())) {
+      if (Utilities.equals(ex.getWorkingCode(), nw.getWorkingCode())) {
         if (!ex.hasProfile() && !nw.hasProfile())
           pfound = true;
         else if (!ex.hasProfile()) {
@@ -1070,7 +1079,7 @@ public class ProfileComparer {
   private String typeCode(DefinitionNavigator defn) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (TypeRefComponent t : defn.current().getType())
-      b.append(t.getCode()+(t.hasProfile() ? "("+t.getProfile()+")" : "")+(t.hasTargetProfile() ? "("+t.getTargetProfile()+")" : "")); // todo: other properties
+      b.append(t.getWorkingCode()+(t.hasProfile() ? "("+t.getProfile()+")" : "")+(t.hasTargetProfile() ? "("+t.getTargetProfile()+")" : "")); // todo: other properties
     return b.toString();
   }
 
@@ -1187,9 +1196,43 @@ public class ProfileComparer {
   }
 
   private String genPCLink(String leftName, String leftLink) {
-    return "<a href=\""+leftLink+"\">"+Utilities.escapeXml(leftName)+"</a>";
+    if (leftLink == null)
+      return leftName;
+    else
+      return "<a href=\""+leftLink+"\">"+Utilities.escapeXml(leftName)+"</a>";
   }
   
+  private String genValueSets(String base) throws IOException {
+    StringBuilder b = new StringBuilder();
+    b.append("<ul>\r\n");
+    for (ValueSet vs : getValuesets()) {
+      b.append("<li>");
+      b.append(" <td><a href=\""+base+"-"+vs.getId()+".html\">"+Utilities.escapeXml(vs.present())+"</a></td>");
+      b.append("</li>\r\n");
+      genValueSetFile(base+"-"+vs.getId()+".html", vs);
+    }
+    b.append("</ul>\r\n");
+    return b.toString();   
+  }
+  
+  private void genValueSetFile(String filename, ValueSet vs) throws IOException {
+    NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
+    gen.generate(null, vs, false);
+    String s = new XhtmlComposer(XhtmlComposer.HTML).compose(vs.getText().getDiv());
+    StringBuilder b = new StringBuilder();
+    b.append("<html>");
+    b.append("<head>");
+    b.append("<title>"+vs.present()+"</title>");
+    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
+    b.append("</head>");
+    b.append("<body>");
+    b.append("<h2>"+vs.present()+"</h2>");
+    b.append(s);    
+    b.append("</body>");
+    b.append("</html>");
+    TextFile.stringToFile(b.toString(), filename);
+  }
+
   private String genPCTable() {
     StringBuilder b = new StringBuilder();
 
@@ -1219,7 +1262,53 @@ public class ProfileComparer {
   }
 
 
+  private String genCmpMessages(ProfileComparison cmp) {
+    StringBuilder b = new StringBuilder();
+    b.append("<table class=\"grid\">\r\n");
+    b.append("<tr><td><b>Path</b></td><td><b>Message</b></td></tr>\r\n");
+    b.append("<tr><td colspan=\"2\" style=\"background: #eeeeee\">Errors Detected</td></tr>\r\n");
+    boolean found = false;
+    for (ValidationMessage vm : cmp.getMessages())
+      if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL) {
+        found = true;
+        b.append("<tr><td>"+vm.getLocation()+"</td><td>"+vm.getHtml()+(vm.getLevel() == IssueSeverity.FATAL ? "(<span style=\"color: maroon\">This error terminated the comparison process</span>)" : "")+"</td></tr>\r\n");
+      }
+    if (!found)
+    b.append("<tr><td colspan=\"2\">(None)</td></tr>\r\n");
+
+    boolean first = true;
+    for (ValidationMessage vm : cmp.getMessages())
+      if (vm.getLevel() == IssueSeverity.WARNING) {
+        if (first) {
+          first = false;
+          b.append("<tr><td colspan=\"2\" style=\"background: #eeeeee\">Warnings about the comparison</td></tr>\r\n");
+        }
+        b.append("<tr><td>"+vm.getLocation()+"</td><td>"+vm.getHtml()+"</td></tr>\r\n");
+      }
+    first = true;
+    for (ValidationMessage vm : cmp.getMessages())
+      if (vm.getLevel() == IssueSeverity.INFORMATION) {
+        if (first) {
+          b.append("<tr><td colspan=\"2\" style=\"background: #eeeeee\">Notes about differences (e.g. definitions)</td></tr>\r\n");
+          first = false;
+        }
+        b.append("<tr><td>"+vm.getLocation()+"</td><td>"+vm.getHtml()+"</td></tr>\r\n");
+      }
+    b.append("</table>\r\n");
+    return b.toString();
+  }
+
+  private String genCompModel(StructureDefinition sd, String name, String base, String prefix, String dest) throws FHIRException, IOException {
+    if (sd == null)
+      return "<p style=\"color: maroon\">No "+name+" could be generated</p>\r\n";
+    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("??", sd, false, dest, false, base, true, prefix, prefix, false, false, null));
+  }
+
+
   public String generate(String dest) throws IOException {
+    for (ValueSet vs : valuesets) {
+      vs.setUserData("path", dest+"/"+getId()+"-vs-"+vs.getId()+".html");
+    }
     // ok, all compared; now produce the output
     // first page we produce is simply the index
     Map<String, String> vars = new HashMap<String, String>();
@@ -1227,21 +1316,20 @@ public class ProfileComparer {
     vars.put("left", genPCLink(getLeftName(), getLeftLink()));
     vars.put("right", genPCLink(getRightName(), getRightLink()));
     vars.put("table", genPCTable());
+    vars.put("valuesets", genValueSets(dest+"/"+getId()+"-vs"));
     producePage(summaryTemplate(), Utilities.path(dest, getId()+".html"), vars);
     
-//    page.log("   ... generate", LogMessageType.Process);
-//    String src = TextFile.fileToString(page.getFolders().srcDir + "template-comparison-set.html");
-//    src = page.processPageIncludes(n+".html", src, "?type", null, "??path", null, null, "Comparison", pc, null, null, page.getDefinitions().getWorkgroups().get("fhir"));
-//    TextFile.stringToFile(src, Utilities.path(page.getFolders().dstDir, n+".html"));
-//    cachePage(n + ".html", src, "Comparison "+pc.getTitle(), false);
-//
-//    // then we produce a comparison page for each pair
-//    for (ProfileComparison cmp : pc.getComparisons()) {
-//      src = TextFile.fileToString(page.getFolders().srcDir + "template-comparison.html");
-//      src = page.processPageIncludes(n+"."+cmp.getId()+".html", src, "?type", null, "??path", null, null, "Comparison", cmp, null, null, page.getDefinitions().getWorkgroups().get("fhir"));
-//      TextFile.stringToFile(src, Utilities.path(page.getFolders().dstDir, n+"."+cmp.getId()+".html"));
-//      cachePage(n +"."+cmp.getId()+".html", src, "Comparison "+pc.getTitle(), false);
-//    }
+    // then we produce a comparison page for each pair
+    for (ProfileComparison cmp : getComparisons()) {
+      vars.clear();
+      vars.put("title", getTitle());
+      vars.put("left", genPCLink(getLeftName(), getLeftLink()));
+      vars.put("right", genPCLink(getRightName(), getRightLink()));
+      vars.put("messages", genCmpMessages(cmp));
+      vars.put("subset", genCompModel(cmp.getSubset(), "intersection", getId()+"."+cmp.getId(), "", dest));
+      vars.put("superset", genCompModel(cmp.getSuperset(), "union", getId()+"."+cmp.getId(), "", dest));
+      producePage(singleTemplate(), Utilities.path(dest, getId()+"."+cmp.getId()+".html"), vars);
+    }
 //      //   and also individual pages for each pair outcome
 //    // then we produce value set pages for each value set
 //
@@ -1249,6 +1337,7 @@ public class ProfileComparer {
     return Utilities.path(dest, getId()+".html");
   }
 
+  
   private void producePage(String src, String path, Map<String, String> vars) throws IOException {
     while (src.contains("[%"))
     {
@@ -1264,7 +1353,13 @@ public class ProfileComparer {
   }
 
   private String summaryTemplate() throws IOException {
-    return cachedFetch("04a9d69a-47f2-4250-8645-bf5d880a8eaa-1.fhir-template", "http://build.fhir.org/template-comparison-set.html.template");
+    return TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\source\\template-comparison-set.html");
+    // return cachedFetch("04a9d69a-47f2-4250-8645-bf5d880a8eaa-1.fhir-template", "http://build.fhir.org/template-comparison-set.html.template");
+  }
+
+  private String singleTemplate() throws IOException {
+    return TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\source\\template-comparison.html");
+    // return cachedFetch("04a9d69a-47f2-4250-8645-bf5d880a8eaa-1.fhir-template", "http://build.fhir.org/template-comparison-set.html.template");
   }
 
   private String cachedFetch(String id, String source) throws IOException {
@@ -1278,6 +1373,85 @@ public class ProfileComparer {
     String result = TextFile.streamToString(c.getInputStream());
     TextFile.stringToFile(result, f);
     return result;
+  }
+
+  @Override
+  public boolean isDatatype(String typeSimple) {
+    throw new Error("Not done yet");
+  }
+
+  @Override
+  public boolean isResource(String typeSimple) {
+    throw new Error("Not done yet");
+  }
+
+  @Override
+  public boolean hasLinkFor(String name) {
+    StructureDefinition sd = context.fetchTypeDefinition(name);
+    return sd != null && sd.hasUserData("path");
+  }
+
+  @Override
+  public String getLinkFor(String corePath, String name) {
+    StructureDefinition sd = context.fetchTypeDefinition(name);
+    return sd == null ? null : sd.getUserString("path");
+  }
+
+  @Override
+  public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
+    return resolveBindingInt(def, binding.getValueSet(), binding.getDescription());
+  }
+
+  @Override
+  public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+    return resolveBindingInt(def, url, url);
+  }
+
+  public BindingResolution resolveBindingInt(StructureDefinition def, String url, String desc) throws FHIRException {
+    ValueSet vs = null;
+    if (url.startsWith("#")) {
+      for (ValueSet t : valuesets) {
+        if (("#"+t.getId()).equals(url)) {
+          vs = t;
+          break;
+        }
+      }
+    }
+    if (vs == null) 
+      context.fetchResource(ValueSet.class, url);
+    BindingResolution br = new BindingResolution();
+    if (vs != null) {
+      br.display = vs.present();
+      br.url = vs.getUserString("path");
+    } else {
+      br.display = desc;
+    }
+    return br;
+  }
+
+  @Override
+  public String getLinkForProfile(StructureDefinition profile, String url) {
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    return sd == null ? null : sd.getUserString("path");
+  }
+
+  @Override
+  public boolean prependLinks() {
+    return false;
+  }
+
+  @Override
+  public String getLinkForUrl(String corePath, String s) {
+    throw new Error("Not done yet");
+  }
+
+  public int getErrCount() {
+    int res = 0;
+    for (ProfileComparison pc : comparisons) {
+      res = res + pc.getErrorCount();
+    }
+    return res;
+    
   }
 
 

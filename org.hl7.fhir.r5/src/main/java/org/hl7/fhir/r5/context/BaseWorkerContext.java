@@ -69,13 +69,13 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -527,7 +527,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       if (implySystem)
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
       if (options != null)
-        options.updateParameters(pIn);
+        setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -535,6 +535,13 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     if (txCache != null)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  private void setTerminologyOptions(TerminologyServiceOptions options, Parameters pIn) {
+    if (options != null) {
+      if (!Utilities.noString(options.getLanguage()))
+        pIn.addParameter("displayLanguage", options.getLanguage());
+     } 
   }
 
   @Override
@@ -561,7 +568,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
       if (options != null)
-        options.updateParameters(pIn);
+        setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
@@ -984,6 +991,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       result.addAll(maps.values());
       result.addAll(transforms.values());
       result.addAll(plans.values());
+      result.addAll(questionnaires.values());
       return result;
     }
   }
@@ -1134,5 +1142,59 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return res;
   }
   
+  public String getLinkForUrl(String corePath, String url) {
+    for (CodeSystem r : codeSystems.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+
+    for (ValueSet r : valueSets.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (ConceptMap r : maps.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (StructureMap r : transforms.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (StructureDefinition r : structures.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (ImplementationGuide r : guides.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (CapabilityStatement r : capstmts.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (SearchParameter r : searchParameters.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (Questionnaire r : questionnaires.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (OperationDefinition r : operations.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+    
+    for (PlanDefinition r : plans.values())
+      if (url.equals(r.getUrl()))
+        return r.getUserString("path");
+
+    if (url.equals("http://loinc.org"))
+      return corePath+"loinc.html";
+    if (url.equals("http://unitsofmeasure.org"))
+      return corePath+"ucum.html";
+    if (url.equals("http://snomed.info/sct"))
+      return corePath+"snomed.html";
+    return null;
+  }
+
   
 }

@@ -1,8 +1,8 @@
-package org.hl7.fhir.r4.validation;
+package org.hl7.fhir.utilities.graphql;
 
 /*-
  * #%L
- * org.hl7.fhir.validation
+ * org.hl7.fhir.utilities
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
@@ -20,11 +20,20 @@ package org.hl7.fhir.r4.validation;
  * #L%
  */
 
-import org.hl7.fhir.r4.elementmodel.Element;
-import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 
-public interface IEnableWhenEvaluator {
-	public boolean isQuestionEnabled(QuestionnaireItemComponent questionnaireItem,
-			Element questionnaireResponse);
+public interface IGraphQLEngine {
 
+  void execute() throws EGraphEngine, EGraphQLException, FHIRException;
+
+  ObjectValue getOutput();
+
+  void setAppInfo(Object appInfo);
+
+  void setFocus(IBaseResource focus);
+
+  void setGraphQL(Package graphQL);
+
+  void setServices(IGraphQLStorageServices services);
 }

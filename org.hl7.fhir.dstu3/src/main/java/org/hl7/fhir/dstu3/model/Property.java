@@ -82,7 +82,8 @@ public class Property {
 	  this.definition = definition;
 	  this.minCardinality = minCardinality;
 	  this.maxCardinality = maxCardinality;
-	  this.values.add(value);
+    if (value != null)
+  	  this.values.add(value);
   }
 
 	/**
@@ -156,6 +157,8 @@ public class Property {
     this.structure = structure;
   }
 
+  public boolean isList() {
+    return maxCardinality > 1;
+  }
 
-	
 }

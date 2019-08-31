@@ -32,18 +32,18 @@ public class ValidationProfileSet {
 
   public static class ProfileRegistration {
     private String profile; 
-    private boolean error;  
+    private boolean errorOnMissing;
     
-    public ProfileRegistration(String profile, boolean error) {
+    public ProfileRegistration(String profile, boolean errorOnMissing) {
       super();
       this.profile = profile;
-      this.error = error;
+      this.errorOnMissing = errorOnMissing;
     }
     public String getProfile() {
       return profile;
     }
-    public boolean isError() {
-      return error;
+    public boolean isErrorOnMissing() {
+      return errorOnMissing;
     }
     
     

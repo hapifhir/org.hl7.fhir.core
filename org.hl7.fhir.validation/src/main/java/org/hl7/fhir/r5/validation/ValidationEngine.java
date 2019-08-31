@@ -142,7 +142,7 @@ import org.xml.sax.SAXException;
  * This is just a wrapper around the InstanceValidator class for convenient use 
  * 
  * The following resource formats are supported: XML, JSON, Turtle
- * The following versions are supported: 1.0.1, 1.4.0, 3.0.1, and current
+ * The following versions are supported: 1.0.1, 1.4.0, 3.0.1, 4.0.0, and current
  * 
  * Note: the validation engine is intended to be threadsafe
  * To Use:
@@ -292,7 +292,7 @@ public class ValidationEngine {
   }
   
   public void loadInitialDefinitions(String src) throws Exception {
-    loadDefinitions(src);   
+    loadDefinitions(src, false);   
   }
   
   public void setTerminologyServer(String src, String log, FhirPublication version) throws Exception {
@@ -329,7 +329,7 @@ public class ValidationEngine {
   }
   
   public ValidationEngine(String src) throws Exception {
-    loadDefinitions(src);
+    loadDefinitions(src, false);
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
   
@@ -341,8 +341,8 @@ public class ValidationEngine {
     this.language = language;
   }
 
-  private void loadDefinitions(String src) throws Exception {
-    Map<String, byte[]> source = loadIgSource(src);   
+  private void loadDefinitions(String src, boolean recursive) throws Exception {
+    Map<String, byte[]> source = loadIgSource(src, recursive);   
     if (version == null)
       version = getVersionFromPack(source);
     context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion());
@@ -417,7 +417,7 @@ public class ValidationEngine {
     return TextFile.fileToBytes(src);
   }
 
-  private Map<String, byte[]> loadIgSource(String src) throws Exception {
+  private Map<String, byte[]> loadIgSource(String src, boolean recursive) throws Exception {
     // src can be one of the following:
     // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
     // - a package id for an ig - this will be loaded into the cache
@@ -445,7 +445,7 @@ public class ValidationEngine {
       if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists())
         return readZip(new FileInputStream(Utilities.path(src, "validator.pack")));
       if (f.isDirectory())
-        return scanDirectory(f);
+        return scanDirectory(f, recursive);
       if (src.endsWith(".tgz"))
         return loadPackage(new FileInputStream(src), src);
       if (src.endsWith(".pack"))
@@ -505,19 +505,22 @@ public class ValidationEngine {
     }
   }
 
-  private Map<String, byte[]> scanDirectory(File f) throws FileNotFoundException, IOException {
-    Map<String, byte[]> res = new HashMap<String, byte[]>();
+  private Map<String, byte[]> scanDirectory(File f, boolean recursive) throws FileNotFoundException, IOException {
+    Map<String, byte[]> res = new HashMap<>();
     for (File ff : f.listFiles()) {
-      if (!isIgnoreFile(ff) && !ff.isDirectory()) {
-      FhirFormat fmt = checkIsResource(ff.getAbsolutePath());
-      if (fmt != null) {
-        res.put(Utilities.changeFileExt(ff.getName(), "."+fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
+      if (ff.isDirectory()){
+        if (recursive)
+          res.putAll(scanDirectory(ff, true));
       }
-    }
+      else if (!isIgnoreFile(ff)) {
+        FhirFormat fmt = checkIsResource(ff.getAbsolutePath());
+        if (fmt != null) {
+          res.put(Utilities.changeFileExt(ff.getName(), "."+fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
+        }
+      }
     }
     return res;
   }
-
 
   private boolean isIgnoreFile(File ff) {
     return Utilities.existsInList(ff.getName(), ".DS_Store") || Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
@@ -531,7 +534,7 @@ public class ValidationEngine {
   public Map<String, byte[]> loadPackage(NpmPackage pi) throws IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.list("package")) {
-      if (s.startsWith("CodeSystem-") || s.startsWith("ConceptMap-") || s.startsWith("ImplementationGuide-") || s.startsWith("StructureMap-") || s.startsWith("ValueSet-") || s.startsWith("StructureDefinition-"))
+      if (s.startsWith("CodeSystem-") || s.startsWith("ConceptMap-") || s.startsWith("ImplementationGuide-") || s.startsWith("CapabilityStatement-") || s.startsWith("StructureMap-") || s.startsWith("ValueSet-") || s.startsWith("StructureDefinition-"))
         res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }
     String ini = "[FHIR]\r\nversion="+pi.fhirVersion()+"\r\n";
@@ -683,9 +686,9 @@ public class ValidationEngine {
     context.cacheResource(r);
   }
   
-  public void loadIg(String src) throws IOException, FHIRException, Exception {
+  public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
     String canonical = null;
-    Map<String, byte[]> source = loadIgSource(src);
+    Map<String, byte[]> source = loadIgSource(src, recursive);
     String version = Constants.VERSION;
     if (this.version != null)
       version = this.version;
@@ -806,7 +809,7 @@ public class ValidationEngine {
   }
   
   public Content loadContent(String source, String opName) throws Exception {
-    Map<String, byte[]> s = loadIgSource(source);
+    Map<String, byte[]> s = loadIgSource(source, false);
     Content res = new Content();
     if (s.size() != 1)
       throw new Exception("Unable to find resource " + source + " to "+opName);

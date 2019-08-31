@@ -17,9 +17,9 @@ import org.hl7.fhir.r5.model.ExpressionNode.*;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
-import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.math.BigDecimal;
@@ -491,7 +491,7 @@ public class FHIRPathEngine {
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base, null, base), list, ExpressionNode, true);
+    return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, null, base), list, ExpressionNode, true);
   }
 
   /**
@@ -509,7 +509,7 @@ public class FHIRPathEngine {
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(null, base.isResource() ? base : null, base, null, base), list, exp, true);
+    return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, null, base), list, exp, true);
   }
 
   /**
@@ -521,12 +521,12 @@ public class FHIRPathEngine {
 	 * @throws FHIRException 
    * @
    */
-	public List<Base> evaluate(Object appContext, Resource resource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+	public List<Base> evaluate(Object appContext, Resource focusResource, Resource rootResource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, resource, base, null, base), list, ExpressionNode, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, ExpressionNode, true);
   }
 
   /**
@@ -538,12 +538,12 @@ public class FHIRPathEngine {
    * @throws FHIRException 
    * @
    */
-  public List<Base> evaluate(Object appContext, Base resource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, resource, base, null, base), list, ExpressionNode, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, ExpressionNode, true);
   }
 
   /**
@@ -555,13 +555,13 @@ public class FHIRPathEngine {
 	 * @throws FHIRException 
    * @
    */
-	public List<Base> evaluate(Object appContext, Resource resource, Base base, String path) throws FHIRException {
+	public List<Base> evaluate(Object appContext, Resource focusResource, Resource rootResource, Base base, String path) throws FHIRException {
     ExpressionNode exp = parse(path);
     List<Base> list = new ArrayList<Base>();
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, resource, base, null, base), list, exp, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, exp, true);
   }
 
   /**
@@ -573,8 +573,8 @@ public class FHIRPathEngine {
 	 * @throws FHIRException 
    * @
    */
-	public boolean evaluateToBoolean(Resource resource, Base base, String path) throws FHIRException {
-    return convertToBoolean(evaluate(null, resource, base, path));
+	public boolean evaluateToBoolean(Resource focusResource, Resource rootResource, Base base, String path) throws FHIRException {
+    return convertToBoolean(evaluate(null, focusResource, rootResource, base, path));
   }
 
   /**
@@ -585,8 +585,8 @@ public class FHIRPathEngine {
    * @throws FHIRException 
    * @
    */
-  public boolean evaluateToBoolean(Resource resource, Base base, ExpressionNode node) throws FHIRException {
-    return convertToBoolean(evaluate(null, resource, base, node));
+  public boolean evaluateToBoolean(Resource focusResource, Resource rootResource, Base base, ExpressionNode node) throws FHIRException {
+    return convertToBoolean(evaluate(null, focusResource, rootResource, base, node));
   }
 
   /**
@@ -598,8 +598,8 @@ public class FHIRPathEngine {
    * @throws FHIRException 
    * @
    */
-  public boolean evaluateToBoolean(Object appInfo, Base resource, Base base, ExpressionNode node) throws FHIRException {
-    return convertToBoolean(evaluate(appInfo, resource, base, node));
+  public boolean evaluateToBoolean(Object appInfo, Resource focusResource, Resource rootResource, Base base, ExpressionNode node) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node));
   }
 
   /**
@@ -610,8 +610,8 @@ public class FHIRPathEngine {
    * @throws FHIRException 
    * @
    */
-  public boolean evaluateToBoolean(Base resource, Base base, ExpressionNode node) throws FHIRException {
-    return convertToBoolean(evaluate(null, resource, base, node));
+  public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node));
   }
 
   /**
@@ -627,8 +627,8 @@ public class FHIRPathEngine {
     return convertToString(evaluate(base, path));
   }
 
-  public String evaluateToString(Object appInfo, Base resource, Base base, ExpressionNode node) throws FHIRException {
-    return convertToString(evaluate(appInfo, resource, base, node));
+  public String evaluateToString(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node) throws FHIRException {
+    return convertToString(evaluate(appInfo, focusResource, rootResource, base, node));
   }
 
   /**
@@ -710,21 +710,26 @@ public class FHIRPathEngine {
 
   private class ExecutionContext {
     private Object appInfo;
-    private Base resource;
+    private Base focusResource;
+    private Base rootResource;
     private Base context;
     private Base thisItem;
     private List<Base> total;
     private Map<String, Base> aliases;
     
-    public ExecutionContext(Object appInfo, Base resource, Base context, Map<String, Base> aliases, Base thisItem) {
+    public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Map<String, Base> aliases, Base thisItem) {
       this.appInfo = appInfo;
       this.context = context;
-      this.resource = resource; 
+      this.focusResource = resource; 
+      this.rootResource = rootResource; 
       this.aliases = aliases;
       this.thisItem = thisItem;
     }
-    public Base getResource() {
-      return resource;
+    public Base getFocusResource() {
+      return focusResource;
+    }
+    public Base getRootResource() {
+        return rootResource;
     }
     public Base getThisItem() {
       return thisItem;
@@ -1312,9 +1317,13 @@ public class FHIRPathEngine {
     else if (s.equals("%ucum"))
       return new StringType("http://unitsofmeasure.org").noExtensions();
     else if (s.equals("%resource")) {
-      if (context.resource == null)
+      if (context.focusResource == null)
         throw new PathEngineException("Cannot use %resource in this context");
-      return context.resource;
+      return context.focusResource;
+    } else if (s.equals("%rootResource")) {
+      if (context.rootResource == null)
+        throw new PathEngineException("Cannot use %rootResource in this context");
+      return context.rootResource;
     } else if (s.equals("%context")) {
       return context.context;
     } else if (s.equals("%us-zip"))
@@ -2280,6 +2289,10 @@ public class FHIRPathEngine {
       if (context.resource == null)
         throw new PathEngineException("%resource cannot be used in this context");
       return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
+    } else if (s.equals("%rootResource")) {
+      if (context.resource == null)
+    	throw new PathEngineException("%rootResource cannot be used in this context");
+      return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
     } else if (s.equals("%context")) {
       return context.context;
     } else if (s.equals("%map-codes"))
@@ -2814,7 +2827,7 @@ public class FHIRPathEngine {
 
 
   private ExecutionContext changeThis(ExecutionContext context, Base newThis) {
-    return new ExecutionContext(context.appInfo, context.resource, context.context, context.aliases, newThis);
+    return new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.aliases, newThis);
   }
 
   private ExecutionTypeContext changeThis(ExecutionTypeContext context, TypeDetails newThis) {
@@ -3286,7 +3299,7 @@ public class FHIRPathEngine {
       if (s != null) {
         Base res = null;
         if (s.startsWith("#")) {
-          Property p = context.resource.getChildByName("contained");
+          Property p = context.rootResource.getChildByName("contained");
           for (Base c : p.getValues()) {
             if (chompHash(s).equals(chompHash(c.getIdBase()))) {
               res = c;
@@ -3505,8 +3518,10 @@ public class FHIRPathEngine {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st))
         result.add(new BooleanType(false).noExtensions());
-      else
-        result.add(new BooleanType(st.matches(sw)).noExtensions());
+      else {
+        boolean ok = st.matches(sw);
+        result.add(new BooleanType(ok).noExtensions());
+      }
     } else
       result.add(new BooleanType(false).noExtensions());
     return result;
@@ -3900,6 +3915,9 @@ public class FHIRPathEngine {
       throw new PathEngineException("No type provided in BuildToolPathEvaluator.getChildTypesByName");
     if (type.equals("http://hl7.org/fhir/StructureDefinition/xhtml"))
       return;
+    if (type.startsWith(Constants.NS_SYSTEM_TYPE))
+      return;
+    
     if (type.equals(TypeDetails.FP_SimpleTypeInfo)) { 
       getSimpleTypeChildTypesByName(name, result);
     } else if (type.equals(TypeDetails.FP_ClassInfo)) { 
@@ -3991,7 +4009,7 @@ public class FHIRPathEngine {
           else
             for (TypeRefComponent t : ed.getDefinition().getType()) {
               if (Utilities.noString(t.getCode())) {
-                if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url")) 
+                if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url") || Utilities.existsInList(ed.getDefinition().getBase().getPath(), "Resource.id", "Element.id", "Extension.url")) 
                   result.addType(TypeDetails.FP_NS, "string");
                 break; // throw new PathEngineException("Illegal reference to primitive value attribute @ "+path);
               }

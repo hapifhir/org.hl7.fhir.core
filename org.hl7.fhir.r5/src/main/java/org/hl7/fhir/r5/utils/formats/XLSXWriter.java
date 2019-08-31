@@ -267,7 +267,7 @@ public class XLSXWriter  extends TextStreamWriter  {
         val = o.toString();
       } else if (o instanceof TypeRefComponent) {
         TypeRefComponent t = (TypeRefComponent)o;
-    	  val = t.getCode();
+    	  val = t.getWorkingCode();
     	  if (val == null)
     	    val = "";
         if (val.startsWith("http://hl7.org/fhir/StructureDefinition/"))

@@ -164,7 +164,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void load(String pack) throws Exception {
-    validator.loadIg(pack);
+    validator.loadIg(pack, false);
   }
 
   /** 

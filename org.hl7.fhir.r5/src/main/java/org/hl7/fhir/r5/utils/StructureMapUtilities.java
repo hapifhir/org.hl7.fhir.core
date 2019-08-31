@@ -102,11 +102,11 @@ import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.TerminologyServiceOptions;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -1687,7 +1687,7 @@ public class StructureMapUtilities {
         expr = fpe.parse(src.getElement());
         src.setUserData(MAP_SEARCH_EXPRESSION, expr);
       }
-      String search = fpe.evaluateToString(vars, null, new StringType(), expr); // string is a holder of nothing to ensure that variables are processed correctly 
+      String search = fpe.evaluateToString(vars, null, null, new StringType(), expr); // string is a holder of nothing to ensure that variables are processed correctly 
       items = services.performSearch(context.appInfo, search);
     } else {
       items = new ArrayList<Base>();
@@ -1723,7 +1723,7 @@ public class StructureMapUtilities {
       }
       List<Base> remove = new ArrayList<Base>();
       for (Base item : items) {
-        if (!fpe.evaluateToBoolean(vars, null, item, expr)) {
+        if (!fpe.evaluateToBoolean(vars, null, null, item, expr)) {
           log(indent+"  condition ["+src.getCondition()+"] for "+item.toString()+" : false");
           remove.add(item);
         } else
@@ -1741,7 +1741,7 @@ public class StructureMapUtilities {
       }
       List<Base> remove = new ArrayList<Base>();
       for (Base item : items) {
-        if (!fpe.evaluateToBoolean(vars, null, item, expr))
+        if (!fpe.evaluateToBoolean(vars, null, null, item, expr))
           throw new FHIRException("Rule \""+ruleId+"\": Check condition failed");
       }
     } 
@@ -1755,7 +1755,7 @@ public class StructureMapUtilities {
       }
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       for (Base item : items) 
-        b.appendIfNotNull(fpe.evaluateToString(vars, null, item, expr));
+        b.appendIfNotNull(fpe.evaluateToString(vars, null, null, item, expr));
       if (b.length() > 0)
         services.log(b.toString());
     } 
@@ -1875,7 +1875,7 @@ public class StructureMapUtilities {
 	        expr = fpe.parse(getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
 	        tgt.setUserData(MAP_WHERE_EXPRESSION, expr);
 	      }
-	      List<Base> v = fpe.evaluate(vars, null, tgt.getParameter().size() == 2 ? getParam(vars, tgt.getParameter().get(0)) : new BooleanType(false), expr);
+	      List<Base> v = fpe.evaluate(vars, null, null, tgt.getParameter().size() == 2 ? getParam(vars, tgt.getParameter().get(0)) : new BooleanType(false), expr);
 	      if (v.size() == 0)
 	        return null;
 	      else if (v.size() != 1)
@@ -2452,7 +2452,7 @@ public class StructureMapUtilities {
       for (TypeRefComponent tr : element.getDefinition().getType()) {
         if (!tr.hasCode())
           throw new Error("Rule \""+ruleId+"\": Element has no type");
-        ProfiledType pt = new ProfiledType(tr.getCode());
+        ProfiledType pt = new ProfiledType(tr.getWorkingCode());
         if (tr.hasProfile())
           pt.addProfiles(tr.getProfile());
         if (element.getDefinition().hasBinding())
@@ -2710,11 +2710,11 @@ public class StructureMapUtilities {
 
 
   private String checkType(String t, Property pvb, List<String> profiles) throws FHIRException {
-    if (pvb.getDefinition().getType().size() == 1 && isCompatibleType(t, pvb.getDefinition().getType().get(0).getCode()) && profilesMatch(profiles, pvb.getDefinition().getType().get(0).getProfile())) 
+    if (pvb.getDefinition().getType().size() == 1 && isCompatibleType(t, pvb.getDefinition().getType().get(0).getWorkingCode()) && profilesMatch(profiles, pvb.getDefinition().getType().get(0).getProfile())) 
       return null;
     for (TypeRefComponent tr : pvb.getDefinition().getType()) {
-      if (isCompatibleType(t, tr.getCode()))
-        return tr.getCode(); // note what is returned - the base type, not the inferred mapping type
+      if (isCompatibleType(t, tr.getWorkingCode()))
+        return tr.getWorkingCode(); // note what is returned - the base type, not the inferred mapping type
     }
     throw new FHIRException("The type "+t+" is not compatible with the allowed types for "+pvb.getDefinition().getPath());
   }

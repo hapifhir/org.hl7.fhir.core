@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.r4.validation;
 
 /*-
  * #%L
@@ -24,9 +24,9 @@ import java.util.*;
 import java.util.stream.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Questionnaire.*;
+import org.hl7.fhir.r4.elementmodel.Element;
+import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Questionnaire.*;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 

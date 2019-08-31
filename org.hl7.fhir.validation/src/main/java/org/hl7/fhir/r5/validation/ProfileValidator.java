@@ -99,14 +99,18 @@ public class ProfileValidator extends BaseValidator {
           }
         }
       }
-      for (ElementDefinition diffElement : profile.getDifferential().getElement()) {
-        ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
-        if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
-          warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
-          if (checkAggregation) {
-            for (TypeRefComponent type : snapElement.getType()) {
-              if ("http://hl7.org/fhir/Reference".equals(type.getCode()) || "http://hl7.org/fhir/canonical".equals(type.getCode())) {
-                warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
+      if (snapshotElements != null) {
+        for (ElementDefinition diffElement : profile.getDifferential().getElement()) {
+          if (diffElement == null)
+            throw new Error("What?");
+          ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
+          if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
+            warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
+            if (checkAggregation) {
+              for (TypeRefComponent type : snapElement.getType()) {
+                if ("http://hl7.org/fhir/Reference".equals(type.getWorkingCode()) || "http://hl7.org/fhir/canonical".equals(type.getWorkingCode())) {
+                  warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
+                }
               }
             }
           }
@@ -122,7 +126,7 @@ public class ProfileValidator extends BaseValidator {
   }
 
   private void checkExtensions(StructureDefinition profile, List<ValidationMessage> errors, String kind, ElementDefinition ec) {
-    if (!ec.getType().isEmpty() && "Extension".equals(ec.getType().get(0).getCode()) && ec.getType().get(0).hasProfile()) {
+    if (!ec.getType().isEmpty() && "Extension".equals(ec.getType().get(0).getWorkingCode()) && ec.getType().get(0).hasProfile()) {
       String url = ec.getType().get(0).getProfile().get(0).getValue();
       StructureDefinition defn = context.fetchResource(StructureDefinition.class, url);
       rule(errors, IssueType.BUSINESSRULE, profile.getId(), defn != null, "Unable to find Extension '"+url+"' referenced at "+profile.getUrl()+" "+kind+" "+ec.getPath()+" ("+ec.getSliceName()+")");

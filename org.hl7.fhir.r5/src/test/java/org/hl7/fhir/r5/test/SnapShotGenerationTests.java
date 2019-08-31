@@ -212,6 +212,12 @@ public class SnapShotGenerationTests {
       return false;
     }
 
+    @Override
+    public String getLinkForUrl(String corePath, String s) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {
@@ -394,7 +400,8 @@ public class SnapShotGenerationTests {
     else
       testSort();
     for (Rule r : test.getRules()) {
-      boolean ok = fp.evaluateToBoolean(new StructureDefinition(), new StructureDefinition(), r.expression);
+      StructureDefinition sdn = new StructureDefinition();
+      boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
       Assert.assertTrue(r.description, ok);
     }
   }
