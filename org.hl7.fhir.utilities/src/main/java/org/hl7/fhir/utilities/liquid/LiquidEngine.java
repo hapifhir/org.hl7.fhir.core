@@ -100,7 +100,7 @@ public class LiquidEngine implements INarrativeConstantResolver {
     public void evaluate(StringBuilder b, IBaseResource resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(statement);
-      b.append(engine.evaluateToString(ctxt, resource, resource, compiled));
+      b.append(engine.evaluateToString(ctxt, resource, resource, resource, compiled));
     }
   }
 
@@ -114,7 +114,7 @@ public class LiquidEngine implements INarrativeConstantResolver {
     public void evaluate(StringBuilder b, IBaseResource resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(condition);
-      boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, compiled);
+      boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, resource, compiled);
       List<LiquidNode> list = ok ? thenBody : elseBody;
       for (LiquidNode n : list) {
         n.evaluate(b, resource, ctxt);
@@ -132,7 +132,7 @@ public class LiquidEngine implements INarrativeConstantResolver {
     public void evaluate(StringBuilder b, IBaseResource resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(condition);
-      List<IBase> list = engine.evaluate(ctxt, resource, resource, compiled);
+      List<IBase> list = engine.evaluate(ctxt, resource, resource, resource, compiled);
       LiquidEngineContext lctxt = new LiquidEngineContext(ctxt);
       for (IBase o : list) {
         lctxt.vars.put(varName, o);
@@ -156,7 +156,7 @@ public class LiquidEngine implements INarrativeConstantResolver {
       INarrativeConstantMap incl = engine.createLiquidIncludeMap();
       nctxt.vars.put("include", incl);
       for (String s : params.keySet()) {
-        incl.addConstant(s, engine.evaluate(ctxt, resource, resource, params.get(s)));
+        incl.addConstant(s, engine.evaluate(ctxt, resource, resource, resource, params.get(s)));
       }
       for (LiquidNode n : doc.body) {
         n.evaluate(b, resource, nctxt);
