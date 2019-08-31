@@ -1,14 +1,14 @@
-package ca.uhn.fhir.r4.narrative;
+package org.hl7.fhir.r5.narrative;
 
 import ca.uhn.fhir.fluentpath.INarrativeConstantResolver;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 
 import java.util.HashMap;
 import java.util.List;
