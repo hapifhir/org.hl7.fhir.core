@@ -1,4 +1,4 @@
-package ca.uhn.fhir.r4.narrative;
+package org.hl7.fhir.r4.narrative;
 
 import ca.uhn.fhir.fluentpath.INarrativeConstantResolver;
 import org.hl7.fhir.exceptions.FHIRException;

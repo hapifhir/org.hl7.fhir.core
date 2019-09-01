@@ -21,10 +21,8 @@ package org.hl7.fhir.dstu3.utils;
  */
 
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
-import ca.uhn.fhir.util.ElementUtil;
 import ca.uhn.fhir.fluentpath.IExpressionNodeWithOffset;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.util.ElementUtil;
 import org.fhir.ucum.Decimal;

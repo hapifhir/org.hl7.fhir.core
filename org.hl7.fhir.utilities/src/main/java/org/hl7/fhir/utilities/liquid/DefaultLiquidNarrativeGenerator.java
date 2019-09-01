@@ -60,14 +60,6 @@ public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
 
   @Override
   protected String applyTemplate(FhirContext theFhirContext, INarrativeTemplate theTemplate, IBase theTargetContext) {
-
-	  // FIXME KHS
-//    Context context = new Context();
-//    context.setVariable("resource", theTargetContext);
-//    context.setVariable("context", theTargetContext);
-//    context.setVariable("fhirVersion", theFhirContext.getVersion().getVersion().name());
-
-    // FIXME KHS expand support to IBase
     if (!(theTargetContext instanceof IBaseResource)) {
       return "";
     }

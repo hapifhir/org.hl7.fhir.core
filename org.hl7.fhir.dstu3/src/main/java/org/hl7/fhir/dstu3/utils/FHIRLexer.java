@@ -63,9 +63,9 @@ public class FHIRLexer {
     currentLocation = new SourceLocation(1, 1);
     next();
   }
-  public FHIRLexer(String source, int i) throws FHIRLexerException {
+  public FHIRLexer(String source, int cursor) throws FHIRLexerException {
     this.source = source;
-    this.cursor = i;
+    this.cursor = cursor;
     currentLocation = new SourceLocation(1, 1);
     next();
   }

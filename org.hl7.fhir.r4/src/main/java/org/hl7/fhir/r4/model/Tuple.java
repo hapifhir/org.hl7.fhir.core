@@ -73,7 +73,7 @@ public class Tuple extends Base implements INarrativeConstantMap {
   }
 
   @Override
-  public void addConstant(String s, List<IBase> list) {
-    this.addProperty(s, (List<Base>)(List<?>)list);
+  public void addConstant(String name, List<IBase> values) {
+    this.addProperty(name, (List<Base>)(List<?>)values);
   }
 }
