@@ -1,5 +1,6 @@
 package org.hl7.fhir.dstu3.narrative;
 
+import ca.uhn.fhir.fluentpath.INarrativeConstantResolver;
 import org.hl7.fhir.dstu3.model.Base;
 import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.dstu3.model.TypeDetails;
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class LiquidHostServices extends BaseLiquidHostServices implements FHIRPathEngine.IEvaluationContext {
 
-  public LiquidHostServices(LiquidEngine theLiquidEngine) {
-    super(theLiquidEngine);
+  public LiquidHostServices(INarrativeConstantResolver theINarrativeConstantResolver) {
+    super(theINarrativeConstantResolver);
   }
 
   @Override
