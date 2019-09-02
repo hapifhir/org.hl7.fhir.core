@@ -139,4 +139,28 @@ public class ValueSetUtilities {
     return -1;
   }
 
+  public static ValueSet generateImplicitValueSet(String uri) {
+    if (uri.startsWith("http://snomed.info/sct"))
+      return generateImplicitSnomedValueSet(uri);
+    return null;
+  }
+
+  private static ValueSet generateImplicitSnomedValueSet(String uri) {
+    if ("http://snomed.info/sct?fhir_vs".equals(uri))
+      return makeImplicitSnomedValueSet(uri);
+    return null;
+  }
+
+  private static ValueSet makeImplicitSnomedValueSet(String uri) {
+    ValueSet vs = new ValueSet();
+    vs.setUrl(uri);
+    vs.setName("SCTValueSet");
+    vs.setTitle("SCT ValueSet");
+    vs.setDescription("All SNOMED CT Concepts");
+    vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
+    vs.setStatus(PublicationStatus.ACTIVE);
+    vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
+    return vs;
+  }
+
 }
