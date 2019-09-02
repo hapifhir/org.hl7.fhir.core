@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.FilterOperator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -142,7 +143,37 @@ public class ValueSetUtilities {
   public static ValueSet generateImplicitValueSet(String uri) {
     if (uri.startsWith("http://snomed.info/sct"))
       return generateImplicitSnomedValueSet(uri);
+    if (uri.startsWith("http://loinc.org/vs"))
+      return generateImplicitLoincValueSet(uri);
     return null;
+  }
+
+  private static ValueSet generateImplicitLoincValueSet(String uri) {
+    if ("http://loinc.org/vs".equals(uri))
+      return makeLoincValueSet();
+    if (uri.startsWith("http://loinc.org/vs/LL"))
+      return makeAnswerList(makeLoincValueSet(), uri);
+    return null;
+  }
+
+  private static ValueSet makeAnswerList(ValueSet vs, String uri) {
+    vs.setUrl(uri);
+    String c = uri.substring(20);
+    vs.setName("LOINCAnswers"+c);
+    vs.setTitle("LOINC Answer Codes for "+c);
+    vs.getCompose().getIncludeFirstRep().addFilter().setProperty("LIST").setOp(FilterOperator.EQUAL).setValue(c);
+    return vs;
+  }
+
+  private static ValueSet makeLoincValueSet() {
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://loinc.org/vs");
+    vs.setName("LOINCCodes");
+    vs.setTitle("All LOINC codes");
+    vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
+    vs.setStatus(PublicationStatus.ACTIVE);
+    vs.getCompose().addInclude().setSystem("http://loinc.org");
+    return vs;
   }
 
   private static ValueSet generateImplicitSnomedValueSet(String uri) {

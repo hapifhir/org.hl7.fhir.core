@@ -1021,7 +1021,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing (cc)")) {
         if (binding.hasValueSet()) {
           ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-          if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(binding.getValueSet()) + " not found")) {
+          if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(binding.getValueSet()) + " not found by validator")) {
             try {
               CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
               if (!cc.hasCoding()) {
@@ -1109,7 +1109,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc, NodeStack stack) {
     // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
+    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found by validator")) {
       try {
         long t = System.nanoTime();
         ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), cc, valueset);
@@ -1129,7 +1129,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c, NodeStack stack) {
     // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
+    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found by validator")) {
       try {
         long t = System.nanoTime();
         ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), c, valueset);
@@ -1149,7 +1149,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value, NodeStack stack) {
     // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found")) {
+    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(maxVSUrl) + " not found by validator")) {
       try {
         long t = System.nanoTime();
         ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), value, valueset);
@@ -1195,7 +1195,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing")) {
               if (binding.hasValueSet()) {
                 ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-                if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(binding.getValueSet()) + " not found")) {
+                if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(binding.getValueSet()) + " not found by validator")) {
                   try {
                     Coding c = ObjectConverter.readAsCoding(element);
                     long t = System.nanoTime();
@@ -1815,7 +1815,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ElementDefinitionBindingComponent binding = elementContext.getBinding();
     if (binding.hasValueSet()) {
       ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-      if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, "ValueSet {0} not found", describeReference(binding.getValueSet()))) {
+      if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, "ValueSet {0} not found by validator", describeReference(binding.getValueSet()))) {
         long t = System.nanoTime();
         ValidationResult vr = null;
 		  if (binding.getStrength() != BindingStrength.EXAMPLE) {
@@ -3449,7 +3449,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   private void validateAnswerCode(List<ValidationMessage> errors, Element value, NodeStack stack, Questionnaire qSrc, String ref, boolean theOpenChoice) {
     ValueSet vs = resolveBindingReference(qSrc, ref, qSrc.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), vs != null, "ValueSet " + describeReference(ref) + " not found"))  {
+    if (warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), vs != null, "ValueSet " + describeReference(ref) + " not found by validator"))  {
       try {
         Coding c = ObjectConverter.readAsCoding(value);
         if (isBlank(c.getCode()) && isBlank(c.getSystem()) && isNotBlank(c.getDisplay())) {
@@ -4535,7 +4535,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       for (String profile : profiles.getCanonicalUrls()) {
         StructureDefinition p = context.fetchResource(StructureDefinition.class, profile);
         if (p == null)
-          throw new DefinitionException("StructureDefinition '" + profile + "' not found");
+          throw new DefinitionException("StructureDefinition '" + profile + "' not found by validator");
         profiles.getDefinitions().add(p);
       }
     }
