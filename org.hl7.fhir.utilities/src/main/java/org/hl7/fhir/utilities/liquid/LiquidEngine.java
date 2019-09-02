@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.liquid;
 
-import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fluentpath.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -11,9 +10,6 @@ import org.hl7.fhir.utilities.Utilities;
 import java.util.*;
 
 public class LiquidEngine implements INarrativeConstantResolver {
-
-  private final FhirContext fhirContext;
-
   public interface ILiquidEngineIncludeResolver {
     public String fetchInclude(String name);
   }
@@ -37,10 +33,9 @@ public class LiquidEngine implements INarrativeConstantResolver {
     }
   }
 
-  public LiquidEngine(FhirContext fhirContext) {
+  public LiquidEngine(IFluentPath fluentPath) {
     super();
-    this.fhirContext = fhirContext;
-    engine = fhirContext.newFluentPath();
+    engine = fluentPath;
     engine.setHostServices(this);
   }
 

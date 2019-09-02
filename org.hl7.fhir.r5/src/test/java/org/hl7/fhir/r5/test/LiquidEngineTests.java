@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import ca.uhn.fhir.context.FhirContext;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -9,6 +8,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.narrative.FluentPath;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.liquid.LiquidEngine;
 import org.junit.Before;
@@ -31,7 +31,6 @@ public class LiquidEngineTests implements LiquidEngine.ILiquidEngineIncludeResol
 
   private static Map<String, Resource> resources = new HashedMap<>();
   private static JsonObject testdoc = null;
-  private static final FhirContext fhirContext = FhirContext.forR5();
 
   private JsonObject test;
   private LiquidEngine engine;
@@ -54,7 +53,7 @@ public class LiquidEngineTests implements LiquidEngine.ILiquidEngineIncludeResol
 
   @Before
   public void setUp() throws Exception {
-    engine = new LiquidEngine(fhirContext);
+    engine = new LiquidEngine(new FluentPath(TestingUtilities.context()));
     engine.setIncludeResolver(this);
   }
 

@@ -95,11 +95,6 @@
             <artifactId>Saxon-HE</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>hapi-fhir-structures-dstu3</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- Used by the validator -->
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>

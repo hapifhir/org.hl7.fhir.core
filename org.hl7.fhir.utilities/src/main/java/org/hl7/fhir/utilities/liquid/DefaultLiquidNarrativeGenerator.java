@@ -25,7 +25,7 @@ public class DefaultLiquidNarrativeGenerator extends BaseNarrativeGenerator {
 	private LiquidEngine myLiquidEngine;
 
 	private void initializeNarrativeEngine(FhirContext theFhirContext) {
-		myLiquidEngine = new LiquidEngine(theFhirContext);
+		myLiquidEngine = new LiquidEngine(theFhirContext.newFluentPath());
 	}
 
 	@Override

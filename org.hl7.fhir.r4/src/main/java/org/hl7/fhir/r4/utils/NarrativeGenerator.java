@@ -21,7 +21,6 @@ package org.hl7.fhir.r4.utils;
  */
 
 
-import ca.uhn.fhir.context.FhirContext;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.NotImplementedException;
@@ -60,6 +59,7 @@ import org.hl7.fhir.r4.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r4.model.Timing.UnitsOfTime;
 import org.hl7.fhir.r4.model.ValueSet.FilterOperator;
 import org.hl7.fhir.r4.model.ValueSet.*;
+import org.hl7.fhir.r4.narrative.FluentPath;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
@@ -292,7 +292,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean generateByLiquid(ResourceContext rcontext, DomainResource r, String liquidTemplate, Set<String> outputTracker) {
 
-    LiquidEngine engine = new LiquidEngine(FhirContext.forR4());
+    LiquidEngine engine = new LiquidEngine(new FluentPath(context));
     XhtmlNode x;
     try {
       LiquidEngine.LiquidDocument doc = engine.parse(liquidTemplate, "template");

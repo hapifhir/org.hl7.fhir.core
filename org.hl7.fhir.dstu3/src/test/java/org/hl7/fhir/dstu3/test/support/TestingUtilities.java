@@ -3,6 +3,7 @@ package org.hl7.fhir.dstu3.test.support;
 import com.google.gson.*;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
+import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -266,5 +267,16 @@ public class TestingUtilities {
 
   public static String resourceNameToFile(String name) throws IOException {
     return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
+  }
+
+  public static IWorkerContext context() {
+    if (context == null) {
+      try {
+        context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\definitions.xml.zip");
+      } catch (IOException e) {
+        throw new Error("Unable to create Context", e);
+      }
+    }
+    return context;
   }
 }
