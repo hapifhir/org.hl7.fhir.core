@@ -21,14 +21,14 @@ package org.hl7.fhir.r5.model;
  */
 
 
+import ca.uhn.fhir.fluentpath.INarrativeConstantMap;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import ca.uhn.fhir.fluentpath.INarrativeConstantMap;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBase;
 
 public class Tuple extends Base implements INarrativeConstantMap {
   private Map<String, List<Base>> properties = new HashMap<>();

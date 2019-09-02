@@ -16,9 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +34,7 @@ public class LiquidEngineTests implements LiquidEngine.ILiquidEngineIncludeResol
   private LiquidEngine engine;
 
   @Parameters(name = "{index}: file{0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
+  public static Iterable<Object[]> data() {
     testdoc = (JsonObject) new com.google.gson.JsonParser().parse(new InputStreamReader(LiquidEngineTests.class.getResourceAsStream("/liquid/liquid-tests.json")));
     JsonArray tests = testdoc.getAsJsonArray("tests");
     List<Object[]> objects = new ArrayList<Object[]>(tests.size());

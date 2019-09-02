@@ -21,11 +21,11 @@ package org.hl7.fhir.r5.model;
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ca.uhn.fhir.fluentpath.IExpressionNode;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExpressionNode  implements IExpressionNode {
 

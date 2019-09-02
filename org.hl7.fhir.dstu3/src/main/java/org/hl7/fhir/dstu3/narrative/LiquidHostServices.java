@@ -8,7 +8,6 @@ import org.hl7.fhir.dstu3.utils.FHIRPathEngine;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.utilities.liquid.BaseLiquidHostServices;
-import org.hl7.fhir.utilities.liquid.LiquidEngine;
 
 import java.util.List;
 
