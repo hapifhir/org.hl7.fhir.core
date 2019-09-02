@@ -854,6 +854,34 @@
 					"errorCount": 1
 				}
 			},
+			"observation-maxvs-base.xml": {
+				"errorCount": 0,
+				"profile": {
+					"source": "maxvalueset-profile.xml",
+					"errorCount": 0
+				}
+			},
+			"observation-maxvs-ex.xml": {
+				"errorCount": 0,
+				"profile": {
+					"source": "maxvalueset-profile.xml",
+					"errorCount": 0
+				}
+			},
+			"observation-maxvs-text.xml": {
+				"errorCount": 0,
+				"profile": {
+					"source": "maxvalueset-profile.xml",
+					"errorCount": 0
+				}
+			},
+			"observation-maxvs-wrong.xml": {
+				"errorCount": 0,
+				"profile": {
+					"source": "maxvalueset-profile.xml",
+					"errorCount": 1
+				}
+			},
       "bundle-local-refs.xml" : {
 				"errorCount": 0,
 				"warningCount": 0

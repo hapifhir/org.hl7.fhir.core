@@ -121,6 +121,7 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -2554,6 +2555,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 					fr = context.fetchResource(ValueSet.class, reference);
 				}
 			}
+			if (fr == null)
+			  fr = ValueSetUtilities.generateImplicitValueSet(reference);
 			txTime = txTime + (System.nanoTime() - t);
         return fr;
       }
