@@ -1027,8 +1027,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!cc.hasCoding()) {
                 if (binding.getStrength() == BindingStrength.REQUIRED)
                   rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code is required from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl());
-                else if (binding.getStrength() == BindingStrength.EXTENSIBLE)
-                  warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code should be provided from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl());
+                else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                  if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
+                    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code must be provided from the value set " + describeReference(ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet")) + " (max value set " + valueset.getUrl()+")");
+                  else
+                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code should be provided from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl()+")");
+                }
               } else {
                 long t = System.nanoTime();
 

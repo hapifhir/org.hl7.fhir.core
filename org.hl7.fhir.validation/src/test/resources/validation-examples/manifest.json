@@ -872,7 +872,7 @@
 				"errorCount": 0,
 				"profile": {
 					"source": "maxvalueset-profile.xml",
-					"errorCount": 0
+					"errorCount": 1
 				}
 			},
 			"observation-maxvs-wrong.xml": {
