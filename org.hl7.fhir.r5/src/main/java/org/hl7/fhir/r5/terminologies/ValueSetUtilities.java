@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.FilterOperator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -137,6 +138,60 @@ public class ValueSetUtilities {
     if ("Normative".equals("status")) 
       return 4;
     return -1;
+  }
+
+  public static ValueSet generateImplicitValueSet(String uri) {
+    if (uri.startsWith("http://snomed.info/sct"))
+      return generateImplicitSnomedValueSet(uri);
+    if (uri.startsWith("http://loinc.org/vs"))
+      return generateImplicitLoincValueSet(uri);
+    return null;
+  }
+
+  private static ValueSet generateImplicitLoincValueSet(String uri) {
+    if ("http://loinc.org/vs".equals(uri))
+      return makeLoincValueSet();
+    if (uri.startsWith("http://loinc.org/vs/LL"))
+      return makeAnswerList(makeLoincValueSet(), uri);
+    return null;
+  }
+
+  private static ValueSet makeAnswerList(ValueSet vs, String uri) {
+    vs.setUrl(uri);
+    String c = uri.substring(20);
+    vs.setName("LOINCAnswers"+c);
+    vs.setTitle("LOINC Answer Codes for "+c);
+    vs.getCompose().getIncludeFirstRep().addFilter().setProperty("LIST").setOp(FilterOperator.EQUAL).setValue(c);
+    return vs;
+  }
+
+  private static ValueSet makeLoincValueSet() {
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://loinc.org/vs");
+    vs.setName("LOINCCodes");
+    vs.setTitle("All LOINC codes");
+    vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
+    vs.setStatus(PublicationStatus.ACTIVE);
+    vs.getCompose().addInclude().setSystem("http://loinc.org");
+    return vs;
+  }
+
+  private static ValueSet generateImplicitSnomedValueSet(String uri) {
+    if ("http://snomed.info/sct?fhir_vs".equals(uri))
+      return makeImplicitSnomedValueSet(uri);
+    return null;
+  }
+
+  private static ValueSet makeImplicitSnomedValueSet(String uri) {
+    ValueSet vs = new ValueSet();
+    vs.setUrl(uri);
+    vs.setName("SCTValueSet");
+    vs.setTitle("SCT ValueSet");
+    vs.setDescription("All SNOMED CT Concepts");
+    vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
+    vs.setStatus(PublicationStatus.ACTIVE);
+    vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
+    return vs;
   }
 
 }

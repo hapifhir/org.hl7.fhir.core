@@ -3661,34 +3661,46 @@ public class NarrativeGenerator implements INarrativeGenerator {
             }
           }
         }
-        boolean first = true;
-        for (ConceptSetFilterComponent f : inc.getFilter()) {
-          if (first) {
-            li.addText(type+" codes from ");
-            first = false;
-          } else
-            li.tx(" and ");
-          addCsRef(inc, li, e);
-          li.tx(" where "+f.getProperty()+" "+describe(f.getOp())+" ");
-          if (e != null && codeExistsInValueSet(e, f.getValue())) {
-            String href = prefix+getCsRef(e);
-            if (href.contains("#"))
-              href = href + "-"+Utilities.nmtokenize(f.getValue());
-            else
-              href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
-            li.ah(href).addText(f.getValue());
-          } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
-            li.addText(f.getValue());
-            ValidationResult vr = context.validateCode(terminologyServiceOptions, inc.getSystem(), f.getValue(), null);
-            if (vr.isOk()) {
-              li.tx(" ("+vr.getDisplay()+")");
+        li.addText(type+" codes from ");
+        addCsRef(inc, li, e);
+        li.tx(" where ");
+        for (int i = 0; i < inc.getFilter().size(); i++) {
+          ConceptSetFilterComponent f = inc.getFilter().get(i);
+          if (i > 0) {
+            if (i == inc.getFilter().size()-1) {
+              li.tx(" and ");
+            } else {
+              li.tx(", ");
             }
           }
-          else
-            li.addText(f.getValue());
-          String disp = ToolingExtensions.getDisplayHint(f);
-          if (disp != null)
-            li.tx(" ("+disp+")");
+          if (f.getOp() == FilterOperator.EXISTS) {
+            if (f.getValue().equals("true")) {
+              li.tx(f.getProperty()+" exists");
+            } else {
+              li.tx(f.getProperty()+" doesn't exist");
+            }
+          } else {
+            li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
+            if (e != null && codeExistsInValueSet(e, f.getValue())) {
+              String href = prefix+getCsRef(e);
+              if (href.contains("#"))
+                href = href + "-"+Utilities.nmtokenize(f.getValue());
+              else
+                href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
+              li.ah(href).addText(f.getValue());
+            } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
+              li.addText(f.getValue());
+              ValidationResult vr = context.validateCode(terminologyServiceOptions, inc.getSystem(), f.getValue(), null);
+              if (vr.isOk()) {
+                li.tx(" ("+vr.getDisplay()+")");
+              }
+            }
+            else
+              li.addText(f.getValue());
+            String disp = ToolingExtensions.getDisplayHint(f);
+            if (disp != null)
+              li.tx(" ("+disp+")");
+          }
         }
       }
       if (inc.hasValueSet()) {
