@@ -1434,6 +1434,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 	  checkFixedValue(errors, path, focus, fixed, propName, parent, false);
   }
 
+  @SuppressWarnings("rawtypes")
   private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String propName, Element parent, boolean pattern) {
     if ((fixed == null || fixed.isEmpty()) && focus == null)
       ; // this is all good
@@ -1461,6 +1462,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.CodeType) fixed).getValue() + "'");
+      else if (fixed instanceof org.hl7.fhir.r5.model.Enumeration)
+        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.Enumeration) fixed).asStringValue(), value),
+            "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.Enumeration) fixed).asStringValue() + "'");
       else if (fixed instanceof org.hl7.fhir.r5.model.StringType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.StringType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.StringType) fixed).getValue() + "'");
