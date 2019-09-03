@@ -1511,7 +1511,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           j++;
         if (j < markdown.length()) {
           String url = markdown.substring(i+2, j);
-          if (!Utilities.isAbsoluteUrl(url)) {
+          if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
             b.append("](");
             b.append(webUrl);
             i = i + 1;
