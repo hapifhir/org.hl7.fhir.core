@@ -2250,27 +2250,29 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (e.hasContentReference()) {
         return c;
       } else {
-      ElementDefinition d = (ElementDefinition) e.getUserData(DERIVATION_POINTER);
-      if (d != null && d.hasType()) {
-        types = new ArrayList<ElementDefinition.TypeRefComponent>();
-        for (TypeRefComponent tr : d.getType()) {
-          TypeRefComponent tt = tr.copy();
-          tt.setUserData(DERIVATION_EQUALS, true);
-          types.add(tt);
+        ElementDefinition d = (ElementDefinition) e.getUserData(DERIVATION_POINTER);
+        if (d != null && d.hasType()) {
+          types = new ArrayList<ElementDefinition.TypeRefComponent>();
+          for (TypeRefComponent tr : d.getType()) {
+            TypeRefComponent tt = tr.copy();
+            tt.setUserData(DERIVATION_EQUALS, true);
+            types.add(tt);
+          }
+        } else {
+          return c;
         }
-      } else
-        return c;
-    }
+      }
     }
 
     boolean first = true;
 
     TypeRefComponent tl = null;
     for (TypeRefComponent t : types) {
-      if (first)
+      if (first) {
         first = false;
-      else
+      } else {
         c.addPiece(checkForNoChange(tl, gen.new Piece(null,", ", null)));
+      }
       tl = t;
       if (t.hasTarget()) {
         c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
@@ -2677,7 +2679,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           hrow.setColor(getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
           hrow.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
-          hrow.getCells().add(gen.new Cell(null, null, "(All Slices)", "", null));
+          hrow.getCells().add(gen.new Cell(null, null, s+":All Slices", "", null));
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
@@ -2692,7 +2694,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           hrow.setColor(getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
           hrow.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
-          hrow.getCells().add(gen.new Cell(null, null, "(All Types)", "", null));
+          hrow.getCells().add(gen.new Cell(null, null, s+":All Types", "", null));
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
@@ -3151,7 +3153,19 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
           c = gen.new Cell();
           row.getCells().add(c);
-          c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, t.getTypeCode()), t.getTypeCode(), null));
+          if (t.getTypeCode().contains("(")) {
+            String tc = t.getTypeCode();
+            String tn = tc.substring(0, tc.indexOf("("));
+            c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, tn), tn, null));
+            c.addPiece(gen.new Piece(null, "(", null));
+            String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
+            for (String s : p) {
+              c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, s), s, null));
+            }
+            c.addPiece(gen.new Piece(null, ")", null));            
+          } else {
+            c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, t.getTypeCode()), t.getTypeCode(), null));
+          }
           c = gen.new Cell();
           c.addPiece(gen.new Piece(null, ed.getShort(), null));
           row.getCells().add(c);
@@ -3178,7 +3192,19 @@ public class ProfileUtilities extends TranslatingUtilities {
 
             c = gen.new Cell();
             row.getCells().add(c);
-            c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, b.fhirType()), b.fhirType(), null));
+            if (b.fhirType().contains("(")) {
+              String tc = b.fhirType();
+              String tn = tc.substring(0, tc.indexOf("("));
+              c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, tn), tn, null));
+              c.addPiece(gen.new Piece(null, "(", null));
+              String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
+              for (String s : p) {
+                c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, s), s, null));
+              }
+              c.addPiece(gen.new Piece(null, ")", null));            
+            } else {
+              c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, b.fhirType()), b.fhirType(), null));
+            }
 
             if (b.isPrimitive()) {
               c = gen.new Cell();
