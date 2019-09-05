@@ -13442,8 +13442,6 @@ public class VersionConvertor_30_50 {
     return tgt;
   }
 
-
-
   private static final String CODE_SYSTEM_MEDIA_TYPE = "http://terminology.hl7.org/CodeSystem/media-type";
 
   public static org.hl7.fhir.r5.model.Media convertMedia(org.hl7.fhir.dstu3.model.Media src) throws FHIRException {
@@ -22199,6 +22197,118 @@ public class VersionConvertor_30_50 {
   }
 
 
+  public static org.hl7.fhir.r5.model.Measure convertMeasure(org.hl7.fhir.dstu3.model.Measure src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure tgt = new org.hl7.fhir.r5.model.Measure();
+    copyDomainResource(src, tgt);
+    if (src.hasUrl())
+      tgt.setUrl(src.getUrl());
+    for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasVersion())
+      tgt.setVersion(src.getVersion());
+    if (src.hasName())
+      tgt.setName(src.getName());
+    if (src.hasTitle())
+      tgt.setTitle(src.getTitle());
+    if (src.hasStatus())
+      tgt.setStatus(convertPublicationStatus(src.getStatus()));
+    if (src.hasExperimental())
+      tgt.setExperimental(src.getExperimental());
+    if (src.hasType())
+      for (org.hl7.fhir.dstu3.model.CodeableConcept concept : src.getType())
+        tgt.addType(convertCodeableConcept(concept));
+    if (src.hasDate())
+      tgt.setDate(src.getDate());
+    if (src.hasPublisher())
+      tgt.setPublisher(src.getPublisher());
+    for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
+      tgt.addContact(convertContactDetail(t));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext())
+      tgt.addUseContext(convertUsageContext(t));
+    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction())
+      tgt.addJurisdiction(convertCodeableConcept(t));
+    if (src.hasPurpose())
+      tgt.setPurpose(src.getPurpose());
+    if (src.hasUsage())
+      tgt.setUsage(src.getUsage());
+    if (src.hasCopyright())
+      tgt.setCopyright(src.getCopyright());
+    if (src.hasApprovalDate())
+      tgt.setApprovalDate(src.getApprovalDate());
+    if (src.hasLastReviewDate())
+      tgt.setLastReviewDate(src.getLastReviewDate());
+    if (src.hasEffectivePeriod())
+      tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+    for (org.hl7.fhir.dstu3.model.Contributor t : src.getContributor()) {
+      if (t.getType() == ContributorType.AUTHOR)
+        for (ContactDetail c : t.getContact())
+          tgt.addAuthor(convertContactDetail(c));
+      if (t.getType() == ContributorType.EDITOR)
+        for (ContactDetail c : t.getContact())
+          tgt.addEditor(convertContactDetail(c));
+      if (t.getType() == ContributorType.REVIEWER)
+        for (ContactDetail c : t.getContact())
+          tgt.addReviewer(convertContactDetail(c));
+      if (t.getType() == ContributorType.ENDORSER)
+        for (ContactDetail c : t.getContact())
+          tgt.addEndorser(convertContactDetail(c));
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure convertMeasure(org.hl7.fhir.r5.model.Measure src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure tgt = new org.hl7.fhir.dstu3.model.Measure();
+    copyDomainResource(src, tgt);
+    if (src.hasUrl())
+      tgt.setUrl(src.getUrl());
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasVersion())
+      tgt.setVersion(src.getVersion());
+    if (src.hasName())
+      tgt.setName(src.getName());
+    if (src.hasTitle())
+      tgt.setTitle(src.getTitle());
+    if (src.hasStatus())
+      tgt.setStatus(convertPublicationStatus(src.getStatus()));
+    if (src.hasExperimental())
+      tgt.setExperimental(src.getExperimental());
+    if (src.hasType())
+      for (org.hl7.fhir.r5.model.CodeableConcept concept : src.getType())
+        tgt.addType(convertCodeableConcept(concept));
+    if (src.hasDate())
+      tgt.setDate(src.getDate());
+    if (src.hasPublisher())
+      tgt.setPublisher(src.getPublisher());
+    for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact())
+      tgt.addContact(convertContactDetail(t));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext())
+      tgt.addUseContext(convertUsageContext(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction())
+      tgt.addJurisdiction(convertCodeableConcept(t));
+    if (src.hasPurpose())
+      tgt.setPurpose(src.getPurpose());
+    if (src.hasUsage())
+      tgt.setUsage(src.getUsage());
+    if (src.hasCopyright())
+      tgt.setCopyright(src.getCopyright());
+    if (src.hasApprovalDate())
+      tgt.setApprovalDate(src.getApprovalDate());
+    if (src.hasLastReviewDate())
+      tgt.setLastReviewDate(src.getLastReviewDate());
+    if (src.hasEffectivePeriod())
+      tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+    return tgt;
+  }
+
 
   public static org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.dstu3.model.Resource src, boolean nullOk) throws FHIRException {
     if (src == null)
@@ -22303,6 +22413,8 @@ public class VersionConvertor_30_50 {
       return convertList((org.hl7.fhir.dstu3.model.ListResource) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Location)
       return convertLocation((org.hl7.fhir.dstu3.model.Location) src);
+    if (src instanceof org.hl7.fhir.dstu3.model.Measure)
+      return convertMeasure((org.hl7.fhir.dstu3.model.Measure) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Media)
       return convertMedia((org.hl7.fhir.dstu3.model.Media) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Medication)
@@ -22488,6 +22600,8 @@ public class VersionConvertor_30_50 {
       return convertList((org.hl7.fhir.r5.model.ListResource) src);
     if (src instanceof org.hl7.fhir.r5.model.Location)
       return convertLocation((org.hl7.fhir.r5.model.Location) src);
+    if (src instanceof org.hl7.fhir.r5.model.Measure)
+      return convertMeasure((org.hl7.fhir.r5.model.Measure) src);
     if (src instanceof org.hl7.fhir.r5.model.Media)
       return convertMedia((org.hl7.fhir.r5.model.Media) src);
     if (src instanceof org.hl7.fhir.r5.model.Medication)
