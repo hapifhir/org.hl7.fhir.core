@@ -109,9 +109,27 @@ public class Validator {
     VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT
   }
 
+  private static String getNamedParam(String[] args, String param) {
+    boolean found = false;
+    for (String a : args) {
+      if (found)
+        return a;
+      if (a.equals(param)) {
+        found = true;
+      }
+    }
+    return null;
+  }
 
   public static void main(String[] args) throws Exception {
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
+    String proxy = getNamedParam(args, "-proxy");
+    if (!Utilities.noString(proxy)) {
+      String[] p = proxy.split("\\:");
+      System.setProperty("http.proxyHost", p[0]);
+      System.setProperty("http.proxyPort", p[1]);
+    }
+
      if (hasParam(args, "-tests")) {
       try {
 			Class<?> clazz = Class.forName("org.hl7.fhir.validation.r5.tests.ValidationEngineTests");
@@ -185,6 +203,8 @@ public class Validator {
       System.out.println("     referenced implementation guides or profiles as errors.  (Default is to only raise information messages.)");
       System.out.println("-hintAboutNonMustSupport: If present, raise hints if the instance contains data elements that are not");
       System.out.println("     marked as mustSupport=true.  Useful to identify elements included that may be ignored by recipients");
+      System.out.println("");
+      System.out.println("The validator also supports the param -proxy=[address]:[port] for if you use a proxy");
       System.out.println("");
       System.out.println("Parameters can appear in any order");
       System.out.println("");
