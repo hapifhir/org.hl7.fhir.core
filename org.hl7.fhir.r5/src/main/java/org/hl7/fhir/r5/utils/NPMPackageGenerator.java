@@ -100,15 +100,16 @@ public class NPMPackageGenerator {
     buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
   }
   
-  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name) throws FHIRException, IOException {
+  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date) throws FHIRException, IOException {
     JsonObject p = master.packageJ.deepCopy();
     p.remove("name");
     p.addProperty("name", id);
     p.remove("type");
     p.addProperty("type", PackageType.SUBSET.getCode());    
     p.remove("title");
-    p.addProperty("title", name);    
-    return new NPMPackageGenerator(destFile, p);
+    p.addProperty("title", name);
+
+    return new NPMPackageGenerator(destFile, p, date);
   }
   
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion) throws FHIRException, IOException {
@@ -119,9 +120,16 @@ public class NPMPackageGenerator {
     buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
   }
   
-  public NPMPackageGenerator(String destFile, JsonObject npm) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, JsonObject npm, Date date) throws FHIRException, IOException {
     super();
     System.out.println("create package file at "+destFile);
+    String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+    packageJ = npm;
+    packageManifest = new JsonObject();
+    packageManifest.addProperty("version", npm.get("version").getAsString());
+    packageManifest.addProperty("date", dt);
+    npm.addProperty("date", dt);
+    packageManifest.addProperty("name", npm.get("name").getAsString());
     this.destFile = destFile;
     start();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -130,7 +138,7 @@ public class NPMPackageGenerator {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
     }
-    packageJ = npm;
+    
   }
  
   private void buildPackageJson(String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
