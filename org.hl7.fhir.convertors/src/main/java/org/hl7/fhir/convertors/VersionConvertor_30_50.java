@@ -33,6 +33,7 @@ import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -1736,8 +1737,15 @@ public class VersionConvertor_30_50 {
       copyElement(src, tgt);
       tgt.setCodeElement(convertUri(src.getCodeElement()));
     }
-    if (src.hasProfile())
-      tgt.addProfile(src.getProfile());
+    if (src.hasProfile()) {
+      boolean found = false;
+      for (CanonicalType p: tgt.getProfile()) {
+        if (p.equals(src.getProfile()))
+          found = true;
+      }
+      if (!found)
+        tgt.addProfile(src.getProfile());
+    }
     if (src.hasTargetProfile())
       tgt.addTargetProfile(src.getTargetProfile());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
