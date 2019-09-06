@@ -60,7 +60,7 @@ public class GraphQLEngine implements IGraphQLEngine {
   /**
    * where the output from executing the query instanceof going to go
    */
-  private ObjectValue output;
+  private GraphQLResponse output;
   /**
    * Application provided reference resolution services
    */
@@ -81,7 +81,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     fpe = new FHIRPathEngine(this.context);
     magicExpression = new ExpressionNode(0);
 
-    output = new ObjectValue();
+    output = new GraphQLResponse();
 
     Operation op = null;
     // todo: initial conditions
@@ -662,7 +662,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     this.graphQL = graphQL;
   }
 
-  public ObjectValue getOutput() {
+  public GraphQLResponse getOutput() {
     return output;
   }
 
