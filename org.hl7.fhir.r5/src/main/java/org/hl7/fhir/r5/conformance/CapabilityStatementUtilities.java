@@ -381,6 +381,7 @@ public class CapabilityStatementUtilities {
           pc.setRightName(otherName+": "+sdR.present());
           pc.setRightLink(sdR.getUserString("path"));
           pc.compareProfiles(sdL, sdR);
+          System.out.println("Generate Comparison between "+pc.getLeftName()+" and "+pc.getRightName());
           pc.generate(folder);
           td.ah(pc.getId()+".html").tx("Comparison...");
           td.tx(pc.getErrCount()+" "+Utilities.pluralize("error", pc.getErrCount()));
