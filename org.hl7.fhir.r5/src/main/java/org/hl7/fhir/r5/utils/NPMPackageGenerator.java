@@ -91,7 +91,6 @@ public class NPMPackageGenerator {
   
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
@@ -114,7 +113,6 @@ public class NPMPackageGenerator {
   
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
     this.destFile = destFile;
     start();
     buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
@@ -122,7 +120,6 @@ public class NPMPackageGenerator {
   
   public NPMPackageGenerator(String destFile, JsonObject npm, Date date) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
     packageJ = npm;
     packageManifest = new JsonObject();

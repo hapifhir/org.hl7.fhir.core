@@ -1524,7 +1524,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
 
   public BindingResolution resolveBindingInt(StructureDefinition def, String url, String desc) throws FHIRException {
     ValueSet vs = null;
-    if (url.startsWith("#")) {
+    if (url != null && url.startsWith("#")) {
       for (ValueSet t : valuesets) {
         if (("#"+t.getId()).equals(url)) {
           vs = t;
@@ -1532,7 +1532,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
         }
       }
     }
-    if (vs == null) 
+    if (url != null && vs == null) 
       context.fetchResource(ValueSet.class, url);
     BindingResolution br = new BindingResolution();
     if (vs != null) {

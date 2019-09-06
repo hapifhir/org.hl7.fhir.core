@@ -36,6 +36,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -341,7 +342,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
   protected void tlog(String msg) {
     if (tlogging )
-      System.out.println("-tx cache miss: "+msg);
+      if (logger != null)
+        logger.logDebugMessage(LogCategory.TX, msg);
+      else 
+        System.out.println("-tx: "+msg);
   }
 
   // --- expansion support ------------------------------------------------------------------------------------------------------------
