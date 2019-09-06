@@ -29,6 +29,8 @@ import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.DesignationIncludeDesignationComponent;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.SystemVersionProcessingMode;
+import org.hl7.fhir.dstu3.model.MarkdownType;
+import org.hl7.fhir.dstu3.model.Measure;
 import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -22257,6 +22259,86 @@ public class VersionConvertor_30_50 {
         for (ContactDetail c : t.getContact())
           tgt.addEndorser(convertContactDetail(c));
     }
+    // NEW
+    for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact())
+      tgt.addRelatedArtifact(convertRelatedArtifact(t));
+    for (org.hl7.fhir.dstu3.model.Reference r : src.getLibrary())
+      tgt.addLibrary(r.getReference());
+    if (src.hasDisclaimer())
+      tgt.setDisclaimer(src.getDisclaimer());
+    if (src.hasScoring())
+      tgt.setScoring(convertCodeableConcept(src.getScoring()));
+    if (src.hasCompositeScoring())
+      tgt.setCompositeScoring(convertCodeableConcept(src.getCompositeScoring()));
+    for (org.hl7.fhir.dstu3.model.CodeableConcept c : src.getType())
+      tgt.addType(convertCodeableConcept(c));
+    if (src.hasRiskAdjustment())
+      tgt.setRiskAdjustment(src.getRiskAdjustment());
+    if (src.hasRateAggregation())
+      tgt.setRateAggregation(src.getRateAggregation());
+    if (src.hasRationale())
+      tgt.setRationale(src.getRationale());
+    if  (src.hasClinicalRecommendationStatement())
+      tgt.setClinicalRecommendationStatement(src.getClinicalRecommendationStatement());
+    if (src.hasImprovementNotation()) {
+      if (src.getImprovementNotation().toLowerCase().contains("increase") || src.getImprovementNotation().toLowerCase().contains("higher"))
+        tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode("increase").setSystem("http://terminology.hl7.org/CodeSystem/measure-improvement-notation")).setText(src.getImprovementNotation()));
+      else if (src.getImprovementNotation().toLowerCase().contains("decrease") || src.getImprovementNotation().toLowerCase().contains("lower"))
+        tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode("decrease").setSystem("http://terminology.hl7.org/CodeSystem/measure-improvement-notation")).setText(src.getImprovementNotation()));
+      else
+        tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().setText(src.getImprovementNotation()));
+    }
+    for (org.hl7.fhir.dstu3.model.MarkdownType m : src.getDefinition())
+      tgt.addDefinition(m.getValue());
+    if (src.hasGuidance())
+      tgt.setGuidance(src.getGuidance());
+    for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent g : src.getGroup())
+      tgt.addGroup(convertMeasureGroup(g));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.Measure.MeasureGroupComponent convertMeasureGroup(org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure.MeasureGroupComponent tgt = new org.hl7.fhir.r5.model.Measure.MeasureGroupComponent();
+    if (src.hasIdentifier())
+      tgt.setCode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode(src.getIdentifier().getValue())));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation())
+      tgt.addPopulation(convertMeasureGroupPopulation(p));
+    for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier())
+      tgt.addStratifier(convertMeasureGroupStratifier(s));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent convertMeasureGroupPopulation(org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent tgt = new org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent();
+    if (src.hasCode())
+      tgt.setCode(convertCodeableConcept(src.getCode()));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    if (src.hasCriteria())
+      tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setExpression(src.getCriteria()));
+    if (src.hasName()) {
+      if (tgt.hasCriteria())
+        tgt.getCriteria().setName(src.getName());
+      else
+        tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setName(src.getName()));
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent convertMeasureGroupStratifier(org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent tgt = new org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent();
+    if (src.hasIdentifier())
+      tgt.setCode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode(src.getIdentifier().getValue())));
+    if (src.hasCriteria())
+      tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setExpression(src.getCriteria()));
     return tgt;
   }
 
@@ -22309,6 +22391,47 @@ public class VersionConvertor_30_50 {
     return tgt;
   }
 
+  public static org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent convertMeasureGroup(org.hl7.fhir.r5.model.Measure.MeasureGroupComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent tgt = new org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent();
+    if (src.hasCode() && src.getCode().hasCoding())
+      tgt.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setValue(src.getCode().getCodingFirstRep().getCode()));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation())
+      tgt.addPopulation(convertMeasureGroupPopulation(p));
+    for (org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier())
+      tgt.addStratifier(convertMeasureGroupStratifier(s));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent convertMeasureGroupPopulation(org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent tgt = new org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent();
+    if (src.hasCode())
+      tgt.setCode(convertCodeableConcept(src.getCode()));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    if (src.hasCriteria() && src.getCriteria().hasExpression())
+      tgt.setCriteria(src.getCriteria().getExpression());
+    if (src.hasCriteria() && src.getCriteria().hasName()) {
+      tgt.setName(src.getCriteria().getName());
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent convertMeasureGroupStratifier(org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent tgt = new org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent();
+    if (src.hasCode() && src.getCode().hasCoding())
+      tgt.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setValue(src.getCode().getCodingFirstRep().getCode()));
+    if (src.hasCriteria() && src.getCriteria().hasExpression())
+      tgt.setCriteria(src.getCriteria().getExpression());
+    return tgt;
+  }
 
   public static org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.dstu3.model.Resource src, boolean nullOk) throws FHIRException {
     if (src == null)
