@@ -458,9 +458,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
         params.add(p);
       }
     }
-    System.out.println("Extensions: "+vs.getExpansion().getExtension().size());
     for (Extension ex : vs.getExpansion().getExtension()) {
-      System.out.println("Extension: "+ex.getUrl());
       if (Utilities.existsInList(ex.getUrl(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly", "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
         if (!hasExtension(extensions, ex.getUrl())) {
           extensions.add(ex);
