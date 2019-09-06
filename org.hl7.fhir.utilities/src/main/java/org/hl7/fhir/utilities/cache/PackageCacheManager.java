@@ -645,8 +645,8 @@ public class PackageCacheManager {
   private NpmPackage checkCurrency(String id, NpmPackage p) {
     // special case: current versions roll over, and we have to check their currency
     try {
-      String url = getPackageUrl(id);
-      JsonObject json = fetchJson(Utilities.pathURL(url, "package.version.json"));
+      String url = ciList.get(id);
+      JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = json.get("date").getAsString();
       String packDate = p.date();
       if (!currDate.equals(packDate))
