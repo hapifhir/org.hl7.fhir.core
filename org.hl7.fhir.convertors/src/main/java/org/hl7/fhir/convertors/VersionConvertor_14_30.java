@@ -1421,17 +1421,15 @@ public class VersionConvertor_14_30 {
     org.hl7.fhir.dstu3.model.ElementDefinition.TypeRefComponent tgt = new org.hl7.fhir.dstu3.model.ElementDefinition.TypeRefComponent();
     copyElement(src, tgt);
     tgt.setCode(src.getCode());
-    for (org.hl7.fhir.dstu2016may.model.UriType t : src.getProfile()) {
-      if (src.hasTarget()) {
-        // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
-        String baseName = t.getValue().toLowerCase();
-        if (baseName.contains("reference") && !baseName.contains("documentreference"))
-          tgt.setProfile(t.getValueAsString());
-        else
-          tgt.setTargetProfile(t.getValueAsString());
-      }
+    for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile()) {
+      if (src.getCode().equals("Reference"))
+        tgt.setTargetProfile(u.getValue());          
       else
-        tgt.setProfile(t.getValueAsString());
+        tgt.setProfile(u.getValue());
+    }
+    for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
+      // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
+      tgt.setProfile(t.getValue().toString());
     }
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> t : src.getAggregation())
       tgt.addAggregation(convertAggregationMode(t.getValue()));
@@ -1448,14 +1446,16 @@ public class VersionConvertor_14_30 {
     if (src.hasTarget()) {
       if (src.hasTargetProfile()) {
         tgt.addProfile(src.getTargetProfile());
-        String baseName = src.getTargetProfile().toLowerCase();
-        if (baseName.contains("reference") && !baseName.contains("documentreference"))
-          throw new Error("2016May Target profile contains the word 'reference':" + src.getTargetProfile());
       }
       if (src.hasProfile()) {
-        tgt.addProfile(src.getProfile());
-        if (!src.getProfile().toLowerCase().contains("reference"))
-          throw new Error("2016May profile doesn't contain the word 'reference':" + src.getTargetProfile());
+        if (src.getCode().equals("Reference")) {
+          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.PROFILE_EXTENSION);
+          t.setValue(new org.hl7.fhir.dstu2016may.model.StringType(src.getProfile()));
+          tgt.addExtension(t);
+        } else
+          tgt.addProfile(src.getProfile());
+//        if (!u.toString().toLowerCase().contains("reference"))
+//          throw new Error("2016May profile doesn't contain the word 'reference':" + u);
       }
     } else
       tgt.addProfile(src.getProfile());
