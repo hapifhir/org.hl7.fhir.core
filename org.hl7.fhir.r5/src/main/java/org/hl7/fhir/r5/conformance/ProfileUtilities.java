@@ -1333,7 +1333,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String summarizeSlicing(ElementDefinitionSlicingComponent slice) {
+  public static String summarizeSlicing(ElementDefinitionSlicingComponent slice) {
     StringBuilder b = new StringBuilder();
     boolean first = true;
     for (ElementDefinitionSlicingDiscriminatorComponent d : slice.getDiscriminator()) {
@@ -1341,11 +1341,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         first = false;
       else
         b.append(", ");
-      b.append(d);
+      b.append(d.getType().toCode()+":"+d.getPath());
     }
-    b.append("(");
+    b.append(" (");
     if (slice.hasOrdered())
-      b.append(slice.getOrderedElement().asStringValue());
+      b.append(slice.getOrdered() ? "ordered" : "unordered");
     b.append("/");
     if (slice.hasRules())
       b.append(slice.getRules().toCode());
@@ -3121,7 +3121,11 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void genFixedValue(HierarchicalTableGenerator gen, Row erow, Type value, boolean snapshot, boolean pattern, String corePath) {
     String ref = pkp.getLinkFor(corePath, value.fhirType());
-    ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#";
+    if (ref != null) {
+      ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#";
+    } else {
+      ref = "??";
+    }
     StructureDefinition sd = context.fetchTypeDefinition(value.fhirType());
     
     for (org.hl7.fhir.r5.model.Property t : value.children()) {

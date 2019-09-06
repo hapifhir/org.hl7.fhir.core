@@ -42,10 +42,13 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -324,7 +327,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     outcome.superset = new StructureDefinition();
     outcome.subset = new StructureDefinition();
     if (outcome.ruleEqual(ln.path(), null,ln.path(), rn.path(), "Base Type is not compatible", false)) {
-      if (compareElements(outcome, ln.path(), ln, rn)) {
+      if (compareElements(outcome, ln.path(), ln, rn, null)) {
         outcome.subset.setName("intersection of "+outcome.leftName()+" and "+outcome.rightName());
         outcome.subset.setStatus(PublicationStatus.DRAFT);
         outcome.subset.setKind(outcome.left.getKind());
@@ -359,9 +362,10 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
    * @throws IOException 
    * @throws FHIRFormatError 
    */
-  private boolean compareElements(ProfileComparison outcome, String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
+  private boolean compareElements(ProfileComparison outcome, String path, DefinitionNavigator left, DefinitionNavigator right, String sliceName) throws DefinitionException, IOException, FHIRFormatError {
+//    System.out.println(path);
 //    preconditions:
-    assert(path != null);
+    assert(path != null);  
     assert(left != null);
     assert(right != null);
     assert(left.path().equals(right.path()));
@@ -370,6 +374,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     // simple stuff
     ElementDefinition subset = new ElementDefinition();
     subset.setPath(left.path());
+    if (sliceName != null)
+      subset.setSliceName(sliceName);
     
     // not allowed to be different: 
     subset.getRepresentation().addAll(left.current().getRepresentation()); // can't be bothered even testing this one
@@ -424,23 +430,114 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     superset.getConstraint().addAll(intersectConstraints(path, left.current().getConstraint(), right.current().getConstraint()));
     subset.getConstraint().addAll(unionConstraints(subset, outcome, path, left.current().getConstraint(), right.current().getConstraint()));
 
+    // add the children
+    outcome.subset.getSnapshot().getElement().add(subset);
+    outcome.superset.getSnapshot().getElement().add(superset);
+    boolean ret = compareChildren(subset, outcome, path, left, right);
+    
     // now process the slices
     if (left.current().hasSlicing() || right.current().hasSlicing()) {
+      assert sliceName == null;
       if (isExtension(left.path()))
         return compareExtensions(outcome, path, superset, subset, left, right);
 //      return true;
       else {
         ElementDefinitionSlicingComponent slicingL = left.current().getSlicing();
         ElementDefinitionSlicingComponent slicingR = right.current().getSlicing();
-        throw new DefinitionException("Slicing is not handled yet");
+        // well, this is tricky. If one is sliced, and the other is not, then in general, the union just ignores the slices, and the intersection is the slices.
+        if (left.current().hasSlicing() && !right.current().hasSlicing()) { 
+          // the super set is done. Any restrictions in the slices are irrelevant to what the super set says, except that we're going sum up the value sets if we can (for documentation purposes) (todo)
+          // the minimum set is the slicing specified in the slicer
+          subset.setSlicing(slicingL);
+          // stick everything from the right to do with the slices to the subset 
+          copySlices(outcome.subset.getSnapshot().getElement(), left.getStructure().getSnapshot().getElement(), left.slices());
+        } else if (!left.current().hasSlicing() && right.current().hasSlicing()) { 
+          // the super set is done. Any restrictions in the slices are irrelevant to what the super set says, except that we're going sum up the value sets if we can (for documentation purposes) (todo)
+          // the minimum set is the slicing specified in the slicer
+          subset.setSlicing(slicingR);
+          // stick everything from the right to do with the slices to the subset 
+          copySlices(outcome.subset.getSnapshot().getElement(), right.getStructure().getSnapshot().getElement(), right.slices());
+        } else if (isTypeSlicing(slicingL) || isTypeSlicing(slicingR)) {
+          superset.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+          subset.getSlicing().setRules(slicingL.getRules() == SlicingRules.CLOSED || slicingR.getRules() == SlicingRules.CLOSED ? SlicingRules.OPEN : SlicingRules.CLOSED).setOrdered(false).addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+
+          // the superset is the union of the types 
+          // the subset is the intersection of them 
+          List<DefinitionNavigator> handled = new ArrayList<>();
+          for (DefinitionNavigator t : left.slices()) {
+            DefinitionNavigator r = findMatchingSlice(right.slices(), t);
+            if (r == null) {
+              copySlice(outcome.superset.getSnapshot().getElement(), left.getStructure().getSnapshot().getElement(), t);              
+            } else {
+              handled.add(r);
+              ret = compareElements(outcome, path+":"+t.current().getSliceName(), t, r, t.current().getSliceName()) && ret;
+            }
+          }
+          for (DefinitionNavigator t : right.slices()) {
+            if (!handled.contains(t)) {
+              copySlice(outcome.superset.getSnapshot().getElement(), right.getStructure().getSnapshot().getElement(), t);
+            }
+          }
+        } else if (slicingMatches(slicingL, slicingR)) {
+          // if it's the same, we can try matching the slices - though we might have to give up without getting matches correct
+          // there amy be implied consistency we can't reason about 
+          throw new DefinitionException("Slicing matches but is not handled yet at "+left.current().getId()+": ("+ProfileUtilities.summarizeSlicing(slicingL)+")");
+        } else  {
+          // if the slicing is different, we can't compare them - or can we?
+          throw new DefinitionException("Slicing doesn't match at "+left.current().getId()+": ("+ProfileUtilities.summarizeSlicing(slicingL)+" / "+ProfileUtilities.summarizeSlicing(slicingR)+")");
+        }
       }
     // todo: name 
     }
+    return ret;
+  }
 
-    // add the children
-    outcome.subset.getSnapshot().getElement().add(subset);
-    outcome.superset.getSnapshot().getElement().add(superset);
-    return compareChildren(subset, outcome, path, left, right);
+
+  private DefinitionNavigator findMatchingSlice(List<DefinitionNavigator> slices, DefinitionNavigator tgt) {
+    for (DefinitionNavigator t : slices) {
+      if (sliceMatchesByType(t, tgt)) 
+        return t;
+    }
+    return null;
+  }
+
+  private boolean sliceMatchesByType(DefinitionNavigator t, DefinitionNavigator tgt) {
+    return t.current().typeSummary().equals(tgt.current().typeSummary());
+  }
+
+  private void copySlices(List<ElementDefinition> target, List<ElementDefinition> source, List<DefinitionNavigator> list) {
+    for (DefinitionNavigator slice : list) {
+      copySlice(target, source, slice);
+    }    
+  }
+
+  public void copySlice(List<ElementDefinition> target, List<ElementDefinition> source, DefinitionNavigator slice) {
+    target.add(slice.current().copy());
+    int i = source.indexOf(slice.current())+1;
+    while (i < source.size() && source.get(i).getPath().startsWith(slice.current().getPath()+".")) {
+      target.add(source.get(i).copy());
+      i++;
+    }
+  }
+
+  private boolean isTypeSlicing(ElementDefinitionSlicingComponent slicing) {
+    if (slicing.getDiscriminator().size() == 1 && slicing.getDiscriminatorFirstRep().getType() == DiscriminatorType.TYPE && "$this".equals(slicing.getDiscriminatorFirstRep().getPath()))
+      return true;
+    return false;
+  }
+
+  private boolean slicingMatches(ElementDefinitionSlicingComponent l, ElementDefinitionSlicingComponent r) {
+    if (l.getDiscriminator().size() != r.getDiscriminator().size())
+      return false;
+    for (int i = 0; i < l.getDiscriminator().size(); i++) {
+      if (!slicingMatches(l.getDiscriminator().get(i), r.getDiscriminator().get(i)))
+        return false;
+    }
+    return l.getOrdered() == r.getOrdered();
+  }
+
+  private boolean slicingMatches(ElementDefinitionSlicingDiscriminatorComponent l,  ElementDefinitionSlicingDiscriminatorComponent r) {
+    return l.getType() == r.getType() && l.getPath().equals(r.getPath());
   }
 
   private class ExtensionUsage {
@@ -527,7 +624,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
         DefinitionNavigator r = rc.get(i);
         String cpath = comparePaths(l.path(), r.path(), path, l.nameTail(), r.nameTail());
         if (cpath != null) {
-          if (!compareElements(outcome, cpath, l, r))
+          if (!compareElements(outcome, cpath, l, r, null))
             return false;
         } else {
           outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "Different path at "+path+"["+Integer.toString(i)+"] ("+l.path()+"/"+r.path()+")", ValidationMessage.IssueSeverity.ERROR));
@@ -978,6 +1075,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       return right;
     if (right == null)
       return left;
+    left = stripLinks(left);
+    right = stripLinks(right);
     if (left.equalsIgnoreCase(right))
       return left;
     if (path != null) {
@@ -986,6 +1085,19 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       status(ed, ProfileUtilities.STATUS_HINT);
     }
     return "left: "+left+"; right: "+right;
+  }
+
+  
+  private String stripLinks(String s) {
+    while (s.contains("](")) {
+      int i = s.indexOf("](");
+      int j = s.substring(i).indexOf(")");
+      if (j == -1)
+        return s;
+      else
+        s = s.substring(0, i+1)+s.substring(i+j+1);
+    }
+    return s;
   }
 
   private List<Coding> mergeCodings(List<Coding> left, List<Coding> right) {
@@ -1206,6 +1318,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     StringBuilder b = new StringBuilder();
     b.append("<ul>\r\n");
     for (ValueSet vs : getValuesets()) {
+      System.out.println("  .. Value set: "+vs.getName());
       b.append("<li>");
       b.append(" <td><a href=\""+base+"-"+vs.getId()+".html\">"+Utilities.escapeXml(vs.present())+"</a></td>");
       b.append("</li>\r\n");
@@ -1217,6 +1330,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   
   private void genValueSetFile(String filename, ValueSet vs) throws IOException {
     NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
+    gen.setNoSlowLookup(true);
     gen.generate(null, vs, false);
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(vs.getText().getDiv());
     StringBuilder b = new StringBuilder();
@@ -1319,6 +1433,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     vars.put("valuesets", genValueSets(dest+"/"+getId()+"-vs"));
     producePage(summaryTemplate(), Utilities.path(dest, getId()+".html"), vars);
     
+    System.out.println("  .. profiles");
     // then we produce a comparison page for each pair
     for (ProfileComparison cmp : getComparisons()) {
       vars.clear();
@@ -1442,7 +1557,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
 
   @Override
   public String getLinkForUrl(String corePath, String s) {
-    throw new Error("Not done yet");
+    return null;
   }
 
   public int getErrCount() {
