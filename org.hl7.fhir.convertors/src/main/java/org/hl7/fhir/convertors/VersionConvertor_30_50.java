@@ -29,6 +29,8 @@ import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.DesignationIncludeDesignationComponent;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.SystemVersionProcessingMode;
+import org.hl7.fhir.dstu3.model.MarkdownType;
+import org.hl7.fhir.dstu3.model.Measure;
 import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -13450,8 +13452,6 @@ public class VersionConvertor_30_50 {
     return tgt;
   }
 
-
-
   private static final String CODE_SYSTEM_MEDIA_TYPE = "http://terminology.hl7.org/CodeSystem/media-type";
 
   public static org.hl7.fhir.r5.model.Media convertMedia(org.hl7.fhir.dstu3.model.Media src) throws FHIRException {
@@ -22207,6 +22207,239 @@ public class VersionConvertor_30_50 {
   }
 
 
+  public static org.hl7.fhir.r5.model.Measure convertMeasure(org.hl7.fhir.dstu3.model.Measure src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure tgt = new org.hl7.fhir.r5.model.Measure();
+    copyDomainResource(src, tgt);
+    if (src.hasUrl())
+      tgt.setUrl(src.getUrl());
+    for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasVersion())
+      tgt.setVersion(src.getVersion());
+    if (src.hasName())
+      tgt.setName(src.getName());
+    if (src.hasTitle())
+      tgt.setTitle(src.getTitle());
+    if (src.hasStatus())
+      tgt.setStatus(convertPublicationStatus(src.getStatus()));
+    if (src.hasExperimental())
+      tgt.setExperimental(src.getExperimental());
+    if (src.hasType())
+      for (org.hl7.fhir.dstu3.model.CodeableConcept concept : src.getType())
+        tgt.addType(convertCodeableConcept(concept));
+    if (src.hasDate())
+      tgt.setDate(src.getDate());
+    if (src.hasPublisher())
+      tgt.setPublisher(src.getPublisher());
+    for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact())
+      tgt.addContact(convertContactDetail(t));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext())
+      tgt.addUseContext(convertUsageContext(t));
+    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction())
+      tgt.addJurisdiction(convertCodeableConcept(t));
+    if (src.hasPurpose())
+      tgt.setPurpose(src.getPurpose());
+    if (src.hasUsage())
+      tgt.setUsage(src.getUsage());
+    if (src.hasCopyright())
+      tgt.setCopyright(src.getCopyright());
+    if (src.hasApprovalDate())
+      tgt.setApprovalDate(src.getApprovalDate());
+    if (src.hasLastReviewDate())
+      tgt.setLastReviewDate(src.getLastReviewDate());
+    if (src.hasEffectivePeriod())
+      tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+    for (org.hl7.fhir.dstu3.model.Contributor t : src.getContributor()) {
+      if (t.getType() == ContributorType.AUTHOR)
+        for (ContactDetail c : t.getContact())
+          tgt.addAuthor(convertContactDetail(c));
+      if (t.getType() == ContributorType.EDITOR)
+        for (ContactDetail c : t.getContact())
+          tgt.addEditor(convertContactDetail(c));
+      if (t.getType() == ContributorType.REVIEWER)
+        for (ContactDetail c : t.getContact())
+          tgt.addReviewer(convertContactDetail(c));
+      if (t.getType() == ContributorType.ENDORSER)
+        for (ContactDetail c : t.getContact())
+          tgt.addEndorser(convertContactDetail(c));
+    }
+    // NEW
+    for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact())
+      tgt.addRelatedArtifact(convertRelatedArtifact(t));
+    for (org.hl7.fhir.dstu3.model.Reference r : src.getLibrary())
+      tgt.addLibrary(r.getReference());
+    if (src.hasDisclaimer())
+      tgt.setDisclaimer(src.getDisclaimer());
+    if (src.hasScoring())
+      tgt.setScoring(convertCodeableConcept(src.getScoring()));
+    if (src.hasCompositeScoring())
+      tgt.setCompositeScoring(convertCodeableConcept(src.getCompositeScoring()));
+    for (org.hl7.fhir.dstu3.model.CodeableConcept c : src.getType())
+      tgt.addType(convertCodeableConcept(c));
+    if (src.hasRiskAdjustment())
+      tgt.setRiskAdjustment(src.getRiskAdjustment());
+    if (src.hasRateAggregation())
+      tgt.setRateAggregation(src.getRateAggregation());
+    if (src.hasRationale())
+      tgt.setRationale(src.getRationale());
+    if  (src.hasClinicalRecommendationStatement())
+      tgt.setClinicalRecommendationStatement(src.getClinicalRecommendationStatement());
+    if (src.hasImprovementNotation()) {
+      if (src.getImprovementNotation().toLowerCase().contains("increase") || src.getImprovementNotation().toLowerCase().contains("higher"))
+        tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode("increase").setSystem("http://terminology.hl7.org/CodeSystem/measure-improvement-notation")).setText(src.getImprovementNotation()));
+      else if (src.getImprovementNotation().toLowerCase().contains("decrease") || src.getImprovementNotation().toLowerCase().contains("lower"))
+        tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode("decrease").setSystem("http://terminology.hl7.org/CodeSystem/measure-improvement-notation")).setText(src.getImprovementNotation()));
+      else
+        tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().setText(src.getImprovementNotation()));
+    }
+    for (org.hl7.fhir.dstu3.model.MarkdownType m : src.getDefinition())
+      tgt.addDefinition(m.getValue());
+    if (src.hasGuidance())
+      tgt.setGuidance(src.getGuidance());
+    for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent g : src.getGroup())
+      tgt.addGroup(convertMeasureGroup(g));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.Measure.MeasureGroupComponent convertMeasureGroup(org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure.MeasureGroupComponent tgt = new org.hl7.fhir.r5.model.Measure.MeasureGroupComponent();
+    if (src.hasIdentifier())
+      tgt.setCode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode(src.getIdentifier().getValue())));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation())
+      tgt.addPopulation(convertMeasureGroupPopulation(p));
+    for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier())
+      tgt.addStratifier(convertMeasureGroupStratifier(s));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent convertMeasureGroupPopulation(org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent tgt = new org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent();
+    if (src.hasCode())
+      tgt.setCode(convertCodeableConcept(src.getCode()));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    if (src.hasCriteria())
+      tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setExpression(src.getCriteria()));
+    if (src.hasName()) {
+      if (tgt.hasCriteria())
+        tgt.getCriteria().setName(src.getName());
+      else
+        tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setName(src.getName()));
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent convertMeasureGroupStratifier(org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent tgt = new org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent();
+    if (src.hasIdentifier())
+      tgt.setCode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode(src.getIdentifier().getValue())));
+    if (src.hasCriteria())
+      tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setExpression(src.getCriteria()));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure convertMeasure(org.hl7.fhir.r5.model.Measure src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure tgt = new org.hl7.fhir.dstu3.model.Measure();
+    copyDomainResource(src, tgt);
+    if (src.hasUrl())
+      tgt.setUrl(src.getUrl());
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasVersion())
+      tgt.setVersion(src.getVersion());
+    if (src.hasName())
+      tgt.setName(src.getName());
+    if (src.hasTitle())
+      tgt.setTitle(src.getTitle());
+    if (src.hasStatus())
+      tgt.setStatus(convertPublicationStatus(src.getStatus()));
+    if (src.hasExperimental())
+      tgt.setExperimental(src.getExperimental());
+    if (src.hasType())
+      for (org.hl7.fhir.r5.model.CodeableConcept concept : src.getType())
+        tgt.addType(convertCodeableConcept(concept));
+    if (src.hasDate())
+      tgt.setDate(src.getDate());
+    if (src.hasPublisher())
+      tgt.setPublisher(src.getPublisher());
+    for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact())
+      tgt.addContact(convertContactDetail(t));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext())
+      tgt.addUseContext(convertUsageContext(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction())
+      tgt.addJurisdiction(convertCodeableConcept(t));
+    if (src.hasPurpose())
+      tgt.setPurpose(src.getPurpose());
+    if (src.hasUsage())
+      tgt.setUsage(src.getUsage());
+    if (src.hasCopyright())
+      tgt.setCopyright(src.getCopyright());
+    if (src.hasApprovalDate())
+      tgt.setApprovalDate(src.getApprovalDate());
+    if (src.hasLastReviewDate())
+      tgt.setLastReviewDate(src.getLastReviewDate());
+    if (src.hasEffectivePeriod())
+      tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent convertMeasureGroup(org.hl7.fhir.r5.model.Measure.MeasureGroupComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent tgt = new org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent();
+    if (src.hasCode() && src.getCode().hasCoding())
+      tgt.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setValue(src.getCode().getCodingFirstRep().getCode()));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    for (org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation())
+      tgt.addPopulation(convertMeasureGroupPopulation(p));
+    for (org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier())
+      tgt.addStratifier(convertMeasureGroupStratifier(s));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent convertMeasureGroupPopulation(org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent tgt = new org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent();
+    if (src.hasCode())
+      tgt.setCode(convertCodeableConcept(src.getCode()));
+    if (src.hasDescription())
+      tgt.setDescription(src.getDescription());
+    if (src.hasCriteria() && src.getCriteria().hasExpression())
+      tgt.setCriteria(src.getCriteria().getExpression());
+    if (src.hasCriteria() && src.getCriteria().hasName()) {
+      tgt.setName(src.getCriteria().getName());
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent convertMeasureGroupStratifier(org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent tgt = new org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent();
+    if (src.hasCode() && src.getCode().hasCoding())
+      tgt.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setValue(src.getCode().getCodingFirstRep().getCode()));
+    if (src.hasCriteria() && src.getCriteria().hasExpression())
+      tgt.setCriteria(src.getCriteria().getExpression());
+    return tgt;
+  }
 
   public static org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.dstu3.model.Resource src, boolean nullOk) throws FHIRException {
     if (src == null)
@@ -22311,6 +22544,8 @@ public class VersionConvertor_30_50 {
       return convertList((org.hl7.fhir.dstu3.model.ListResource) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Location)
       return convertLocation((org.hl7.fhir.dstu3.model.Location) src);
+    if (src instanceof org.hl7.fhir.dstu3.model.Measure)
+      return convertMeasure((org.hl7.fhir.dstu3.model.Measure) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Media)
       return convertMedia((org.hl7.fhir.dstu3.model.Media) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Medication)
@@ -22496,6 +22731,8 @@ public class VersionConvertor_30_50 {
       return convertList((org.hl7.fhir.r5.model.ListResource) src);
     if (src instanceof org.hl7.fhir.r5.model.Location)
       return convertLocation((org.hl7.fhir.r5.model.Location) src);
+    if (src instanceof org.hl7.fhir.r5.model.Measure)
+      return convertMeasure((org.hl7.fhir.r5.model.Measure) src);
     if (src instanceof org.hl7.fhir.r5.model.Media)
       return convertMedia((org.hl7.fhir.r5.model.Media) src);
     if (src instanceof org.hl7.fhir.r5.model.Medication)
