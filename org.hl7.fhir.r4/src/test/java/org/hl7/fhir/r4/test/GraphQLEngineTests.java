@@ -104,6 +104,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     if (ok) {
       assertTrue("Expected to fail, but didn't", !output.equals("$error"));
       StringBuilder str = new StringBuilder();
+      gql.getOutput().setWriteWrapper(false);
       gql.getOutput().write(str, 0);
       TextFile.stringToFile(str.toString(), TestingUtilities.resourceNameToFile("graphql", output+".out"));
       msg = TestingUtilities.checkJsonIsSame(TestingUtilities.resourceNameToFile("graphql", output+".out"), TestingUtilities.resourceNameToFile("graphql", output));
