@@ -3640,6 +3640,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public static ElementDefinitionSlicingDiscriminatorComponent interpretR2Discriminator(String discriminator) {
+    if (discriminator.endsWith("@pattern"))
+      return makeDiscriminator(DiscriminatorType.PATTERN, discriminator.length() == 8 ? "" : discriminator.substring(0,discriminator.length()-9)); 
     if (discriminator.endsWith("@profile"))
       return makeDiscriminator(DiscriminatorType.PROFILE, discriminator.length() == 8 ? "" : discriminator.substring(discriminator.length()-9)); 
     if (discriminator.endsWith("@type")) 
@@ -3656,6 +3658,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public static String buildR2Discriminator(ElementDefinitionSlicingDiscriminatorComponent t) throws FHIRException {
     switch (t.getType()) {
     case PROFILE: return t.getPath()+"/@profile";
+    case PATTERN: return t.getPath()+"/@pattern";
     case TYPE: return t.getPath()+"/@type";
     case VALUE: return t.getPath();
     case EXISTS: return t.getPath(); // determination of value vs. exists is based on whether there's only 2 slices - one with minOccurs=1 and other with maxOccur=0
