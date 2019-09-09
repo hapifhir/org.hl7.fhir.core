@@ -58,8 +58,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
@@ -81,7 +83,9 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
@@ -106,7 +110,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 public class Validator {
 
   public enum EngineMode {
-    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT
+    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN
   }
 
   private static String getNamedParam(String[] args, String param) {
@@ -339,7 +343,7 @@ public class Validator {
       String lang = null;
       boolean doDebug = false;
 
-        // load the parameters - so order doesn't matter
+      // load the parameters - so order doesn't matter
       for (int i = 0; i < args.length; i++) {
         if (args[i].equals("-defn"))
           if (i+1 == args.length)
@@ -396,6 +400,8 @@ public class Validator {
           mode = EngineMode.NARRATIVE;
         else if (args[i].equals("-snapshot"))
           mode = EngineMode.SNAPSHOT;
+        else if (args[i].equals("-scan"))
+          mode = EngineMode.SCAN;
         else if (args[i].equals("-tx"))
           if (i+1 == args.length)
             throw new Error("Specified -tx without indicating terminology server");
@@ -510,25 +516,41 @@ public class Validator {
             validator.loadProfile(locations.getOrDefault(s, s));
           }
         }
-        if (profiles.size() > 0)
-          System.out.println("  .. validate "+sources+" against "+profiles.toString());
-        else
-          System.out.println("  .. validate "+sources);
-        validator.prepare(); // generate any missing snapshots
-        Resource r = validator.validate(sources, profiles);
-        int ec = 0;
-        if (output == null) {
-          if (r instanceof Bundle)
-            for (BundleEntryComponent e : ((Bundle)r).getEntry())
-              ec  = displayOO((OperationOutcome)e.getResource()) + ec;
+        if (mode == EngineMode.SCAN) {
+          if (Utilities.noString(output))
+            throw new Exception("Output parameter required when scanning");
+          if (!(new File(output).isDirectory()))
+            throw new Exception("Output '"+output+"' must be a directory when scanning");
+          System.out.println("  .. scan "+sources+" against loaded IGs");
+          Set<String> urls = new HashSet<>();
+          for (ImplementationGuide ig : validator.getContext().allImplementationGuides()) {
+            if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
+              urls.add(ig.getUrl());
+          }
+          List<ScanOutputItem> res = validator.validateScan(sources, urls);
+          validator.genScanOutput(output, res);         
+          System.out.println("Done. output in "+Utilities.path(output, "scan.html"));
+        } else { 
+          if (profiles.size() > 0)
+            System.out.println("  .. validate "+sources+" against "+profiles.toString());
           else
-            ec = displayOO((OperationOutcome)r);
-        } else {
-          FileOutputStream s = new FileOutputStream(output);
-          x.compose(s, r);
-          s.close();
+            System.out.println("  .. validate "+sources);
+          validator.prepare(); // generate any missing snapshots
+          Resource r = validator.validate(sources, profiles);
+          int ec = 0;
+          if (output == null) {
+            if (r instanceof Bundle)
+              for (BundleEntryComponent e : ((Bundle)r).getEntry())
+                ec  = displayOO((OperationOutcome)e.getResource()) + ec;
+            else
+              ec = displayOO((OperationOutcome)r);
+          } else {
+            FileOutputStream s = new FileOutputStream(output);
+            x.compose(s, r);
+            s.close();
+          }
+          System.exit(ec > 0 ? 1 : 0);
         }
-        System.exit(ec > 0 ? 1 : 0);
       }
     }
   }
