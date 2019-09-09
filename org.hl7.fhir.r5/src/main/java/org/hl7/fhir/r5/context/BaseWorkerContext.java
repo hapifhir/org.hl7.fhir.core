@@ -1201,4 +1201,11 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   
+
+  public List<ImplementationGuide> allImplementationGuides() {
+    List<ImplementationGuide> res = new ArrayList<>();
+    res.addAll(guides.values());
+    return res;
+  }
+  
 }
