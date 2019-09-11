@@ -13,7 +13,7 @@
 	each other. It is fine to bump the point version of this POM without affecting
 	HAPI FHIR.
 	-->
-	<version>4.0.10-SNAPSHOT</version>
+	<version>4.0.11</version>
 
 	<properties>
 		<hapi_fhir_version>4.0.0</hapi_fhir_version>
