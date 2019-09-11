@@ -89,6 +89,7 @@ import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -132,13 +133,6 @@ public class Validator {
   public static void main(String[] args) throws Exception {
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
     System.out.println("Detected Java version: " + System.getProperty("java.version")+" from "+System.getProperty("java.home")+" on "+System.getProperty("os.arch")+" ("+System.getProperty("sun.arch.data.model")+"bit). "+toMB(Runtime.getRuntime().maxMemory())+"MB available");
-    System.out.print("Parameters:");
-    for (int i = 0; i < args.length; i++) {
-        System.out.print(" "+args[i]);
-    }      
-    System.out.print(" [dir = "+System.getProperty("user.dir")+"]");
-    System.out.println("");
-    System.out.println("");
     String proxy = getNamedParam(args, "-proxy");
     if (!Utilities.noString(proxy)) {
       String[] p = proxy.split("\\:");
@@ -334,6 +328,7 @@ public class Validator {
       for (String s : args)
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
       System.out.println();
+      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
 
       String definitions = "hl7.fhir.core#current";
       String map = null;
