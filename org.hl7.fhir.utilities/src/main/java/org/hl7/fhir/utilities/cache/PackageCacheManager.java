@@ -776,4 +776,9 @@ public class PackageCacheManager {
     }
   }
 
+
+  public static String userDir() throws IOException {
+    return Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+  }
+
 }
