@@ -183,7 +183,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 					return ourYearMonthDayTimeMilliFormat.format(theValue);
 				}
 			}
-			throw new IllegalStateException("Invalid precision (this is a bug, shouldn't happen): " + myPrecision);
+			throw new IllegalStateException("Invalid precision (this is a bug, shouldn't happen https://xkcd.com/2200/): " + myPrecision);
 		}
 	}
 
