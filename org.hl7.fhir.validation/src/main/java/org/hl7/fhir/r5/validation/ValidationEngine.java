@@ -63,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -544,13 +545,16 @@ public class ValidationEngine {
     //// -----
     
     // ok, having tried all that... now we'll just try to access it directly
+    byte[] cnt;
     if (stream == null)
-      stream = fetchFromUrlSpecific(src, "application/json", true);
+      cnt = fetchFromUrlSpecific(src, "application/json", true);
+    else
+      cnt = TextFile.streamToBytes(stream);
     
-    FhirFormat fmt = checkIsResource(stream, src);
+    FhirFormat fmt = checkIsResource(cnt, src);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
-      res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytes(src));
+      res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), cnt);
       return res;
     }    
     throw new Exception("Unable to find/resolve/read -ig "+src);
@@ -569,12 +573,12 @@ public class ValidationEngine {
     }
   }
 
-  private InputStream fetchFromUrlSpecific(String source, String contentType, boolean optional) throws Exception {
+  private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional) throws Exception {
     try {
       URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
-      URLConnection c = url.openConnection();
-      c.setRequestProperty("Content-Type", contentType);
-      return c.getInputStream();
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setRequestProperty("Accept", contentType);
+      return TextFile.streamToBytes(conn.getInputStream());
     } catch (Exception e) {
       if (optional)
         return null;
@@ -693,25 +697,25 @@ public class ValidationEngine {
     this.noInvariantChecks = value;
   }
 
-  private FhirFormat checkIsResource(InputStream stream, String filename) {
+  private FhirFormat checkIsResource(byte[] cnt, String filename) {
     System.out.println("   ..Detect format for "+filename);
     try {
-      Manager.parse(context, stream, FhirFormat.XML);
-      return FhirFormat.XML;
-    } catch (Exception e) {
-    }
-    try {
-      Manager.parse(context, stream, FhirFormat.JSON);
+      Manager.parse(context, new ByteArrayInputStream(cnt), FhirFormat.JSON);
       return FhirFormat.JSON;
     } catch (Exception e) {
     }
     try {
-      Manager.parse(context, stream, FhirFormat.TURTLE);
+      Manager.parse(context, new ByteArrayInputStream(cnt),FhirFormat.XML);
+      return FhirFormat.XML;
+    } catch (Exception e) {
+    }
+    try {
+      Manager.parse(context, new ByteArrayInputStream(cnt),FhirFormat.TURTLE);
       return FhirFormat.TURTLE;
     } catch (Exception e) {
     }
     try {
-      new StructureMapUtilities(context, null, null).parse(TextFile.streamToString(stream), null);
+      new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(cnt), null);
       return FhirFormat.TEXT;
     } catch (Exception e) {
     }
@@ -720,7 +724,7 @@ public class ValidationEngine {
     return null;    
   }
 
-  private FhirFormat checkIsResource(String path) throws FileNotFoundException {
+  private FhirFormat checkIsResource(String path) throws IOException {
     String ext = Utilities.getFileExtension(path);
     if (Utilities.existsInList(ext, "xml")) 
       return FhirFormat.XML;
@@ -733,7 +737,7 @@ public class ValidationEngine {
     if (Utilities.existsInList(ext, "txt")) 
       return FhirFormat.TEXT;
 
-    return checkIsResource(new FileInputStream(path), path);
+    return checkIsResource(TextFile.fileToBytes(path), path);
 	}
 
   public void connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
