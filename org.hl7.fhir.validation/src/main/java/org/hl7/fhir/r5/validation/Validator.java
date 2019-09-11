@@ -125,8 +125,20 @@ public class Validator {
     return null;
   }
 
+  private static String toMB(long maxMemory) {
+    return Long.toString(maxMemory / (1024*1024));
+  }
+
   public static void main(String[] args) throws Exception {
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
+    System.out.println("Detected Java version: " + System.getProperty("java.version")+" from "+System.getProperty("java.home")+" on "+System.getProperty("os.arch")+" ("+System.getProperty("sun.arch.data.model")+"bit). "+toMB(Runtime.getRuntime().maxMemory())+"MB available");
+    System.out.print("Parameters:");
+    for (int i = 0; i < args.length; i++) {
+        System.out.print(" "+args[i]);
+    }      
+    System.out.print(" [dir = "+System.getProperty("user.dir")+"]");
+    System.out.println("");
+    System.out.println("");
     String proxy = getNamedParam(args, "-proxy");
     if (!Utilities.noString(proxy)) {
       String[] p = proxy.split("\\:");
