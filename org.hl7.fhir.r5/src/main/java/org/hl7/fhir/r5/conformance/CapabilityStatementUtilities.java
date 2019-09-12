@@ -9,12 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -29,9 +27,12 @@ import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResource
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestSecurityComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Element;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -50,10 +51,44 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class CapabilityStatementUtilities {
 
+  public class CapabilityStatementComparisonOutput {
+    public CapabilityStatementComparisonOutput() {
+      subset = new CapabilityStatement();
+      subset.setDate(new Date());
+      subset.setId(UUID.randomUUID().toString().toLowerCase());
+      subset.setUrl("urn:uuid:"+subset.getId());
+      subset.setName("intersection of "+selfName+" and "+otherName);
+      subset.setStatus(PublicationStatus.DRAFT);
+      
+      superset = new CapabilityStatement();
+      superset.setDate(subset.getDate());
+      superset.setId(UUID.randomUUID().toString().toLowerCase());
+      superset.setUrl("urn:uuid:"+superset.getId());
+      superset.setName("union of "+selfName+" and "+otherName);
+      superset.setStatus(PublicationStatus.DRAFT);
+    }
+    private CapabilityStatement superset;
+    private CapabilityStatement subset;
+    private OperationOutcome outcome;
+    private List<ValidationMessage> messages = new ArrayList<>();
+    public CapabilityStatement getSuperset() {
+      return superset;
+    }
+    public CapabilityStatement getSubset() {
+      return subset;
+    }
+    public OperationOutcome getOutcome() {
+      return outcome;
+    }
+    public List<ValidationMessage> getMessages() {
+      return messages;
+    }
+  }
+
   private IWorkerContext context;
   private String selfName;
   private String otherName;
-  private List<ValidationMessage> output;
+  private CapabilityStatementComparisonOutput output;
   private XhtmlDocument html;
   private MarkDownProcessor markdown = new MarkDownProcessor(Dialect.COMMON_MARK);
   private String folder;
@@ -142,10 +177,10 @@ public class CapabilityStatementUtilities {
    * @throws FHIRFormatError 
    * @throws DefinitionException 
    */
-  public List<ValidationMessage> isCompatible(String selfName, String otherName, CapabilityStatement self,  CapabilityStatement other) throws DefinitionException, FHIRFormatError, IOException {
+  public CapabilityStatementComparisonOutput isCompatible(String selfName, String otherName, CapabilityStatement self,  CapabilityStatement other) throws DefinitionException, FHIRFormatError, IOException {
     this.selfName = selfName;
     this.otherName = otherName;
-    this.output = new ArrayList<>();
+    this.output = new CapabilityStatementComparisonOutput();
     XhtmlNode x = startHtml();
 
     information(x, IssueType.INVARIANT, self.getUrl(), "Comparing "+selfName+" to "+otherName+", to see if a server that implements "+otherName+" also implements "+selfName+"");
@@ -159,15 +194,16 @@ public class CapabilityStatementUtilities {
 
     if (self.getRest().size() == 1 && other.getRest().size() == 1) {
       XhtmlNode tbl = startTable(x, self, other);
-      compareRest(tbl, self.getUrl(), self.getRest().get(0), other.getRest().get(0)); 
+      compareRest(tbl, self.getUrl(), self.getRest().get(0), other.getRest().get(0), output.subset.addRest().setMode(RestfulCapabilityMode.SERVER), output.superset.addRest().setMode(RestfulCapabilityMode.SERVER)); 
     }
     if (folder != null)
       saveToFile();
+    output.outcome = OperationOutcomeUtilities.createOutcome(output.messages);
     return output;
   }
 
-  private void compareRest(XhtmlNode tbl, String path, CapabilityStatementRestComponent self, CapabilityStatementRestComponent other) throws DefinitionException, FHIRFormatError, IOException {
-    compareSecurity(tbl, path, self, other);
+  private void compareRest(XhtmlNode tbl, String path, CapabilityStatementRestComponent self, CapabilityStatementRestComponent other, CapabilityStatementRestComponent intersection, CapabilityStatementRestComponent union) throws DefinitionException, FHIRFormatError, IOException {
+    compareSecurity(tbl, path, self, other, intersection, union);
 
     // check resources
     List<CapabilityStatementRestResourceComponent> ol = new ArrayList<>();
@@ -188,6 +224,7 @@ public class CapabilityStatementUtilities {
      
 
       if (o == null) {
+        union.addResource(r);
         XhtmlNode p = tr.td().para("Absent");
         XhtmlNode td = tr.td();
         String s = getConfStatus(r);
@@ -224,12 +261,13 @@ public class CapabilityStatementUtilities {
         olr.add(o);
         tr.td().tx("Present");
         tr.td().nbsp();
-        compareResource(path+".resource.where(type = '"+r.getType()+"')", r, o, tbl);
+        compareResource(path+".resource.where(type = '"+r.getType()+"')", r, o, tbl, intersection.addResource().setType(r.getType()), union.addResource().setType(r.getType()));
       }
     }
     for (CapabilityStatementRestResourceComponent t : ol) {
       XhtmlNode tr = tbl.tr();
       if (!olr.contains(t)) {
+        union.addResource(t);
         tr.td().addText(t.getType());
         XhtmlNode td = tr.td();
         td.style("background-color: #eeeeee").para("Absent");
@@ -315,7 +353,7 @@ public class CapabilityStatementUtilities {
     return false;
   }
 
-  public void compareSecurity(XhtmlNode tbl, String path, CapabilityStatementRestComponent self, CapabilityStatementRestComponent other) {
+  public void compareSecurity(XhtmlNode tbl, String path, CapabilityStatementRestComponent self, CapabilityStatementRestComponent other, CapabilityStatementRestComponent intersection, CapabilityStatementRestComponent union) {
     XhtmlNode tr = tbl.tr();
     tr.td().b().addText("Security");
     tr.td().para(gen(self.getSecurity()));
@@ -327,10 +365,11 @@ public class CapabilityStatementUtilities {
     else if (!self.hasSecurity() && other.hasSecurity()) 
       error(td, IssueType.CONFLICT, path+".security", selfName+" does not specify security requirements but "+otherName+" does ("+gen(self.getSecurity())+")");
     else if (self.hasSecurity() && other.hasSecurity())
-      compareSecurity(td, path+".security", self.getSecurity(), other.getSecurity());
+      compareSecurity(td, path+".security", self.getSecurity(), other.getSecurity(), intersection.getSecurity(), union.getSecurity());
   }  
 
-  private void compareResource(String path, CapabilityStatementRestResourceComponent self, CapabilityStatementRestResourceComponent other, XhtmlNode tbl) throws DefinitionException, FHIRFormatError, IOException {
+  private void compareResource(String path, CapabilityStatementRestResourceComponent self, CapabilityStatementRestResourceComponent other, XhtmlNode tbl,
+      CapabilityStatementRestResourceComponent intersection, CapabilityStatementRestResourceComponent union) throws DefinitionException, FHIRFormatError, IOException {
     XhtmlNode tr = tbl.tr();
     tr.td().para().tx(XhtmlNode.NBSP+" - Conformance");
     genConf(tr.td(), self, other);
@@ -341,11 +380,11 @@ public class CapabilityStatementUtilities {
     tr.td().para().tx(XhtmlNode.NBSP+" - Profile");
     genProfile(tr.td(), self, other);
     genProfile(tr.td(), other, self);
-    compareProfiles(tr.td(), path, getProfile(self), getProfile(other), self.getType());
+    compareProfiles(tr.td(), path, getProfile(self), getProfile(other), self.getType(), intersection, union);
     
     // compare the interactions
-    compareResourceInteractions(path, self, other, tbl);
-    compareResourceSearchParams(path, self, other, tbl);
+    compareResourceInteractions(path, self, other, tbl, intersection, union);
+    compareResourceSearchParams(path, self, other, tbl, intersection, union);
     // compare the search parameters
     // compare the operations
 
@@ -353,7 +392,8 @@ public class CapabilityStatementUtilities {
 
   }
 
-  private void compareProfiles(XhtmlNode td, String path, String urlL, String urlR, String type) throws DefinitionException, FHIRFormatError, IOException {
+  private void compareProfiles(XhtmlNode td, String path, String urlL, String urlR, String type,
+      CapabilityStatementRestResourceComponent intersection, CapabilityStatementRestResourceComponent union) throws DefinitionException, FHIRFormatError, IOException {
     if (urlL == null) {
       urlL = "http://hl7.org/fhir/StructureDefinition/"+type;
     }
@@ -371,6 +411,12 @@ public class CapabilityStatementUtilities {
       // ok they are different... 
       if (sdR.getUrl().equals(sdL.getBaseDefinition())) {
         information(td, null, path, "The profile specified by "+selfName+" is inherited from the profile specified by "+otherName);
+        intersection.setProfile(sdL.getUrl());
+        union.setProfile(sdR.getUrl());
+      } else if (sdL.getUrl().equals(sdR.getBaseDefinition())) {
+        information(td, null, path, "The profile specified by "+otherName+" is inherited from the profile specified by "+selfName);
+        intersection.setProfile(sdR.getUrl());
+        union.setProfile(sdL.getUrl());
       } else if (folder != null) {
         try {
           ProfileComparer pc = new ProfileComparer(context);
@@ -383,6 +429,8 @@ public class CapabilityStatementUtilities {
           pc.compareProfiles(sdL, sdR);
           System.out.println("Generate Comparison between "+pc.getLeftName()+" and "+pc.getRightName());
           pc.generate(folder);
+          intersection.setProfile(pc.getComparisons().get(0).getSubset().getUrl());
+          union.setProfile(pc.getComparisons().get(0).getSuperset().getUrl());
           td.ah(pc.getId()+".html").tx("Comparison...");
           td.tx(pc.getErrCount()+" "+Utilities.pluralize("error", pc.getErrCount()));
         } catch (Exception e) {
@@ -395,7 +443,8 @@ public class CapabilityStatementUtilities {
     }
   }
 
-  private void compareResourceInteractions(String path, CapabilityStatementRestResourceComponent self, CapabilityStatementRestResourceComponent other, XhtmlNode tbl) {
+  private void compareResourceInteractions(String path, CapabilityStatementRestResourceComponent self, CapabilityStatementRestResourceComponent other, XhtmlNode tbl,
+      CapabilityStatementRestResourceComponent intersection, CapabilityStatementRestResourceComponent union) {
     XhtmlNode tr = tbl.tr();
     tr.td().para().tx(XhtmlNode.NBSP+" - Interactions");
     genInt(tr.td(), self, other, true);
@@ -412,19 +461,23 @@ public class CapabilityStatementUtilities {
           break;
         }
       }
+      union.addInteraction(r);
       if (o == null) {
         error(td, IssueType.NOTFOUND, path+".interaction.where(code = '"+r.getCode()+"')", selfName+" specifies the interaction "+r.getCode()+" but "+otherName+" does not");        
       } else { 
+        intersection.addInteraction(r);
         olr.add(o);
       }
     }
     for (ResourceInteractionComponent t : ol) {
+      union.addInteraction(t);
       if (!olr.contains(t) && isProhibited(t))
         error(td, IssueType.CONFLICT, path+".interaction", selfName+" does not specify the interaction "+t.getCode()+" but "+otherName+" prohibits it");        
     }        
   }
 
-  private void compareResourceSearchParams(String path, CapabilityStatementRestResourceComponent self, CapabilityStatementRestResourceComponent other, XhtmlNode tbl) {
+  private void compareResourceSearchParams(String path, CapabilityStatementRestResourceComponent self, CapabilityStatementRestResourceComponent other, XhtmlNode tbl,
+      CapabilityStatementRestResourceComponent intersection, CapabilityStatementRestResourceComponent union) {
     XhtmlNode tr = tbl.tr();
     tr.td().para().tx(XhtmlNode.NBSP+" - Search Params");
     genSP(tr.td(), self, other, true);
@@ -442,13 +495,17 @@ public class CapabilityStatementUtilities {
           break;
         }
       }
+      union.addSearchParam(r);
       if (o == null) {
         error(td, IssueType.NOTFOUND, path+".searchParam.where(name = '"+r.getName()+"')", selfName+" specifies the search parameter "+r.getName()+" but "+otherName+" does not");        
       } else { 
+        intersection.addSearchParam(r);
         olr.add(o);
       }
     }
     for (CapabilityStatementRestResourceSearchParamComponent t : ol) {
+      if (!olr.contains(t))
+        union.addSearchParam(t);
       if (!olr.contains(t) && isProhibited(t))
         error(td, IssueType.CONFLICT, path+"", selfName+" does not specify the search parameter "+t.getName()+" but "+otherName+" prohibits it");        
     }    
@@ -469,11 +526,16 @@ public class CapabilityStatementUtilities {
     return t.hasExtension("http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation") && "SHALL NOT".equals(t.getExtensionString("http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation"));
   }
 
-  private void compareSecurity(XhtmlNode td, String path, CapabilityStatementRestSecurityComponent self, CapabilityStatementRestSecurityComponent other) {
+  private void compareSecurity(XhtmlNode td, String path, CapabilityStatementRestSecurityComponent self, CapabilityStatementRestSecurityComponent other, 
+      CapabilityStatementRestSecurityComponent intersection, CapabilityStatementRestSecurityComponent union) {
     if (self.getCors() && !other.getCors()) 
       error(td, IssueType.CONFLICT, path+".security.cors", selfName+" specifies CORS but "+otherName+" doesn't");
     else if (!self.getCors() && other.getCors()) 
       error(td, IssueType.CONFLICT, path+".security.cors", selfName+" does not specify CORS but "+otherName+" does");
+    if (self.getCors() || other.getCors())
+      union.setCors(true);
+    if (self.getCors() && other.getCors())
+      union.setCors(true);
 
     List<CodeableConcept> ol = new ArrayList<>();
     List<CodeableConcept> olr = new ArrayList<>();
@@ -486,15 +548,19 @@ public class CapabilityStatementUtilities {
           break;
         }
       }
+      union.getService().add(cc);
       if (o == null) {
         error(td, IssueType.CONFLICT, path+".security.cors", selfName+" specifies the security option "+gen(cc)+" but "+otherName+" does not");        
       } else { 
+        intersection.getService().add(cc);
         olr.add(o);
       }
     }
     for (CodeableConcept cc : ol) {
-      if (!olr.contains(cc))
-        error(td, IssueType.CONFLICT, path+".security.cors", selfName+" does not specify the security option "+gen(cc)+" but "+otherName+" does");        
+      if (!olr.contains(cc)) {
+        union.getService().add(cc);
+        error(td, IssueType.CONFLICT, path+".security.cors", selfName+" does not specify the security option "+gen(cc)+" but "+otherName+" does");
+      }
     }    
   }
 
@@ -615,7 +681,7 @@ public class CapabilityStatementUtilities {
   }
 
   private void fatal(XhtmlNode x, IssueType type, String path, String message) {
-    output.add(new ValidationMessage(Source.ProfileComparer, type, path, message, IssueSeverity.FATAL));
+    output.messages.add(new ValidationMessage(Source.ProfileComparer, type, path, message, IssueSeverity.FATAL));
     XhtmlNode ul;
     if ("ul".equals(x.getName())) {
       ul = x;
@@ -634,7 +700,7 @@ public class CapabilityStatementUtilities {
   }
 
   private void error(XhtmlNode x, IssueType type, String path, String message) {
-    output.add(new ValidationMessage(Source.ProfileComparer, type, path, message, IssueSeverity.ERROR));
+    output.messages.add(new ValidationMessage(Source.ProfileComparer, type, path, message, IssueSeverity.ERROR));
     XhtmlNode ul;
     if ("ul".equals(x.getName())) {
       ul = x;
@@ -654,7 +720,7 @@ public class CapabilityStatementUtilities {
 
   private void information(XhtmlNode x, IssueType type, String path, String message) {
     if (type != null)
-      output.add(new ValidationMessage(Source.ProfileComparer, type, path, message, IssueSeverity.INFORMATION));
+      output.messages.add(new ValidationMessage(Source.ProfileComparer, type, path, message, IssueSeverity.INFORMATION));
     XhtmlNode ul;
     if ("ul".equals(x.getName())) {
       ul = x;

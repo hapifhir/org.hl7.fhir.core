@@ -65,6 +65,7 @@ import java.util.Set;
 
 import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
+import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities.CapabilityStatementComparisonOutput;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -243,6 +244,12 @@ public class Validator {
       System.out.println("");
       System.out.println("-snapshot requires the parameters -defn, -txserver, -source, and -output. ig may be used to provide necessary base profiles");
     } else if (hasParam(args, "-compare")) {
+      System.out.print("Arguments:");
+      for (String s : args)
+        System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
+      System.out.println();
+      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
+
       String dest =  getParam(args, "-dest");
       if (dest == null)
         System.out.println("no -dest parameter provided");
@@ -302,18 +309,24 @@ public class Validator {
             CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest);
             CapabilityStatement capL = (CapabilityStatement) resLeft;
             CapabilityStatement capR = (CapabilityStatement) resRight;
-            List<ValidationMessage> msgs = pc.isCompatible(nameLeft, nameRight, capL, capR);
+            CapabilityStatementComparisonOutput output = pc.isCompatible(nameLeft, nameRight, capL, capR);
             
             String destTxt = Utilities.path(dest, "output.txt");
             System.out.println("Generating output to "+destTxt+"...");
             StringBuilder b = new StringBuilder();
-            for (ValidationMessage msg : msgs) {
+            for (ValidationMessage msg : output.getMessages()) {
               b.append(msg.summary());
               b.append("\r\n");
             }
             TextFile.stringToFile(b.toString(), destTxt);
             File txtFile = new File(destTxt);
             Desktop.getDesktop().browse(txtFile.toURI());
+            new XmlParser().compose(new FileOutputStream(Utilities.path(dest, "union.xml")), output.getSuperset());
+            new XmlParser().compose(new FileOutputStream(Utilities.path(dest, "intersection.xml")), output.getSubset());
+            new XmlParser().compose(new FileOutputStream(Utilities.path(dest, "issues.xml")), output.getOutcome());
+            new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "union.json")), output.getSuperset());
+            new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "intersection.json")), output.getSubset());
+            new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "issues.json")), output.getOutcome());
             
             String destHtml = Utilities.path(dest, "index.html");
             File htmlFile = new File(destHtml);

@@ -434,6 +434,7 @@ public interface IWorkerContext {
       PROGRESS,
       TX, 
       CONTEXT, 
+      GENERATE,
       HTML 
     }
     public void logMessage(String message); // status messages, always display
