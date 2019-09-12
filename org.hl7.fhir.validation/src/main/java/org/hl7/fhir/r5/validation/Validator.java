@@ -62,6 +62,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
@@ -84,6 +85,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.KeyGenerator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
@@ -306,7 +308,7 @@ public class Validator {
             String nameLeft = chooseName(args, "leftName", (MetadataResource) resLeft);
             String nameRight = chooseName(args, "rightName", (MetadataResource) resRight);
             System.out.println("Comparing CapabilityStatements "+left+" to "+right);
-            CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest);
+            CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest, new KeyGenerator("http://fhir.org/temp/"+UUID.randomUUID().toString().toLowerCase()));
             CapabilityStatement capL = (CapabilityStatement) resLeft;
             CapabilityStatement capR = (CapabilityStatement) resRight;
             CapabilityStatementComparisonOutput output = pc.isCompatible(nameLeft, nameRight, capL, capR);
@@ -319,14 +321,12 @@ public class Validator {
               b.append("\r\n");
             }
             TextFile.stringToFile(b.toString(), destTxt);
-            File txtFile = new File(destTxt);
-            Desktop.getDesktop().browse(txtFile.toURI());
-            new XmlParser().compose(new FileOutputStream(Utilities.path(dest, "union.xml")), output.getSuperset());
-            new XmlParser().compose(new FileOutputStream(Utilities.path(dest, "intersection.xml")), output.getSubset());
-            new XmlParser().compose(new FileOutputStream(Utilities.path(dest, "issues.xml")), output.getOutcome());
-            new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "union.json")), output.getSuperset());
-            new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "intersection.json")), output.getSubset());
-            new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "issues.json")), output.getOutcome());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-union.xml")), output.getSuperset());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-intersection.xml")), output.getSubset());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "OperationOutcome-issues.xml")), output.getOutcome());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-union.json")), output.getSuperset());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-intersection.json")), output.getSubset());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "OperationOutcome-issues.json")), output.getOutcome());
             
             String destHtml = Utilities.path(dest, "index.html");
             File htmlFile = new File(destHtml);

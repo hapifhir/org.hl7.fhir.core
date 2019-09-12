@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -18,22 +20,39 @@ import java.util.zip.ZipInputStream;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities.CapabilityStatementRestSorter;
+import org.hl7.fhir.r5.conformance.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.BackboneElement;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestSecurityComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
+import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.utils.KeyGenerator;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
@@ -54,16 +73,14 @@ public class CapabilityStatementUtilities {
   public class CapabilityStatementComparisonOutput {
     public CapabilityStatementComparisonOutput() {
       subset = new CapabilityStatement();
+      keygen.genId(subset);
       subset.setDate(new Date());
-      subset.setId(UUID.randomUUID().toString().toLowerCase());
-      subset.setUrl("urn:uuid:"+subset.getId());
       subset.setName("intersection of "+selfName+" and "+otherName);
       subset.setStatus(PublicationStatus.DRAFT);
       
       superset = new CapabilityStatement();
+      keygen.genId(superset);
       superset.setDate(subset.getDate());
-      superset.setId(UUID.randomUUID().toString().toLowerCase());
-      superset.setUrl("urn:uuid:"+superset.getId());
       superset.setName("union of "+selfName+" and "+otherName);
       superset.setStatus(PublicationStatus.DRAFT);
     }
@@ -92,12 +109,14 @@ public class CapabilityStatementUtilities {
   private XhtmlDocument html;
   private MarkDownProcessor markdown = new MarkDownProcessor(Dialect.COMMON_MARK);
   private String folder;
+  private KeyGenerator keygen;
 //  private String css; 
 
-  public CapabilityStatementUtilities(SimpleWorkerContext context, String folder) throws IOException {
+  public CapabilityStatementUtilities(SimpleWorkerContext context, String folder, KeyGenerator keygen) throws IOException {
     super();
     this.context = context;
     this.folder = folder;
+    this.keygen = keygen;
     String f = Utilities.path(folder, "comparison.zip");
     download("http://fhir.org/archive/comparison.zip", f);
     unzip(f, folder);
@@ -199,6 +218,8 @@ public class CapabilityStatementUtilities {
     if (folder != null)
       saveToFile();
     output.outcome = OperationOutcomeUtilities.createOutcome(output.messages);
+    sortCapabilityStatement(output.subset);
+    sortCapabilityStatement(output.superset);
     return output;
   }
 
@@ -419,7 +440,7 @@ public class CapabilityStatementUtilities {
         union.setProfile(sdL.getUrl());
       } else if (folder != null) {
         try {
-          ProfileComparer pc = new ProfileComparer(context);
+          ProfileComparer pc = new ProfileComparer(context, keygen);
           pc.setId("api-ep."+type);
           pc.setTitle("Comparison - "+selfName+" vs "+otherName);
           pc.setLeftName(selfName+": "+sdL.present());
@@ -429,6 +450,18 @@ public class CapabilityStatementUtilities {
           pc.compareProfiles(sdL, sdR);
           System.out.println("Generate Comparison between "+pc.getLeftName()+" and "+pc.getRightName());
           pc.generate(folder);
+          
+          for (ProfileComparison cmp : pc.getComparisons()) {
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, cmp.getSubset().fhirType()+"-"+cmp.getSubset().getId()+".xml")), cmp.getSubset());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, cmp.getSubset().fhirType()+"-"+cmp.getSubset().getId()+".json")), cmp.getSubset());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, cmp.getSuperset().fhirType()+"-"+cmp.getSuperset().getId()+".xml")), cmp.getSuperset());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, cmp.getSuperset().fhirType()+"-"+cmp.getSuperset().getId()+".json")), cmp.getSuperset());
+          }
+          for (ValueSet vs : pc.getValuesets())  {
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, vs.fhirType()+"-"+vs.getId()+".xml")), vs);
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, vs.fhirType()+"-"+vs.getId()+".json")), vs);
+          }
+
           intersection.setProfile(pc.getComparisons().get(0).getSubset().getUrl());
           union.setProfile(pc.getComparisons().get(0).getSuperset().getUrl());
           td.ah(pc.getId()+".html").tx("Comparison...");
@@ -745,5 +778,148 @@ public class CapabilityStatementUtilities {
     span.tx(text);
     return span;
   }
+
+  private int compareStr(String l, String r) {
+    if (l == null) {
+      if (r == null)
+        return (r == null) ? 0 : -1;
+    }
+    if (r == null)
+      return 1;
+    return l.compareTo(r);
+  }
+
+  public class CapabilityStatementRestSorter implements Comparator<CapabilityStatementRestComponent> {
+    @Override
+    public int compare(CapabilityStatementRestComponent l, CapabilityStatementRestComponent r) {
+      return compareStr(l.hasMode() ? l.getMode().toCode() : null, r.hasMode() ? r.getMode().toCode() : null);
+    }
+  }
+
+  public class CapabilityStatementRestResourceSorter implements Comparator<CapabilityStatementRestResourceComponent> {
+    @Override
+    public int compare(CapabilityStatementRestResourceComponent l, CapabilityStatementRestResourceComponent r) {
+      return compareStr(l.getType(), r.getType());
+    }
+  }
+
+  public class CapabilityStatementRestResourceInteractionSorter implements Comparator<ResourceInteractionComponent> {
+    @Override
+    public int compare(ResourceInteractionComponent l, ResourceInteractionComponent r) {
+      return compareStr(l.hasCode() ? l.getCode().toCode() : null, r.hasCode() ? r.getCode().toCode() : null);
+    }
+  }
+
+  public class SystemInteractionComponentSorter implements Comparator<SystemInteractionComponent> {
+    @Override
+    public int compare(SystemInteractionComponent l, SystemInteractionComponent r) {
+      return compareStr(l.hasCode() ? l.getCode().toCode() : null, r.hasCode() ? r.getCode().toCode() : null);
+    }
+  }
+
+  public class SearchParamSorter implements Comparator<CapabilityStatementRestResourceSearchParamComponent> {
+    @Override
+    public int compare(CapabilityStatementRestResourceSearchParamComponent l, CapabilityStatementRestResourceSearchParamComponent r) {
+      return compareStr(l.getName(), r.getName());
+    }
+  }
+
+  public class OperationSorter implements Comparator<CapabilityStatementRestResourceOperationComponent> {
+    @Override
+    public int compare(CapabilityStatementRestResourceOperationComponent l, CapabilityStatementRestResourceOperationComponent r) {
+      return compareStr(l.getName(), r.getName());
+    }
+  }
   
+  public class CanonicalTypeSorter implements Comparator<CanonicalType> {
+    @Override
+    public int compare(CanonicalType l, CanonicalType r) {
+      return compareStr(l.getValue(), r.getValue());
+    }
+  }
+
+  public class StringTypeSorter implements Comparator<StringType> {
+    @Override
+    public int compare(StringType l, StringType r) {
+      return compareStr(l.getValue(), r.getValue());
+    }
+  }
+
+  public class EnumSorter implements Comparator<Enumeration> {
+    @Override
+    public int compare(Enumeration l, Enumeration r) {
+      return compareStr(l.getCode(), r.getCode());
+    }
+  }
+
+  public class ExtensionSorter implements Comparator<Extension> {
+    @Override
+    public int compare(Extension l, Extension r) {
+      return compareStr(l.getUrl(), r.getUrl());
+    }
+  }
+
+  public class CodingSorter implements Comparator<Coding> {
+    @Override
+    public int compare(Coding l, Coding r) {
+      return compareStr(""+l.getSystem()+"#"+l.getCode(), ""+r.getSystem()+"#"+r.getCode());
+    }    
+  }
+  public class CodeableConceptSorter implements Comparator<CodeableConcept> {
+    @Override
+    public int compare(CodeableConcept l, CodeableConcept r) {
+      Collections.sort(l.getCoding(), new CodingSorter());      
+      Collections.sort(r.getCoding(), new CodingSorter());      
+      return compareStr(cgen(l), cgen(r));
+    }
+
+    private String cgen(CodeableConcept cc) {
+      if (cc.hasCoding())
+        return ""+cc.getCodingFirstRep().getSystem()+"#"+cc.getCodingFirstRep().getCode();
+      return "~"+cc.getText();
+    }    
+  }
+
+  private void sortCapabilityStatement(CapabilityStatement cs) {
+    sortExtensions(cs);
+    Collections.sort(cs.getRest(), new CapabilityStatementRestSorter());
+    for (CapabilityStatementRestComponent csr : cs.getRest()) {
+      Collections.sort(csr.getSecurity().getService(), new CodeableConceptSorter());
+      Collections.sort(csr.getCompartment(), new CanonicalTypeSorter());
+      Collections.sort(csr.getResource(), new CapabilityStatementRestResourceSorter());
+      for (CapabilityStatementRestResourceComponent r : csr.getResource()) {
+        Collections.sort(r.getSupportedProfile(), new CanonicalTypeSorter());
+        Collections.sort(r.getInteraction(), new CapabilityStatementRestResourceInteractionSorter());
+        Collections.sort(r.getReferencePolicy(), new EnumSorter());
+        Collections.sort(r.getSearchInclude(), new StringTypeSorter());
+        Collections.sort(r.getSearchRevInclude(), new StringTypeSorter());
+        Collections.sort(r.getSearchParam(), new SearchParamSorter());
+        Collections.sort(r.getOperation(), new OperationSorter());
+      }
+      Collections.sort(csr.getInteraction(), new SystemInteractionComponentSorter());
+      Collections.sort(csr.getSearchParam(), new SearchParamSorter());
+      Collections.sort(csr.getOperation(), new OperationSorter());
+    }
+  }
+  
+  private void sortExtensions(DomainResource dr) {
+    Collections.sort(dr.getExtension(), new ExtensionSorter());
+    for (Property p : dr.children()) {
+      for (Base b : p.getValues()) {
+        if (b instanceof Element)
+          sortExtensions((Element) b);
+      }
+    }
+  }
+
+  private void sortExtensions(Element e) {
+    Collections.sort(e.getExtension(), new ExtensionSorter());         
+    for (Property p : e.children()) {
+      for (Base b : p.getValues()) {
+        if (b instanceof Element)
+          sortExtensions((Element) b);
+      }
+    }
+  }
+
 }

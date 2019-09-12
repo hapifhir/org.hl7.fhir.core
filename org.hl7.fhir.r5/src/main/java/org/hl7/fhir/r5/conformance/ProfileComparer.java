@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -64,6 +66,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.r5.utils.KeyGenerator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -96,7 +99,14 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 public class ProfileComparer implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
+  private KeyGenerator keygen;
   
+  public ProfileComparer(IWorkerContext context, KeyGenerator keygen) {
+    super();
+    this.context = context;
+    this.keygen = keygen;
+  }
+
   public ProfileComparer(IWorkerContext context) {
     super();
     this.context = context;
@@ -326,6 +336,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     // from here on in, any issues go in messages
     outcome.superset = new StructureDefinition();
     outcome.subset = new StructureDefinition();
+    keygen.genId(outcome.subset);
+    keygen.genId(outcome.superset);
     if (outcome.ruleEqual(ln.path(), null,ln.path(), rn.path(), "Base Type is not compatible", false)) {
       if (compareElements(outcome, ln.path(), ln, rn, null)) {
         outcome.subset.setName("intersection of "+outcome.leftName()+" and "+outcome.rightName());
