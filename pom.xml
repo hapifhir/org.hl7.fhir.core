@@ -149,34 +149,11 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<testFailureIgnore>true</testFailureIgnore>
+					<testFailureIgnore>false</testFailureIgnore>
 					<includes>
-          
-          <!-- R5: SnomedExpressionsTests.class, 
-    GraphQLParserTests.class,
-    TurtleTests.class,
-    ProfileUtilitiesTests.class,
-    ResourceRoundTripTests.class, 
-    GraphQLEngineTests.class,
-    LiquidEngineTests.class,
-    FHIRPathTests.class,
-    NarrativeGeneratorTests.class,
-    ShexGeneratorTests.class,
-    BaseDateTimeTypeTest.class,
-    OpenApiGeneratorTest.class,
-    SnapShotGenerationTests.class  -->
-    
-    <!-- validator
-     ValidationTestSuite.class, 
-  ValidationEngineTests.class,
-  JsonSchemaTests.class,
-  ProfileComparisonTests.class,
-  CDAValidationTestCase.class})
-  -->
+						<include>**/AllR5Tests</include>
+						<include>**/AllR5ValidationTests</include>
 					</includes>
-					<excludes>
-						<exclude>*</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
