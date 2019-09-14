@@ -106,4 +106,9 @@ public class JsonCreatorGson implements JsonCreator {
     value(new BigDecimal(value));    
   }
 
+  @Override
+  public void anchor(String name) {
+    // not used
+  }
+       
 }
