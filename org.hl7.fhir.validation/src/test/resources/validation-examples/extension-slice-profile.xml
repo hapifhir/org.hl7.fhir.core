@@ -20,7 +20,7 @@
 			<slicing>
         <discriminator>
           <type value="value"/>
-          <path value="extension(&#39;http://hl7.org/fhir/StructureDefinition/data-absent-reason&#39;).valueCode"/>
+          <path value="extension(&#39;http://hl7.org/fhir/StructureDefinition/data-absent-reason&#39;).value"/>
         </discriminator>
         <rules value="open"/>
       </slicing>
