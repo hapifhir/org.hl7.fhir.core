@@ -18,7 +18,7 @@ call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\build" --fileMask "*.xm
 call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\fhir-ig-publisher" --fileMask "*.xml" --find "%oldver%-SNAPSHOT" --replace "%newver%-SNAPSHOT"
 call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\latest-ig-publisher" --fileMask "*.html" --find "%oldver%" --replace "%newver%"
 call "C:\tools\fnr.exe" --cl --dir "C:\work\org.hl7.fhir\latest-ig-publisher" --fileMask "*.json" --find "%oldver%" --replace "%newver%"
-call mvn deploy -Dmaven.test.redirectTestOutputToFile=false -DdeployAtEnd=true 
+call mvn clean deploy -Dmaven.test.redirectTestOutputToFile=false -DdeployAtEnd=true 
 IF %ERRORLEVEL% NEQ 0 ( 
   GOTO DONE
 )
