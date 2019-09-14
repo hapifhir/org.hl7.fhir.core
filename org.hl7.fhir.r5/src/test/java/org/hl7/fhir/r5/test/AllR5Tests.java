@@ -20,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BaseDateTimeTypeTest.class,
     OpenApiGeneratorTest.class,
     SnapShotGenerationTests.class})
+
 public class AllR5Tests {
 
 }
