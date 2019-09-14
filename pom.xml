@@ -151,6 +151,7 @@
 				<configuration>
 					<testFailureIgnore>false</testFailureIgnore>
           <argLine>-Xmx4096m</argLine>
+					<redirectTestOutputToFile>false</redirectTestOutputToFile>
 				<includes>
 					<include>**/All*</include>
 				</includes>
