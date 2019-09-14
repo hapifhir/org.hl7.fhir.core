@@ -189,4 +189,10 @@ public class JsonCreatorDirect implements JsonCreator {
     
   }
 
+  @Override
+  public void anchor(String name) {
+    // not used
+  }
+       
+
 }

@@ -262,5 +262,10 @@ public class JsonCreatorCanonical implements JsonCreator {
     // not used
   }
        
+  @Override
+  public void anchor(String name) {
+    // not used
+  }
+       
     
 }

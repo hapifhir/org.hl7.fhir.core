@@ -1363,13 +1363,29 @@ public class StructureMapUtilities {
 		vars.add(VariableMode.INPUT, getInputName(g, StructureMapInputMode.SOURCE, "source"), source);
 		if (target != null)
   		vars.add(VariableMode.OUTPUT, getInputName(g, StructureMapInputMode.TARGET, "target"), target);
+		else if (getInputName(g, StructureMapInputMode.TARGET, null) != null) {
+		  String type = getInputType(g, StructureMapInputMode.TARGET);
+		  throw new Error("not handled yet: creating a type of "+type);
+		}
 
     executeGroup("", context, map, vars, g, true);
     if (target instanceof Element)
       ((Element) target).sort();
 	}
 
-	private String getInputName(StructureMapGroupComponent g, StructureMapInputMode mode, String def) throws DefinitionException {
+	private String getInputType(StructureMapGroupComponent g, StructureMapInputMode mode) {
+    String type = null;
+    for (StructureMapGroupInputComponent inp : g.getInput()) {
+      if (inp.getMode() == mode)
+        if (type != null)
+          throw new DefinitionException("This engine does not support multiple source inputs");
+        else
+          type = inp.getType();
+    }
+    return type;
+  }
+
+  private String getInputName(StructureMapGroupComponent g, StructureMapInputMode mode, String def) throws DefinitionException {
 	  String name = null;
     for (StructureMapGroupInputComponent inp : g.getInput()) {
       if (inp.getMode() == mode)
