@@ -260,6 +260,16 @@
 					</instructions>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<fork>true</fork>
+					<meminitial>512m</meminitial>
+					<maxmem>2G</maxmem>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
