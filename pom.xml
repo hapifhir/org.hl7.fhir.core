@@ -150,12 +150,12 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>false</testFailureIgnore>
+				<includes>
+					<include>**/All*</include>
+				</includes>
 					<excludes>
-						<exclude>**/org/hl7/fhir/dstu2/**</exclude>
-						<exclude>**/org/hl7/fhir/dstu3/**</exclude>
-						<exclude>**/org/hl7/fhir/dstu2016may/**</exclude>
-						<exclude>**/org/hl7/fhir/r4/**</exclude>
-						<exclude>**/R3R4ConversionTests/**</exclude>
+						<exclude>**/*dstu*/**</exclude>
+						<exclude>**/*r4*/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
