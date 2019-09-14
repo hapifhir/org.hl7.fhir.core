@@ -150,6 +150,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>false</testFailureIgnore>
+          <argLine>-Xmx4096m</argLine>
 				<includes>
 					<include>**/All*</include>
 				</includes>
@@ -267,7 +268,7 @@
 				<configuration>
 					<fork>true</fork>
 					<meminitial>512m</meminitial>
-					<maxmem>2g</maxmem>
+					<maxmem>4000m</maxmem>
 				</configuration>
 			</plugin>
 		</plugins>
