@@ -1199,7 +1199,7 @@ public class VersionConvertor_14_30 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasName())
       tgt.setSliceName(src.getName());
     if (src.hasLabel())
@@ -1260,7 +1260,7 @@ public class VersionConvertor_14_30 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setName(src.getSliceName());
     if (src.hasLabel())
@@ -1432,7 +1432,7 @@ public class VersionConvertor_14_30 {
       tgt.setProfile(t.getValue().toString());
     }
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> t : src.getAggregation())
-      tgt.addAggregation(convertAggregationMode(t.getValue()));
+      copyElement(t, tgt.addAggregationElement().setValue(convertAggregationMode(t.getValue())));
     tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
     return tgt;
   }
@@ -1460,7 +1460,7 @@ public class VersionConvertor_14_30 {
     } else
       tgt.addProfile(src.getProfile());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.AggregationMode> t : src.getAggregation())
-      tgt.addAggregation(convertAggregationMode(t.getValue()));
+      copyElement(t, tgt.addAggregationElement().setValue(convertAggregationMode(t.getValue())));
     tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
     return tgt;
   }
