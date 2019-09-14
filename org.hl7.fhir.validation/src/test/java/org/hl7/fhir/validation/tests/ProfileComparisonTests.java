@@ -52,7 +52,6 @@ public class ProfileComparisonTests {
           e.printStackTrace();
           throw e;
         }
-        Desktop.getDesktop().browse(htmlFile.toURI());
         System.out.println("Done");
       }
     }
