@@ -267,7 +267,7 @@
 				<configuration>
 					<fork>true</fork>
 					<meminitial>512m</meminitial>
-					<maxmem>2G</maxmem>
+					<maxmem>2g</maxmem>
 				</configuration>
 			</plugin>
 		</plugins>
