@@ -150,12 +150,14 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>false</testFailureIgnore>
+          <argLine>-Xmx4096m</argLine>
+					<redirectTestOutputToFile>false</redirectTestOutputToFile>
+				<includes>
+					<include>**/All*</include>
+				</includes>
 					<excludes>
-						<exclude>**/org/hl7/fhir/dstu2/**</exclude>
-						<exclude>**/org/hl7/fhir/dstu3/**</exclude>
-						<exclude>**/org/hl7/fhir/dstu2016may/**</exclude>
-						<exclude>**/org/hl7/fhir/r4/**</exclude>
-						<exclude>**/R3R4ConversionTests/**</exclude>
+						<exclude>**/*dstu*/**</exclude>
+						<exclude>**/*r4*/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -258,6 +260,16 @@
 							ca.uhn.hapi.fhir.hapi-fhir-base
 						</Fragment-Host>
 					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<fork>true</fork>
+					<meminitial>512m</meminitial>
+					<maxmem>4000m</maxmem>
 				</configuration>
 			</plugin>
 		</plugins>
