@@ -220,7 +220,7 @@ public class Location extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDayElement(convertBoolean(src.getAllDayElement()));
     if (src.hasOpeningTime())
@@ -236,7 +236,7 @@ public class Location extends VersionConvertor_40_50 {
     org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDayElement(convertBoolean(src.getAllDayElement()));
     if (src.hasOpeningTime())

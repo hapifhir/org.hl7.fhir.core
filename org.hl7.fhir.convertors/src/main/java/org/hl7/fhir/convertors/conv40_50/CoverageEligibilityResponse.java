@@ -70,7 +70,7 @@ public class CoverageEligibilityResponse extends VersionConvertor_40_50 {
     if (src.hasStatus())
       tgt.setStatus(convertEligibilityResponseStatus(src.getStatus()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose())
-      tgt.addPurpose(convertEligibilityResponsePurpose(t.getValue()));
+      copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityResponsePurpose(t.getValue())));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasServiced())
@@ -108,7 +108,7 @@ public class CoverageEligibilityResponse extends VersionConvertor_40_50 {
     if (src.hasStatus())
       tgt.setStatus(convertEligibilityResponseStatus(src.getStatus()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose())
-      tgt.addPurpose(convertEligibilityResponsePurpose(t.getValue()));
+      copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityResponsePurpose(t.getValue())));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasServiced())

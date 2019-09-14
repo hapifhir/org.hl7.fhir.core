@@ -240,7 +240,7 @@ public class CodeSystem extends VersionConvertor_40_50 {
     if (src.hasDescription())
       tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.FilterOperator> t : src.getOperator())
-      tgt.addOperator(convertFilterOperator(t.getValue()));
+      copyElement(t, tgt.addOperatorElement().setValue(convertFilterOperator(t.getValue())));
     if (src.hasValue())
       tgt.setValueElement(convertString(src.getValueElement()));
     return tgt;
@@ -256,7 +256,7 @@ public class CodeSystem extends VersionConvertor_40_50 {
     if (src.hasDescription())
       tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.FilterOperator> t : src.getOperator())
-      tgt.addOperator(convertFilterOperator(t.getValue()));
+      copyElement(t, tgt.addOperatorElement().setValue(convertFilterOperator(t.getValue())));
     if (src.hasValue())
       tgt.setValueElement(convertString(src.getValueElement()));
     return tgt;

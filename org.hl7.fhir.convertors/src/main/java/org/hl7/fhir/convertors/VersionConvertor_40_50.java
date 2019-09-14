@@ -2106,11 +2106,11 @@ public class VersionConvertor_40_50 {
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Timing.DayOfWeek> t : src.getDayOfWeek())
-      tgt.addDayOfWeek(convertDayOfWeek(t.getValue()));
+      copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.r4.model.TimeType t : src.getTimeOfDay())
       tgt.getTimeOfDay().add(convertTime(t));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Timing.EventTiming> t : src.getWhen())
-      tgt.addWhen(convertEventTiming(t.getValue()));
+      copyElement(t, tgt.addWhenElement().setValue(convertEventTiming(t.getValue())));
     if (src.hasOffset())
       tgt.setOffsetElement(convertUnsignedInt(src.getOffsetElement()));
     return tgt;
@@ -2144,11 +2144,11 @@ public class VersionConvertor_40_50 {
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DayOfWeek> t : src.getDayOfWeek())
-      tgt.addDayOfWeek(convertDayOfWeek(t.getValue()));
+      copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.r5.model.TimeType t : src.getTimeOfDay())
       tgt.getTimeOfDay().add(convertTime(t));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> t : src.getWhen())
-      tgt.addWhen(convertEventTiming(t.getValue()));
+      copyElement(t, tgt.addWhenElement().setValue(convertEventTiming(t.getValue())));
     if (src.hasOffset())
       tgt.setOffsetElement(convertUnsignedInt(src.getOffsetElement()));
     return tgt;
@@ -2382,7 +2382,7 @@ public class VersionConvertor_40_50 {
     if (src.hasPath())
       tgt.setPathElement(convertString(src.getPathElement()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setSliceNameElement(convertString(src.getSliceNameElement()));
     if (src.hasSliceIsConstraining())
@@ -2458,7 +2458,7 @@ public class VersionConvertor_40_50 {
     if (src.hasPath())
       tgt.setPathElement(convertString(src.getPathElement()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setSliceNameElement(convertString(src.getSliceNameElement()));
     if (src.hasSliceIsConstraining())
@@ -2696,7 +2696,7 @@ public class VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(convertCanonical(t));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.AggregationMode> t : src.getAggregation())
-      tgt.addAggregation(convertAggregationMode(t.getValue()));
+      copyElement(t, tgt.addAggregationElement().setValue(convertAggregationMode(t.getValue())));
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
     return tgt;
@@ -2714,7 +2714,7 @@ public class VersionConvertor_40_50 {
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(convertCanonical(t));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> t : src.getAggregation())
-      tgt.addAggregation(convertAggregationMode(t.getValue()));
+      copyElement(t, tgt.addAggregationElement().setValue(convertAggregationMode(t.getValue())));
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
     return tgt;
