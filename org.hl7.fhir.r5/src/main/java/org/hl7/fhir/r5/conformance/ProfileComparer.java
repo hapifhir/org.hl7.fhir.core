@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.conformance;
 
+import java.io.BufferedOutputStream;
+
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -22,7 +24,11 @@ package org.hl7.fhir.r5.conformance;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -32,7 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -100,16 +107,96 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
   private KeyGenerator keygen;
+  private String folder;
   
-  public ProfileComparer(IWorkerContext context, KeyGenerator keygen) {
+  public ProfileComparer(IWorkerContext context, KeyGenerator keygen, String folder) throws IOException {
     super();
     this.context = context;
     this.keygen = keygen;
+    this.folder = folder;
+    if (!new File(Utilities.path(folder, "conparison-zip-marker.bin")).exists()) {
+      String f = Utilities.path(folder, "comparison.zip");
+      download("https://www.fhir.org/archive/comparison.zip", f);
+      unzip(f, folder);
+    }
   }
 
-  public ProfileComparer(IWorkerContext context) {
+  private void download(String address, String filename) throws IOException {
+    URL url = new URL(address);
+    URLConnection c = url.openConnection();
+    InputStream s = c.getInputStream();
+    FileOutputStream f = new FileOutputStream(filename);
+    transfer(s, f, 1024);
+    f.close();   
+  }
+
+
+  public static void transfer(InputStream in, OutputStream out, int buffer) throws IOException {
+    byte[] read = new byte[buffer]; // Your buffer size.
+    while (0 < (buffer = in.read(read)))
+      out.write(read, 0, buffer);
+  }
+
+  /**
+   * Size of the buffer to read/write data
+   */
+  private static final int BUFFER_SIZE = 4096;
+  /**
+   * Extracts a zip file specified by the zipFilePath to a directory specified by
+   * destDirectory (will be created if does not exists)
+   * @param zipFilePath
+   * @param destDirectory
+   * @throws IOException
+   */
+  public void unzip(String zipFilePath, String destDirectory) throws IOException {
+      File destDir = new File(destDirectory);
+      if (!destDir.exists()) {
+          destDir.mkdir();
+      }
+      ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+      ZipEntry entry = zipIn.getNextEntry();
+      // iterates over entries in the zip file
+      while (entry != null) {
+          String filePath = destDirectory + File.separator + entry.getName();
+          if (!entry.isDirectory()) {
+              // if the entry is a file, extracts it
+              extractFile(zipIn, filePath);
+          } else {
+              // if the entry is a directory, make the directory
+              File dir = new File(filePath);
+              dir.mkdir();
+          }
+          zipIn.closeEntry();
+          entry = zipIn.getNextEntry();
+      }
+      zipIn.close();
+  }
+  /**
+   * Extracts a zip entry (file entry)
+   * @param zipIn
+   * @param filePath
+   * @throws IOException
+   */
+  private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+      byte[] bytesIn = new byte[BUFFER_SIZE];
+      int read = 0;
+      while ((read = zipIn.read(bytesIn)) != -1) {
+          bos.write(bytesIn, 0, read);
+      }
+      bos.close();
+  }
+
+
+  public ProfileComparer(IWorkerContext context, String folder) throws IOException {
     super();
     this.context = context;
+    this.folder = folder;
+    if (!new File(Utilities.path(folder, "conparison-zip-marker.bin")).exists()) {
+      String f = Utilities.path(folder, "comparison.zip");
+      download("https://www.fhir.org/archive/comparison.zip", f);
+      unzip(f, folder);
+    }
   }
 
   private static final int BOTH_NULL = 0;
@@ -1431,9 +1518,9 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   }
 
 
-  public String generate(String dest) throws IOException {
+  public String generate() throws IOException {
     for (ValueSet vs : valuesets) {
-      vs.setUserData("path", dest+"/"+getId()+"-vs-"+vs.getId()+".html");
+      vs.setUserData("path", folder+"/"+getId()+"-vs-"+vs.getId()+".html");
     }
     // ok, all compared; now produce the output
     // first page we produce is simply the index
@@ -1442,8 +1529,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     vars.put("left", genPCLink(getLeftName(), getLeftLink()));
     vars.put("right", genPCLink(getRightName(), getRightLink()));
     vars.put("table", genPCTable());
-    vars.put("valuesets", genValueSets(dest+"/"+getId()+"-vs"));
-    producePage(summaryTemplate(), Utilities.path(dest, getId()+".html"), vars);
+    vars.put("valuesets", genValueSets(folder+"/"+getId()+"-vs"));
+    producePage(summaryTemplate(), Utilities.path(folder, getId()+".html"), vars);
     
     System.out.println("  .. profiles");
     // then we produce a comparison page for each pair
@@ -1453,15 +1540,15 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       vars.put("left", genPCLink(getLeftName(), getLeftLink()));
       vars.put("right", genPCLink(getRightName(), getRightLink()));
       vars.put("messages", genCmpMessages(cmp));
-      vars.put("subset", genCompModel(cmp.getSubset(), "intersection", getId()+"."+cmp.getId(), "", dest));
-      vars.put("superset", genCompModel(cmp.getSuperset(), "union", getId()+"."+cmp.getId(), "", dest));
-      producePage(singleTemplate(), Utilities.path(dest, getId()+"."+cmp.getId()+".html"), vars);
+      vars.put("subset", genCompModel(cmp.getSubset(), "intersection", getId()+"."+cmp.getId(), "", folder));
+      vars.put("superset", genCompModel(cmp.getSuperset(), "union", getId()+"."+cmp.getId(), "", folder));
+      producePage(singleTemplate(), Utilities.path(folder, getId()+"."+cmp.getId()+".html"), vars);
     }
 //      //   and also individual pages for each pair outcome
 //    // then we produce value set pages for each value set
 //
 //    // TODO Auto-generated method stub
-    return Utilities.path(dest, getId()+".html");
+    return Utilities.path(folder, getId()+".html");
   }
 
   
@@ -1480,13 +1567,11 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   }
 
   private String summaryTemplate() throws IOException {
-    return TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\source\\template-comparison-set.html");
-    // return cachedFetch("04a9d69a-47f2-4250-8645-bf5d880a8eaa-1.fhir-template", "http://build.fhir.org/template-comparison-set.html.template");
+    return TextFile.fileToString(Utilities.path(folder, "template-comparison-set.html"));
   }
 
   private String singleTemplate() throws IOException {
-    return TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\source\\template-comparison.html");
-    // return cachedFetch("04a9d69a-47f2-4250-8645-bf5d880a8eaa-1.fhir-template", "http://build.fhir.org/template-comparison-set.html.template");
+    return TextFile.fileToString(Utilities.path(folder, "template-comparison.html"));
   }
 
   private String cachedFetch(String id, String source) throws IOException {
