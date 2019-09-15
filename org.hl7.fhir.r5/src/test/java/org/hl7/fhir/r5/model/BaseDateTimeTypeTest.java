@@ -52,8 +52,8 @@ public class BaseDateTimeTypeTest {
         // FHIRPath tests:
         assertNull( compareDateTimes("1974-12-25", "1974-12-25T12:34:00+10:00"));
         assertNull( compareDateTimes("1974-12-25T12:34:00+10:00", "1974-12-25"));
-        assertFalse(compareDateTimes("1974-12-25", "1974-12-25T12:34:00-10:00"));
-        assertFalse(compareDateTimes("1974-12-25T12:34:00-10:00", "1974-12-25"));
+        assertFalse(compareDateTimes("1974-12-25", "1974-12-23T12:34:00+10:00")); // false because they can't be the same date irrespective of precision
+        assertFalse(compareDateTimes("1974-12-23T12:34:00+10:00", "1974-12-25"));
         assertNull( compareDateTimes("1974-12-25", "1974-12-25T12:34:00Z"));
         assertNull( compareDateTimes("1974-12-25T12:34:00Z", "1974-12-25"));
         assertFalse(compareDateTimes("2012-04-15", "2012-04-16"));
