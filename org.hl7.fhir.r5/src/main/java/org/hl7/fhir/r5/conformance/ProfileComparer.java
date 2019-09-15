@@ -122,12 +122,14 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   }
 
   private void download(String address, String filename) throws IOException {
+    System.out.print("Download "+address+" to "+filename);
     URL url = new URL(address);
     URLConnection c = url.openConnection();
     InputStream s = c.getInputStream();
     FileOutputStream f = new FileOutputStream(filename);
     transfer(s, f, 1024);
     f.close();   
+    System.out.println(" ... "+new File(filename).length()+" bytes");
   }
 
 
