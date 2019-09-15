@@ -292,3 +292,4 @@ local.properties
 /org.hl7.fhir.r4b
 /org.hl7.fhir.r5/src/test/resources/gen/gen.xml
 /org.hl7.fhir.r5/src/test/resources/graphql/*.out
+/org.hl7.fhir.validation/src/test/resources/comparison/output
