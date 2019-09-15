@@ -1244,7 +1244,7 @@ public class VersionConvertor_14_40 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasName())
       tgt.setSliceName(src.getName());
     if (src.hasLabel())
@@ -1311,7 +1311,7 @@ public class VersionConvertor_14_40 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setName(src.getSliceName());
     if (src.hasLabel())
@@ -1522,7 +1522,7 @@ public class VersionConvertor_14_40 {
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.r4.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -1560,7 +1560,7 @@ public class VersionConvertor_14_40 {
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -6212,7 +6212,7 @@ public class VersionConvertor_14_40 {
     if (src.hasVariable())
       tgt.setVariable(src.getVariable());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleId(src.getListRuleId());
     if (src.hasTransform())

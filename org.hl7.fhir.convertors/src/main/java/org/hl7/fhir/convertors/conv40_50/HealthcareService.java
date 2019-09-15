@@ -202,7 +202,7 @@ public class HealthcareService extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDayElement(convertBoolean(src.getAllDayElement()));
     if (src.hasAvailableStartTime())
@@ -218,7 +218,7 @@ public class HealthcareService extends VersionConvertor_40_50 {
     org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDayElement(convertBoolean(src.getAllDayElement()));
     if (src.hasAvailableStartTime())

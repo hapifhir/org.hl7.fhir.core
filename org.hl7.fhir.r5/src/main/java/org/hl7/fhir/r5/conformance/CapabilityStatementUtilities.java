@@ -117,9 +117,11 @@ public class CapabilityStatementUtilities {
     this.context = context;
     this.folder = folder;
     this.keygen = keygen;
-    String f = Utilities.path(folder, "comparison.zip");
-    download("http://fhir.org/archive/comparison.zip", f);
-    unzip(f, folder);
+    if (!new File(Utilities.path(folder, "conparison-zip-marker.bin")).exists()) {
+      String f = Utilities.path(folder, "comparison.zip");
+      download("https://www.fhir.org/archive/comparison.zip", f);
+      unzip(f, folder);
+    }
   }
   
   /**
@@ -440,7 +442,7 @@ public class CapabilityStatementUtilities {
         union.setProfile(sdL.getUrl());
       } else if (folder != null) {
         try {
-          ProfileComparer pc = new ProfileComparer(context, keygen);
+          ProfileComparer pc = new ProfileComparer(context, keygen, folder);
           pc.setId("api-ep."+type);
           pc.setTitle("Comparison - "+selfName+" vs "+otherName);
           pc.setLeftName(selfName+": "+sdL.present());
@@ -449,7 +451,7 @@ public class CapabilityStatementUtilities {
           pc.setRightLink(sdR.getUserString("path"));
           pc.compareProfiles(sdL, sdR);
           System.out.println("Generate Comparison between "+pc.getLeftName()+" and "+pc.getRightName());
-          pc.generate(folder);
+          pc.generate();
           
           for (ProfileComparison cmp : pc.getComparisons()) {
             new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, cmp.getSubset().fhirType()+"-"+cmp.getSubset().getId()+".xml")), cmp.getSubset());

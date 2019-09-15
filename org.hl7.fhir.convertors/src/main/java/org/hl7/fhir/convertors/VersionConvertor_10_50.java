@@ -1005,7 +1005,7 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasName()) {
       if (slicePaths.contains(src.getPath()))
         tgt.setSliceName(src.getName());
@@ -1085,7 +1085,7 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setName(src.getSliceName());
     else
@@ -1268,7 +1268,7 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.r5.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
   }
 
@@ -6996,7 +6996,7 @@ public class VersionConvertor_10_50 {
     org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     tgt.setAllDay(src.getAllDay());
     tgt.setAvailableStartTime(src.getAvailableStartTime());
     tgt.setAvailableEndTime(src.getAvailableEndTime());
@@ -7009,7 +7009,7 @@ public class VersionConvertor_10_50 {
     org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     tgt.setAllDay(src.getAllDay());
     tgt.setAvailableStartTime(src.getAvailableStartTime());
     tgt.setAvailableEndTime(src.getAvailableEndTime());

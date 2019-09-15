@@ -34,7 +34,7 @@ public class ProfileComparisonTests {
 
     // ok now set up the comparison
     StructureDefinition sdL = ve.getContext().fetchResource(StructureDefinition.class, left);
-    ProfileComparer pc = new ProfileComparer(ve.getContext(), new KeyGenerator("http://fhir.org/temp/"+UUID.randomUUID().toString().toLowerCase()));
+    ProfileComparer pc = new ProfileComparer(ve.getContext(), new KeyGenerator("http://fhir.org/temp/"+UUID.randomUUID().toString().toLowerCase()), dest);
     if (sdL == null) {
       System.out.println("Unable to locate left profile " +left);
     } else {
@@ -47,7 +47,7 @@ public class ProfileComparisonTests {
         System.out.println("Generating output...");
         File htmlFile = null;
         try {
-          htmlFile = new File(pc.generate(dest));
+          htmlFile = new File(pc.generate());
         } catch (Exception e) {
           e.printStackTrace();
           throw e;

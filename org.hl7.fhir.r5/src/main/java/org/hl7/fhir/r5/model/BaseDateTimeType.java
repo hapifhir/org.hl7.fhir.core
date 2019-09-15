@@ -872,16 +872,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS");
     String ms = df.format(this.getValue());
     String os = df.format(theOther.getValue());
-    if (!sub(ms, cp.stringLength()).equals(sub(os, cp.stringLength())))
+    if (!sub(ms, cp.stringLength()).equals(sub(os, cp.stringLength()))) {
+      System.out.println("  ms = "+ms+", os = "+os+", return false");
       return false;
-    if (mp != op)
+    }
+    if (mp != op) {
+      System.out.println("  ms = "+ms+", os = "+os+", return null");
       return null;
+    }
     if (this.myPrecision == TemporalPrecisionEnum.MILLI || theOther.myPrecision == TemporalPrecisionEnum.MILLI) {
       float mf = Float.parseFloat(ms.substring(17)); 
       float of = Float.parseFloat(os.substring(17));
-      if (mf != of)
+      if (mf != of) {
+        System.out.println("  ms = "+ms+", os = "+os+", return false");
         return false;
+      }
     }
+    System.out.println("  ms = "+ms+", os = "+os+", return true");
     return true;
   }
 
