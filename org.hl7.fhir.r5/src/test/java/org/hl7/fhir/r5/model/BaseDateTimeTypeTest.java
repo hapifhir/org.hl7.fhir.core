@@ -79,9 +79,10 @@ public class BaseDateTimeTypeTest {
     }
 
     private Boolean compareDateTimes(String theLeft, String theRight) {
-        DateTimeType leftDt = new DateTimeType(theLeft);
-        DateTimeType rightDt = new DateTimeType(theRight);
-        return leftDt.equalsUsingFhirPathRules(rightDt);
+      System.out.println("Compare "+theLeft+" to "+theRight);
+      DateTimeType leftDt = new DateTimeType(theLeft);
+      DateTimeType rightDt = new DateTimeType(theRight);
+      return leftDt.equalsUsingFhirPathRules(rightDt);
     }
 
 }
