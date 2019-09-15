@@ -296,12 +296,12 @@ public class Validator {
         if (resLeft != null && resRight != null) {
           if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
             System.out.println("Comparing StructureDefinitions "+left+" to "+right);
-            ProfileComparer pc = new ProfileComparer(validator.getContext());
+            ProfileComparer pc = new ProfileComparer(validator.getContext(), dest);
             StructureDefinition sdL = (StructureDefinition) resLeft;
             StructureDefinition sdR = (StructureDefinition) resRight;
             pc.compareProfiles(sdL, sdR);
             System.out.println("Generating output to "+dest+"...");
-            File htmlFile = new File(pc.generate(dest));
+            File htmlFile = new File(pc.generate());
             Desktop.getDesktop().browse(htmlFile.toURI());
             System.out.println("Done");
           } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {

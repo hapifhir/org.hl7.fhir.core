@@ -72,7 +72,7 @@ public class CoverageEligibilityRequest extends VersionConvertor_40_50 {
     if (src.hasPriority())
       tgt.setPriority(convertCodeableConcept(src.getPriority()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestPurpose> t : src.getPurpose())
-      tgt.addPurpose(convertEligibilityRequestPurpose(t.getValue()));
+      copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityRequestPurpose(t.getValue())));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasServiced())
@@ -108,7 +108,7 @@ public class CoverageEligibilityRequest extends VersionConvertor_40_50 {
     if (src.hasPriority())
       tgt.setPriority(convertCodeableConcept(src.getPriority()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose> t : src.getPurpose())
-      tgt.addPurpose(convertEligibilityRequestPurpose(t.getValue()));
+      copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityRequestPurpose(t.getValue())));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasServiced())
