@@ -122,14 +122,14 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   }
 
   private void download(String address, String filename) throws IOException {
-    System.out.print("Download "+address+" to "+filename);
+//    System.out.print("Download "+address+" to "+filename);
     URL url = new URL(address);
     URLConnection c = url.openConnection();
     InputStream s = c.getInputStream();
     FileOutputStream f = new FileOutputStream(filename);
     transfer(s, f, 1024);
     f.close();   
-    System.out.println(" ... "+new File(filename).length()+" bytes");
+//    System.out.println(" ... "+new File(filename).length()+" bytes");
   }
 
 
@@ -464,7 +464,6 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
    * @throws FHIRFormatError 
    */
   private boolean compareElements(ProfileComparison outcome, String path, DefinitionNavigator left, DefinitionNavigator right, String sliceName) throws DefinitionException, IOException, FHIRFormatError {
-//    System.out.println(path);
 //    preconditions:
     assert(path != null);  
     assert(left != null);
@@ -1534,7 +1533,6 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     vars.put("valuesets", genValueSets(folder+"/"+getId()+"-vs"));
     producePage(summaryTemplate(), Utilities.path(folder, getId()+".html"), vars);
     
-    System.out.println("  .. profiles");
     // then we produce a comparison page for each pair
     for (ProfileComparison cmp : getComparisons()) {
       vars.clear();

@@ -457,7 +457,7 @@ public class SnapShotGenerationTests {
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
     pu.setNewSlicingProcessing(true);
     pu.setThrowException(true);
-    pu.setDebug(true);
+    pu.setDebug(false);
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
