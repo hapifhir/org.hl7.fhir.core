@@ -55,59 +55,39 @@ package org.hl7.fhir.r5.model.codesystems;
 
 import org.hl7.fhir.r5.model.EnumFactory;
 
-public class ConceptMapEquivalenceEnumFactory implements EnumFactory<ConceptMapEquivalence> {
+public class ConceptMapRelationshipEnumFactory implements EnumFactory<ConceptMapRelationship> {
 
-  public ConceptMapEquivalence fromCode(String codeString) throws IllegalArgumentException {
+  public ConceptMapRelationship fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("relatedto".equals(codeString))
-      return ConceptMapEquivalence.RELATEDTO;
+    if ("related-to".equals(codeString))
+      return ConceptMapRelationship.RELATEDTO;
     if ("equivalent".equals(codeString))
-      return ConceptMapEquivalence.EQUIVALENT;
-    if ("equal".equals(codeString))
-      return ConceptMapEquivalence.EQUAL;
-    if ("wider".equals(codeString))
-      return ConceptMapEquivalence.WIDER;
-    if ("subsumes".equals(codeString))
-      return ConceptMapEquivalence.SUBSUMES;
+      return ConceptMapRelationship.EQUIVALENT;
+    if ("broader".equals(codeString))
+      return ConceptMapRelationship.BROADER;
     if ("narrower".equals(codeString))
-      return ConceptMapEquivalence.NARROWER;
-    if ("specializes".equals(codeString))
-      return ConceptMapEquivalence.SPECIALIZES;
-    if ("inexact".equals(codeString))
-      return ConceptMapEquivalence.INEXACT;
-    if ("unmatched".equals(codeString))
-      return ConceptMapEquivalence.UNMATCHED;
-    if ("disjoint".equals(codeString))
-      return ConceptMapEquivalence.DISJOINT;
-    throw new IllegalArgumentException("Unknown ConceptMapEquivalence code '"+codeString+"'");
+      return ConceptMapRelationship.NARROWER;
+    if ("not-related-to".equals(codeString))
+      return ConceptMapRelationship.NOTRELATEDTO;
+    throw new IllegalArgumentException("Unknown ConceptMapRelationship code '"+codeString+"'");
   }
 
-  public String toCode(ConceptMapEquivalence code) {
-    if (code == ConceptMapEquivalence.RELATEDTO)
-      return "relatedto";
-    if (code == ConceptMapEquivalence.EQUIVALENT)
+  public String toCode(ConceptMapRelationship code) {
+    if (code == ConceptMapRelationship.RELATEDTO)
+      return "related-to";
+    if (code == ConceptMapRelationship.EQUIVALENT)
       return "equivalent";
-    if (code == ConceptMapEquivalence.EQUAL)
-      return "equal";
-    if (code == ConceptMapEquivalence.WIDER)
-      return "wider";
-    if (code == ConceptMapEquivalence.SUBSUMES)
-      return "subsumes";
-    if (code == ConceptMapEquivalence.NARROWER)
+    if (code == ConceptMapRelationship.BROADER)
+      return "broader";
+    if (code == ConceptMapRelationship.NARROWER)
       return "narrower";
-    if (code == ConceptMapEquivalence.SPECIALIZES)
-      return "specializes";
-    if (code == ConceptMapEquivalence.INEXACT)
-      return "inexact";
-    if (code == ConceptMapEquivalence.UNMATCHED)
-      return "unmatched";
-    if (code == ConceptMapEquivalence.DISJOINT)
-      return "disjoint";
+    if (code == ConceptMapRelationship.NOTRELATEDTO)
+      return "not-related-to";
     return "?";
   }
 
-    public String toSystem(ConceptMapEquivalence code) {
+    public String toSystem(ConceptMapRelationship code) {
       return code.getSystem();
       }
 

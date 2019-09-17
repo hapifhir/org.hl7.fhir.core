@@ -125,7 +125,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Dosage;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.HumanName;
@@ -2284,7 +2284,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       addMarkdown(x, cm.getDescription());
 
     x.br();
-    CodeSystem cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
+    CodeSystem cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     String eqpath = cs.getUserString("path");
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
@@ -2323,7 +2323,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
         tr.td().b().tx("Source Code");
-        tr.td().b().tx("Equivalence");
+        tr.td().b().tx("Relationship");
         tr.td().b().tx("Destination Code");
         if (comment)
           tr.td().b().tx("Comment");
@@ -2335,7 +2335,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
           TargetElementComponent ccm = ccl.getTarget().get(0);
-          tr.td().addText(!ccm.hasEquivalence() ? "" : ccm.getEquivalence().toCode());
+          tr.td().addText(!ccm.hasRelationship() ? "" : ccm.getRelationship().toCode());
           td = tr.td();
           td.addText(ccm.getCode());
           display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
@@ -2349,7 +2349,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
         tr.td().colspan(Integer.toString(sources.size())).b().tx("Source Concept Details");
-        tr.td().b().tx("Equivalence");
+        tr.td().b().tx("Relationship");
         tr.td().colspan(Integer.toString(targets.size())).b().tx("Destination Concept Details");
         if (comment)
           tr.td().b().tx("Comment");
@@ -2422,10 +2422,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
               }
             }
             first = false;
-            if (!ccm.hasEquivalence())
-              tr.td().tx(":"+"("+ConceptMapEquivalence.EQUIVALENT.toCode()+")");
+            if (!ccm.hasRelationship())
+              tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
             else
-              tr.td().ah(eqpath+"#"+ccm.getEquivalence().toCode()).tx(ccm.getEquivalence().toCode());
+              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(ccm.getRelationship().toCode());
             td = tr.td();
             if (targets.get("code").size() == 1)
               td.addText(ccm.getCode());
@@ -3296,8 +3296,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
         if (!first)
             td.br();
         first = false;
-        XhtmlNode span = td.span(null, mapping.comp.getEquivalence().toString());
-        span.addText(getCharForEquivalence(mapping.comp));
+        XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
+        span.addText(getCharForRelationship(mapping.comp));
         addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
         if (!Utilities.noString(mapping.comp.getComment()))
           td.i().tx("("+mapping.comp.getComment()+")");
@@ -3515,8 +3515,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       	if (!first)
       		  td.br();
       	first = false;
-      	XhtmlNode span = td.span(null, mapping.comp.hasEquivalence() ?  mapping.comp.getEquivalence().toCode() : "");
-        span.addText(getCharForEquivalence(mapping.comp));
+      	XhtmlNode span = td.span(null, mapping.comp.hasRelationship() ?  mapping.comp.getRelationship().toCode() : "");
+        span.addText(getCharForRelationship(mapping.comp));
       	a = td.ah(prefix+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode()));
         a.addText(mapping.comp.getCode());
         if (!Utilities.noString(mapping.comp.getComment()))
@@ -3564,17 +3564,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return null;
   }
 
-  private String getCharForEquivalence(TargetElementComponent mapping) {
-    if (!mapping.hasEquivalence())
+  private String getCharForRelationship(TargetElementComponent mapping) {
+    if (!mapping.hasRelationship())
       return "";
-	  switch (mapping.getEquivalence()) {
-	  case EQUAL : return "=";
+	  switch (mapping.getRelationship()) {
 	  case EQUIVALENT : return "~";
-	  case WIDER : return "<";
+	  case BROADER : return "<";
 	  case NARROWER : return ">";
-	  case INEXACT : return "><";
-	  case UNMATCHED : return "-";
-	  case DISJOINT : return "!=";
+	  case NOTRELATEDTO : return "!=";
     default: return "?";
 	  }
   }
