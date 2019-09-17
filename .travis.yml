@@ -29,3 +29,8 @@ before_script:
 
 script:
   - mvn install
+
+
+notifications:
+  webhooks:
+    - https://chat.fhir.org/api/v1/external/travis?api_key=djw9NZjz5FaZk3A4Jh78vtIZgoaLmOBK&stream=committers/notification&topic=java%20core
