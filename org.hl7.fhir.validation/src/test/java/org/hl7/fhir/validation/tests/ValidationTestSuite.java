@@ -302,7 +302,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     if (url.equals("Patient/test"))
       return new ObjectConverter(TestingUtilities.context()).convert(new Patient());
-    String filename = TestingUtilities.resourceNameToFile("validation-examples", url.replace("/", "-"));
+    String filename = TestingUtilities.resourceNameToFile("validation-examples", url.replace("/", "-").toLowerCase());
     if (new File(filename+".json").exists())
       return Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(new FileInputStream(filename+".json"));
     if (new File(filename+".xml").exists())
