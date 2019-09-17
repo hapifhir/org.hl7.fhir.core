@@ -257,10 +257,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (res != null)
         return res;
       
-      if (externalHostServices == null)
-        throw new Error("Not done yet - resolve "+url+" locally (2)");
-      else 
+      if (externalHostServices != null)
         return externalHostServices.resolveReference(c.appContext, url);
+      else if (fetcher != null)
+        try {
+          return fetcher.fetch(c.appContext, url);
+        } catch (IOException e) {
+          throw new FHIRException(e);
+        }
+      else
+        throw new Error("Not done yet - resolve "+url+" locally (2)");
           
     }
 
