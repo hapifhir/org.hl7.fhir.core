@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.tests;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -300,6 +302,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     if (url.equals("Patient/test"))
       return new ObjectConverter(TestingUtilities.context()).convert(new Patient());
+    String filename = TestingUtilities.resourceNameToFile("validation-examples", url.replace("/", "-"));
+    if (new File(filename+".json").exists())
+      return Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(new FileInputStream(filename+".json"));
+    if (new File(filename+".xml").exists())
+      return Manager.makeParser(TestingUtilities.context(), FhirFormat.XML).parse(new FileInputStream(filename+".xml"));
     return null;
   }
 
