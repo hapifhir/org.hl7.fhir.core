@@ -3614,18 +3614,20 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           // If it's the wrong type, just keep going
         }
       }
-      if (list.isEmpty() && !openChoice) {
-        rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, "Option list has no option values of type string");
-      } else {
-        boolean found = false;
-        for (StringType item : list) {
-          if (item.getValue().equals((v.primitiveValue()))) {
-            found = true;
-            break;
+      if (!openChoice) {
+        if (list.isEmpty()) {
+          rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, "Option list has no option values of type string");
+        } else {
+          boolean found = false;
+          for (StringType item : list) {
+            if (item.getValue().equals((v.primitiveValue()))) {
+              found = true;
+              break;
+            }
           }
-        }
-        if (!found) {
-          rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, "The string "+v.primitiveValue()+" is not a valid option");
+          if (!found) {
+            rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, "The string " + v.primitiveValue() + " is not a valid option");
+          }
         }
       }
     } else {
