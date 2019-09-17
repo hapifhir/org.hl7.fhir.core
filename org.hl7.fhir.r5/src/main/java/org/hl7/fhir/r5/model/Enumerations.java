@@ -29,7 +29,7 @@ public class Enumerations {
 //   AdministrativeGender: The gender of a person used for administrative purposes.
 //   AgeUnits: A valueSet of UCUM codes for representing age value units.
 //   BindingStrength: Indication of the degree of conformance expectations associated with a binding.
-//   ConceptMapEquivalence: The degree of equivalence between concepts.
+//   ConceptMapRelationship: The relationship between concepts.
 //   DataAbsentReason: Used to specify why the normally expected content of the data element is missing.
 //   DataType: A version specific list of the data types defined by the FHIR specification for use as an element  type (any of the FHIR defined data types).
 //   DefinitionResourceType: A list of all the definition resource types defined in this version of the FHIR specification.
@@ -533,9 +533,9 @@ public class Enumerations {
       }
     }
 
-    public enum ConceptMapEquivalence {
+    public enum ConceptMapRelationship {
         /**
-         * The concepts are related to each other, and have at least some overlap in meaning, but the exact relationship is not known.
+         * The concepts are related to each other, but the exact relationship is not known.
          */
         RELATEDTO, 
         /**
@@ -543,108 +543,63 @@ public class Enumerations {
          */
         EQUIVALENT, 
         /**
-         * The definitions of the concepts are exactly the same (i.e. only grammatical differences) and structural implications of meaning are identical or irrelevant (i.e. intentionally identical).
+         * The target mapping is broader in meaning than the source concept.
          */
-        EQUAL, 
-        /**
-         * The target mapping is wider in meaning than the source concept.
-         */
-        WIDER, 
-        /**
-         * The target mapping subsumes the meaning of the source concept (e.g. the source is-a target).
-         */
-        SUBSUMES, 
+        BROADER, 
         /**
          * The target mapping is narrower in meaning than the source concept. The sense in which the mapping is narrower SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.
          */
         NARROWER, 
         /**
-         * The target mapping specializes the meaning of the source concept (e.g. the target is-a source).
+         * This is an explicit assertion that there is no relationship between the source and target concept.
          */
-        SPECIALIZES, 
-        /**
-         * The target mapping overlaps with the source concept, but both source and target cover additional meaning, or the definitions are imprecise and it is uncertain whether they have the same boundaries to their meaning. The sense in which the mapping is inexact SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.
-         */
-        INEXACT, 
-        /**
-         * There is no match for this concept in the target code system.
-         */
-        UNMATCHED, 
-        /**
-         * This is an explicit assertion that there is no mapping between the source and target concept.
-         */
-        DISJOINT, 
+        NOTRELATEDTO, 
         /**
          * added to help the parsers
          */
         NULL;
-        public static ConceptMapEquivalence fromCode(String codeString) throws FHIRException {
+        public static ConceptMapRelationship fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("relatedto".equals(codeString))
+        if ("related-to".equals(codeString))
           return RELATEDTO;
         if ("equivalent".equals(codeString))
           return EQUIVALENT;
-        if ("equal".equals(codeString))
-          return EQUAL;
-        if ("wider".equals(codeString))
-          return WIDER;
-        if ("subsumes".equals(codeString))
-          return SUBSUMES;
+        if ("broader".equals(codeString))
+          return BROADER;
         if ("narrower".equals(codeString))
           return NARROWER;
-        if ("specializes".equals(codeString))
-          return SPECIALIZES;
-        if ("inexact".equals(codeString))
-          return INEXACT;
-        if ("unmatched".equals(codeString))
-          return UNMATCHED;
-        if ("disjoint".equals(codeString))
-          return DISJOINT;
-        throw new FHIRException("Unknown ConceptMapEquivalence code '"+codeString+"'");
+        if ("not-related-to".equals(codeString))
+          return NOTRELATEDTO;
+        throw new FHIRException("Unknown ConceptMapRelationship code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case RELATEDTO: return "relatedto";
+            case RELATEDTO: return "related-to";
             case EQUIVALENT: return "equivalent";
-            case EQUAL: return "equal";
-            case WIDER: return "wider";
-            case SUBSUMES: return "subsumes";
+            case BROADER: return "broader";
             case NARROWER: return "narrower";
-            case SPECIALIZES: return "specializes";
-            case INEXACT: return "inexact";
-            case UNMATCHED: return "unmatched";
-            case DISJOINT: return "disjoint";
+            case NOTRELATEDTO: return "not-related-to";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case RELATEDTO: return "http://hl7.org/fhir/concept-map-equivalence";
-            case EQUIVALENT: return "http://hl7.org/fhir/concept-map-equivalence";
-            case EQUAL: return "http://hl7.org/fhir/concept-map-equivalence";
-            case WIDER: return "http://hl7.org/fhir/concept-map-equivalence";
-            case SUBSUMES: return "http://hl7.org/fhir/concept-map-equivalence";
-            case NARROWER: return "http://hl7.org/fhir/concept-map-equivalence";
-            case SPECIALIZES: return "http://hl7.org/fhir/concept-map-equivalence";
-            case INEXACT: return "http://hl7.org/fhir/concept-map-equivalence";
-            case UNMATCHED: return "http://hl7.org/fhir/concept-map-equivalence";
-            case DISJOINT: return "http://hl7.org/fhir/concept-map-equivalence";
+            case RELATEDTO: return "http://hl7.org/fhir/concept-map-relationship";
+            case EQUIVALENT: return "http://hl7.org/fhir/concept-map-relationship";
+            case BROADER: return "http://hl7.org/fhir/concept-map-relationship";
+            case NARROWER: return "http://hl7.org/fhir/concept-map-relationship";
+            case NOTRELATEDTO: return "http://hl7.org/fhir/concept-map-relationship";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case RELATEDTO: return "The concepts are related to each other, and have at least some overlap in meaning, but the exact relationship is not known.";
+            case RELATEDTO: return "The concepts are related to each other, but the exact relationship is not known.";
             case EQUIVALENT: return "The definitions of the concepts mean the same thing (including when structural implications of meaning are considered) (i.e. extensionally identical).";
-            case EQUAL: return "The definitions of the concepts are exactly the same (i.e. only grammatical differences) and structural implications of meaning are identical or irrelevant (i.e. intentionally identical).";
-            case WIDER: return "The target mapping is wider in meaning than the source concept.";
-            case SUBSUMES: return "The target mapping subsumes the meaning of the source concept (e.g. the source is-a target).";
+            case BROADER: return "The target mapping is wider in meaning than the source concept.";
             case NARROWER: return "The target mapping is narrower in meaning than the source concept. The sense in which the mapping is narrower SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.";
-            case SPECIALIZES: return "The target mapping specializes the meaning of the source concept (e.g. the target is-a source).";
-            case INEXACT: return "The target mapping overlaps with the source concept, but both source and target cover additional meaning, or the definitions are imprecise and it is uncertain whether they have the same boundaries to their meaning. The sense in which the mapping is inexact SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.";
-            case UNMATCHED: return "There is no match for this concept in the target code system.";
-            case DISJOINT: return "This is an explicit assertion that there is no mapping between the source and target concept.";
+            case NOTRELATEDTO: return "This is an explicit assertion that there is no relationship between the source and target concept.";
             default: return "?";
           }
         }
@@ -652,100 +607,65 @@ public class Enumerations {
           switch (this) {
             case RELATEDTO: return "Related To";
             case EQUIVALENT: return "Equivalent";
-            case EQUAL: return "Equal";
-            case WIDER: return "Wider";
-            case SUBSUMES: return "Subsumes";
+            case BROADER: return "Broader";
             case NARROWER: return "Narrower";
-            case SPECIALIZES: return "Specializes";
-            case INEXACT: return "Inexact";
-            case UNMATCHED: return "Unmatched";
-            case DISJOINT: return "Disjoint";
+            case NOTRELATEDTO: return "Not Related To";
             default: return "?";
           }
         }
     }
 
-  public static class ConceptMapEquivalenceEnumFactory implements EnumFactory<ConceptMapEquivalence> {
-    public ConceptMapEquivalence fromCode(String codeString) throws IllegalArgumentException {
+  public static class ConceptMapRelationshipEnumFactory implements EnumFactory<ConceptMapRelationship> {
+    public ConceptMapRelationship fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("relatedto".equals(codeString))
-          return ConceptMapEquivalence.RELATEDTO;
+        if ("related-to".equals(codeString))
+          return ConceptMapRelationship.RELATEDTO;
         if ("equivalent".equals(codeString))
-          return ConceptMapEquivalence.EQUIVALENT;
-        if ("equal".equals(codeString))
-          return ConceptMapEquivalence.EQUAL;
-        if ("wider".equals(codeString))
-          return ConceptMapEquivalence.WIDER;
-        if ("subsumes".equals(codeString))
-          return ConceptMapEquivalence.SUBSUMES;
+          return ConceptMapRelationship.EQUIVALENT;
+        if ("broader".equals(codeString))
+          return ConceptMapRelationship.BROADER;
         if ("narrower".equals(codeString))
-          return ConceptMapEquivalence.NARROWER;
-        if ("specializes".equals(codeString))
-          return ConceptMapEquivalence.SPECIALIZES;
-        if ("inexact".equals(codeString))
-          return ConceptMapEquivalence.INEXACT;
-        if ("unmatched".equals(codeString))
-          return ConceptMapEquivalence.UNMATCHED;
-        if ("disjoint".equals(codeString))
-          return ConceptMapEquivalence.DISJOINT;
-        throw new IllegalArgumentException("Unknown ConceptMapEquivalence code '"+codeString+"'");
+          return ConceptMapRelationship.NARROWER;
+        if ("not-related-to".equals(codeString))
+          return ConceptMapRelationship.NOTRELATEDTO;
+        throw new IllegalArgumentException("Unknown ConceptMapRelationship code '"+codeString+"'");
         }
-        public Enumeration<ConceptMapEquivalence> fromType(Base code) throws FHIRException {
+        public Enumeration<ConceptMapRelationship> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConceptMapEquivalence>(this);
+            return new Enumeration<ConceptMapRelationship>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("relatedto".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.RELATEDTO);
+        if ("related-to".equals(codeString))
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.RELATEDTO);
         if ("equivalent".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.EQUIVALENT);
-        if ("equal".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.EQUAL);
-        if ("wider".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.WIDER);
-        if ("subsumes".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.SUBSUMES);
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.EQUIVALENT);
+        if ("broader".equals(codeString))
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.BROADER);
         if ("narrower".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.NARROWER);
-        if ("specializes".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.SPECIALIZES);
-        if ("inexact".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.INEXACT);
-        if ("unmatched".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.UNMATCHED);
-        if ("disjoint".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.DISJOINT);
-        throw new FHIRException("Unknown ConceptMapEquivalence code '"+codeString+"'");
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.NARROWER);
+        if ("not-related-to".equals(codeString))
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.NOTRELATEDTO);
+        throw new FHIRException("Unknown ConceptMapRelationship code '"+codeString+"'");
         }
-    public String toCode(ConceptMapEquivalence code) {
-      if (code == ConceptMapEquivalence.RELATEDTO)
-        return "relatedto";
-      if (code == ConceptMapEquivalence.EQUIVALENT)
+    public String toCode(ConceptMapRelationship code) {
+      if (code == ConceptMapRelationship.RELATEDTO)
+        return "related-to";
+      if (code == ConceptMapRelationship.EQUIVALENT)
         return "equivalent";
-      if (code == ConceptMapEquivalence.EQUAL)
-        return "equal";
-      if (code == ConceptMapEquivalence.WIDER)
-        return "wider";
-      if (code == ConceptMapEquivalence.SUBSUMES)
-        return "subsumes";
-      if (code == ConceptMapEquivalence.NARROWER)
+      if (code == ConceptMapRelationship.BROADER)
+        return "broader";
+      if (code == ConceptMapRelationship.NARROWER)
         return "narrower";
-      if (code == ConceptMapEquivalence.SPECIALIZES)
-        return "specializes";
-      if (code == ConceptMapEquivalence.INEXACT)
-        return "inexact";
-      if (code == ConceptMapEquivalence.UNMATCHED)
-        return "unmatched";
-      if (code == ConceptMapEquivalence.DISJOINT)
-        return "disjoint";
+      if (code == ConceptMapRelationship.NOTRELATEDTO)
+        return "not-related-to";
       return "?";
       }
-    public String toSystem(ConceptMapEquivalence code) {
+    public String toSystem(ConceptMapRelationship code) {
       return code.getSystem();
       }
     }

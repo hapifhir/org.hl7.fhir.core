@@ -40,7 +40,7 @@ import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.MetadataResource;
@@ -212,9 +212,9 @@ public class MappingSheetParser {
       element.addExtension(ToolingExtensions.EXT_MAPPING_TYPE, new StringType(row.getDataType()));
       element.addExtension(ToolingExtensions.EXT_MAPPING_CARD, new StringType(row.getCardinality()));
       if ("N/A".equals(row.getAttribute()))
-        element.getTargetFirstRep().setEquivalence(ConceptMapEquivalence.UNMATCHED);
+        element.setNoMap(true);
       else {
-        element.getTargetFirstRep().setEquivalence(ConceptMapEquivalence.RELATEDTO);
+        element.getTargetFirstRep().setRelationship(ConceptMapRelationship.RELATEDTO);
         if (row.getCondition() != null)
           element.getTargetFirstRep().addDependsOn().setProperty("http://hl7.org/fhirpath").setValue(processCondition(row.getCondition()));
         element.getTargetFirstRep().setCode(row.getAttribute());
@@ -404,7 +404,7 @@ public class MappingSheetParser {
           row.name = e.getExtensionString(ToolingExtensions.EXT_MAPPING_NAME);
           row.dataType = e.getExtensionString(ToolingExtensions.EXT_MAPPING_TYPE);
           row.cardinality = e.getExtensionString(ToolingExtensions.EXT_MAPPING_CARD);
-          if (t.getEquivalence() == ConceptMapEquivalence.UNMATCHED) {
+          if (e.getNoMap().booleanValue() == true) {
             row.attribute = "N/A";            
           } else {
             OtherElementComponent dep = getDependency(t, "http://hl7.org/fhirpath");

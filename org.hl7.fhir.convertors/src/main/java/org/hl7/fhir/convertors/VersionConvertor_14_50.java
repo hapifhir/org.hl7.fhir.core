@@ -3252,7 +3252,11 @@ public class VersionConvertor_14_50 {
       copyElement(src, tgt);
       if (src.hasCode())
         tgt.setCode(src.getCode());
-      tgt.addTarget(convertTargetElementComponent(t));
+      if (t.getEquivalence() == org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
+    	  tgt.setNoMap(true);
+      } else {
+    	  tgt.addTarget(convertTargetElementComponent(t));
+      }      
       res.add(new SourceElementComponentWrapper(tgt, src.getSystem(), t.getSystem()));
     }
     return res;
@@ -3267,8 +3271,13 @@ public class VersionConvertor_14_50 {
       tgt.setSystem(g.getSource());
     if (src.hasCode())
       tgt.setCode(src.getCode());
-    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
-      tgt.addTarget(convertTargetElementComponent(t, g));
+    if (src.getNoMap() == true) {
+    	tgt.addTarget(new org.hl7.fhir.dstu2016may.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
+    }
+    else {
+	    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
+	    	tgt.addTarget(convertTargetElementComponent(t, g));
+    }
     return tgt;
   }
 
@@ -3279,7 +3288,7 @@ public class VersionConvertor_14_50 {
     copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(src.getCode());
-    tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    tgt.setRelationship(convertConceptMapRelationship(src.getEquivalence()));
     if (src.hasComments())
       tgt.setComment(src.getComments());
     for (org.hl7.fhir.dstu2016may.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -3298,7 +3307,7 @@ public class VersionConvertor_14_50 {
       tgt.setSystem(g.getTarget());
     if (src.hasCode())
       tgt.setCode(src.getCode());
-    tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    tgt.setEquivalence(convertConceptMapEquivalence(src.getRelationship()));
     if (src.hasComment())
       tgt.setComments(src.getComment());
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -3308,36 +3317,31 @@ public class VersionConvertor_14_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship convertConceptMapRelationship(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
-    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.DISJOINT;
-    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NULL;
+    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
     }
   }
 
-  public static org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public static org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case EQUIVALENT: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
+    case BROADER: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.WIDER;
     case NARROWER: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.DISJOINT;
+    case NOTRELATEDTO: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.DISJOINT;
     default: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.NULL;
     }
   }
