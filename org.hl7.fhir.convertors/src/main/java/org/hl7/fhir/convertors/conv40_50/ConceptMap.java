@@ -215,7 +215,7 @@ public class ConceptMap extends VersionConvertor_40_50 {
       tgt.setCodeElement(convertCode(src.getCodeElement()));
     if (src.hasDisplay())
       tgt.setDisplayElement(convertString(src.getDisplayElement()));
-    if (src.getNoMap() == true) {
+    if (src.hasNoMap() && src.getNoMap() == true) {
     	tgt.addTarget(new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
     }
     else {

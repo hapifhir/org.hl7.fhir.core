@@ -3932,7 +3932,7 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setCodeSystem(g.getSource());
     tgt.setCode(src.getCode());
-    if (src.getNoMap() == true) {
+    if (src.hasNoMap() && src.getNoMap() == true) {
     	tgt.addTarget(new org.hl7.fhir.dstu2.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
     }
     else {
