@@ -8014,7 +8014,7 @@ public class VersionConvertor_30_50 {
       tgt.setCode(src.getCode());
     if (src.hasDisplay())
       tgt.setDisplay(src.getDisplay());
-    if (src.getNoMap() == true) {
+    if (src.hasNoMap() && src.getNoMap() == true) {
     	tgt.addTarget(new org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
     }
     else {
