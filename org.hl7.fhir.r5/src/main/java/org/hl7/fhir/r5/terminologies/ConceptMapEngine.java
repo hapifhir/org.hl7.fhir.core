@@ -28,7 +28,7 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 
 public class ConceptMapEngine {
 
@@ -65,7 +65,7 @@ public class ConceptMapEngine {
       return null;
     TargetElementComponent tt = null;
     for (TargetElementComponent t : ct.getTarget()) {
-      if (!t.hasDependsOn() && !t.hasProduct() && isOkEquivalence(t.getEquivalence())) {
+      if (!t.hasDependsOn() && !t.hasProduct() && isOkRelationship(t.getRelationship())) {
         if (tt != null)
           throw new FHIRException("Unable to process translate "+code+" because multiple targets were found in concept map "+cm.getUrl());
         tt = t;       
@@ -76,8 +76,8 @@ public class ConceptMapEngine {
     return new Coding().setSystem(cg.getTarget()).setVersion(cg.getTargetVersion()).setCode(tt.getCode()).setDisplay(tt.getDisplay());
   }
 
-  private boolean isOkEquivalence(ConceptMapEquivalence equivalence) {
-    return equivalence != null && equivalence != ConceptMapEquivalence.DISJOINT && equivalence != ConceptMapEquivalence.UNMATCHED;
+  private boolean isOkRelationship(ConceptMapRelationship relationship) {
+    return relationship != null && relationship != ConceptMapRelationship.NOTRELATEDTO;
   }
 
   private Coding translateBySystem(ConceptMap cm, String system, String code) {

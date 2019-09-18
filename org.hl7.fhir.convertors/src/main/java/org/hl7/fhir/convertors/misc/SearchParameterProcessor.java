@@ -40,7 +40,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.TextFile;
@@ -133,7 +133,7 @@ public class SearchParameterProcessor {
       String d = sp.getByCode(dst);
       if (!Utilities.noString(s) && !Utilities.noString(d)) {
         SourceElementComponent e = makeElement(s, group);
-        e.addTarget().setCode(d).setEquivalence(ConceptMapEquivalence.RELATEDTO);
+        e.addTarget().setCode(d).setRelationship(ConceptMapRelationship.RELATEDTO);
       }
     }
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(ROOT, "ConceptMap-"+map.getId()+".json")), map);

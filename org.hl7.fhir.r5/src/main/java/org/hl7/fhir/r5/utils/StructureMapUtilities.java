@@ -64,7 +64,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ExpressionNode;
@@ -329,7 +329,7 @@ public class StructureMapUtilities {
           b.append("\"");
         }
         b.append(" ");
-        b.append(getChar(ce.getTargetFirstRep().getEquivalence()));
+        b.append(getChar(ce.getTargetFirstRep().getRelationship()));
         b.append(" ");
         b.append(prefixesTgt.get(cg.getTarget()));
         b.append(":");
@@ -346,18 +346,13 @@ public class StructureMapUtilities {
     b.append("}\r\n\r\n");
   }
 
-  private static Object getChar(ConceptMapEquivalence equivalence) {
-    switch (equivalence) {
+  private static Object getChar(ConceptMapRelationship relationship) {
+    switch (relationship) {
     case RELATEDTO: return "-";
-    case EQUAL: return "=";
     case EQUIVALENT: return "==";
-    case DISJOINT: return "!=";
-    case UNMATCHED: return "--";
-    case WIDER: return "<=";
-    case SUBSUMES: return "<-";
+    case NOTRELATEDTO: return "!=";
+    case BROADER: return "<=";
     case NARROWER: return ">=";
-    case SPECIALIZES: return ">-";
-    case INEXACT: return "~";
     default: return "??";
     }
   }
@@ -770,22 +765,20 @@ public class StructureMapUtilities {
 		  String srcs = readPrefix(prefixes, lexer);
 			lexer.token(":");
       String sc = lexer.getCurrent().startsWith("\"") ? lexer.readConstant("code") : lexer.take();
-		  ConceptMapEquivalence eq = readEquivalence(lexer);
-		  String tgts = (eq != ConceptMapEquivalence.UNMATCHED) ? readPrefix(prefixes, lexer) : "";
+		  ConceptMapRelationship rel = readRelationship(lexer);
+		  String tgts = readPrefix(prefixes, lexer);
 		  ConceptMapGroupComponent g = getGroup(map, srcs, tgts);
 			SourceElementComponent e = g.addElement();
 			e.setCode(sc);
       if (e.getCode().startsWith("\""))
         e.setCode(lexer.processConstant(e.getCode()));
 			TargetElementComponent tgt = e.addTarget();
-			if (eq != ConceptMapEquivalence.EQUIVALENT)
-			  tgt.setEquivalence(eq);
-			if (tgt.getEquivalence() != ConceptMapEquivalence.UNMATCHED) {
-				lexer.token(":");
-				tgt.setCode(lexer.take());
-				if (tgt.getCode().startsWith("\""))
-				  tgt.setCode(lexer.processConstant(tgt.getCode()));
-			}
+			if (rel != ConceptMapRelationship.EQUIVALENT)
+			  tgt.setRelationship(rel);
+			lexer.token(":");
+			tgt.setCode(lexer.take());
+			if (tgt.getCode().startsWith("\""))
+			  tgt.setCode(lexer.processConstant(tgt.getCode()));
 			if (lexer.hasComment())
 				tgt.setComment(lexer.take().substring(2).trim());
 		}
@@ -817,29 +810,19 @@ public class StructureMapUtilities {
 	}
 
 
-	private ConceptMapEquivalence readEquivalence(FHIRLexer lexer) throws FHIRLexerException {
+	private ConceptMapRelationship readRelationship(FHIRLexer lexer) throws FHIRLexerException {
 		String token = lexer.take();
     if (token.equals("-"))
-      return ConceptMapEquivalence.RELATEDTO;
-    if (token.equals("="))
-      return ConceptMapEquivalence.EQUAL;
+      return ConceptMapRelationship.RELATEDTO;
 		if (token.equals("=="))
-			return ConceptMapEquivalence.EQUIVALENT;
+			return ConceptMapRelationship.EQUIVALENT;
 		if (token.equals("!="))
-			return ConceptMapEquivalence.DISJOINT;
-		if (token.equals("--"))
-			return ConceptMapEquivalence.UNMATCHED;
+			return ConceptMapRelationship.NOTRELATEDTO;
 		if (token.equals("<="))
-			return ConceptMapEquivalence.WIDER;
-		if (token.equals("<-"))
-			return ConceptMapEquivalence.SUBSUMES;
+			return ConceptMapRelationship.BROADER;
 		if (token.equals(">="))
-			return ConceptMapEquivalence.NARROWER;
-		if (token.equals(">-"))
-			return ConceptMapEquivalence.SPECIALIZES;
-		if (token.equals("~"))
-			return ConceptMapEquivalence.INEXACT;
-		throw lexer.error("Unknown equivalence token '"+token+"'");
+			return ConceptMapRelationship.NARROWER;
+		throw lexer.error("Unknown relationship token '"+token+"'");
 	}
 
 
@@ -2131,7 +2114,7 @@ public class StructureMapUtilities {
 					message = "Concept map "+su+" found no translation for "+src.getCode();
 				else {
 					for (TargetElementComponent tgt : list.get(0).comp.getTarget()) {
-						if (tgt.getEquivalence() == null || EnumSet.of( ConceptMapEquivalence.EQUAL , ConceptMapEquivalence.RELATEDTO , ConceptMapEquivalence.EQUIVALENT, ConceptMapEquivalence.WIDER).contains(tgt.getEquivalence())) {
+						if (tgt.getRelationship() == null || EnumSet.of( ConceptMapRelationship.RELATEDTO , ConceptMapRelationship.EQUIVALENT, ConceptMapRelationship.BROADER).contains(tgt.getRelationship())) {
 							if (done) {
 								message = "Concept map "+su+" found multiple matches for "+src.getCode();
 								done = false;
@@ -2139,8 +2122,6 @@ public class StructureMapUtilities {
 								done = true;
 								outcome = new Coding().setCode(tgt.getCode()).setSystem(list.get(0).group.getTarget());
 							}
-						} else if (tgt.getEquivalence() == ConceptMapEquivalence.UNMATCHED) {
-							done = true;
 						}
 					}
 					if (!done)
