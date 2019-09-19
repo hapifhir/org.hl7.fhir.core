@@ -2285,7 +2285,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
     x.br();
     CodeSystem cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
-    String eqpath = cs.getUserString("path");
+    if (cs == null)
+      cs = context.fetchCodeSystem("http://hl7.org/fhir/ValueSet/concept-map-equivalence");
+    String eqpath = cs == null ? null : cs.getUserString("path");
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       String src = grp.getSource();
