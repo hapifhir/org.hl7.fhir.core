@@ -724,7 +724,7 @@ public class ConceptMap extends MetadataResource {
         /**
          * noMap = true indicates that there is no target mapping for the source concept.
          */
-        @Child(name = "noMap", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "noMap", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="No mapping to a target concept for this source concept", formalDefinition="noMap = true indicates that no mapping to a target concept exists for this source concept." )
         protected BooleanType noMap;
 
