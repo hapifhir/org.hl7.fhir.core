@@ -477,7 +477,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_POINTER, e.getUserData(DERIVATION_POINTER));
         }
         if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
-          System.out.println("Error in snapshot generation: Differential for "+derived.getUrl()+" with " + (e.hasId() ? "id: "+e.getId() : "path: "+e.getPath())+" has an element that is not marked with a snapshot match");
+          System.out.println("Error in snapshot generation: Differential for "+derived.getUrl()+" has an element " + (e.hasId() ? "id: "+e.getId() : "path: "+e.getPath())+" that is not marked with a snapshot match - check validity of differential (including order)");
           if (exception)
             throw new DefinitionException("Snapshot for "+derived.getUrl()+" does not contain an element that matches an existing differential element that has "+(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath()));
           else
@@ -658,7 +658,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!sd.hasSnapshot()) {
                 StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
                 if (sdb == null)
-                  throw new DefinitionException("no base for "+sd.getBaseDefinition());
+                  throw new DefinitionException("Unable to find base "+sd.getBaseDefinition()+" for "+sd.getUrl());
                 generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasUserData("path")) ? Utilities.extractBaseUrl(sdb.getUserString("path")) : webUrl, sd.getName());
               }
               ElementDefinition src;
@@ -4101,7 +4101,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         b.append(".");
         String s = paths.get(i);
         String p = slices[i];
-        b.append(s);
+        b.append(fixChars(s));
         if (p != null) {
           b.append(":");
           b.append(p);
@@ -4126,6 +4126,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     }  
     // second path - fix up any broken path based id references
     
+  }
+
+
+  private Object fixChars(String s) {
+    return s.replace("_", "-");
   }
 
 
