@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.codec.Charsets;
+import ca.uhn.fhir.rest.api.Constants;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.model.BooleanType;
@@ -349,7 +349,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     ByteArrayOutputStream b = new  ByteArrayOutputStream();
     parser.compose(b, vsid);
     b.close();
-    String s = new String(b.toByteArray(), Charsets.UTF_8);
+    String s = new String(b.toByteArray(), Constants.CHARSET_UTF8);
     // any code systems we can find, we add these too. 
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       CodeSystem cs = fetchCodeSystem(inc.getSystem());
@@ -378,7 +378,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     ByteArrayOutputStream b = new  ByteArrayOutputStream();
     parser.compose(b, csid);
     b.close();
-    return new String(b.toByteArray(), Charsets.UTF_8);
+    return new String(b.toByteArray(), Constants.CHARSET_UTF8);
   }
 
 
