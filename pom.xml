@@ -272,6 +272,13 @@
 					<maxmem>4000m</maxmem>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<skipUpdateLicense>true</skipUpdateLicense>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
