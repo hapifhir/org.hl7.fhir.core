@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -1974,6 +1975,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       	  ElementDefinitionConstraintComponent inv = s.copy();
           base.getConstraint().add(inv);
       	}
+      }
+      for (IdType id : derived.getCondition()) {
+        base.getCondition().add(id);
       }
       
       // now, check that we still have a bindable type; if not, delete the binding - see task 8477
