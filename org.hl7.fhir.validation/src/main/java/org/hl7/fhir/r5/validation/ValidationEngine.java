@@ -1185,19 +1185,41 @@ public class ValidationEngine {
     List<Resource> outputs = new ArrayList<Resource>();
     
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs));
-
-    
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType); 
     StructureMap map = context.getTransform(mapUri);
     if (map == null)
       throw new Error("Unable to find map "+mapUri+" (Known Maps = "+context.listMapUrls()+")");
     
-    scu.transform(null, src, map, null);
-    if (outputs.size() == 0)
-      throw new Exception("This transform did not produce an output");
-    if (outputs.size() > 1)
-      throw new Exception("This transform did produced multiple outputs which is not supported in this context");
-    return outputs.get(0);
+    Resource resource = getTargetResourceFromStructureMap(map);
+
+    scu.transform(null, src, map, resource);
+    return resource;
+  }
+
+  private Resource getTargetResourceFromStructureMap(StructureMap map) {
+    String targetTypeUrl = null;
+    for(StructureMap.StructureMapStructureComponent component: map.getStructure()) {
+      if(component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
+        targetTypeUrl = component.getUrl();
+        break;
+      }
+    }
+
+    if(targetTypeUrl == null)
+      throw new FHIRException("Unable to determine resource URL for target type");
+
+    StructureDefinition structureDefinition = null;
+    for(StructureDefinition sd:this.context.getStructures()) {
+      if(sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
+        structureDefinition = sd;
+        break;
+      }
+    }
+
+    if(structureDefinition == null)
+      throw new FHIRException("Unable to determine StructureDefinition for target type");
+
+    return ResourceFactory.createResource(structureDefinition.getName());
   }
 
   public DomainResource generate(String source) throws Exception {
