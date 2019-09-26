@@ -36,8 +36,13 @@
             <a name="Patient.extension"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">..3</td>
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+            <span style="opacity: 0.4">0</span>..
+            <span style="opacity: 0.4">3</span>
+          </td>
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+            <a style="opacity: 0.4" href="nulldatatypes.html#Extension">Extension</a>
+          </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
             <span style="font-weight:bold">Slice: </span>Unordered, Open by value:url
           </td>
@@ -362,8 +367,8 @@
     <element id="Patient.extension:name2">
       <path value="Patient.extension"/>
       <sliceName value="name2"/>
-      <short value="Mother&#39;s Maiden name"/>
-      <definition value="Mother&#39;s maiden (unmarried) name, commonly collected to help verify patient identity."/>
+      <short value="Condition(s) limiting movement, senses, or activities"/>
+      <definition value="Value(s) identifying physical or mental condition(s) that limits a person&#39;s movements, senses, or activities."/>
       <min value="0"/>
       <max value="*"/>
       <base>
@@ -373,7 +378,7 @@
       </base>
       <type>
         <code value="Extension"/>
-        <profile value="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName"/>
+        <profile value="http://hl7.org/fhir/StructureDefinition/patient-disability"/>
       </type>
       <condition value="ele-1"/>
       <constraint>
@@ -393,14 +398,6 @@
         <source value="Extension"/>
       </constraint>
       <isModifier value="false"/>
-      <mapping>
-        <identity value="v2"/>
-        <map value="PID-6"/>
-      </mapping>
-      <mapping>
-        <identity value="rim"/>
-        <map value="Role relationship to entity with maiden name (?)"/>
-      </mapping>
     </element>
     <element id="Patient.modifierExtension">
       <path value="Patient.modifierExtension"/>
@@ -1602,7 +1599,7 @@
       <sliceName value="name2"/>
       <type>
         <code value="Extension"/>
-        <profile value="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName"/>
+        <profile value="http://hl7.org/fhir/StructureDefinition/patient-disability"/>
       </type>
     </element>
   </differential>

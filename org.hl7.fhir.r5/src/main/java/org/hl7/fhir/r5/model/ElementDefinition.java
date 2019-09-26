@@ -7576,6 +7576,22 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 
   public String present() {
     return hasId() ? getId() : getPath();
+  }
+
+  public boolean hasCondition(IdType id) {
+    for (IdType c : getCondition()) {
+      if (c.primitiveValue().equals(id.primitiveValue()))
+        return true;
+    }
+    return false;
+  }
+
+  public boolean hasConstraint(String key) {
+    for (ElementDefinitionConstraintComponent c : getConstraint()) {
+      if (c.getKey().equals(key))
+        return true;
+    }
+    return false;
   }  
 
 
