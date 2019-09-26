@@ -1295,7 +1295,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (usage.hasBinding())
       res.setBinding(usage.getBinding().copy());
     for (ElementDefinitionConstraintComponent c : usage.getConstraint())
-      res.addConstraint(c);
+      if (!res.hasConstraint(c.getKey()))
+        res.addConstraint(c);
     for (Extension e : usage.getExtension()) {
       if (!res.hasExtension(e.getUrl()))
         res.addExtension(e.copy());
@@ -1971,13 +1972,16 @@ public class ProfileUtilities extends TranslatingUtilities {
           s.setSource(base.getId());
       }
       if (derived.hasConstraint()) {
-      	for (ElementDefinitionConstraintComponent s : derived.getConstraint()) {
-      	  ElementDefinitionConstraintComponent inv = s.copy();
-          base.getConstraint().add(inv);
+        for (ElementDefinitionConstraintComponent s : derived.getConstraint()) {
+          if (!base.hasConstraint(s.getKey())) {
+            ElementDefinitionConstraintComponent inv = s.copy();
+            base.getConstraint().add(inv);
+          }
       	}
       }
       for (IdType id : derived.getCondition()) {
-        base.getCondition().add(id);
+        if (!base.hasCondition(id))
+          base.getCondition().add(id);
       }
       
       // now, check that we still have a bindable type; if not, delete the binding - see task 8477

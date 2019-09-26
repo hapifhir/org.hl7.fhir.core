@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <StructureDefinition xmlns="http://hl7.org/fhir">
-  <id value="t4"/>
+  <id value="t4a"/>
   <text>
     <status value="generated"/>
     <div xmlns="http://www.w3.org/1999/xhtml">
@@ -53,7 +53,7 @@
     </div>
   </text>
   <url value="urn:uuid:71e0a5a6-95bf-4e04-aa6a-4af0ebef3f29"/>
-  <name value="t4"/>
+  <name value="t4a"/>
   <status value="draft"/>
   <description value="fixture for #4: test appending documentation"/>
   <mapping>
