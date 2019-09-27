@@ -363,6 +363,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String serverBase;
   
   private EnableWhenEvaluator myEnableWhenEvaluator = new EnableWhenEvaluator();
+  private String executionId;
 
   /*
    * Keeps track of whether a particular profile has been checked or not yet
@@ -3750,6 +3751,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   }
 
   public final static String URI_REGEX3 = "((http|https)://([A-Za-z0-9\\\\\\.\\:\\%\\$]*\\/)*)?(Account|ActivityDefinition|AllergyIntolerance|AdverseEvent|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CapabilityStatement|CarePlan|CareTeam|ChargeItem|Claim|ClaimResponse|ClinicalImpression|CodeSystem|Communication|CommunicationRequest|CompartmentDefinition|Composition|ConceptMap|Condition (aka Problem)|Consent|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceRequest|DeviceUseStatement|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|Endpoint|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExpansionProfile|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|GraphDefinition|Group|GuidanceResponse|HealthcareService|ImagingManifest|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|Library|Linkage|List|Location|Measure|MeasureReport|Media|Medication|MedicationAdministration|MedicationDispense|MedicationRequest|MedicationStatement|MessageDefinition|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Organization|Parameters|Patient|PaymentNotice|PaymentReconciliation|Person|PlanDefinition|Practitioner|PractitionerRole|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RequestGroup|ResearchStudy|ResearchSubject|RiskAssessment|Schedule|SearchParameter|Sequence|ServiceDefinition|Slot|Specimen|StructureDefinition|StructureMap|Subscription|Substance|SupplyDelivery|SupplyRequest|Task|TestScript|TestReport|ValueSet|VisionPrescription)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
+  private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
+  private static final String EXECUTION_ID = "validator.execution.id";
 
   private String uriRegexForVersion() {
     if ("3.0.1".equals(context.getVersion()))
@@ -4415,8 +4418,21 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       return;
 
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-      if (inv.hasExpression()) 
-        checkInvariant(hostContext, errors, path, profile, resource, element, inv);
+      if (inv.hasExpression()) {
+        @SuppressWarnings("unchecked")
+        Set<String> invList = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Set<String>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
+        if (invList == null) {
+          invList = new HashSet<>();
+          element.setUserData(EXECUTED_CONSTRAINT_LIST, invList);
+          element.setUserData(EXECUTION_ID, executionId);
+        }     
+        if (!invList.contains(inv.getKey())) {
+          invList.add(inv.getKey());
+          checkInvariant(hostContext, errors, path, profile, resource, element, inv);
+        } else {
+//          System.out.println("Skip "+inv.getKey()+" on "+path);
+        }
+      }
     }
   }
 
@@ -4511,6 +4527,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     assert stack != null;
     assert resource != null;
 
+    if (isEntry || executionId == null)
+      executionId = UUID.randomUUID().toString();
     boolean ok = true;
 
     String resourceName = element.getType(); // todo: consider namespace...?
