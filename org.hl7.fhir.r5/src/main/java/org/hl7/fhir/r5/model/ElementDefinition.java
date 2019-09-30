@@ -7592,6 +7592,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         return true;
     }
     return false;
+  }
+
+  public boolean hasCode(Coding c) {
+    for (Coding t : getCode()) {
+      if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
+        return true;
+    }
+    return false;
   }  
 
 
