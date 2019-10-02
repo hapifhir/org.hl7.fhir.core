@@ -239,6 +239,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean exception;
   private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
   private boolean newSlicingProcessing;
+  private String defWebRoot;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
@@ -438,6 +439,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!Utilities.noString(webUrl) && !webUrl.endsWith("/"))
       webUrl = webUrl + '/';
 
+    if (defWebRoot == null)
+      defWebRoot = webUrl;
     derived.setSnapshot(new StructureDefinitionSnapshotComponent());
 
     try {
@@ -653,7 +656,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
                 diffCursor++;
               processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
-                  diffCursor-1, url, webUrl, profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, redirector, srcSD);
+                  diffCursor-1, url, getWebUrl(dt, webUrl, indent), profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, redirector, srcSD);
             }
           }
           baseCursor++;
@@ -761,7 +764,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                   throw new DefinitionException(diffMatches.get(0).getPath()+" has children ("+differential.getElement().get(diffCursor).getPath()+") for type "+typeCode(outcome.getType())+" in profile "+profileName+", but can't find type");
                 contextName = dt.getUrl();
                 processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
-                    diffCursor - 1, url, webUrl, profileName+pathTail(diffMatches, 0), diffMatches.get(0).getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, new ArrayList<ElementRedirection>(), srcSD);
+                    diffCursor - 1, url, getWebUrl(dt, webUrl, indent), profileName+pathTail(diffMatches, 0), diffMatches.get(0).getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, new ArrayList<ElementRedirection>(), srcSD);
               }
             }
           }
@@ -980,7 +983,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
                 diffCursor++;
               processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
-                  diffCursor-1, url, webUrl, profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, redirector, srcSD);
+                  diffCursor-1, url, getWebUrl(dt, webUrl, indent), profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, redirector, srcSD);
             }
             baseCursor++;
           } else {
@@ -1138,7 +1141,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                       while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), diffMatches.get(0).getPath()+"."))
                         diffCursor++;
                       processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start-1, dt.getSnapshot().getElement().size()-1,
-                          diffCursor - 1, url, webUrl, profileName+pathTail(diffMatches, 0), diffMatches.get(0).getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, redirector, srcSD);
+                          diffCursor - 1, url, getWebUrl(dt, webUrl, indent), profileName+pathTail(diffMatches, 0), diffMatches.get(0).getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, redirector, srcSD);
                     }
                   }
                 }
@@ -1159,6 +1162,25 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error("null min");
     }
     return res;
+  }
+
+
+  private String getWebUrl(StructureDefinition dt, String webUrl, String indent) {
+    if (dt.hasUserData("path")) {
+      // this is a hack, but it works for now, since we don't have deep folders
+      String url = dt.getUserString("path");
+      int i = url.lastIndexOf("/");
+      if (i < 1) {
+        System.out.println(indent+"Base for "+dt.getUrl()+" -> "+webUrl);
+        return defWebRoot;
+      } else {
+        System.out.println(indent+"Base for "+dt.getUrl()+" -> "+url.substring(0, i));
+        return url.substring(0, i+1);
+      }
+    } else {  
+      System.out.println(indent+"Base for "+dt.getUrl()+" -> "+webUrl);
+      return webUrl;
+    }
   }
 
 
@@ -4832,6 +4854,18 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public void setDebug(boolean debug) {
     this.debug = debug;
+  }
+
+
+  public String getDefWebRoot() {
+    return defWebRoot;
+  }
+
+
+  public void setDefWebRoot(String defWebRoot) {
+    this.defWebRoot = defWebRoot;
+    if (!this.defWebRoot.endsWith("/"))
+      this.defWebRoot = this.defWebRoot + '/';
   }
 
 
