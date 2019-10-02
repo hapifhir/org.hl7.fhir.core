@@ -1171,14 +1171,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       String url = dt.getUserString("path");
       int i = url.lastIndexOf("/");
       if (i < 1) {
-        System.out.println(indent+"Base for "+dt.getUrl()+" -> "+webUrl);
         return defWebRoot;
       } else {
-        System.out.println(indent+"Base for "+dt.getUrl()+" -> "+url.substring(0, i));
         return url.substring(0, i+1);
       }
     } else {  
-      System.out.println(indent+"Base for "+dt.getUrl()+" -> "+webUrl);
       return webUrl;
     }
   }
