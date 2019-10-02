@@ -103,6 +103,7 @@ import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IContextResourceLoader;
@@ -134,7 +135,9 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.IdStatus;
+import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
@@ -201,7 +204,7 @@ import org.xml.sax.SAXException;
  * @author Grahame Grieve
  *
  */
-public class ValidationEngine {
+public class ValidationEngine implements IValidatorResourceFetcher {
 
   public class ScanOutputItem {
     private String ref;
@@ -1282,6 +1285,7 @@ public class ValidationEngine {
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setValidationLanguage(language);
+    validator.setFetcher(this);
     return validator;
   }
 
@@ -1555,6 +1559,27 @@ public class ValidationEngine {
       names.addAll(keys);
     Collections.sort(names);
     return names;
+  }
+
+  @Override
+  public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+    return null;
+  }
+
+  @Override
+  public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+    if (!url.startsWith("http://hl7.org/fhir"))
+      return ReferenceValidationPolicy.IGNORE;
+    throw new Error("Not done yet");
+  }
+
+  @Override
+  public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
+    if (!url.startsWith("http://hl7.org/fhir"))
+      return true; // we don't bother with those.
+    if (context.fetchResource(Resource.class, url) != null)
+      return true;
+    throw new Error("Not done yet - resolve "+url);
   }
 
 }
