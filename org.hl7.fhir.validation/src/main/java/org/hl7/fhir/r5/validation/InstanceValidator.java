@@ -1756,7 +1756,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xhtml != null) { // if it is null, this is an error already noted in the parsers
         // check that the namespace is there and correct.
         String ns = xhtml.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"')");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"', should be '"+FormatUtilities.XHTML_NS+"')");
         // check that inner namespaces are all correct
         checkInnerNS(errors, e, path, xhtml.getChildNodes());
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), "Wrong name on the XHTML ('"+ns+"') - must start with div");
@@ -1809,7 +1809,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         String ns = node.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"')");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"', should be '"+FormatUtilities.XHTML_NS+"')");
         checkInnerNS(errors, e, path, node.getChildNodes());
       }
     }
@@ -4310,13 +4310,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   public void checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
       Element resource, Element element, NodeStack stack) throws FHIRException {
-    if (resource.getName().equals("contained")) {
-      NodeStack ancestor = stack;
-      while (ancestor != null && ancestor.element != null && (!ancestor.element.isResource() || "contained".equals(ancestor.element.getName())))
-        ancestor = ancestor.parent;
-      if (ancestor != null && ancestor.element != null)
-        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
-    } else
+	  // this was an old work around for resource/rootresource issue.
+//    if (resource.getName().equals("contained")) {
+//      NodeStack ancestor = stack;
+//      while (ancestor != null && ancestor.element != null && (!ancestor.element.isResource() || "contained".equals(ancestor.element.getName())))
+//        ancestor = ancestor.parent;
+//      if (ancestor != null && ancestor.element != null)
+//        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
+//    } else
       checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
     if (definition.getFixed()!=null)
       checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), definition.getSliceName(), null);
@@ -4560,7 +4561,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, "Resource requires an id, but none is present");
       else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild("id") != null))
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, "Resource has an id, but none is allowed");
-      start(hostContext, errors, resource, element, defn, stack); // root is both definition and type
+      start(hostContext, errors, element, element, defn, stack); // root is both definition and type
     }
   }
 
