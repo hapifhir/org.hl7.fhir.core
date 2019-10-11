@@ -810,17 +810,17 @@ public class ProfileUtilities extends TranslatingUtilities {
           // the first element is setting up the slicing
           if (diffMatches.get(0).getSlicing().hasRules())
             if (diffMatches.get(0).getSlicing().getRules() != SlicingRules.CLOSED)
-              throw new FHIRException("Error at path "+contextPathSrc+": Type slicing with slicing.rules != closed");
+              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.rules != closed");
           if (diffMatches.get(0).getSlicing().hasOrdered())
             if (diffMatches.get(0).getSlicing().getOrdered())
-              throw new FHIRException("Error at path "+contextPathSrc+": Type slicing with slicing.ordered = true");
+              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.ordered = true");
           if (diffMatches.get(0).getSlicing().hasDiscriminator()) {
             if (diffMatches.get(0).getSlicing().getDiscriminator().size() != 1)
-              throw new FHIRException("Error at path "+contextPathSrc+": Type slicing with slicing.discriminator.count() > 1");
+              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.count() > 1");
             if (!"$this".equals(diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getPath()))
-              throw new FHIRException("Error at path "+contextPathSrc+": Type slicing with slicing.discriminator.path != '$this'");
+              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.path != '$this'");
             if (diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getType() != DiscriminatorType.TYPE)
-              throw new FHIRException("Error at path "+contextPathSrc+": Type slicing with slicing.discriminator.type != 'type'");
+              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.type != 'type'");
           }
           // check the slice names too while we're at it...
           for (TypeSlice ts : typeList)
@@ -1686,8 +1686,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       for (int j = 0; j < p.length; j++) {
         ok = ok && sp.length > j && (p[j].equals(sp[j]) || (p[j].endsWith("[x]") && sp[j].startsWith(p[j].substring(0, p[j].length()-3))));
       }
-      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 && statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) && (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
-        System.out.println("mismatch");
+      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 && 
+            statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) && 
+            (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
+        System.out.println("mismatch in paths: "+statedPath +" vs " +path);
       }
       if (ok) {
         /* 
