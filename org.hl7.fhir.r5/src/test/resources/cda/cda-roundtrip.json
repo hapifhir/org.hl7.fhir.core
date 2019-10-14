@@ -1499,7 +1499,7 @@
                   "title": {
                     "dataString": "Skin Exam"
                   },
-                  "text": "<div src=\"MM1\">Erythematous rash, palmar surface, left index finger.\n\t\t\t\t\t\t\t\t <img/></div>",
+                  "text": "<div>Erythematous rash, palmar surface, left index finger.\n\t\t\t\t\t\t\t\t <img src=\"MM1\"/></div>",
                   "entry": [
                     {
                       "observation": {
