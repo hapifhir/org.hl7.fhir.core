@@ -486,6 +486,8 @@ public class JsonParser extends ParserBase {
 			if (element.hasValue())
 				primitiveValue(name, element);
 			name = "_"+name;
+			if (element.getType().equals("xhtml"))
+			  json.anchor("end-xhtml");
 		}
 		if (element.hasChildren()) {
 			open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));

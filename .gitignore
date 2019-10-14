@@ -126,6 +126,8 @@ tmp/
 local.properties
 .loadpath
 *.hprof
+.project
+.classpath
 
 # External tool builders
 .externalToolBuilders/
@@ -292,3 +294,7 @@ local.properties
 /org.hl7.fhir.r4b
 /org.hl7.fhir.r5/src/test/resources/gen/gen.xml
 /org.hl7.fhir.r5/src/test/resources/graphql/*.out
+/org.hl7.fhir.validation/src/test/resources/comparison/output
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/au2-actual.xml
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/au3-actual.xml
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/t29b-input.xml

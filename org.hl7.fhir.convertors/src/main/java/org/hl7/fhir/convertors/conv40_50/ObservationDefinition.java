@@ -72,7 +72,7 @@ public class ObservationDefinition extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType())
-      tgt.addPermittedDataType(convertObservationDataType(t.getValue()));
+      copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
     if (src.hasMultipleResultsAllowed())
       tgt.setMultipleResultsAllowedElement(convertBoolean(src.getMultipleResultsAllowedElement()));
     if (src.hasMethod())
@@ -106,7 +106,7 @@ public class ObservationDefinition extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType())
-      tgt.addPermittedDataType(convertObservationDataType(t.getValue()));
+      copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
     if (src.hasMultipleResultsAllowed())
       tgt.setMultipleResultsAllowedElement(convertBoolean(src.getMultipleResultsAllowedElement()));
     if (src.hasMethod())

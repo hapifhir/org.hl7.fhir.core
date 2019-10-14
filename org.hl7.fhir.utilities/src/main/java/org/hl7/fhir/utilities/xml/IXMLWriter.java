@@ -119,5 +119,5 @@ public interface IXMLWriter {
 	
 	// this is only implemented by an implementation that is producing an xhtml representation, and is able to render elements as hyperlinks 
   public abstract void link(String href);
-  
+  public abstract void anchor(String name);
 }

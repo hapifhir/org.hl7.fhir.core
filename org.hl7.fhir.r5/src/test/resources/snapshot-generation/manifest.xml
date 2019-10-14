@@ -88,24 +88,27 @@
     <rule text="element 13 (2nd slice).extension.id path" fhirpath="fixture('t13-output').snapshot.element[13].path = 'Patient.extension.extension.id'"/>
     <rule text="element 14 (2nd slice).extension.extension path" fhirpath="fixture('t13-output').snapshot.element[14].path = 'Patient.extension.extension.extension'"/>
     <rule text="element 15 (2nd slice).extension.url path" fhirpath="fixture('t13-output').snapshot.element[15].path = 'Patient.extension.extension.url'"/>
-    <rule text="element 16 (2nd slice).extension.valueCodeableConcept path" fhirpath="fixture('t13-output').snapshot.element[16].path = 'Patient.extension.extension.valueCodeableConcept'"/>
-    <rule text="element 17 (2nd slice).extension path" fhirpath="fixture('t13-output').snapshot.element[17].path = 'Patient.extension.extension'"/>
-    <rule text="element 17 (2nd slice).extension cardinality" fhirpath="fixture('t13-output').snapshot.element[17].max = '0'"/>
-    <rule text="element 18 (2nd slice).extension.id path" fhirpath="fixture('t13-output').snapshot.element[18].path = 'Patient.extension.extension.id'"/>
-    <rule text="element 19 (2nd slice).extension.extension path" fhirpath="fixture('t13-output').snapshot.element[19].path = 'Patient.extension.extension.extension'"/>
-    <rule text="element 20 (2nd slice).extension.url path" fhirpath="fixture('t13-output').snapshot.element[20].path = 'Patient.extension.extension.url'"/>
-    <rule text="element 21 (2nd slice).extension.valuePeriod path" fhirpath="fixture('t13-output').snapshot.element[21].path = 'Patient.extension.extension.valuePeriod'"/>
-    <rule text="element 22.url path" fhirpath="fixture('t13-output').snapshot.element[22].path = 'Patient.extension.url'"/>
-    <rule text="element 22.value path" fhirpath="fixture('t13-output').snapshot.element[23].path = 'Patient.extension.value[x]'"/>
+    <rule text="element 16 (2nd slice).extension.value path" fhirpath="fixture('t13-output').snapshot.element[16].path = 'Patient.extension.extension.value[x]'"/>
+    <rule text="element 16 (2nd slice).extension.value id" fhirpath="fixture('t13-output').snapshot.element[16].id = 'Patient.extension:complex.extension:code.value[x]'"/>
+    <rule text="element 17 (2nd slice).extension.value(CodeableConcept) path" fhirpath="fixture('t13-output').snapshot.element[17].path = 'Patient.extension.extension.value[x]'"/>
+    <rule text="element 17 (2nd slice).extension.value(CodeableConcept) id" fhirpath="fixture('t13-output').snapshot.element[17].id = 'Patient.extension:complex.extension:code.value[x]:valueCodeableConcept'"/>
+    <rule text="element 18 (2nd slice).extension path" fhirpath="fixture('t13-output').snapshot.element[18].path = 'Patient.extension.extension'"/>
+    <rule text="element 18 (2nd slice).extension cardinality" fhirpath="fixture('t13-output').snapshot.element[18].max = '0'"/>
+    <rule text="element 19 (2nd slice).extension.id path" fhirpath="fixture('t13-output').snapshot.element[19].path = 'Patient.extension.extension.id'"/>
+    <rule text="element 20 (2nd slice).extension.extension path" fhirpath="fixture('t13-output').snapshot.element[20].path = 'Patient.extension.extension.extension'"/>
+    <rule text="element 21 (2nd slice).extension.url path" fhirpath="fixture('t13-output').snapshot.element[21].path = 'Patient.extension.extension.url'"/>
+    <rule text="element 22 (2nd slice).extension.valuePeriod path" fhirpath="fixture('t13-output').snapshot.element[22].path = 'Patient.extension.extension.value[x]'"/>
+    <rule text="element 24.url path" fhirpath="fixture('t13-output').snapshot.element[24].path.trace('path') = 'Patient.extension.url'"/>
+    <rule text="element 25.value path" fhirpath="fixture('t13-output').snapshot.element[25].path = 'Patient.extension.value[x]'"/>
   </test>
   <test gen="true" id="t14">
     <rule text="element count increased by 13" fhirpath="fixture('t14-output').snapshot.element.count() = fixture('organization').snapshot.element.count() + 13"/>
   </test>
   <test gen="true" id="t15">
-    <rule text="element count increased by 27" fhirpath="fixture('t15-output').snapshot.element.count() = fixture('patient').snapshot.element.count() + 27"/>
+    <rule text="element count increased by 27" fhirpath="fixture('t15-output').snapshot.element.count() = fixture('patient').snapshot.element.count() + 29"/>
   </test>
   <test gen="true" id="t16">
-    <rule text="element count increased by 17" fhirpath="fixture('t16-output').snapshot.element.count() = fixture('t15-output').snapshot.element.count() + 17"/>
+    <rule text="element count increased by 17" fhirpath="fixture('t16-output').snapshot.element.count() = fixture('t15-output').snapshot.element.count() + 19"/>
   </test>
   <test gen="true" id="t17">
     <rule text="Patient.modifierExtension must be sliced" fhirpath="fixture('t17-output').snapshot.element.where(path = 'Patient.modifierExtension').first().slicing.exists()"/>
@@ -140,7 +143,7 @@
     <rule text="PlanDefinition.action.action tail must not have a slice name" fhirpath="fixture('t21-output').snapshot.element.where(path = 'PlanDefinition.action.action').tail().all(sliceName.empty().not())"/>
   </test>
   <test gen="true" id="t22">
-    <rule text="element count increased by 76" fhirpath="fixture('t22-output').snapshot.element.count().trace('t22o') = fixture('patient').snapshot.element.count().trace('t22patient') + 76"/>
+    <rule text="element count increased by 64" fhirpath="fixture('t22-output').snapshot.element.count().trace('t22o') = fixture('patient').snapshot.element.count().trace('t22patient') + 64"/>
   </test>
   <test gen="true" sort="true" id="t23">
     <rule text="element count increased by ??" fhirpath="fixture('t23-output').snapshot.element.count().trace('t23o') = fixture('patient').snapshot.element.count().trace('t23patient') + 11"/>
@@ -165,6 +168,7 @@
     <rule text="There is an element with id 'Parameters.parameter.part:foo.id'" fhirpath="fixture('t29-output').snapshot.element.where(id = 'Parameters.parameter.part:foo.id').count()=1"/>
   </test>
   <test gen="true" sort="true" id="t29a" fail="true"/>
+  <test gen="true" id="t29b" fail="true" regex=".*OperationOutcome.*"/>
   <test gen="true" sort="true" id="t30b" include="t30a">
     <rule text="Snapshot doesn't result in an error'" fhirpath="fixture('t30b-output').snapshot.element.count().trace('t30bo')&gt;1"/>
   </test>

@@ -430,7 +430,12 @@ public interface IWorkerContext {
 
   public interface ILoggingService {
     public enum LogCategory {
-      PROGRESS, TX, INIT, CONTEXT, HTML 
+      INIT, 
+      PROGRESS,
+      TX, 
+      CONTEXT, 
+      GENERATE,
+      HTML 
     }
     public void logMessage(String message); // status messages, always display
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 

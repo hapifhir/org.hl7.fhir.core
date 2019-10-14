@@ -26,11 +26,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -84,40 +87,46 @@ public class NPMPackageGenerator {
   private BufferedOutputStream bufferedOutputStream;
   private GzipCompressorOutputStream gzipOutputStream;
   private JsonObject packageJ;
+  private JsonObject packageManifest;
   
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
       fhirVersion.add(v.asStringValue());
-    buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
+    buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
   }
   
-  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name) throws FHIRException, IOException {
+  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date) throws FHIRException, IOException {
     JsonObject p = master.packageJ.deepCopy();
     p.remove("name");
     p.addProperty("name", id);
     p.remove("type");
     p.addProperty("type", PackageType.SUBSET.getCode());    
     p.remove("title");
-    p.addProperty("title", name);    
-    return new NPMPackageGenerator(destFile, p);
+    p.addProperty("title", name);
+
+    return new NPMPackageGenerator(destFile, p, date);
   }
   
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate, List<String> fhirVersion) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
     this.destFile = destFile;
     start();
-    buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
+    buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
   }
   
-  public NPMPackageGenerator(String destFile, JsonObject npm) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, JsonObject npm, Date date) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
+    String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+    packageJ = npm;
+    packageManifest = new JsonObject();
+    packageManifest.addProperty("version", npm.get("version").getAsString());
+    packageManifest.addProperty("date", dt);
+    npm.addProperty("date", dt);
+    packageManifest.addProperty("name", npm.get("name").getAsString());
     this.destFile = destFile;
     start();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -126,10 +135,13 @@ public class NPMPackageGenerator {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
     }
-    packageJ = npm;
+    
   }
  
-  private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
+  private void buildPackageJson(String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
+    String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
+    String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+    
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (!ig.hasPackageId())
       b.append("packageId");
@@ -150,6 +162,7 @@ public class NPMPackageGenerator {
     npm.addProperty("version", ig.getVersion());
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
     npm.addProperty("type", kind.getCode());
+    npm.addProperty("date", dt);
     if (ig.hasLicense())
       npm.addProperty("license", ig.getLicense().toCode());
     npm.addProperty("canonical", canonical);
@@ -157,7 +170,7 @@ public class NPMPackageGenerator {
     if (ig.hasTitle())
       npm.addProperty("title", ig.getTitle());
     if (ig.hasDescription())
-      npm.addProperty("description", ig.getDescription()+ " (built "+genDate+timezone()+")");
+      npm.addProperty("description", ig.getDescription()+ " (built "+dtHuman+timezone()+")");
     if (kind != PackageType.CORE) {
       JsonObject dep = new JsonObject();
       npm.add("dependencies", dep);
@@ -199,6 +212,13 @@ public class NPMPackageGenerator {
     } catch (UnsupportedEncodingException e) {
     }
     packageJ = npm;
+
+    packageManifest = new JsonObject();
+    packageManifest.addProperty("version", ig.getVersion());
+    packageManifest.addProperty("fhirVersion", fhirVersion.toString());
+    packageManifest.addProperty("date", dt);
+    packageManifest.addProperty("name", ig.getPackageId());
+    
   }
 
 
@@ -260,6 +280,10 @@ public class NPMPackageGenerator {
     bufferedOutputStream.close();
     OutputStream.close();
     TextFile.bytesToFile(OutputStream.toByteArray(), destFile);
+    // also, for cache management on current builds, generate a little manifest
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    String json = gson.toJson(packageManifest);
+    TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"), false);
   }
 
   public String filename() {

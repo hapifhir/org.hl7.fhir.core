@@ -74,7 +74,7 @@ public class AllergyIntolerance extends VersionConvertor_40_50 {
     if (src.hasType())
       tgt.setType(convertAllergyIntoleranceType(src.getType()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory())
-      tgt.addCategory(convertAllergyIntoleranceCategory(t.getValue()));
+      copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
     if (src.hasCriticality())
       tgt.setCriticality(convertAllergyIntoleranceCriticality(src.getCriticality()));
     if (src.hasCode())
@@ -114,7 +114,7 @@ public class AllergyIntolerance extends VersionConvertor_40_50 {
     if (src.hasType())
       tgt.setType(convertAllergyIntoleranceType(src.getType()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory())
-      tgt.addCategory(convertAllergyIntoleranceCategory(t.getValue()));
+      copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
     if (src.hasCriticality())
       tgt.setCriticality(convertAllergyIntoleranceCriticality(src.getCriticality()));
     if (src.hasCode())

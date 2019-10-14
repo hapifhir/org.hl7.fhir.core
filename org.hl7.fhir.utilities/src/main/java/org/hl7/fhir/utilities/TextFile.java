@@ -200,5 +200,12 @@ public class TextFile {
     return streamToString(new ByteArrayInputStream(bs));
   }
 
+  public static String bytesToString(byte[] bs, boolean removeBOM) throws IOException {
+    if (removeBOM)
+      return streamToString(new ByteArrayInputStream(bs)).replace("\uFEFF", "");
+    else
+      return streamToString(new ByteArrayInputStream(bs));
+  }
+
 
 }

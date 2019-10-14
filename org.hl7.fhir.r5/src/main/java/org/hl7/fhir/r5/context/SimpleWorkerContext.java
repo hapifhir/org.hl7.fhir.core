@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.MetadataResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
@@ -216,12 +217,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 
-  public String connectToTSServer(TerminologyClient client, String log) throws URISyntaxException, FHIRException {
-    tlog("Connect to "+client.getAddress());
-    txClient = client;
-    txLog = new HTMLClientLogger(log);
-    txClient.setLogger(txLog);
-    return txClient.getCapabilitiesStatementQuick().getSoftware().getVersion();
+  public String connectToTSServer(TerminologyClient client, String log) {
+    try {
+      tlog("Connect to "+client.getAddress());
+      txClient = client;
+      txLog = new HTMLClientLogger(log);
+      txClient.setLogger(txLog);
+      return txClient.getCapabilitiesStatementQuick().getSoftware().getVersion();
+    } catch (Exception e) {
+      throw new FHIRException("Unable to connect to terminology server. Use parameter '-tx n/a' tun run without using terminology services to validate LOINC, SNOMED, ICD-X etc. Error = "+e.getMessage(), e);
+    }
   }
 
 	public void loadFromFile(InputStream stream, String name, IContextResourceLoader loader) throws IOException, FHIRException {

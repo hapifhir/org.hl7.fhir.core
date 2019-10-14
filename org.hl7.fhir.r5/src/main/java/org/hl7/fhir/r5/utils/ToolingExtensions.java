@@ -162,6 +162,7 @@ public class ToolingExtensions {
   public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
   public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
+  public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
 
   // specific extension helpers
 
@@ -793,6 +794,20 @@ public class ToolingExtensions {
     }
   }
 
+  public static String getPresentation(PrimitiveType<?> type) {
+    if (type.hasExtension(EXT_RENDERED_VALUE))
+      return readStringExtension(type, EXT_RENDERED_VALUE);
+    return type.primitiveValue();
+  }
+  
+  public static String getPresentation(Element holder, PrimitiveType<?> type) {
+    if (holder.hasExtension(EXT_RENDERED_VALUE))
+      return readStringExtension(holder, EXT_RENDERED_VALUE);
+    if (type.hasExtension(EXT_RENDERED_VALUE))
+      return readStringExtension(type, EXT_RENDERED_VALUE);
+    return type.primitiveValue();
+  }
+  
 //  public static boolean hasOID(ValueSet vs) {
 //    return hasExtension(vs, EXT_OID);
 //  }

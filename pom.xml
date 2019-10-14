@@ -13,7 +13,7 @@
 	each other. It is fine to bump the point version of this POM without affecting
 	HAPI FHIR.
 	-->
-	<version>4.0.5-SNAPSHOT</version>
+	<version>4.0.23-SNAPSHOT</version>
 
 	<properties>
 		<hapi_fhir_version>4.0.0</hapi_fhir_version>
@@ -140,7 +140,9 @@
 					<target>1.8</target>
 					<forceJavacCompilerUse>false</forceJavacCompilerUse>
 					<encoding>UTF-8</encoding>
-					<fork>false</fork>
+					<fork>true</fork>
+					<meminitial>512m</meminitial>
+					<maxmem>4000m</maxmem>
 					<debug>true</debug>
 				</configuration>
 				<dependencies>
@@ -149,33 +151,15 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<testFailureIgnore>true</testFailureIgnore>
-					<includes>
-          
-          <!-- R5: SnomedExpressionsTests.class, 
-    GraphQLParserTests.class,
-    TurtleTests.class,
-    ProfileUtilitiesTests.class,
-    ResourceRoundTripTests.class, 
-    GraphQLEngineTests.class,
-    LiquidEngineTests.class,
-    FHIRPathTests.class,
-    NarrativeGeneratorTests.class,
-    ShexGeneratorTests.class,
-    BaseDateTimeTypeTest.class,
-    OpenApiGeneratorTest.class,
-    SnapShotGenerationTests.class  -->
-    
-    <!-- validator
-     ValidationTestSuite.class, 
-  ValidationEngineTests.class,
-  JsonSchemaTests.class,
-  ProfileComparisonTests.class,
-  CDAValidationTestCase.class})
-  -->
-					</includes>
+					<testFailureIgnore>false</testFailureIgnore>
+          <argLine>-Xmx4096m</argLine>
+					<redirectTestOutputToFile>false</redirectTestOutputToFile>
+				<includes>
+					<include>**/All*</include>
+				</includes>
 					<excludes>
-						<exclude>*</exclude>
+						<exclude>**/*dstu*/**</exclude>
+						<exclude>**/*r4*/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -278,6 +262,13 @@
 							ca.uhn.hapi.fhir.hapi-fhir-base
 						</Fragment-Host>
 					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<skipUpdateLicense>true</skipUpdateLicense>
 				</configuration>
 			</plugin>
 		</plugins>

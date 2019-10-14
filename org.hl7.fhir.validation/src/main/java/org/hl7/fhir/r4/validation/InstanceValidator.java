@@ -1743,7 +1743,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xhtml != null) { // if it is null, this is an error already noted in the parsers
         // check that the namespace is there and correct.
         String ns = xhtml.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"')");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"', should be '"+FormatUtilities.XHTML_NS+"')");
         // check that inner namespaces are all correct
         checkInnerNS(errors, e, path, xhtml.getChildNodes());
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), "Wrong name on the XHTML ('"+ns+"') - must start with div");
@@ -1796,7 +1796,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         String ns = node.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"')");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"', should be '"+FormatUtilities.XHTML_NS+"')");
         checkInnerNS(errors, e, path, node.getChildNodes());
       }
     }

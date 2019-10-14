@@ -229,19 +229,46 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       }
       return this;
     }
-    private List<Piece> htmlToParagraphPieces(String html) throws IOException, FHIRException {
+    
+    private List<Piece> htmlToParagraphPieces(String html)  {
       List<Piece> myPieces = new ArrayList<Piece>();
-      String[] paragraphs = html.replace("<p>", "").split("<\\/p>|<br  \\/>");
-      for (int i=0;i<paragraphs.length;i++) {
-        if (!paragraphs[i].isEmpty()) {
-          if (i!=0) {
+      try {
+        XhtmlNode node = new XhtmlParser().parseFragment("<html>"+html+"</html>");
+        boolean first = true;
+        for (XhtmlNode c : node.getChildNodes()) {
+          if (first) {
+            first = false;
+          } else {
             myPieces.add(new Piece("br"));
-            myPieces.add(new Piece("br"));
+            myPieces.add(new Piece("br"));            
           }
-          myPieces.addAll(htmlFormattingToPieces(paragraphs[i]));
+          if (c.getNodeType() == NodeType.Text) {
+            if (!Utilities.isWhitespace(c.getContent()))
+              addNode(myPieces, c);
+          } else if ("p".equals(c.getName())) {
+            for (XhtmlNode g : c.getChildNodes()) {
+              addNode(myPieces, g);
+            }
+          } else {
+           Piece x = new Piece(c.getName());
+           x.getChildren().addAll(c.getChildNodes());
+           myPieces.add(x);            
+          }
         }
+//        String[] paragraphs = html.replace("<p>", "").split("<\\/p>|<br  \\/>");
+//        for (int i=0;i<paragraphs.length;i++) {
+//          if (!paragraphs[i].isEmpty()) {
+//            if (i!=0) {
+//              myPieces.add(new Piece("br"));
+//              myPieces.add(new Piece("br"));
+//            }
+//            myPieces.addAll(htmlFormattingToPieces(paragraphs[i]));
+//          }
+//        }
+      } catch (Exception e) {
+        throw new FHIRException("Exception parsing html: "+e.getMessage()+" for "+html, e);
       }
-      
+
       return myPieces;
     }
     

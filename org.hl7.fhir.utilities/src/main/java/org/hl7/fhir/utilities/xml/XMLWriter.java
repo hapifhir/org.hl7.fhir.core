@@ -903,6 +903,11 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   }
 
   @Override
+  public void anchor(String name) {
+    // ignore this    
+  }
+
+  @Override
   public void decorate(ElementDecoration element) throws IOException {
     // nothing...
   }

@@ -458,7 +458,7 @@ public class StructureMap extends VersionConvertor_40_50 {
     if (src.hasVariable())
       tgt.setVariableElement(convertId(src.getVariableElement()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleIdElement(convertId(src.getListRuleIdElement()));
     if (src.hasTransform())
@@ -482,7 +482,7 @@ public class StructureMap extends VersionConvertor_40_50 {
     if (src.hasVariable())
       tgt.setVariableElement(convertId(src.getVariableElement()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleIdElement(convertId(src.getListRuleIdElement()));
     if (src.hasTransform())

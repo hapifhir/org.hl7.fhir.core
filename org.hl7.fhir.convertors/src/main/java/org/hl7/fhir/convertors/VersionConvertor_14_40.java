@@ -1244,7 +1244,7 @@ public class VersionConvertor_14_40 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasName())
       tgt.setSliceName(src.getName());
     if (src.hasLabel())
@@ -1311,7 +1311,7 @@ public class VersionConvertor_14_40 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setName(src.getSliceName());
     if (src.hasLabel())
@@ -1506,12 +1506,14 @@ public class VersionConvertor_14_40 {
     }
     if (tgt.hasTarget()) {
       for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile()) {
-        // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
-        String baseName = u.getValue().toLowerCase();
-        if (baseName.contains("reference") && !baseName.contains("documentreference"))
-          tgt.addProfile(u.getValue());          
+        if (src.getCode().equals("Reference"))
+          tgt.addTargetProfile(u.getValue());          
         else
-          tgt.addTargetProfile(u.getValue());
+          tgt.addProfile(u.getValue());
+      }
+      for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
+        // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
+        tgt.addProfile(t.getValue().toString());
       }
     } else {
       for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile())
@@ -1520,7 +1522,7 @@ public class VersionConvertor_14_40 {
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.r4.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -1541,9 +1543,14 @@ public class VersionConvertor_14_40 {
           throw new Error("2016May Target profile contains the word 'reference':" + u);
       }
       for (org.hl7.fhir.r4.model.UriType u : src.getProfile()) {
-        tgt.addProfile(u.getValue());
-        if (!u.toString().toLowerCase().contains("reference"))
-          throw new Error("2016May profile doesn't contain the word 'reference':" + u);
+        if (src.getCode().equals("Reference")) {
+          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.PROFILE_EXTENSION);
+          t.setValue(convertType(u));
+          tgt.addExtension(t);
+        } else
+          tgt.addProfile(u.getValue());
+//        if (!u.toString().toLowerCase().contains("reference"))
+//          throw new Error("2016May profile doesn't contain the word 'reference':" + u);
       }
     } else {
       for (org.hl7.fhir.r4.model.UriType u : src.getProfile()) {
@@ -1553,7 +1560,7 @@ public class VersionConvertor_14_40 {
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -6205,7 +6212,7 @@ public class VersionConvertor_14_40 {
     if (src.hasVariable())
       tgt.setVariable(src.getVariable());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleId(src.getListRuleId());
     if (src.hasTransform())

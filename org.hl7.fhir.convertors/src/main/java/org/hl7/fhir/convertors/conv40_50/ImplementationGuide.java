@@ -96,7 +96,7 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     if (src.hasLicense())
       tgt.setLicense(convertSPDXLicense(src.getLicense()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> t : src.getFhirVersion())
-      tgt.addFhirVersion(Enumerations.convertFHIRVersion(t.getValue()));
+      copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations.convertFHIRVersion(t.getValue())));
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnComponent t : src.getDependsOn())
       tgt.addDependsOn(convertImplementationGuideDependsOnComponent(t));
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideGlobalComponent t : src.getGlobal())
@@ -144,7 +144,7 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     if (src.hasLicense())
       tgt.setLicense(convertSPDXLicense(src.getLicense()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> t : src.getFhirVersion())
-      tgt.addFhirVersion(Enumerations.convertFHIRVersion(t.getValue()));
+      copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations.convertFHIRVersion(t.getValue())));
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent t : src.getDependsOn())
       tgt.addDependsOn(convertImplementationGuideDependsOnComponent(t));
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent t : src.getGlobal())
@@ -984,7 +984,7 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     if (src.hasReference())
       tgt.setReference(convertReference(src.getReference()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> t : src.getFhirVersion())
-      tgt.addFhirVersion(Enumerations.convertFHIRVersion(t.getValue()));
+      copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations.convertFHIRVersion(t.getValue())));
     if (src.hasName())
       tgt.setNameElement(convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -1004,7 +1004,7 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     if (src.hasReference())
       tgt.setReference(convertReference(src.getReference()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> t : src.getFhirVersion())
-      tgt.addFhirVersion(Enumerations.convertFHIRVersion(t.getValue()));
+      copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations.convertFHIRVersion(t.getValue())));
     if (src.hasName())
       tgt.setNameElement(convertString(src.getNameElement()));
     if (src.hasDescription())

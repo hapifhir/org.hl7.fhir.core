@@ -222,38 +222,33 @@ public class Enumerations extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship convertConceptMapRelationship(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case RELATEDTO: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.RELATEDTO;
-    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
-    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.DISJOINT;
-    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NULL;
+    case RELATEDTO: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case RELATEDTO: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.RELATEDTO;
     case EQUIVALENT: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
+    case BROADER: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.WIDER;
     case NARROWER: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.DISJOINT;
+    case NOTRELATEDTO: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.DISJOINT;
     default: return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NULL;
   }
 }

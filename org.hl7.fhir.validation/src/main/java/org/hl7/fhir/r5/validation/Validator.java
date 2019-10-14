@@ -58,11 +58,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
+import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities.CapabilityStatementComparisonOutput;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -81,10 +85,14 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.KeyGenerator;
+import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -106,12 +114,35 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 public class Validator {
 
   public enum EngineMode {
-    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT
+    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN
   }
 
+  private static String getNamedParam(String[] args, String param) {
+    boolean found = false;
+    for (String a : args) {
+      if (found)
+        return a;
+      if (a.equals(param)) {
+        found = true;
+      }
+    }
+    return null;
+  }
+
+  private static String toMB(long maxMemory) {
+    return Long.toString(maxMemory / (1024*1024));
+  }
 
   public static void main(String[] args) throws Exception {
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
+    System.out.println("Detected Java version: " + System.getProperty("java.version")+" from "+System.getProperty("java.home")+" on "+System.getProperty("os.arch")+" ("+System.getProperty("sun.arch.data.model")+"bit). "+toMB(Runtime.getRuntime().maxMemory())+"MB available");
+    String proxy = getNamedParam(args, "-proxy");
+    if (!Utilities.noString(proxy)) {
+      String[] p = proxy.split("\\:");
+      System.setProperty("http.proxyHost", p[0]);
+      System.setProperty("http.proxyPort", p[1]);
+    }
+
      if (hasParam(args, "-tests")) {
       try {
 			Class<?> clazz = Class.forName("org.hl7.fhir.validation.r5.tests.ValidationEngineTests");
@@ -186,6 +217,8 @@ public class Validator {
       System.out.println("-hintAboutNonMustSupport: If present, raise hints if the instance contains data elements that are not");
       System.out.println("     marked as mustSupport=true.  Useful to identify elements included that may be ignored by recipients");
       System.out.println("");
+      System.out.println("The validator also supports the param -proxy=[address]:[port] for if you use a proxy");
+      System.out.println("");
       System.out.println("Parameters can appear in any order");
       System.out.println("");
       System.out.println("Alternatively, you can use the validator to execute a transformation as described by a structure map.");
@@ -213,6 +246,12 @@ public class Validator {
       System.out.println("");
       System.out.println("-snapshot requires the parameters -defn, -txserver, -source, and -output. ig may be used to provide necessary base profiles");
     } else if (hasParam(args, "-compare")) {
+      System.out.print("Arguments:");
+      for (String s : args)
+        System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
+      System.out.println();
+      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
+
       String dest =  getParam(args, "-dest");
       if (dest == null)
         System.out.println("no -dest parameter provided");
@@ -257,33 +296,37 @@ public class Validator {
         if (resLeft != null && resRight != null) {
           if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
             System.out.println("Comparing StructureDefinitions "+left+" to "+right);
-            ProfileComparer pc = new ProfileComparer(validator.getContext());
+            ProfileComparer pc = new ProfileComparer(validator.getContext(), dest);
             StructureDefinition sdL = (StructureDefinition) resLeft;
             StructureDefinition sdR = (StructureDefinition) resRight;
             pc.compareProfiles(sdL, sdR);
             System.out.println("Generating output to "+dest+"...");
-            File htmlFile = new File(pc.generate(dest));
+            File htmlFile = new File(pc.generate());
             Desktop.getDesktop().browse(htmlFile.toURI());
             System.out.println("Done");
           } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
             String nameLeft = chooseName(args, "leftName", (MetadataResource) resLeft);
             String nameRight = chooseName(args, "rightName", (MetadataResource) resRight);
             System.out.println("Comparing CapabilityStatements "+left+" to "+right);
-            CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest);
+            CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest, new KeyGenerator("http://fhir.org/temp/"+UUID.randomUUID().toString().toLowerCase()));
             CapabilityStatement capL = (CapabilityStatement) resLeft;
             CapabilityStatement capR = (CapabilityStatement) resRight;
-            List<ValidationMessage> msgs = pc.isCompatible(nameLeft, nameRight, capL, capR);
+            CapabilityStatementComparisonOutput output = pc.isCompatible(nameLeft, nameRight, capL, capR);
             
             String destTxt = Utilities.path(dest, "output.txt");
             System.out.println("Generating output to "+destTxt+"...");
             StringBuilder b = new StringBuilder();
-            for (ValidationMessage msg : msgs) {
+            for (ValidationMessage msg : output.getMessages()) {
               b.append(msg.summary());
               b.append("\r\n");
             }
             TextFile.stringToFile(b.toString(), destTxt);
-            File txtFile = new File(destTxt);
-            Desktop.getDesktop().browse(txtFile.toURI());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-union.xml")), output.getSuperset());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-intersection.xml")), output.getSubset());
+            new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "OperationOutcome-issues.xml")), output.getOutcome());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-union.json")), output.getSuperset());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-intersection.json")), output.getSubset());
+            new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "OperationOutcome-issues.json")), output.getOutcome());
             
             String destHtml = Utilities.path(dest, "index.html");
             File htmlFile = new File(destHtml);
@@ -298,6 +341,7 @@ public class Validator {
       for (String s : args)
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
       System.out.println();
+      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
 
       String definitions = "hl7.fhir.core#current";
       String map = null;
@@ -319,7 +363,7 @@ public class Validator {
       String lang = null;
       boolean doDebug = false;
 
-        // load the parameters - so order doesn't matter
+      // load the parameters - so order doesn't matter
       for (int i = 0; i < args.length; i++) {
         if (args[i].equals("-defn"))
           if (i+1 == args.length)
@@ -376,6 +420,8 @@ public class Validator {
           mode = EngineMode.NARRATIVE;
         else if (args[i].equals("-snapshot"))
           mode = EngineMode.SNAPSHOT;
+        else if (args[i].equals("-scan"))
+          mode = EngineMode.SCAN;
         else if (args[i].equals("-tx"))
           if (i+1 == args.length)
             throw new Error("Specified -tx without indicating terminology server");
@@ -490,25 +536,41 @@ public class Validator {
             validator.loadProfile(locations.getOrDefault(s, s));
           }
         }
-        if (profiles.size() > 0)
-          System.out.println("  .. validate "+sources+" against "+profiles.toString());
-        else
-          System.out.println("  .. validate "+sources);
-        validator.prepare(); // generate any missing snapshots
-        Resource r = validator.validate(sources, profiles);
-        int ec = 0;
-        if (output == null) {
-          if (r instanceof Bundle)
-            for (BundleEntryComponent e : ((Bundle)r).getEntry())
-              ec  = displayOO((OperationOutcome)e.getResource()) + ec;
+        if (mode == EngineMode.SCAN) {
+          if (Utilities.noString(output))
+            throw new Exception("Output parameter required when scanning");
+          if (!(new File(output).isDirectory()))
+            throw new Exception("Output '"+output+"' must be a directory when scanning");
+          System.out.println("  .. scan "+sources+" against loaded IGs");
+          Set<String> urls = new HashSet<>();
+          for (ImplementationGuide ig : validator.getContext().allImplementationGuides()) {
+            if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
+              urls.add(ig.getUrl());
+          }
+          List<ScanOutputItem> res = validator.validateScan(sources, urls);
+          validator.genScanOutput(output, res);         
+          System.out.println("Done. output in "+Utilities.path(output, "scan.html"));
+        } else { 
+          if (profiles.size() > 0)
+            System.out.println("  .. validate "+sources+" against "+profiles.toString());
           else
-            ec = displayOO((OperationOutcome)r);
-        } else {
-          FileOutputStream s = new FileOutputStream(output);
-          x.compose(s, r);
-          s.close();
+            System.out.println("  .. validate "+sources);
+          validator.prepare(); // generate any missing snapshots
+          Resource r = validator.validate(sources, profiles);
+          int ec = 0;
+          if (output == null) {
+            if (r instanceof Bundle)
+              for (BundleEntryComponent e : ((Bundle)r).getEntry())
+                ec  = displayOO((OperationOutcome)e.getResource()) + ec;
+            else
+              ec = displayOO((OperationOutcome)r);
+          } else {
+            FileOutputStream s = new FileOutputStream(output);
+            x.compose(s, r);
+            s.close();
+          }
+          System.exit(ec > 0 ? 1 : 0);
         }
-        System.exit(ec > 0 ? 1 : 0);
       }
     }
   }

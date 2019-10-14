@@ -145,7 +145,19 @@ public class ValueSetUtilities {
       return generateImplicitSnomedValueSet(uri);
     if (uri.startsWith("http://loinc.org/vs"))
       return generateImplicitLoincValueSet(uri);
+    if (uri.equals("http://hl7.org/fhir/ValueSet/mimetypes")) {
+      return generateImplicitMimetypesValueSet(uri);
+    }
     return null;
+  }
+
+  private static ValueSet generateImplicitMimetypesValueSet(String theUri) {
+    ValueSet valueSet = new ValueSet();
+    valueSet.setUrl(theUri);
+    valueSet.setDescription("This value set includes all possible codes from BCP-13 (http://tools.ietf.org/html/bcp13)");
+    valueSet.getCompose()
+      .addInclude().setSystem("urn:ietf:bcp:13");
+    return valueSet;
   }
 
   private static ValueSet generateImplicitLoincValueSet(String uri) {
