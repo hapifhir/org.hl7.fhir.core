@@ -2,11 +2,13 @@ package org.hl7.fhir.validation.tests;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.util.UUID;
 
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.KeyGenerator;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -32,7 +34,7 @@ public class ProfileComparisonTests {
 
     // ok now set up the comparison
     StructureDefinition sdL = ve.getContext().fetchResource(StructureDefinition.class, left);
-    ProfileComparer pc = new ProfileComparer(ve.getContext());
+    ProfileComparer pc = new ProfileComparer(ve.getContext(), new KeyGenerator("http://fhir.org/temp/"+UUID.randomUUID().toString().toLowerCase()), dest);
     if (sdL == null) {
       System.out.println("Unable to locate left profile " +left);
     } else {
@@ -45,12 +47,11 @@ public class ProfileComparisonTests {
         System.out.println("Generating output...");
         File htmlFile = null;
         try {
-          htmlFile = new File(pc.generate(dest));
+          htmlFile = new File(pc.generate());
         } catch (Exception e) {
           e.printStackTrace();
           throw e;
         }
-        Desktop.getDesktop().browse(htmlFile.toURI());
         System.out.println("Done");
       }
     }

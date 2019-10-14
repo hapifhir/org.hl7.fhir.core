@@ -1005,7 +1005,7 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasName()) {
       if (slicePaths.contains(src.getPath()))
         tgt.setSliceName(src.getName());
@@ -1085,7 +1085,7 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setName(src.getSliceName());
     else
@@ -1268,7 +1268,7 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.r5.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
   }
 
@@ -3915,7 +3915,11 @@ public class VersionConvertor_10_50 {
       org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent();
       copyElement(src, tgt);
       tgt.setCode(src.getCode());
-      tgt.addTarget(convertTargetElementComponent(t));
+      if (t.getEquivalence() == org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
+    	  tgt.setNoMap(true);
+      } else {
+    	  tgt.addTarget(convertTargetElementComponent(t));
+      }      
       res.add(new SourceElementComponentWrapper(tgt, src.getCodeSystem(), t.getCodeSystem()));
     }
     return res;
@@ -3928,8 +3932,13 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setCodeSystem(g.getSource());
     tgt.setCode(src.getCode());
-    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
-      tgt.addTarget(convertTargetElementComponent(t, g));
+    if (src.hasNoMap() && src.getNoMap() == true) {
+    	tgt.addTarget(new org.hl7.fhir.dstu2.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
+    }
+    else {
+	    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
+	    	tgt.addTarget(convertTargetElementComponent(t, g));
+    }
     return tgt;
   }
 
@@ -3939,7 +3948,7 @@ public class VersionConvertor_10_50 {
     org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent();
     copyElement(src, tgt);
     tgt.setCode(src.getCode());
-    tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    tgt.setRelationship(convertConceptMapRelationship(src.getEquivalence()));
     tgt.setComment(src.getComments());
     for (org.hl7.fhir.dstu2.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
       tgt.addDependsOn(convertOtherElementComponent(t));
@@ -3955,7 +3964,7 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
     tgt.setCodeSystem(g.getTarget());
     tgt.setCode(src.getCode());
-    tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    tgt.setEquivalence(convertConceptMapEquivalence(src.getRelationship()));
     tgt.setComments(src.getComment());
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
       tgt.addDependsOn(convertOtherElementComponent(t));
@@ -3964,36 +3973,31 @@ public class VersionConvertor_10_50 {
     return tgt;
   }
 
-  public org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship convertConceptMapRelationship(org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
-    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.DISJOINT;
-    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NULL;
+    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
     }
   }
 
-  public org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case EQUIVALENT: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
+    case BROADER: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.WIDER;
     case NARROWER: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.DISJOINT;
+    case NOTRELATEDTO: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.DISJOINT;
     default: return org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence.NULL;
     }
   }
@@ -6996,7 +7000,7 @@ public class VersionConvertor_10_50 {
     org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     tgt.setAllDay(src.getAllDay());
     tgt.setAvailableStartTime(src.getAvailableStartTime());
     tgt.setAvailableEndTime(src.getAvailableEndTime());
@@ -7009,7 +7013,7 @@ public class VersionConvertor_10_50 {
     org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     tgt.setAllDay(src.getAllDay());
     tgt.setAvailableStartTime(src.getAvailableStartTime());
     tgt.setAvailableEndTime(src.getAvailableEndTime());

@@ -499,6 +499,10 @@ private Map<String, Object> userData;
       CodeableConcept cc = new CodeableConcept();
       cc.addCoding().setCode(((CodeType) b).asStringValue());
       return cc;
+    } else if(b instanceof StringType) {
+      CodeableConcept cc = new CodeableConcept();
+      cc.addCoding().setCode(((StringType) b).asStringValue());
+      return cc;
     } else
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a CodeableConcept");
   }

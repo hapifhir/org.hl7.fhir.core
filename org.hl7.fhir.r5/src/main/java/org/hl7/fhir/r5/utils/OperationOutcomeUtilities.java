@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.List;
+
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -102,5 +104,13 @@ public class OperationOutcomeUtilities {
 	 case NULL: return IssueType.NULL;
     }
     return IssueType.NULL;
+  }
+
+  public static OperationOutcome createOutcome(List<ValidationMessage> messages) {
+    OperationOutcome res = new OperationOutcome();
+    for (ValidationMessage vm : messages) {
+      res.addIssue(convertToIssue(vm, res));
+    }
+    return res;
   }
 }

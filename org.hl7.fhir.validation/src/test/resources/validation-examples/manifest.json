@@ -186,6 +186,20 @@
         "errors-for-debugging" : ["ERROR: Medication.extension[2].valueCodeableConcept.coding: The code \"N02AA\" is not valid in the system http://www.whocc.no/atc; The code provided (http://www.whocc.no/atc#N02AA) is not  valid in the value set All codes known to the system"],
 				"allowed-extension-domain": "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open"
 			},
+			"fhirpath-good.json": {
+				"errorCount": 0
+      },
+			"fhirpath-bad.json": {
+				"errorCount": 1
+      },
+			"fhirpath-null.json": {
+				"errorCount": 1
+      },
+			"qr-ex.json": {
+				"questionnaire": "q-ex.json",
+        "version" : "3.0",
+				"errorCount": 0
+			},
 			"bp.json": {
 				"errorCount": 0,
 				"profile": {
@@ -897,6 +911,9 @@
 					"errorCount": 0
 				}
       },
+	  "q-bp.xml": {
+		"errorCount": 0
+	  },
       "valueset-slicing-meds-bad.xml" : {
         "version" : "3.0",
 				"codesystems": [

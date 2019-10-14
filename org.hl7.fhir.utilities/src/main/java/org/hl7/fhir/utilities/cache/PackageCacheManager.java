@@ -581,11 +581,17 @@ public class PackageCacheManager {
   
   public NpmPackage loadPackage(String id, String v) throws FHIRException, IOException {
     NpmPackage p = loadPackageFromCacheOnly(id, v);
-    if (p != null)
-      return p;
+    if (p != null) {
+      if ("current".equals(v)) {
+        p = checkCurrency(id, p);
+      }
+      if (p != null)
+        return p;
+    }
 
     if ("dev".equals(v)) {
       p = loadPackageFromCacheOnly(id, "current");
+      p = checkCurrency(id, p);
       if (p != null)
         return p;
       v = "current";
@@ -632,6 +638,22 @@ public class PackageCacheManager {
 //        return addPackageToCache(id, v, stream);
 //      }
       throw new FHIRException("Unable to resolve version "+v+" for package "+id);
+    }
+  }
+
+
+  private NpmPackage checkCurrency(String id, NpmPackage p) {
+    // special case: current versions roll over, and we have to check their currency
+    try {
+      String url = ciList.get(id);
+      JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
+      String currDate = json.get("date").getAsString();
+      String packDate = p.date();
+      if (!currDate.equals(packDate))
+        return null; // nup, we need a new copy 
+      return p;
+    } catch (Exception e) {
+      return p;
     }
   }
 
@@ -752,6 +774,11 @@ public class PackageCacheManager {
         f.delete();
       }
     }
+  }
+
+
+  public static String userDir() throws IOException {
+    return Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
   }
 
 }

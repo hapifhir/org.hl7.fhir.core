@@ -100,6 +100,7 @@ public class SnapShotGenerationTests {
     private String id;
     private String include;
     private String register;
+    private String regex;
     private boolean gen;
     private boolean sort;
     private boolean fail;
@@ -117,6 +118,7 @@ public class SnapShotGenerationTests {
       id = test.getAttribute("id");
       include = test.getAttribute("include");
       register = test.getAttribute("register");
+      regex = test.getAttribute("regex");
       Element rule = XMLUtil.getFirstChild(test);
       while (rule != null && rule.getNodeName().equals("rule")) {
         rules.add(new Rule(rule));
@@ -411,7 +413,10 @@ public class SnapShotGenerationTests {
           testSort();
         Assert.assertTrue("Should have failed", false);
       } catch (Throwable e) {
-        Assert.assertTrue("all ok", true);
+        if (!Utilities.noString(test.regex))
+          Assert.assertTrue("correct error message", e.getMessage().matches(test.regex));
+        else
+          Assert.assertTrue("all ok", true);
         
       }
     } else if (test.isGen())

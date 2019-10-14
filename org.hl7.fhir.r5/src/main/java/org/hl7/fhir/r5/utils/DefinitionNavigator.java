@@ -187,6 +187,10 @@ public class DefinitionNavigator {
     }
     return typeChildren;
   }
+
+  public StructureDefinition getStructure() {
+    return structure;
+  }
   
 
 }

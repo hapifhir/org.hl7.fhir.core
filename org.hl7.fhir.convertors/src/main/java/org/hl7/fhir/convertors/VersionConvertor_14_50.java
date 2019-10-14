@@ -1244,7 +1244,7 @@ public class VersionConvertor_14_50 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasName())
       tgt.setSliceName(src.getName());
     if (src.hasLabel())
@@ -1311,7 +1311,7 @@ public class VersionConvertor_14_50 {
     copyElement(src, tgt);
     tgt.setPath(src.getPath());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setName(src.getSliceName());
     if (src.hasLabel())
@@ -1507,11 +1507,14 @@ public class VersionConvertor_14_50 {
     if (tgt.hasTarget()) {
       for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile()) {
         // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
-        String baseName = u.getValue().toLowerCase();
-        if (baseName.contains("reference") && !baseName.contains("documentreference"))
-          tgt.addProfile(u.getValue());          
+        if (src.getCode().equals("Reference"))
+          tgt.addTargetProfile(u.getValue());          
         else
-          tgt.addTargetProfile(u.getValue());
+          tgt.addProfile(u.getValue());
+      }
+      for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
+        // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
+        tgt.addProfile(t.getValue().toString());
       }
     } else {
       for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile())
@@ -1520,7 +1523,7 @@ public class VersionConvertor_14_50 {
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.r5.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -1534,16 +1537,18 @@ public class VersionConvertor_14_50 {
     tgt.setCode(src.getCode());
     list.add(tgt);
     if (src.hasTarget()) {
-      for (org.hl7.fhir.r5.model.UriType u : src.getTargetProfile()) {
-        tgt.addProfile(u.getValue());
-        String baseName = u.getValue().toLowerCase();
-        if (baseName.contains("reference") && !baseName.contains("documentreference"))
-          throw new Error("2016May Target profile contains the word 'reference':" + u);
-      }
       for (org.hl7.fhir.r5.model.UriType u : src.getProfile()) {
+        org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.PROFILE_EXTENSION);
+        t.setValue(convertType(u));
+        tgt.addExtension(t);
+      }
+      for (org.hl7.fhir.r5.model.UriType u : src.getTargetProfile()) {
+        if (!u.equals(src.getTargetProfile().get(0))) {
+          tgt = tgt.copy();
+          tgt.getProfile().clear();
+          list.add(tgt);
+        }
         tgt.addProfile(u.getValue());
-        if (!u.toString().toLowerCase().contains("reference"))
-          throw new Error("2016May profile doesn't contain the word 'reference':" + u);
       }
     } else {
       for (org.hl7.fhir.r5.model.UriType u : src.getProfile()) {
@@ -1553,7 +1558,7 @@ public class VersionConvertor_14_50 {
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregationElement().setValue(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -3247,7 +3252,11 @@ public class VersionConvertor_14_50 {
       copyElement(src, tgt);
       if (src.hasCode())
         tgt.setCode(src.getCode());
-      tgt.addTarget(convertTargetElementComponent(t));
+      if (t.getEquivalence() == org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
+    	  tgt.setNoMap(true);
+      } else {
+    	  tgt.addTarget(convertTargetElementComponent(t));
+      }      
       res.add(new SourceElementComponentWrapper(tgt, src.getSystem(), t.getSystem()));
     }
     return res;
@@ -3262,8 +3271,13 @@ public class VersionConvertor_14_50 {
       tgt.setSystem(g.getSource());
     if (src.hasCode())
       tgt.setCode(src.getCode());
-    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
-      tgt.addTarget(convertTargetElementComponent(t, g));
+    if (src.hasNoMap() && src.getNoMap() == true) {
+    	tgt.addTarget(new org.hl7.fhir.dstu2016may.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
+    }
+    else {
+	    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
+	    	tgt.addTarget(convertTargetElementComponent(t, g));
+    }
     return tgt;
   }
 
@@ -3274,7 +3288,7 @@ public class VersionConvertor_14_50 {
     copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(src.getCode());
-    tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    tgt.setRelationship(convertConceptMapRelationship(src.getEquivalence()));
     if (src.hasComments())
       tgt.setComment(src.getComments());
     for (org.hl7.fhir.dstu2016may.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -3293,7 +3307,7 @@ public class VersionConvertor_14_50 {
       tgt.setSystem(g.getTarget());
     if (src.hasCode())
       tgt.setCode(src.getCode());
-    tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    tgt.setEquivalence(convertConceptMapEquivalence(src.getRelationship()));
     if (src.hasComment())
       tgt.setComments(src.getComment());
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -3303,36 +3317,31 @@ public class VersionConvertor_14_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship convertConceptMapRelationship(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
-    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.DISJOINT;
-    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NULL;
+    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
     }
   }
 
-  public static org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  public static org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case EQUIVALENT: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
+    case BROADER: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.WIDER;
     case NARROWER: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.DISJOINT;
+    case NOTRELATEDTO: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.DISJOINT;
     default: return org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.NULL;
     }
   }
@@ -6205,7 +6214,7 @@ public class VersionConvertor_14_50 {
     if (src.hasVariable())
       tgt.setVariable(src.getVariable());
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleId(src.getListRuleId());
     if (src.hasTransform())

@@ -384,7 +384,7 @@ public class CapabilityStatement extends VersionConvertor_40_50 {
     if (src.hasConditionalDelete())
       tgt.setConditionalDelete(convertConditionalDeleteStatus(src.getConditionalDelete()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy())
-      tgt.addReferencePolicy(convertReferenceHandlingPolicy(t.getValue()));
+      copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
     for (org.hl7.fhir.r4.model.StringType t : src.getSearchInclude())
       tgt.getSearchInclude().add(convertString(t));
     for (org.hl7.fhir.r4.model.StringType t : src.getSearchRevInclude())
@@ -426,7 +426,7 @@ public class CapabilityStatement extends VersionConvertor_40_50 {
     if (src.hasConditionalDelete())
       tgt.setConditionalDelete(convertConditionalDeleteStatus(src.getConditionalDelete()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy())
-      tgt.addReferencePolicy(convertReferenceHandlingPolicy(t.getValue()));
+      copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
     for (org.hl7.fhir.r5.model.StringType t : src.getSearchInclude())
       tgt.getSearchInclude().add(convertString(t));
     for (org.hl7.fhir.r5.model.StringType t : src.getSearchRevInclude())

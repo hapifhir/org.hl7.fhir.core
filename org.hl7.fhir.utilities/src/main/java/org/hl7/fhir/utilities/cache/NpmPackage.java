@@ -269,6 +269,10 @@ import com.google.gson.JsonObject;
     public String name() {
       return npm.get("name").getAsString();
     }
+    
+    public String date() {
+      return npm.has("date") ? npm.get("date").getAsString() : null;
+    }
 
     public String canonical() {
       return npm.has("canonical") ? npm.get("canonical").getAsString() : null;

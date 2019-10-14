@@ -35,6 +35,7 @@ import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -1423,7 +1424,7 @@ public class VersionConvertor_30_50 {
     if (src.hasPath())
       tgt.setPath(src.getPath());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setSliceName(src.getSliceName());
     if (src.hasLabel())
@@ -1501,7 +1502,7 @@ public class VersionConvertor_30_50 {
     if (src.hasPath())
       tgt.setPath(src.getPath());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> t : src.getRepresentation())
-      tgt.addRepresentation(convertPropertyRepresentation(t.getValue()));
+      copyElement(t, tgt.addRepresentationElement().setValue(convertPropertyRepresentation(t.getValue())));
     if (src.hasSliceName())
       tgt.setSliceName(src.getSliceName());
     if (src.hasLabel())
@@ -1738,14 +1739,21 @@ public class VersionConvertor_30_50 {
       copyElement(src, tgt);
       tgt.setCodeElement(convertUri(src.getCodeElement()));
     }
-    if (src.hasProfile())
-      tgt.addProfile(src.getProfile());
+    if (src.hasProfile()) {
+      boolean found = false;
+      for (CanonicalType p: tgt.getProfile()) {
+        if (p.equals(src.getProfile()))
+          found = true;
+      }
+      if (!found)
+        tgt.addProfile(src.getProfile());
+    }
     if (src.hasTargetProfile())
       tgt.addTargetProfile(src.getTargetProfile());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
       org.hl7.fhir.r5.model.ElementDefinition.AggregationMode a = convertAggregationMode(t.getValue());
       if (!tgt.hasAggregation(a))
-        tgt.addAggregation(a);
+        copyElement(t, tgt.addAggregation(a));
     }
     if (src.hasVersioning())
       tgt.setVersioning(convertReferenceVersionRules(src.getVersioning()));
@@ -2315,11 +2323,11 @@ public class VersionConvertor_30_50 {
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Timing.DayOfWeek> t : src.getDayOfWeek())
-      tgt.addDayOfWeek(convertDayOfWeek(t.getValue()));
+      copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.dstu3.model.TimeType t : src.getTimeOfDay())
       tgt.addTimeOfDay(t.getValue());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Timing.EventTiming> t : src.getWhen())
-      tgt.addWhen(convertEventTiming(t.getValue()));
+      copyElement(t, tgt.addWhenElement().setValue(convertEventTiming(t.getValue())));
     if (src.hasOffset())
       tgt.setOffset(src.getOffset());
     return tgt;
@@ -2353,11 +2361,11 @@ public class VersionConvertor_30_50 {
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DayOfWeek> t : src.getDayOfWeek())
-      tgt.addDayOfWeek(convertDayOfWeek(t.getValue()));
+      copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.r5.model.TimeType t : src.getTimeOfDay())
       tgt.addTimeOfDay(t.getValue());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> t : src.getWhen())
-      tgt.addWhen(convertEventTiming(t.getValue()));
+      copyElement(t, tgt.addWhenElement().setValue(convertEventTiming(t.getValue())));
     if (src.hasOffset())
       tgt.setOffset(src.getOffset());
     return tgt;
@@ -3386,7 +3394,7 @@ public class VersionConvertor_30_50 {
     if (src.hasType())
       tgt.setType(convertAllergyIntoleranceType(src.getType()));
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory())
-      tgt.addCategory(convertAllergyIntoleranceCategory(t.getValue()));
+      copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
     if (src.hasCriticality())
       tgt.setCriticality(convertAllergyIntoleranceCriticality(src.getCriticality()));
     if (src.hasCode())
@@ -3424,7 +3432,7 @@ public class VersionConvertor_30_50 {
     if (src.hasType())
       tgt.setType(convertAllergyIntoleranceType(src.getType()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory())
-      tgt.addCategory(convertAllergyIntoleranceCategory(t.getValue()));
+      copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
     if (src.hasCriticality())
       tgt.setCriticality(convertAllergyIntoleranceCriticality(src.getCriticality()));
     if (src.hasCode())
@@ -4978,7 +4986,7 @@ public class VersionConvertor_30_50 {
         if (src.hasConditionalDelete())
       tgt.setConditionalDelete(convertConditionalDeleteStatus(src.getConditionalDelete()));
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy())
-      tgt.addReferencePolicy(convertReferenceHandlingPolicy(t.getValue()));
+      copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
     for (org.hl7.fhir.dstu3.model.StringType t : src.getSearchInclude())
       tgt.addSearchInclude(t.getValue());
     for (org.hl7.fhir.dstu3.model.StringType t : src.getSearchRevInclude())
@@ -5028,7 +5036,7 @@ public class VersionConvertor_30_50 {
     if (src.hasConditionalDelete())
       tgt.setConditionalDelete(convertConditionalDeleteStatus(src.getConditionalDelete()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy())
-      tgt.addReferencePolicy(convertReferenceHandlingPolicy(t.getValue()));
+      copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
     for (org.hl7.fhir.r5.model.StringType t : src.getSearchInclude())
       tgt.addSearchInclude(t.getValue());
     for (org.hl7.fhir.r5.model.StringType t : src.getSearchRevInclude())
@@ -7042,7 +7050,7 @@ public class VersionConvertor_30_50 {
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator> t : src.getOperator())
-      tgt.addOperator(convertFilterOperator(t.getValue()));
+      copyElement(t, tgt.addOperatorElement().setValue(convertFilterOperator(t.getValue())));
     if (src.hasValue())
       tgt.setValue(src.getValue());
     return tgt;
@@ -7058,7 +7066,7 @@ public class VersionConvertor_30_50 {
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.FilterOperator> t : src.getOperator())
-      tgt.addOperator(convertFilterOperator(t.getValue()));
+      copyElement(t, tgt.addOperatorElement().setValue(convertFilterOperator(t.getValue())));
     if (src.hasValue())
       tgt.setValue(src.getValue());
     return tgt;
@@ -7991,7 +7999,11 @@ public class VersionConvertor_30_50 {
     if (src.hasDisplay())
       tgt.setDisplay(src.getDisplay());
     for (org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent t : src.getTarget())
-      tgt.addTarget(convertTargetElementComponent(t));
+      if (t.getEquivalence() == org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
+    	  tgt.setNoMap(true);
+      } else {
+    	  tgt.addTarget(convertTargetElementComponent(t));
+      }
     return tgt;
   }
 
@@ -8004,8 +8016,13 @@ public class VersionConvertor_30_50 {
       tgt.setCode(src.getCode());
     if (src.hasDisplay())
       tgt.setDisplay(src.getDisplay());
-    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
-      tgt.addTarget(convertTargetElementComponent(t));
+    if (src.hasNoMap() && src.getNoMap() == true) {
+    	tgt.addTarget(new org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
+    }
+    else {
+	    for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
+	      tgt.addTarget(convertTargetElementComponent(t));
+    }
     return tgt;
   }
 
@@ -8019,7 +8036,7 @@ public class VersionConvertor_30_50 {
     if (src.hasDisplay())
       tgt.setDisplay(src.getDisplay());
     if (src.hasEquivalence())
-      tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+      tgt.setRelationship(convertConceptMapRelationship(src.getEquivalence()));
     if (src.hasComment())
       tgt.setComment(src.getComment());
     for (org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -8038,8 +8055,8 @@ public class VersionConvertor_30_50 {
       tgt.setCode(src.getCode());
     if (src.hasDisplay())
       tgt.setDisplay(src.getDisplay());
-    if (src.hasEquivalence())
-      tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
+    if (src.hasRelationship())
+      tgt.setEquivalence(convertConceptMapEquivalence(src.getRelationship()));
     if (src.hasComment())
       tgt.setComment(src.getComment());
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -8049,38 +8066,33 @@ public class VersionConvertor_30_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  private static org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship convertConceptMapRelationship(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case RELATEDTO: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.RELATEDTO;
-    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
-    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.DISJOINT;
-    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence.NULL;
+    case RELATEDTO: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case EQUIVALENT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+    case WIDER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case SUBSUMES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+    case NARROWER: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case SPECIALIZES: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+    case INEXACT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+    case UNMATCHED: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+    case DISJOINT: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
   }
 }
 
-  private static org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
+  private static org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case RELATEDTO: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.RELATEDTO;
     case EQUIVALENT: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
-    case EQUAL: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.EQUAL;
-    case WIDER: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.WIDER;
-    case SUBSUMES: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.SUBSUMES;
+    case BROADER: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.WIDER;
     case NARROWER: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.NARROWER;
-    case SPECIALIZES: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.SPECIALIZES;
-    case INEXACT: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.INEXACT;
-    case UNMATCHED: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.UNMATCHED;
-    case DISJOINT: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.DISJOINT;
+    case NOTRELATEDTO: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.DISJOINT;
     default: return org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.NULL;
   }
 }
@@ -12271,7 +12283,7 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDay(src.getAllDay());
     if (src.hasAvailableStartTime())
@@ -12287,7 +12299,7 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDay(src.getAllDay());
     if (src.hasAvailableStartTime())
@@ -16594,7 +16606,7 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDay(src.getAllDay());
     if (src.hasAvailableStartTime())
@@ -16610,7 +16622,7 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.PractitionerRole.DaysOfWeek> t : src.getDaysOfWeek())
-      tgt.addDaysOfWeek(convertDaysOfWeek(t.getValue()));
+      copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDay(src.getAllDay());
     if (src.hasAvailableStartTime())
@@ -17606,9 +17618,9 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.dstu3.model.CodeType t : src.getTarget())
       tgt.addTarget(t.getValue());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchComparator> t : src.getComparator())
-      tgt.addComparator(convertSearchComparator(t.getValue()));
+      copyElement(t, tgt.addComparatorElement().setValue(convertSearchComparator(t.getValue())));
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCode> t : src.getModifier())
-      tgt.addModifier(convertSearchModifierCode(t.getValue()));
+      copyElement(t, tgt.addModifierElement().setValue(convertSearchModifierCode(t.getValue())));
     for (org.hl7.fhir.dstu3.model.StringType t : src.getChain())
       tgt.addChain(t.getValue());
     for (org.hl7.fhir.dstu3.model.SearchParameter.SearchParameterComponentComponent t : src.getComponent())
@@ -17662,9 +17674,9 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.r5.model.CodeType t : src.getTarget())
       tgt.addTarget(t.getValue());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchComparator> t : src.getComparator())
-      tgt.addComparator(convertSearchComparator(t.getValue()));
+      copyElement(t, tgt.addComparatorElement().setValue(convertSearchComparator(t.getValue())));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> t : src.getModifier())
-      tgt.addModifier(convertSearchModifierCode(t.getValue()));
+      copyElement(t, tgt.addModifierElement().setValue(convertSearchModifierCode(t.getValue())));
     for (org.hl7.fhir.r5.model.StringType t : src.getChain())
       tgt.addChain(t.getValue());
     for (org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent t : src.getComponent())
@@ -19090,7 +19102,7 @@ public class VersionConvertor_30_50 {
     if (src.hasVariable())
       tgt.setVariable(src.getVariable());
     for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureMap.StructureMapTargetListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleId(src.getListRuleId());
     if (src.hasTransform())
@@ -19114,7 +19126,7 @@ public class VersionConvertor_30_50 {
     if (src.hasVariable())
       tgt.setVariable(src.getVariable());
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> t : src.getListMode())
-      tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+      copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
     if (src.hasListRuleId())
       tgt.setListRuleId(src.getListRuleId());
     if (src.hasTransform())

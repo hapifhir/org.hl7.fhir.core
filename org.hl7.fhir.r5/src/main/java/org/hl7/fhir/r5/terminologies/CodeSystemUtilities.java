@@ -276,4 +276,13 @@ public class CodeSystemUtilities {
     owner.addProperty().setCode("child").setValue(new CodeType(code));
   }
 
+  public static boolean hasProperty(ConceptDefinitionComponent c, String code) {
+    for (ConceptPropertyComponent cp : c.getProperty()) {
+      if (code.equals(cp.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

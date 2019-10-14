@@ -86,6 +86,8 @@ public class ObjectValue extends Value {
    * @param lineSeparator The line separator
    */
   public void write(StringBuilder b, Integer indent, String lineSeparator) throws EGraphQLException, EGraphEngine {
+
+    // Write the GraphQL output
     b.append("{");
     String s = "";
     String se = "";
@@ -103,6 +105,5 @@ public class ObjectValue extends Value {
     }
     b.append(se);
     b.append("}");
-
   }
 }

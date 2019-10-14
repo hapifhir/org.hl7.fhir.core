@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.validation;
 
+import java.io.BufferedOutputStream;
+
 /*-
  * #%L
  * org.hl7.fhir.validation
@@ -55,19 +57,29 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -91,9 +103,11 @@ import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.FormatUtilities;
@@ -107,9 +121,12 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
+import org.hl7.fhir.r5.model.ImplementationGuide.ManifestResourceComponent;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -118,12 +135,15 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.IdStatus;
+import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
+import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.utilities.IniFile;
@@ -136,6 +156,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.xml.sax.SAXException;
 
 /**
@@ -183,9 +204,49 @@ import org.xml.sax.SAXException;
  * @author Grahame Grieve
  *
  */
-public class ValidationEngine {
+public class ValidationEngine implements IValidatorResourceFetcher {
 
-	public class TransformSupportServices implements ITransformerServices {
+  public class ScanOutputItem {
+    private String ref;
+    private ImplementationGuide ig;
+    private StructureDefinition profile;
+    private OperationOutcome outcome;
+    private String id;
+    public ScanOutputItem(String ref, ImplementationGuide ig, StructureDefinition profile, OperationOutcome outcome) {
+      super();
+      this.ref = ref;
+      this.ig = ig;
+      this.profile = profile;
+      this.outcome = outcome;
+    }
+    public String getRef() {
+      return ref;
+    }
+    public ImplementationGuide getIg() {
+      return ig;
+    }
+    public StructureDefinition getProfile() {
+      return profile;
+    }
+    public OperationOutcome getOutcome() {
+      return outcome;
+    }
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+    public String getTitle() {
+      if (profile != null)
+        return "Validate " +ref+" against "+profile.present()+" ("+profile.getUrl()+")";
+      if (ig != null)
+        return "Validate " +ref+" against global profile specified in "+ig.present()+" ("+ig.getUrl()+")";      
+      return "Validate " +ref+" against FHIR Spec";
+    }
+  }
+
+  public class TransformSupportServices implements ITransformerServices {
 
     private List<Resource> outputs;
 
@@ -476,6 +537,7 @@ public class ValidationEngine {
     InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
     if (stream != null)
       return loadPackage(stream, Utilities.pathURL(src, "package.tgz"));
+    // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
     stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
     if (stream != null)
       return readZip(stream);
@@ -483,12 +545,21 @@ public class ValidationEngine {
     if (stream != null)
       return readZip(stream);
     stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
-    FhirFormat fmt = checkIsResource(stream, src);
+    //// -----
+    
+    // ok, having tried all that... now we'll just try to access it directly
+    byte[] cnt;
+    if (stream == null)
+      cnt = fetchFromUrlSpecific(src, "application/json", true);
+    else
+      cnt = TextFile.streamToBytes(stream);
+    
+    FhirFormat fmt = checkIsResource(cnt, src);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
-      res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytes(src));
+      res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), cnt);
       return res;
-    }
+    }    
     throw new Exception("Unable to find/resolve/read -ig "+src);
   }
 
@@ -497,6 +568,20 @@ public class ValidationEngine {
       URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
       URLConnection c = url.openConnection();
       return c.getInputStream();
+    } catch (Exception e) {
+      if (optional)
+        return null;
+      else
+        throw e;
+    }
+  }
+
+  private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional) throws Exception {
+    try {
+      URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setRequestProperty("Accept", contentType);
+      return TextFile.streamToBytes(conn.getInputStream());
     } catch (Exception e) {
       if (optional)
         return null;
@@ -615,25 +700,25 @@ public class ValidationEngine {
     this.noInvariantChecks = value;
   }
 
-  private FhirFormat checkIsResource(InputStream stream, String filename) {
+  private FhirFormat checkIsResource(byte[] cnt, String filename) {
     System.out.println("   ..Detect format for "+filename);
     try {
-      Manager.parse(context, stream, FhirFormat.XML);
-      return FhirFormat.XML;
-    } catch (Exception e) {
-    }
-    try {
-      Manager.parse(context, stream, FhirFormat.JSON);
+      Manager.parse(context, new ByteArrayInputStream(cnt), FhirFormat.JSON);
       return FhirFormat.JSON;
     } catch (Exception e) {
     }
     try {
-      Manager.parse(context, stream, FhirFormat.TURTLE);
+      Manager.parse(context, new ByteArrayInputStream(cnt),FhirFormat.XML);
+      return FhirFormat.XML;
+    } catch (Exception e) {
+    }
+    try {
+      Manager.parse(context, new ByteArrayInputStream(cnt),FhirFormat.TURTLE);
       return FhirFormat.TURTLE;
     } catch (Exception e) {
     }
     try {
-      new StructureMapUtilities(context, null, null).parse(TextFile.streamToString(stream), null);
+      new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(cnt), null);
       return FhirFormat.TEXT;
     } catch (Exception e) {
     }
@@ -642,7 +727,7 @@ public class ValidationEngine {
     return null;    
   }
 
-  private FhirFormat checkIsResource(String path) throws FileNotFoundException {
+  private FhirFormat checkIsResource(String path) throws IOException {
     String ext = Utilities.getFileExtension(path);
     if (Utilities.existsInList(ext, "xml")) 
       return FhirFormat.XML;
@@ -655,7 +740,7 @@ public class ValidationEngine {
     if (Utilities.existsInList(ext, "txt")) 
       return FhirFormat.TEXT;
 
-    return checkIsResource(new FileInputStream(path), path);
+    return checkIsResource(TextFile.fileToBytes(path), path);
 	}
 
   public void connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
@@ -835,6 +920,76 @@ public class ValidationEngine {
     return (OperationOutcome)validate(l, profiles);
   }
     
+  public List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws Exception {
+    List<String> refs = new ArrayList<String>();
+    handleSources(sources, refs);
+    
+    List<ScanOutputItem> res = new ArrayList();
+    InstanceValidator validator = getValidator();
+    
+    for (String ref : refs) {
+      Content cnt = loadContent(ref, "validate");
+      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+      Element e = null;
+      try {
+        System.out.println("Validate "+ref);
+        messages.clear();
+        e = validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+        res.add(new ScanOutputItem(ref, null, null, messagesToOutcome(messages)));
+      } catch (Exception ex) {
+        res.add(new ScanOutputItem(ref, null, null, exceptionToOutcome(ex)));
+      }
+      if (e != null) {  
+        String rt = e.fhirType();
+        for (String u : guides) {
+          ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, u); 
+          System.out.println("Check Guide "+ig.getUrl());
+          String canonical = ig.getUrl().contains("/Impl") ? ig.getUrl().substring(0, ig.getUrl().indexOf("/Impl")) : ig.getUrl();
+          String url = getGlobal(ig, rt);
+          if (url != null) {
+            try {
+              System.out.println("Validate "+ref+" against "+ig.getUrl());
+              messages.clear();
+              validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, new ValidationProfileSet(url, true));
+              res.add(new ScanOutputItem(ref, ig, null, messagesToOutcome(messages)));
+            } catch (Exception ex) {
+              res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
+            }
+          }
+          Set<String> done = new HashSet<>(); 
+          for (StructureDefinition sd : context.allStructures()) {
+            if (!done.contains(sd.getUrl())) {
+              done.add(sd.getUrl());
+              if (sd.getUrl().startsWith(canonical) && rt.equals(sd.getType())) {
+                try {
+                  System.out.println("Validate "+ref+" against "+sd.getUrl());
+                  messages.clear();
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, new ValidationProfileSet(sd.getUrl(), true));
+                  res.add(new ScanOutputItem(ref, ig, sd, messagesToOutcome(messages)));
+                } catch (Exception ex) {
+                  res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return res;
+  }
+  
+  private Resource resolve(Reference reference) {
+    return null;
+  }
+
+  private String getGlobal(ImplementationGuide ig, String rt) {
+    for (ImplementationGuideGlobalComponent igg : ig.getGlobal()) {
+      if (rt.equals(igg.getType()))
+        return igg.getProfile();
+    }
+    return null;
+  }
+
   public Resource validate(List<String> sources, List<String> profiles) throws Exception {
     List<String> refs = new ArrayList<String>();
     boolean asBundle = handleSources(sources, refs);
@@ -997,6 +1152,13 @@ public class ValidationEngine {
     return filteredValidation;
   }
   
+  private OperationOutcome exceptionToOutcome(Exception ex) throws DefinitionException {
+    OperationOutcome op = new OperationOutcome();
+    op.addIssue().setCode(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION).setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
+    new NarrativeGenerator("", "", context).generate(null, op);
+    return op;
+  }
+  
   private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws DefinitionException {
     OperationOutcome op = new OperationOutcome();
     for (ValidationMessage vm : filterMessages(messages)) {
@@ -1026,19 +1188,41 @@ public class ValidationEngine {
     List<Resource> outputs = new ArrayList<Resource>();
     
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs));
-
-    
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType); 
     StructureMap map = context.getTransform(mapUri);
     if (map == null)
       throw new Error("Unable to find map "+mapUri+" (Known Maps = "+context.listMapUrls()+")");
     
-    scu.transform(null, src, map, null);
-    if (outputs.size() == 0)
-      throw new Exception("This transform did not produce an output");
-    if (outputs.size() > 1)
-      throw new Exception("This transform did produced multiple outputs which is not supported in this context");
-    return outputs.get(0);
+    Resource resource = getTargetResourceFromStructureMap(map);
+
+    scu.transform(null, src, map, resource);
+    return resource;
+  }
+
+  private Resource getTargetResourceFromStructureMap(StructureMap map) {
+    String targetTypeUrl = null;
+    for(StructureMap.StructureMapStructureComponent component: map.getStructure()) {
+      if(component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
+        targetTypeUrl = component.getUrl();
+        break;
+      }
+    }
+
+    if(targetTypeUrl == null)
+      throw new FHIRException("Unable to determine resource URL for target type");
+
+    StructureDefinition structureDefinition = null;
+    for(StructureDefinition sd:this.context.getStructures()) {
+      if(sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
+        structureDefinition = sd;
+        break;
+      }
+    }
+
+    if(structureDefinition == null)
+      throw new FHIRException("Unable to determine StructureDefinition for target type");
+
+    return ResourceFactory.createResource(structureDefinition.getName());
   }
 
   public DomainResource generate(String source) throws Exception {
@@ -1101,6 +1285,7 @@ public class ValidationEngine {
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setValidationLanguage(language);
+    validator.setFetcher(this);
     return validator;
   }
 
@@ -1136,5 +1321,266 @@ public class ValidationEngine {
   public void setDebug(boolean debug) {
     this.debug = debug;
   }
-  
+
+  public void genScanOutput(String folder, List<ScanOutputItem> items) throws IOException {
+    String f = Utilities.path(folder, "comparison.zip");
+    download("http://fhir.org/archive/comparison.zip", f);
+    unzip(f, folder);
+
+    for (int i = 0; i < items.size(); i++) {
+      items.get(i).setId("c"+Integer.toString(i));
+      genScanOutputItem(items.get(i), Utilities.path(folder, items.get(i).getId()+".html"));
+    }
+
+    StringBuilder b = new StringBuilder();
+    b.append("<html>");
+    b.append("<head>");
+    b.append("<title>Implementation Guide Scan</title>");
+    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
+    b.append("<style>\r\n");
+    b.append("th \r\n");
+    b.append("{\r\n");
+    b.append("  vertical-align: bottom;\r\n");
+    b.append("  text-align: center;\r\n");
+    b.append("}\r\n");
+    b.append("\r\n");
+    b.append("th span\r\n"); 
+    b.append("{\r\n");
+    b.append("  -ms-writing-mode: tb-rl;\r\n");
+    b.append("  -webkit-writing-mode: vertical-rl;\r\n");
+    b.append("  writing-mode: vertical-rl;\r\n");
+    b.append("  transform: rotate(180deg);\r\n");
+    b.append("  white-space: nowrap;\r\n");
+    b.append("}\r\n");
+    b.append("</style>\r\n");
+    b.append("</head>");
+    b.append("<body>");
+    b.append("<h2>Implementation Guide Scan</h2>");
+
+    // organise
+    Set<String> refs = new HashSet<>();
+    Set<String> igs = new HashSet<>();    
+    Map<String, Set<String>> profiles = new HashMap<>();    
+    for (ScanOutputItem item : items) {
+      refs.add(item.ref);
+      if (item.ig != null) {
+        igs.add(item.ig.getUrl());
+        if (!profiles.containsKey(item.ig.getUrl())) {
+          profiles.put(item.ig.getUrl(), new HashSet<>());
+        }
+        if (item.profile != null)
+          profiles.get(item.ig.getUrl()).add(item.profile.getUrl());
+      }
+    }
+
+    b.append("<h2>By reference</h2>\r\n");
+    b.append("<table class=\"grid\">");
+    b.append("<tr><th></th><th></th>");
+    for (String s : sorted(igs)) {
+      ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, s);
+      b.append("<th colspan=\""+Integer.toString(profiles.get(s).size()+1)+"\"><b title=\""+s+"\">"+ig.present()+"</b></th>");      
+    }
+    b.append("</tr>\r\n");
+    b.append("<tr><th><b>Source</b></th><th><span>Core Spec</span></th>");
+    for (String s : sorted(igs)) {
+      ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, s);
+      b.append("<th><span>Global</span></th>");      
+      for (String sp : sorted(profiles.get(s))) {
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, sp);
+        b.append("<th><b title=\""+sp+"\"><span>"+sd.present()+"</span></b></th>");      
+      }
+    }
+    b.append("</tr>\r\n");
+
+    for (String s : sorted(refs)) {
+      b.append("<tr>");
+      b.append("<td>"+s+"</td>");
+      b.append(genOutcome(items, s, null, null));
+      for (String si : sorted(igs)) {
+        ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, si);
+        b.append(genOutcome(items, s, si, null));
+        for (String sp : sorted(profiles.get(ig.getUrl()))) {
+          b.append(genOutcome(items, s, si, sp));      
+        }
+      }
+      b.append("</tr>\r\n");
+    }
+    b.append("</table>\r\n");
+
+    b.append("<h2>By IG</h2>\r\n");
+    b.append("<table class=\"grid\">");
+    b.append("<tr><th></th><th></th>");
+    for (String s : sorted(refs)) {
+      b.append("<th><span>"+s+"</span></th>");      
+    }
+    b.append("</tr>\r\n");
+    b.append("<tr><td></td><td>Core Spec</td>");
+    for (String s : sorted(refs)) {
+      b.append(genOutcome(items, s, null, null));
+    }
+    b.append("</tr>\r\n");
+    for (String si : sorted(igs)) {
+      b.append("<tr>");
+      ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, si);
+      b.append("<td><b title=\""+si+"\">"+ig.present()+"</b></td>");      
+      b.append("<td>Global</td>");      
+      for (String s : sorted(refs)) {
+        b.append(genOutcome(items, s, si, null));
+      }
+      b.append("</tr>\r\n");
+
+      for (String sp : sorted(profiles.get(ig.getUrl()))) {
+        b.append("<tr>");
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, sp);
+        b.append("<td></td><td><b title=\""+sp+"\">"+sd.present()+"</b></td>");      
+        for (String s : sorted(refs)) {
+          b.append(genOutcome(items, s, si, sp));
+        }
+        b.append("</tr>\r\n");
+      }
+    }
+    b.append("</table>\r\n");
+        
+    b.append("</body>");
+    b.append("</html>");
+    TextFile.stringToFile(b.toString(), Utilities.path(folder, "scan.html"));
+
+    
+  }
+
+  private String genOutcome(List<ScanOutputItem> items, String src, String ig, String profile) {
+    ScanOutputItem item = null;
+    for (ScanOutputItem t : items) {
+      boolean match = true;
+      if (!t.ref.equals(src))
+        match = false;
+      if (!((ig == null && t.ig == null) || (ig != null && t.ig != null && ig.equals(t.ig.getUrl()))))
+        match = false;
+      if (!((profile == null && t.profile == null) || (profile != null && t.profile != null && profile.equals(t.profile.getUrl()))))
+        match = false;
+      if (match) {
+        item = t;
+        break;
+      }
+    }
+      
+    if (item == null)
+      return "<td></td>";
+    boolean ok = true;
+    for (OperationOutcomeIssueComponent iss : item.outcome.getIssue()) {
+      if (iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR || iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL) {
+        ok = false;
+      }
+    }
+    if (ok) 
+      return "<td style=\"background-color: #e6ffe6\"><a href=\""+item.getId()+".html\">\u2714</a></td>";
+    else
+      return "<td style=\"background-color: #ffe6e6\"><a href=\""+item.getId()+".html\">\u2716</a></td>";
+  }
+
+  public void unzip(String zipFilePath, String destDirectory) throws IOException {
+    File destDir = new File(destDirectory);
+    if (!destDir.exists()) {
+        destDir.mkdir();
+    }
+    ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+    ZipEntry entry = zipIn.getNextEntry();
+    // iterates over entries in the zip file
+    while (entry != null) {
+        String filePath = destDirectory + File.separator + entry.getName();
+        if (!entry.isDirectory()) {
+            // if the entry is a file, extracts it
+            extractFile(zipIn, filePath);
+        } else {
+            // if the entry is a directory, make the directory
+            File dir = new File(filePath);
+            dir.mkdir();
+        }
+        zipIn.closeEntry();
+        entry = zipIn.getNextEntry();
+    }
+    zipIn.close();
+  }
+
+  private static final int BUFFER_SIZE = 4096;
+
+  private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+    byte[] bytesIn = new byte[BUFFER_SIZE];
+    int read = 0;
+    while ((read = zipIn.read(bytesIn)) != -1) {
+      bos.write(bytesIn, 0, read);
+    }
+    bos.close();
 }
+
+  private void download(String address, String filename) throws IOException {
+    URL url = new URL(address);
+    URLConnection c = url.openConnection();
+    InputStream s = c.getInputStream();
+    FileOutputStream f = new FileOutputStream(filename);
+    transfer(s, f, 1024);
+    f.close();   
+  }
+
+  public static void transfer(InputStream in, OutputStream out, int buffer) throws IOException {
+    byte[] read = new byte[buffer]; // Your buffer size.
+    while (0 < (buffer = in.read(read)))
+      out.write(read, 0, buffer);
+  }
+
+  private void genScanOutputItem(ScanOutputItem item, String filename) throws IOException {
+    NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
+    gen.setNoSlowLookup(true);
+    gen.generate(null, item.outcome);
+    String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.outcome.getText().getDiv());
+    
+    String title = item.getTitle();
+    
+    StringBuilder b = new StringBuilder();
+    b.append("<html>");
+    b.append("<head>");
+    b.append("<title>"+title+"</title>");
+    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
+    b.append("</head>");
+    b.append("<body>");
+    b.append("<h2>"+title+"</h2>");
+    b.append(s);    
+    b.append("</body>");
+    b.append("</html>");
+    TextFile.stringToFile(b.toString(), filename);
+
+  }
+
+
+  private List<String> sorted(Set<String> keys) {
+    List<String> names = new ArrayList<String>();
+    if (keys != null)
+      names.addAll(keys);
+    Collections.sort(names);
+    return names;
+  }
+
+  @Override
+  public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+    return null;
+  }
+
+  @Override
+  public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+    if (!url.startsWith("http://hl7.org/fhir"))
+      return ReferenceValidationPolicy.IGNORE;
+    throw new Error("Not done yet");
+  }
+
+  @Override
+  public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
+    if (!url.startsWith("http://hl7.org/fhir"))
+      return true; // we don't bother with those.
+    if (context.fetchResource(Resource.class, url) != null)
+      return true;
+    throw new Error("Not done yet - resolve "+url);
+  }
+
+}
+

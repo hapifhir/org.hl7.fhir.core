@@ -257,10 +257,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (res != null)
         return res;
       
-      if (externalHostServices == null)
-        throw new Error("Not done yet - resolve "+url+" locally (2)");
-      else 
+      if (externalHostServices != null)
         return externalHostServices.resolveReference(c.appContext, url);
+      else if (fetcher != null)
+        try {
+          return fetcher.fetch(c.appContext, url);
+        } catch (IOException e) {
+          throw new FHIRException(e);
+        }
+      else
+        throw new Error("Not done yet - resolve "+url+" locally (2)");
           
     }
 
@@ -357,6 +363,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String serverBase;
   
   private EnableWhenEvaluator myEnableWhenEvaluator = new EnableWhenEvaluator();
+  private String executionId;
 
   /*
    * Keeps track of whether a particular profile has been checked or not yet
@@ -1749,7 +1756,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xhtml != null) { // if it is null, this is an error already noted in the parsers
         // check that the namespace is there and correct.
         String ns = xhtml.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"')");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"', should be '"+FormatUtilities.XHTML_NS+"')");
         // check that inner namespaces are all correct
         checkInnerNS(errors, e, path, xhtml.getChildNodes());
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), "Wrong name on the XHTML ('"+ns+"') - must start with div");
@@ -1802,7 +1809,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         String ns = node.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"')");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), "Wrong namespace on the XHTML ('"+ns+"', should be '"+FormatUtilities.XHTML_NS+"')");
         checkInnerNS(errors, e, path, node.getChildNodes());
       }
     }
@@ -3608,18 +3615,20 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           // If it's the wrong type, just keep going
         }
       }
-      if (list.isEmpty() && !openChoice) {
-        rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, "Option list has no option values of type string");
-      } else {
-        boolean found = false;
-        for (StringType item : list) {
-          if (item.getValue().equals((v.primitiveValue()))) {
-            found = true;
-            break;
+      if (!openChoice) {
+        if (list.isEmpty()) {
+          rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, "Option list has no option values of type string");
+        } else {
+          boolean found = false;
+          for (StringType item : list) {
+            if (item.getValue().equals((v.primitiveValue()))) {
+              found = true;
+              break;
+            }
           }
-        }
-        if (!found) {
-          rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, "The string "+v.primitiveValue()+" is not a valid option");
+          if (!found) {
+            rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, "The string " + v.primitiveValue() + " is not a valid option");
+          }
         }
       }
     } else {
@@ -3742,6 +3751,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   }
 
   public final static String URI_REGEX3 = "((http|https)://([A-Za-z0-9\\\\\\.\\:\\%\\$]*\\/)*)?(Account|ActivityDefinition|AllergyIntolerance|AdverseEvent|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CapabilityStatement|CarePlan|CareTeam|ChargeItem|Claim|ClaimResponse|ClinicalImpression|CodeSystem|Communication|CommunicationRequest|CompartmentDefinition|Composition|ConceptMap|Condition (aka Problem)|Consent|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceRequest|DeviceUseStatement|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|Endpoint|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExpansionProfile|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|GraphDefinition|Group|GuidanceResponse|HealthcareService|ImagingManifest|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|Library|Linkage|List|Location|Measure|MeasureReport|Media|Medication|MedicationAdministration|MedicationDispense|MedicationRequest|MedicationStatement|MessageDefinition|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Organization|Parameters|Patient|PaymentNotice|PaymentReconciliation|Person|PlanDefinition|Practitioner|PractitionerRole|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RequestGroup|ResearchStudy|ResearchSubject|RiskAssessment|Schedule|SearchParameter|Sequence|ServiceDefinition|Slot|Specimen|StructureDefinition|StructureMap|Subscription|Substance|SupplyDelivery|SupplyRequest|Task|TestScript|TestReport|ValueSet|VisionPrescription)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
+  private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
+  private static final String EXECUTION_ID = "validator.execution.id";
 
   private String uriRegexForVersion() {
     if ("3.0.1".equals(context.getVersion()))
@@ -4299,13 +4310,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   public void checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
       Element resource, Element element, NodeStack stack) throws FHIRException {
-    if (resource.getName().equals("contained")) {
-      NodeStack ancestor = stack;
-      while (ancestor != null && ancestor.element != null && (!ancestor.element.isResource() || "contained".equals(ancestor.element.getName())))
-        ancestor = ancestor.parent;
-      if (ancestor != null && ancestor.element != null)
-        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
-    } else
+	  // this was an old work around for resource/rootresource issue.
+//    if (resource.getName().equals("contained")) {
+//      NodeStack ancestor = stack;
+//      while (ancestor != null && ancestor.element != null && (!ancestor.element.isResource() || "contained".equals(ancestor.element.getName())))
+//        ancestor = ancestor.parent;
+//      if (ancestor != null && ancestor.element != null)
+//        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
+//    } else
       checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
     if (definition.getFixed()!=null)
       checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), definition.getSliceName(), null);
@@ -4407,8 +4419,21 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       return;
 
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-      if (inv.hasExpression()) 
-        checkInvariant(hostContext, errors, path, profile, resource, element, inv);
+      if (inv.hasExpression()) {
+        @SuppressWarnings("unchecked")
+        Set<String> invList = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Set<String>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
+        if (invList == null) {
+          invList = new HashSet<>();
+          element.setUserData(EXECUTED_CONSTRAINT_LIST, invList);
+          element.setUserData(EXECUTION_ID, executionId);
+        }     
+        if (!invList.contains(inv.getKey())) {
+          invList.add(inv.getKey());
+          checkInvariant(hostContext, errors, path, profile, resource, element, inv);
+        } else {
+//          System.out.println("Skip "+inv.getKey()+" on "+path);
+        }
+      }
     }
   }
 
@@ -4503,6 +4528,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     assert stack != null;
     assert resource != null;
 
+    if (isEntry || executionId == null)
+      executionId = UUID.randomUUID().toString();
     boolean ok = true;
 
     String resourceName = element.getType(); // todo: consider namespace...?
@@ -4534,7 +4561,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, "Resource requires an id, but none is present");
       else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild("id") != null))
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, "Resource has an id, but none is allowed");
-      start(hostContext, errors, resource, element, defn, stack); // root is both definition and type
+      start(hostContext, errors, element, element, defn, stack); // root is both definition and type
     }
   }
 
