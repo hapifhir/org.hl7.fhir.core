@@ -735,7 +735,7 @@ Readers should be aware of the evolving "Using SNOMED CT in HL7 Version 3" imple
               <title>Skin Exam</title>
               <text>Erythematous rash, palmar surface, left index finger.
 								 
-                <renderMultiMedia referencedObject=""/>
+                <renderMultiMedia referencedObject="MM1"/>
               </text>
               <entry>
                 <observation classCode="OBS" moodCode="EVN">
