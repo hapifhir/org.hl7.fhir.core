@@ -912,7 +912,8 @@
 				}
       },
 	  "q-bp.xml": {
-		"errorCount": 0
+		"errorCount": 17,
+    "errors" : "all related to extensions"
 	  },
       "valueset-slicing-meds-bad.xml" : {
         "version" : "3.0",
