@@ -81,6 +81,7 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.Type;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -816,5 +817,23 @@ public class ToolingExtensions {
 //    return hasExtension(cs, EXT_OID);
 //  }
 //  
+  public static void addUrlExtension(Element e, String url, String content) {
+    if (!StringUtils.isBlank(content)) {
+      Extension ex = getExtension(e, url);
+      if (ex != null)
+        ex.setValue(new CodeType(content));
+      else
+        e.getExtension().add(Factory.newExtension(url, new UrlType(content), true));   
+    }
+  }
+
+  public static void addUrlExtension(DomainResource dr, String url, String value) {
+    Extension ex = getExtension(dr, url);
+    if (ex != null)
+      ex.setValue(new CodeType(value));
+    else
+      dr.getExtension().add(Factory.newExtension(url, new UrlType(value), true));   
+  }
+
   
 }
