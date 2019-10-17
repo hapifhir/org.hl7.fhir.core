@@ -53,31 +53,417 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Catalog entries are wrappers that contextualize items included in a catalog.
  */
 @ResourceDef(name="CatalogEntry", profile="http://hl7.org/fhir/StructureDefinition/CatalogEntry")
 public class CatalogEntry extends DomainResource {
 
+    public enum CatalogEntryType {
+        /**
+         * null
+         */
+        ACTIVITYDEFINITION, 
+        /**
+         * null
+         */
+        PLANDEFINITION, 
+        /**
+         * null
+         */
+        SPECIMENDEFINITION, 
+        /**
+         * null
+         */
+        OBSERVATIONDEFINITION, 
+        /**
+         * null
+         */
+        DEVICEDEFINITION, 
+        /**
+         * null
+         */
+        ORGANIZATION, 
+        /**
+         * null
+         */
+        PRACTITIONER, 
+        /**
+         * null
+         */
+        PRACTITIONERROLE, 
+        /**
+         * null
+         */
+        HEALTHCARESERVICE, 
+        /**
+         * null
+         */
+        MEDICATIONKNOWLEDGE, 
+        /**
+         * null
+         */
+        MEDICATION, 
+        /**
+         * null
+         */
+        SUBSTANCE, 
+        /**
+         * null
+         */
+        LOCATION, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CatalogEntryType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("ActivityDefinition".equals(codeString))
+          return ACTIVITYDEFINITION;
+        if ("PlanDefinition".equals(codeString))
+          return PLANDEFINITION;
+        if ("SpecimenDefinition".equals(codeString))
+          return SPECIMENDEFINITION;
+        if ("ObservationDefinition".equals(codeString))
+          return OBSERVATIONDEFINITION;
+        if ("DeviceDefinition".equals(codeString))
+          return DEVICEDEFINITION;
+        if ("Organization".equals(codeString))
+          return ORGANIZATION;
+        if ("Practitioner".equals(codeString))
+          return PRACTITIONER;
+        if ("PractitionerRole".equals(codeString))
+          return PRACTITIONERROLE;
+        if ("HealthcareService".equals(codeString))
+          return HEALTHCARESERVICE;
+        if ("MedicationKnowledge".equals(codeString))
+          return MEDICATIONKNOWLEDGE;
+        if ("Medication".equals(codeString))
+          return MEDICATION;
+        if ("Substance".equals(codeString))
+          return SUBSTANCE;
+        if ("Location".equals(codeString))
+          return LOCATION;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CatalogEntryType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVITYDEFINITION: return "ActivityDefinition";
+            case PLANDEFINITION: return "PlanDefinition";
+            case SPECIMENDEFINITION: return "SpecimenDefinition";
+            case OBSERVATIONDEFINITION: return "ObservationDefinition";
+            case DEVICEDEFINITION: return "DeviceDefinition";
+            case ORGANIZATION: return "Organization";
+            case PRACTITIONER: return "Practitioner";
+            case PRACTITIONERROLE: return "PractitionerRole";
+            case HEALTHCARESERVICE: return "HealthcareService";
+            case MEDICATIONKNOWLEDGE: return "MedicationKnowledge";
+            case MEDICATION: return "Medication";
+            case SUBSTANCE: return "Substance";
+            case LOCATION: return "Location";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ACTIVITYDEFINITION: return "http://hl7.org/fhir/catalogentry-type";
+            case PLANDEFINITION: return "http://hl7.org/fhir/catalogentry-type";
+            case SPECIMENDEFINITION: return "http://hl7.org/fhir/catalogentry-type";
+            case OBSERVATIONDEFINITION: return "http://hl7.org/fhir/catalogentry-type";
+            case DEVICEDEFINITION: return "http://hl7.org/fhir/catalogentry-type";
+            case ORGANIZATION: return "http://hl7.org/fhir/catalogentry-type";
+            case PRACTITIONER: return "http://hl7.org/fhir/catalogentry-type";
+            case PRACTITIONERROLE: return "http://hl7.org/fhir/catalogentry-type";
+            case HEALTHCARESERVICE: return "http://hl7.org/fhir/catalogentry-type";
+            case MEDICATIONKNOWLEDGE: return "http://hl7.org/fhir/catalogentry-type";
+            case MEDICATION: return "http://hl7.org/fhir/catalogentry-type";
+            case SUBSTANCE: return "http://hl7.org/fhir/catalogentry-type";
+            case LOCATION: return "http://hl7.org/fhir/catalogentry-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVITYDEFINITION: return "";
+            case PLANDEFINITION: return "";
+            case SPECIMENDEFINITION: return "";
+            case OBSERVATIONDEFINITION: return "";
+            case DEVICEDEFINITION: return "";
+            case ORGANIZATION: return "";
+            case PRACTITIONER: return "";
+            case PRACTITIONERROLE: return "";
+            case HEALTHCARESERVICE: return "";
+            case MEDICATIONKNOWLEDGE: return "";
+            case MEDICATION: return "";
+            case SUBSTANCE: return "";
+            case LOCATION: return "";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVITYDEFINITION: return "ActivityDefinition";
+            case PLANDEFINITION: return "PlanDefinition";
+            case SPECIMENDEFINITION: return "SpecimenDefinition";
+            case OBSERVATIONDEFINITION: return "ObservationDefinition";
+            case DEVICEDEFINITION: return "DeviceDefinition";
+            case ORGANIZATION: return "Organization";
+            case PRACTITIONER: return "Practitioner";
+            case PRACTITIONERROLE: return "PractitionerRole";
+            case HEALTHCARESERVICE: return "HealthcareService";
+            case MEDICATIONKNOWLEDGE: return "MedicationKnowledge";
+            case MEDICATION: return "Medication";
+            case SUBSTANCE: return "Substance";
+            case LOCATION: return "Location";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CatalogEntryTypeEnumFactory implements EnumFactory<CatalogEntryType> {
+    public CatalogEntryType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("ActivityDefinition".equals(codeString))
+          return CatalogEntryType.ACTIVITYDEFINITION;
+        if ("PlanDefinition".equals(codeString))
+          return CatalogEntryType.PLANDEFINITION;
+        if ("SpecimenDefinition".equals(codeString))
+          return CatalogEntryType.SPECIMENDEFINITION;
+        if ("ObservationDefinition".equals(codeString))
+          return CatalogEntryType.OBSERVATIONDEFINITION;
+        if ("DeviceDefinition".equals(codeString))
+          return CatalogEntryType.DEVICEDEFINITION;
+        if ("Organization".equals(codeString))
+          return CatalogEntryType.ORGANIZATION;
+        if ("Practitioner".equals(codeString))
+          return CatalogEntryType.PRACTITIONER;
+        if ("PractitionerRole".equals(codeString))
+          return CatalogEntryType.PRACTITIONERROLE;
+        if ("HealthcareService".equals(codeString))
+          return CatalogEntryType.HEALTHCARESERVICE;
+        if ("MedicationKnowledge".equals(codeString))
+          return CatalogEntryType.MEDICATIONKNOWLEDGE;
+        if ("Medication".equals(codeString))
+          return CatalogEntryType.MEDICATION;
+        if ("Substance".equals(codeString))
+          return CatalogEntryType.SUBSTANCE;
+        if ("Location".equals(codeString))
+          return CatalogEntryType.LOCATION;
+        throw new IllegalArgumentException("Unknown CatalogEntryType code '"+codeString+"'");
+        }
+        public Enumeration<CatalogEntryType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CatalogEntryType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("ActivityDefinition".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.ACTIVITYDEFINITION);
+        if ("PlanDefinition".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.PLANDEFINITION);
+        if ("SpecimenDefinition".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.SPECIMENDEFINITION);
+        if ("ObservationDefinition".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.OBSERVATIONDEFINITION);
+        if ("DeviceDefinition".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.DEVICEDEFINITION);
+        if ("Organization".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.ORGANIZATION);
+        if ("Practitioner".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.PRACTITIONER);
+        if ("PractitionerRole".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.PRACTITIONERROLE);
+        if ("HealthcareService".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.HEALTHCARESERVICE);
+        if ("MedicationKnowledge".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.MEDICATIONKNOWLEDGE);
+        if ("Medication".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.MEDICATION);
+        if ("Substance".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.SUBSTANCE);
+        if ("Location".equals(codeString))
+          return new Enumeration<CatalogEntryType>(this, CatalogEntryType.LOCATION);
+        throw new FHIRException("Unknown CatalogEntryType code '"+codeString+"'");
+        }
+    public String toCode(CatalogEntryType code) {
+      if (code == CatalogEntryType.ACTIVITYDEFINITION)
+        return "ActivityDefinition";
+      if (code == CatalogEntryType.PLANDEFINITION)
+        return "PlanDefinition";
+      if (code == CatalogEntryType.SPECIMENDEFINITION)
+        return "SpecimenDefinition";
+      if (code == CatalogEntryType.OBSERVATIONDEFINITION)
+        return "ObservationDefinition";
+      if (code == CatalogEntryType.DEVICEDEFINITION)
+        return "DeviceDefinition";
+      if (code == CatalogEntryType.ORGANIZATION)
+        return "Organization";
+      if (code == CatalogEntryType.PRACTITIONER)
+        return "Practitioner";
+      if (code == CatalogEntryType.PRACTITIONERROLE)
+        return "PractitionerRole";
+      if (code == CatalogEntryType.HEALTHCARESERVICE)
+        return "HealthcareService";
+      if (code == CatalogEntryType.MEDICATIONKNOWLEDGE)
+        return "MedicationKnowledge";
+      if (code == CatalogEntryType.MEDICATION)
+        return "Medication";
+      if (code == CatalogEntryType.SUBSTANCE)
+        return "Substance";
+      if (code == CatalogEntryType.LOCATION)
+        return "Location";
+      return "?";
+      }
+    public String toSystem(CatalogEntryType code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum CatalogEntryStatus {
+        /**
+         * null
+         */
+        DRAFT, 
+        /**
+         * null
+         */
+        ACTIVE, 
+        /**
+         * null
+         */
+        RETIRED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CatalogEntryStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return DRAFT;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("retired".equals(codeString))
+          return RETIRED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CatalogEntryStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DRAFT: return "draft";
+            case ACTIVE: return "active";
+            case RETIRED: return "retired";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case DRAFT: return "http://hl7.org/fhir/catalogentry-status";
+            case ACTIVE: return "http://hl7.org/fhir/catalogentry-status";
+            case RETIRED: return "http://hl7.org/fhir/catalogentry-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DRAFT: return "";
+            case ACTIVE: return "";
+            case RETIRED: return "";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DRAFT: return "Draft";
+            case ACTIVE: return "Active";
+            case RETIRED: return "Retired";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CatalogEntryStatusEnumFactory implements EnumFactory<CatalogEntryStatus> {
+    public CatalogEntryStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return CatalogEntryStatus.DRAFT;
+        if ("active".equals(codeString))
+          return CatalogEntryStatus.ACTIVE;
+        if ("retired".equals(codeString))
+          return CatalogEntryStatus.RETIRED;
+        throw new IllegalArgumentException("Unknown CatalogEntryStatus code '"+codeString+"'");
+        }
+        public Enumeration<CatalogEntryStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CatalogEntryStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("draft".equals(codeString))
+          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.DRAFT);
+        if ("active".equals(codeString))
+          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.ACTIVE);
+        if ("retired".equals(codeString))
+          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.RETIRED);
+        throw new FHIRException("Unknown CatalogEntryStatus code '"+codeString+"'");
+        }
+    public String toCode(CatalogEntryStatus code) {
+      if (code == CatalogEntryStatus.DRAFT)
+        return "draft";
+      if (code == CatalogEntryStatus.ACTIVE)
+        return "active";
+      if (code == CatalogEntryStatus.RETIRED)
+        return "retired";
+      return "?";
+      }
+    public String toSystem(CatalogEntryStatus code) {
+      return code.getSystem();
+      }
+    }
+
     public enum CatalogEntryRelationType {
         /**
-         * the related entry represents an activity that may be triggered by the current item.
+         * Depending on the context, the item of the related catalog entry may be added by the performer.
          */
         TRIGGERS, 
         /**
-         * the related entry represents an item that replaces the current retired item.
+         * the related catalog entry supersedes this one when it is not active.
          */
         ISREPLACEDBY, 
+        /**
+         * The related catalog entry is excluded by this one.
+         */
+        EXCLUDES, 
+        /**
+         * The item of the related catalog entry  will be part of the orders containing the current item.
+         */
+        INCLUDES, 
         /**
          * added to help the parsers with the generic types
          */
@@ -89,6 +475,10 @@ public class CatalogEntry extends DomainResource {
           return TRIGGERS;
         if ("is-replaced-by".equals(codeString))
           return ISREPLACEDBY;
+        if ("excludes".equals(codeString))
+          return EXCLUDES;
+        if ("includes".equals(codeString))
+          return INCLUDES;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -98,27 +488,35 @@ public class CatalogEntry extends DomainResource {
           switch (this) {
             case TRIGGERS: return "triggers";
             case ISREPLACEDBY: return "is-replaced-by";
+            case EXCLUDES: return "excludes";
+            case INCLUDES: return "includes";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case TRIGGERS: return "http://hl7.org/fhir/relation-type";
-            case ISREPLACEDBY: return "http://hl7.org/fhir/relation-type";
+            case TRIGGERS: return "http://hl7.org/fhir/catalogentry-relation-type";
+            case ISREPLACEDBY: return "http://hl7.org/fhir/catalogentry-relation-type";
+            case EXCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
+            case INCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case TRIGGERS: return "the related entry represents an activity that may be triggered by the current item.";
-            case ISREPLACEDBY: return "the related entry represents an item that replaces the current retired item.";
+            case TRIGGERS: return "Depending on the context, the item of the related catalog entry may be added by the performer.";
+            case ISREPLACEDBY: return "the related catalog entry supersedes this one when it is not active.";
+            case EXCLUDES: return "The related catalog entry is excluded by this one.";
+            case INCLUDES: return "The item of the related catalog entry  will be part of the orders containing the current item.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case TRIGGERS: return "Triggers";
-            case ISREPLACEDBY: return "Replaced By";
+            case ISREPLACEDBY: return "Is replaced by";
+            case EXCLUDES: return "Excludes";
+            case INCLUDES: return "Includes";
             default: return "?";
           }
         }
@@ -133,6 +531,10 @@ public class CatalogEntry extends DomainResource {
           return CatalogEntryRelationType.TRIGGERS;
         if ("is-replaced-by".equals(codeString))
           return CatalogEntryRelationType.ISREPLACEDBY;
+        if ("excludes".equals(codeString))
+          return CatalogEntryRelationType.EXCLUDES;
+        if ("includes".equals(codeString))
+          return CatalogEntryRelationType.INCLUDES;
         throw new IllegalArgumentException("Unknown CatalogEntryRelationType code '"+codeString+"'");
         }
         public Enumeration<CatalogEntryRelationType> fromType(Base code) throws FHIRException {
@@ -147,6 +549,10 @@ public class CatalogEntry extends DomainResource {
           return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.TRIGGERS);
         if ("is-replaced-by".equals(codeString))
           return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.ISREPLACEDBY);
+        if ("excludes".equals(codeString))
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.EXCLUDES);
+        if ("includes".equals(codeString))
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.INCLUDES);
         throw new FHIRException("Unknown CatalogEntryRelationType code '"+codeString+"'");
         }
     public String toCode(CatalogEntryRelationType code) {
@@ -154,6 +560,10 @@ public class CatalogEntry extends DomainResource {
         return "triggers";
       if (code == CatalogEntryRelationType.ISREPLACEDBY)
         return "is-replaced-by";
+      if (code == CatalogEntryRelationType.EXCLUDES)
+        return "excludes";
+      if (code == CatalogEntryRelationType.INCLUDES)
+        return "includes";
       return "?";
       }
     public String toSystem(CatalogEntryRelationType code) {
@@ -164,26 +574,21 @@ public class CatalogEntry extends DomainResource {
     @Block()
     public static class CatalogEntryRelatedEntryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.
+         * The type of relationship to the related entry.
          */
-        @Child(name = "relationtype", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="triggers | is-replaced-by", formalDefinition="The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/relation-type")
-        protected Enumeration<CatalogEntryRelationType> relationtype;
+        @Child(name = "relationship", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="triggers | is-replaced-by | excludes | includes", formalDefinition="The type of relationship to the related entry." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/catalogentry-relation-type")
+        protected Enumeration<CatalogEntryRelationType> relationship;
 
         /**
-         * The reference to the related item.
+         * The reference to the related entry.
          */
-        @Child(name = "item", type = {CatalogEntry.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The reference to the related item", formalDefinition="The reference to the related item." )
-        protected Reference item;
+        @Child(name = "target", type = {CatalogEntry.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The reference to the related entry", formalDefinition="The reference to the related entry." )
+        protected Reference target;
 
-        /**
-         * The actual object that is the target of the reference (The reference to the related item.)
-         */
-        protected CatalogEntry itemTarget;
-
-        private static final long serialVersionUID = -1367020813L;
+        private static final long serialVersionUID = -1175541480L;
 
     /**
      * Constructor
@@ -195,112 +600,92 @@ public class CatalogEntry extends DomainResource {
     /**
      * Constructor
      */
-      public CatalogEntryRelatedEntryComponent(Enumeration<CatalogEntryRelationType> relationtype, Reference item) {
+      public CatalogEntryRelatedEntryComponent(Enumeration<CatalogEntryRelationType> relationship, Reference target) {
         super();
-        this.relationtype = relationtype;
-        this.item = item;
+        this.relationship = relationship;
+        this.target = target;
       }
 
         /**
-         * @return {@link #relationtype} (The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.). This is the underlying object with id, value and extensions. The accessor "getRelationtype" gives direct access to the value
+         * @return {@link #relationship} (The type of relationship to the related entry.). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
-        public Enumeration<CatalogEntryRelationType> getRelationtypeElement() { 
-          if (this.relationtype == null)
+        public Enumeration<CatalogEntryRelationType> getRelationshipElement() { 
+          if (this.relationship == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CatalogEntryRelatedEntryComponent.relationtype");
+              throw new Error("Attempt to auto-create CatalogEntryRelatedEntryComponent.relationship");
             else if (Configuration.doAutoCreate())
-              this.relationtype = new Enumeration<CatalogEntryRelationType>(new CatalogEntryRelationTypeEnumFactory()); // bb
-          return this.relationtype;
+              this.relationship = new Enumeration<CatalogEntryRelationType>(new CatalogEntryRelationTypeEnumFactory()); // bb
+          return this.relationship;
         }
 
-        public boolean hasRelationtypeElement() { 
-          return this.relationtype != null && !this.relationtype.isEmpty();
+        public boolean hasRelationshipElement() { 
+          return this.relationship != null && !this.relationship.isEmpty();
         }
 
-        public boolean hasRelationtype() { 
-          return this.relationtype != null && !this.relationtype.isEmpty();
+        public boolean hasRelationship() { 
+          return this.relationship != null && !this.relationship.isEmpty();
         }
 
         /**
-         * @param value {@link #relationtype} (The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.). This is the underlying object with id, value and extensions. The accessor "getRelationtype" gives direct access to the value
+         * @param value {@link #relationship} (The type of relationship to the related entry.). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
-        public CatalogEntryRelatedEntryComponent setRelationtypeElement(Enumeration<CatalogEntryRelationType> value) { 
-          this.relationtype = value;
+        public CatalogEntryRelatedEntryComponent setRelationshipElement(Enumeration<CatalogEntryRelationType> value) { 
+          this.relationship = value;
           return this;
         }
 
         /**
-         * @return The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.
+         * @return The type of relationship to the related entry.
          */
-        public CatalogEntryRelationType getRelationtype() { 
-          return this.relationtype == null ? null : this.relationtype.getValue();
+        public CatalogEntryRelationType getRelationship() { 
+          return this.relationship == null ? null : this.relationship.getValue();
         }
 
         /**
-         * @param value The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.
+         * @param value The type of relationship to the related entry.
          */
-        public CatalogEntryRelatedEntryComponent setRelationtype(CatalogEntryRelationType value) { 
-            if (this.relationtype == null)
-              this.relationtype = new Enumeration<CatalogEntryRelationType>(new CatalogEntryRelationTypeEnumFactory());
-            this.relationtype.setValue(value);
+        public CatalogEntryRelatedEntryComponent setRelationship(CatalogEntryRelationType value) { 
+            if (this.relationship == null)
+              this.relationship = new Enumeration<CatalogEntryRelationType>(new CatalogEntryRelationTypeEnumFactory());
+            this.relationship.setValue(value);
           return this;
         }
 
         /**
-         * @return {@link #item} (The reference to the related item.)
+         * @return {@link #target} (The reference to the related entry.)
          */
-        public Reference getItem() { 
-          if (this.item == null)
+        public Reference getTarget() { 
+          if (this.target == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CatalogEntryRelatedEntryComponent.item");
+              throw new Error("Attempt to auto-create CatalogEntryRelatedEntryComponent.target");
             else if (Configuration.doAutoCreate())
-              this.item = new Reference(); // cc
-          return this.item;
+              this.target = new Reference(); // cc
+          return this.target;
         }
 
-        public boolean hasItem() { 
-          return this.item != null && !this.item.isEmpty();
-        }
-
-        /**
-         * @param value {@link #item} (The reference to the related item.)
-         */
-        public CatalogEntryRelatedEntryComponent setItem(Reference value) { 
-          this.item = value;
-          return this;
+        public boolean hasTarget() { 
+          return this.target != null && !this.target.isEmpty();
         }
 
         /**
-         * @return {@link #item} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The reference to the related item.)
+         * @param value {@link #target} (The reference to the related entry.)
          */
-        public CatalogEntry getItemTarget() { 
-          if (this.itemTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CatalogEntryRelatedEntryComponent.item");
-            else if (Configuration.doAutoCreate())
-              this.itemTarget = new CatalogEntry(); // aa
-          return this.itemTarget;
-        }
-
-        /**
-         * @param value {@link #item} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The reference to the related item.)
-         */
-        public CatalogEntryRelatedEntryComponent setItemTarget(CatalogEntry value) { 
-          this.itemTarget = value;
+        public CatalogEntryRelatedEntryComponent setTarget(Reference value) { 
+          this.target = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("relationtype", "code", "The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.", 0, 1, relationtype));
-          children.add(new Property("item", "Reference(CatalogEntry)", "The reference to the related item.", 0, 1, item));
+          children.add(new Property("relationship", "code", "The type of relationship to the related entry.", 0, 1, relationship));
+          children.add(new Property("target", "Reference(CatalogEntry)", "The reference to the related entry.", 0, 1, target));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -261805258: /*relationtype*/  return new Property("relationtype", "code", "The type of relation to the related item: child, parent, packageContent, containerPackage, usedIn, uses, requires, etc.", 0, 1, relationtype);
-          case 3242771: /*item*/  return new Property("item", "Reference(CatalogEntry)", "The reference to the related item.", 0, 1, item);
+          case -261851592: /*relationship*/  return new Property("relationship", "code", "The type of relationship to the related entry.", 0, 1, relationship);
+          case -880905839: /*target*/  return new Property("target", "Reference(CatalogEntry)", "The reference to the related entry.", 0, 1, target);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -309,8 +694,8 @@ public class CatalogEntry extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -261805258: /*relationtype*/ return this.relationtype == null ? new Base[0] : new Base[] {this.relationtype}; // Enumeration<CatalogEntryRelationType>
-        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // Reference
+        case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<CatalogEntryRelationType>
+        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -319,12 +704,12 @@ public class CatalogEntry extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -261805258: // relationtype
+        case -261851592: // relationship
           value = new CatalogEntryRelationTypeEnumFactory().fromType(castToCode(value));
-          this.relationtype = (Enumeration) value; // Enumeration<CatalogEntryRelationType>
+          this.relationship = (Enumeration) value; // Enumeration<CatalogEntryRelationType>
           return value;
-        case 3242771: // item
-          this.item = castToReference(value); // Reference
+        case -880905839: // target
+          this.target = castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -333,11 +718,11 @@ public class CatalogEntry extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("relationtype")) {
+        if (name.equals("relationship")) {
           value = new CatalogEntryRelationTypeEnumFactory().fromType(castToCode(value));
-          this.relationtype = (Enumeration) value; // Enumeration<CatalogEntryRelationType>
-        } else if (name.equals("item")) {
-          this.item = castToReference(value); // Reference
+          this.relationship = (Enumeration) value; // Enumeration<CatalogEntryRelationType>
+        } else if (name.equals("target")) {
+          this.target = castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -346,8 +731,8 @@ public class CatalogEntry extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -261805258:  return getRelationtypeElement();
-        case 3242771:  return getItem(); 
+        case -261851592:  return getRelationshipElement();
+        case -880905839:  return getTarget();
         default: return super.makeProperty(hash, name);
         }
 
@@ -356,8 +741,8 @@ public class CatalogEntry extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -261805258: /*relationtype*/ return new String[] {"code"};
-        case 3242771: /*item*/ return new String[] {"Reference"};
+        case -261851592: /*relationship*/ return new String[] {"code"};
+        case -880905839: /*target*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -365,12 +750,12 @@ public class CatalogEntry extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("relationtype")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.relationtype");
+        if (name.equals("relationship")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.relationship");
         }
-        else if (name.equals("item")) {
-          this.item = new Reference();
-          return this.item;
+        else if (name.equals("target")) {
+          this.target = new Reference();
+          return this.target;
         }
         else
           return super.addChild(name);
@@ -379,9 +764,13 @@ public class CatalogEntry extends DomainResource {
       public CatalogEntryRelatedEntryComponent copy() {
         CatalogEntryRelatedEntryComponent dst = new CatalogEntryRelatedEntryComponent();
         copyValues(dst);
-        dst.relationtype = relationtype == null ? null : relationtype.copy();
-        dst.item = item == null ? null : item.copy();
         return dst;
+      }
+
+      public void copyValues(CatalogEntryRelatedEntryComponent dst) {
+        super.copyValues(dst);
+        dst.relationship = relationship == null ? null : relationship.copy();
+        dst.target = target == null ? null : target.copy();
       }
 
       @Override
@@ -391,7 +780,7 @@ public class CatalogEntry extends DomainResource {
         if (!(other_ instanceof CatalogEntryRelatedEntryComponent))
           return false;
         CatalogEntryRelatedEntryComponent o = (CatalogEntryRelatedEntryComponent) other_;
-        return compareDeep(relationtype, o.relationtype, true) && compareDeep(item, o.item, true);
+        return compareDeep(relationship, o.relationship, true) && compareDeep(target, o.target, true);
       }
 
       @Override
@@ -401,11 +790,11 @@ public class CatalogEntry extends DomainResource {
         if (!(other_ instanceof CatalogEntryRelatedEntryComponent))
           return false;
         CatalogEntryRelatedEntryComponent o = (CatalogEntryRelatedEntryComponent) other_;
-        return compareValues(relationtype, o.relationtype, true);
+        return compareValues(relationship, o.relationship, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationtype, item);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationship, target);
       }
 
   public String fhirType() {
@@ -416,103 +805,121 @@ public class CatalogEntry extends DomainResource {
   }
 
     /**
-     * Used in supporting different identifiers for the same product, e.g. manufacturer code and retailer code.
+     * Business identifier uniquely assigned to the catalog entry.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Unique identifier of the catalog item", formalDefinition="Used in supporting different identifiers for the same product, e.g. manufacturer code and retailer code." )
+    @Description(shortDefinition="Business identifier of the catalog entry", formalDefinition="Business identifier uniquely assigned to the catalog entry." )
     protected List<Identifier> identifier;
 
     /**
-     * The type of item - medication, device, service, protocol or other.
+     * The name of this catalog entry announces the item that is represented by the entry.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The type of item - medication, device, service, protocol or other", formalDefinition="The type of item - medication, device, service, protocol or other." )
-    protected CodeableConcept type;
+    @Child(name = "name", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Displayable name assigned to the catalog entry", formalDefinition="The name of this catalog entry announces the item that is represented by the entry." )
+    protected StringType name;
 
     /**
-     * Whether the entry represents an orderable item.
+     * The type of resource that is represented by this catalog entry.
      */
-    @Child(name = "orderable", type = {BooleanType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Whether the entry represents an orderable item", formalDefinition="Whether the entry represents an orderable item." )
+    @Child(name = "type", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location", formalDefinition="The type of resource that is represented by this catalog entry." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/catalogentry-type")
+    protected Enumeration<CatalogEntryType> type;
+
+    /**
+     * Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).
+     */
+    @Child(name = "status", type = {CodeType.class}, order=3, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired", formalDefinition="Indicates whether this catalog entry is open to public usage (active) or not (draft or retired)." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/catalogentry-status")
+    protected Enumeration<CatalogEntryStatus> status;
+
+    /**
+     * Period of usability of the catalog entry.
+     */
+    @Child(name = "effectivePeriod", type = {Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When this catalog entry is expected to be active", formalDefinition="Period of usability of the catalog entry." )
+    protected Period effectivePeriod;
+
+    /**
+     * Indicates whether or not the entry represents an item that is orderable.
+     */
+    @Child(name = "orderable", type = {BooleanType.class}, order=5, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="Is orderable", formalDefinition="Indicates whether or not the entry represents an item that is orderable." )
     protected BooleanType orderable;
 
     /**
-     * The item in a catalog or definition.
+     * The item (resource) that this entry of the catalog represents.
      */
-    @Child(name = "referencedItem", type = {Medication.class, Device.class, Organization.class, Practitioner.class, PractitionerRole.class, HealthcareService.class, ActivityDefinition.class, PlanDefinition.class, SpecimenDefinition.class, ObservationDefinition.class, Binary.class}, order=3, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The item that is being defined", formalDefinition="The item in a catalog or definition." )
+    @Child(name = "referencedItem", type = {DeviceDefinition.class, Organization.class, Practitioner.class, PractitionerRole.class, HealthcareService.class, ActivityDefinition.class, PlanDefinition.class, SpecimenDefinition.class, ObservationDefinition.class, MedicationKnowledge.class, Substance.class, Location.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Item attached to this entry of the catalog", formalDefinition="The item (resource) that this entry of the catalog represents." )
     protected Reference referencedItem;
-
-    /**
-     * The actual object that is the target of the reference (The item in a catalog or definition.)
-     */
-    protected Resource referencedItemTarget;
-
-    /**
-     * Used in supporting related concepts, e.g. NDC to RxNorm.
-     */
-    @Child(name = "additionalIdentifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Any additional identifier(s) for the catalog item, in the same granularity or concept", formalDefinition="Used in supporting related concepts, e.g. NDC to RxNorm." )
-    protected List<Identifier> additionalIdentifier;
-
-    /**
-     * Classes of devices, or ATC for medication.
-     */
-    @Child(name = "classification", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Classification (category or class) of the item entry", formalDefinition="Classes of devices, or ATC for medication." )
-    protected List<CodeableConcept> classification;
-
-    /**
-     * Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.
-     */
-    @Child(name = "status", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
-    protected Enumeration<PublicationStatus> status;
-
-    /**
-     * The time period in which this catalog entry is expected to be active.
-     */
-    @Child(name = "validityPeriod", type = {Period.class}, order=7, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The time period in which this catalog entry is expected to be active", formalDefinition="The time period in which this catalog entry is expected to be active." )
-    protected Period validityPeriod;
-
-    /**
-     * The date until which this catalog entry is expected to be active.
-     */
-    @Child(name = "validTo", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The date until which this catalog entry is expected to be active", formalDefinition="The date until which this catalog entry is expected to be active." )
-    protected DateTimeType validTo;
-
-    /**
-     * Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.
-     */
-    @Child(name = "lastUpdated", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="When was this catalog last updated", formalDefinition="Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated." )
-    protected DateTimeType lastUpdated;
-
-    /**
-     * Used for examplefor Out of Formulary, or any specifics.
-     */
-    @Child(name = "additionalCharacteristic", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Additional characteristics of the catalog entry", formalDefinition="Used for examplefor Out of Formulary, or any specifics." )
-    protected List<CodeableConcept> additionalCharacteristic;
-
-    /**
-     * User for example for ATC classification, or.
-     */
-    @Child(name = "additionalClassification", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Additional classification of the catalog entry", formalDefinition="User for example for ATC classification, or." )
-    protected List<CodeableConcept> additionalClassification;
 
     /**
      * Used for example, to point to a substance, or to a device used to administer a medication.
      */
-    @Child(name = "relatedEntry", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="An item that this catalog entry is related to", formalDefinition="Used for example, to point to a substance, or to a device used to administer a medication." )
+    @Child(name = "relatedEntry", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Another entry of the catalog related to this one", formalDefinition="Used for example, to point to a substance, or to a device used to administer a medication." )
     protected List<CatalogEntryRelatedEntryComponent> relatedEntry;
 
-    private static final long serialVersionUID = 57448275L;
+    /**
+     * Last actor who recorded (created or updated) this catalog entry.
+     */
+    @Child(name = "updatedBy", type = {Person.class, Device.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Last updater of this catalog entry", formalDefinition="Last actor who recorded (created or updated) this catalog entry." )
+    protected Reference updatedBy;
+
+    /**
+     * Notes and comments about this catalog entry.
+     */
+    @Child(name = "note", type = {Annotation.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Notes and comments about this catalog entry", formalDefinition="Notes and comments about this catalog entry." )
+    protected List<Annotation> note;
+
+    /**
+     * Estimated duration of the orderable item of this  entry of the catalog.
+     */
+    @Child(name = "estimatedDuration", type = {Duration.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Estimated duration of the orderable item", formalDefinition="Estimated duration of the orderable item of this  entry of the catalog." )
+    protected Duration estimatedDuration;
+
+    /**
+     * Billing code associated to the  item in the context of this  entry of the catalog.
+     */
+    @Child(name = "billingCode", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Billing code in the context of this catalog entry", formalDefinition="Billing code associated to the  item in the context of this  entry of the catalog." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/cpt-all")
+    protected List<CodeableConcept> billingCode;
+
+    /**
+     * Billing summary attached to the  item in the context of this  entry of the catalog.
+     */
+    @Child(name = "billingSummary", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Billing summary in the context of this catalog entry", formalDefinition="Billing summary attached to the  item in the context of this  entry of the catalog." )
+    protected StringType billingSummary;
+
+    /**
+     * Schedule summary for the  item in the context of this  entry of the catalog.
+     */
+    @Child(name = "scheduleSummary", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Schedule summary for the catalog entry", formalDefinition="Schedule summary for the  item in the context of this  entry of the catalog." )
+    protected StringType scheduleSummary;
+
+    /**
+     * Summary of limitations for the  item in the context of this  entry of the catalog.
+     */
+    @Child(name = "limitationSummary", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Summary of limitations for the catalog entry", formalDefinition="Summary of limitations for the  item in the context of this  entry of the catalog." )
+    protected StringType limitationSummary;
+
+    /**
+     * Regulatory summary for the  item in the context of this  entry of the catalog.
+     */
+    @Child(name = "regulatorySummary", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Regulatory  summary for the catalog entry", formalDefinition="Regulatory summary for the  item in the context of this  entry of the catalog." )
+    protected StringType regulatorySummary;
+
+    private static final long serialVersionUID = -2010989359L;
 
   /**
    * Constructor
@@ -531,7 +938,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Used in supporting different identifiers for the same product, e.g. manufacturer code and retailer code.)
+     * @return {@link #identifier} (Business identifier uniquely assigned to the catalog entry.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -584,15 +991,68 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return {@link #type} (The type of item - medication, device, service, protocol or other.)
+     * @return {@link #name} (The name of this catalog entry announces the item that is represented by the entry.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
-    public CodeableConcept getType() { 
+    public StringType getNameElement() { 
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new StringType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (The name of this catalog entry announces the item that is represented by the entry.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public CatalogEntry setNameElement(StringType value) { 
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return The name of this catalog entry announces the item that is represented by the entry.
+     */
+    public String getName() { 
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value The name of this catalog entry announces the item that is represented by the entry.
+     */
+    public CatalogEntry setName(String value) { 
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+        if (this.name == null)
+          this.name = new StringType();
+        this.name.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #type} (The type of resource that is represented by this catalog entry.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     */
+    public Enumeration<CatalogEntryType> getTypeElement() { 
       if (this.type == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CatalogEntry.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeableConcept(); // cc
+          this.type = new Enumeration<CatalogEntryType>(new CatalogEntryTypeEnumFactory()); // bb
       return this.type;
+    }
+
+    public boolean hasTypeElement() { 
+      return this.type != null && !this.type.isEmpty();
     }
 
     public boolean hasType() { 
@@ -600,15 +1060,109 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @param value {@link #type} (The type of item - medication, device, service, protocol or other.)
+     * @param value {@link #type} (The type of resource that is represented by this catalog entry.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public CatalogEntry setType(CodeableConcept value) { 
+    public CatalogEntry setTypeElement(Enumeration<CatalogEntryType> value) { 
       this.type = value;
       return this;
     }
 
     /**
-     * @return {@link #orderable} (Whether the entry represents an orderable item.). This is the underlying object with id, value and extensions. The accessor "getOrderable" gives direct access to the value
+     * @return The type of resource that is represented by this catalog entry.
+     */
+    public CatalogEntryType getType() { 
+      return this.type == null ? null : this.type.getValue();
+    }
+
+    /**
+     * @param value The type of resource that is represented by this catalog entry.
+     */
+    public CatalogEntry setType(CatalogEntryType value) { 
+      if (value == null)
+        this.type = null;
+      else {
+        if (this.type == null)
+          this.type = new Enumeration<CatalogEntryType>(new CatalogEntryTypeEnumFactory());
+        this.type.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #status} (Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Enumeration<CatalogEntryStatus> getStatusElement() { 
+      if (this.status == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<CatalogEntryStatus>(new CatalogEntryStatusEnumFactory()); // bb
+      return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    public boolean hasStatus() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    /**
+     * @param value {@link #status} (Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public CatalogEntry setStatusElement(Enumeration<CatalogEntryStatus> value) { 
+      this.status = value;
+      return this;
+    }
+
+    /**
+     * @return Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).
+     */
+    public CatalogEntryStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).
+     */
+    public CatalogEntry setStatus(CatalogEntryStatus value) { 
+      if (value == null)
+        this.status = null;
+      else {
+        if (this.status == null)
+          this.status = new Enumeration<CatalogEntryStatus>(new CatalogEntryStatusEnumFactory());
+        this.status.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #effectivePeriod} (Period of usability of the catalog entry.)
+     */
+    public Period getEffectivePeriod() { 
+      if (this.effectivePeriod == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.effectivePeriod");
+        else if (Configuration.doAutoCreate())
+          this.effectivePeriod = new Period(); // cc
+      return this.effectivePeriod;
+    }
+
+    public boolean hasEffectivePeriod() { 
+      return this.effectivePeriod != null && !this.effectivePeriod.isEmpty();
+    }
+
+    /**
+     * @param value {@link #effectivePeriod} (Period of usability of the catalog entry.)
+     */
+    public CatalogEntry setEffectivePeriod(Period value) { 
+      this.effectivePeriod = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #orderable} (Indicates whether or not the entry represents an item that is orderable.). This is the underlying object with id, value and extensions. The accessor "getOrderable" gives direct access to the value
      */
     public BooleanType getOrderableElement() { 
       if (this.orderable == null)
@@ -628,7 +1182,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @param value {@link #orderable} (Whether the entry represents an orderable item.). This is the underlying object with id, value and extensions. The accessor "getOrderable" gives direct access to the value
+     * @param value {@link #orderable} (Indicates whether or not the entry represents an item that is orderable.). This is the underlying object with id, value and extensions. The accessor "getOrderable" gives direct access to the value
      */
     public CatalogEntry setOrderableElement(BooleanType value) { 
       this.orderable = value;
@@ -636,14 +1190,14 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return Whether the entry represents an orderable item.
+     * @return Indicates whether or not the entry represents an item that is orderable.
      */
     public boolean getOrderable() { 
       return this.orderable == null || this.orderable.isEmpty() ? false : this.orderable.getValue();
     }
 
     /**
-     * @param value Whether the entry represents an orderable item.
+     * @param value Indicates whether or not the entry represents an item that is orderable.
      */
     public CatalogEntry setOrderable(boolean value) { 
         if (this.orderable == null)
@@ -653,7 +1207,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return {@link #referencedItem} (The item in a catalog or definition.)
+     * @return {@link #referencedItem} (The item (resource) that this entry of the catalog represents.)
      */
     public Reference getReferencedItem() { 
       if (this.referencedItem == null)
@@ -669,409 +1223,11 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @param value {@link #referencedItem} (The item in a catalog or definition.)
+     * @param value {@link #referencedItem} (The item (resource) that this entry of the catalog represents.)
      */
     public CatalogEntry setReferencedItem(Reference value) { 
       this.referencedItem = value;
       return this;
-    }
-
-    /**
-     * @return {@link #referencedItem} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The item in a catalog or definition.)
-     */
-    public Resource getReferencedItemTarget() { 
-      return this.referencedItemTarget;
-    }
-
-    /**
-     * @param value {@link #referencedItem} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The item in a catalog or definition.)
-     */
-    public CatalogEntry setReferencedItemTarget(Resource value) { 
-      this.referencedItemTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #additionalIdentifier} (Used in supporting related concepts, e.g. NDC to RxNorm.)
-     */
-    public List<Identifier> getAdditionalIdentifier() { 
-      if (this.additionalIdentifier == null)
-        this.additionalIdentifier = new ArrayList<Identifier>();
-      return this.additionalIdentifier;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public CatalogEntry setAdditionalIdentifier(List<Identifier> theAdditionalIdentifier) { 
-      this.additionalIdentifier = theAdditionalIdentifier;
-      return this;
-    }
-
-    public boolean hasAdditionalIdentifier() { 
-      if (this.additionalIdentifier == null)
-        return false;
-      for (Identifier item : this.additionalIdentifier)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Identifier addAdditionalIdentifier() { //3
-      Identifier t = new Identifier();
-      if (this.additionalIdentifier == null)
-        this.additionalIdentifier = new ArrayList<Identifier>();
-      this.additionalIdentifier.add(t);
-      return t;
-    }
-
-    public CatalogEntry addAdditionalIdentifier(Identifier t) { //3
-      if (t == null)
-        return this;
-      if (this.additionalIdentifier == null)
-        this.additionalIdentifier = new ArrayList<Identifier>();
-      this.additionalIdentifier.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #additionalIdentifier}, creating it if it does not already exist
-     */
-    public Identifier getAdditionalIdentifierFirstRep() { 
-      if (getAdditionalIdentifier().isEmpty()) {
-        addAdditionalIdentifier();
-      }
-      return getAdditionalIdentifier().get(0);
-    }
-
-    /**
-     * @return {@link #classification} (Classes of devices, or ATC for medication.)
-     */
-    public List<CodeableConcept> getClassification() { 
-      if (this.classification == null)
-        this.classification = new ArrayList<CodeableConcept>();
-      return this.classification;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public CatalogEntry setClassification(List<CodeableConcept> theClassification) { 
-      this.classification = theClassification;
-      return this;
-    }
-
-    public boolean hasClassification() { 
-      if (this.classification == null)
-        return false;
-      for (CodeableConcept item : this.classification)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addClassification() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.classification == null)
-        this.classification = new ArrayList<CodeableConcept>();
-      this.classification.add(t);
-      return t;
-    }
-
-    public CatalogEntry addClassification(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.classification == null)
-        this.classification = new ArrayList<CodeableConcept>();
-      this.classification.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #classification}, creating it if it does not already exist
-     */
-    public CodeableConcept getClassificationFirstRep() { 
-      if (getClassification().isEmpty()) {
-        addClassification();
-      }
-      return getClassification().get(0);
-    }
-
-    /**
-     * @return {@link #status} (Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
-     */
-    public Enumeration<PublicationStatus> getStatusElement() { 
-      if (this.status == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CatalogEntry.status");
-        else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
-      return this.status;
-    }
-
-    public boolean hasStatusElement() { 
-      return this.status != null && !this.status.isEmpty();
-    }
-
-    public boolean hasStatus() { 
-      return this.status != null && !this.status.isEmpty();
-    }
-
-    /**
-     * @param value {@link #status} (Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
-     */
-    public CatalogEntry setStatusElement(Enumeration<PublicationStatus> value) { 
-      this.status = value;
-      return this;
-    }
-
-    /**
-     * @return Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.
-     */
-    public PublicationStatus getStatus() { 
-      return this.status == null ? null : this.status.getValue();
-    }
-
-    /**
-     * @param value Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.
-     */
-    public CatalogEntry setStatus(PublicationStatus value) { 
-      if (value == null)
-        this.status = null;
-      else {
-        if (this.status == null)
-          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
-        this.status.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #validityPeriod} (The time period in which this catalog entry is expected to be active.)
-     */
-    public Period getValidityPeriod() { 
-      if (this.validityPeriod == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CatalogEntry.validityPeriod");
-        else if (Configuration.doAutoCreate())
-          this.validityPeriod = new Period(); // cc
-      return this.validityPeriod;
-    }
-
-    public boolean hasValidityPeriod() { 
-      return this.validityPeriod != null && !this.validityPeriod.isEmpty();
-    }
-
-    /**
-     * @param value {@link #validityPeriod} (The time period in which this catalog entry is expected to be active.)
-     */
-    public CatalogEntry setValidityPeriod(Period value) { 
-      this.validityPeriod = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #validTo} (The date until which this catalog entry is expected to be active.). This is the underlying object with id, value and extensions. The accessor "getValidTo" gives direct access to the value
-     */
-    public DateTimeType getValidToElement() { 
-      if (this.validTo == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CatalogEntry.validTo");
-        else if (Configuration.doAutoCreate())
-          this.validTo = new DateTimeType(); // bb
-      return this.validTo;
-    }
-
-    public boolean hasValidToElement() { 
-      return this.validTo != null && !this.validTo.isEmpty();
-    }
-
-    public boolean hasValidTo() { 
-      return this.validTo != null && !this.validTo.isEmpty();
-    }
-
-    /**
-     * @param value {@link #validTo} (The date until which this catalog entry is expected to be active.). This is the underlying object with id, value and extensions. The accessor "getValidTo" gives direct access to the value
-     */
-    public CatalogEntry setValidToElement(DateTimeType value) { 
-      this.validTo = value;
-      return this;
-    }
-
-    /**
-     * @return The date until which this catalog entry is expected to be active.
-     */
-    public Date getValidTo() { 
-      return this.validTo == null ? null : this.validTo.getValue();
-    }
-
-    /**
-     * @param value The date until which this catalog entry is expected to be active.
-     */
-    public CatalogEntry setValidTo(Date value) { 
-      if (value == null)
-        this.validTo = null;
-      else {
-        if (this.validTo == null)
-          this.validTo = new DateTimeType();
-        this.validTo.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #lastUpdated} (Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.). This is the underlying object with id, value and extensions. The accessor "getLastUpdated" gives direct access to the value
-     */
-    public DateTimeType getLastUpdatedElement() { 
-      if (this.lastUpdated == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CatalogEntry.lastUpdated");
-        else if (Configuration.doAutoCreate())
-          this.lastUpdated = new DateTimeType(); // bb
-      return this.lastUpdated;
-    }
-
-    public boolean hasLastUpdatedElement() { 
-      return this.lastUpdated != null && !this.lastUpdated.isEmpty();
-    }
-
-    public boolean hasLastUpdated() { 
-      return this.lastUpdated != null && !this.lastUpdated.isEmpty();
-    }
-
-    /**
-     * @param value {@link #lastUpdated} (Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.). This is the underlying object with id, value and extensions. The accessor "getLastUpdated" gives direct access to the value
-     */
-    public CatalogEntry setLastUpdatedElement(DateTimeType value) { 
-      this.lastUpdated = value;
-      return this;
-    }
-
-    /**
-     * @return Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.
-     */
-    public Date getLastUpdated() { 
-      return this.lastUpdated == null ? null : this.lastUpdated.getValue();
-    }
-
-    /**
-     * @param value Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.
-     */
-    public CatalogEntry setLastUpdated(Date value) { 
-      if (value == null)
-        this.lastUpdated = null;
-      else {
-        if (this.lastUpdated == null)
-          this.lastUpdated = new DateTimeType();
-        this.lastUpdated.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #additionalCharacteristic} (Used for examplefor Out of Formulary, or any specifics.)
-     */
-    public List<CodeableConcept> getAdditionalCharacteristic() { 
-      if (this.additionalCharacteristic == null)
-        this.additionalCharacteristic = new ArrayList<CodeableConcept>();
-      return this.additionalCharacteristic;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public CatalogEntry setAdditionalCharacteristic(List<CodeableConcept> theAdditionalCharacteristic) { 
-      this.additionalCharacteristic = theAdditionalCharacteristic;
-      return this;
-    }
-
-    public boolean hasAdditionalCharacteristic() { 
-      if (this.additionalCharacteristic == null)
-        return false;
-      for (CodeableConcept item : this.additionalCharacteristic)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addAdditionalCharacteristic() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.additionalCharacteristic == null)
-        this.additionalCharacteristic = new ArrayList<CodeableConcept>();
-      this.additionalCharacteristic.add(t);
-      return t;
-    }
-
-    public CatalogEntry addAdditionalCharacteristic(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.additionalCharacteristic == null)
-        this.additionalCharacteristic = new ArrayList<CodeableConcept>();
-      this.additionalCharacteristic.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #additionalCharacteristic}, creating it if it does not already exist
-     */
-    public CodeableConcept getAdditionalCharacteristicFirstRep() { 
-      if (getAdditionalCharacteristic().isEmpty()) {
-        addAdditionalCharacteristic();
-      }
-      return getAdditionalCharacteristic().get(0);
-    }
-
-    /**
-     * @return {@link #additionalClassification} (User for example for ATC classification, or.)
-     */
-    public List<CodeableConcept> getAdditionalClassification() { 
-      if (this.additionalClassification == null)
-        this.additionalClassification = new ArrayList<CodeableConcept>();
-      return this.additionalClassification;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public CatalogEntry setAdditionalClassification(List<CodeableConcept> theAdditionalClassification) { 
-      this.additionalClassification = theAdditionalClassification;
-      return this;
-    }
-
-    public boolean hasAdditionalClassification() { 
-      if (this.additionalClassification == null)
-        return false;
-      for (CodeableConcept item : this.additionalClassification)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addAdditionalClassification() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.additionalClassification == null)
-        this.additionalClassification = new ArrayList<CodeableConcept>();
-      this.additionalClassification.add(t);
-      return t;
-    }
-
-    public CatalogEntry addAdditionalClassification(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.additionalClassification == null)
-        this.additionalClassification = new ArrayList<CodeableConcept>();
-      this.additionalClassification.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #additionalClassification}, creating it if it does not already exist
-     */
-    public CodeableConcept getAdditionalClassificationFirstRep() { 
-      if (getAdditionalClassification().isEmpty()) {
-        addAdditionalClassification();
-      }
-      return getAdditionalClassification().get(0);
     }
 
     /**
@@ -1127,39 +1283,395 @@ public class CatalogEntry extends DomainResource {
       return getRelatedEntry().get(0);
     }
 
+    /**
+     * @return {@link #updatedBy} (Last actor who recorded (created or updated) this catalog entry.)
+     */
+    public Reference getUpdatedBy() { 
+      if (this.updatedBy == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.updatedBy");
+        else if (Configuration.doAutoCreate())
+          this.updatedBy = new Reference(); // cc
+      return this.updatedBy;
+    }
+
+    public boolean hasUpdatedBy() { 
+      return this.updatedBy != null && !this.updatedBy.isEmpty();
+    }
+
+    /**
+     * @param value {@link #updatedBy} (Last actor who recorded (created or updated) this catalog entry.)
+     */
+    public CatalogEntry setUpdatedBy(Reference value) { 
+      this.updatedBy = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #note} (Notes and comments about this catalog entry.)
+     */
+    public List<Annotation> getNote() { 
+      if (this.note == null)
+        this.note = new ArrayList<Annotation>();
+      return this.note;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CatalogEntry setNote(List<Annotation> theNote) { 
+      this.note = theNote;
+      return this;
+    }
+
+    public boolean hasNote() { 
+      if (this.note == null)
+        return false;
+      for (Annotation item : this.note)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Annotation addNote() { //3
+      Annotation t = new Annotation();
+      if (this.note == null)
+        this.note = new ArrayList<Annotation>();
+      this.note.add(t);
+      return t;
+    }
+
+    public CatalogEntry addNote(Annotation t) { //3
+      if (t == null)
+        return this;
+      if (this.note == null)
+        this.note = new ArrayList<Annotation>();
+      this.note.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     */
+    public Annotation getNoteFirstRep() { 
+      if (getNote().isEmpty()) {
+        addNote();
+      }
+      return getNote().get(0);
+    }
+
+    /**
+     * @return {@link #estimatedDuration} (Estimated duration of the orderable item of this  entry of the catalog.)
+     */
+    public Duration getEstimatedDuration() { 
+      if (this.estimatedDuration == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.estimatedDuration");
+        else if (Configuration.doAutoCreate())
+          this.estimatedDuration = new Duration(); // cc
+      return this.estimatedDuration;
+    }
+
+    public boolean hasEstimatedDuration() { 
+      return this.estimatedDuration != null && !this.estimatedDuration.isEmpty();
+    }
+
+    /**
+     * @param value {@link #estimatedDuration} (Estimated duration of the orderable item of this  entry of the catalog.)
+     */
+    public CatalogEntry setEstimatedDuration(Duration value) { 
+      this.estimatedDuration = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #billingCode} (Billing code associated to the  item in the context of this  entry of the catalog.)
+     */
+    public List<CodeableConcept> getBillingCode() { 
+      if (this.billingCode == null)
+        this.billingCode = new ArrayList<CodeableConcept>();
+      return this.billingCode;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CatalogEntry setBillingCode(List<CodeableConcept> theBillingCode) { 
+      this.billingCode = theBillingCode;
+      return this;
+    }
+
+    public boolean hasBillingCode() { 
+      if (this.billingCode == null)
+        return false;
+      for (CodeableConcept item : this.billingCode)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addBillingCode() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.billingCode == null)
+        this.billingCode = new ArrayList<CodeableConcept>();
+      this.billingCode.add(t);
+      return t;
+    }
+
+    public CatalogEntry addBillingCode(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.billingCode == null)
+        this.billingCode = new ArrayList<CodeableConcept>();
+      this.billingCode.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #billingCode}, creating it if it does not already exist
+     */
+    public CodeableConcept getBillingCodeFirstRep() { 
+      if (getBillingCode().isEmpty()) {
+        addBillingCode();
+      }
+      return getBillingCode().get(0);
+    }
+
+    /**
+     * @return {@link #billingSummary} (Billing summary attached to the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getBillingSummary" gives direct access to the value
+     */
+    public StringType getBillingSummaryElement() { 
+      if (this.billingSummary == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.billingSummary");
+        else if (Configuration.doAutoCreate())
+          this.billingSummary = new StringType(); // bb
+      return this.billingSummary;
+    }
+
+    public boolean hasBillingSummaryElement() { 
+      return this.billingSummary != null && !this.billingSummary.isEmpty();
+    }
+
+    public boolean hasBillingSummary() { 
+      return this.billingSummary != null && !this.billingSummary.isEmpty();
+    }
+
+    /**
+     * @param value {@link #billingSummary} (Billing summary attached to the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getBillingSummary" gives direct access to the value
+     */
+    public CatalogEntry setBillingSummaryElement(StringType value) { 
+      this.billingSummary = value;
+      return this;
+    }
+
+    /**
+     * @return Billing summary attached to the  item in the context of this  entry of the catalog.
+     */
+    public String getBillingSummary() { 
+      return this.billingSummary == null ? null : this.billingSummary.getValue();
+    }
+
+    /**
+     * @param value Billing summary attached to the  item in the context of this  entry of the catalog.
+     */
+    public CatalogEntry setBillingSummary(String value) { 
+      if (Utilities.noString(value))
+        this.billingSummary = null;
+      else {
+        if (this.billingSummary == null)
+          this.billingSummary = new StringType();
+        this.billingSummary.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #scheduleSummary} (Schedule summary for the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getScheduleSummary" gives direct access to the value
+     */
+    public StringType getScheduleSummaryElement() { 
+      if (this.scheduleSummary == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.scheduleSummary");
+        else if (Configuration.doAutoCreate())
+          this.scheduleSummary = new StringType(); // bb
+      return this.scheduleSummary;
+    }
+
+    public boolean hasScheduleSummaryElement() { 
+      return this.scheduleSummary != null && !this.scheduleSummary.isEmpty();
+    }
+
+    public boolean hasScheduleSummary() { 
+      return this.scheduleSummary != null && !this.scheduleSummary.isEmpty();
+    }
+
+    /**
+     * @param value {@link #scheduleSummary} (Schedule summary for the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getScheduleSummary" gives direct access to the value
+     */
+    public CatalogEntry setScheduleSummaryElement(StringType value) { 
+      this.scheduleSummary = value;
+      return this;
+    }
+
+    /**
+     * @return Schedule summary for the  item in the context of this  entry of the catalog.
+     */
+    public String getScheduleSummary() { 
+      return this.scheduleSummary == null ? null : this.scheduleSummary.getValue();
+    }
+
+    /**
+     * @param value Schedule summary for the  item in the context of this  entry of the catalog.
+     */
+    public CatalogEntry setScheduleSummary(String value) { 
+      if (Utilities.noString(value))
+        this.scheduleSummary = null;
+      else {
+        if (this.scheduleSummary == null)
+          this.scheduleSummary = new StringType();
+        this.scheduleSummary.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #limitationSummary} (Summary of limitations for the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getLimitationSummary" gives direct access to the value
+     */
+    public StringType getLimitationSummaryElement() { 
+      if (this.limitationSummary == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.limitationSummary");
+        else if (Configuration.doAutoCreate())
+          this.limitationSummary = new StringType(); // bb
+      return this.limitationSummary;
+    }
+
+    public boolean hasLimitationSummaryElement() { 
+      return this.limitationSummary != null && !this.limitationSummary.isEmpty();
+    }
+
+    public boolean hasLimitationSummary() { 
+      return this.limitationSummary != null && !this.limitationSummary.isEmpty();
+    }
+
+    /**
+     * @param value {@link #limitationSummary} (Summary of limitations for the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getLimitationSummary" gives direct access to the value
+     */
+    public CatalogEntry setLimitationSummaryElement(StringType value) { 
+      this.limitationSummary = value;
+      return this;
+    }
+
+    /**
+     * @return Summary of limitations for the  item in the context of this  entry of the catalog.
+     */
+    public String getLimitationSummary() { 
+      return this.limitationSummary == null ? null : this.limitationSummary.getValue();
+    }
+
+    /**
+     * @param value Summary of limitations for the  item in the context of this  entry of the catalog.
+     */
+    public CatalogEntry setLimitationSummary(String value) { 
+      if (Utilities.noString(value))
+        this.limitationSummary = null;
+      else {
+        if (this.limitationSummary == null)
+          this.limitationSummary = new StringType();
+        this.limitationSummary.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #regulatorySummary} (Regulatory summary for the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getRegulatorySummary" gives direct access to the value
+     */
+    public StringType getRegulatorySummaryElement() { 
+      if (this.regulatorySummary == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CatalogEntry.regulatorySummary");
+        else if (Configuration.doAutoCreate())
+          this.regulatorySummary = new StringType(); // bb
+      return this.regulatorySummary;
+    }
+
+    public boolean hasRegulatorySummaryElement() { 
+      return this.regulatorySummary != null && !this.regulatorySummary.isEmpty();
+    }
+
+    public boolean hasRegulatorySummary() { 
+      return this.regulatorySummary != null && !this.regulatorySummary.isEmpty();
+    }
+
+    /**
+     * @param value {@link #regulatorySummary} (Regulatory summary for the  item in the context of this  entry of the catalog.). This is the underlying object with id, value and extensions. The accessor "getRegulatorySummary" gives direct access to the value
+     */
+    public CatalogEntry setRegulatorySummaryElement(StringType value) { 
+      this.regulatorySummary = value;
+      return this;
+    }
+
+    /**
+     * @return Regulatory summary for the  item in the context of this  entry of the catalog.
+     */
+    public String getRegulatorySummary() { 
+      return this.regulatorySummary == null ? null : this.regulatorySummary.getValue();
+    }
+
+    /**
+     * @param value Regulatory summary for the  item in the context of this  entry of the catalog.
+     */
+    public CatalogEntry setRegulatorySummary(String value) { 
+      if (Utilities.noString(value))
+        this.regulatorySummary = null;
+      else {
+        if (this.regulatorySummary == null)
+          this.regulatorySummary = new StringType();
+        this.regulatorySummary.setValue(value);
+      }
+      return this;
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Used in supporting different identifiers for the same product, e.g. manufacturer code and retailer code.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("type", "CodeableConcept", "The type of item - medication, device, service, protocol or other.", 0, 1, type));
-        children.add(new Property("orderable", "boolean", "Whether the entry represents an orderable item.", 0, 1, orderable));
-        children.add(new Property("referencedItem", "Reference(Medication|Device|Organization|Practitioner|PractitionerRole|HealthcareService|ActivityDefinition|PlanDefinition|SpecimenDefinition|ObservationDefinition|Binary)", "The item in a catalog or definition.", 0, 1, referencedItem));
-        children.add(new Property("additionalIdentifier", "Identifier", "Used in supporting related concepts, e.g. NDC to RxNorm.", 0, java.lang.Integer.MAX_VALUE, additionalIdentifier));
-        children.add(new Property("classification", "CodeableConcept", "Classes of devices, or ATC for medication.", 0, java.lang.Integer.MAX_VALUE, classification));
-        children.add(new Property("status", "code", "Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.", 0, 1, status));
-        children.add(new Property("validityPeriod", "Period", "The time period in which this catalog entry is expected to be active.", 0, 1, validityPeriod));
-        children.add(new Property("validTo", "dateTime", "The date until which this catalog entry is expected to be active.", 0, 1, validTo));
-        children.add(new Property("lastUpdated", "dateTime", "Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.", 0, 1, lastUpdated));
-        children.add(new Property("additionalCharacteristic", "CodeableConcept", "Used for examplefor Out of Formulary, or any specifics.", 0, java.lang.Integer.MAX_VALUE, additionalCharacteristic));
-        children.add(new Property("additionalClassification", "CodeableConcept", "User for example for ATC classification, or.", 0, java.lang.Integer.MAX_VALUE, additionalClassification));
+        children.add(new Property("identifier", "Identifier", "Business identifier uniquely assigned to the catalog entry.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("name", "string", "The name of this catalog entry announces the item that is represented by the entry.", 0, 1, name));
+        children.add(new Property("type", "code", "The type of resource that is represented by this catalog entry.", 0, 1, type));
+        children.add(new Property("status", "code", "Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).", 0, 1, status));
+        children.add(new Property("effectivePeriod", "Period", "Period of usability of the catalog entry.", 0, 1, effectivePeriod));
+        children.add(new Property("orderable", "boolean", "Indicates whether or not the entry represents an item that is orderable.", 0, 1, orderable));
+        children.add(new Property("referencedItem", "Reference(DeviceDefinition|Organization|Practitioner|PractitionerRole|HealthcareService|ActivityDefinition|PlanDefinition|SpecimenDefinition|ObservationDefinition|MedicationKnowledge|Substance|Location)", "The item (resource) that this entry of the catalog represents.", 0, 1, referencedItem));
         children.add(new Property("relatedEntry", "", "Used for example, to point to a substance, or to a device used to administer a medication.", 0, java.lang.Integer.MAX_VALUE, relatedEntry));
+        children.add(new Property("updatedBy", "Reference(Person|Device)", "Last actor who recorded (created or updated) this catalog entry.", 0, 1, updatedBy));
+        children.add(new Property("note", "Annotation", "Notes and comments about this catalog entry.", 0, java.lang.Integer.MAX_VALUE, note));
+        children.add(new Property("estimatedDuration", "Duration", "Estimated duration of the orderable item of this  entry of the catalog.", 0, 1, estimatedDuration));
+        children.add(new Property("billingCode", "CodeableConcept", "Billing code associated to the  item in the context of this  entry of the catalog.", 0, java.lang.Integer.MAX_VALUE, billingCode));
+        children.add(new Property("billingSummary", "string", "Billing summary attached to the  item in the context of this  entry of the catalog.", 0, 1, billingSummary));
+        children.add(new Property("scheduleSummary", "string", "Schedule summary for the  item in the context of this  entry of the catalog.", 0, 1, scheduleSummary));
+        children.add(new Property("limitationSummary", "string", "Summary of limitations for the  item in the context of this  entry of the catalog.", 0, 1, limitationSummary));
+        children.add(new Property("regulatorySummary", "string", "Regulatory summary for the  item in the context of this  entry of the catalog.", 0, 1, regulatorySummary));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Used in supporting different identifiers for the same product, e.g. manufacturer code and retailer code.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of item - medication, device, service, protocol or other.", 0, 1, type);
-        case -391199320: /*orderable*/  return new Property("orderable", "boolean", "Whether the entry represents an orderable item.", 0, 1, orderable);
-        case -1896630996: /*referencedItem*/  return new Property("referencedItem", "Reference(Medication|Device|Organization|Practitioner|PractitionerRole|HealthcareService|ActivityDefinition|PlanDefinition|SpecimenDefinition|ObservationDefinition|Binary)", "The item in a catalog or definition.", 0, 1, referencedItem);
-        case 1195162672: /*additionalIdentifier*/  return new Property("additionalIdentifier", "Identifier", "Used in supporting related concepts, e.g. NDC to RxNorm.", 0, java.lang.Integer.MAX_VALUE, additionalIdentifier);
-        case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "Classes of devices, or ATC for medication.", 0, java.lang.Integer.MAX_VALUE, classification);
-        case -892481550: /*status*/  return new Property("status", "code", "Used to support catalog exchange even for unsupported products, e.g. getting list of medications even if not prescribable.", 0, 1, status);
-        case -1434195053: /*validityPeriod*/  return new Property("validityPeriod", "Period", "The time period in which this catalog entry is expected to be active.", 0, 1, validityPeriod);
-        case 231246743: /*validTo*/  return new Property("validTo", "dateTime", "The date until which this catalog entry is expected to be active.", 0, 1, validTo);
-        case 1649733957: /*lastUpdated*/  return new Property("lastUpdated", "dateTime", "Typically date of issue is different from the beginning of the validity. This can be used to see when an item was last updated.", 0, 1, lastUpdated);
-        case -1638369886: /*additionalCharacteristic*/  return new Property("additionalCharacteristic", "CodeableConcept", "Used for examplefor Out of Formulary, or any specifics.", 0, java.lang.Integer.MAX_VALUE, additionalCharacteristic);
-        case -1622333459: /*additionalClassification*/  return new Property("additionalClassification", "CodeableConcept", "User for example for ATC classification, or.", 0, java.lang.Integer.MAX_VALUE, additionalClassification);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier uniquely assigned to the catalog entry.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case 3373707: /*name*/  return new Property("name", "string", "The name of this catalog entry announces the item that is represented by the entry.", 0, 1, name);
+        case 3575610: /*type*/  return new Property("type", "code", "The type of resource that is represented by this catalog entry.", 0, 1, type);
+        case -892481550: /*status*/  return new Property("status", "code", "Indicates whether this catalog entry is open to public usage (active) or not (draft or retired).", 0, 1, status);
+        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "Period of usability of the catalog entry.", 0, 1, effectivePeriod);
+        case -391199320: /*orderable*/  return new Property("orderable", "boolean", "Indicates whether or not the entry represents an item that is orderable.", 0, 1, orderable);
+        case -1896630996: /*referencedItem*/  return new Property("referencedItem", "Reference(DeviceDefinition|Organization|Practitioner|PractitionerRole|HealthcareService|ActivityDefinition|PlanDefinition|SpecimenDefinition|ObservationDefinition|MedicationKnowledge|Substance|Location)", "The item (resource) that this entry of the catalog represents.", 0, 1, referencedItem);
         case 130178823: /*relatedEntry*/  return new Property("relatedEntry", "", "Used for example, to point to a substance, or to a device used to administer a medication.", 0, java.lang.Integer.MAX_VALUE, relatedEntry);
+        case -1949194638: /*updatedBy*/  return new Property("updatedBy", "Reference(Person|Device)", "Last actor who recorded (created or updated) this catalog entry.", 0, 1, updatedBy);
+        case 3387378: /*note*/  return new Property("note", "Annotation", "Notes and comments about this catalog entry.", 0, java.lang.Integer.MAX_VALUE, note);
+        case 1266497008: /*estimatedDuration*/  return new Property("estimatedDuration", "Duration", "Estimated duration of the orderable item of this  entry of the catalog.", 0, 1, estimatedDuration);
+        case 91787016: /*billingCode*/  return new Property("billingCode", "CodeableConcept", "Billing code associated to the  item in the context of this  entry of the catalog.", 0, java.lang.Integer.MAX_VALUE, billingCode);
+        case 28404907: /*billingSummary*/  return new Property("billingSummary", "string", "Billing summary attached to the  item in the context of this  entry of the catalog.", 0, 1, billingSummary);
+        case -255728369: /*scheduleSummary*/  return new Property("scheduleSummary", "string", "Schedule summary for the  item in the context of this  entry of the catalog.", 0, 1, scheduleSummary);
+        case -79871444: /*limitationSummary*/  return new Property("limitationSummary", "string", "Summary of limitations for the  item in the context of this  entry of the catalog.", 0, 1, limitationSummary);
+        case 1296867822: /*regulatorySummary*/  return new Property("regulatorySummary", "string", "Regulatory summary for the  item in the context of this  entry of the catalog.", 0, 1, regulatorySummary);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1169,18 +1681,21 @@ public class CatalogEntry extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<CatalogEntryType>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<CatalogEntryStatus>
+        case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
         case -391199320: /*orderable*/ return this.orderable == null ? new Base[0] : new Base[] {this.orderable}; // BooleanType
         case -1896630996: /*referencedItem*/ return this.referencedItem == null ? new Base[0] : new Base[] {this.referencedItem}; // Reference
-        case 1195162672: /*additionalIdentifier*/ return this.additionalIdentifier == null ? new Base[0] : this.additionalIdentifier.toArray(new Base[this.additionalIdentifier.size()]); // Identifier
-        case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // CodeableConcept
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
-        case -1434195053: /*validityPeriod*/ return this.validityPeriod == null ? new Base[0] : new Base[] {this.validityPeriod}; // Period
-        case 231246743: /*validTo*/ return this.validTo == null ? new Base[0] : new Base[] {this.validTo}; // DateTimeType
-        case 1649733957: /*lastUpdated*/ return this.lastUpdated == null ? new Base[0] : new Base[] {this.lastUpdated}; // DateTimeType
-        case -1638369886: /*additionalCharacteristic*/ return this.additionalCharacteristic == null ? new Base[0] : this.additionalCharacteristic.toArray(new Base[this.additionalCharacteristic.size()]); // CodeableConcept
-        case -1622333459: /*additionalClassification*/ return this.additionalClassification == null ? new Base[0] : this.additionalClassification.toArray(new Base[this.additionalClassification.size()]); // CodeableConcept
         case 130178823: /*relatedEntry*/ return this.relatedEntry == null ? new Base[0] : this.relatedEntry.toArray(new Base[this.relatedEntry.size()]); // CatalogEntryRelatedEntryComponent
+        case -1949194638: /*updatedBy*/ return this.updatedBy == null ? new Base[0] : new Base[] {this.updatedBy}; // Reference
+        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        case 1266497008: /*estimatedDuration*/ return this.estimatedDuration == null ? new Base[0] : new Base[] {this.estimatedDuration}; // Duration
+        case 91787016: /*billingCode*/ return this.billingCode == null ? new Base[0] : this.billingCode.toArray(new Base[this.billingCode.size()]); // CodeableConcept
+        case 28404907: /*billingSummary*/ return this.billingSummary == null ? new Base[0] : new Base[] {this.billingSummary}; // StringType
+        case -255728369: /*scheduleSummary*/ return this.scheduleSummary == null ? new Base[0] : new Base[] {this.scheduleSummary}; // StringType
+        case -79871444: /*limitationSummary*/ return this.limitationSummary == null ? new Base[0] : new Base[] {this.limitationSummary}; // StringType
+        case 1296867822: /*regulatorySummary*/ return this.regulatorySummary == null ? new Base[0] : new Base[] {this.regulatorySummary}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1192,8 +1707,19 @@ public class CatalogEntry extends DomainResource {
         case -1618432855: // identifier
           this.getIdentifier().add(castToIdentifier(value)); // Identifier
           return value;
+        case 3373707: // name
+          this.name = castToString(value); // StringType
+          return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          value = new CatalogEntryTypeEnumFactory().fromType(castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<CatalogEntryType>
+          return value;
+        case -892481550: // status
+          value = new CatalogEntryStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<CatalogEntryStatus>
+          return value;
+        case -403934648: // effectivePeriod
+          this.effectivePeriod = castToPeriod(value); // Period
           return value;
         case -391199320: // orderable
           this.orderable = castToBoolean(value); // BooleanType
@@ -1201,33 +1727,32 @@ public class CatalogEntry extends DomainResource {
         case -1896630996: // referencedItem
           this.referencedItem = castToReference(value); // Reference
           return value;
-        case 1195162672: // additionalIdentifier
-          this.getAdditionalIdentifier().add(castToIdentifier(value)); // Identifier
-          return value;
-        case 382350310: // classification
-          this.getClassification().add(castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
-          return value;
-        case -1434195053: // validityPeriod
-          this.validityPeriod = castToPeriod(value); // Period
-          return value;
-        case 231246743: // validTo
-          this.validTo = castToDateTime(value); // DateTimeType
-          return value;
-        case 1649733957: // lastUpdated
-          this.lastUpdated = castToDateTime(value); // DateTimeType
-          return value;
-        case -1638369886: // additionalCharacteristic
-          this.getAdditionalCharacteristic().add(castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1622333459: // additionalClassification
-          this.getAdditionalClassification().add(castToCodeableConcept(value)); // CodeableConcept
-          return value;
         case 130178823: // relatedEntry
           this.getRelatedEntry().add((CatalogEntryRelatedEntryComponent) value); // CatalogEntryRelatedEntryComponent
+          return value;
+        case -1949194638: // updatedBy
+          this.updatedBy = castToReference(value); // Reference
+          return value;
+        case 3387378: // note
+          this.getNote().add(castToAnnotation(value)); // Annotation
+          return value;
+        case 1266497008: // estimatedDuration
+          this.estimatedDuration = castToDuration(value); // Duration
+          return value;
+        case 91787016: // billingCode
+          this.getBillingCode().add(castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 28404907: // billingSummary
+          this.billingSummary = castToString(value); // StringType
+          return value;
+        case -255728369: // scheduleSummary
+          this.scheduleSummary = castToString(value); // StringType
+          return value;
+        case -79871444: // limitationSummary
+          this.limitationSummary = castToString(value); // StringType
+          return value;
+        case 1296867822: // regulatorySummary
+          this.regulatorySummary = castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1238,31 +1763,38 @@ public class CatalogEntry extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(castToIdentifier(value));
+        } else if (name.equals("name")) {
+          this.name = castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          value = new CatalogEntryTypeEnumFactory().fromType(castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<CatalogEntryType>
+        } else if (name.equals("status")) {
+          value = new CatalogEntryStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<CatalogEntryStatus>
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = castToPeriod(value); // Period
         } else if (name.equals("orderable")) {
           this.orderable = castToBoolean(value); // BooleanType
         } else if (name.equals("referencedItem")) {
           this.referencedItem = castToReference(value); // Reference
-        } else if (name.equals("additionalIdentifier")) {
-          this.getAdditionalIdentifier().add(castToIdentifier(value));
-        } else if (name.equals("classification")) {
-          this.getClassification().add(castToCodeableConcept(value));
-        } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
-        } else if (name.equals("validityPeriod")) {
-          this.validityPeriod = castToPeriod(value); // Period
-        } else if (name.equals("validTo")) {
-          this.validTo = castToDateTime(value); // DateTimeType
-        } else if (name.equals("lastUpdated")) {
-          this.lastUpdated = castToDateTime(value); // DateTimeType
-        } else if (name.equals("additionalCharacteristic")) {
-          this.getAdditionalCharacteristic().add(castToCodeableConcept(value));
-        } else if (name.equals("additionalClassification")) {
-          this.getAdditionalClassification().add(castToCodeableConcept(value));
         } else if (name.equals("relatedEntry")) {
           this.getRelatedEntry().add((CatalogEntryRelatedEntryComponent) value);
+        } else if (name.equals("updatedBy")) {
+          this.updatedBy = castToReference(value); // Reference
+        } else if (name.equals("note")) {
+          this.getNote().add(castToAnnotation(value));
+        } else if (name.equals("estimatedDuration")) {
+          this.estimatedDuration = castToDuration(value); // Duration
+        } else if (name.equals("billingCode")) {
+          this.getBillingCode().add(castToCodeableConcept(value));
+        } else if (name.equals("billingSummary")) {
+          this.billingSummary = castToString(value); // StringType
+        } else if (name.equals("scheduleSummary")) {
+          this.scheduleSummary = castToString(value); // StringType
+        } else if (name.equals("limitationSummary")) {
+          this.limitationSummary = castToString(value); // StringType
+        } else if (name.equals("regulatorySummary")) {
+          this.regulatorySummary = castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1272,18 +1804,21 @@ public class CatalogEntry extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 3575610:  return getType(); 
-        case -391199320:  return getOrderableElement();
-        case -1896630996:  return getReferencedItem(); 
-        case 1195162672:  return addAdditionalIdentifier(); 
-        case 382350310:  return addClassification(); 
+        case 3373707:  return getNameElement();
+        case 3575610:  return getTypeElement();
         case -892481550:  return getStatusElement();
-        case -1434195053:  return getValidityPeriod(); 
-        case 231246743:  return getValidToElement();
-        case 1649733957:  return getLastUpdatedElement();
-        case -1638369886:  return addAdditionalCharacteristic(); 
-        case -1622333459:  return addAdditionalClassification(); 
+        case -403934648:  return getEffectivePeriod();
+        case -391199320:  return getOrderableElement();
+        case -1896630996:  return getReferencedItem();
         case 130178823:  return addRelatedEntry(); 
+        case -1949194638:  return getUpdatedBy();
+        case 3387378:  return addNote(); 
+        case 1266497008:  return getEstimatedDuration();
+        case 91787016:  return addBillingCode(); 
+        case 28404907:  return getBillingSummaryElement();
+        case -255728369:  return getScheduleSummaryElement();
+        case -79871444:  return getLimitationSummaryElement();
+        case 1296867822:  return getRegulatorySummaryElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1293,18 +1828,21 @@ public class CatalogEntry extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 3373707: /*name*/ return new String[] {"string"};
+        case 3575610: /*type*/ return new String[] {"code"};
+        case -892481550: /*status*/ return new String[] {"code"};
+        case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
         case -391199320: /*orderable*/ return new String[] {"boolean"};
         case -1896630996: /*referencedItem*/ return new String[] {"Reference"};
-        case 1195162672: /*additionalIdentifier*/ return new String[] {"Identifier"};
-        case 382350310: /*classification*/ return new String[] {"CodeableConcept"};
-        case -892481550: /*status*/ return new String[] {"code"};
-        case -1434195053: /*validityPeriod*/ return new String[] {"Period"};
-        case 231246743: /*validTo*/ return new String[] {"dateTime"};
-        case 1649733957: /*lastUpdated*/ return new String[] {"dateTime"};
-        case -1638369886: /*additionalCharacteristic*/ return new String[] {"CodeableConcept"};
-        case -1622333459: /*additionalClassification*/ return new String[] {"CodeableConcept"};
         case 130178823: /*relatedEntry*/ return new String[] {};
+        case -1949194638: /*updatedBy*/ return new String[] {"Reference"};
+        case 3387378: /*note*/ return new String[] {"Annotation"};
+        case 1266497008: /*estimatedDuration*/ return new String[] {"Duration"};
+        case 91787016: /*billingCode*/ return new String[] {"CodeableConcept"};
+        case 28404907: /*billingSummary*/ return new String[] {"string"};
+        case -255728369: /*scheduleSummary*/ return new String[] {"string"};
+        case -79871444: /*limitationSummary*/ return new String[] {"string"};
+        case 1296867822: /*regulatorySummary*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1315,9 +1853,18 @@ public class CatalogEntry extends DomainResource {
         if (name.equals("identifier")) {
           return addIdentifier();
         }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.name");
+        }
         else if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.type");
+        }
+        else if (name.equals("status")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.status");
+        }
+        else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = new Period();
+          return this.effectivePeriod;
         }
         else if (name.equals("orderable")) {
           throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.orderable");
@@ -1326,33 +1873,34 @@ public class CatalogEntry extends DomainResource {
           this.referencedItem = new Reference();
           return this.referencedItem;
         }
-        else if (name.equals("additionalIdentifier")) {
-          return addAdditionalIdentifier();
-        }
-        else if (name.equals("classification")) {
-          return addClassification();
-        }
-        else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.status");
-        }
-        else if (name.equals("validityPeriod")) {
-          this.validityPeriod = new Period();
-          return this.validityPeriod;
-        }
-        else if (name.equals("validTo")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.validTo");
-        }
-        else if (name.equals("lastUpdated")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.lastUpdated");
-        }
-        else if (name.equals("additionalCharacteristic")) {
-          return addAdditionalCharacteristic();
-        }
-        else if (name.equals("additionalClassification")) {
-          return addAdditionalClassification();
-        }
         else if (name.equals("relatedEntry")) {
           return addRelatedEntry();
+        }
+        else if (name.equals("updatedBy")) {
+          this.updatedBy = new Reference();
+          return this.updatedBy;
+        }
+        else if (name.equals("note")) {
+          return addNote();
+        }
+        else if (name.equals("estimatedDuration")) {
+          this.estimatedDuration = new Duration();
+          return this.estimatedDuration;
+        }
+        else if (name.equals("billingCode")) {
+          return addBillingCode();
+        }
+        else if (name.equals("billingSummary")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.billingSummary");
+        }
+        else if (name.equals("scheduleSummary")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.scheduleSummary");
+        }
+        else if (name.equals("limitationSummary")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.limitationSummary");
+        }
+        else if (name.equals("regulatorySummary")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.regulatorySummary");
         }
         else
           return super.addChild(name);
@@ -1366,44 +1914,43 @@ public class CatalogEntry extends DomainResource {
       public CatalogEntry copy() {
         CatalogEntry dst = new CatalogEntry();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CatalogEntry dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
+        dst.status = status == null ? null : status.copy();
+        dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
         dst.orderable = orderable == null ? null : orderable.copy();
         dst.referencedItem = referencedItem == null ? null : referencedItem.copy();
-        if (additionalIdentifier != null) {
-          dst.additionalIdentifier = new ArrayList<Identifier>();
-          for (Identifier i : additionalIdentifier)
-            dst.additionalIdentifier.add(i.copy());
-        };
-        if (classification != null) {
-          dst.classification = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : classification)
-            dst.classification.add(i.copy());
-        };
-        dst.status = status == null ? null : status.copy();
-        dst.validityPeriod = validityPeriod == null ? null : validityPeriod.copy();
-        dst.validTo = validTo == null ? null : validTo.copy();
-        dst.lastUpdated = lastUpdated == null ? null : lastUpdated.copy();
-        if (additionalCharacteristic != null) {
-          dst.additionalCharacteristic = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : additionalCharacteristic)
-            dst.additionalCharacteristic.add(i.copy());
-        };
-        if (additionalClassification != null) {
-          dst.additionalClassification = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : additionalClassification)
-            dst.additionalClassification.add(i.copy());
-        };
         if (relatedEntry != null) {
           dst.relatedEntry = new ArrayList<CatalogEntryRelatedEntryComponent>();
           for (CatalogEntryRelatedEntryComponent i : relatedEntry)
             dst.relatedEntry.add(i.copy());
         };
-        return dst;
+        dst.updatedBy = updatedBy == null ? null : updatedBy.copy();
+        if (note != null) {
+          dst.note = new ArrayList<Annotation>();
+          for (Annotation i : note)
+            dst.note.add(i.copy());
+        };
+        dst.estimatedDuration = estimatedDuration == null ? null : estimatedDuration.copy();
+        if (billingCode != null) {
+          dst.billingCode = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : billingCode)
+            dst.billingCode.add(i.copy());
+        };
+        dst.billingSummary = billingSummary == null ? null : billingSummary.copy();
+        dst.scheduleSummary = scheduleSummary == null ? null : scheduleSummary.copy();
+        dst.limitationSummary = limitationSummary == null ? null : limitationSummary.copy();
+        dst.regulatorySummary = regulatorySummary == null ? null : regulatorySummary.copy();
       }
 
       protected CatalogEntry typedCopy() {
@@ -1417,12 +1964,14 @@ public class CatalogEntry extends DomainResource {
         if (!(other_ instanceof CatalogEntry))
           return false;
         CatalogEntry o = (CatalogEntry) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(orderable, o.orderable, true)
-           && compareDeep(referencedItem, o.referencedItem, true) && compareDeep(additionalIdentifier, o.additionalIdentifier, true)
-           && compareDeep(classification, o.classification, true) && compareDeep(status, o.status, true) && compareDeep(validityPeriod, o.validityPeriod, true)
-           && compareDeep(validTo, o.validTo, true) && compareDeep(lastUpdated, o.lastUpdated, true) && compareDeep(additionalCharacteristic, o.additionalCharacteristic, true)
-           && compareDeep(additionalClassification, o.additionalClassification, true) && compareDeep(relatedEntry, o.relatedEntry, true)
-          ;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(type, o.type, true)
+           && compareDeep(status, o.status, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(orderable, o.orderable, true) && compareDeep(referencedItem, o.referencedItem, true)
+           && compareDeep(relatedEntry, o.relatedEntry, true) && compareDeep(updatedBy, o.updatedBy, true)
+           && compareDeep(note, o.note, true) && compareDeep(estimatedDuration, o.estimatedDuration, true)
+           && compareDeep(billingCode, o.billingCode, true) && compareDeep(billingSummary, o.billingSummary, true)
+           && compareDeep(scheduleSummary, o.scheduleSummary, true) && compareDeep(limitationSummary, o.limitationSummary, true)
+           && compareDeep(regulatorySummary, o.regulatorySummary, true);
       }
 
       @Override
@@ -1432,20 +1981,175 @@ public class CatalogEntry extends DomainResource {
         if (!(other_ instanceof CatalogEntry))
           return false;
         CatalogEntry o = (CatalogEntry) other_;
-        return compareValues(orderable, o.orderable, true) && compareValues(status, o.status, true) && compareValues(validTo, o.validTo, true)
-           && compareValues(lastUpdated, o.lastUpdated, true);
+        return compareValues(name, o.name, true) && compareValues(type, o.type, true) && compareValues(status, o.status, true)
+           && compareValues(orderable, o.orderable, true) && compareValues(billingSummary, o.billingSummary, true)
+           && compareValues(scheduleSummary, o.scheduleSummary, true) && compareValues(limitationSummary, o.limitationSummary, true)
+           && compareValues(regulatorySummary, o.regulatorySummary, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, orderable
-          , referencedItem, additionalIdentifier, classification, status, validityPeriod, validTo
-          , lastUpdated, additionalCharacteristic, additionalClassification, relatedEntry);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, type, status
+          , effectivePeriod, orderable, referencedItem, relatedEntry, updatedBy, note, estimatedDuration
+          , billingCode, billingSummary, scheduleSummary, limitationSummary, regulatorySummary
+          );
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.CatalogEntry;
    }
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier of the catalog entry</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="CatalogEntry.identifier", description="Business identifier of the catalog entry", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier of the catalog entry</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>related-entry</b>
+   * <p>
+   * Description: <b>The reference to the related entry</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CatalogEntry.relatedEntry.target</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="related-entry", path="CatalogEntry.relatedEntry.target", description="The reference to the related entry", type="reference", target={CatalogEntry.class } )
+  public static final String SP_RELATED_ENTRY = "related-entry";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>related-entry</b>
+   * <p>
+   * Description: <b>The reference to the related entry</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CatalogEntry.relatedEntry.target</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATED_ENTRY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATED_ENTRY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CatalogEntry:related-entry</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATED_ENTRY = new ca.uhn.fhir.model.api.Include("CatalogEntry:related-entry").toLocked();
+
+ /**
+   * Search parameter: <b>referenced-item</b>
+   * <p>
+   * Description: <b>Item attached to this entry of the catalog</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CatalogEntry.referencedItem</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="referenced-item", path="CatalogEntry.referencedItem", description="Item attached to this entry of the catalog", type="reference", target={ActivityDefinition.class, DeviceDefinition.class, HealthcareService.class, Location.class, MedicationKnowledge.class, ObservationDefinition.class, Organization.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, SpecimenDefinition.class, Substance.class } )
+  public static final String SP_REFERENCED_ITEM = "referenced-item";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>referenced-item</b>
+   * <p>
+   * Description: <b>Item attached to this entry of the catalog</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CatalogEntry.referencedItem</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REFERENCED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REFERENCED_ITEM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CatalogEntry:referenced-item</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REFERENCED_ITEM = new ca.uhn.fhir.model.api.Include("CatalogEntry:referenced-item").toLocked();
+
+ /**
+   * Search parameter: <b>orderable</b>
+   * <p>
+   * Description: <b>Is orderable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.orderable</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="orderable", path="CatalogEntry.orderable", description="Is orderable", type="token" )
+  public static final String SP_ORDERABLE = "orderable";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>orderable</b>
+   * <p>
+   * Description: <b>Is orderable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.orderable</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ORDERABLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ORDERABLE);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>Displayable name assigned to the catalog entry</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CatalogEntry.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="CatalogEntry.name", description="Displayable name assigned to the catalog entry", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>Displayable name assigned to the catalog entry</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CatalogEntry.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="CatalogEntry.type", description="ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Usability status of this entry in the catalog</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="CatalogEntry.status", description="Usability status of this entry in the catalog", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Usability status of this entry in the catalog</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

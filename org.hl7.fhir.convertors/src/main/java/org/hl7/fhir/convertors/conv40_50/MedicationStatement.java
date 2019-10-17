@@ -60,10 +60,10 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 public class MedicationStatement extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.MedicationStatement convertMedicationStatement(org.hl7.fhir.r4.model.MedicationStatement src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.MedicationUsage convertMedicationStatement(org.hl7.fhir.r4.model.MedicationStatement src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.MedicationStatement tgt = new org.hl7.fhir.r5.model.MedicationStatement();
+    org.hl7.fhir.r5.model.MedicationUsage tgt = new org.hl7.fhir.r5.model.MedicationUsage();
     copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
@@ -76,13 +76,13 @@ public class MedicationStatement extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(convertCodeableConcept(t));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.addCategory(convertCodeableConcept(src.getCategory()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
+      tgt.setEncounter(convertReference(src.getContext()));
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasDateAsserted())
@@ -102,7 +102,7 @@ public class MedicationStatement extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.MedicationStatement convertMedicationStatement(org.hl7.fhir.r5.model.MedicationStatement src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.MedicationStatement convertMedicationStatement(org.hl7.fhir.r5.model.MedicationUsage src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationStatement tgt = new org.hl7.fhir.r4.model.MedicationStatement();
@@ -118,13 +118,13 @@ public class MedicationStatement extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(convertCodeableConcept(t));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
+    if (src.hasEncounter())
+      tgt.setContext(convertReference(src.getEncounter()));
     if (src.hasEffective())
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasDateAsserted())
@@ -144,23 +144,23 @@ public class MedicationStatement extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.ACTIVE;
-    case COMPLETED: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR;
-    case INTENDED: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.INTENDED;
-    case STOPPED: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.STOPPED;
-    case ONHOLD: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.ONHOLD;
-    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.UNKNOWN;
-    case NOTTAKEN: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.NOTTAKEN;
-    default: return org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.ACTIVE;
+    case COMPLETED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.ENTEREDINERROR;
+    case INTENDED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.INTENDED;
+    case STOPPED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.STOPPED;
+    case ONHOLD: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.ONHOLD;
+    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.UNKNOWN;
+    case NOTTAKEN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.NOTTAKEN;
+    default: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

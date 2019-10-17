@@ -53,21 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A set of rules of how a particular interoperability or standards problem is solved - typically through the use of FHIR resources. This resource is used to gather all the parts of an implementation guide into a logical whole and to publish a computable definition of all the parts.
  */
@@ -5795,226 +5793,6 @@ public class ImplementationGuide extends MetadataResource {
       }
     }
 
-    public enum GuideParameterCode {
-        /**
-         * If the value of this string 0..* parameter is one of the metadata fields then all conformance resources will have any specified [Resource].[field] overwritten with the ImplementationGuide.[field], where field is one of: version, date, status, publisher, contact, copyright, experimental, jurisdiction, useContext.
-         */
-        APPLY, 
-        /**
-         * The value of this string 0..* parameter is a subfolder of the build context's location that is to be scanned to load resources. Scope is (if present) a particular resource type.
-         */
-        PATHRESOURCE, 
-        /**
-         * The value of this string 0..1 parameter is a subfolder of the build context's location that contains files that are part of the html content processed by the builder.
-         */
-        PATHPAGES, 
-        /**
-         * The value of this string 0..1 parameter is a subfolder of the build context's location that is used as the terminology cache. If this is not present, the terminology cache is on the local system, not under version control.
-         */
-        PATHTXCACHE, 
-        /**
-         * The value of this string 0..* parameter is a parameter (name=value) when expanding value sets for this implementation guide. This is particularly used to specify the versions of published terminologies such as SNOMED CT.
-         */
-        EXPANSIONPARAMETER, 
-        /**
-         * The value of this string 0..1 parameter is either "warning" or "error" (default = "error"). If the value is "warning" then IG build tools allow the IG to be considered successfully build even when there is no internal broken links.
-         */
-        RULEBROKENLINKS, 
-        /**
-         * The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in XML format. If not present, the Publication Tool decides whether to generate XML.
-         */
-        GENERATEXML, 
-        /**
-         * The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in JSON format. If not present, the Publication Tool decides whether to generate JSON.
-         */
-        GENERATEJSON, 
-        /**
-         * The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in Turtle format. If not present, the Publication Tool decides whether to generate Turtle.
-         */
-        GENERATETURTLE, 
-        /**
-         * The value of this string singleton parameter is the name of the file to use as the builder template for each generated page (see templating).
-         */
-        HTMLTEMPLATE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static GuideParameterCode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("apply".equals(codeString))
-          return APPLY;
-        if ("path-resource".equals(codeString))
-          return PATHRESOURCE;
-        if ("path-pages".equals(codeString))
-          return PATHPAGES;
-        if ("path-tx-cache".equals(codeString))
-          return PATHTXCACHE;
-        if ("expansion-parameter".equals(codeString))
-          return EXPANSIONPARAMETER;
-        if ("rule-broken-links".equals(codeString))
-          return RULEBROKENLINKS;
-        if ("generate-xml".equals(codeString))
-          return GENERATEXML;
-        if ("generate-json".equals(codeString))
-          return GENERATEJSON;
-        if ("generate-turtle".equals(codeString))
-          return GENERATETURTLE;
-        if ("html-template".equals(codeString))
-          return HTMLTEMPLATE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown GuideParameterCode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case APPLY: return "apply";
-            case PATHRESOURCE: return "path-resource";
-            case PATHPAGES: return "path-pages";
-            case PATHTXCACHE: return "path-tx-cache";
-            case EXPANSIONPARAMETER: return "expansion-parameter";
-            case RULEBROKENLINKS: return "rule-broken-links";
-            case GENERATEXML: return "generate-xml";
-            case GENERATEJSON: return "generate-json";
-            case GENERATETURTLE: return "generate-turtle";
-            case HTMLTEMPLATE: return "html-template";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case APPLY: return "http://hl7.org/fhir/guide-parameter-code";
-            case PATHRESOURCE: return "http://hl7.org/fhir/guide-parameter-code";
-            case PATHPAGES: return "http://hl7.org/fhir/guide-parameter-code";
-            case PATHTXCACHE: return "http://hl7.org/fhir/guide-parameter-code";
-            case EXPANSIONPARAMETER: return "http://hl7.org/fhir/guide-parameter-code";
-            case RULEBROKENLINKS: return "http://hl7.org/fhir/guide-parameter-code";
-            case GENERATEXML: return "http://hl7.org/fhir/guide-parameter-code";
-            case GENERATEJSON: return "http://hl7.org/fhir/guide-parameter-code";
-            case GENERATETURTLE: return "http://hl7.org/fhir/guide-parameter-code";
-            case HTMLTEMPLATE: return "http://hl7.org/fhir/guide-parameter-code";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case APPLY: return "If the value of this string 0..* parameter is one of the metadata fields then all conformance resources will have any specified [Resource].[field] overwritten with the ImplementationGuide.[field], where field is one of: version, date, status, publisher, contact, copyright, experimental, jurisdiction, useContext.";
-            case PATHRESOURCE: return "The value of this string 0..* parameter is a subfolder of the build context's location that is to be scanned to load resources. Scope is (if present) a particular resource type.";
-            case PATHPAGES: return "The value of this string 0..1 parameter is a subfolder of the build context's location that contains files that are part of the html content processed by the builder.";
-            case PATHTXCACHE: return "The value of this string 0..1 parameter is a subfolder of the build context's location that is used as the terminology cache. If this is not present, the terminology cache is on the local system, not under version control.";
-            case EXPANSIONPARAMETER: return "The value of this string 0..* parameter is a parameter (name=value) when expanding value sets for this implementation guide. This is particularly used to specify the versions of published terminologies such as SNOMED CT.";
-            case RULEBROKENLINKS: return "The value of this string 0..1 parameter is either \"warning\" or \"error\" (default = \"error\"). If the value is \"warning\" then IG build tools allow the IG to be considered successfully build even when there is no internal broken links.";
-            case GENERATEXML: return "The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in XML format. If not present, the Publication Tool decides whether to generate XML.";
-            case GENERATEJSON: return "The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in JSON format. If not present, the Publication Tool decides whether to generate JSON.";
-            case GENERATETURTLE: return "The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in Turtle format. If not present, the Publication Tool decides whether to generate Turtle.";
-            case HTMLTEMPLATE: return "The value of this string singleton parameter is the name of the file to use as the builder template for each generated page (see templating).";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case APPLY: return "Apply Metadata Value";
-            case PATHRESOURCE: return "Resource Path";
-            case PATHPAGES: return "Pages Path";
-            case PATHTXCACHE: return "Terminology Cache Path";
-            case EXPANSIONPARAMETER: return "Expansion Profile";
-            case RULEBROKENLINKS: return "Broken Links Rule";
-            case GENERATEXML: return "Generate XML";
-            case GENERATEJSON: return "Generate JSON";
-            case GENERATETURTLE: return "Generate Turtle";
-            case HTMLTEMPLATE: return "HTML Template";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class GuideParameterCodeEnumFactory implements EnumFactory<GuideParameterCode> {
-    public GuideParameterCode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("apply".equals(codeString))
-          return GuideParameterCode.APPLY;
-        if ("path-resource".equals(codeString))
-          return GuideParameterCode.PATHRESOURCE;
-        if ("path-pages".equals(codeString))
-          return GuideParameterCode.PATHPAGES;
-        if ("path-tx-cache".equals(codeString))
-          return GuideParameterCode.PATHTXCACHE;
-        if ("expansion-parameter".equals(codeString))
-          return GuideParameterCode.EXPANSIONPARAMETER;
-        if ("rule-broken-links".equals(codeString))
-          return GuideParameterCode.RULEBROKENLINKS;
-        if ("generate-xml".equals(codeString))
-          return GuideParameterCode.GENERATEXML;
-        if ("generate-json".equals(codeString))
-          return GuideParameterCode.GENERATEJSON;
-        if ("generate-turtle".equals(codeString))
-          return GuideParameterCode.GENERATETURTLE;
-        if ("html-template".equals(codeString))
-          return GuideParameterCode.HTMLTEMPLATE;
-        throw new IllegalArgumentException("Unknown GuideParameterCode code '"+codeString+"'");
-        }
-        public Enumeration<GuideParameterCode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<GuideParameterCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("apply".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.APPLY);
-        if ("path-resource".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHRESOURCE);
-        if ("path-pages".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHPAGES);
-        if ("path-tx-cache".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHTXCACHE);
-        if ("expansion-parameter".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.EXPANSIONPARAMETER);
-        if ("rule-broken-links".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.RULEBROKENLINKS);
-        if ("generate-xml".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATEXML);
-        if ("generate-json".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATEJSON);
-        if ("generate-turtle".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATETURTLE);
-        if ("html-template".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.HTMLTEMPLATE);
-        throw new FHIRException("Unknown GuideParameterCode code '"+codeString+"'");
-        }
-    public String toCode(GuideParameterCode code) {
-      if (code == GuideParameterCode.APPLY)
-        return "apply";
-      if (code == GuideParameterCode.PATHRESOURCE)
-        return "path-resource";
-      if (code == GuideParameterCode.PATHPAGES)
-        return "path-pages";
-      if (code == GuideParameterCode.PATHTXCACHE)
-        return "path-tx-cache";
-      if (code == GuideParameterCode.EXPANSIONPARAMETER)
-        return "expansion-parameter";
-      if (code == GuideParameterCode.RULEBROKENLINKS)
-        return "rule-broken-links";
-      if (code == GuideParameterCode.GENERATEXML)
-        return "generate-xml";
-      if (code == GuideParameterCode.GENERATEJSON)
-        return "generate-json";
-      if (code == GuideParameterCode.GENERATETURTLE)
-        return "generate-turtle";
-      if (code == GuideParameterCode.HTMLTEMPLATE)
-        return "html-template";
-      return "?";
-      }
-    public String toSystem(GuideParameterCode code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class ImplementationGuideDependsOnComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -6297,10 +6075,14 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDependsOnComponent copy() {
         ImplementationGuideDependsOnComponent dst = new ImplementationGuideDependsOnComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDependsOnComponent dst) {
+        super.copyValues(dst);
         dst.uri = uri == null ? null : uri.copy();
         dst.packageId = packageId == null ? null : packageId.copy();
         dst.version = version == null ? null : version.copy();
-        return dst;
       }
 
       @Override
@@ -6547,9 +6329,13 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideGlobalComponent copy() {
         ImplementationGuideGlobalComponent dst = new ImplementationGuideGlobalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideGlobalComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -6945,7 +6731,7 @@ public class ImplementationGuide extends MetadataResource {
         switch (hash) {
         case 506371331:  return addGrouping(); 
         case -341064690:  return addResource(); 
-        case 3433103:  return getPage(); 
+        case 3433103:  return getPage();
         case 1954460585:  return addParameter(); 
         case -1321546630:  return addTemplate(); 
         default: return super.makeProperty(hash, name);
@@ -6991,6 +6777,11 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDefinitionComponent copy() {
         ImplementationGuideDefinitionComponent dst = new ImplementationGuideDefinitionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDefinitionComponent dst) {
+        super.copyValues(dst);
         if (grouping != null) {
           dst.grouping = new ArrayList<ImplementationGuideDefinitionGroupingComponent>();
           for (ImplementationGuideDefinitionGroupingComponent i : grouping)
@@ -7012,7 +6803,6 @@ public class ImplementationGuide extends MetadataResource {
           for (ImplementationGuideDefinitionTemplateComponent i : template)
             dst.template.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7261,9 +7051,13 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDefinitionGroupingComponent copy() {
         ImplementationGuideDefinitionGroupingComponent dst = new ImplementationGuideDefinitionGroupingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDefinitionGroupingComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -7307,11 +7101,6 @@ public class ImplementationGuide extends MetadataResource {
         protected Reference reference;
 
         /**
-         * The actual object that is the target of the reference (Where this resource is found.)
-         */
-        protected Resource referenceTarget;
-
-        /**
          * Indicates the FHIR Version(s) this artifact is intended to apply to. If no versions are specified, the resource is assumed to apply to all the versions stated in ImplementationGuide.fhirVersion.
          */
         @Child(name = "fhirVersion", type = {CodeType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -7347,7 +7136,7 @@ public class ImplementationGuide extends MetadataResource {
         @Description(shortDefinition="Grouping this is part of", formalDefinition="Reference to the id of the grouping this resource appears in." )
         protected IdType groupingId;
 
-        private static final long serialVersionUID = 1840689093L;
+        private static final long serialVersionUID = 727833977L;
 
     /**
      * Constructor
@@ -7385,21 +7174,6 @@ public class ImplementationGuide extends MetadataResource {
          */
         public ImplementationGuideDefinitionResourceComponent setReference(Reference value) { 
           this.reference = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #reference} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where this resource is found.)
-         */
-        public Resource getReferenceTarget() { 
-          return this.referenceTarget;
-        }
-
-        /**
-         * @param value {@link #reference} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where this resource is found.)
-         */
-        public ImplementationGuideDefinitionResourceComponent setReferenceTarget(Resource value) { 
-          this.referenceTarget = value;
           return this;
         }
 
@@ -7753,12 +7527,12 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -925155509:  return getReference(); 
+        case -925155509:  return getReference();
         case 461006061:  return addFhirVersionElement();
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
-        case -2002328874:  return getExample(); 
-        case -1322970774:  return getExample(); 
+        case -2002328874:  return getExample();
+        case -1322970774:  return getExample();
         case 1291547006:  return getGroupingIdElement();
         default: return super.makeProperty(hash, name);
         }
@@ -7812,6 +7586,11 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDefinitionResourceComponent copy() {
         ImplementationGuideDefinitionResourceComponent dst = new ImplementationGuideDefinitionResourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDefinitionResourceComponent dst) {
+        super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
         if (fhirVersion != null) {
           dst.fhirVersion = new ArrayList<Enumeration<FHIRVersion>>();
@@ -7822,7 +7601,6 @@ public class ImplementationGuide extends MetadataResource {
         dst.description = description == null ? null : description.copy();
         dst.example = example == null ? null : example.copy();
         dst.groupingId = groupingId == null ? null : groupingId.copy();
-        return dst;
       }
 
       @Override
@@ -7858,6 +7636,11 @@ public class ImplementationGuide extends MetadataResource {
 
   }
 
+// added from java-adornments.txt:
+
+
+
+// end addition
   }
 
     @Block()
@@ -8179,8 +7962,8 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1721948693:  return getName(); 
-        case 3373707:  return getName(); 
+        case 1721948693:  return getName();
+        case 3373707:  return getName();
         case 110371416:  return getTitleElement();
         case 305703192:  return getGenerationElement();
         case 3433103:  return addPage(); 
@@ -8227,6 +8010,11 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDefinitionPageComponent copy() {
         ImplementationGuideDefinitionPageComponent dst = new ImplementationGuideDefinitionPageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDefinitionPageComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.generation = generation == null ? null : generation.copy();
@@ -8235,7 +8023,6 @@ public class ImplementationGuide extends MetadataResource {
           for (ImplementationGuideDefinitionPageComponent i : page)
             dst.page.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -8287,7 +8074,7 @@ public class ImplementationGuide extends MetadataResource {
         @Description(shortDefinition="Value for named type", formalDefinition="Value for named type." )
         protected StringType value;
 
-        private static final long serialVersionUID = 1188999138L;
+        private static final long serialVersionUID = -26486942L;
 
     /**
      * Constructor
@@ -8481,9 +8268,13 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDefinitionParameterComponent copy() {
         ImplementationGuideDefinitionParameterComponent dst = new ImplementationGuideDefinitionParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDefinitionParameterComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -8796,10 +8587,14 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideDefinitionTemplateComponent copy() {
         ImplementationGuideDefinitionTemplateComponent dst = new ImplementationGuideDefinitionTemplateComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideDefinitionTemplateComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.source = source == null ? null : source.copy();
         dst.scope = scope == null ? null : scope.copy();
-        return dst;
       }
 
       @Override
@@ -9283,6 +9078,11 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuideManifestComponent copy() {
         ImplementationGuideManifestComponent dst = new ImplementationGuideManifestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuideManifestComponent dst) {
+        super.copyValues(dst);
         dst.rendering = rendering == null ? null : rendering.copy();
         if (resource != null) {
           dst.resource = new ArrayList<ManifestResourceComponent>();
@@ -9304,7 +9104,6 @@ public class ImplementationGuide extends MetadataResource {
           for (StringType i : other)
             dst.other.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -9351,11 +9150,6 @@ public class ImplementationGuide extends MetadataResource {
         protected Reference reference;
 
         /**
-         * The actual object that is the target of the reference (Where this resource is found.)
-         */
-        protected Resource referenceTarget;
-
-        /**
          * If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.
          */
         @Child(name = "example", type = {BooleanType.class, CanonicalType.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -9369,7 +9163,7 @@ public class ImplementationGuide extends MetadataResource {
         @Description(shortDefinition="Relative path for page in IG", formalDefinition="The relative path for primary page for this resource within the IG." )
         protected UrlType relativePath;
 
-        private static final long serialVersionUID = 1150095716L;
+        private static final long serialVersionUID = -1760678864L;
 
     /**
      * Constructor
@@ -9407,21 +9201,6 @@ public class ImplementationGuide extends MetadataResource {
          */
         public ManifestResourceComponent setReference(Reference value) { 
           this.reference = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #reference} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where this resource is found.)
-         */
-        public Resource getReferenceTarget() { 
-          return this.referenceTarget;
-        }
-
-        /**
-         * @param value {@link #reference} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where this resource is found.)
-         */
-        public ManifestResourceComponent setReferenceTarget(Resource value) { 
-          this.referenceTarget = value;
           return this;
         }
 
@@ -9590,9 +9369,9 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -925155509:  return getReference(); 
-        case -2002328874:  return getExample(); 
-        case -1322970774:  return getExample(); 
+        case -925155509:  return getReference();
+        case -2002328874:  return getExample();
+        case -1322970774:  return getExample();
         case -70808303:  return getRelativePathElement();
         default: return super.makeProperty(hash, name);
         }
@@ -9634,10 +9413,14 @@ public class ImplementationGuide extends MetadataResource {
       public ManifestResourceComponent copy() {
         ManifestResourceComponent dst = new ManifestResourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ManifestResourceComponent dst) {
+        super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
         dst.example = example == null ? null : example.copy();
         dst.relativePath = relativePath == null ? null : relativePath.copy();
-        return dst;
       }
 
       @Override
@@ -9671,6 +9454,10 @@ public class ImplementationGuide extends MetadataResource {
 
   }
 
+// added from java-adornments.txt:
+ 
+
+// end addition
   }
 
     @Block()
@@ -9967,6 +9754,11 @@ public class ImplementationGuide extends MetadataResource {
       public ManifestPageComponent copy() {
         ManifestPageComponent dst = new ManifestPageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ManifestPageComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         if (anchor != null) {
@@ -9974,7 +9766,6 @@ public class ImplementationGuide extends MetadataResource {
           for (StringType i : anchor)
             dst.anchor.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -10033,10 +9824,10 @@ public class ImplementationGuide extends MetadataResource {
     protected Enumeration<SPDXLicense> license;
 
     /**
-     * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.
+     * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.
      */
     @Child(name = "fhirVersion", type = {CodeType.class}, order=3, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version." )
+    @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/FHIR-version")
     protected List<Enumeration<FHIRVersion>> fhirVersion;
 
@@ -10816,7 +10607,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     /**
-     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.)
+     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
      */
     public List<Enumeration<FHIRVersion>> getFhirVersion() { 
       if (this.fhirVersion == null)
@@ -10842,7 +10633,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     /**
-     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.)
+     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
      */
     public Enumeration<FHIRVersion> addFhirVersionElement() {//2 
       Enumeration<FHIRVersion> t = new Enumeration<FHIRVersion>(new FHIRVersionEnumFactory());
@@ -10853,7 +10644,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     /**
-     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.)
+     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
      */
     public ImplementationGuide addFhirVersion(FHIRVersion value) { //1
       Enumeration<FHIRVersion> t = new Enumeration<FHIRVersion>(new FHIRVersionEnumFactory());
@@ -10865,7 +10656,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     /**
-     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.)
+     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
      */
     public boolean hasFhirVersion(FHIRVersion value) { 
       if (this.fhirVersion == null)
@@ -11047,7 +10838,7 @@ public class ImplementationGuide extends MetadataResource {
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright));
         children.add(new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId));
         children.add(new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license));
-        children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
+        children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
         children.add(new Property("dependsOn", "", "Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
         children.add(new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to.", 0, java.lang.Integer.MAX_VALUE, global));
         children.add(new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition));
@@ -11072,7 +10863,7 @@ public class ImplementationGuide extends MetadataResource {
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright);
         case 1802060801: /*packageId*/  return new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId);
         case 166757441: /*license*/  return new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license);
-        case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.0.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
+        case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
         case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
         case -1243020381: /*global*/  return new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to.", 0, java.lang.Integer.MAX_VALUE, global);
         case -1014418093: /*definition*/  return new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition);
@@ -11252,8 +11043,8 @@ public class ImplementationGuide extends MetadataResource {
         case 461006061:  return addFhirVersionElement();
         case -1109214266:  return addDependsOn(); 
         case -1243020381:  return addGlobal(); 
-        case -1014418093:  return getDefinition(); 
-        case 130625071:  return getManifest(); 
+        case -1014418093:  return getDefinition();
+        case 130625071:  return getManifest();
         default: return super.makeProperty(hash, name);
         }
 
@@ -11363,6 +11154,11 @@ public class ImplementationGuide extends MetadataResource {
       public ImplementationGuide copy() {
         ImplementationGuide dst = new ImplementationGuide();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImplementationGuide dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -11407,7 +11203,6 @@ public class ImplementationGuide extends MetadataResource {
         };
         dst.definition = definition == null ? null : definition.copy();
         dst.manifest = manifest == null ? null : manifest.copy();
-        return dst;
       }
 
       protected ImplementationGuide typedCopy() {

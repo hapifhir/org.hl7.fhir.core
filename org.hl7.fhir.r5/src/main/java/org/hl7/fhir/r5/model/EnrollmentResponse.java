@@ -53,16 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome;
-import org.hl7.fhir.r5.model.Enumerations.RemittanceOutcomeEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource provides enrollment and plan details from the processing of an EnrollmentRequest resource.
  */
@@ -216,11 +219,6 @@ public class EnrollmentResponse extends DomainResource {
     protected Reference request;
 
     /**
-     * The actual object that is the target of the reference (Original request resource reference.)
-     */
-    protected EnrollmentRequest requestTarget;
-
-    /**
      * Processing status: error, complete.
      */
     @Child(name = "outcome", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
@@ -250,23 +248,13 @@ public class EnrollmentResponse extends DomainResource {
     protected Reference organization;
 
     /**
-     * The actual object that is the target of the reference (The Insurer who produced this adjudicated response.)
-     */
-    protected Organization organizationTarget;
-
-    /**
      * The practitioner who is responsible for the services rendered to the patient.
      */
     @Child(name = "requestProvider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference requestProvider;
 
-    /**
-     * The actual object that is the target of the reference (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    protected Resource requestProviderTarget;
-
-    private static final long serialVersionUID = -1759921458L;
+    private static final long serialVersionUID = -385777247L;
 
   /**
    * Constructor
@@ -398,26 +386,6 @@ public class EnrollmentResponse extends DomainResource {
      */
     public EnrollmentResponse setRequest(Reference value) { 
       this.request = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #request} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
-     */
-    public EnrollmentRequest getRequestTarget() { 
-      if (this.requestTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EnrollmentResponse.request");
-        else if (Configuration.doAutoCreate())
-          this.requestTarget = new EnrollmentRequest(); // aa
-      return this.requestTarget;
-    }
-
-    /**
-     * @param value {@link #request} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
-     */
-    public EnrollmentResponse setRequestTarget(EnrollmentRequest value) { 
-      this.requestTarget = value;
       return this;
     }
 
@@ -593,26 +561,6 @@ public class EnrollmentResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #organization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Insurer who produced this adjudicated response.)
-     */
-    public Organization getOrganizationTarget() { 
-      if (this.organizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EnrollmentResponse.organization");
-        else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization(); // aa
-      return this.organizationTarget;
-    }
-
-    /**
-     * @param value {@link #organization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Insurer who produced this adjudicated response.)
-     */
-    public EnrollmentResponse setOrganizationTarget(Organization value) { 
-      this.organizationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #requestProvider} (The practitioner who is responsible for the services rendered to the patient.)
      */
     public Reference getRequestProvider() { 
@@ -633,21 +581,6 @@ public class EnrollmentResponse extends DomainResource {
      */
     public EnrollmentResponse setRequestProvider(Reference value) { 
       this.requestProvider = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #requestProvider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    public Resource getRequestProviderTarget() { 
-      return this.requestProviderTarget;
-    }
-
-    /**
-     * @param value {@link #requestProvider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    public EnrollmentResponse setRequestProviderTarget(Resource value) { 
-      this.requestProviderTarget = value;
       return this;
     }
 
@@ -759,12 +692,12 @@ public class EnrollmentResponse extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 1095692943:  return getRequest(); 
+        case 1095692943:  return getRequest();
         case -1106507950:  return getOutcomeElement();
         case 583380919:  return getDispositionElement();
         case 1028554472:  return getCreatedElement();
-        case 1178922291:  return getOrganization(); 
-        case 1601527200:  return getRequestProvider(); 
+        case 1178922291:  return getOrganization();
+        case 1601527200:  return getRequestProvider();
         default: return super.makeProperty(hash, name);
         }
 
@@ -827,6 +760,11 @@ public class EnrollmentResponse extends DomainResource {
       public EnrollmentResponse copy() {
         EnrollmentResponse dst = new EnrollmentResponse();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EnrollmentResponse dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -839,7 +777,6 @@ public class EnrollmentResponse extends DomainResource {
         dst.created = created == null ? null : created.copy();
         dst.organization = organization == null ? null : organization.copy();
         dst.requestProvider = requestProvider == null ? null : requestProvider.copy();
-        return dst;
       }
 
       protected EnrollmentResponse typedCopy() {

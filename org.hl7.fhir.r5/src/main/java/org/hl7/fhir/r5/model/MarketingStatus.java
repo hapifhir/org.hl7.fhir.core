@@ -50,15 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.
  */
@@ -342,10 +345,10 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 957831062:  return getCountry(); 
-        case -507075711:  return getJurisdiction(); 
-        case -892481550:  return getStatus(); 
-        case -261425617:  return getDateRange(); 
+        case 957831062:  return getCountry();
+        case -507075711:  return getJurisdiction();
+        case -892481550:  return getStatus();
+        case -261425617:  return getDateRange();
         case 329465692:  return getRestoreDateElement();
         default: return super.makeProperty(hash, name);
         }
@@ -398,12 +401,16 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
       public MarketingStatus copy() {
         MarketingStatus dst = new MarketingStatus();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MarketingStatus dst) {
+        super.copyValues(dst);
         dst.country = country == null ? null : country.copy();
         dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
         dst.status = status == null ? null : status.copy();
         dst.dateRange = dateRange == null ? null : dateRange.copy();
         dst.restoreDate = restoreDate == null ? null : restoreDate.copy();
-        return dst;
       }
 
       protected MarketingStatus typedCopy() {

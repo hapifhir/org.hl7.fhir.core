@@ -50,16 +50,21 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.INarrative;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+import org.hl7.fhir.instance.model.api.INarrative;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A human-readable summary of the resource conveying the essential clinical and business information for the resource.
  */
@@ -276,7 +281,7 @@ public class Narrative extends BaseNarrative implements INarrative {
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Narrative.div");
         else if (Configuration.doAutoCreate())
-          this.div = new XhtmlNode(NodeType.Element, "div"); // cc 
+          this.div = new XhtmlNode(NodeType.Element, "div"); // cc.1
       return this.div;
     }
 
@@ -383,9 +388,13 @@ public class Narrative extends BaseNarrative implements INarrative {
       public Narrative copy() {
         Narrative dst = new Narrative();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Narrative dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         dst.div = div == null ? null : div.copy();
-        return dst;
       }
 
       protected Narrative typedCopy() {

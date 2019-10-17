@@ -51,17 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle.
  */
@@ -193,11 +197,6 @@ public class MessageHeader extends DomainResource {
         protected Reference target;
 
         /**
-         * The actual object that is the target of the reference (Identifies the target end system in situations where the initial message transmission is to an intermediary system.)
-         */
-        protected Device targetTarget;
-
-        /**
          * Indicates where the message should be routed to.
          */
         @Child(name = "endpoint", type = {UrlType.class}, order=3, min=1, max=1, modifier=false, summary=true)
@@ -211,12 +210,7 @@ public class MessageHeader extends DomainResource {
         @Description(shortDefinition="Intended \"real-world\" recipient for the data", formalDefinition="Allows data conveyed by a message to be addressed to a particular person or department when routing to a specific application isn't sufficient." )
         protected Reference receiver;
 
-        /**
-         * The actual object that is the target of the reference (Allows data conveyed by a message to be addressed to a particular person or department when routing to a specific application isn't sufficient.)
-         */
-        protected Resource receiverTarget;
-
-        private static final long serialVersionUID = 611064500L;
+        private static final long serialVersionUID = -686949282L;
 
     /**
      * Constructor
@@ -307,26 +301,6 @@ public class MessageHeader extends DomainResource {
         }
 
         /**
-         * @return {@link #target} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the target end system in situations where the initial message transmission is to an intermediary system.)
-         */
-        public Device getTargetTarget() { 
-          if (this.targetTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MessageDestinationComponent.target");
-            else if (Configuration.doAutoCreate())
-              this.targetTarget = new Device(); // aa
-          return this.targetTarget;
-        }
-
-        /**
-         * @param value {@link #target} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the target end system in situations where the initial message transmission is to an intermediary system.)
-         */
-        public MessageDestinationComponent setTargetTarget(Device value) { 
-          this.targetTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #endpoint} (Indicates where the message should be routed to.). This is the underlying object with id, value and extensions. The accessor "getEndpoint" gives direct access to the value
          */
         public UrlType getEndpointElement() { 
@@ -392,21 +366,6 @@ public class MessageHeader extends DomainResource {
          */
         public MessageDestinationComponent setReceiver(Reference value) { 
           this.receiver = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #receiver} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Allows data conveyed by a message to be addressed to a particular person or department when routing to a specific application isn't sufficient.)
-         */
-        public Resource getReceiverTarget() { 
-          return this.receiverTarget;
-        }
-
-        /**
-         * @param value {@link #receiver} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Allows data conveyed by a message to be addressed to a particular person or department when routing to a specific application isn't sufficient.)
-         */
-        public MessageDestinationComponent setReceiverTarget(Resource value) { 
-          this.receiverTarget = value;
           return this;
         }
 
@@ -481,9 +440,9 @@ public class MessageHeader extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case -880905839:  return getTarget(); 
+        case -880905839:  return getTarget();
         case 1741102485:  return getEndpointElement();
-        case -808719889:  return getReceiver(); 
+        case -808719889:  return getReceiver();
         default: return super.makeProperty(hash, name);
         }
 
@@ -524,11 +483,15 @@ public class MessageHeader extends DomainResource {
       public MessageDestinationComponent copy() {
         MessageDestinationComponent dst = new MessageDestinationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDestinationComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.target = target == null ? null : target.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
         dst.receiver = receiver == null ? null : receiver.copy();
-        return dst;
       }
 
       @Override
@@ -915,7 +878,7 @@ public class MessageHeader extends DomainResource {
         case 3373707:  return getNameElement();
         case 1319330215:  return getSoftwareElement();
         case 351608024:  return getVersionElement();
-        case 951526432:  return getContact(); 
+        case 951526432:  return getContact();
         case 1741102485:  return getEndpointElement();
         default: return super.makeProperty(hash, name);
         }
@@ -960,12 +923,16 @@ public class MessageHeader extends DomainResource {
       public MessageSourceComponent copy() {
         MessageSourceComponent dst = new MessageSourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageSourceComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.software = software == null ? null : software.copy();
         dst.version = version == null ? null : version.copy();
         dst.contact = contact == null ? null : contact.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
-        return dst;
       }
 
       @Override
@@ -1026,12 +993,7 @@ public class MessageHeader extends DomainResource {
         @Description(shortDefinition="Specific list of hints/warnings/errors", formalDefinition="Full details of any issues found in the message." )
         protected Reference details;
 
-        /**
-         * The actual object that is the target of the reference (Full details of any issues found in the message.)
-         */
-        protected OperationOutcome detailsTarget;
-
-        private static final long serialVersionUID = -1008716838L;
+        private static final long serialVersionUID = 399636654L;
 
     /**
      * Constructor
@@ -1163,26 +1125,6 @@ public class MessageHeader extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #details} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Full details of any issues found in the message.)
-         */
-        public OperationOutcome getDetailsTarget() { 
-          if (this.detailsTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MessageHeaderResponseComponent.details");
-            else if (Configuration.doAutoCreate())
-              this.detailsTarget = new OperationOutcome(); // aa
-          return this.detailsTarget;
-        }
-
-        /**
-         * @param value {@link #details} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Full details of any issues found in the message.)
-         */
-        public MessageHeaderResponseComponent setDetailsTarget(OperationOutcome value) { 
-          this.detailsTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("identifier", "id", "The MessageHeader.id of the message to which this message is a response.", 0, 1, identifier));
@@ -1249,7 +1191,7 @@ public class MessageHeader extends DomainResource {
         switch (hash) {
         case -1618432855:  return getIdentifierElement();
         case 3059181:  return getCodeElement();
-        case 1557721666:  return getDetails(); 
+        case 1557721666:  return getDetails();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1285,10 +1227,14 @@ public class MessageHeader extends DomainResource {
       public MessageHeaderResponseComponent copy() {
         MessageHeaderResponseComponent dst = new MessageHeaderResponseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageHeaderResponseComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.code = code == null ? null : code.copy();
         dst.details = details == null ? null : details.copy();
-        return dst;
       }
 
       @Override
@@ -1347,11 +1293,6 @@ public class MessageHeader extends DomainResource {
     protected Reference sender;
 
     /**
-     * The actual object that is the target of the reference (Identifies the sending system to allow the use of a trust relationship.)
-     */
-    protected Resource senderTarget;
-
-    /**
      * The person or device that performed the data entry leading to this message. When there is more than one candidate, pick the most proximal to the message. Can provide other enterers in extensions.
      */
     @Child(name = "enterer", type = {Practitioner.class, PractitionerRole.class}, order=3, min=0, max=1, modifier=false, summary=true)
@@ -1359,21 +1300,11 @@ public class MessageHeader extends DomainResource {
     protected Reference enterer;
 
     /**
-     * The actual object that is the target of the reference (The person or device that performed the data entry leading to this message. When there is more than one candidate, pick the most proximal to the message. Can provide other enterers in extensions.)
-     */
-    protected Resource entererTarget;
-
-    /**
      * The logical author of the message - the person or device that decided the described event should happen. When there is more than one candidate, pick the most proximal to the MessageHeader. Can provide other authors in extensions.
      */
     @Child(name = "author", type = {Practitioner.class, PractitionerRole.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The source of the decision", formalDefinition="The logical author of the message - the person or device that decided the described event should happen. When there is more than one candidate, pick the most proximal to the MessageHeader. Can provide other authors in extensions." )
     protected Reference author;
-
-    /**
-     * The actual object that is the target of the reference (The logical author of the message - the person or device that decided the described event should happen. When there is more than one candidate, pick the most proximal to the MessageHeader. Can provide other authors in extensions.)
-     */
-    protected Resource authorTarget;
 
     /**
      * The source application from which this message originated.
@@ -1388,11 +1319,6 @@ public class MessageHeader extends DomainResource {
     @Child(name = "responsible", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Final responsibility for event", formalDefinition="The person or organization that accepts overall responsibility for the contents of the message. The implication is that the message event happened under the policies of the responsible party." )
     protected Reference responsible;
-
-    /**
-     * The actual object that is the target of the reference (The person or organization that accepts overall responsibility for the contents of the message. The implication is that the message event happened under the policies of the responsible party.)
-     */
-    protected Resource responsibleTarget;
 
     /**
      * Coded indication of the cause for the event - indicates  a reason for the occurrence of the event that is a focus of this message.
@@ -1415,11 +1341,6 @@ public class MessageHeader extends DomainResource {
     @Child(name = "focus", type = {Reference.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The actual content of the message", formalDefinition="The actual data of the message - a reference to the root/focus class of the event." )
     protected List<Reference> focus;
-    /**
-     * The actual objects that are the target of the reference (The actual data of the message - a reference to the root/focus class of the event.)
-     */
-    protected List<Resource> focusTarget;
-
 
     /**
      * Permanent link to the MessageDefinition for this message.
@@ -1428,7 +1349,7 @@ public class MessageHeader extends DomainResource {
     @Description(shortDefinition="Link to the definition for this message", formalDefinition="Permanent link to the MessageDefinition for this message." )
     protected CanonicalType definition;
 
-    private static final long serialVersionUID = -1039408819L;
+    private static final long serialVersionUID = 611254423L;
 
   /**
    * Constructor
@@ -1575,21 +1496,6 @@ public class MessageHeader extends DomainResource {
     }
 
     /**
-     * @return {@link #sender} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the sending system to allow the use of a trust relationship.)
-     */
-    public Resource getSenderTarget() { 
-      return this.senderTarget;
-    }
-
-    /**
-     * @param value {@link #sender} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the sending system to allow the use of a trust relationship.)
-     */
-    public MessageHeader setSenderTarget(Resource value) { 
-      this.senderTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #enterer} (The person or device that performed the data entry leading to this message. When there is more than one candidate, pick the most proximal to the message. Can provide other enterers in extensions.)
      */
     public Reference getEnterer() { 
@@ -1614,21 +1520,6 @@ public class MessageHeader extends DomainResource {
     }
 
     /**
-     * @return {@link #enterer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person or device that performed the data entry leading to this message. When there is more than one candidate, pick the most proximal to the message. Can provide other enterers in extensions.)
-     */
-    public Resource getEntererTarget() { 
-      return this.entererTarget;
-    }
-
-    /**
-     * @param value {@link #enterer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person or device that performed the data entry leading to this message. When there is more than one candidate, pick the most proximal to the message. Can provide other enterers in extensions.)
-     */
-    public MessageHeader setEntererTarget(Resource value) { 
-      this.entererTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #author} (The logical author of the message - the person or device that decided the described event should happen. When there is more than one candidate, pick the most proximal to the MessageHeader. Can provide other authors in extensions.)
      */
     public Reference getAuthor() { 
@@ -1649,21 +1540,6 @@ public class MessageHeader extends DomainResource {
      */
     public MessageHeader setAuthor(Reference value) { 
       this.author = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The logical author of the message - the person or device that decided the described event should happen. When there is more than one candidate, pick the most proximal to the MessageHeader. Can provide other authors in extensions.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The logical author of the message - the person or device that decided the described event should happen. When there is more than one candidate, pick the most proximal to the MessageHeader. Can provide other authors in extensions.)
-     */
-    public MessageHeader setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
       return this;
     }
 
@@ -1712,21 +1588,6 @@ public class MessageHeader extends DomainResource {
      */
     public MessageHeader setResponsible(Reference value) { 
       this.responsible = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #responsible} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person or organization that accepts overall responsibility for the contents of the message. The implication is that the message event happened under the policies of the responsible party.)
-     */
-    public Resource getResponsibleTarget() { 
-      return this.responsibleTarget;
-    }
-
-    /**
-     * @param value {@link #responsible} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person or organization that accepts overall responsibility for the contents of the message. The implication is that the message event happened under the policies of the responsible party.)
-     */
-    public MessageHeader setResponsibleTarget(Resource value) { 
-      this.responsibleTarget = value;
       return this;
     }
 
@@ -1829,16 +1690,6 @@ public class MessageHeader extends DomainResource {
         addFocus();
       }
       return getFocus().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getFocusTarget() { 
-      if (this.focusTarget == null)
-        this.focusTarget = new ArrayList<Resource>();
-      return this.focusTarget;
     }
 
     /**
@@ -2019,16 +1870,16 @@ public class MessageHeader extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 278115238:  return getEvent(); 
-        case 96891546:  return getEvent(); 
+        case 278115238:  return getEvent();
+        case 96891546:  return getEvent();
         case -1429847026:  return addDestination(); 
-        case -905962955:  return getSender(); 
-        case -1591951995:  return getEnterer(); 
-        case -1406328437:  return getAuthor(); 
-        case -896505829:  return getSource(); 
-        case 1847674614:  return getResponsible(); 
-        case -934964668:  return getReason(); 
-        case -340323263:  return getResponse(); 
+        case -905962955:  return getSender();
+        case -1591951995:  return getEnterer();
+        case -1406328437:  return getAuthor();
+        case -896505829:  return getSource();
+        case 1847674614:  return getResponsible();
+        case -934964668:  return getReason();
+        case -340323263:  return getResponse();
         case 97604824:  return addFocus(); 
         case -1014418093:  return getDefinitionElement();
         default: return super.makeProperty(hash, name);
@@ -2114,6 +1965,11 @@ public class MessageHeader extends DomainResource {
       public MessageHeader copy() {
         MessageHeader dst = new MessageHeader();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageHeader dst) {
+        super.copyValues(dst);
         dst.event = event == null ? null : event.copy();
         if (destination != null) {
           dst.destination = new ArrayList<MessageDestinationComponent>();
@@ -2133,7 +1989,6 @@ public class MessageHeader extends DomainResource {
             dst.focus.add(i.copy());
         };
         dst.definition = definition == null ? null : definition.copy();
-        return dst;
       }
 
       protected MessageHeader typedCopy() {

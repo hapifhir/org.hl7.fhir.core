@@ -53,21 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
-import org.hl7.fhir.r5.model.Enumerations.SearchParamTypeEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A search parameter that defines a named search item that can be used to search/filter on a resource.
  */
@@ -881,9 +879,13 @@ public class SearchParameter extends MetadataResource {
       public SearchParameterComponentComponent copy() {
         SearchParameterComponentComponent dst = new SearchParameterComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SearchParameterComponentComponent dst) {
+        super.copyValues(dst);
         dst.definition = definition == null ? null : definition.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -2778,6 +2780,11 @@ public class SearchParameter extends MetadataResource {
       public SearchParameter copy() {
         SearchParameter dst = new SearchParameter();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SearchParameter dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -2840,7 +2847,6 @@ public class SearchParameter extends MetadataResource {
           for (SearchParameterComponentComponent i : component)
             dst.component.add(i.copy());
         };
-        return dst;
       }
 
       protected SearchParameter typedCopy() {

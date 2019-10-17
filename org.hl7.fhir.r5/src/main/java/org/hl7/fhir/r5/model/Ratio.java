@@ -50,14 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A relationship of two Quantity values - expressed as a numerator and a denominator.
  */
@@ -189,8 +193,8 @@ public class Ratio extends Type implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1747334793:  return getNumerator(); 
-        case -1983274394:  return getDenominator(); 
+        case 1747334793:  return getNumerator();
+        case -1983274394:  return getDenominator();
         default: return super.makeProperty(hash, name);
         }
 
@@ -228,9 +232,13 @@ public class Ratio extends Type implements ICompositeType {
       public Ratio copy() {
         Ratio dst = new Ratio();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Ratio dst) {
+        super.copyValues(dst);
         dst.numerator = numerator == null ? null : numerator.copy();
         dst.denominator = denominator == null ? null : denominator.copy();
-        return dst;
       }
 
       protected Ratio typedCopy() {

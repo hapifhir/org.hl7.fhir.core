@@ -53,14 +53,17 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A signature along with supporting context. The signature may be a digital signature that is cryptographic in nature, or some other signature acceptable to the domain. This other signature may be as simple as a graphical image representing a hand-written signature, or a signature ceremony Different signature approaches have different utilities.
  */
@@ -90,21 +93,11 @@ public class Signature extends Type implements ICompositeType {
     protected Reference who;
 
     /**
-     * The actual object that is the target of the reference (A reference to an application-usable description of the identity that signed  (e.g. the signature used their private key).)
-     */
-    protected Resource whoTarget;
-
-    /**
      * A reference to an application-usable description of the identity that is represented by the signature.
      */
     @Child(name = "onBehalfOf", type = {Practitioner.class, PractitionerRole.class, RelatedPerson.class, Patient.class, Device.class, Organization.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The party represented", formalDefinition="A reference to an application-usable description of the identity that is represented by the signature." )
     protected Reference onBehalfOf;
-
-    /**
-     * The actual object that is the target of the reference (A reference to an application-usable description of the identity that is represented by the signature.)
-     */
-    protected Resource onBehalfOfTarget;
 
     /**
      * A mime type that indicates the technical format of the target resources signed by the signature.
@@ -129,7 +122,7 @@ public class Signature extends Type implements ICompositeType {
     @Description(shortDefinition="The actual signature content (XML DigSig. JWS, picture, etc.)", formalDefinition="The base64 encoding of the Signature content. When signature is not recorded electronically this element would be empty." )
     protected Base64BinaryType data;
 
-    private static final long serialVersionUID = 1587325823L;
+    private static final long serialVersionUID = -986223243L;
 
   /**
    * Constructor
@@ -270,21 +263,6 @@ public class Signature extends Type implements ICompositeType {
     }
 
     /**
-     * @return {@link #who} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to an application-usable description of the identity that signed  (e.g. the signature used their private key).)
-     */
-    public Resource getWhoTarget() { 
-      return this.whoTarget;
-    }
-
-    /**
-     * @param value {@link #who} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to an application-usable description of the identity that signed  (e.g. the signature used their private key).)
-     */
-    public Signature setWhoTarget(Resource value) { 
-      this.whoTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #onBehalfOf} (A reference to an application-usable description of the identity that is represented by the signature.)
      */
     public Reference getOnBehalfOf() { 
@@ -305,21 +283,6 @@ public class Signature extends Type implements ICompositeType {
      */
     public Signature setOnBehalfOf(Reference value) { 
       this.onBehalfOf = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to an application-usable description of the identity that is represented by the signature.)
-     */
-    public Resource getOnBehalfOfTarget() { 
-      return this.onBehalfOfTarget;
-    }
-
-    /**
-     * @param value {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to an application-usable description of the identity that is represented by the signature.)
-     */
-    public Signature setOnBehalfOfTarget(Resource value) { 
-      this.onBehalfOfTarget = value;
       return this;
     }
 
@@ -566,8 +529,8 @@ public class Signature extends Type implements ICompositeType {
         switch (hash) {
         case 3575610:  return addType(); 
         case 3648314:  return getWhenElement();
-        case 117694:  return getWho(); 
-        case -14402964:  return getOnBehalfOf(); 
+        case 117694:  return getWho();
+        case -14402964:  return getOnBehalfOf();
         case -917363480:  return getTargetFormatElement();
         case -58720216:  return getSigFormatElement();
         case 3076010:  return getDataElement();
@@ -628,6 +591,11 @@ public class Signature extends Type implements ICompositeType {
       public Signature copy() {
         Signature dst = new Signature();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Signature dst) {
+        super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<Coding>();
           for (Coding i : type)
@@ -639,7 +607,6 @@ public class Signature extends Type implements ICompositeType {
         dst.targetFormat = targetFormat == null ? null : targetFormat.copy();
         dst.sigFormat = sigFormat == null ? null : sigFormat.copy();
         dst.data = data == null ? null : data.copy();
-        return dst;
       }
 
       protected Signature typedCopy() {

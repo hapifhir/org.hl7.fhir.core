@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -58,41 +57,17 @@ import org.hl7.fhir.exceptions.FHIRException;
 public enum ExRevenueCenter {
 
         /**
-         * Anaesthesia.
-         */
-        _0370, 
-        /**
-         * Physical Therapy.
-         */
-        _0420, 
-        /**
-         * Physical Therapy - visit charge.
-         */
-        _0421, 
-        /**
-         * Speech-Language Pathology.
-         */
-        _0440, 
-        /**
-         * Speech-Language Pathology- visit charge
-         */
-        _0441, 
-        /**
-         * Emergency Room
-         */
-        _0450, 
-        /**
-         * Emergency Room - EM/EMTALA
-         */
-        _0451, 
-        /**
-         * Emergency Room - beyond EMTALA
-         */
-        _0452, 
-        /**
-         * Vision Clinic
+         * Vision Office or Clinic.
          */
         _0010, 
+        /**
+         * Dental Office or Clinic.
+         */
+        _0011, 
+        /**
+         * Emergency Department.
+         */
+        _1001, 
         /**
          * added to help the parsers
          */
@@ -100,37 +75,19 @@ public enum ExRevenueCenter {
         public static ExRevenueCenter fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("0370".equals(codeString))
-          return _0370;
-        if ("0420".equals(codeString))
-          return _0420;
-        if ("0421".equals(codeString))
-          return _0421;
-        if ("0440".equals(codeString))
-          return _0440;
-        if ("0441".equals(codeString))
-          return _0441;
-        if ("0450".equals(codeString))
-          return _0450;
-        if ("0451".equals(codeString))
-          return _0451;
-        if ("0452".equals(codeString))
-          return _0452;
         if ("0010".equals(codeString))
           return _0010;
+        if ("0011".equals(codeString))
+          return _0011;
+        if ("1001".equals(codeString))
+          return _1001;
         throw new FHIRException("Unknown ExRevenueCenter code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case _0370: return "0370";
-            case _0420: return "0420";
-            case _0421: return "0421";
-            case _0440: return "0440";
-            case _0441: return "0441";
-            case _0450: return "0450";
-            case _0451: return "0451";
-            case _0452: return "0452";
             case _0010: return "0010";
+            case _0011: return "0011";
+            case _1001: return "1001";
             default: return "?";
           }
         }
@@ -139,29 +96,17 @@ public enum ExRevenueCenter {
         }
         public String getDefinition() {
           switch (this) {
-            case _0370: return "Anaesthesia.";
-            case _0420: return "Physical Therapy.";
-            case _0421: return "Physical Therapy - visit charge.";
-            case _0440: return "Speech-Language Pathology.";
-            case _0441: return "Speech-Language Pathology- visit charge";
-            case _0450: return "Emergency Room";
-            case _0451: return "Emergency Room - EM/EMTALA";
-            case _0452: return "Emergency Room - beyond EMTALA";
-            case _0010: return "Vision Clinic";
+            case _0010: return "Vision Office or Clinic.";
+            case _0011: return "Dental Office or Clinic.";
+            case _1001: return "Emergency Department.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case _0370: return "Anaesthesia";
-            case _0420: return "Physical Therapy";
-            case _0421: return "Physical Therapy - ";
-            case _0440: return "Speech-Language Pathology";
-            case _0441: return "Speech-Language Pathology - Visit";
-            case _0450: return "Emergency Room";
-            case _0451: return "Emergency Room - EM/EMTALA";
-            case _0452: return "Emergency Room - beyond EMTALA";
             case _0010: return "Vision Clinic";
+            case _0011: return "Dental Clinic";
+            case _1001: return "Emergency";
             default: return "?";
           }
     }

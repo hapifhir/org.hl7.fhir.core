@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Source material shall capture information on the taxonomic and anatomical origins as well as the fraction of a material that can result in or can be modified to form a substance. This set of data elements shall be used to define polymer substances isolated from biological matrices. Taxonomic and anatomical origins shall be described using a controlled vocabulary as required. This information is captured for naturally derived polymers ( . starch) and structurally diverse substances. For Organisms belonging to the Kingdom Plantae the Substance level defines the fresh material of a single species or infraspecies, the Herbal Drug and the Herbal preparation. For Herbal preparations, the fraction information will be captured at the Substance information level and additional information for herbal extracts will be captured at the Specified Substance Group 1 information level. See for further explanation the Substance Class: Structurally Diverse and the herbal annex.
  */
@@ -220,7 +224,7 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1653751294:  return getFractionElement();
-        case -2115601151:  return getMaterialType(); 
+        case -2115601151:  return getMaterialType();
         default: return super.makeProperty(hash, name);
         }
 
@@ -252,9 +256,13 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterialFractionDescriptionComponent copy() {
         SubstanceSourceMaterialFractionDescriptionComponent dst = new SubstanceSourceMaterialFractionDescriptionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterialFractionDescriptionComponent dst) {
+        super.copyValues(dst);
         dst.fraction = fraction == null ? null : fraction.copy();
         dst.materialType = materialType == null ? null : materialType.copy();
-        return dst;
       }
 
       @Override
@@ -704,14 +712,14 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1281860764:  return getFamily(); 
-        case 98241006:  return getGenus(); 
-        case -2008465092:  return getSpecies(); 
-        case 1717161194:  return getIntraspecificType(); 
+        case -1281860764:  return getFamily();
+        case 98241006:  return getGenus();
+        case -2008465092:  return getSpecies();
+        case 1717161194:  return getIntraspecificType();
         case -1473085364:  return getIntraspecificDescriptionElement();
         case -1406328437:  return addAuthor(); 
-        case -1202757124:  return getHybrid(); 
-        case -865996874:  return getOrganismGeneral(); 
+        case -1202757124:  return getHybrid();
+        case -865996874:  return getOrganismGeneral();
         default: return super.makeProperty(hash, name);
         }
 
@@ -772,6 +780,11 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterialOrganismComponent copy() {
         SubstanceSourceMaterialOrganismComponent dst = new SubstanceSourceMaterialOrganismComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterialOrganismComponent dst) {
+        super.copyValues(dst);
         dst.family = family == null ? null : family.copy();
         dst.genus = genus == null ? null : genus.copy();
         dst.species = species == null ? null : species.copy();
@@ -784,7 +797,6 @@ public class SubstanceSourceMaterial extends DomainResource {
         };
         dst.hybrid = hybrid == null ? null : hybrid.copy();
         dst.organismGeneral = organismGeneral == null ? null : organismGeneral.copy();
-        return dst;
       }
 
       @Override
@@ -974,7 +986,7 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1501337755:  return getAuthorType(); 
+        case -1501337755:  return getAuthorType();
         case -166185615:  return getAuthorDescriptionElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1007,9 +1019,13 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterialOrganismAuthorComponent copy() {
         SubstanceSourceMaterialOrganismAuthorComponent dst = new SubstanceSourceMaterialOrganismAuthorComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterialOrganismAuthorComponent dst) {
+        super.copyValues(dst);
         dst.authorType = authorType == null ? null : authorType.copy();
         dst.authorDescription = authorDescription == null ? null : authorDescription.copy();
-        return dst;
       }
 
       @Override
@@ -1393,7 +1409,7 @@ public class SubstanceSourceMaterial extends DomainResource {
         case -86441847:  return getMaternalOrganismNameElement();
         case 123773174:  return getPaternalOrganismIdElement();
         case -1312914522:  return getPaternalOrganismNameElement();
-        case 1572734806:  return getHybridType(); 
+        case 1572734806:  return getHybridType();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1437,12 +1453,16 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterialOrganismHybridComponent copy() {
         SubstanceSourceMaterialOrganismHybridComponent dst = new SubstanceSourceMaterialOrganismHybridComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterialOrganismHybridComponent dst) {
+        super.copyValues(dst);
         dst.maternalOrganismId = maternalOrganismId == null ? null : maternalOrganismId.copy();
         dst.maternalOrganismName = maternalOrganismName == null ? null : maternalOrganismName.copy();
         dst.paternalOrganismId = paternalOrganismId == null ? null : paternalOrganismId.copy();
         dst.paternalOrganismName = paternalOrganismName == null ? null : paternalOrganismName.copy();
         dst.hybridType = hybridType == null ? null : hybridType.copy();
-        return dst;
       }
 
       @Override
@@ -1686,10 +1706,10 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -710537653:  return getKingdom(); 
-        case -988743965:  return getPhylum(); 
-        case 94742904:  return getClass_(); 
-        case 106006350:  return getOrder(); 
+        case -710537653:  return getKingdom();
+        case -988743965:  return getPhylum();
+        case 94742904:  return getClass_();
+        case 106006350:  return getOrder();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1732,11 +1752,15 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterialOrganismOrganismGeneralComponent copy() {
         SubstanceSourceMaterialOrganismOrganismGeneralComponent dst = new SubstanceSourceMaterialOrganismOrganismGeneralComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterialOrganismOrganismGeneralComponent dst) {
+        super.copyValues(dst);
         dst.kingdom = kingdom == null ? null : kingdom.copy();
         dst.phylum = phylum == null ? null : phylum.copy();
         dst.class_ = class_ == null ? null : class_.copy();
         dst.order = order == null ? null : order.copy();
-        return dst;
       }
 
       @Override
@@ -1899,8 +1923,8 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3433459:  return getPart(); 
-        case 893437128:  return getPartLocation(); 
+        case 3433459:  return getPart();
+        case 893437128:  return getPartLocation();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1933,9 +1957,13 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterialPartDescriptionComponent copy() {
         SubstanceSourceMaterialPartDescriptionComponent dst = new SubstanceSourceMaterialPartDescriptionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterialPartDescriptionComponent dst) {
+        super.copyValues(dst);
         dst.part = part == null ? null : part.copy();
         dst.partLocation = partLocation == null ? null : partLocation.copy();
-        return dst;
       }
 
       @Override
@@ -2738,18 +2766,18 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1253081034:  return getSourceMaterialClass(); 
-        case 1622665404:  return getSourceMaterialType(); 
-        case -1238066353:  return getSourceMaterialState(); 
-        case -1965449843:  return getOrganismId(); 
+        case -1253081034:  return getSourceMaterialClass();
+        case 1622665404:  return getSourceMaterialType();
+        case -1238066353:  return getSourceMaterialState();
+        case -1965449843:  return getOrganismId();
         case 988460669:  return getOrganismNameElement();
         case -675437663:  return addParentSubstanceId(); 
         case -555382895:  return addParentSubstanceNameElement();
         case 57176467:  return addCountryOfOrigin(); 
         case -1988836681:  return addGeographicalLocationElement();
-        case 391529091:  return getDevelopmentStage(); 
+        case 391529091:  return getDevelopmentStage();
         case 1472689306:  return addFractionDescription(); 
-        case 1316389074:  return getOrganism(); 
+        case 1316389074:  return getOrganism();
         case -1803623927:  return addPartDescription(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2836,6 +2864,11 @@ public class SubstanceSourceMaterial extends DomainResource {
       public SubstanceSourceMaterial copy() {
         SubstanceSourceMaterial dst = new SubstanceSourceMaterial();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSourceMaterial dst) {
+        super.copyValues(dst);
         dst.sourceMaterialClass = sourceMaterialClass == null ? null : sourceMaterialClass.copy();
         dst.sourceMaterialType = sourceMaterialType == null ? null : sourceMaterialType.copy();
         dst.sourceMaterialState = sourceMaterialState == null ? null : sourceMaterialState.copy();
@@ -2873,7 +2906,6 @@ public class SubstanceSourceMaterial extends DomainResource {
           for (SubstanceSourceMaterialPartDescriptionComponent i : partDescription)
             dst.partDescription.add(i.copy());
         };
-        return dst;
       }
 
       protected SubstanceSourceMaterial typedCopy() {

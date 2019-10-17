@@ -50,18 +50,22 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+
 import org.hl7.fhir.instance.model.api.IAnyResource;
 import org.hl7.fhir.instance.model.api.IBaseReference;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.utilities.Utilities;
-
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A reference from one resource to another.
  */
@@ -402,7 +406,7 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         switch (hash) {
         case -925155509:  return getReferenceElement_();
         case 3575610:  return getTypeElement();
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case 1671764162:  return getDisplayElement();
         default: return super.makeProperty(hash, name);
         }
@@ -448,11 +452,15 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       public Reference copy() {
         Reference dst = new Reference();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Reference dst) {
+        super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
         dst.type = type == null ? null : type.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.display = display == null ? null : display.copy();
-        return dst;
       }
 
       protected Reference typedCopy() {
@@ -485,8 +493,10 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(reference, type, identifier
           , display);
       }
-      
-      @Override
+
+// added from java-adornments.txt:
+
+    @Override
       public String toString() {
         if (hasReference())
           return "Reference["+getReference()+"]";
@@ -497,6 +507,8 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         return "Reference[??]";
       }
 
+
+// end addition
 
 }
 

@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,16 +53,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * An authorization for the provision of glasses and/or contact lenses to a patient.
  */
@@ -1427,7 +1428,7 @@ public class VisionPrescription extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -309474065:  return getProduct(); 
+        case -309474065:  return getProduct();
         case 100913:  return getEyeElement();
         case -895981619:  return getSphereElement();
         case -349378602:  return getCylinderElement();
@@ -1437,7 +1438,7 @@ public class VisionPrescription extends DomainResource {
         case 106858757:  return getPowerElement();
         case 1309344840:  return getBackCurveElement();
         case -233204595:  return getDiameterElement();
-        case -1992012396:  return getDuration(); 
+        case -1992012396:  return getDuration();
         case 94842723:  return getColorElement();
         case 93997959:  return getBrandElement();
         case 3387378:  return addNote(); 
@@ -1521,6 +1522,11 @@ public class VisionPrescription extends DomainResource {
       public VisionPrescriptionLensSpecificationComponent copy() {
         VisionPrescriptionLensSpecificationComponent dst = new VisionPrescriptionLensSpecificationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VisionPrescriptionLensSpecificationComponent dst) {
+        super.copyValues(dst);
         dst.product = product == null ? null : product.copy();
         dst.eye = eye == null ? null : eye.copy();
         dst.sphere = sphere == null ? null : sphere.copy();
@@ -1543,7 +1549,6 @@ public class VisionPrescription extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1817,9 +1822,13 @@ public class VisionPrescription extends DomainResource {
       public PrismComponent copy() {
         PrismComponent dst = new PrismComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PrismComponent dst) {
+        super.copyValues(dst);
         dst.amount = amount == null ? null : amount.copy();
         dst.base = base == null ? null : base.copy();
-        return dst;
       }
 
       @Override
@@ -1883,21 +1892,11 @@ public class VisionPrescription extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (A resource reference to the person to whom the vision prescription applies.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * A reference to a resource that identifies the particular occurrence of contact between patient and health care provider during which the prescription was issued.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Created during encounter / admission / stay", formalDefinition="A reference to a resource that identifies the particular occurrence of contact between patient and health care provider during which the prescription was issued." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (A reference to a resource that identifies the particular occurrence of contact between patient and health care provider during which the prescription was issued.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date (and perhaps time) when the prescription was written.
@@ -1914,18 +1913,13 @@ public class VisionPrescription extends DomainResource {
     protected Reference prescriber;
 
     /**
-     * The actual object that is the target of the reference (The healthcare professional responsible for authorizing the prescription.)
-     */
-    protected Resource prescriberTarget;
-
-    /**
      * Contain the details of  the individual lens specifications and serves as the authorization for the fullfillment by certified professionals.
      */
     @Child(name = "lensSpecification", type = {}, order=7, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Vision lens authorization", formalDefinition="Contain the details of  the individual lens specifications and serves as the authorization for the fullfillment by certified professionals." )
     protected List<VisionPrescriptionLensSpecificationComponent> lensSpecification;
 
-    private static final long serialVersionUID = 988021071L;
+    private static final long serialVersionUID = 252562003L;
 
   /**
    * Constructor
@@ -2114,26 +2108,6 @@ public class VisionPrescription extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A resource reference to the person to whom the vision prescription applies.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create VisionPrescription.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A resource reference to the person to whom the vision prescription applies.)
-     */
-    public VisionPrescription setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (A reference to a resource that identifies the particular occurrence of contact between patient and health care provider during which the prescription was issued.)
      */
     public Reference getEncounter() { 
@@ -2154,26 +2128,6 @@ public class VisionPrescription extends DomainResource {
      */
     public VisionPrescription setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to a resource that identifies the particular occurrence of contact between patient and health care provider during which the prescription was issued.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create VisionPrescription.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to a resource that identifies the particular occurrence of contact between patient and health care provider during which the prescription was issued.)
-     */
-    public VisionPrescription setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -2243,21 +2197,6 @@ public class VisionPrescription extends DomainResource {
      */
     public VisionPrescription setPrescriber(Reference value) { 
       this.prescriber = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #prescriber} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The healthcare professional responsible for authorizing the prescription.)
-     */
-    public Resource getPrescriberTarget() { 
-      return this.prescriberTarget;
-    }
-
-    /**
-     * @param value {@link #prescriber} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The healthcare professional responsible for authorizing the prescription.)
-     */
-    public VisionPrescription setPrescriberTarget(Resource value) { 
-      this.prescriberTarget = value;
       return this;
     }
 
@@ -2421,10 +2360,10 @@ public class VisionPrescription extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 1028554472:  return getCreatedElement();
-        case -791418107:  return getPatient(); 
-        case 1524132147:  return getEncounter(); 
+        case -791418107:  return getPatient();
+        case 1524132147:  return getEncounter();
         case -1496880759:  return getDateWrittenElement();
-        case 1430631077:  return getPrescriber(); 
+        case 1430631077:  return getPrescriber();
         case -1767318363:  return addLensSpecification(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2488,6 +2427,11 @@ public class VisionPrescription extends DomainResource {
       public VisionPrescription copy() {
         VisionPrescription dst = new VisionPrescription();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VisionPrescription dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2504,7 +2448,6 @@ public class VisionPrescription extends DomainResource {
           for (VisionPrescriptionLensSpecificationComponent i : lensSpecification)
             dst.lensSpecification.add(i.copy());
         };
-        return dst;
       }
 
       protected VisionPrescription typedCopy() {

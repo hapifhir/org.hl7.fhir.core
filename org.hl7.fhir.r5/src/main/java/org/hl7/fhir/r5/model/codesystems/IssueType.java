@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -162,7 +161,7 @@ public enum IssueType {
          */
         NOSTORE, 
         /**
-         * y.
+         * An unexpected internal error has occurred.
          */
         EXCEPTION, 
         /**
@@ -319,7 +318,7 @@ public enum IssueType {
             case TRANSIENT: return "Transient processing issues. The system receiving the message may be able to resubmit the same content once an underlying issue is resolved.";
             case LOCKERROR: return "A resource/record locking failure (usually in an underlying database).";
             case NOSTORE: return "The persistent store is unavailable; e.g. the database is down for maintenance or similar action, and the interaction or operation cannot be processed.";
-            case EXCEPTION: return "y.";
+            case EXCEPTION: return "An unexpected internal error has occurred.";
             case TIMEOUT: return "An internal timeout has occurred.";
             case INCOMPLETE: return "Not all data sources typically accessed could be reached or responded in time, so the returned information might not be complete (applies to search interactions and some operations).";
             case THROTTLED: return "The system is not prepared to handle this request due to load management.";

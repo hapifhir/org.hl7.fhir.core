@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A homogeneous material with a definite composition.
  */
@@ -368,9 +370,9 @@ public class Substance extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case -1289159373:  return getExpiryElement();
-        case -1285004149:  return getQuantity(); 
+        case -1285004149:  return getQuantity();
         default: return super.makeProperty(hash, name);
         }
 
@@ -407,10 +409,14 @@ public class Substance extends DomainResource {
       public SubstanceInstanceComponent copy() {
         SubstanceInstanceComponent dst = new SubstanceInstanceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceInstanceComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.expiry = expiry == null ? null : expiry.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
-        return dst;
       }
 
       @Override
@@ -612,9 +618,9 @@ public class Substance extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1285004149:  return getQuantity(); 
-        case 2127194384:  return getSubstance(); 
-        case 530040176:  return getSubstance(); 
+        case -1285004149:  return getQuantity();
+        case 2127194384:  return getSubstance();
+        case 530040176:  return getSubstance();
         default: return super.makeProperty(hash, name);
         }
 
@@ -651,9 +657,13 @@ public class Substance extends DomainResource {
       public SubstanceIngredientComponent copy() {
         SubstanceIngredientComponent dst = new SubstanceIngredientComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceIngredientComponent dst) {
+        super.copyValues(dst);
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.substance = substance == null ? null : substance.copy();
-        return dst;
       }
 
       @Override
@@ -1189,7 +1199,7 @@ public class Substance extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
         case 555127957:  return addInstance(); 
         case -206409263:  return addIngredient(); 
@@ -1249,6 +1259,11 @@ public class Substance extends DomainResource {
       public Substance copy() {
         Substance dst = new Substance();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Substance dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1272,7 +1287,6 @@ public class Substance extends DomainResource {
           for (SubstanceIngredientComponent i : ingredient)
             dst.ingredient.add(i.copy());
         };
-        return dst;
       }
 
       protected Substance typedCopy() {

@@ -53,13 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A record of a device being used by a patient where the record is the result of a report from the patient or another clinician.
  */
@@ -235,11 +240,6 @@ public class DeviceUseStatement extends DomainResource {
     @Child(name = "basedOn", type = {ServiceRequest.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Fulfills plan, proposal or order", formalDefinition="A plan, proposal or order that is fulfilled in whole or in part by this DeviceUseStatement." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A plan, proposal or order that is fulfilled in whole or in part by this DeviceUseStatement.)
-     */
-    protected List<ServiceRequest> basedOnTarget;
-
 
     /**
      * A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed.
@@ -257,21 +257,11 @@ public class DeviceUseStatement extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient who used the device.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * Allows linking the DeviceUseStatement to the underlying Request, or to other information that supports or is used to derive the DeviceUseStatement.
      */
     @Child(name = "derivedFrom", type = {ServiceRequest.class, Procedure.class, Claim.class, Observation.class, QuestionnaireResponse.class, DocumentReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Supporting information", formalDefinition="Allows linking the DeviceUseStatement to the underlying Request, or to other information that supports or is used to derive the DeviceUseStatement." )
     protected List<Reference> derivedFrom;
-    /**
-     * The actual objects that are the target of the reference (Allows linking the DeviceUseStatement to the underlying Request, or to other information that supports or is used to derive the DeviceUseStatement.)
-     */
-    protected List<Resource> derivedFromTarget;
-
 
     /**
      * How often the device was used.
@@ -295,21 +285,11 @@ public class DeviceUseStatement extends DomainResource {
     protected Reference source;
 
     /**
-     * The actual object that is the target of the reference (Who reported the device was being used by the patient.)
-     */
-    protected Resource sourceTarget;
-
-    /**
      * The details of the device used.
      */
     @Child(name = "device", type = {Device.class}, order=8, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reference to device used", formalDefinition="The details of the device used." )
     protected Reference device;
-
-    /**
-     * The actual object that is the target of the reference (The details of the device used.)
-     */
-    protected Device deviceTarget;
 
     /**
      * Reason or justification for the use of the device.
@@ -321,14 +301,9 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * Indicates another resource whose existence justifies this DeviceUseStatement.
      */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class, Media.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why was DeviceUseStatement performed?", formalDefinition="Indicates another resource whose existence justifies this DeviceUseStatement." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates another resource whose existence justifies this DeviceUseStatement.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).
@@ -345,7 +320,7 @@ public class DeviceUseStatement extends DomainResource {
     @Description(shortDefinition="Addition details (comments, instructions)", formalDefinition="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -968330048L;
+    private static final long serialVersionUID = 663636711L;
 
   /**
    * Constructor
@@ -471,28 +446,6 @@ public class DeviceUseStatement extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<ServiceRequest>();
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addBasedOnTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<ServiceRequest>();
-      this.basedOnTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #status} (A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<DeviceUseStatementStatus> getStatusElement() { 
@@ -562,21 +515,6 @@ public class DeviceUseStatement extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient who used the device.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient who used the device.)
-     */
-    public DeviceUseStatement setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #derivedFrom} (Allows linking the DeviceUseStatement to the underlying Request, or to other information that supports or is used to derive the DeviceUseStatement.)
      */
     public List<Reference> getDerivedFrom() { 
@@ -627,16 +565,6 @@ public class DeviceUseStatement extends DomainResource {
         addDerivedFrom();
       }
       return getDerivedFrom().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDerivedFromTarget() { 
-      if (this.derivedFromTarget == null)
-        this.derivedFromTarget = new ArrayList<Resource>();
-      return this.derivedFromTarget;
     }
 
     /**
@@ -779,21 +707,6 @@ public class DeviceUseStatement extends DomainResource {
     }
 
     /**
-     * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who reported the device was being used by the patient.)
-     */
-    public Resource getSourceTarget() { 
-      return this.sourceTarget;
-    }
-
-    /**
-     * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who reported the device was being used by the patient.)
-     */
-    public DeviceUseStatement setSourceTarget(Resource value) { 
-      this.sourceTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #device} (The details of the device used.)
      */
     public Reference getDevice() { 
@@ -814,26 +727,6 @@ public class DeviceUseStatement extends DomainResource {
      */
     public DeviceUseStatement setDevice(Reference value) { 
       this.device = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #device} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The details of the device used.)
-     */
-    public Device getDeviceTarget() { 
-      if (this.deviceTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceUseStatement.device");
-        else if (Configuration.doAutoCreate())
-          this.deviceTarget = new Device(); // aa
-      return this.deviceTarget;
-    }
-
-    /**
-     * @param value {@link #device} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The details of the device used.)
-     */
-    public DeviceUseStatement setDeviceTarget(Device value) { 
-      this.deviceTarget = value;
       return this;
     }
 
@@ -944,16 +837,6 @@ public class DeviceUseStatement extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #bodySite} (Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).)
      */
     public CodeableConcept getBodySite() { 
@@ -1042,7 +925,7 @@ public class DeviceUseStatement extends DomainResource {
         children.add(new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Who reported the device was being used by the patient.", 0, 1, source));
         children.add(new Property("device", "Reference(Device)", "The details of the device used.", 0, 1, device));
         children.add(new Property("reasonCode", "CodeableConcept", "Reason or justification for the use of the device.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference|Media)", "Indicates another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
         children.add(new Property("bodySite", "CodeableConcept", "Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).", 0, 1, bodySite));
         children.add(new Property("note", "Annotation", "Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note));
       }
@@ -1064,7 +947,7 @@ public class DeviceUseStatement extends DomainResource {
         case -896505829: /*source*/  return new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Who reported the device was being used by the patient.", 0, 1, source);
         case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "The details of the device used.", 0, 1, device);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Reason or justification for the use of the device.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference|Media)", "Indicates another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).", 0, 1, bodySite);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1181,16 +1064,16 @@ public class DeviceUseStatement extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -332612366:  return addBasedOn(); 
         case -892481550:  return getStatusElement();
-        case -1867885268:  return getSubject(); 
+        case -1867885268:  return getSubject();
         case 1077922663:  return addDerivedFrom(); 
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
         case 735397551:  return getRecordedOnElement();
-        case -896505829:  return getSource(); 
-        case -1335157162:  return getDevice(); 
+        case -896505829:  return getSource();
+        case -1335157162:  return getDevice();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
-        case 1702620169:  return getBodySite(); 
+        case 1702620169:  return getBodySite();
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1284,6 +1167,11 @@ public class DeviceUseStatement extends DomainResource {
       public DeviceUseStatement copy() {
         DeviceUseStatement dst = new DeviceUseStatement();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceUseStatement dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1321,7 +1209,6 @@ public class DeviceUseStatement extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected DeviceUseStatement typedCopy() {

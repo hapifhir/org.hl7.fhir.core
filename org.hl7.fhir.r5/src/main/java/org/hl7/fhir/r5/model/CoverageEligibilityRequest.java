@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The CoverageEligibilityRequest provides patient and insurance coverage information to an insurer for them to respond, in the form of an CoverageEligibilityResponse, with information regarding whether the stated coverage is valid and in-force and optionally to provide the insurance details of the policy.
  */
@@ -334,18 +336,13 @@ public class CoverageEligibilityRequest extends DomainResource {
         protected Reference information;
 
         /**
-         * The actual object that is the target of the reference (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
-         */
-        protected Resource informationTarget;
-
-        /**
          * The supporting materials are applicable for all detail items, product/servce categories and specific billing codes.
          */
         @Child(name = "appliesToAll", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Applies to all items", formalDefinition="The supporting materials are applicable for all detail items, product/servce categories and specific billing codes." )
         protected BooleanType appliesToAll;
 
-        private static final long serialVersionUID = 819254843L;
+        private static final long serialVersionUID = -1430960090L;
 
     /**
      * Constructor
@@ -429,21 +426,6 @@ public class CoverageEligibilityRequest extends DomainResource {
          */
         public SupportingInformationComponent setInformation(Reference value) { 
           this.information = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #information} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
-         */
-        public Resource getInformationTarget() { 
-          return this.informationTarget;
-        }
-
-        /**
-         * @param value {@link #information} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
-         */
-        public SupportingInformationComponent setInformationTarget(Resource value) { 
-          this.informationTarget = value;
           return this;
         }
 
@@ -555,7 +537,7 @@ public class CoverageEligibilityRequest extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 1968600364:  return getInformation(); 
+        case 1968600364:  return getInformation();
         case -1096846342:  return getAppliesToAllElement();
         default: return super.makeProperty(hash, name);
         }
@@ -592,10 +574,14 @@ public class CoverageEligibilityRequest extends DomainResource {
       public SupportingInformationComponent copy() {
         SupportingInformationComponent dst = new SupportingInformationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupportingInformationComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.information = information == null ? null : information.copy();
         dst.appliesToAll = appliesToAll == null ? null : appliesToAll.copy();
-        return dst;
       }
 
       @Override
@@ -649,18 +635,13 @@ public class CoverageEligibilityRequest extends DomainResource {
         protected Reference coverage;
 
         /**
-         * The actual object that is the target of the reference (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        protected Coverage coverageTarget;
-
-        /**
          * A business agreement number established between the provider and the insurer for special business processing purposes.
          */
         @Child(name = "businessArrangement", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Additional provider contract number", formalDefinition="A business agreement number established between the provider and the insurer for special business processing purposes." )
         protected StringType businessArrangement;
 
-        private static final long serialVersionUID = 692505842L;
+        private static final long serialVersionUID = -1656150261L;
 
     /**
      * Constructor
@@ -743,26 +724,6 @@ public class CoverageEligibilityRequest extends DomainResource {
          */
         public InsuranceComponent setCoverage(Reference value) { 
           this.coverage = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #coverage} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        public Coverage getCoverageTarget() { 
-          if (this.coverageTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsuranceComponent.coverage");
-            else if (Configuration.doAutoCreate())
-              this.coverageTarget = new Coverage(); // aa
-          return this.coverageTarget;
-        }
-
-        /**
-         * @param value {@link #coverage} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        public InsuranceComponent setCoverageTarget(Coverage value) { 
-          this.coverageTarget = value;
           return this;
         }
 
@@ -878,7 +839,7 @@ public class CoverageEligibilityRequest extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 97604197:  return getFocalElement();
-        case -351767064:  return getCoverage(); 
+        case -351767064:  return getCoverage();
         case 259920682:  return getBusinessArrangementElement();
         default: return super.makeProperty(hash, name);
         }
@@ -915,10 +876,14 @@ public class CoverageEligibilityRequest extends DomainResource {
       public InsuranceComponent copy() {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsuranceComponent dst) {
+        super.copyValues(dst);
         dst.focal = focal == null ? null : focal.copy();
         dst.coverage = coverage == null ? null : coverage.copy();
         dst.businessArrangement = businessArrangement == null ? null : businessArrangement.copy();
-        return dst;
       }
 
       @Override
@@ -996,11 +961,6 @@ public class CoverageEligibilityRequest extends DomainResource {
         protected Reference provider;
 
         /**
-         * The actual object that is the target of the reference (The practitioner who is responsible for the product or service to be rendered to the patient.)
-         */
-        protected Resource providerTarget;
-
-        /**
          * The number of repetitions of a service or product.
          */
         @Child(name = "quantity", type = {Quantity.class}, order=6, min=0, max=1, modifier=false, summary=false)
@@ -1022,11 +982,6 @@ public class CoverageEligibilityRequest extends DomainResource {
         protected Reference facility;
 
         /**
-         * The actual object that is the target of the reference (Facility where the services will be provided.)
-         */
-        protected Resource facilityTarget;
-
-        /**
          * Patient diagnosis for which care is sought.
          */
         @Child(name = "diagnosis", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -1039,13 +994,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         @Child(name = "detail", type = {Reference.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Product or service details", formalDefinition="The plan/proposal/order describing the proposed service in detail." )
         protected List<Reference> detail;
-        /**
-         * The actual objects that are the target of the reference (The plan/proposal/order describing the proposed service in detail.)
-         */
-        protected List<Resource> detailTarget;
 
-
-        private static final long serialVersionUID = 389110539L;
+        private static final long serialVersionUID = 1615052611L;
 
     /**
      * Constructor
@@ -1241,21 +1191,6 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         /**
-         * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the product or service to be rendered to the patient.)
-         */
-        public Resource getProviderTarget() { 
-          return this.providerTarget;
-        }
-
-        /**
-         * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the product or service to be rendered to the patient.)
-         */
-        public DetailsComponent setProviderTarget(Resource value) { 
-          this.providerTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #quantity} (The number of repetitions of a service or product.)
          */
         public Quantity getQuantity() { 
@@ -1324,21 +1259,6 @@ public class CoverageEligibilityRequest extends DomainResource {
          */
         public DetailsComponent setFacility(Reference value) { 
           this.facility = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #facility} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Facility where the services will be provided.)
-         */
-        public Resource getFacilityTarget() { 
-          return this.facilityTarget;
-        }
-
-        /**
-         * @param value {@link #facility} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Facility where the services will be provided.)
-         */
-        public DetailsComponent setFacilityTarget(Resource value) { 
-          this.facilityTarget = value;
           return this;
         }
 
@@ -1446,16 +1366,6 @@ public class CoverageEligibilityRequest extends DomainResource {
             addDetail();
           }
           return getDetail().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
         }
 
         protected void listChildren(List<Property> children) {
@@ -1577,13 +1487,13 @@ public class CoverageEligibilityRequest extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -595860510:  return addSupportingInfoSequenceElement();
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
-        case -987494927:  return getProvider(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
-        case 501116579:  return getFacility(); 
+        case -987494927:  return getProvider();
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
+        case 501116579:  return getFacility();
         case 1196993265:  return addDiagnosis(); 
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
@@ -1654,6 +1564,11 @@ public class CoverageEligibilityRequest extends DomainResource {
       public DetailsComponent copy() {
         DetailsComponent dst = new DetailsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetailsComponent dst) {
+        super.copyValues(dst);
         if (supportingInfoSequence != null) {
           dst.supportingInfoSequence = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : supportingInfoSequence)
@@ -1680,7 +1595,6 @@ public class CoverageEligibilityRequest extends DomainResource {
           for (Reference i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1839,8 +1753,8 @@ public class CoverageEligibilityRequest extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1487009809:  return getDiagnosis(); 
-        case 1196993265:  return getDiagnosis(); 
+        case -1487009809:  return getDiagnosis();
+        case 1196993265:  return getDiagnosis();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1872,8 +1786,12 @@ public class CoverageEligibilityRequest extends DomainResource {
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
-        dst.diagnosis = diagnosis == null ? null : diagnosis.copy();
         return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
+        dst.diagnosis = diagnosis == null ? null : diagnosis.copy();
       }
 
       @Override
@@ -1946,11 +1864,6 @@ public class CoverageEligibilityRequest extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The party who is the beneficiary of the supplied coverage and for whom eligibility is sought.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The date or dates when the enclosed suite of services were performed or completed.
      */
     @Child(name = "serviced", type = {DateType.class, Period.class}, order=5, min=0, max=1, modifier=false, summary=false)
@@ -1972,21 +1885,11 @@ public class CoverageEligibilityRequest extends DomainResource {
     protected Reference enterer;
 
     /**
-     * The actual object that is the target of the reference (Person who created the request.)
-     */
-    protected Resource entererTarget;
-
-    /**
      * The provider which is responsible for the request.
      */
     @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Party responsible for the request", formalDefinition="The provider which is responsible for the request." )
     protected Reference provider;
-
-    /**
-     * The actual object that is the target of the reference (The provider which is responsible for the request.)
-     */
-    protected Resource providerTarget;
 
     /**
      * The Insurer who issued the coverage in question and is the recipient of the request.
@@ -1996,21 +1899,11 @@ public class CoverageEligibilityRequest extends DomainResource {
     protected Reference insurer;
 
     /**
-     * The actual object that is the target of the reference (The Insurer who issued the coverage in question and is the recipient of the request.)
-     */
-    protected Organization insurerTarget;
-
-    /**
      * Facility where the services are intended to be provided.
      */
     @Child(name = "facility", type = {Location.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Servicing facility", formalDefinition="Facility where the services are intended to be provided." )
     protected Reference facility;
-
-    /**
-     * The actual object that is the target of the reference (Facility where the services are intended to be provided.)
-     */
-    protected Location facilityTarget;
 
     /**
      * Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.
@@ -2033,7 +1926,7 @@ public class CoverageEligibilityRequest extends DomainResource {
     @Description(shortDefinition="Item to be evaluated for eligibiity", formalDefinition="Service categories or billable services for which benefit details and/or an authorization prior to service delivery may be required by the payor." )
     protected List<DetailsComponent> item;
 
-    private static final long serialVersionUID = 1371127108L;
+    private static final long serialVersionUID = 707883224L;
 
   /**
    * Constructor
@@ -2261,26 +2154,6 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who is the beneficiary of the supplied coverage and for whom eligibility is sought.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CoverageEligibilityRequest.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who is the beneficiary of the supplied coverage and for whom eligibility is sought.)
-     */
-    public CoverageEligibilityRequest setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #serviced} (The date or dates when the enclosed suite of services were performed or completed.)
      */
     public Type getServiced() { 
@@ -2401,21 +2274,6 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #enterer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Person who created the request.)
-     */
-    public Resource getEntererTarget() { 
-      return this.entererTarget;
-    }
-
-    /**
-     * @param value {@link #enterer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Person who created the request.)
-     */
-    public CoverageEligibilityRequest setEntererTarget(Resource value) { 
-      this.entererTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #provider} (The provider which is responsible for the request.)
      */
     public Reference getProvider() { 
@@ -2436,21 +2294,6 @@ public class CoverageEligibilityRequest extends DomainResource {
      */
     public CoverageEligibilityRequest setProvider(Reference value) { 
       this.provider = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The provider which is responsible for the request.)
-     */
-    public Resource getProviderTarget() { 
-      return this.providerTarget;
-    }
-
-    /**
-     * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The provider which is responsible for the request.)
-     */
-    public CoverageEligibilityRequest setProviderTarget(Resource value) { 
-      this.providerTarget = value;
       return this;
     }
 
@@ -2479,26 +2322,6 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #insurer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Insurer who issued the coverage in question and is the recipient of the request.)
-     */
-    public Organization getInsurerTarget() { 
-      if (this.insurerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CoverageEligibilityRequest.insurer");
-        else if (Configuration.doAutoCreate())
-          this.insurerTarget = new Organization(); // aa
-      return this.insurerTarget;
-    }
-
-    /**
-     * @param value {@link #insurer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Insurer who issued the coverage in question and is the recipient of the request.)
-     */
-    public CoverageEligibilityRequest setInsurerTarget(Organization value) { 
-      this.insurerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #facility} (Facility where the services are intended to be provided.)
      */
     public Reference getFacility() { 
@@ -2519,26 +2342,6 @@ public class CoverageEligibilityRequest extends DomainResource {
      */
     public CoverageEligibilityRequest setFacility(Reference value) { 
       this.facility = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #facility} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Facility where the services are intended to be provided.)
-     */
-    public Location getFacilityTarget() { 
-      if (this.facilityTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CoverageEligibilityRequest.facility");
-        else if (Configuration.doAutoCreate())
-          this.facilityTarget = new Location(); // aa
-      return this.facilityTarget;
-    }
-
-    /**
-     * @param value {@link #facility} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Facility where the services are intended to be provided.)
-     */
-    public CoverageEligibilityRequest setFacilityTarget(Location value) { 
-      this.facilityTarget = value;
       return this;
     }
 
@@ -2860,16 +2663,16 @@ public class CoverageEligibilityRequest extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case -1165461084:  return getPriority(); 
+        case -1165461084:  return getPriority();
         case -220463842:  return addPurposeElement();
-        case -791418107:  return getPatient(); 
-        case -1927922223:  return getServiced(); 
-        case 1379209295:  return getServiced(); 
+        case -791418107:  return getPatient();
+        case -1927922223:  return getServiced();
+        case 1379209295:  return getServiced();
         case 1028554472:  return getCreatedElement();
-        case -1591951995:  return getEnterer(); 
-        case -987494927:  return getProvider(); 
-        case 1957615864:  return getInsurer(); 
-        case 501116579:  return getFacility(); 
+        case -1591951995:  return getEnterer();
+        case -987494927:  return getProvider();
+        case 1957615864:  return getInsurer();
+        case 501116579:  return getFacility();
         case 1922406657:  return addSupportingInfo(); 
         case 73049818:  return addInsurance(); 
         case 3242771:  return addItem(); 
@@ -2967,6 +2770,11 @@ public class CoverageEligibilityRequest extends DomainResource {
       public CoverageEligibilityRequest copy() {
         CoverageEligibilityRequest dst = new CoverageEligibilityRequest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CoverageEligibilityRequest dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3001,7 +2809,6 @@ public class CoverageEligibilityRequest extends DomainResource {
           for (DetailsComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       protected CoverageEligibilityRequest typedCopy() {

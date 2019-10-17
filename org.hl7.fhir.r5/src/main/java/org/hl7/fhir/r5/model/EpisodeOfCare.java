@@ -51,16 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.
  */
@@ -400,7 +405,7 @@ public class EpisodeOfCare extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -892481550:  return getStatusElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -432,9 +437,13 @@ public class EpisodeOfCare extends DomainResource {
       public EpisodeOfCareStatusHistoryComponent copy() {
         EpisodeOfCareStatusHistoryComponent dst = new EpisodeOfCareStatusHistoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EpisodeOfCareStatusHistoryComponent dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -478,11 +487,6 @@ public class EpisodeOfCare extends DomainResource {
         protected Reference condition;
 
         /**
-         * The actual object that is the target of the reference (A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.)
-         */
-        protected Condition conditionTarget;
-
-        /**
          * Role that this diagnosis has within the episode of care (e.g. admission, billing, discharge …).
          */
         @Child(name = "role", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
@@ -497,7 +501,7 @@ public class EpisodeOfCare extends DomainResource {
         @Description(shortDefinition="Ranking of the diagnosis (for each role type)", formalDefinition="Ranking of the diagnosis (for each role type)." )
         protected PositiveIntType rank;
 
-        private static final long serialVersionUID = 249445632L;
+        private static final long serialVersionUID = -294944963L;
 
     /**
      * Constructor
@@ -535,26 +539,6 @@ public class EpisodeOfCare extends DomainResource {
          */
         public DiagnosisComponent setCondition(Reference value) { 
           this.condition = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #condition} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.)
-         */
-        public Condition getConditionTarget() { 
-          if (this.conditionTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DiagnosisComponent.condition");
-            else if (Configuration.doAutoCreate())
-              this.conditionTarget = new Condition(); // aa
-          return this.conditionTarget;
-        }
-
-        /**
-         * @param value {@link #condition} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.)
-         */
-        public DiagnosisComponent setConditionTarget(Condition value) { 
-          this.conditionTarget = value;
           return this;
         }
 
@@ -689,8 +673,8 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -861311717:  return getCondition(); 
-        case 3506294:  return getRole(); 
+        case -861311717:  return getCondition();
+        case 3506294:  return getRole();
         case 3492908:  return getRankElement();
         default: return super.makeProperty(hash, name);
         }
@@ -728,10 +712,14 @@ public class EpisodeOfCare extends DomainResource {
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
         dst.condition = condition == null ? null : condition.copy();
         dst.role = role == null ? null : role.copy();
         dst.rank = rank == null ? null : rank.copy();
-        return dst;
       }
 
       @Override
@@ -811,21 +799,11 @@ public class EpisodeOfCare extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The patient who is the focus of this episode of care.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The organization that has assumed the specific responsibilities for the specified duration.
      */
     @Child(name = "managingOrganization", type = {Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Organization that assumes care", formalDefinition="The organization that has assumed the specific responsibilities for the specified duration." )
     protected Reference managingOrganization;
-
-    /**
-     * The actual object that is the target of the reference (The organization that has assumed the specific responsibilities for the specified duration.)
-     */
-    protected Organization managingOrganizationTarget;
 
     /**
      * The interval during which the managing organization assumes the defined responsibility.
@@ -840,11 +818,6 @@ public class EpisodeOfCare extends DomainResource {
     @Child(name = "referralRequest", type = {ServiceRequest.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Originating Referral Request(s)", formalDefinition="Referral Request(s) that are fulfilled by this EpisodeOfCare, incoming referrals." )
     protected List<Reference> referralRequest;
-    /**
-     * The actual objects that are the target of the reference (Referral Request(s) that are fulfilled by this EpisodeOfCare, incoming referrals.)
-     */
-    protected List<ServiceRequest> referralRequestTarget;
-
 
     /**
      * The practitioner that is the care manager/care coordinator for this patient.
@@ -854,21 +827,11 @@ public class EpisodeOfCare extends DomainResource {
     protected Reference careManager;
 
     /**
-     * The actual object that is the target of the reference (The practitioner that is the care manager/care coordinator for this patient.)
-     */
-    protected Resource careManagerTarget;
-
-    /**
      * The list of practitioners that may be facilitating this episode of care for specific purposes.
      */
     @Child(name = "team", type = {CareTeam.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Other practitioners facilitating this episode of care", formalDefinition="The list of practitioners that may be facilitating this episode of care for specific purposes." )
     protected List<Reference> team;
-    /**
-     * The actual objects that are the target of the reference (The list of practitioners that may be facilitating this episode of care for specific purposes.)
-     */
-    protected List<CareTeam> teamTarget;
-
 
     /**
      * The set of accounts that may be used for billing for this EpisodeOfCare.
@@ -876,13 +839,8 @@ public class EpisodeOfCare extends DomainResource {
     @Child(name = "account", type = {Account.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The set of accounts that may be used for billing for this EpisodeOfCare", formalDefinition="The set of accounts that may be used for billing for this EpisodeOfCare." )
     protected List<Reference> account;
-    /**
-     * The actual objects that are the target of the reference (The set of accounts that may be used for billing for this EpisodeOfCare.)
-     */
-    protected List<Account> accountTarget;
 
-
-    private static final long serialVersionUID = 548033949L;
+    private static final long serialVersionUID = 202200834L;
 
   /**
    * Constructor
@@ -1182,26 +1140,6 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient who is the focus of this episode of care.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EpisodeOfCare.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient who is the focus of this episode of care.)
-     */
-    public EpisodeOfCare setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #managingOrganization} (The organization that has assumed the specific responsibilities for the specified duration.)
      */
     public Reference getManagingOrganization() { 
@@ -1222,26 +1160,6 @@ public class EpisodeOfCare extends DomainResource {
      */
     public EpisodeOfCare setManagingOrganization(Reference value) { 
       this.managingOrganization = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization that has assumed the specific responsibilities for the specified duration.)
-     */
-    public Organization getManagingOrganizationTarget() { 
-      if (this.managingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EpisodeOfCare.managingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization(); // aa
-      return this.managingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization that has assumed the specific responsibilities for the specified duration.)
-     */
-    public EpisodeOfCare setManagingOrganizationTarget(Organization value) { 
-      this.managingOrganizationTarget = value;
       return this;
     }
 
@@ -1323,28 +1241,6 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getReferralRequestTarget() { 
-      if (this.referralRequestTarget == null)
-        this.referralRequestTarget = new ArrayList<ServiceRequest>();
-      return this.referralRequestTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addReferralRequestTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.referralRequestTarget == null)
-        this.referralRequestTarget = new ArrayList<ServiceRequest>();
-      this.referralRequestTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #careManager} (The practitioner that is the care manager/care coordinator for this patient.)
      */
     public Reference getCareManager() { 
@@ -1365,21 +1261,6 @@ public class EpisodeOfCare extends DomainResource {
      */
     public EpisodeOfCare setCareManager(Reference value) { 
       this.careManager = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #careManager} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner that is the care manager/care coordinator for this patient.)
-     */
-    public Resource getCareManagerTarget() { 
-      return this.careManagerTarget;
-    }
-
-    /**
-     * @param value {@link #careManager} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner that is the care manager/care coordinator for this patient.)
-     */
-    public EpisodeOfCare setCareManagerTarget(Resource value) { 
-      this.careManagerTarget = value;
       return this;
     }
 
@@ -1437,28 +1318,6 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CareTeam> getTeamTarget() { 
-      if (this.teamTarget == null)
-        this.teamTarget = new ArrayList<CareTeam>();
-      return this.teamTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CareTeam addTeamTarget() { 
-      CareTeam r = new CareTeam();
-      if (this.teamTarget == null)
-        this.teamTarget = new ArrayList<CareTeam>();
-      this.teamTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #account} (The set of accounts that may be used for billing for this EpisodeOfCare.)
      */
     public List<Reference> getAccount() { 
@@ -1509,28 +1368,6 @@ public class EpisodeOfCare extends DomainResource {
         addAccount();
       }
       return getAccount().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Account> getAccountTarget() { 
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      return this.accountTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Account addAccountTarget() { 
-      Account r = new Account();
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      this.accountTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {
@@ -1674,11 +1511,11 @@ public class EpisodeOfCare extends DomainResource {
         case -986695614:  return addStatusHistory(); 
         case 3575610:  return addType(); 
         case 1196993265:  return addDiagnosis(); 
-        case -791418107:  return getPatient(); 
-        case -2058947787:  return getManagingOrganization(); 
-        case -991726143:  return getPeriod(); 
+        case -791418107:  return getPatient();
+        case -2058947787:  return getManagingOrganization();
+        case -991726143:  return getPeriod();
         case -310299598:  return addReferralRequest(); 
-        case -1147746468:  return getCareManager(); 
+        case -1147746468:  return getCareManager();
         case 3555933:  return addTeam(); 
         case -1177318867:  return addAccount(); 
         default: return super.makeProperty(hash, name);
@@ -1760,6 +1597,11 @@ public class EpisodeOfCare extends DomainResource {
       public EpisodeOfCare copy() {
         EpisodeOfCare dst = new EpisodeOfCare();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EpisodeOfCare dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1800,7 +1642,6 @@ public class EpisodeOfCare extends DomainResource {
           for (Reference i : account)
             dst.account.add(i.copy());
         };
-        return dst;
       }
 
       protected EpisodeOfCare typedCopy() {

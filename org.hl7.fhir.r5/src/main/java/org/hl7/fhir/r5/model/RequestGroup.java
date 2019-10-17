@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A group of related requests that can be used to capture intended activities that have inter-dependencies such as "give this medication after that one".
  */
@@ -1516,11 +1518,6 @@ public class RequestGroup extends DomainResource {
         @Child(name = "participant", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Who should perform the action", formalDefinition="The participant that should perform or be responsible for this action." )
         protected List<Reference> participant;
-        /**
-         * The actual objects that are the target of the reference (The participant that should perform or be responsible for this action.)
-         */
-        protected List<Resource> participantTarget;
-
 
         /**
          * The type of action to perform (create, update, remove).
@@ -1578,18 +1575,13 @@ public class RequestGroup extends DomainResource {
         protected Reference resource;
 
         /**
-         * The actual object that is the target of the reference (The resource that is the target of the action (e.g. CommunicationRequest).)
-         */
-        protected Resource resourceTarget;
-
-        /**
          * Sub actions.
          */
         @Child(name = "action", type = {RequestGroupActionComponent.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Sub action", formalDefinition="Sub actions." )
         protected List<RequestGroupActionComponent> action;
 
-        private static final long serialVersionUID = 296752321L;
+        private static final long serialVersionUID = 558009654L;
 
     /**
      * Constructor
@@ -2220,16 +2212,6 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getParticipantTarget() { 
-          if (this.participantTarget == null)
-            this.participantTarget = new ArrayList<Resource>();
-          return this.participantTarget;
-        }
-
-        /**
          * @return {@link #type} (The type of action to perform (create, update, remove).)
          */
         public CodeableConcept getType() { 
@@ -2523,21 +2505,6 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return {@link #resource} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The resource that is the target of the action (e.g. CommunicationRequest).)
-         */
-        public Resource getResourceTarget() { 
-          return this.resourceTarget;
-        }
-
-        /**
-         * @param value {@link #resource} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The resource that is the target of the action (e.g. CommunicationRequest).)
-         */
-        public RequestGroupActionComponent setResourceTarget(Resource value) { 
-          this.resourceTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #action} (Sub actions.)
          */
         public List<RequestGroupActionComponent> getAction() { 
@@ -2808,16 +2775,16 @@ public class RequestGroup extends DomainResource {
         case 1587405498:  return addDocumentation(); 
         case -861311717:  return addCondition(); 
         case -384107967:  return addRelatedAction(); 
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
         case 767422259:  return addParticipant(); 
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 586678389:  return getGroupingBehaviorElement();
         case 168639486:  return getSelectionBehaviorElement();
         case -1163906287:  return getRequiredBehaviorElement();
         case -1174249033:  return getPrecheckBehaviorElement();
         case -922577408:  return getCardinalityBehaviorElement();
-        case -341064690:  return getResource(); 
+        case -341064690:  return getResource();
         case -1422950858:  return addAction(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2940,6 +2907,11 @@ public class RequestGroup extends DomainResource {
       public RequestGroupActionComponent copy() {
         RequestGroupActionComponent dst = new RequestGroupActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RequestGroupActionComponent dst) {
+        super.copyValues(dst);
         dst.prefix = prefix == null ? null : prefix.copy();
         dst.title = title == null ? null : title.copy();
         dst.description = description == null ? null : description.copy();
@@ -2983,7 +2955,6 @@ public class RequestGroup extends DomainResource {
           for (RequestGroupActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3191,7 +3162,7 @@ public class RequestGroup extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3292052:  return getKindElement();
-        case -1795452264:  return getExpression(); 
+        case -1795452264:  return getExpression();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3223,9 +3194,13 @@ public class RequestGroup extends DomainResource {
       public RequestGroupActionConditionComponent copy() {
         RequestGroupActionConditionComponent dst = new RequestGroupActionConditionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RequestGroupActionConditionComponent dst) {
+        super.copyValues(dst);
         dst.kind = kind == null ? null : kind.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -3511,8 +3486,8 @@ public class RequestGroup extends DomainResource {
         switch (hash) {
         case -1656172047:  return getActionIdElement();
         case -261851592:  return getRelationshipElement();
-        case -1960684787:  return getOffset(); 
-        case -1019779949:  return getOffset(); 
+        case -1960684787:  return getOffset();
+        case -1019779949:  return getOffset();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3552,10 +3527,14 @@ public class RequestGroup extends DomainResource {
       public RequestGroupActionRelatedActionComponent copy() {
         RequestGroupActionRelatedActionComponent dst = new RequestGroupActionRelatedActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RequestGroupActionRelatedActionComponent dst) {
+        super.copyValues(dst);
         dst.actionId = actionId == null ? null : actionId.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.offset = offset == null ? null : offset.copy();
-        return dst;
       }
 
       @Override
@@ -3619,11 +3598,6 @@ public class RequestGroup extends DomainResource {
     @Child(name = "basedOn", type = {Reference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Fulfills plan, proposal, or order", formalDefinition="A plan, proposal or order that is fulfilled in whole or in part by this request." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A plan, proposal or order that is fulfilled in whole or in part by this request.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * Completed or terminated request(s) whose function is taken by this new request.
@@ -3631,11 +3605,6 @@ public class RequestGroup extends DomainResource {
     @Child(name = "replaces", type = {Reference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Request(s) replaced by this request", formalDefinition="Completed or terminated request(s) whose function is taken by this new request." )
     protected List<Reference> replaces;
-    /**
-     * The actual objects that are the target of the reference (Completed or terminated request(s) whose function is taken by this new request.)
-     */
-    protected List<Resource> replacesTarget;
-
 
     /**
      * A shared identifier common to all requests that were authorized more or less simultaneously by a single author, representing the identifier of the requisition, prescription or similar form.
@@ -3648,7 +3617,7 @@ public class RequestGroup extends DomainResource {
      * The current state of the request. For request groups, the status reflects the status of all the requests in the group.
      */
     @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | suspended | cancelled | completed | entered-in-error | unknown", formalDefinition="The current state of the request. For request groups, the status reflects the status of all the requests in the group." )
+    @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The current state of the request. For request groups, the status reflects the status of all the requests in the group." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
     protected Enumeration<RequestStatus> status;
 
@@ -3656,7 +3625,7 @@ public class RequestGroup extends DomainResource {
      * Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain.
      */
     @Child(name = "intent", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposal | plan | order", formalDefinition="Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain." )
+    @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
     protected Enumeration<RequestIntent> intent;
 
@@ -3683,21 +3652,11 @@ public class RequestGroup extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The subject for which the request group was created.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * Describes the context of the request group, if any.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Created as part of", formalDefinition="Describes the context of the request group, if any." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (Describes the context of the request group, if any.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Indicates when the request group was created.
@@ -3714,11 +3673,6 @@ public class RequestGroup extends DomainResource {
     protected Reference author;
 
     /**
-     * The actual object that is the target of the reference (Provides a reference to the author of the request group.)
-     */
-    protected Resource authorTarget;
-
-    /**
      * Describes the reason for the request group in coded or textual form.
      */
     @Child(name = "reasonCode", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -3731,11 +3685,6 @@ public class RequestGroup extends DomainResource {
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why the request group is needed", formalDefinition="Indicates another resource whose existence justifies this request group." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates another resource whose existence justifies this request group.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Provides a mechanism to communicate additional information about the response.
@@ -3751,7 +3700,7 @@ public class RequestGroup extends DomainResource {
     @Description(shortDefinition="Proposed actions, if any", formalDefinition="The actions, if any, produced by the evaluation of the artifact." )
     protected List<RequestGroupActionComponent> action;
 
-    private static final long serialVersionUID = -2053492070L;
+    private static final long serialVersionUID = 1938026085L;
 
   /**
    * Constructor
@@ -3998,16 +3947,6 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #replaces} (Completed or terminated request(s) whose function is taken by this new request.)
      */
     public List<Reference> getReplaces() { 
@@ -4058,16 +3997,6 @@ public class RequestGroup extends DomainResource {
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<Resource>();
-      return this.replacesTarget;
     }
 
     /**
@@ -4282,21 +4211,6 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The subject for which the request group was created.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The subject for which the request group was created.)
-     */
-    public RequestGroup setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (Describes the context of the request group, if any.)
      */
     public Reference getEncounter() { 
@@ -4317,26 +4231,6 @@ public class RequestGroup extends DomainResource {
      */
     public RequestGroup setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Describes the context of the request group, if any.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create RequestGroup.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Describes the context of the request group, if any.)
-     */
-    public RequestGroup setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -4410,21 +4304,6 @@ public class RequestGroup extends DomainResource {
      */
     public RequestGroup setAuthor(Reference value) { 
       this.author = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Provides a reference to the author of the request group.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Provides a reference to the author of the request group.)
-     */
-    public RequestGroup setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
       return this;
     }
 
@@ -4532,16 +4411,6 @@ public class RequestGroup extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**
@@ -4843,15 +4712,15 @@ public class RequestGroup extends DomainResource {
         case -1926393373:  return addInstantiatesUriElement();
         case -332612366:  return addBasedOn(); 
         case -430332865:  return addReplaces(); 
-        case -445338488:  return getGroupIdentifier(); 
+        case -445338488:  return getGroupIdentifier();
         case -892481550:  return getStatusElement();
         case -1183762788:  return getIntentElement();
         case -1165461084:  return getPriorityElement();
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
         case -1500852503:  return getAuthoredOnElement();
-        case -1406328437:  return getAuthor(); 
+        case -1406328437:  return getAuthor();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 3387378:  return addNote(); 
@@ -4960,6 +4829,11 @@ public class RequestGroup extends DomainResource {
       public RequestGroup copy() {
         RequestGroup dst = new RequestGroup();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RequestGroup dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -5014,7 +4888,6 @@ public class RequestGroup extends DomainResource {
           for (RequestGroupActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       protected RequestGroup typedCopy() {

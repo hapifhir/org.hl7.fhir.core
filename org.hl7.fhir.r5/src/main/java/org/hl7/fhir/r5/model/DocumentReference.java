@@ -53,20 +53,21 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus;
-import org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
- * A reference to a document of any kind for any purpose. Provides metadata about the document so that the document can be discovered and managed. The scope of a document is any seralized object with a mime-type, so includes formal patient centric documents (CDA), cliical notes, scanned paper, and non-patient specific documents like policy text.
+ * A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this "document" encompasses *any* seralized object with a mime-type, so includes formal patient centric documents (CDA), clniical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.
  */
 @ResourceDef(name="DocumentReference", profile="http://hl7.org/fhir/StructureDefinition/DocumentReference")
 public class DocumentReference extends DomainResource {
@@ -336,12 +337,7 @@ public class DocumentReference extends DomainResource {
         @Description(shortDefinition="Target of the relationship", formalDefinition="The target document of this relationship." )
         protected Reference target;
 
-        /**
-         * The actual object that is the target of the reference (The target document of this relationship.)
-         */
-        protected DocumentReference targetTarget;
-
-        private static final long serialVersionUID = -347257495L;
+        private static final long serialVersionUID = 1212070475L;
 
     /**
      * Constructor
@@ -428,26 +424,6 @@ public class DocumentReference extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #target} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The target document of this relationship.)
-         */
-        public DocumentReference getTargetTarget() { 
-          if (this.targetTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DocumentReferenceRelatesToComponent.target");
-            else if (Configuration.doAutoCreate())
-              this.targetTarget = new DocumentReference(); // aa
-          return this.targetTarget;
-        }
-
-        /**
-         * @param value {@link #target} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The target document of this relationship.)
-         */
-        public DocumentReferenceRelatesToComponent setTargetTarget(DocumentReference value) { 
-          this.targetTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "code", "The type of relationship that this document has with anther document.", 0, 1, code));
@@ -505,7 +481,7 @@ public class DocumentReference extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return getCodeElement();
-        case -880905839:  return getTarget(); 
+        case -880905839:  return getTarget();
         default: return super.makeProperty(hash, name);
         }
 
@@ -537,9 +513,13 @@ public class DocumentReference extends DomainResource {
       public DocumentReferenceRelatesToComponent copy() {
         DocumentReferenceRelatesToComponent dst = new DocumentReferenceRelatesToComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceRelatesToComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.target = target == null ? null : target.copy();
-        return dst;
       }
 
       @Override
@@ -709,8 +689,8 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1963501277:  return getAttachment(); 
-        case -1268779017:  return getFormat(); 
+        case -1963501277:  return getAttachment();
+        case -1268779017:  return getFormat();
         default: return super.makeProperty(hash, name);
         }
 
@@ -743,9 +723,13 @@ public class DocumentReference extends DomainResource {
       public DocumentReferenceContentComponent copy() {
         DocumentReferenceContentComponent dst = new DocumentReferenceContentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceContentComponent dst) {
+        super.copyValues(dst);
         dst.attachment = attachment == null ? null : attachment.copy();
         dst.format = format == null ? null : format.copy();
-        return dst;
       }
 
       @Override
@@ -787,11 +771,6 @@ public class DocumentReference extends DomainResource {
         @Child(name = "encounter", type = {Encounter.class, EpisodeOfCare.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Context of the document  content", formalDefinition="Describes the clinical encounter or type of care that the document content is associated with." )
         protected List<Reference> encounter;
-        /**
-         * The actual objects that are the target of the reference (Describes the clinical encounter or type of care that the document content is associated with.)
-         */
-        protected List<Resource> encounterTarget;
-
 
         /**
          * This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a "History and Physical Report" in which the procedure being documented is necessarily a "History and Physical" act.
@@ -832,23 +811,20 @@ public class DocumentReference extends DomainResource {
         protected Reference sourcePatientInfo;
 
         /**
-         * The actual object that is the target of the reference (The Patient Information as known when the document was published. May be a reference to a version specific, or contained.)
-         */
-        protected Patient sourcePatientInfoTarget;
-
-        /**
          * Related identifiers or resources associated with the DocumentReference.
          */
         @Child(name = "related", type = {Reference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Related identifiers or resources", formalDefinition="Related identifiers or resources associated with the DocumentReference." )
         protected List<Reference> related;
+
         /**
-         * The actual objects that are the target of the reference (Related identifiers or resources associated with the DocumentReference.)
+         * A procedure that is fulfilled in whole or in part by the creation of this media.
          */
-        protected List<Resource> relatedTarget;
+        @Child(name = "basedOn", type = {ServiceRequest.class, CarePlan.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Procedure that caused this media to be created", formalDefinition="A procedure that is fulfilled in whole or in part by the creation of this media." )
+        protected List<Reference> basedOn;
 
-
-        private static final long serialVersionUID = 140463218L;
+        private static final long serialVersionUID = 1499534389L;
 
     /**
      * Constructor
@@ -908,16 +884,6 @@ public class DocumentReference extends DomainResource {
             addEncounter();
           }
           return getEncounter().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getEncounterTarget() { 
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Resource>();
-          return this.encounterTarget;
         }
 
         /**
@@ -1070,26 +1036,6 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @return {@link #sourcePatientInfo} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Patient Information as known when the document was published. May be a reference to a version specific, or contained.)
-         */
-        public Patient getSourcePatientInfoTarget() { 
-          if (this.sourcePatientInfoTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DocumentReferenceContextComponent.sourcePatientInfo");
-            else if (Configuration.doAutoCreate())
-              this.sourcePatientInfoTarget = new Patient(); // aa
-          return this.sourcePatientInfoTarget;
-        }
-
-        /**
-         * @param value {@link #sourcePatientInfo} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Patient Information as known when the document was published. May be a reference to a version specific, or contained.)
-         */
-        public DocumentReferenceContextComponent setSourcePatientInfoTarget(Patient value) { 
-          this.sourcePatientInfoTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #related} (Related identifiers or resources associated with the DocumentReference.)
          */
         public List<Reference> getRelated() { 
@@ -1143,13 +1089,56 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
+         * @return {@link #basedOn} (A procedure that is fulfilled in whole or in part by the creation of this media.)
          */
-        @Deprecated
-        public List<Resource> getRelatedTarget() { 
-          if (this.relatedTarget == null)
-            this.relatedTarget = new ArrayList<Resource>();
-          return this.relatedTarget;
+        public List<Reference> getBasedOn() { 
+          if (this.basedOn == null)
+            this.basedOn = new ArrayList<Reference>();
+          return this.basedOn;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public DocumentReferenceContextComponent setBasedOn(List<Reference> theBasedOn) { 
+          this.basedOn = theBasedOn;
+          return this;
+        }
+
+        public boolean hasBasedOn() { 
+          if (this.basedOn == null)
+            return false;
+          for (Reference item : this.basedOn)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Reference addBasedOn() { //3
+          Reference t = new Reference();
+          if (this.basedOn == null)
+            this.basedOn = new ArrayList<Reference>();
+          this.basedOn.add(t);
+          return t;
+        }
+
+        public DocumentReferenceContextComponent addBasedOn(Reference t) { //3
+          if (t == null)
+            return this;
+          if (this.basedOn == null)
+            this.basedOn = new ArrayList<Reference>();
+          this.basedOn.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+         */
+        public Reference getBasedOnFirstRep() { 
+          if (getBasedOn().isEmpty()) {
+            addBasedOn();
+          }
+          return getBasedOn().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -1161,6 +1150,7 @@ public class DocumentReference extends DomainResource {
           children.add(new Property("practiceSetting", "CodeableConcept", "This property may convey specifics about the practice setting where the content was created, often reflecting the clinical specialty.", 0, 1, practiceSetting));
           children.add(new Property("sourcePatientInfo", "Reference(Patient)", "The Patient Information as known when the document was published. May be a reference to a version specific, or contained.", 0, 1, sourcePatientInfo));
           children.add(new Property("related", "Reference(Any)", "Related identifiers or resources associated with the DocumentReference.", 0, java.lang.Integer.MAX_VALUE, related));
+          children.add(new Property("basedOn", "Reference(ServiceRequest|CarePlan)", "A procedure that is fulfilled in whole or in part by the creation of this media.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         }
 
         @Override
@@ -1173,6 +1163,7 @@ public class DocumentReference extends DomainResource {
           case 331373717: /*practiceSetting*/  return new Property("practiceSetting", "CodeableConcept", "This property may convey specifics about the practice setting where the content was created, often reflecting the clinical specialty.", 0, 1, practiceSetting);
           case 2031381048: /*sourcePatientInfo*/  return new Property("sourcePatientInfo", "Reference(Patient)", "The Patient Information as known when the document was published. May be a reference to a version specific, or contained.", 0, 1, sourcePatientInfo);
           case 1090493483: /*related*/  return new Property("related", "Reference(Any)", "Related identifiers or resources associated with the DocumentReference.", 0, java.lang.Integer.MAX_VALUE, related);
+          case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(ServiceRequest|CarePlan)", "A procedure that is fulfilled in whole or in part by the creation of this media.", 0, java.lang.Integer.MAX_VALUE, basedOn);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1188,6 +1179,7 @@ public class DocumentReference extends DomainResource {
         case 331373717: /*practiceSetting*/ return this.practiceSetting == null ? new Base[0] : new Base[] {this.practiceSetting}; // CodeableConcept
         case 2031381048: /*sourcePatientInfo*/ return this.sourcePatientInfo == null ? new Base[0] : new Base[] {this.sourcePatientInfo}; // Reference
         case 1090493483: /*related*/ return this.related == null ? new Base[0] : this.related.toArray(new Base[this.related.size()]); // Reference
+        case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1217,6 +1209,9 @@ public class DocumentReference extends DomainResource {
         case 1090493483: // related
           this.getRelated().add(castToReference(value)); // Reference
           return value;
+        case -332612366: // basedOn
+          this.getBasedOn().add(castToReference(value)); // Reference
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -1238,6 +1233,8 @@ public class DocumentReference extends DomainResource {
           this.sourcePatientInfo = castToReference(value); // Reference
         } else if (name.equals("related")) {
           this.getRelated().add(castToReference(value));
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().add(castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1248,11 +1245,12 @@ public class DocumentReference extends DomainResource {
         switch (hash) {
         case 1524132147:  return addEncounter(); 
         case 96891546:  return addEvent(); 
-        case -991726143:  return getPeriod(); 
-        case 370698365:  return getFacilityType(); 
-        case 331373717:  return getPracticeSetting(); 
-        case 2031381048:  return getSourcePatientInfo(); 
+        case -991726143:  return getPeriod();
+        case 370698365:  return getFacilityType();
+        case 331373717:  return getPracticeSetting();
+        case 2031381048:  return getSourcePatientInfo();
         case 1090493483:  return addRelated(); 
+        case -332612366:  return addBasedOn(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -1268,6 +1266,7 @@ public class DocumentReference extends DomainResource {
         case 331373717: /*practiceSetting*/ return new String[] {"CodeableConcept"};
         case 2031381048: /*sourcePatientInfo*/ return new String[] {"Reference"};
         case 1090493483: /*related*/ return new String[] {"Reference"};
+        case -332612366: /*basedOn*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1300,6 +1299,9 @@ public class DocumentReference extends DomainResource {
         else if (name.equals("related")) {
           return addRelated();
         }
+        else if (name.equals("basedOn")) {
+          return addBasedOn();
+        }
         else
           return super.addChild(name);
       }
@@ -1307,6 +1309,11 @@ public class DocumentReference extends DomainResource {
       public DocumentReferenceContextComponent copy() {
         DocumentReferenceContextComponent dst = new DocumentReferenceContextComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceContextComponent dst) {
+        super.copyValues(dst);
         if (encounter != null) {
           dst.encounter = new ArrayList<Reference>();
           for (Reference i : encounter)
@@ -1326,7 +1333,11 @@ public class DocumentReference extends DomainResource {
           for (Reference i : related)
             dst.related.add(i.copy());
         };
-        return dst;
+        if (basedOn != null) {
+          dst.basedOn = new ArrayList<Reference>();
+          for (Reference i : basedOn)
+            dst.basedOn.add(i.copy());
+        };
       }
 
       @Override
@@ -1339,7 +1350,7 @@ public class DocumentReference extends DomainResource {
         return compareDeep(encounter, o.encounter, true) && compareDeep(event, o.event, true) && compareDeep(period, o.period, true)
            && compareDeep(facilityType, o.facilityType, true) && compareDeep(practiceSetting, o.practiceSetting, true)
            && compareDeep(sourcePatientInfo, o.sourcePatientInfo, true) && compareDeep(related, o.related, true)
-          ;
+           && compareDeep(basedOn, o.basedOn, true);
       }
 
       @Override
@@ -1354,7 +1365,7 @@ public class DocumentReference extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(encounter, event, period
-          , facilityType, practiceSetting, sourcePatientInfo, related);
+          , facilityType, practiceSetting, sourcePatientInfo, related, basedOn);
       }
 
   public String fhirType() {
@@ -1390,7 +1401,7 @@ public class DocumentReference extends DomainResource {
      * The status of the underlying document.
      */
     @Child(name = "docStatus", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="preliminary | final | appended | amended | entered-in-error", formalDefinition="The status of the underlying document." )
+    @Description(shortDefinition="preliminary | final | amended | entered-in-error", formalDefinition="The status of the underlying document." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/composition-status")
     protected Enumeration<ReferredDocumentStatus> docStatus;
 
@@ -1418,11 +1429,6 @@ public class DocumentReference extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * When the document reference was created.
      */
     @Child(name = "date", type = {InstantType.class}, order=7, min=0, max=1, modifier=false, summary=true)
@@ -1435,11 +1441,6 @@ public class DocumentReference extends DomainResource {
     @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Organization.class, Device.class, Patient.class, RelatedPerson.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who and/or what authored the document", formalDefinition="Identifies who is responsible for adding the information to the document." )
     protected List<Reference> author;
-    /**
-     * The actual objects that are the target of the reference (Identifies who is responsible for adding the information to the document.)
-     */
-    protected List<Resource> authorTarget;
-
 
     /**
      * Which person or organization authenticates that this document is valid.
@@ -1449,21 +1450,11 @@ public class DocumentReference extends DomainResource {
     protected Reference authenticator;
 
     /**
-     * The actual object that is the target of the reference (Which person or organization authenticates that this document is valid.)
-     */
-    protected Resource authenticatorTarget;
-
-    /**
      * Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.
      */
     @Child(name = "custodian", type = {Organization.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Organization which maintains the document", formalDefinition="Identifies the organization or group who is responsible for ongoing maintenance of and access to the document." )
     protected Reference custodian;
-
-    /**
-     * The actual object that is the target of the reference (Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.)
-     */
-    protected Organization custodianTarget;
 
     /**
      * Relationships that this document has with other document references that already exist.
@@ -1501,7 +1492,7 @@ public class DocumentReference extends DomainResource {
     @Description(shortDefinition="Clinical context of document", formalDefinition="The clinical context in which the document was prepared." )
     protected DocumentReferenceContextComponent context;
 
-    private static final long serialVersionUID = 307086535L;
+    private static final long serialVersionUID = 498456242L;
 
   /**
    * Constructor
@@ -1791,21 +1782,6 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).)
-     */
-    public DocumentReference setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #date} (When the document reference was created.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public InstantType getDateElement() { 
@@ -1908,16 +1884,6 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
-    }
-
-    /**
      * @return {@link #authenticator} (Which person or organization authenticates that this document is valid.)
      */
     public Reference getAuthenticator() { 
@@ -1942,21 +1908,6 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @return {@link #authenticator} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Which person or organization authenticates that this document is valid.)
-     */
-    public Resource getAuthenticatorTarget() { 
-      return this.authenticatorTarget;
-    }
-
-    /**
-     * @param value {@link #authenticator} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Which person or organization authenticates that this document is valid.)
-     */
-    public DocumentReference setAuthenticatorTarget(Resource value) { 
-      this.authenticatorTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #custodian} (Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.)
      */
     public Reference getCustodian() { 
@@ -1977,26 +1928,6 @@ public class DocumentReference extends DomainResource {
      */
     public DocumentReference setCustodian(Reference value) { 
       this.custodian = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #custodian} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.)
-     */
-    public Organization getCustodianTarget() { 
-      if (this.custodianTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DocumentReference.custodian");
-        else if (Configuration.doAutoCreate())
-          this.custodianTarget = new Organization(); // aa
-      return this.custodianTarget;
-    }
-
-    /**
-     * @param value {@link #custodian} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.)
-     */
-    public DocumentReference setCustodianTarget(Organization value) { 
-      this.custodianTarget = value;
       return this;
     }
 
@@ -2402,22 +2333,22 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 243769515:  return getMasterIdentifier(); 
+        case 243769515:  return getMasterIdentifier();
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case -23496886:  return getDocStatusElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 50511102:  return addCategory(); 
-        case -1867885268:  return getSubject(); 
+        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case -1406328437:  return addAuthor(); 
-        case 1815000435:  return getAuthenticator(); 
-        case 1611297262:  return getCustodian(); 
+        case 1815000435:  return getAuthenticator();
+        case 1611297262:  return getCustodian();
         case -7765931:  return addRelatesTo(); 
         case -1724546052:  return getDescriptionElement();
         case -722296940:  return addSecurityLabel(); 
         case 951530617:  return addContent(); 
-        case 951530927:  return getContext(); 
+        case 951530927:  return getContext();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2515,6 +2446,11 @@ public class DocumentReference extends DomainResource {
       public DocumentReference copy() {
         DocumentReference dst = new DocumentReference();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReference dst) {
+        super.copyValues(dst);
         dst.masterIdentifier = masterIdentifier == null ? null : masterIdentifier.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -2555,7 +2491,6 @@ public class DocumentReference extends DomainResource {
             dst.content.add(i.copy());
         };
         dst.context = context == null ? null : context.copy();
-        return dst;
       }
 
       protected DocumentReference typedCopy() {
@@ -2744,6 +2679,32 @@ public class DocumentReference extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam SETTING = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SETTING);
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Procedure that caused this media to be created</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DocumentReference.context.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="DocumentReference.context.basedOn", description="Procedure that caused this media to be created", type="reference", target={CarePlan.class, ServiceRequest.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Procedure that caused this media to be created</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DocumentReference.context.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DocumentReference:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("DocumentReference:based-on").toLocked();
 
  /**
    * Search parameter: <b>related</b>

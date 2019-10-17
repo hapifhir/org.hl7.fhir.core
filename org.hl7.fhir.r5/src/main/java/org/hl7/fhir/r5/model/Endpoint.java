@@ -51,15 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
  */
@@ -260,11 +266,6 @@ public class Endpoint extends DomainResource {
     protected Reference managingOrganization;
 
     /**
-     * The actual object that is the target of the reference (The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).)
-     */
-    protected Organization managingOrganizationTarget;
-
-    /**
      * Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.
      */
     @Child(name = "contact", type = {ContactPoint.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -308,7 +309,7 @@ public class Endpoint extends DomainResource {
     @Description(shortDefinition="Usage depends on the channel type", formalDefinition="Additional headers / information to send as part of the notification." )
     protected List<StringType> header;
 
-    private static final long serialVersionUID = 755181080L;
+    private static final long serialVersionUID = 1528960001L;
 
   /**
    * Constructor
@@ -519,26 +520,6 @@ public class Endpoint extends DomainResource {
      */
     public Endpoint setManagingOrganization(Reference value) { 
       this.managingOrganization = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).)
-     */
-    public Organization getManagingOrganizationTarget() { 
-      if (this.managingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Endpoint.managingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization(); // aa
-      return this.managingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).)
-     */
-    public Endpoint setManagingOrganizationTarget(Organization value) { 
-      this.managingOrganizationTarget = value;
       return this;
     }
 
@@ -969,11 +950,11 @@ public class Endpoint extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 1270211384:  return getConnectionType(); 
+        case 1270211384:  return getConnectionType();
         case 3373707:  return getNameElement();
-        case -2058947787:  return getManagingOrganization(); 
+        case -2058947787:  return getManagingOrganization();
         case 951526432:  return addContact(); 
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         case 909929960:  return addPayloadType(); 
         case -1702836932:  return addPayloadMimeTypeElement();
         case -1147692044:  return getAddressElement();
@@ -1052,6 +1033,11 @@ public class Endpoint extends DomainResource {
       public Endpoint copy() {
         Endpoint dst = new Endpoint();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Endpoint dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1083,7 +1069,6 @@ public class Endpoint extends DomainResource {
           for (StringType i : header)
             dst.header.add(i.copy());
         };
-        return dst;
       }
 
       protected Endpoint typedCopy() {

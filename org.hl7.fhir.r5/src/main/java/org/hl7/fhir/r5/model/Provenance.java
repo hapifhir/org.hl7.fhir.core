@@ -53,15 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.
  */
@@ -211,18 +214,18 @@ public class Provenance extends DomainResource {
     @Block()
     public static class ProvenanceAgentComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The participation the agent had with respect to the activity.
+         * The primary act of participation of the agent with respect to the activity.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="How the agent participated", formalDefinition="The participation the agent had with respect to the activity." )
+        @Description(shortDefinition="How the agent participated", formalDefinition="The primary act of participation of the agent with respect to the activity." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/provenance-agent-type")
         protected CodeableConcept type;
 
         /**
-         * The function of the agent with respect to the activity. The security role enabling the agent with respect to the activity.
+         * The functional or structural roles of the agent indicating the agent's competency. The security role enabling the agent with respect to the activity.
          */
         @Child(name = "role", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="What the agents role was", formalDefinition="The function of the agent with respect to the activity. The security role enabling the agent with respect to the activity." )
+        @Description(shortDefinition="What the agents role was", formalDefinition="The functional or structural roles of the agent indicating the agent's competency. The security role enabling the agent with respect to the activity." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-role-type")
         protected List<CodeableConcept> role;
 
@@ -234,23 +237,13 @@ public class Provenance extends DomainResource {
         protected Reference who;
 
         /**
-         * The actual object that is the target of the reference (The individual, device or organization that participated in the event.)
-         */
-        protected Resource whoTarget;
-
-        /**
          * The individual, device, or organization for whom the change was made.
          */
         @Child(name = "onBehalfOf", type = {Practitioner.class, PractitionerRole.class, RelatedPerson.class, Patient.class, Device.class, Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who the agent is representing", formalDefinition="The individual, device, or organization for whom the change was made." )
         protected Reference onBehalfOf;
 
-        /**
-         * The actual object that is the target of the reference (The individual, device, or organization for whom the change was made.)
-         */
-        protected Resource onBehalfOfTarget;
-
-        private static final long serialVersionUID = -1363252586L;
+        private static final long serialVersionUID = 642650054L;
 
     /**
      * Constructor
@@ -268,7 +261,7 @@ public class Provenance extends DomainResource {
       }
 
         /**
-         * @return {@link #type} (The participation the agent had with respect to the activity.)
+         * @return {@link #type} (The primary act of participation of the agent with respect to the activity.)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -284,7 +277,7 @@ public class Provenance extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (The participation the agent had with respect to the activity.)
+         * @param value {@link #type} (The primary act of participation of the agent with respect to the activity.)
          */
         public ProvenanceAgentComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -292,7 +285,7 @@ public class Provenance extends DomainResource {
         }
 
         /**
-         * @return {@link #role} (The function of the agent with respect to the activity. The security role enabling the agent with respect to the activity.)
+         * @return {@link #role} (The functional or structural roles of the agent indicating the agent's competency. The security role enabling the agent with respect to the activity.)
          */
         public List<CodeableConcept> getRole() { 
           if (this.role == null)
@@ -369,21 +362,6 @@ public class Provenance extends DomainResource {
         }
 
         /**
-         * @return {@link #who} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual, device or organization that participated in the event.)
-         */
-        public Resource getWhoTarget() { 
-          return this.whoTarget;
-        }
-
-        /**
-         * @param value {@link #who} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual, device or organization that participated in the event.)
-         */
-        public ProvenanceAgentComponent setWhoTarget(Resource value) { 
-          this.whoTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #onBehalfOf} (The individual, device, or organization for whom the change was made.)
          */
         public Reference getOnBehalfOf() { 
@@ -407,25 +385,10 @@ public class Provenance extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual, device, or organization for whom the change was made.)
-         */
-        public Resource getOnBehalfOfTarget() { 
-          return this.onBehalfOfTarget;
-        }
-
-        /**
-         * @param value {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual, device, or organization for whom the change was made.)
-         */
-        public ProvenanceAgentComponent setOnBehalfOfTarget(Resource value) { 
-          this.onBehalfOfTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "The participation the agent had with respect to the activity.", 0, 1, type));
-          children.add(new Property("role", "CodeableConcept", "The function of the agent with respect to the activity. The security role enabling the agent with respect to the activity.", 0, java.lang.Integer.MAX_VALUE, role));
+          children.add(new Property("type", "CodeableConcept", "The primary act of participation of the agent with respect to the activity.", 0, 1, type));
+          children.add(new Property("role", "CodeableConcept", "The functional or structural roles of the agent indicating the agent's competency. The security role enabling the agent with respect to the activity.", 0, java.lang.Integer.MAX_VALUE, role));
           children.add(new Property("who", "Reference(Practitioner|PractitionerRole|RelatedPerson|Patient|Device|Organization)", "The individual, device or organization that participated in the event.", 0, 1, who));
           children.add(new Property("onBehalfOf", "Reference(Practitioner|PractitionerRole|RelatedPerson|Patient|Device|Organization)", "The individual, device, or organization for whom the change was made.", 0, 1, onBehalfOf));
         }
@@ -433,8 +396,8 @@ public class Provenance extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The participation the agent had with respect to the activity.", 0, 1, type);
-          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The function of the agent with respect to the activity. The security role enabling the agent with respect to the activity.", 0, java.lang.Integer.MAX_VALUE, role);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The primary act of participation of the agent with respect to the activity.", 0, 1, type);
+          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The functional or structural roles of the agent indicating the agent's competency. The security role enabling the agent with respect to the activity.", 0, java.lang.Integer.MAX_VALUE, role);
           case 117694: /*who*/  return new Property("who", "Reference(Practitioner|PractitionerRole|RelatedPerson|Patient|Device|Organization)", "The individual, device or organization that participated in the event.", 0, 1, who);
           case -14402964: /*onBehalfOf*/  return new Property("onBehalfOf", "Reference(Practitioner|PractitionerRole|RelatedPerson|Patient|Device|Organization)", "The individual, device, or organization for whom the change was made.", 0, 1, onBehalfOf);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -492,10 +455,10 @@ public class Provenance extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 3506294:  return addRole(); 
-        case 117694:  return getWho(); 
-        case -14402964:  return getOnBehalfOf(); 
+        case 117694:  return getWho();
+        case -14402964:  return getOnBehalfOf();
         default: return super.makeProperty(hash, name);
         }
 
@@ -537,6 +500,11 @@ public class Provenance extends DomainResource {
       public ProvenanceAgentComponent copy() {
         ProvenanceAgentComponent dst = new ProvenanceAgentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProvenanceAgentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (role != null) {
           dst.role = new ArrayList<CodeableConcept>();
@@ -545,7 +513,6 @@ public class Provenance extends DomainResource {
         };
         dst.who = who == null ? null : who.copy();
         dst.onBehalfOf = onBehalfOf == null ? null : onBehalfOf.copy();
-        return dst;
       }
 
       @Override
@@ -599,18 +566,13 @@ public class Provenance extends DomainResource {
         protected Reference what;
 
         /**
-         * The actual object that is the target of the reference (Identity of the  Entity used. May be a logical or physical uri and maybe absolute or relative.)
-         */
-        protected Resource whatTarget;
-
-        /**
          * The entity is attributed to an agent to express the agent's responsibility for that entity, possibly along with other agents. This description can be understood as shorthand for saying that the agent was responsible for the activity which generated the entity.
          */
         @Child(name = "agent", type = {ProvenanceAgentComponent.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Entity is attributed to this agent", formalDefinition="The entity is attributed to an agent to express the agent's responsibility for that entity, possibly along with other agents. This description can be understood as shorthand for saying that the agent was responsible for the activity which generated the entity." )
         protected List<ProvenanceAgentComponent> agent;
 
-        private static final long serialVersionUID = 144967401L;
+        private static final long serialVersionUID = 211110220L;
 
     /**
      * Constructor
@@ -694,21 +656,6 @@ public class Provenance extends DomainResource {
          */
         public ProvenanceEntityComponent setWhat(Reference value) { 
           this.what = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #what} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identity of the  Entity used. May be a logical or physical uri and maybe absolute or relative.)
-         */
-        public Resource getWhatTarget() { 
-          return this.whatTarget;
-        }
-
-        /**
-         * @param value {@link #what} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identity of the  Entity used. May be a logical or physical uri and maybe absolute or relative.)
-         */
-        public ProvenanceEntityComponent setWhatTarget(Resource value) { 
-          this.whatTarget = value;
           return this;
         }
 
@@ -830,7 +777,7 @@ public class Provenance extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3506294:  return getRoleElement();
-        case 3648196:  return getWhat(); 
+        case 3648196:  return getWhat();
         case 92750597:  return addAgent(); 
         default: return super.makeProperty(hash, name);
         }
@@ -867,6 +814,11 @@ public class Provenance extends DomainResource {
       public ProvenanceEntityComponent copy() {
         ProvenanceEntityComponent dst = new ProvenanceEntityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProvenanceEntityComponent dst) {
+        super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
         dst.what = what == null ? null : what.copy();
         if (agent != null) {
@@ -874,7 +826,6 @@ public class Provenance extends DomainResource {
           for (ProvenanceAgentComponent i : agent)
             dst.agent.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -915,11 +866,6 @@ public class Provenance extends DomainResource {
     @Child(name = "target", type = {Reference.class}, order=0, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Target Reference(s) (usually version specific)", formalDefinition="The Reference(s) that were generated or updated by  the activity described in this resource. A provenance can point to more than one target if multiple resources were created/updated by the same activity." )
     protected List<Reference> target;
-    /**
-     * The actual objects that are the target of the reference (The Reference(s) that were generated or updated by  the activity described in this resource. A provenance can point to more than one target if multiple resources were created/updated by the same activity.)
-     */
-    protected List<Resource> targetTarget;
-
 
     /**
      * The period during which the activity occurred.
@@ -948,11 +894,6 @@ public class Provenance extends DomainResource {
     @Child(name = "location", type = {Location.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Where the activity occurred, if relevant", formalDefinition="Where the activity occurred, if relevant." )
     protected Reference location;
-
-    /**
-     * The actual object that is the target of the reference (Where the activity occurred, if relevant.)
-     */
-    protected Location locationTarget;
 
     /**
      * The reason that the activity was taking place.
@@ -991,7 +932,7 @@ public class Provenance extends DomainResource {
     @Description(shortDefinition="Signature on target", formalDefinition="A digital signature on the target Reference(s). The signer should match a Provenance.agent. The purpose of the signature is indicated." )
     protected List<Signature> signature;
 
-    private static final long serialVersionUID = -1991881518L;
+    private static final long serialVersionUID = -236021005L;
 
   /**
    * Constructor
@@ -1059,16 +1000,6 @@ public class Provenance extends DomainResource {
         addTarget();
       }
       return getTarget().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTargetTarget() { 
-      if (this.targetTarget == null)
-        this.targetTarget = new ArrayList<Resource>();
-      return this.targetTarget;
     }
 
     /**
@@ -1249,26 +1180,6 @@ public class Provenance extends DomainResource {
      */
     public Provenance setLocation(Reference value) { 
       this.location = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where the activity occurred, if relevant.)
-     */
-    public Location getLocationTarget() { 
-      if (this.locationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Provenance.location");
-        else if (Configuration.doAutoCreate())
-          this.locationTarget = new Location(); // aa
-      return this.locationTarget;
-    }
-
-    /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where the activity occurred, if relevant.)
-     */
-    public Provenance setLocationTarget(Location value) { 
-      this.locationTarget = value;
       return this;
     }
 
@@ -1630,13 +1541,13 @@ public class Provenance extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -880905839:  return addTarget(); 
-        case 784181563:  return getOccurred(); 
-        case 792816933:  return getOccurred(); 
+        case 784181563:  return getOccurred();
+        case 792816933:  return getOccurred();
         case -799233872:  return getRecordedElement();
         case -982670030:  return addPolicyElement();
-        case 1901043637:  return getLocation(); 
+        case 1901043637:  return getLocation();
         case -934964668:  return addReason(); 
-        case -1655966961:  return getActivity(); 
+        case -1655966961:  return getActivity();
         case 92750597:  return addAgent(); 
         case -1298275357:  return addEntity(); 
         case 1073584312:  return addSignature(); 
@@ -1714,6 +1625,11 @@ public class Provenance extends DomainResource {
       public Provenance copy() {
         Provenance dst = new Provenance();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Provenance dst) {
+        super.copyValues(dst);
         if (target != null) {
           dst.target = new ArrayList<Reference>();
           for (Reference i : target)
@@ -1748,7 +1664,6 @@ public class Provenance extends DomainResource {
           for (Signature i : signature)
             dst.signature.add(i.copy());
         };
-        return dst;
       }
 
       protected Provenance typedCopy() {

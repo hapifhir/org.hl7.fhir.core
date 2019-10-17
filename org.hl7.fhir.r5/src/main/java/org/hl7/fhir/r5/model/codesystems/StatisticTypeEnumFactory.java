@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -60,62 +59,98 @@ public class StatisticTypeEnumFactory implements EnumFactory<StatisticType> {
   public StatisticType fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("relative-RR".equals(codeString))
-      return StatisticType.RELATIVERR;
-    if ("relative-OR".equals(codeString))
-      return StatisticType.RELATIVEOR;
-    if ("relative-HR".equals(codeString))
-      return StatisticType.RELATIVEHR;
-    if ("absolute-ARD".equals(codeString))
-      return StatisticType.ABSOLUTEARD;
-    if ("absolute-MeanDiff".equals(codeString))
-      return StatisticType.ABSOLUTEMEANDIFF;
-    if ("absolute-SMD".equals(codeString))
-      return StatisticType.ABSOLUTESMD;
     if ("absolute-MedianDiff".equals(codeString))
       return StatisticType.ABSOLUTEMEDIANDIFF;
-    if ("proportion".equals(codeString))
-      return StatisticType.PROPORTION;
-    if ("derivedProportion".equals(codeString))
-      return StatisticType.DERIVEDPROPORTION;
-    if ("mean".equals(codeString))
-      return StatisticType.MEAN;
-    if ("median".equals(codeString))
-      return StatisticType.MEDIAN;
-    if ("count".equals(codeString))
-      return StatisticType.COUNT;
+    if ("C25463".equals(codeString))
+      return StatisticType.C25463;
+    if ("0000301".equals(codeString))
+      return StatisticType._0000301;
+    if ("predictedRisk".equals(codeString))
+      return StatisticType.PREDICTEDRISK;
     if ("descriptive".equals(codeString))
       return StatisticType.DESCRIPTIVE;
+    if ("C93150".equals(codeString))
+      return StatisticType.C93150;
+    if ("C16726".equals(codeString))
+      return StatisticType.C16726;
+    if ("rate-ratio".equals(codeString))
+      return StatisticType.RATERATIO;
+    if ("C25564".equals(codeString))
+      return StatisticType.C25564;
+    if ("C53319".equals(codeString))
+      return StatisticType.C53319;
+    if ("0000457".equals(codeString))
+      return StatisticType._0000457;
+    if ("C28007".equals(codeString))
+      return StatisticType.C28007;
+    if ("C25570".equals(codeString))
+      return StatisticType.C25570;
+    if ("C16932".equals(codeString))
+      return StatisticType.C16932;
+    if ("C65172".equals(codeString))
+      return StatisticType.C65172;
+    if ("C17010".equals(codeString))
+      return StatisticType.C17010;
+    if ("C44256".equals(codeString))
+      return StatisticType.C44256;
+    if ("0000565".equals(codeString))
+      return StatisticType._0000565;
+    if ("C93152".equals(codeString))
+      return StatisticType.C93152;
+    if ("0000424".equals(codeString))
+      return StatisticType._0000424;
+    if ("C65171".equals(codeString))
+      return StatisticType.C65171;
+    if ("0000100".equals(codeString))
+      return StatisticType._0000100;
     throw new IllegalArgumentException("Unknown StatisticType code '"+codeString+"'");
   }
 
   public String toCode(StatisticType code) {
-    if (code == StatisticType.RELATIVERR)
-      return "relative-RR";
-    if (code == StatisticType.RELATIVEOR)
-      return "relative-OR";
-    if (code == StatisticType.RELATIVEHR)
-      return "relative-HR";
-    if (code == StatisticType.ABSOLUTEARD)
-      return "absolute-ARD";
-    if (code == StatisticType.ABSOLUTEMEANDIFF)
-      return "absolute-MeanDiff";
-    if (code == StatisticType.ABSOLUTESMD)
-      return "absolute-SMD";
     if (code == StatisticType.ABSOLUTEMEDIANDIFF)
       return "absolute-MedianDiff";
-    if (code == StatisticType.PROPORTION)
-      return "proportion";
-    if (code == StatisticType.DERIVEDPROPORTION)
-      return "derivedProportion";
-    if (code == StatisticType.MEAN)
-      return "mean";
-    if (code == StatisticType.MEDIAN)
-      return "median";
-    if (code == StatisticType.COUNT)
-      return "count";
+    if (code == StatisticType.C25463)
+      return "C25463";
+    if (code == StatisticType._0000301)
+      return "0000301";
+    if (code == StatisticType.PREDICTEDRISK)
+      return "predictedRisk";
     if (code == StatisticType.DESCRIPTIVE)
       return "descriptive";
+    if (code == StatisticType.C93150)
+      return "C93150";
+    if (code == StatisticType.C16726)
+      return "C16726";
+    if (code == StatisticType.RATERATIO)
+      return "rate-ratio";
+    if (code == StatisticType.C25564)
+      return "C25564";
+    if (code == StatisticType.C53319)
+      return "C53319";
+    if (code == StatisticType._0000457)
+      return "0000457";
+    if (code == StatisticType.C28007)
+      return "C28007";
+    if (code == StatisticType.C25570)
+      return "C25570";
+    if (code == StatisticType.C16932)
+      return "C16932";
+    if (code == StatisticType.C65172)
+      return "C65172";
+    if (code == StatisticType.C17010)
+      return "C17010";
+    if (code == StatisticType.C44256)
+      return "C44256";
+    if (code == StatisticType._0000565)
+      return "0000565";
+    if (code == StatisticType.C93152)
+      return "C93152";
+    if (code == StatisticType._0000424)
+      return "0000424";
+    if (code == StatisticType.C65171)
+      return "C65171";
+    if (code == StatisticType._0000100)
+      return "0000100";
     return "?";
   }
 

@@ -53,21 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationshipEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
  */
@@ -221,10 +219,10 @@ public class ConceptMap extends MetadataResource {
         protected List<SourceElementComponent> element;
 
         /**
-         * What to do when there is no mapping for the source concept. "Unmapped" does not include codes that are unamatched, and the unmapped element is ignored in a code is specified to have relationship = not-related-to.
+         * What to do when there is no mapping to a target concept from the source concept.  This provides the "default" to be applied when there is no target concept mapping specified.  The 'unmapped' element is ignored if a code is specified to have relationship = not-related-to.
          */
         @Child(name = "unmapped", type = {}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="What to do when there is no mapping for the source concept", formalDefinition="What to do when there is no mapping for the source concept. \"Unmapped\" does not include codes that are unamatched, and the unmapped element is ignored in a code is specified to have relationship = not-related-to." )
+        @Description(shortDefinition="What to do when there is no mapping target for the source concept", formalDefinition="What to do when there is no mapping to a target concept from the source concept.  This provides the \"default\" to be applied when there is no target concept mapping specified.  The 'unmapped' element is ignored if a code is specified to have relationship = not-related-to." )
         protected ConceptMapGroupUnmappedComponent unmapped;
 
         private static final long serialVersionUID = 1606357508L;
@@ -486,7 +484,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #unmapped} (What to do when there is no mapping for the source concept. "Unmapped" does not include codes that are unamatched, and the unmapped element is ignored in a code is specified to have relationship = not-related-to.)
+         * @return {@link #unmapped} (What to do when there is no mapping to a target concept from the source concept.  This provides the "default" to be applied when there is no target concept mapping specified.  The 'unmapped' element is ignored if a code is specified to have relationship = not-related-to.)
          */
         public ConceptMapGroupUnmappedComponent getUnmapped() { 
           if (this.unmapped == null)
@@ -502,7 +500,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @param value {@link #unmapped} (What to do when there is no mapping for the source concept. "Unmapped" does not include codes that are unamatched, and the unmapped element is ignored in a code is specified to have relationship = not-related-to.)
+         * @param value {@link #unmapped} (What to do when there is no mapping to a target concept from the source concept.  This provides the "default" to be applied when there is no target concept mapping specified.  The 'unmapped' element is ignored if a code is specified to have relationship = not-related-to.)
          */
         public ConceptMapGroupComponent setUnmapped(ConceptMapGroupUnmappedComponent value) { 
           this.unmapped = value;
@@ -516,7 +514,7 @@ public class ConceptMap extends MetadataResource {
           children.add(new Property("target", "uri", "An absolute URI that identifies the target system that the concepts will be mapped to.", 0, 1, target));
           children.add(new Property("targetVersion", "string", "The specific version of the code system, as determined by the code system authority.", 0, 1, targetVersion));
           children.add(new Property("element", "", "Mappings for an individual concept in the source to one or more concepts in the target.", 0, java.lang.Integer.MAX_VALUE, element));
-          children.add(new Property("unmapped", "", "What to do when there is no mapping for the source concept. \"Unmapped\" does not include codes that are unamatched, and the unmapped element is ignored in a code is specified to have relationship = not-related-to.", 0, 1, unmapped));
+          children.add(new Property("unmapped", "", "What to do when there is no mapping to a target concept from the source concept.  This provides the \"default\" to be applied when there is no target concept mapping specified.  The 'unmapped' element is ignored if a code is specified to have relationship = not-related-to.", 0, 1, unmapped));
         }
 
         @Override
@@ -527,7 +525,7 @@ public class ConceptMap extends MetadataResource {
           case -880905839: /*target*/  return new Property("target", "uri", "An absolute URI that identifies the target system that the concepts will be mapped to.", 0, 1, target);
           case -1639412217: /*targetVersion*/  return new Property("targetVersion", "string", "The specific version of the code system, as determined by the code system authority.", 0, 1, targetVersion);
           case -1662836996: /*element*/  return new Property("element", "", "Mappings for an individual concept in the source to one or more concepts in the target.", 0, java.lang.Integer.MAX_VALUE, element);
-          case -194857460: /*unmapped*/  return new Property("unmapped", "", "What to do when there is no mapping for the source concept. \"Unmapped\" does not include codes that are unamatched, and the unmapped element is ignored in a code is specified to have relationship = not-related-to.", 0, 1, unmapped);
+          case -194857460: /*unmapped*/  return new Property("unmapped", "", "What to do when there is no mapping to a target concept from the source concept.  This provides the \"default\" to be applied when there is no target concept mapping specified.  The 'unmapped' element is ignored if a code is specified to have relationship = not-related-to.", 0, 1, unmapped);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -648,6 +646,11 @@ public class ConceptMap extends MetadataResource {
       public ConceptMapGroupComponent copy() {
         ConceptMapGroupComponent dst = new ConceptMapGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptMapGroupComponent dst) {
+        super.copyValues(dst);
         dst.source = source == null ? null : source.copy();
         dst.sourceVersion = sourceVersion == null ? null : sourceVersion.copy();
         dst.target = target == null ? null : target.copy();
@@ -658,7 +661,6 @@ public class ConceptMap extends MetadataResource {
             dst.element.add(i.copy());
         };
         dst.unmapped = unmapped == null ? null : unmapped.copy();
-        return dst;
       }
 
       @Override
@@ -713,20 +715,20 @@ public class ConceptMap extends MetadataResource {
         protected StringType display;
 
         /**
+         * If noMap = true this indicates that no mapping to a target concept exists for this source concept.
+         */
+        @Child(name = "noMap", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="No mapping to a target concept for this source concept", formalDefinition="If noMap = true this indicates that no mapping to a target concept exists for this source concept." )
+        protected BooleanType noMap;
+
+        /**
          * A concept from the target value set that this concept maps to.
          */
-        @Child(name = "target", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "target", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Concept in target system for element", formalDefinition="A concept from the target value set that this concept maps to." )
         protected List<TargetElementComponent> target;
 
-        private static final long serialVersionUID = -1115258852L;
-
-        /**
-         * noMap = true indicates that there is no target mapping for the source concept.
-         */
-        @Child(name = "noMap", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="No mapping to a target concept for this source concept", formalDefinition="noMap = true indicates that no mapping to a target concept exists for this source concept." )
-        protected BooleanType noMap;
+        private static final long serialVersionUID = 1876940521L;
 
     /**
      * Constructor
@@ -834,14 +836,14 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #noMap} (noMap = true indicates that no mapping to a target concept exists for this source concept.). This is the underlying object with id, value and extensions. The accessor "getNoMap" gives direct access to the value
+         * @return {@link #noMap} (If noMap = true this indicates that no mapping to a target concept exists for this source concept.). This is the underlying object with id, value and extensions. The accessor "getNoMap" gives direct access to the value
          */
         public BooleanType getNoMapElement() { 
           if (this.noMap == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SourceElementComponent.noMap");
             else if (Configuration.doAutoCreate())
-              this.noMap = new BooleanType();
+              this.noMap = new BooleanType(); // bb
           return this.noMap;
         }
 
@@ -854,24 +856,24 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @param value {@link #source} (noMap = true indicates that no mapping to a target concept exists for this source concept.). This is the underlying object with id, value and extensions. The accessor "getNoMap" gives direct access to the value
+         * @param value {@link #noMap} (If noMap = true this indicates that no mapping to a target concept exists for this source concept.). This is the underlying object with id, value and extensions. The accessor "getNoMap" gives direct access to the value
          */
-        public SourceElementComponent setNoMapElement(Boolean value) { 
-          this.noMap = new BooleanType(value);
+        public SourceElementComponent setNoMapElement(BooleanType value) { 
+          this.noMap = value;
           return this;
         }
 
         /**
-         * @return noMap = true indicates that no mapping to a target concept exists for this source concept.
+         * @return If noMap = true this indicates that no mapping to a target concept exists for this source concept.
          */
-        public Boolean getNoMap() { 
-          return this.noMap == null ? null : this.noMap.getValue();
+        public boolean getNoMap() { 
+          return this.noMap == null || this.noMap.isEmpty() ? false : this.noMap.getValue();
         }
 
         /**
-         * @param value noMap = true indicates that no mapping to a target concept exists for this source concept.
+         * @param value If noMap = true this indicates that no mapping to a target concept exists for this source concept.
          */
-        public SourceElementComponent setNoMap(Boolean value) { 
+        public SourceElementComponent setNoMap(boolean value) { 
           if (this.noMap == null)
         	this.noMap = new BooleanType();
           this.noMap.setValue(value);
@@ -935,6 +937,7 @@ public class ConceptMap extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("code", "code", "Identity (code or path) or the element/item being mapped.", 0, 1, code));
           children.add(new Property("display", "string", "The display for the code. The display is only provided to help editors when editing the concept map.", 0, 1, display));
+          children.add(new Property("noMap", "boolean", "If noMap = true this indicates that no mapping to a target concept exists for this source concept.", 0, 1, noMap));
           children.add(new Property("target", "", "A concept from the target value set that this concept maps to.", 0, java.lang.Integer.MAX_VALUE, target));
         }
 
@@ -943,6 +946,7 @@ public class ConceptMap extends MetadataResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "code", "Identity (code or path) or the element/item being mapped.", 0, 1, code);
           case 1671764162: /*display*/  return new Property("display", "string", "The display for the code. The display is only provided to help editors when editing the concept map.", 0, 1, display);
+          case 104971227: /*noMap*/  return new Property("noMap", "boolean", "If noMap = true this indicates that no mapping to a target concept exists for this source concept.", 0, 1, noMap);
           case -880905839: /*target*/  return new Property("target", "", "A concept from the target value set that this concept maps to.", 0, java.lang.Integer.MAX_VALUE, target);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -954,6 +958,7 @@ public class ConceptMap extends MetadataResource {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
         case 1671764162: /*display*/ return this.display == null ? new Base[0] : new Base[] {this.display}; // StringType
+        case 104971227: /*noMap*/ return this.noMap == null ? new Base[0] : new Base[] {this.noMap}; // BooleanType
         case -880905839: /*target*/ return this.target == null ? new Base[0] : this.target.toArray(new Base[this.target.size()]); // TargetElementComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -969,6 +974,9 @@ public class ConceptMap extends MetadataResource {
         case 1671764162: // display
           this.display = castToString(value); // StringType
           return value;
+        case 104971227: // noMap
+          this.noMap = castToBoolean(value); // BooleanType
+          return value;
         case -880905839: // target
           this.getTarget().add((TargetElementComponent) value); // TargetElementComponent
           return value;
@@ -983,6 +991,8 @@ public class ConceptMap extends MetadataResource {
           this.code = castToCode(value); // CodeType
         } else if (name.equals("display")) {
           this.display = castToString(value); // StringType
+        } else if (name.equals("noMap")) {
+          this.noMap = castToBoolean(value); // BooleanType
         } else if (name.equals("target")) {
           this.getTarget().add((TargetElementComponent) value);
         } else
@@ -995,6 +1005,7 @@ public class ConceptMap extends MetadataResource {
         switch (hash) {
         case 3059181:  return getCodeElement();
         case 1671764162:  return getDisplayElement();
+        case 104971227:  return getNoMapElement();
         case -880905839:  return addTarget(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1006,6 +1017,7 @@ public class ConceptMap extends MetadataResource {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"code"};
         case 1671764162: /*display*/ return new String[] {"string"};
+        case 104971227: /*noMap*/ return new String[] {"boolean"};
         case -880905839: /*target*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1020,6 +1032,9 @@ public class ConceptMap extends MetadataResource {
         else if (name.equals("display")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.display");
         }
+        else if (name.equals("noMap")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.noMap");
+        }
         else if (name.equals("target")) {
           return addTarget();
         }
@@ -1030,14 +1045,19 @@ public class ConceptMap extends MetadataResource {
       public SourceElementComponent copy() {
         SourceElementComponent dst = new SourceElementComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SourceElementComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.display = display == null ? null : display.copy();
+        dst.noMap = noMap == null ? null : noMap.copy();
         if (target != null) {
           dst.target = new ArrayList<TargetElementComponent>();
           for (TargetElementComponent i : target)
             dst.target.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1047,8 +1067,8 @@ public class ConceptMap extends MetadataResource {
         if (!(other_ instanceof SourceElementComponent))
           return false;
         SourceElementComponent o = (SourceElementComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(display, o.display, true) && compareDeep(target, o.target, true)
-          ;
+        return compareDeep(code, o.code, true) && compareDeep(display, o.display, true) && compareDeep(noMap, o.noMap, true)
+           && compareDeep(target, o.target, true);
       }
 
       @Override
@@ -1058,11 +1078,13 @@ public class ConceptMap extends MetadataResource {
         if (!(other_ instanceof SourceElementComponent))
           return false;
         SourceElementComponent o = (SourceElementComponent) other_;
-        return compareValues(code, o.code, true) && compareValues(display, o.display, true);
+        return compareValues(code, o.code, true) && compareValues(display, o.display, true) && compareValues(noMap, o.noMap, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, display, target);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, display, noMap, target
+          );
       }
 
   public String fhirType() {
@@ -1089,10 +1111,10 @@ public class ConceptMap extends MetadataResource {
         protected StringType display;
 
         /**
-         * The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).
+         * The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).
          */
         @Child(name = "relationship", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=false)
-        @Description(shortDefinition="related-to | equivalent | broader | narrower | not-related-to", formalDefinition="The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source)." )
+        @Description(shortDefinition="related-to | equivalent | broader | narrower | not-related-to", formalDefinition="The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/concept-map-relationship")
         protected Enumeration<ConceptMapRelationship> relationship;
 
@@ -1111,13 +1133,13 @@ public class ConceptMap extends MetadataResource {
         protected List<OtherElementComponent> dependsOn;
 
         /**
-         * A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship cannot be relied on.
+         * A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on.
          */
         @Child(name = "product", type = {OtherElementComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Other concepts that this mapping also produces", formalDefinition="A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship cannot be relied on." )
+        @Description(shortDefinition="Other concepts that this mapping also produces", formalDefinition="A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on." )
         protected List<OtherElementComponent> product;
 
-        private static final long serialVersionUID = -2008997477L;
+        private static final long serialVersionUID = -1425743857L;
 
     /**
      * Constructor
@@ -1233,7 +1255,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #relationship} (The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
+         * @return {@link #relationship} (The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
         public Enumeration<ConceptMapRelationship> getRelationshipElement() { 
           if (this.relationship == null)
@@ -1253,7 +1275,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @param value {@link #relationship} (The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
+         * @param value {@link #relationship} (The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
         public TargetElementComponent setRelationshipElement(Enumeration<ConceptMapRelationship> value) { 
           this.relationship = value;
@@ -1261,14 +1283,14 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).
+         * @return The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).
          */
         public ConceptMapRelationship getRelationship() { 
           return this.relationship == null ? null : this.relationship.getValue();
         }
 
         /**
-         * @param value The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).
+         * @param value The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).
          */
         public TargetElementComponent setRelationship(ConceptMapRelationship value) { 
             if (this.relationship == null)
@@ -1380,7 +1402,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #product} (A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship cannot be relied on.)
+         * @return {@link #product} (A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on.)
          */
         public List<OtherElementComponent> getProduct() { 
           if (this.product == null)
@@ -1436,10 +1458,10 @@ public class ConceptMap extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("code", "code", "Identity (code or path) or the element/item that the map refers to.", 0, 1, code));
           children.add(new Property("display", "string", "The display for the code. The display is only provided to help editors when editing the concept map.", 0, 1, display));
-          children.add(new Property("relationship", "code", "The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).", 0, 1, relationship));
+          children.add(new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).", 0, 1, relationship));
           children.add(new Property("comment", "string", "A description of status/issues in mapping that conveys additional information not represented in  the structured data.", 0, 1, comment));
           children.add(new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified element can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
-          children.add(new Property("product", "@ConceptMap.group.element.target.dependsOn", "A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship cannot be relied on.", 0, java.lang.Integer.MAX_VALUE, product));
+          children.add(new Property("product", "@ConceptMap.group.element.target.dependsOn", "A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on.", 0, java.lang.Integer.MAX_VALUE, product));
         }
 
         @Override
@@ -1447,10 +1469,10 @@ public class ConceptMap extends MetadataResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "code", "Identity (code or path) or the element/item that the map refers to.", 0, 1, code);
           case 1671764162: /*display*/  return new Property("display", "string", "The display for the code. The display is only provided to help editors when editing the concept map.", 0, 1, display);
-          case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship between the source and target concepts (counting for the dependencies and products). The relationship is read from target to source (e.g. the target is 'broader' than the source).", 0, 1, relationship);
+          case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).", 0, 1, relationship);
           case 950398559: /*comment*/  return new Property("comment", "string", "A description of status/issues in mapping that conveys additional information not represented in  the structured data.", 0, 1, comment);
           case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified element can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
-          case -309474065: /*product*/  return new Property("product", "@ConceptMap.group.element.target.dependsOn", "A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship cannot be relied on.", 0, java.lang.Integer.MAX_VALUE, product);
+          case -309474065: /*product*/  return new Property("product", "@ConceptMap.group.element.target.dependsOn", "A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on.", 0, java.lang.Integer.MAX_VALUE, product);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1572,6 +1594,11 @@ public class ConceptMap extends MetadataResource {
       public TargetElementComponent copy() {
         TargetElementComponent dst = new TargetElementComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TargetElementComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.display = display == null ? null : display.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
@@ -1586,7 +1613,6 @@ public class ConceptMap extends MetadataResource {
           for (OtherElementComponent i : product)
             dst.product.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1972,11 +1998,15 @@ public class ConceptMap extends MetadataResource {
       public OtherElementComponent copy() {
         OtherElementComponent dst = new OtherElementComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OtherElementComponent dst) {
+        super.copyValues(dst);
         dst.property = property == null ? null : property.copy();
         dst.system = system == null ? null : system.copy();
         dst.value = value == null ? null : value.copy();
         dst.display = display == null ? null : display.copy();
-        return dst;
       }
 
       @Override
@@ -2367,11 +2397,15 @@ public class ConceptMap extends MetadataResource {
       public ConceptMapGroupUnmappedComponent copy() {
         ConceptMapGroupUnmappedComponent dst = new ConceptMapGroupUnmappedComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptMapGroupUnmappedComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.code = code == null ? null : code.copy();
         dst.display = display == null ? null : display.copy();
         dst.url = url == null ? null : url.copy();
-        return dst;
       }
 
       @Override
@@ -3656,6 +3690,11 @@ public class ConceptMap extends MetadataResource {
       public ConceptMap copy() {
         ConceptMap dst = new ConceptMap();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptMap dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.version = version == null ? null : version.copy();
@@ -3690,7 +3729,6 @@ public class ConceptMap extends MetadataResource {
           for (ConceptMapGroupComponent i : group)
             dst.group.add(i.copy());
         };
-        return dst;
       }
 
       protected ConceptMap typedCopy() {

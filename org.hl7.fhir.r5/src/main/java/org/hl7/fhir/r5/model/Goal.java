@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.
  */
@@ -580,11 +582,11 @@ public class Goal extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 938321246:  return getMeasure(); 
-        case -1973084529:  return getDetail(); 
-        case -1335224239:  return getDetail(); 
-        case -1320900084:  return getDue(); 
-        case 99828:  return getDue(); 
+        case 938321246:  return getMeasure();
+        case -1973084529:  return getDetail();
+        case -1335224239:  return getDetail();
+        case -1320900084:  return getDue();
+        case 99828:  return getDue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -650,10 +652,14 @@ public class Goal extends DomainResource {
       public GoalTargetComponent copy() {
         GoalTargetComponent dst = new GoalTargetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GoalTargetComponent dst) {
+        super.copyValues(dst);
         dst.measure = measure == null ? null : measure.copy();
         dst.detail = detail == null ? null : detail.copy();
         dst.due = due == null ? null : due.copy();
-        return dst;
       }
 
       @Override
@@ -720,9 +726,16 @@ public class Goal extends DomainResource {
     protected List<CodeableConcept> category;
 
     /**
+     * After meeting the goal, ongoing activity is needed to sustain the goal objective.
+     */
+    @Child(name = "continuous", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="After meeting the goal, ongoing activity is needed to sustain the goal objective", formalDefinition="After meeting the goal, ongoing activity is needed to sustain the goal objective." )
+    protected BooleanType continuous;
+
+    /**
      * Identifies the mutually agreed level of importance associated with reaching/sustaining the goal.
      */
-    @Child(name = "priority", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "priority", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="high-priority | medium-priority | low-priority", formalDefinition="Identifies the mutually agreed level of importance associated with reaching/sustaining the goal." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/goal-priority")
     protected CodeableConcept priority;
@@ -730,7 +743,7 @@ public class Goal extends DomainResource {
     /**
      * Human-readable and/or coded description of a specific desired objective of care, such as "control blood pressure" or "negotiate an obstacle course" or "dance with child at wedding".
      */
-    @Child(name = "description", type = {CodeableConcept.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {CodeableConcept.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Code or text describing goal", formalDefinition="Human-readable and/or coded description of a specific desired objective of care, such as \"control blood pressure\" or \"negotiate an obstacle course\" or \"dance with child at wedding\"." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinical-findings")
     protected CodeableConcept description;
@@ -738,19 +751,14 @@ public class Goal extends DomainResource {
     /**
      * Identifies the patient, group or organization for whom the goal is being established.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class, Organization.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Group.class, Organization.class}, order=7, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who this goal is intended for", formalDefinition="Identifies the patient, group or organization for whom the goal is being established." )
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Identifies the patient, group or organization for whom the goal is being established.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The date or event after which the goal should begin being pursued.
      */
-    @Child(name = "start", type = {DateType.class, CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "start", type = {DateType.class, CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When goal pursuit begins", formalDefinition="The date or event after which the goal should begin being pursued." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/goal-start-event")
     protected Type start;
@@ -758,59 +766,49 @@ public class Goal extends DomainResource {
     /**
      * Indicates what should be done by when.
      */
-    @Child(name = "target", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "target", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Target outcome for the goal", formalDefinition="Indicates what should be done by when." )
     protected List<GoalTargetComponent> target;
 
     /**
      * Identifies when the current status.  I.e. When initially created, when achieved, when cancelled, etc.
      */
-    @Child(name = "statusDate", type = {DateType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "statusDate", type = {DateType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When goal status took effect", formalDefinition="Identifies when the current status.  I.e. When initially created, when achieved, when cancelled, etc." )
     protected DateType statusDate;
 
     /**
      * Captures the reason for the current status.
      */
-    @Child(name = "statusReason", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "statusReason", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Reason for current status", formalDefinition="Captures the reason for the current status." )
     protected StringType statusReason;
 
     /**
      * Indicates whose goal this is - patient goal, practitioner goal, etc.
      */
-    @Child(name = "expressedBy", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "expressedBy", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who's responsible for creating Goal?", formalDefinition="Indicates whose goal this is - patient goal, practitioner goal, etc." )
     protected Reference expressedBy;
 
     /**
-     * The actual object that is the target of the reference (Indicates whose goal this is - patient goal, practitioner goal, etc.)
-     */
-    protected Resource expressedByTarget;
-
-    /**
      * The identified conditions and other health record elements that are intended to be addressed by the goal.
      */
-    @Child(name = "addresses", type = {Condition.class, Observation.class, MedicationStatement.class, NutritionOrder.class, ServiceRequest.class, RiskAssessment.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "addresses", type = {Condition.class, Observation.class, MedicationUsage.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class, RiskAssessment.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Issues addressed by this goal", formalDefinition="The identified conditions and other health record elements that are intended to be addressed by the goal." )
     protected List<Reference> addresses;
-    /**
-     * The actual objects that are the target of the reference (The identified conditions and other health record elements that are intended to be addressed by the goal.)
-     */
-    protected List<Resource> addressesTarget;
-
 
     /**
      * Any comments related to the goal.
      */
-    @Child(name = "note", type = {Annotation.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments about the goal", formalDefinition="Any comments related to the goal." )
     protected List<Annotation> note;
 
     /**
      * Identifies the change (or lack of change) at the point when the status of the goal is assessed.
      */
-    @Child(name = "outcomeCode", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "outcomeCode", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What result was achieved regarding the goal?", formalDefinition="Identifies the change (or lack of change) at the point when the status of the goal is assessed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinical-findings")
     protected List<CodeableConcept> outcomeCode;
@@ -818,16 +816,11 @@ public class Goal extends DomainResource {
     /**
      * Details of what's changed (or not changed).
      */
-    @Child(name = "outcomeReference", type = {Observation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "outcomeReference", type = {Observation.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Observation that resulted from goal", formalDefinition="Details of what's changed (or not changed)." )
     protected List<Reference> outcomeReference;
-    /**
-     * The actual objects that are the target of the reference (Details of what's changed (or not changed).)
-     */
-    protected List<Observation> outcomeReferenceTarget;
 
-
-    private static final long serialVersionUID = -1366854797L;
+    private static final long serialVersionUID = 1967927353L;
 
   /**
    * Constructor
@@ -1022,6 +1015,51 @@ public class Goal extends DomainResource {
     }
 
     /**
+     * @return {@link #continuous} (After meeting the goal, ongoing activity is needed to sustain the goal objective.). This is the underlying object with id, value and extensions. The accessor "getContinuous" gives direct access to the value
+     */
+    public BooleanType getContinuousElement() { 
+      if (this.continuous == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Goal.continuous");
+        else if (Configuration.doAutoCreate())
+          this.continuous = new BooleanType(); // bb
+      return this.continuous;
+    }
+
+    public boolean hasContinuousElement() { 
+      return this.continuous != null && !this.continuous.isEmpty();
+    }
+
+    public boolean hasContinuous() { 
+      return this.continuous != null && !this.continuous.isEmpty();
+    }
+
+    /**
+     * @param value {@link #continuous} (After meeting the goal, ongoing activity is needed to sustain the goal objective.). This is the underlying object with id, value and extensions. The accessor "getContinuous" gives direct access to the value
+     */
+    public Goal setContinuousElement(BooleanType value) { 
+      this.continuous = value;
+      return this;
+    }
+
+    /**
+     * @return After meeting the goal, ongoing activity is needed to sustain the goal objective.
+     */
+    public boolean getContinuous() { 
+      return this.continuous == null || this.continuous.isEmpty() ? false : this.continuous.getValue();
+    }
+
+    /**
+     * @param value After meeting the goal, ongoing activity is needed to sustain the goal objective.
+     */
+    public Goal setContinuous(boolean value) { 
+        if (this.continuous == null)
+          this.continuous = new BooleanType();
+        this.continuous.setValue(value);
+      return this;
+    }
+
+    /**
      * @return {@link #priority} (Identifies the mutually agreed level of importance associated with reaching/sustaining the goal.)
      */
     public CodeableConcept getPriority() { 
@@ -1090,21 +1128,6 @@ public class Goal extends DomainResource {
      */
     public Goal setSubject(Reference value) { 
       this.subject = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the patient, group or organization for whom the goal is being established.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the patient, group or organization for whom the goal is being established.)
-     */
-    public Goal setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
       return this;
     }
 
@@ -1335,21 +1358,6 @@ public class Goal extends DomainResource {
     }
 
     /**
-     * @return {@link #expressedBy} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates whose goal this is - patient goal, practitioner goal, etc.)
-     */
-    public Resource getExpressedByTarget() { 
-      return this.expressedByTarget;
-    }
-
-    /**
-     * @param value {@link #expressedBy} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates whose goal this is - patient goal, practitioner goal, etc.)
-     */
-    public Goal setExpressedByTarget(Resource value) { 
-      this.expressedByTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #addresses} (The identified conditions and other health record elements that are intended to be addressed by the goal.)
      */
     public List<Reference> getAddresses() { 
@@ -1400,16 +1408,6 @@ public class Goal extends DomainResource {
         addAddresses();
       }
       return getAddresses().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAddressesTarget() { 
-      if (this.addressesTarget == null)
-        this.addressesTarget = new ArrayList<Resource>();
-      return this.addressesTarget;
     }
 
     /**
@@ -1571,34 +1569,13 @@ public class Goal extends DomainResource {
       return getOutcomeReference().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Observation> getOutcomeReferenceTarget() { 
-      if (this.outcomeReferenceTarget == null)
-        this.outcomeReferenceTarget = new ArrayList<Observation>();
-      return this.outcomeReferenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Observation addOutcomeReferenceTarget() { 
-      Observation r = new Observation();
-      if (this.outcomeReferenceTarget == null)
-        this.outcomeReferenceTarget = new ArrayList<Observation>();
-      this.outcomeReferenceTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this goal by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("lifecycleStatus", "code", "The state of the goal throughout its lifecycle.", 0, 1, lifecycleStatus));
         children.add(new Property("achievementStatus", "CodeableConcept", "Describes the progression, or lack thereof, towards the goal against the target.", 0, 1, achievementStatus));
         children.add(new Property("category", "CodeableConcept", "Indicates a category the goal falls within.", 0, java.lang.Integer.MAX_VALUE, category));
+        children.add(new Property("continuous", "boolean", "After meeting the goal, ongoing activity is needed to sustain the goal objective.", 0, 1, continuous));
         children.add(new Property("priority", "CodeableConcept", "Identifies the mutually agreed level of importance associated with reaching/sustaining the goal.", 0, 1, priority));
         children.add(new Property("description", "CodeableConcept", "Human-readable and/or coded description of a specific desired objective of care, such as \"control blood pressure\" or \"negotiate an obstacle course\" or \"dance with child at wedding\".", 0, 1, description));
         children.add(new Property("subject", "Reference(Patient|Group|Organization)", "Identifies the patient, group or organization for whom the goal is being established.", 0, 1, subject));
@@ -1607,7 +1584,7 @@ public class Goal extends DomainResource {
         children.add(new Property("statusDate", "date", "Identifies when the current status.  I.e. When initially created, when achieved, when cancelled, etc.", 0, 1, statusDate));
         children.add(new Property("statusReason", "string", "Captures the reason for the current status.", 0, 1, statusReason));
         children.add(new Property("expressedBy", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Indicates whose goal this is - patient goal, practitioner goal, etc.", 0, 1, expressedBy));
-        children.add(new Property("addresses", "Reference(Condition|Observation|MedicationStatement|NutritionOrder|ServiceRequest|RiskAssessment)", "The identified conditions and other health record elements that are intended to be addressed by the goal.", 0, java.lang.Integer.MAX_VALUE, addresses));
+        children.add(new Property("addresses", "Reference(Condition|Observation|MedicationUsage|MedicationRequest|NutritionOrder|ServiceRequest|RiskAssessment)", "The identified conditions and other health record elements that are intended to be addressed by the goal.", 0, java.lang.Integer.MAX_VALUE, addresses));
         children.add(new Property("note", "Annotation", "Any comments related to the goal.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("outcomeCode", "CodeableConcept", "Identifies the change (or lack of change) at the point when the status of the goal is assessed.", 0, java.lang.Integer.MAX_VALUE, outcomeCode));
         children.add(new Property("outcomeReference", "Reference(Observation)", "Details of what's changed (or not changed).", 0, java.lang.Integer.MAX_VALUE, outcomeReference));
@@ -1620,6 +1597,7 @@ public class Goal extends DomainResource {
         case 1165552636: /*lifecycleStatus*/  return new Property("lifecycleStatus", "code", "The state of the goal throughout its lifecycle.", 0, 1, lifecycleStatus);
         case 104524801: /*achievementStatus*/  return new Property("achievementStatus", "CodeableConcept", "Describes the progression, or lack thereof, towards the goal against the target.", 0, 1, achievementStatus);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Indicates a category the goal falls within.", 0, java.lang.Integer.MAX_VALUE, category);
+        case 379114255: /*continuous*/  return new Property("continuous", "boolean", "After meeting the goal, ongoing activity is needed to sustain the goal objective.", 0, 1, continuous);
         case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "Identifies the mutually agreed level of importance associated with reaching/sustaining the goal.", 0, 1, priority);
         case -1724546052: /*description*/  return new Property("description", "CodeableConcept", "Human-readable and/or coded description of a specific desired objective of care, such as \"control blood pressure\" or \"negotiate an obstacle course\" or \"dance with child at wedding\".", 0, 1, description);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Organization)", "Identifies the patient, group or organization for whom the goal is being established.", 0, 1, subject);
@@ -1631,7 +1609,7 @@ public class Goal extends DomainResource {
         case 247524032: /*statusDate*/  return new Property("statusDate", "date", "Identifies when the current status.  I.e. When initially created, when achieved, when cancelled, etc.", 0, 1, statusDate);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "string", "Captures the reason for the current status.", 0, 1, statusReason);
         case 175423686: /*expressedBy*/  return new Property("expressedBy", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Indicates whose goal this is - patient goal, practitioner goal, etc.", 0, 1, expressedBy);
-        case 874544034: /*addresses*/  return new Property("addresses", "Reference(Condition|Observation|MedicationStatement|NutritionOrder|ServiceRequest|RiskAssessment)", "The identified conditions and other health record elements that are intended to be addressed by the goal.", 0, java.lang.Integer.MAX_VALUE, addresses);
+        case 874544034: /*addresses*/  return new Property("addresses", "Reference(Condition|Observation|MedicationUsage|MedicationRequest|NutritionOrder|ServiceRequest|RiskAssessment)", "The identified conditions and other health record elements that are intended to be addressed by the goal.", 0, java.lang.Integer.MAX_VALUE, addresses);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Any comments related to the goal.", 0, java.lang.Integer.MAX_VALUE, note);
         case 1062482015: /*outcomeCode*/  return new Property("outcomeCode", "CodeableConcept", "Identifies the change (or lack of change) at the point when the status of the goal is assessed.", 0, java.lang.Integer.MAX_VALUE, outcomeCode);
         case -782273511: /*outcomeReference*/  return new Property("outcomeReference", "Reference(Observation)", "Details of what's changed (or not changed).", 0, java.lang.Integer.MAX_VALUE, outcomeReference);
@@ -1647,6 +1625,7 @@ public class Goal extends DomainResource {
         case 1165552636: /*lifecycleStatus*/ return this.lifecycleStatus == null ? new Base[0] : new Base[] {this.lifecycleStatus}; // Enumeration<GoalLifecycleStatus>
         case 104524801: /*achievementStatus*/ return this.achievementStatus == null ? new Base[0] : new Base[] {this.achievementStatus}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
+        case 379114255: /*continuous*/ return this.continuous == null ? new Base[0] : new Base[] {this.continuous}; // BooleanType
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
@@ -1679,6 +1658,9 @@ public class Goal extends DomainResource {
           return value;
         case 50511102: // category
           this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 379114255: // continuous
+          this.continuous = castToBoolean(value); // BooleanType
           return value;
         case -1165461084: // priority
           this.priority = castToCodeableConcept(value); // CodeableConcept
@@ -1732,6 +1714,8 @@ public class Goal extends DomainResource {
           this.achievementStatus = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
           this.getCategory().add(castToCodeableConcept(value));
+        } else if (name.equals("continuous")) {
+          this.continuous = castToBoolean(value); // BooleanType
         } else if (name.equals("priority")) {
           this.priority = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
@@ -1766,17 +1750,18 @@ public class Goal extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case 1165552636:  return getLifecycleStatusElement();
-        case 104524801:  return getAchievementStatus(); 
+        case 104524801:  return getAchievementStatus();
         case 50511102:  return addCategory(); 
-        case -1165461084:  return getPriority(); 
-        case -1724546052:  return getDescription(); 
-        case -1867885268:  return getSubject(); 
-        case 1316793566:  return getStart(); 
-        case 109757538:  return getStart(); 
+        case 379114255:  return getContinuousElement();
+        case -1165461084:  return getPriority();
+        case -1724546052:  return getDescription();
+        case -1867885268:  return getSubject();
+        case 1316793566:  return getStart();
+        case 109757538:  return getStart();
         case -880905839:  return addTarget(); 
         case 247524032:  return getStatusDateElement();
         case 2051346646:  return getStatusReasonElement();
-        case 175423686:  return getExpressedBy(); 
+        case 175423686:  return getExpressedBy();
         case 874544034:  return addAddresses(); 
         case 3387378:  return addNote(); 
         case 1062482015:  return addOutcomeCode(); 
@@ -1793,6 +1778,7 @@ public class Goal extends DomainResource {
         case 1165552636: /*lifecycleStatus*/ return new String[] {"code"};
         case 104524801: /*achievementStatus*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
+        case 379114255: /*continuous*/ return new String[] {"boolean"};
         case -1165461084: /*priority*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
@@ -1824,6 +1810,9 @@ public class Goal extends DomainResource {
         }
         else if (name.equals("category")) {
           return addCategory();
+        }
+        else if (name.equals("continuous")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Goal.continuous");
         }
         else if (name.equals("priority")) {
           this.priority = new CodeableConcept();
@@ -1882,6 +1871,11 @@ public class Goal extends DomainResource {
       public Goal copy() {
         Goal dst = new Goal();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Goal dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1894,6 +1888,7 @@ public class Goal extends DomainResource {
           for (CodeableConcept i : category)
             dst.category.add(i.copy());
         };
+        dst.continuous = continuous == null ? null : continuous.copy();
         dst.priority = priority == null ? null : priority.copy();
         dst.description = description == null ? null : description.copy();
         dst.subject = subject == null ? null : subject.copy();
@@ -1926,7 +1921,6 @@ public class Goal extends DomainResource {
           for (Reference i : outcomeReference)
             dst.outcomeReference.add(i.copy());
         };
-        return dst;
       }
 
       protected Goal typedCopy() {
@@ -1942,11 +1936,12 @@ public class Goal extends DomainResource {
         Goal o = (Goal) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(lifecycleStatus, o.lifecycleStatus, true)
            && compareDeep(achievementStatus, o.achievementStatus, true) && compareDeep(category, o.category, true)
-           && compareDeep(priority, o.priority, true) && compareDeep(description, o.description, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(start, o.start, true) && compareDeep(target, o.target, true) && compareDeep(statusDate, o.statusDate, true)
-           && compareDeep(statusReason, o.statusReason, true) && compareDeep(expressedBy, o.expressedBy, true)
-           && compareDeep(addresses, o.addresses, true) && compareDeep(note, o.note, true) && compareDeep(outcomeCode, o.outcomeCode, true)
-           && compareDeep(outcomeReference, o.outcomeReference, true);
+           && compareDeep(continuous, o.continuous, true) && compareDeep(priority, o.priority, true) && compareDeep(description, o.description, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(start, o.start, true) && compareDeep(target, o.target, true)
+           && compareDeep(statusDate, o.statusDate, true) && compareDeep(statusReason, o.statusReason, true)
+           && compareDeep(expressedBy, o.expressedBy, true) && compareDeep(addresses, o.addresses, true) && compareDeep(note, o.note, true)
+           && compareDeep(outcomeCode, o.outcomeCode, true) && compareDeep(outcomeReference, o.outcomeReference, true)
+          ;
       }
 
       @Override
@@ -1956,14 +1951,16 @@ public class Goal extends DomainResource {
         if (!(other_ instanceof Goal))
           return false;
         Goal o = (Goal) other_;
-        return compareValues(lifecycleStatus, o.lifecycleStatus, true) && compareValues(statusDate, o.statusDate, true)
-           && compareValues(statusReason, o.statusReason, true);
+        return compareValues(lifecycleStatus, o.lifecycleStatus, true) && compareValues(continuous, o.continuous, true)
+           && compareValues(statusDate, o.statusDate, true) && compareValues(statusReason, o.statusReason, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, lifecycleStatus
-          , achievementStatus, category, priority, description, subject, start, target, statusDate
-          , statusReason, expressedBy, addresses, note, outcomeCode, outcomeReference);
+          , achievementStatus, category, continuous, priority, description, subject, start
+          , target, statusDate, statusReason, expressedBy, addresses, note, outcomeCode
+          , outcomeReference);
       }
 
   @Override

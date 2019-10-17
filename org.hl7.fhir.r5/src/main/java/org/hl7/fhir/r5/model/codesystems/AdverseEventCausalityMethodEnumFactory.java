@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -60,22 +59,22 @@ public class AdverseEventCausalityMethodEnumFactory implements EnumFactory<Adver
   public AdverseEventCausalityMethod fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("ProbabilityScale".equals(codeString))
+    if ("probability-scale".equals(codeString))
       return AdverseEventCausalityMethod.PROBABILITYSCALE;
-    if ("Bayesian".equals(codeString))
+    if ("bayesian".equals(codeString))
       return AdverseEventCausalityMethod.BAYESIAN;
-    if ("Checklist".equals(codeString))
+    if ("checklist".equals(codeString))
       return AdverseEventCausalityMethod.CHECKLIST;
     throw new IllegalArgumentException("Unknown AdverseEventCausalityMethod code '"+codeString+"'");
   }
 
   public String toCode(AdverseEventCausalityMethod code) {
     if (code == AdverseEventCausalityMethod.PROBABILITYSCALE)
-      return "ProbabilityScale";
+      return "probability-scale";
     if (code == AdverseEventCausalityMethod.BAYESIAN)
-      return "Bayesian";
+      return "bayesian";
     if (code == AdverseEventCausalityMethod.CHECKLIST)
-      return "Checklist";
+      return "checklist";
     return "?";
   }
 
