@@ -685,6 +685,21 @@ private Map<String, Object> userData;
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a MarketingStatus");
   }
     
+  public Statistic castToStatistic(Base b) throws FHIRException {
+    if (b instanceof Statistic)
+      return (Statistic) b;
+    else
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Statistic");
+  }
+   
+  
+  public OrderedDistribution castToOrderedDistribution(Base b) throws FHIRException {
+    if (b instanceof OrderedDistribution)
+      return (OrderedDistribution) b;
+    else
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a OrderedDistribution");
+  }
+  
   public ProductShelfLife castToProductShelfLife(Base b) throws FHIRException {
     if (b instanceof ProductShelfLife)
       return (ProductShelfLife) b;

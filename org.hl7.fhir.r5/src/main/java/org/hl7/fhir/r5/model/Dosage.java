@@ -51,17 +51,18 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Indicates how the medication is/was taken or should be taken by the patient.
  */
@@ -311,11 +312,11 @@ public class Dosage extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case 1843195715:  return getDose(); 
-        case 3089437:  return getDose(); 
-        case 983460768:  return getRate(); 
-        case 3493088:  return getRate(); 
+        case 3575610:  return getType();
+        case 1843195715:  return getDose();
+        case 3089437:  return getDose();
+        case 983460768:  return getRate();
+        case 3493088:  return getRate();
         default: return super.makeProperty(hash, name);
         }
 
@@ -365,10 +366,14 @@ public class Dosage extends BackboneType implements ICompositeType {
       public DosageDoseAndRateComponent copy() {
         DosageDoseAndRateComponent dst = new DosageDoseAndRateComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DosageDoseAndRateComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.dose = dose == null ? null : dose.copy();
         dst.rate = rate == null ? null : rate.copy();
-        return dst;
       }
 
       @Override
@@ -1125,16 +1130,16 @@ public class Dosage extends BackboneType implements ICompositeType {
         case 3556653:  return getTextElement();
         case 1623641575:  return addAdditionalInstruction(); 
         case 737543241:  return getPatientInstructionElement();
-        case -873664438:  return getTiming(); 
-        case -544329575:  return getAsNeeded(); 
-        case -1432923513:  return getAsNeeded(); 
-        case 3530567:  return getSite(); 
-        case 108704329:  return getRoute(); 
-        case -1077554975:  return getMethod(); 
+        case -873664438:  return getTiming();
+        case -544329575:  return getAsNeeded();
+        case -1432923513:  return getAsNeeded();
+        case 3530567:  return getSite();
+        case 108704329:  return getRoute();
+        case -1077554975:  return getMethod();
         case -611024774:  return addDoseAndRate(); 
-        case 1506263709:  return getMaxDosePerPeriod(); 
-        case 2004889914:  return getMaxDosePerAdministration(); 
-        case 642099621:  return getMaxDosePerLifetime(); 
+        case 1506263709:  return getMaxDosePerPeriod();
+        case 2004889914:  return getMaxDosePerAdministration();
+        case 642099621:  return getMaxDosePerLifetime();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1226,6 +1231,11 @@ public class Dosage extends BackboneType implements ICompositeType {
       public Dosage copy() {
         Dosage dst = new Dosage();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Dosage dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.text = text == null ? null : text.copy();
         if (additionalInstruction != null) {
@@ -1247,7 +1257,6 @@ public class Dosage extends BackboneType implements ICompositeType {
         dst.maxDosePerPeriod = maxDosePerPeriod == null ? null : maxDosePerPeriod.copy();
         dst.maxDosePerAdministration = maxDosePerAdministration == null ? null : maxDosePerAdministration.copy();
         dst.maxDosePerLifetime = maxDosePerLifetime == null ? null : maxDosePerLifetime.copy();
-        return dst;
       }
 
       protected Dosage typedCopy() {

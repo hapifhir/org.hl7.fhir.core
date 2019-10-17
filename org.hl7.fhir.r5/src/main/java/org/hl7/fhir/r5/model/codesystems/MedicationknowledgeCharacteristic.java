@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -86,6 +85,10 @@ public enum MedicationknowledgeCharacteristic {
          */
         LOGO, 
         /**
+         * Description of the Image of the product
+         */
+        IMAGE, 
+        /**
          * added to help the parsers
          */
         NULL;
@@ -106,6 +109,8 @@ public enum MedicationknowledgeCharacteristic {
           return SCORING;
         if ("logo".equals(codeString))
           return LOGO;
+        if ("image".equals(codeString))
+          return IMAGE;
         throw new FHIRException("Unknown MedicationknowledgeCharacteristic code '"+codeString+"'");
         }
         public String toCode() {
@@ -117,6 +122,7 @@ public enum MedicationknowledgeCharacteristic {
             case COATING: return "coating";
             case SCORING: return "scoring";
             case LOGO: return "logo";
+            case IMAGE: return "image";
             default: return "?";
           }
         }
@@ -132,6 +138,7 @@ public enum MedicationknowledgeCharacteristic {
             case COATING: return "Description of the coating of the product";
             case SCORING: return "Description of the scoring of the product";
             case LOGO: return "Description of the Logo of the product";
+            case IMAGE: return "Description of the Image of the product";
             default: return "?";
           }
         }
@@ -144,6 +151,7 @@ public enum MedicationknowledgeCharacteristic {
             case COATING: return "Coating";
             case SCORING: return "Scoring";
             case LOGO: return "Logo";
+            case IMAGE: return "Image";
             default: return "?";
           }
     }

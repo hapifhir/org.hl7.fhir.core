@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.
  */
@@ -1018,9 +1018,13 @@ public class ActivityDefinition extends MetadataResource {
       public ActivityDefinitionParticipantComponent copy() {
         ActivityDefinitionParticipantComponent dst = new ActivityDefinitionParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActivityDefinitionParticipantComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -1244,9 +1248,13 @@ public class ActivityDefinition extends MetadataResource {
       public ActivityDefinitionDynamicValueComponent copy() {
         ActivityDefinitionDynamicValueComponent dst = new ActivityDefinitionDynamicValueComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActivityDefinitionDynamicValueComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -1421,7 +1429,7 @@ public class ActivityDefinition extends MetadataResource {
      * Indicates the level of authority/intentionality associated with the activity and where the request should fit into the workflow chain.
      */
     @Child(name = "intent", type = {CodeType.class}, order=19, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="proposal | plan | order", formalDefinition="Indicates the level of authority/intentionality associated with the activity and where the request should fit into the workflow chain." )
+    @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the activity and where the request should fit into the workflow chain." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
     protected Enumeration<RequestIntent> intent;
 
@@ -1453,11 +1461,6 @@ public class ActivityDefinition extends MetadataResource {
     @Child(name = "location", type = {Location.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Where it should happen", formalDefinition="Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc." )
     protected Reference location;
-
-    /**
-     * The actual object that is the target of the reference (Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.)
-     */
-    protected Location locationTarget;
 
     /**
      * Indicates who should participate in performing the action described.
@@ -1502,11 +1505,6 @@ public class ActivityDefinition extends MetadataResource {
     @Child(name = "specimenRequirement", type = {SpecimenDefinition.class}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What specimens are required to perform this action", formalDefinition="Defines specimen requirements for the action to be performed, such as required specimens for a lab test." )
     protected List<Reference> specimenRequirement;
-    /**
-     * The actual objects that are the target of the reference (Defines specimen requirements for the action to be performed, such as required specimens for a lab test.)
-     */
-    protected List<SpecimenDefinition> specimenRequirementTarget;
-
 
     /**
      * Defines observation requirements for the action to be performed, such as body weight or surface area.
@@ -1514,11 +1512,6 @@ public class ActivityDefinition extends MetadataResource {
     @Child(name = "observationRequirement", type = {ObservationDefinition.class}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What observations are required to perform this action", formalDefinition="Defines observation requirements for the action to be performed, such as body weight or surface area." )
     protected List<Reference> observationRequirement;
-    /**
-     * The actual objects that are the target of the reference (Defines observation requirements for the action to be performed, such as body weight or surface area.)
-     */
-    protected List<ObservationDefinition> observationRequirementTarget;
-
 
     /**
      * Defines the observations that are expected to be produced by the action.
@@ -1526,11 +1519,6 @@ public class ActivityDefinition extends MetadataResource {
     @Child(name = "observationResultRequirement", type = {ObservationDefinition.class}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What observations must be produced by this action", formalDefinition="Defines the observations that are expected to be produced by the action." )
     protected List<Reference> observationResultRequirement;
-    /**
-     * The actual objects that are the target of the reference (Defines the observations that are expected to be produced by the action.)
-     */
-    protected List<ObservationDefinition> observationResultRequirementTarget;
-
 
     /**
      * A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.
@@ -1546,7 +1534,7 @@ public class ActivityDefinition extends MetadataResource {
     @Description(shortDefinition="Dynamic aspects of the definition", formalDefinition="Dynamic values that will be evaluated to produce values for elements of the resulting resource. For example, if the dosage of a medication must be computed based on the patient's weight, a dynamic value would be used to specify an expression that calculated the weight, and the path on the request resource that would contain the result." )
     protected List<ActivityDefinitionDynamicValueComponent> dynamicValue;
 
-    private static final long serialVersionUID = 1488459022L;
+    private static final long serialVersionUID = -2129841377L;
 
   /**
    * Constructor
@@ -3357,26 +3345,6 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.)
-     */
-    public Location getLocationTarget() { 
-      if (this.locationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ActivityDefinition.location");
-        else if (Configuration.doAutoCreate())
-          this.locationTarget = new Location(); // aa
-      return this.locationTarget;
-    }
-
-    /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.)
-     */
-    public ActivityDefinition setLocationTarget(Location value) { 
-      this.locationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #participant} (Indicates who should participate in performing the action described.)
      */
     public List<ActivityDefinitionParticipantComponent> getParticipant() { 
@@ -3664,28 +3632,6 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<SpecimenDefinition> getSpecimenRequirementTarget() { 
-      if (this.specimenRequirementTarget == null)
-        this.specimenRequirementTarget = new ArrayList<SpecimenDefinition>();
-      return this.specimenRequirementTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public SpecimenDefinition addSpecimenRequirementTarget() { 
-      SpecimenDefinition r = new SpecimenDefinition();
-      if (this.specimenRequirementTarget == null)
-        this.specimenRequirementTarget = new ArrayList<SpecimenDefinition>();
-      this.specimenRequirementTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #observationRequirement} (Defines observation requirements for the action to be performed, such as body weight or surface area.)
      */
     public List<Reference> getObservationRequirement() { 
@@ -3739,28 +3685,6 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ObservationDefinition> getObservationRequirementTarget() { 
-      if (this.observationRequirementTarget == null)
-        this.observationRequirementTarget = new ArrayList<ObservationDefinition>();
-      return this.observationRequirementTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ObservationDefinition addObservationRequirementTarget() { 
-      ObservationDefinition r = new ObservationDefinition();
-      if (this.observationRequirementTarget == null)
-        this.observationRequirementTarget = new ArrayList<ObservationDefinition>();
-      this.observationRequirementTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #observationResultRequirement} (Defines the observations that are expected to be produced by the action.)
      */
     public List<Reference> getObservationResultRequirement() { 
@@ -3811,28 +3735,6 @@ public class ActivityDefinition extends MetadataResource {
         addObservationResultRequirement();
       }
       return getObservationResultRequirement().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ObservationDefinition> getObservationResultRequirementTarget() { 
-      if (this.observationResultRequirementTarget == null)
-        this.observationResultRequirementTarget = new ArrayList<ObservationDefinition>();
-      return this.observationResultRequirementTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ObservationDefinition addObservationResultRequirementTarget() { 
-      ObservationDefinition r = new ObservationDefinition();
-      if (this.observationResultRequirementTarget == null)
-        this.observationResultRequirementTarget = new ArrayList<ObservationDefinition>();
-      this.observationResultRequirementTarget.add(r);
-      return r;
     }
 
     /**
@@ -4659,6 +4561,11 @@ public class ActivityDefinition extends MetadataResource {
       public ActivityDefinition copy() {
         ActivityDefinition dst = new ActivityDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActivityDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4777,7 +4684,6 @@ public class ActivityDefinition extends MetadataResource {
           for (ActivityDefinitionDynamicValueComponent i : dynamicValue)
             dst.dynamicValue.add(i.copy());
         };
-        return dst;
       }
 
       protected ActivityDefinition typedCopy() {

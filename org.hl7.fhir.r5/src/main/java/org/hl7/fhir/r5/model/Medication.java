@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
  */
@@ -180,10 +182,10 @@ public class Medication extends DomainResource {
     @Block()
     public static class MedicationIngredientComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The actual ingredient - either a substance (simple ingredient) or another medication of a medication.
+         * The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).
          */
         @Child(name = "item", type = {CodeableConcept.class, Substance.class, Medication.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The actual ingredient or content", formalDefinition="The actual ingredient - either a substance (simple ingredient) or another medication of a medication." )
+        @Description(shortDefinition="The ingredient (substance or medication) that the ingredient.strength relates to", formalDefinition="The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication)." )
         protected Type item;
 
         /**
@@ -196,11 +198,12 @@ public class Medication extends DomainResource {
         /**
          * Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.
          */
-        @Child(name = "strength", type = {Ratio.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "strength", type = {Ratio.class, CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Quantity of ingredient present", formalDefinition="Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet." )
-        protected Ratio strength;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-ingredientstrength")
+        protected Type strength;
 
-        private static final long serialVersionUID = 1365103497L;
+        private static final long serialVersionUID = 1452876170L;
 
     /**
      * Constructor
@@ -218,14 +221,14 @@ public class Medication extends DomainResource {
       }
 
         /**
-         * @return {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication of a medication.)
+         * @return {@link #item} (The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).)
          */
         public Type getItem() { 
           return this.item;
         }
 
         /**
-         * @return {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication of a medication.)
+         * @return {@link #item} (The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).)
          */
         public CodeableConcept getItemCodeableConcept() throws FHIRException { 
           if (this.item == null)
@@ -240,7 +243,7 @@ public class Medication extends DomainResource {
         }
 
         /**
-         * @return {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication of a medication.)
+         * @return {@link #item} (The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).)
          */
         public Reference getItemReference() throws FHIRException { 
           if (this.item == null)
@@ -259,7 +262,7 @@ public class Medication extends DomainResource {
         }
 
         /**
-         * @param value {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication of a medication.)
+         * @param value {@link #item} (The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).)
          */
         public MedicationIngredientComponent setItem(Type value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
@@ -316,13 +319,38 @@ public class Medication extends DomainResource {
         /**
          * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.)
          */
-        public Ratio getStrength() { 
-          if (this.strength == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationIngredientComponent.strength");
-            else if (Configuration.doAutoCreate())
-              this.strength = new Ratio(); // cc
+        public Type getStrength() { 
           return this.strength;
+        }
+
+        /**
+         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.)
+         */
+        public Ratio getStrengthRatio() throws FHIRException { 
+          if (this.strength == null)
+            this.strength = new Ratio();
+          if (!(this.strength instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.strength.getClass().getName()+" was encountered");
+          return (Ratio) this.strength;
+        }
+
+        public boolean hasStrengthRatio() { 
+          return this != null && this.strength instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.)
+         */
+        public CodeableConcept getStrengthCodeableConcept() throws FHIRException { 
+          if (this.strength == null)
+            this.strength = new CodeableConcept();
+          if (!(this.strength instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.strength.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.strength;
+        }
+
+        public boolean hasStrengthCodeableConcept() { 
+          return this != null && this.strength instanceof CodeableConcept;
         }
 
         public boolean hasStrength() { 
@@ -332,27 +360,32 @@ public class Medication extends DomainResource {
         /**
          * @param value {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.)
          */
-        public MedicationIngredientComponent setStrength(Ratio value) { 
+        public MedicationIngredientComponent setStrength(Type value) { 
+          if (value != null && !(value instanceof Ratio || value instanceof CodeableConcept))
+            throw new Error("Not the right type for Medication.ingredient.strength[x]: "+value.fhirType());
           this.strength = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The actual ingredient - either a substance (simple ingredient) or another medication of a medication.", 0, 1, item));
+          children.add(new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item));
           children.add(new Property("isActive", "boolean", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, isActive));
-          children.add(new Property("strength", "Ratio", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength));
+          children.add(new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 2116201613: /*item[x]*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The actual ingredient - either a substance (simple ingredient) or another medication of a medication.", 0, 1, item);
-          case 3242771: /*item*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The actual ingredient - either a substance (simple ingredient) or another medication of a medication.", 0, 1, item);
-          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The actual ingredient - either a substance (simple ingredient) or another medication of a medication.", 0, 1, item);
-          case 1376364920: /*itemReference*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The actual ingredient - either a substance (simple ingredient) or another medication of a medication.", 0, 1, item);
+          case 2116201613: /*item[x]*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
+          case 3242771: /*item*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
+          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
+          case 1376364920: /*itemReference*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
           case -748916528: /*isActive*/  return new Property("isActive", "boolean", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, isActive);
-          case 1791316033: /*strength*/  return new Property("strength", "Ratio", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
+          case 127377567: /*strength[x]*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
+          case 1791316033: /*strength*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
+          case 2141786186: /*strengthRatio*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
+          case -1455903456: /*strengthCodeableConcept*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -363,7 +396,7 @@ public class Medication extends DomainResource {
         switch (hash) {
         case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // Type
         case -748916528: /*isActive*/ return this.isActive == null ? new Base[0] : new Base[] {this.isActive}; // BooleanType
-        case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // Ratio
+        case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // Type
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -379,7 +412,7 @@ public class Medication extends DomainResource {
           this.isActive = castToBoolean(value); // BooleanType
           return value;
         case 1791316033: // strength
-          this.strength = castToRatio(value); // Ratio
+          this.strength = castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -392,8 +425,8 @@ public class Medication extends DomainResource {
           this.item = castToType(value); // Type
         } else if (name.equals("isActive")) {
           this.isActive = castToBoolean(value); // BooleanType
-        } else if (name.equals("strength")) {
-          this.strength = castToRatio(value); // Ratio
+        } else if (name.equals("strength[x]")) {
+          this.strength = castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -402,10 +435,11 @@ public class Medication extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 2116201613:  return getItem(); 
-        case 3242771:  return getItem(); 
+        case 2116201613:  return getItem();
+        case 3242771:  return getItem();
         case -748916528:  return getIsActiveElement();
-        case 1791316033:  return getStrength(); 
+        case 127377567:  return getStrength();
+        case 1791316033:  return getStrength();
         default: return super.makeProperty(hash, name);
         }
 
@@ -416,7 +450,7 @@ public class Medication extends DomainResource {
         switch (hash) {
         case 3242771: /*item*/ return new String[] {"CodeableConcept", "Reference"};
         case -748916528: /*isActive*/ return new String[] {"boolean"};
-        case 1791316033: /*strength*/ return new String[] {"Ratio"};
+        case 1791316033: /*strength*/ return new String[] {"Ratio", "CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -435,8 +469,12 @@ public class Medication extends DomainResource {
         else if (name.equals("isActive")) {
           throw new FHIRException("Cannot call addChild on a primitive type Medication.isActive");
         }
-        else if (name.equals("strength")) {
+        else if (name.equals("strengthRatio")) {
           this.strength = new Ratio();
+          return this.strength;
+        }
+        else if (name.equals("strengthCodeableConcept")) {
+          this.strength = new CodeableConcept();
           return this.strength;
         }
         else
@@ -446,10 +484,14 @@ public class Medication extends DomainResource {
       public MedicationIngredientComponent copy() {
         MedicationIngredientComponent dst = new MedicationIngredientComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationIngredientComponent dst) {
+        super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
         dst.isActive = isActive == null ? null : isActive.copy();
         dst.strength = strength == null ? null : strength.copy();
-        return dst;
       }
 
       @Override
@@ -694,9 +736,13 @@ public class Medication extends DomainResource {
       public MedicationBatchComponent copy() {
         MedicationBatchComponent dst = new MedicationBatchComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationBatchComponent dst) {
+        super.copyValues(dst);
         dst.lotNumber = lotNumber == null ? null : lotNumber.copy();
         dst.expirationDate = expirationDate == null ? null : expirationDate.copy();
-        return dst;
       }
 
       @Override
@@ -764,17 +810,12 @@ public class Medication extends DomainResource {
     protected Reference manufacturer;
 
     /**
-     * The actual object that is the target of the reference (Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.)
-     */
-    protected Organization manufacturerTarget;
-
-    /**
      * Describes the form of the item.  Powder; tablets; capsule.
      */
-    @Child(name = "form", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "doseForm", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="powder | tablets | capsule +", formalDefinition="Describes the form of the item.  Powder; tablets; capsule." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-form-codes")
-    protected CodeableConcept form;
+    protected CodeableConcept doseForm;
 
     /**
      * Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).
@@ -797,7 +838,7 @@ public class Medication extends DomainResource {
     @Description(shortDefinition="Details about packaged medications", formalDefinition="Information that only applies to packages (not products)." )
     protected MedicationBatchComponent batch;
 
-    private static final long serialVersionUID = 781229373L;
+    private static final long serialVersionUID = -1266616065L;
 
   /**
    * Constructor
@@ -957,46 +998,26 @@ public class Medication extends DomainResource {
     }
 
     /**
-     * @return {@link #manufacturer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.)
+     * @return {@link #doseForm} (Describes the form of the item.  Powder; tablets; capsule.)
      */
-    public Organization getManufacturerTarget() { 
-      if (this.manufacturerTarget == null)
+    public CodeableConcept getDoseForm() { 
+      if (this.doseForm == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Medication.manufacturer");
+          throw new Error("Attempt to auto-create Medication.doseForm");
         else if (Configuration.doAutoCreate())
-          this.manufacturerTarget = new Organization(); // aa
-      return this.manufacturerTarget;
+          this.doseForm = new CodeableConcept(); // cc
+      return this.doseForm;
+    }
+
+    public boolean hasDoseForm() { 
+      return this.doseForm != null && !this.doseForm.isEmpty();
     }
 
     /**
-     * @param value {@link #manufacturer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.)
+     * @param value {@link #doseForm} (Describes the form of the item.  Powder; tablets; capsule.)
      */
-    public Medication setManufacturerTarget(Organization value) { 
-      this.manufacturerTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #form} (Describes the form of the item.  Powder; tablets; capsule.)
-     */
-    public CodeableConcept getForm() { 
-      if (this.form == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Medication.form");
-        else if (Configuration.doAutoCreate())
-          this.form = new CodeableConcept(); // cc
-      return this.form;
-    }
-
-    public boolean hasForm() { 
-      return this.form != null && !this.form.isEmpty();
-    }
-
-    /**
-     * @param value {@link #form} (Describes the form of the item.  Powder; tablets; capsule.)
-     */
-    public Medication setForm(CodeableConcept value) { 
-      this.form = value;
+    public Medication setDoseForm(CodeableConcept value) { 
+      this.doseForm = value;
       return this;
     }
 
@@ -1107,7 +1128,7 @@ public class Medication extends DomainResource {
         children.add(new Property("code", "CodeableConcept", "A code (or set of codes) that specify this medication, or a textual description if no code is available. Usage note: This could be a standard medication code such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or local formulary code, optionally with translations to other code systems.", 0, 1, code));
         children.add(new Property("status", "code", "A code to indicate if the medication is in active use.", 0, 1, status));
         children.add(new Property("manufacturer", "Reference(Organization)", "Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.", 0, 1, manufacturer));
-        children.add(new Property("form", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, form));
+        children.add(new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm));
         children.add(new Property("amount", "Ratio", "Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, amount));
         children.add(new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("batch", "", "Information that only applies to packages (not products).", 0, 1, batch));
@@ -1120,7 +1141,7 @@ public class Medication extends DomainResource {
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code (or set of codes) that specify this medication, or a textual description if no code is available. Usage note: This could be a standard medication code such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or local formulary code, optionally with translations to other code systems.", 0, 1, code);
         case -892481550: /*status*/  return new Property("status", "code", "A code to indicate if the medication is in active use.", 0, 1, status);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.", 0, 1, manufacturer);
-        case 3148996: /*form*/  return new Property("form", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, form);
+        case 1303858817: /*doseForm*/  return new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm);
         case -1413853096: /*amount*/  return new Property("amount", "Ratio", "Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, amount);
         case -206409263: /*ingredient*/  return new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case 93509434: /*batch*/  return new Property("batch", "", "Information that only applies to packages (not products).", 0, 1, batch);
@@ -1136,7 +1157,7 @@ public class Medication extends DomainResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationStatus>
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
-        case 3148996: /*form*/ return this.form == null ? new Base[0] : new Base[] {this.form}; // CodeableConcept
+        case 1303858817: /*doseForm*/ return this.doseForm == null ? new Base[0] : new Base[] {this.doseForm}; // CodeableConcept
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Ratio
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // MedicationIngredientComponent
         case 93509434: /*batch*/ return this.batch == null ? new Base[0] : new Base[] {this.batch}; // MedicationBatchComponent
@@ -1161,8 +1182,8 @@ public class Medication extends DomainResource {
         case -1969347631: // manufacturer
           this.manufacturer = castToReference(value); // Reference
           return value;
-        case 3148996: // form
-          this.form = castToCodeableConcept(value); // CodeableConcept
+        case 1303858817: // doseForm
+          this.doseForm = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
           this.amount = castToRatio(value); // Ratio
@@ -1189,8 +1210,8 @@ public class Medication extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<MedicationStatus>
         } else if (name.equals("manufacturer")) {
           this.manufacturer = castToReference(value); // Reference
-        } else if (name.equals("form")) {
-          this.form = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("doseForm")) {
+          this.doseForm = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
           this.amount = castToRatio(value); // Ratio
         } else if (name.equals("ingredient")) {
@@ -1206,13 +1227,13 @@ public class Medication extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -892481550:  return getStatusElement();
-        case -1969347631:  return getManufacturer(); 
-        case 3148996:  return getForm(); 
-        case -1413853096:  return getAmount(); 
+        case -1969347631:  return getManufacturer();
+        case 1303858817:  return getDoseForm();
+        case -1413853096:  return getAmount();
         case -206409263:  return addIngredient(); 
-        case 93509434:  return getBatch(); 
+        case 93509434:  return getBatch();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1225,7 +1246,7 @@ public class Medication extends DomainResource {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
-        case 3148996: /*form*/ return new String[] {"CodeableConcept"};
+        case 1303858817: /*doseForm*/ return new String[] {"CodeableConcept"};
         case -1413853096: /*amount*/ return new String[] {"Ratio"};
         case -206409263: /*ingredient*/ return new String[] {};
         case 93509434: /*batch*/ return new String[] {};
@@ -1250,9 +1271,9 @@ public class Medication extends DomainResource {
           this.manufacturer = new Reference();
           return this.manufacturer;
         }
-        else if (name.equals("form")) {
-          this.form = new CodeableConcept();
-          return this.form;
+        else if (name.equals("doseForm")) {
+          this.doseForm = new CodeableConcept();
+          return this.doseForm;
         }
         else if (name.equals("amount")) {
           this.amount = new Ratio();
@@ -1277,6 +1298,11 @@ public class Medication extends DomainResource {
       public Medication copy() {
         Medication dst = new Medication();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Medication dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1285,7 +1311,7 @@ public class Medication extends DomainResource {
         dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
         dst.manufacturer = manufacturer == null ? null : manufacturer.copy();
-        dst.form = form == null ? null : form.copy();
+        dst.doseForm = doseForm == null ? null : doseForm.copy();
         dst.amount = amount == null ? null : amount.copy();
         if (ingredient != null) {
           dst.ingredient = new ArrayList<MedicationIngredientComponent>();
@@ -1293,7 +1319,6 @@ public class Medication extends DomainResource {
             dst.ingredient.add(i.copy());
         };
         dst.batch = batch == null ? null : batch.copy();
-        return dst;
       }
 
       protected Medication typedCopy() {
@@ -1308,7 +1333,7 @@ public class Medication extends DomainResource {
           return false;
         Medication o = (Medication) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(code, o.code, true) && compareDeep(status, o.status, true)
-           && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(form, o.form, true) && compareDeep(amount, o.amount, true)
+           && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(doseForm, o.doseForm, true) && compareDeep(amount, o.amount, true)
            && compareDeep(ingredient, o.ingredient, true) && compareDeep(batch, o.batch, true);
       }
 
@@ -1324,7 +1349,7 @@ public class Medication extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, code, status
-          , manufacturer, form, amount, ingredient, batch);
+          , manufacturer, doseForm, amount, ingredient, batch);
       }
 
   @Override
@@ -1423,17 +1448,17 @@ public class Medication extends DomainResource {
    * <p>
    * Description: <b>Returns medications for a specific dose form</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Medication.form</b><br>
+   * Path: <b></b><br>
    * </p>
    */
-  @SearchParamDefinition(name="form", path="Medication.form", description="Returns medications for a specific dose form", type="token" )
+  @SearchParamDefinition(name="form", path="", description="Returns medications for a specific dose form", type="token" )
   public static final String SP_FORM = "form";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>form</b>
    * <p>
    * Description: <b>Returns medications for a specific dose form</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Medication.form</b><br>
+   * Path: <b></b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORM);

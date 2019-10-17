@@ -70,7 +70,7 @@ public class ObservationDefinition extends VersionConvertor_40_50 {
     if (src.hasCode())
       tgt.setCode(convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
+      tgt.setIdentifier(convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType())
       copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
     if (src.hasMultipleResultsAllowed())
@@ -103,8 +103,8 @@ public class ObservationDefinition extends VersionConvertor_40_50 {
       tgt.addCategory(convertCodeableConcept(t));
     if (src.hasCode())
       tgt.setCode(convertCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasIdentifier())
+      tgt.addIdentifier(convertIdentifier(src.getIdentifier()));
     for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType())
       copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
     if (src.hasMultipleResultsAllowed())

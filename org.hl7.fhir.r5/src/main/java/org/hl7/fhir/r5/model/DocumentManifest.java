@@ -53,18 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus;
-import org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A collection of documents compiled for a purpose together with metadata that applies to the collection.
  */
@@ -87,12 +88,7 @@ public class DocumentManifest extends DomainResource {
         @Description(shortDefinition="Related Resource", formalDefinition="Related Resource to this DocumentManifest. For example, Order, ServiceRequest,  Procedure, EligibilityRequest, etc." )
         protected Reference ref;
 
-        /**
-         * The actual object that is the target of the reference (Related Resource to this DocumentManifest. For example, Order, ServiceRequest,  Procedure, EligibilityRequest, etc.)
-         */
-        protected Resource refTarget;
-
-        private static final long serialVersionUID = -1670123330L;
+        private static final long serialVersionUID = -1464616234L;
 
     /**
      * Constructor
@@ -146,21 +142,6 @@ public class DocumentManifest extends DomainResource {
          */
         public DocumentManifestRelatedComponent setRef(Reference value) { 
           this.ref = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #ref} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Related Resource to this DocumentManifest. For example, Order, ServiceRequest,  Procedure, EligibilityRequest, etc.)
-         */
-        public Resource getRefTarget() { 
-          return this.refTarget;
-        }
-
-        /**
-         * @param value {@link #ref} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Related Resource to this DocumentManifest. For example, Order, ServiceRequest,  Procedure, EligibilityRequest, etc.)
-         */
-        public DocumentManifestRelatedComponent setRefTarget(Resource value) { 
-          this.refTarget = value;
           return this;
         }
 
@@ -218,8 +199,8 @@ public class DocumentManifest extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
-        case 112787:  return getRef(); 
+        case -1618432855:  return getIdentifier();
+        case 112787:  return getRef();
         default: return super.makeProperty(hash, name);
         }
 
@@ -252,9 +233,13 @@ public class DocumentManifest extends DomainResource {
       public DocumentManifestRelatedComponent copy() {
         DocumentManifestRelatedComponent dst = new DocumentManifestRelatedComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentManifestRelatedComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.ref = ref == null ? null : ref.copy();
-        return dst;
       }
 
       @Override
@@ -326,11 +311,6 @@ public class DocumentManifest extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Who or what the set of documents is about. The documents can be about a person, (patient or healthcare practitioner), a device (i.e. machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure). If the documents cross more than one subject, then more than one subject is allowed here (unusual use case).)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * When the document manifest was created for submission to the server (not necessarily the same thing as the actual resource last modified time, since it may be modified, replicated, etc.).
      */
     @Child(name = "created", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
@@ -343,11 +323,6 @@ public class DocumentManifest extends DomainResource {
     @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Organization.class, Device.class, Patient.class, RelatedPerson.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who and/or what authored the DocumentManifest", formalDefinition="Identifies who is the author of the manifest. Manifest author is not necessarly the author of the references included." )
     protected List<Reference> author;
-    /**
-     * The actual objects that are the target of the reference (Identifies who is the author of the manifest. Manifest author is not necessarly the author of the references included.)
-     */
-    protected List<Resource> authorTarget;
-
 
     /**
      * A patient, practitioner, or organization for which this set of documents is intended.
@@ -355,11 +330,6 @@ public class DocumentManifest extends DomainResource {
     @Child(name = "recipient", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Organization.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Intended to get notified about this set of documents", formalDefinition="A patient, practitioner, or organization for which this set of documents is intended." )
     protected List<Reference> recipient;
-    /**
-     * The actual objects that are the target of the reference (A patient, practitioner, or organization for which this set of documents is intended.)
-     */
-    protected List<Resource> recipientTarget;
-
 
     /**
      * Identifies the source system, application, or software that produced the document manifest.
@@ -381,11 +351,6 @@ public class DocumentManifest extends DomainResource {
     @Child(name = "content", type = {Reference.class}, order=10, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Items in manifest", formalDefinition="The list of Resources that consist of the parts of this manifest." )
     protected List<Reference> content;
-    /**
-     * The actual objects that are the target of the reference (The list of Resources that consist of the parts of this manifest.)
-     */
-    protected List<Resource> contentTarget;
-
 
     /**
      * Related identifiers or resources associated with the DocumentManifest.
@@ -394,7 +359,7 @@ public class DocumentManifest extends DomainResource {
     @Description(shortDefinition="Related things", formalDefinition="Related identifiers or resources associated with the DocumentManifest." )
     protected List<DocumentManifestRelatedComponent> related;
 
-    private static final long serialVersionUID = 432971934L;
+    private static final long serialVersionUID = -1695559473L;
 
   /**
    * Constructor
@@ -582,21 +547,6 @@ public class DocumentManifest extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who or what the set of documents is about. The documents can be about a person, (patient or healthcare practitioner), a device (i.e. machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure). If the documents cross more than one subject, then more than one subject is allowed here (unusual use case).)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who or what the set of documents is about. The documents can be about a person, (patient or healthcare practitioner), a device (i.e. machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure). If the documents cross more than one subject, then more than one subject is allowed here (unusual use case).)
-     */
-    public DocumentManifest setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #created} (When the document manifest was created for submission to the server (not necessarily the same thing as the actual resource last modified time, since it may be modified, replicated, etc.).). This is the underlying object with id, value and extensions. The accessor "getCreated" gives direct access to the value
      */
     public DateTimeType getCreatedElement() { 
@@ -699,16 +649,6 @@ public class DocumentManifest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
-    }
-
-    /**
      * @return {@link #recipient} (A patient, practitioner, or organization for which this set of documents is intended.)
      */
     public List<Reference> getRecipient() { 
@@ -759,16 +699,6 @@ public class DocumentManifest extends DomainResource {
         addRecipient();
       }
       return getRecipient().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRecipientTarget() { 
-      if (this.recipientTarget == null)
-        this.recipientTarget = new ArrayList<Resource>();
-      return this.recipientTarget;
     }
 
     /**
@@ -920,16 +850,6 @@ public class DocumentManifest extends DomainResource {
         addContent();
       }
       return getContent().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getContentTarget() { 
-      if (this.contentTarget == null)
-        this.contentTarget = new ArrayList<Resource>();
-      return this.contentTarget;
     }
 
     /**
@@ -1121,11 +1041,11 @@ public class DocumentManifest extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 243769515:  return getMasterIdentifier(); 
+        case 243769515:  return getMasterIdentifier();
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
-        case -1867885268:  return getSubject(); 
+        case 3575610:  return getType();
+        case -1867885268:  return getSubject();
         case 1028554472:  return getCreatedElement();
         case -1406328437:  return addAuthor(); 
         case 820081177:  return addRecipient(); 
@@ -1211,6 +1131,11 @@ public class DocumentManifest extends DomainResource {
       public DocumentManifest copy() {
         DocumentManifest dst = new DocumentManifest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentManifest dst) {
+        super.copyValues(dst);
         dst.masterIdentifier = masterIdentifier == null ? null : masterIdentifier.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -1243,7 +1168,6 @@ public class DocumentManifest extends DomainResource {
           for (DocumentManifestRelatedComponent i : related)
             dst.related.add(i.copy());
         };
-        return dst;
       }
 
       protected DocumentManifest typedCopy() {

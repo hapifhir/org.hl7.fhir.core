@@ -50,16 +50,23 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+// added from java-adornments.txt:
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+
+
+// end addition
 /**
  * A time period defined by a start and end date and optionally time.
  */
@@ -304,9 +311,13 @@ public class Period extends Type implements ICompositeType {
       public Period copy() {
         Period dst = new Period();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Period dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
-        return dst;
       }
 
       protected Period typedCopy() {

@@ -1096,25 +1096,25 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode convertGuideParameterCode(org.hl7.fhir.r4.model.ImplementationGuide.GuideParameterCode src) throws FHIRException {
+  public static org.hl7.fhir.r5.utils.GuideParameterCode convertGuideParameterCode(org.hl7.fhir.r4.model.ImplementationGuide.GuideParameterCode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case APPLY: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.APPLY;
-    case PATHRESOURCE: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.PATHRESOURCE;
-    case PATHPAGES: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.PATHPAGES;
-    case PATHTXCACHE: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.PATHTXCACHE;
-    case EXPANSIONPARAMETER: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.EXPANSIONPARAMETER;
-    case RULEBROKENLINKS: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.RULEBROKENLINKS;
-    case GENERATEXML: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.GENERATEXML;
-    case GENERATEJSON: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.GENERATEJSON;
-    case GENERATETURTLE: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.GENERATETURTLE;
-    case HTMLTEMPLATE: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.HTMLTEMPLATE;
-    default: return org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode.NULL;
+    case APPLY: return org.hl7.fhir.r5.utils.GuideParameterCode.APPLY;
+    case PATHRESOURCE: return org.hl7.fhir.r5.utils.GuideParameterCode.PATHRESOURCE;
+    case PATHPAGES: return org.hl7.fhir.r5.utils.GuideParameterCode.PATHPAGES;
+    case PATHTXCACHE: return org.hl7.fhir.r5.utils.GuideParameterCode.PATHTXCACHE;
+    case EXPANSIONPARAMETER: return org.hl7.fhir.r5.utils.GuideParameterCode.EXPANSIONPARAMETER;
+    case RULEBROKENLINKS: return org.hl7.fhir.r5.utils.GuideParameterCode.RULEBROKENLINKS;
+    case GENERATEXML: return org.hl7.fhir.r5.utils.GuideParameterCode.GENERATEXML;
+    case GENERATEJSON: return org.hl7.fhir.r5.utils.GuideParameterCode.GENERATEJSON;
+    case GENERATETURTLE: return org.hl7.fhir.r5.utils.GuideParameterCode.GENERATETURTLE;
+    case HTMLTEMPLATE: return org.hl7.fhir.r5.utils.GuideParameterCode.HTMLTEMPLATE;
+    default: return org.hl7.fhir.r5.utils.GuideParameterCode.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ImplementationGuide.GuideParameterCode convertGuideParameterCode(org.hl7.fhir.r5.model.ImplementationGuide.GuideParameterCode src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ImplementationGuide.GuideParameterCode convertGuideParameterCode(org.hl7.fhir.r5.utils.GuideParameterCode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

@@ -50,15 +50,19 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Details for all kinds of technology mediated contact points for a person or organization, including telephone, email, etc.
  */
@@ -725,7 +729,7 @@ public class ContactPoint extends Type implements ICompositeType {
         case 111972721:  return getValueElement();
         case 116103:  return getUseElement();
         case 3492908:  return getRankElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -774,12 +778,16 @@ public class ContactPoint extends Type implements ICompositeType {
       public ContactPoint copy() {
         ContactPoint dst = new ContactPoint();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContactPoint dst) {
+        super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
         dst.value = value == null ? null : value.copy();
         dst.use = use == null ? null : use.copy();
         dst.rank = rank == null ? null : rank.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       protected ContactPoint typedCopy() {

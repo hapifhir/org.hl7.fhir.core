@@ -50,15 +50,20 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * An identifier - identifies some entity uniquely and unambiguously. Typically this is used for business identifiers.
  */
@@ -249,12 +254,7 @@ public class Identifier extends Type implements ICompositeType {
     @Description(shortDefinition="Organization that issued id (may be just text)", formalDefinition="Organization that issued/manages the identifier." )
     protected Reference assigner;
 
-    /**
-     * The actual object that is the target of the reference (Organization that issued/manages the identifier.)
-     */
-    protected Organization assignerTarget;
-
-    private static final long serialVersionUID = -478840981L;
+    private static final long serialVersionUID = 2098433371L;
 
   /**
    * Constructor
@@ -482,26 +482,6 @@ public class Identifier extends Type implements ICompositeType {
       return this;
     }
 
-    /**
-     * @return {@link #assigner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Organization that issued/manages the identifier.)
-     */
-    public Organization getAssignerTarget() { 
-      if (this.assignerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Identifier.assigner");
-        else if (Configuration.doAutoCreate())
-          this.assignerTarget = new Organization(); // aa
-      return this.assignerTarget;
-    }
-
-    /**
-     * @param value {@link #assigner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Organization that issued/manages the identifier.)
-     */
-    public Identifier setAssignerTarget(Organization value) { 
-      this.assignerTarget = value;
-      return this;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("use", "code", "The purpose of this identifier.", 0, 1, use));
@@ -591,11 +571,11 @@ public class Identifier extends Type implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116103:  return getUseElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -887328209:  return getSystemElement();
         case 111972721:  return getValueElement();
-        case -991726143:  return getPeriod(); 
-        case -369881636:  return getAssigner(); 
+        case -991726143:  return getPeriod();
+        case -369881636:  return getAssigner();
         default: return super.makeProperty(hash, name);
         }
 
@@ -650,13 +630,17 @@ public class Identifier extends Type implements ICompositeType {
       public Identifier copy() {
         Identifier dst = new Identifier();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Identifier dst) {
+        super.copyValues(dst);
         dst.use = use == null ? null : use.copy();
         dst.type = type == null ? null : type.copy();
         dst.system = system == null ? null : system.copy();
         dst.value = value == null ? null : value.copy();
         dst.period = period == null ? null : period.copy();
         dst.assigner = assigner == null ? null : assigner.copy();
-        return dst;
       }
 
       protected Identifier typedCopy() {

@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.
  */
@@ -952,6 +954,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderOralDietComponent copy() {
         NutritionOrderOralDietComponent dst = new NutritionOrderOralDietComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderOralDietComponent dst) {
+        super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : type)
@@ -978,7 +985,6 @@ public class NutritionOrder extends DomainResource {
             dst.fluidConsistencyType.add(i.copy());
         };
         dst.instruction = instruction == null ? null : instruction.copy();
-        return dst;
       }
 
       @Override
@@ -1143,8 +1149,8 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -615513385:  return getModifier(); 
-        case -1413853096:  return getAmount(); 
+        case -615513385:  return getModifier();
+        case -1413853096:  return getAmount();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1177,9 +1183,13 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderOralDietNutrientComponent copy() {
         NutritionOrderOralDietNutrientComponent dst = new NutritionOrderOralDietNutrientComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderOralDietNutrientComponent dst) {
+        super.copyValues(dst);
         dst.modifier = modifier == null ? null : modifier.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -1342,8 +1352,8 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -615513385:  return getModifier(); 
-        case 379498680:  return getFoodType(); 
+        case -615513385:  return getModifier();
+        case 379498680:  return getFoodType();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1376,9 +1386,13 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderOralDietTextureComponent copy() {
         NutritionOrderOralDietTextureComponent dst = new NutritionOrderOralDietTextureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderOralDietTextureComponent dst) {
+        super.copyValues(dst);
         dst.modifier = modifier == null ? null : modifier.copy();
         dst.foodType = foodType == null ? null : foodType.copy();
-        return dst;
       }
 
       @Override
@@ -1736,10 +1750,10 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1491817446:  return getProductNameElement();
         case -697920873:  return addSchedule(); 
-        case -1285004149:  return getQuantity(); 
+        case -1285004149:  return getQuantity();
         case 301526158:  return getInstructionElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1785,6 +1799,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderSupplementComponent copy() {
         NutritionOrderSupplementComponent dst = new NutritionOrderSupplementComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderSupplementComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.productName = productName == null ? null : productName.copy();
         if (schedule != null) {
@@ -1794,7 +1813,6 @@ public class NutritionOrder extends DomainResource {
         };
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.instruction = instruction == null ? null : instruction.copy();
-        return dst;
       }
 
       @Override
@@ -2338,14 +2356,14 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -138930641:  return getBaseFormulaType(); 
+        case -138930641:  return getBaseFormulaType();
         case -1267705979:  return getBaseFormulaProductNameElement();
-        case -470746842:  return getAdditiveType(); 
+        case -470746842:  return getAdditiveType();
         case 488079534:  return getAdditiveProductNameElement();
-        case 186983261:  return getCaloricDensity(); 
-        case -1710107042:  return getRouteofAdministration(); 
+        case 186983261:  return getCaloricDensity();
+        case -1710107042:  return getRouteofAdministration();
         case 1255702622:  return addAdministration(); 
-        case 2017924652:  return getMaxVolumeToDeliver(); 
+        case 2017924652:  return getMaxVolumeToDeliver();
         case 427085136:  return getAdministrationInstructionElement();
         default: return super.makeProperty(hash, name);
         }
@@ -2410,6 +2428,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderEnteralFormulaComponent copy() {
         NutritionOrderEnteralFormulaComponent dst = new NutritionOrderEnteralFormulaComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderEnteralFormulaComponent dst) {
+        super.copyValues(dst);
         dst.baseFormulaType = baseFormulaType == null ? null : baseFormulaType.copy();
         dst.baseFormulaProductName = baseFormulaProductName == null ? null : baseFormulaProductName.copy();
         dst.additiveType = additiveType == null ? null : additiveType.copy();
@@ -2423,7 +2446,6 @@ public class NutritionOrder extends DomainResource {
         };
         dst.maxVolumeToDeliver = maxVolumeToDeliver == null ? null : maxVolumeToDeliver.copy();
         dst.administrationInstruction = administrationInstruction == null ? null : administrationInstruction.copy();
-        return dst;
       }
 
       @Override
@@ -2660,10 +2682,10 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -697920873:  return getSchedule(); 
-        case -1285004149:  return getQuantity(); 
-        case 983460768:  return getRate(); 
-        case 3493088:  return getRate(); 
+        case -697920873:  return getSchedule();
+        case -1285004149:  return getQuantity();
+        case 983460768:  return getRate();
+        case 3493088:  return getRate();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2705,10 +2727,14 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderEnteralFormulaAdministrationComponent copy() {
         NutritionOrderEnteralFormulaAdministrationComponent dst = new NutritionOrderEnteralFormulaAdministrationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderEnteralFormulaAdministrationComponent dst) {
+        super.copyValues(dst);
         dst.schedule = schedule == null ? null : schedule.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.rate = rate == null ? null : rate.copy();
-        return dst;
       }
 
       @Override
@@ -2776,7 +2802,7 @@ public class NutritionOrder extends DomainResource {
      * The workflow status of the nutrition order/request.
      */
     @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposed | draft | planned | requested | active | on-hold | completed | cancelled | entered-in-error", formalDefinition="The workflow status of the nutrition order/request." )
+    @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The workflow status of the nutrition order/request." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
     protected Enumeration<NutritionOrderStatus> status;
 
@@ -2784,7 +2810,7 @@ public class NutritionOrder extends DomainResource {
      * Indicates the level of authority/intentionality associated with the NutrionOrder and where the request fits into the workflow chain.
      */
     @Child(name = "intent", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposal | plan | order", formalDefinition="Indicates the level of authority/intentionality associated with the NutrionOrder and where the request fits into the workflow chain." )
+    @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the NutrionOrder and where the request fits into the workflow chain." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
     protected Enumeration<NutritiionOrderIntent> intent;
 
@@ -2796,21 +2822,11 @@ public class NutritionOrder extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The person (patient) who needs the nutrition order for an oral diet, nutritional supplement and/or enteral or formula feeding.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * An encounter that provides additional information about the healthcare context in which this request is made.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The encounter associated with this nutrition order", formalDefinition="An encounter that provides additional information about the healthcare context in which this request is made." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (An encounter that provides additional information about the healthcare context in which this request is made.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date and time that this nutrition order was requested.
@@ -2827,21 +2843,11 @@ public class NutritionOrder extends DomainResource {
     protected Reference orderer;
 
     /**
-     * The actual object that is the target of the reference (The practitioner that holds legal responsibility for ordering the diet, nutritional supplement, or formula feedings.)
-     */
-    protected Resource ordererTarget;
-
-    /**
      * A link to a record of allergies or intolerances  which should be included in the nutrition order.
      */
     @Child(name = "allergyIntolerance", type = {AllergyIntolerance.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="List of the patient's food and nutrition-related allergies and intolerances", formalDefinition="A link to a record of allergies or intolerances  which should be included in the nutrition order." )
     protected List<Reference> allergyIntolerance;
-    /**
-     * The actual objects that are the target of the reference (A link to a record of allergies or intolerances  which should be included in the nutrition order.)
-     */
-    protected List<AllergyIntolerance> allergyIntoleranceTarget;
-
 
     /**
      * This modifier is used to convey order-specific modifiers about the type of food that should be given. These can be derived from patient allergies, intolerances, or preferences such as Halal, Vegan or Kosher. This modifier applies to the entire nutrition order inclusive of the oral diet, nutritional supplements and enteral formula feedings.
@@ -2887,7 +2893,7 @@ public class NutritionOrder extends DomainResource {
     @Description(shortDefinition="Comments", formalDefinition="Comments made about the {{title}} by the requester, performer, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1746744267L;
+    private static final long serialVersionUID = -1819091028L;
 
   /**
    * Constructor
@@ -3258,26 +3264,6 @@ public class NutritionOrder extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person (patient) who needs the nutrition order for an oral diet, nutritional supplement and/or enteral or formula feeding.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create NutritionOrder.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person (patient) who needs the nutrition order for an oral diet, nutritional supplement and/or enteral or formula feeding.)
-     */
-    public NutritionOrder setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (An encounter that provides additional information about the healthcare context in which this request is made.)
      */
     public Reference getEncounter() { 
@@ -3298,26 +3284,6 @@ public class NutritionOrder extends DomainResource {
      */
     public NutritionOrder setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (An encounter that provides additional information about the healthcare context in which this request is made.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create NutritionOrder.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (An encounter that provides additional information about the healthcare context in which this request is made.)
-     */
-    public NutritionOrder setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -3391,21 +3357,6 @@ public class NutritionOrder extends DomainResource {
     }
 
     /**
-     * @return {@link #orderer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner that holds legal responsibility for ordering the diet, nutritional supplement, or formula feedings.)
-     */
-    public Resource getOrdererTarget() { 
-      return this.ordererTarget;
-    }
-
-    /**
-     * @param value {@link #orderer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner that holds legal responsibility for ordering the diet, nutritional supplement, or formula feedings.)
-     */
-    public NutritionOrder setOrdererTarget(Resource value) { 
-      this.ordererTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #allergyIntolerance} (A link to a record of allergies or intolerances  which should be included in the nutrition order.)
      */
     public List<Reference> getAllergyIntolerance() { 
@@ -3456,28 +3407,6 @@ public class NutritionOrder extends DomainResource {
         addAllergyIntolerance();
       }
       return getAllergyIntolerance().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<AllergyIntolerance> getAllergyIntoleranceTarget() { 
-      if (this.allergyIntoleranceTarget == null)
-        this.allergyIntoleranceTarget = new ArrayList<AllergyIntolerance>();
-      return this.allergyIntoleranceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public AllergyIntolerance addAllergyIntoleranceTarget() { 
-      AllergyIntolerance r = new AllergyIntolerance();
-      if (this.allergyIntoleranceTarget == null)
-        this.allergyIntoleranceTarget = new ArrayList<AllergyIntolerance>();
-      this.allergyIntoleranceTarget.add(r);
-      return r;
     }
 
     /**
@@ -3924,16 +3853,16 @@ public class NutritionOrder extends DomainResource {
         case -246883639:  return addInstantiatesElement();
         case -892481550:  return getStatusElement();
         case -1183762788:  return getIntentElement();
-        case -791418107:  return getPatient(); 
-        case 1524132147:  return getEncounter(); 
+        case -791418107:  return getPatient();
+        case 1524132147:  return getEncounter();
         case 1792749467:  return getDateTimeElement();
-        case -1207109509:  return getOrderer(); 
+        case -1207109509:  return getOrderer();
         case -120164120:  return addAllergyIntolerance(); 
         case 659473872:  return addFoodPreferenceModifier(); 
         case 1760260175:  return addExcludeFoodModifier(); 
-        case 1153521250:  return getOralDiet(); 
+        case 1153521250:  return getOralDiet();
         case -711993159:  return addSupplement(); 
-        case -671083805:  return getEnteralFormula(); 
+        case -671083805:  return getEnteralFormula();
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -4035,6 +3964,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrder copy() {
         NutritionOrder dst = new NutritionOrder();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrder dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4088,7 +4022,6 @@ public class NutritionOrder extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected NutritionOrder typedCopy() {

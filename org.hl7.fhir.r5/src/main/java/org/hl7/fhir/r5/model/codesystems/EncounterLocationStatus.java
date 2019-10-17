@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -62,9 +61,7 @@ public enum EncounterLocationStatus {
          */
         PLANNED, 
         /**
-         * The patient is currently at this location, or was between the period specified.
-
-A system may update these records when the patient leaves the location to either reserved, or completed.
+         * The patient is currently at this location, or was between the period specified.A system may update these records when the patient leaves the location to either reserved, or completed.
          */
         ACTIVE, 
         /**
@@ -72,9 +69,7 @@ A system may update these records when the patient leaves the location to either
          */
         RESERVED, 
         /**
-         * The patient was at this location during the period specified.
-
-Not to be used when the patient is currently at the location.
+         * The patient was at this location during the period specified.Not to be used when the patient is currently at the location.
          */
         COMPLETED, 
         /**

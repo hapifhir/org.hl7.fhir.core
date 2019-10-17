@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -60,42 +59,18 @@ public class AdverseEventSeriousnessEnumFactory implements EnumFactory<AdverseEv
   public AdverseEventSeriousness fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("Non-serious".equals(codeString))
+    if ("non-serious".equals(codeString))
       return AdverseEventSeriousness.NONSERIOUS;
-    if ("Serious".equals(codeString))
+    if ("serious".equals(codeString))
       return AdverseEventSeriousness.SERIOUS;
-    if ("SeriousResultsInDeath".equals(codeString))
-      return AdverseEventSeriousness.SERIOUSRESULTSINDEATH;
-    if ("SeriousIsLifeThreatening".equals(codeString))
-      return AdverseEventSeriousness.SERIOUSISLIFETHREATENING;
-    if ("SeriousResultsInHospitalization".equals(codeString))
-      return AdverseEventSeriousness.SERIOUSRESULTSINHOSPITALIZATION;
-    if ("SeriousResultsInDisability".equals(codeString))
-      return AdverseEventSeriousness.SERIOUSRESULTSINDISABILITY;
-    if ("SeriousIsBirthDefect".equals(codeString))
-      return AdverseEventSeriousness.SERIOUSISBIRTHDEFECT;
-    if ("SeriousRequiresPreventImpairment".equals(codeString))
-      return AdverseEventSeriousness.SERIOUSREQUIRESPREVENTIMPAIRMENT;
     throw new IllegalArgumentException("Unknown AdverseEventSeriousness code '"+codeString+"'");
   }
 
   public String toCode(AdverseEventSeriousness code) {
     if (code == AdverseEventSeriousness.NONSERIOUS)
-      return "Non-serious";
+      return "non-serious";
     if (code == AdverseEventSeriousness.SERIOUS)
-      return "Serious";
-    if (code == AdverseEventSeriousness.SERIOUSRESULTSINDEATH)
-      return "SeriousResultsInDeath";
-    if (code == AdverseEventSeriousness.SERIOUSISLIFETHREATENING)
-      return "SeriousIsLifeThreatening";
-    if (code == AdverseEventSeriousness.SERIOUSRESULTSINHOSPITALIZATION)
-      return "SeriousResultsInHospitalization";
-    if (code == AdverseEventSeriousness.SERIOUSRESULTSINDISABILITY)
-      return "SeriousResultsInDisability";
-    if (code == AdverseEventSeriousness.SERIOUSISBIRTHDEFECT)
-      return "SeriousIsBirthDefect";
-    if (code == AdverseEventSeriousness.SERIOUSREQUIRESPREVENTIMPAIRMENT)
-      return "SeriousRequiresPreventImpairment";
+      return "serious";
     return "?";
   }
 

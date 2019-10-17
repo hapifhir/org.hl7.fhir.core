@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,18 +53,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.NoteType;
-import org.hl7.fhir.r5.model.Enumerations.NoteTypeEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.
  */
@@ -439,11 +439,6 @@ public class ExplanationOfBenefit extends DomainResource {
         protected Reference claim;
 
         /**
-         * The actual object that is the target of the reference (Reference to a related claim.)
-         */
-        protected Claim claimTarget;
-
-        /**
          * A code to convey how the claims are related.
          */
         @Child(name = "relationship", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -458,7 +453,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="File or case reference", formalDefinition="An alternate organizational reference to the case or file to which this particular claim pertains." )
         protected Identifier reference;
 
-        private static final long serialVersionUID = -379338905L;
+        private static final long serialVersionUID = 1047077926L;
 
     /**
      * Constructor
@@ -488,26 +483,6 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public RelatedClaimComponent setClaim(Reference value) { 
           this.claim = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #claim} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to a related claim.)
-         */
-        public Claim getClaimTarget() { 
-          if (this.claimTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create RelatedClaimComponent.claim");
-            else if (Configuration.doAutoCreate())
-              this.claimTarget = new Claim(); // aa
-          return this.claimTarget;
-        }
-
-        /**
-         * @param value {@link #claim} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to a related claim.)
-         */
-        public RelatedClaimComponent setClaimTarget(Claim value) { 
-          this.claimTarget = value;
           return this;
         }
 
@@ -621,9 +596,9 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 94742588:  return getClaim(); 
-        case -261851592:  return getRelationship(); 
-        case -925155509:  return getReference(); 
+        case 94742588:  return getClaim();
+        case -261851592:  return getRelationship();
+        case -925155509:  return getReference();
         default: return super.makeProperty(hash, name);
         }
 
@@ -661,10 +636,14 @@ public class ExplanationOfBenefit extends DomainResource {
       public RelatedClaimComponent copy() {
         RelatedClaimComponent dst = new RelatedClaimComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedClaimComponent dst) {
+        super.copyValues(dst);
         dst.claim = claim == null ? null : claim.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.reference = reference == null ? null : reference.copy();
-        return dst;
       }
 
       @Override
@@ -717,12 +696,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Recipient reference", formalDefinition="Reference to the individual or organization to whom any payment will be made." )
         protected Reference party;
 
-        /**
-         * The actual object that is the target of the reference (Reference to the individual or organization to whom any payment will be made.)
-         */
-        protected Resource partyTarget;
-
-        private static final long serialVersionUID = 1609484699L;
+        private static final long serialVersionUID = -1948897146L;
 
     /**
      * Constructor
@@ -776,21 +750,6 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public PayeeComponent setParty(Reference value) { 
           this.party = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #party} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the individual or organization to whom any payment will be made.)
-         */
-        public Resource getPartyTarget() { 
-          return this.partyTarget;
-        }
-
-        /**
-         * @param value {@link #party} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the individual or organization to whom any payment will be made.)
-         */
-        public PayeeComponent setPartyTarget(Resource value) { 
-          this.partyTarget = value;
           return this;
         }
 
@@ -848,8 +807,8 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case 106437350:  return getParty(); 
+        case 3575610:  return getType();
+        case 106437350:  return getParty();
         default: return super.makeProperty(hash, name);
         }
 
@@ -882,9 +841,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public PayeeComponent copy() {
         PayeeComponent dst = new PayeeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PayeeComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.party = party == null ? null : party.copy();
-        return dst;
       }
 
       @Override
@@ -935,11 +898,6 @@ public class ExplanationOfBenefit extends DomainResource {
         protected Reference provider;
 
         /**
-         * The actual object that is the target of the reference (Member of the team who provided the product or service.)
-         */
-        protected Resource providerTarget;
-
-        /**
          * The party who is billing and/or responsible for the claimed products or services.
          */
         @Child(name = "responsible", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
@@ -962,7 +920,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/provider-qualification")
         protected CodeableConcept qualification;
 
-        private static final long serialVersionUID = 1758966968L;
+        private static final long serialVersionUID = 1479624238L;
 
     /**
      * Constructor
@@ -1046,21 +1004,6 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public CareTeamComponent setProvider(Reference value) { 
           this.provider = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Member of the team who provided the product or service.)
-         */
-        public Resource getProviderTarget() { 
-          return this.providerTarget;
-        }
-
-        /**
-         * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Member of the team who provided the product or service.)
-         */
-        public CareTeamComponent setProviderTarget(Resource value) { 
-          this.providerTarget = value;
           return this;
         }
 
@@ -1236,10 +1179,10 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case -987494927:  return getProvider(); 
+        case -987494927:  return getProvider();
         case 1847674614:  return getResponsibleElement();
-        case 3506294:  return getRole(); 
-        case -631333393:  return getQualification(); 
+        case 3506294:  return getRole();
+        case -631333393:  return getQualification();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1285,12 +1228,16 @@ public class ExplanationOfBenefit extends DomainResource {
       public CareTeamComponent copy() {
         CareTeamComponent dst = new CareTeamComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CareTeamComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.provider = provider == null ? null : provider.copy();
         dst.responsible = responsible == null ? null : responsible.copy();
         dst.role = role == null ? null : role.copy();
         dst.qualification = qualification == null ? null : qualification.copy();
-        return dst;
       }
 
       @Override
@@ -1752,13 +1699,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 50511102:  return getCategory(); 
-        case 3059181:  return getCode(); 
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
-        case -934964668:  return getReason(); 
+        case 50511102:  return getCategory();
+        case 3059181:  return getCode();
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case -934964668:  return getReason();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1830,13 +1777,17 @@ public class ExplanationOfBenefit extends DomainResource {
       public SupportingInformationComponent copy() {
         SupportingInformationComponent dst = new SupportingInformationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupportingInformationComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.category = category == null ? null : category.copy();
         dst.code = code == null ? null : code.copy();
         dst.timing = timing == null ? null : timing.copy();
         dst.value = value == null ? null : value.copy();
         dst.reason = reason == null ? null : reason.copy();
-        return dst;
       }
 
       @Override
@@ -2211,11 +2162,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case -1487009809:  return getDiagnosis(); 
-        case 1196993265:  return getDiagnosis(); 
+        case -1487009809:  return getDiagnosis();
+        case 1196993265:  return getDiagnosis();
         case 3575610:  return addType(); 
-        case -3386134:  return getOnAdmission(); 
-        case 908444499:  return getPackageCode(); 
+        case -3386134:  return getOnAdmission();
+        case 908444499:  return getPackageCode();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2265,6 +2216,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.diagnosis = diagnosis == null ? null : diagnosis.copy();
         if (type != null) {
@@ -2274,7 +2230,6 @@ public class ExplanationOfBenefit extends DomainResource {
         };
         dst.onAdmission = onAdmission == null ? null : onAdmission.copy();
         dst.packageCode = packageCode == null ? null : packageCode.copy();
-        return dst;
       }
 
       @Override
@@ -2349,13 +2304,8 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
 
-
-        private static final long serialVersionUID = 935341852L;
+        private static final long serialVersionUID = -1550802443L;
 
     /**
      * Constructor
@@ -2624,28 +2574,6 @@ public class ExplanationOfBenefit extends DomainResource {
           return getUdi().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify procedure entries.", 0, 1, sequence));
@@ -2730,8 +2658,8 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1349547969:  return getSequenceElement();
         case 3575610:  return addType(); 
         case 3076014:  return getDateElement();
-        case 1640074445:  return getProcedure(); 
-        case -1095204141:  return getProcedure(); 
+        case 1640074445:  return getProcedure();
+        case -1095204141:  return getProcedure();
         case 115642:  return addUdi(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2780,6 +2708,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public ProcedureComponent copy() {
         ProcedureComponent dst = new ProcedureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProcedureComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -2793,7 +2726,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (Reference i : udi)
             dst.udi.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2846,18 +2778,13 @@ public class ExplanationOfBenefit extends DomainResource {
         protected Reference coverage;
 
         /**
-         * The actual object that is the target of the reference (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        protected Coverage coverageTarget;
-
-        /**
          * Reference numbers previously provided by the insurer to the provider to be quoted on subsequent claims containing services or products related to the prior authorization.
          */
         @Child(name = "preAuthRef", type = {StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Prior authorization reference number", formalDefinition="Reference numbers previously provided by the insurer to the provider to be quoted on subsequent claims containing services or products related to the prior authorization." )
         protected List<StringType> preAuthRef;
 
-        private static final long serialVersionUID = -606383626L;
+        private static final long serialVersionUID = 1519900285L;
 
     /**
      * Constructor
@@ -2941,26 +2868,6 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public InsuranceComponent setCoverage(Reference value) { 
           this.coverage = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #coverage} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        public Coverage getCoverageTarget() { 
-          if (this.coverageTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsuranceComponent.coverage");
-            else if (Configuration.doAutoCreate())
-              this.coverageTarget = new Coverage(); // aa
-          return this.coverageTarget;
-        }
-
-        /**
-         * @param value {@link #coverage} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        public InsuranceComponent setCoverageTarget(Coverage value) { 
-          this.coverageTarget = value;
           return this;
         }
 
@@ -3088,7 +2995,7 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 97604197:  return getFocalElement();
-        case -351767064:  return getCoverage(); 
+        case -351767064:  return getCoverage();
         case 522246568:  return addPreAuthRefElement();
         default: return super.makeProperty(hash, name);
         }
@@ -3125,6 +3032,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public InsuranceComponent copy() {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsuranceComponent dst) {
+        super.copyValues(dst);
         dst.focal = focal == null ? null : focal.copy();
         dst.coverage = coverage == null ? null : coverage.copy();
         if (preAuthRef != null) {
@@ -3132,7 +3044,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (StringType i : preAuthRef)
             dst.preAuthRef.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3391,9 +3302,9 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3076014:  return getDateElement();
-        case 3575610:  return getType(); 
-        case 552316075:  return getLocation(); 
-        case 1901043637:  return getLocation(); 
+        case 3575610:  return getType();
+        case 552316075:  return getLocation();
+        case 1901043637:  return getLocation();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3434,10 +3345,14 @@ public class ExplanationOfBenefit extends DomainResource {
       public AccidentComponent copy() {
         AccidentComponent dst = new AccidentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccidentComponent dst) {
+        super.copyValues(dst);
         dst.date = date == null ? null : date.copy();
         dst.type = type == null ? null : type.copy();
         dst.location = location == null ? null : location.copy();
-        return dst;
       }
 
       @Override
@@ -3598,11 +3513,6 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
-
 
         /**
          * Physical service site on the patient (limb, tooth, etc.).
@@ -3626,11 +3536,6 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "encounter", type = {Encounter.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Encounters related to this billed item", formalDefinition="A billed item may include goods or services provided in multiple encounters." )
         protected List<Reference> encounter;
-        /**
-         * The actual objects that are the target of the reference (A billed item may include goods or services provided in multiple encounters.)
-         */
-        protected List<Encounter> encounterTarget;
-
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
@@ -3653,7 +3558,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Additional items", formalDefinition="Second-tier of goods and services." )
         protected List<DetailComponent> detail;
 
-        private static final long serialVersionUID = 67419471L;
+        private static final long serialVersionUID = 2136686267L;
 
     /**
      * Constructor
@@ -4448,28 +4353,6 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
          */
         public CodeableConcept getBodySite() { 
@@ -4597,28 +4480,6 @@ public class ExplanationOfBenefit extends DomainResource {
             addEncounter();
           }
           return getEncounter().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Encounter> getEncounterTarget() { 
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Encounter>();
-          return this.encounterTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Encounter addEncounterTarget() { 
-          Encounter r = new Encounter();
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Encounter>();
-          this.encounterTarget.add(r);
-          return r;
         }
 
         /**
@@ -5022,21 +4883,21 @@ public class ExplanationOfBenefit extends DomainResource {
         case -909769262:  return addDiagnosisSequenceElement();
         case -808920140:  return addProcedureSequenceElement();
         case -702585587:  return addInformationSequenceElement();
-        case 1099842588:  return getRevenue(); 
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1099842588:  return getRevenue();
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1927922223:  return getServiced(); 
-        case 1379209295:  return getServiced(); 
-        case 552316075:  return getLocation(); 
-        case 1901043637:  return getLocation(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1927922223:  return getServiced();
+        case 1379209295:  return getServiced();
+        case 552316075:  return getLocation();
+        case 1901043637:  return getLocation();
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case 115642:  return addUdi(); 
-        case 1702620169:  return getBodySite(); 
+        case 1702620169:  return getBodySite();
         case -1868566105:  return addSubSite(); 
         case 1524132147:  return addEncounter(); 
         case -1110033957:  return addNoteNumberElement();
@@ -5177,6 +5038,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public ItemComponent copy() {
         ItemComponent dst = new ItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ItemComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         if (careTeamSequence != null) {
           dst.careTeamSequence = new ArrayList<PositiveIntType>();
@@ -5248,7 +5114,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (DetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -5555,9 +5420,9 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategory(); 
-        case -934964668:  return getReason(); 
-        case -1413853096:  return getAmount(); 
+        case 50511102:  return getCategory();
+        case -934964668:  return getReason();
+        case -1413853096:  return getAmount();
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
         }
@@ -5600,11 +5465,15 @@ public class ExplanationOfBenefit extends DomainResource {
       public AdjudicationComponent copy() {
         AdjudicationComponent dst = new AdjudicationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdjudicationComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.reason = reason == null ? null : reason.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -5723,11 +5592,6 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
-
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
@@ -5750,7 +5614,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Additional items", formalDefinition="Third-tier of goods and services." )
         protected List<SubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = 225639798L;
+        private static final long serialVersionUID = -318460001L;
 
     /**
      * Constructor
@@ -6184,28 +6048,6 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #noteNumber} (The numbers associated with notes below which apply to the adjudication of this item.)
          */
         public List<PositiveIntType> getNoteNumber() { 
@@ -6523,15 +6365,15 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 1099842588:  return getRevenue(); 
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1099842588:  return getRevenue();
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case 115642:  return addUdi(); 
         case -1110033957:  return addNoteNumberElement();
         case -231349275:  return addAdjudication(); 
@@ -6620,6 +6462,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public DetailComponent copy() {
         DetailComponent dst = new DetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetailComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
@@ -6658,7 +6505,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (SubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6783,11 +6629,6 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
-
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
@@ -6803,7 +6644,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Subdetail level adjudication details", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
-        private static final long serialVersionUID = -996156853L;
+        private static final long serialVersionUID = -579551678L;
 
     /**
      * Constructor
@@ -7237,28 +7078,6 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #noteNumber} (The numbers associated with notes below which apply to the adjudication of this item.)
          */
         public List<PositiveIntType> getNoteNumber() { 
@@ -7515,15 +7334,15 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 1099842588:  return getRevenue(); 
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1099842588:  return getRevenue();
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case 115642:  return addUdi(); 
         case -1110033957:  return addNoteNumberElement();
         case -231349275:  return addAdjudication(); 
@@ -7607,6 +7426,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public SubDetailComponent copy() {
         SubDetailComponent dst = new SubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubDetailComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
@@ -7640,7 +7464,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AdjudicationComponent i : adjudication)
             dst.adjudication.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7711,11 +7534,6 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Authorized providers", formalDefinition="The providers who are authorized for the services rendered to the patient." )
         protected List<Reference> provider;
-        /**
-         * The actual objects that are the target of the reference (The providers who are authorized for the services rendered to the patient.)
-         */
-        protected List<Resource> providerTarget;
-
 
         /**
          * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
@@ -7821,7 +7639,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Insurer added line items", formalDefinition="The second-tier service adjudications for payor added services." )
         protected List<AddedItemDetailComponent> detail;
 
-        private static final long serialVersionUID = -206524210L;
+        private static final long serialVersionUID = -1270390028L;
 
     /**
      * Constructor
@@ -8072,16 +7890,6 @@ public class ExplanationOfBenefit extends DomainResource {
             addProvider();
           }
           return getProvider().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getProviderTarget() { 
-          if (this.providerTarget == null)
-            this.providerTarget = new ArrayList<Resource>();
-          return this.providerTarget;
         }
 
         /**
@@ -8907,18 +8715,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1321472818:  return addDetailSequenceElement();
         case -855462510:  return addSubDetailSequenceElement();
         case -987494927:  return addProvider(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1927922223:  return getServiced(); 
-        case 1379209295:  return getServiced(); 
-        case 552316075:  return getLocation(); 
-        case 1901043637:  return getLocation(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1927922223:  return getServiced();
+        case 1379209295:  return getServiced();
+        case 552316075:  return getLocation();
+        case 1901043637:  return getLocation();
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
-        case 1702620169:  return getBodySite(); 
+        case 108957:  return getNet();
+        case 1702620169:  return getBodySite();
         case -1868566105:  return addSubSite(); 
         case -1110033957:  return addNoteNumberElement();
         case -231349275:  return addAdjudication(); 
@@ -9036,6 +8844,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public AddedItemComponent copy() {
         AddedItemComponent dst = new AddedItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemComponent dst) {
+        super.copyValues(dst);
         if (itemSequence != null) {
           dst.itemSequence = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : itemSequence)
@@ -9094,7 +8907,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AddedItemDetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -9717,12 +9529,12 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1957227299:  return getProductOrService(); 
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case -1110033957:  return addNoteNumberElement();
         case -231349275:  return addAdjudication(); 
         case -828829007:  return addSubDetail(); 
@@ -9788,6 +9600,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public AddedItemDetailComponent copy() {
         AddedItemDetailComponent dst = new AddedItemDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemDetailComponent dst) {
+        super.copyValues(dst);
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
@@ -9813,7 +9630,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AddedItemDetailSubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -10360,12 +10176,12 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1957227299:  return getProductOrService(); 
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case -1110033957:  return addNoteNumberElement();
         case -231349275:  return addAdjudication(); 
         default: return super.makeProperty(hash, name);
@@ -10426,6 +10242,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public AddedItemDetailSubDetailComponent copy() {
         AddedItemDetailSubDetailComponent dst = new AddedItemDetailSubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemDetailSubDetailComponent dst) {
+        super.copyValues(dst);
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
@@ -10446,7 +10267,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AdjudicationComponent i : adjudication)
             dst.adjudication.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -10621,8 +10441,8 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategory(); 
-        case -1413853096:  return getAmount(); 
+        case 50511102:  return getCategory();
+        case -1413853096:  return getAmount();
         default: return super.makeProperty(hash, name);
         }
 
@@ -10655,9 +10475,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public TotalComponent copy() {
         TotalComponent dst = new TotalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TotalComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -11001,12 +10825,12 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case 1977085293:  return getAdjustment(); 
-        case -1255938543:  return getAdjustmentReason(); 
+        case 3575610:  return getType();
+        case 1977085293:  return getAdjustment();
+        case -1255938543:  return getAdjustmentReason();
         case 3076014:  return getDateElement();
-        case -1413853096:  return getAmount(); 
-        case -1618432855:  return getIdentifier(); 
+        case -1413853096:  return getAmount();
+        case -1618432855:  return getIdentifier();
         default: return super.makeProperty(hash, name);
         }
 
@@ -11058,13 +10882,17 @@ public class ExplanationOfBenefit extends DomainResource {
       public PaymentComponent copy() {
         PaymentComponent dst = new PaymentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PaymentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.adjustment = adjustment == null ? null : adjustment.copy();
         dst.adjustmentReason = adjustmentReason == null ? null : adjustmentReason.copy();
         dst.date = date == null ? null : date.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
-        return dst;
       }
 
       @Override
@@ -11384,7 +11212,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1034364087:  return getNumberElement();
         case 3575610:  return getTypeElement();
         case 3556653:  return getTextElement();
-        case -1613589672:  return getLanguage(); 
+        case -1613589672:  return getLanguage();
         default: return super.makeProperty(hash, name);
         }
 
@@ -11424,11 +11252,15 @@ public class ExplanationOfBenefit extends DomainResource {
       public NoteComponent copy() {
         NoteComponent dst = new NoteComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NoteComponent dst) {
+        super.copyValues(dst);
         dst.number = number == null ? null : number.copy();
         dst.type = type == null ? null : type.copy();
         dst.text = text == null ? null : text.copy();
         dst.language = language == null ? null : language.copy();
-        return dst;
       }
 
       @Override
@@ -11938,13 +11770,13 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategory(); 
+        case 50511102:  return getCategory();
         case 1994055114:  return getExcludedElement();
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
-        case 1843485230:  return getNetwork(); 
-        case 3594628:  return getUnit(); 
-        case 3556460:  return getTerm(); 
+        case 1843485230:  return getNetwork();
+        case 3594628:  return getUnit();
+        case 3556460:  return getTerm();
         case 357555337:  return addFinancial(); 
         default: return super.makeProperty(hash, name);
         }
@@ -12004,6 +11836,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public BenefitBalanceComponent copy() {
         BenefitBalanceComponent dst = new BenefitBalanceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BenefitBalanceComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.excluded = excluded == null ? null : excluded.copy();
         dst.name = name == null ? null : name.copy();
@@ -12016,7 +11853,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (BenefitComponent i : financial)
             dst.financial.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -12305,11 +12141,11 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1336663592:  return getAllowed(); 
-        case -911343192:  return getAllowed(); 
-        case -147553373:  return getUsed(); 
-        case 3599293:  return getUsed(); 
+        case 3575610:  return getType();
+        case -1336663592:  return getAllowed();
+        case -911343192:  return getAllowed();
+        case -147553373:  return getUsed();
+        case 3599293:  return getUsed();
         default: return super.makeProperty(hash, name);
         }
 
@@ -12359,10 +12195,14 @@ public class ExplanationOfBenefit extends DomainResource {
       public BenefitComponent copy() {
         BenefitComponent dst = new BenefitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BenefitComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.allowed = allowed == null ? null : allowed.copy();
         dst.used = used == null ? null : used.copy();
-        return dst;
       }
 
       @Override
@@ -12444,11 +12284,6 @@ public class ExplanationOfBenefit extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for forecast reimbursement is sought.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The period for which charges are being submitted.
      */
     @Child(name = "billablePeriod", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
@@ -12470,11 +12305,6 @@ public class ExplanationOfBenefit extends DomainResource {
     protected Reference enterer;
 
     /**
-     * The actual object that is the target of the reference (Individual who created the claim, predetermination or preauthorization.)
-     */
-    protected Resource entererTarget;
-
-    /**
      * The party responsible for authorization, adjudication and reimbursement.
      */
     @Child(name = "insurer", type = {Organization.class}, order=9, min=1, max=1, modifier=false, summary=true)
@@ -12482,21 +12312,11 @@ public class ExplanationOfBenefit extends DomainResource {
     protected Reference insurer;
 
     /**
-     * The actual object that is the target of the reference (The party responsible for authorization, adjudication and reimbursement.)
-     */
-    protected Organization insurerTarget;
-
-    /**
      * The provider which is responsible for the claim, predetermination or preauthorization.
      */
     @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=10, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party responsible for the claim", formalDefinition="The provider which is responsible for the claim, predetermination or preauthorization." )
     protected Reference provider;
-
-    /**
-     * The actual object that is the target of the reference (The provider which is responsible for the claim, predetermination or preauthorization.)
-     */
-    protected Resource providerTarget;
 
     /**
      * The provider-required urgency of processing the request. Typical values include: stat, routine deferred.
@@ -12536,21 +12356,11 @@ public class ExplanationOfBenefit extends DomainResource {
     protected Reference prescription;
 
     /**
-     * The actual object that is the target of the reference (Prescription to support the dispensing of pharmacy, device or vision products.)
-     */
-    protected Resource prescriptionTarget;
-
-    /**
      * Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.
      */
     @Child(name = "originalPrescription", type = {MedicationRequest.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Original prescription if superceded by fulfiller", formalDefinition="Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products." )
     protected Reference originalPrescription;
-
-    /**
-     * The actual object that is the target of the reference (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
-     */
-    protected MedicationRequest originalPrescriptionTarget;
 
     /**
      * The party to be reimbursed for cost of the products and services according to the terms of the policy.
@@ -12567,21 +12377,11 @@ public class ExplanationOfBenefit extends DomainResource {
     protected Reference referral;
 
     /**
-     * The actual object that is the target of the reference (A reference to a referral resource.)
-     */
-    protected ServiceRequest referralTarget;
-
-    /**
      * Facility where the services were provided.
      */
     @Child(name = "facility", type = {Location.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Servicing Facility", formalDefinition="Facility where the services were provided." )
     protected Reference facility;
-
-    /**
-     * The actual object that is the target of the reference (Facility where the services were provided.)
-     */
-    protected Location facilityTarget;
 
     /**
      * The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.
@@ -12591,21 +12391,11 @@ public class ExplanationOfBenefit extends DomainResource {
     protected Reference claim;
 
     /**
-     * The actual object that is the target of the reference (The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.)
-     */
-    protected Claim claimTarget;
-
-    /**
      * The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.
      */
     @Child(name = "claimResponse", type = {ClaimResponse.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Claim response reference", formalDefinition="The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response." )
     protected Reference claimResponse;
-
-    /**
-     * The actual object that is the target of the reference (The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.)
-     */
-    protected ClaimResponse claimResponseTarget;
 
     /**
      * The outcome of the claim, predetermination, or preauthorization processing.
@@ -12756,7 +12546,7 @@ public class ExplanationOfBenefit extends DomainResource {
     @Description(shortDefinition="Balance by Benefit Category", formalDefinition="Balance by Benefit Category." )
     protected List<BenefitBalanceComponent> benefitBalance;
 
-    private static final long serialVersionUID = -1515422099L;
+    private static final long serialVersionUID = 1403248694L;
 
   /**
    * Constructor
@@ -12996,26 +12786,6 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for forecast reimbursement is sought.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for forecast reimbursement is sought.)
-     */
-    public ExplanationOfBenefit setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #billablePeriod} (The period for which charges are being submitted.)
      */
     public Period getBillablePeriod() { 
@@ -13109,21 +12879,6 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #enterer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who created the claim, predetermination or preauthorization.)
-     */
-    public Resource getEntererTarget() { 
-      return this.entererTarget;
-    }
-
-    /**
-     * @param value {@link #enterer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who created the claim, predetermination or preauthorization.)
-     */
-    public ExplanationOfBenefit setEntererTarget(Resource value) { 
-      this.entererTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #insurer} (The party responsible for authorization, adjudication and reimbursement.)
      */
     public Reference getInsurer() { 
@@ -13148,26 +12903,6 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #insurer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party responsible for authorization, adjudication and reimbursement.)
-     */
-    public Organization getInsurerTarget() { 
-      if (this.insurerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.insurer");
-        else if (Configuration.doAutoCreate())
-          this.insurerTarget = new Organization(); // aa
-      return this.insurerTarget;
-    }
-
-    /**
-     * @param value {@link #insurer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party responsible for authorization, adjudication and reimbursement.)
-     */
-    public ExplanationOfBenefit setInsurerTarget(Organization value) { 
-      this.insurerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #provider} (The provider which is responsible for the claim, predetermination or preauthorization.)
      */
     public Reference getProvider() { 
@@ -13188,21 +12923,6 @@ public class ExplanationOfBenefit extends DomainResource {
      */
     public ExplanationOfBenefit setProvider(Reference value) { 
       this.provider = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The provider which is responsible for the claim, predetermination or preauthorization.)
-     */
-    public Resource getProviderTarget() { 
-      return this.providerTarget;
-    }
-
-    /**
-     * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The provider which is responsible for the claim, predetermination or preauthorization.)
-     */
-    public ExplanationOfBenefit setProviderTarget(Resource value) { 
-      this.providerTarget = value;
       return this;
     }
 
@@ -13356,21 +13076,6 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #prescription} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Prescription to support the dispensing of pharmacy, device or vision products.)
-     */
-    public Resource getPrescriptionTarget() { 
-      return this.prescriptionTarget;
-    }
-
-    /**
-     * @param value {@link #prescription} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Prescription to support the dispensing of pharmacy, device or vision products.)
-     */
-    public ExplanationOfBenefit setPrescriptionTarget(Resource value) { 
-      this.prescriptionTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #originalPrescription} (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
      */
     public Reference getOriginalPrescription() { 
@@ -13391,26 +13096,6 @@ public class ExplanationOfBenefit extends DomainResource {
      */
     public ExplanationOfBenefit setOriginalPrescription(Reference value) { 
       this.originalPrescription = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #originalPrescription} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
-     */
-    public MedicationRequest getOriginalPrescriptionTarget() { 
-      if (this.originalPrescriptionTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.originalPrescription");
-        else if (Configuration.doAutoCreate())
-          this.originalPrescriptionTarget = new MedicationRequest(); // aa
-      return this.originalPrescriptionTarget;
-    }
-
-    /**
-     * @param value {@link #originalPrescription} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
-     */
-    public ExplanationOfBenefit setOriginalPrescriptionTarget(MedicationRequest value) { 
-      this.originalPrescriptionTarget = value;
       return this;
     }
 
@@ -13463,26 +13148,6 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #referral} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to a referral resource.)
-     */
-    public ServiceRequest getReferralTarget() { 
-      if (this.referralTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.referral");
-        else if (Configuration.doAutoCreate())
-          this.referralTarget = new ServiceRequest(); // aa
-      return this.referralTarget;
-    }
-
-    /**
-     * @param value {@link #referral} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to a referral resource.)
-     */
-    public ExplanationOfBenefit setReferralTarget(ServiceRequest value) { 
-      this.referralTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #facility} (Facility where the services were provided.)
      */
     public Reference getFacility() { 
@@ -13503,26 +13168,6 @@ public class ExplanationOfBenefit extends DomainResource {
      */
     public ExplanationOfBenefit setFacility(Reference value) { 
       this.facility = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #facility} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Facility where the services were provided.)
-     */
-    public Location getFacilityTarget() { 
-      if (this.facilityTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.facility");
-        else if (Configuration.doAutoCreate())
-          this.facilityTarget = new Location(); // aa
-      return this.facilityTarget;
-    }
-
-    /**
-     * @param value {@link #facility} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Facility where the services were provided.)
-     */
-    public ExplanationOfBenefit setFacilityTarget(Location value) { 
-      this.facilityTarget = value;
       return this;
     }
 
@@ -13551,26 +13196,6 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #claim} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.)
-     */
-    public Claim getClaimTarget() { 
-      if (this.claimTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.claim");
-        else if (Configuration.doAutoCreate())
-          this.claimTarget = new Claim(); // aa
-      return this.claimTarget;
-    }
-
-    /**
-     * @param value {@link #claim} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.)
-     */
-    public ExplanationOfBenefit setClaimTarget(Claim value) { 
-      this.claimTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #claimResponse} (The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.)
      */
     public Reference getClaimResponse() { 
@@ -13591,26 +13216,6 @@ public class ExplanationOfBenefit extends DomainResource {
      */
     public ExplanationOfBenefit setClaimResponse(Reference value) { 
       this.claimResponse = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #claimResponse} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.)
-     */
-    public ClaimResponse getClaimResponseTarget() { 
-      if (this.claimResponseTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExplanationOfBenefit.claimResponse");
-        else if (Configuration.doAutoCreate())
-          this.claimResponseTarget = new ClaimResponse(); // aa
-      return this.claimResponseTarget;
-    }
-
-    /**
-     * @param value {@link #claimResponse} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.)
-     */
-    public ExplanationOfBenefit setClaimResponseTarget(ClaimResponse value) { 
-      this.claimResponseTarget = value;
       return this;
     }
 
@@ -14960,26 +14565,26 @@ public class ExplanationOfBenefit extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
-        case -1868521062:  return getSubType(); 
+        case 3575610:  return getType();
+        case -1868521062:  return getSubType();
         case 116103:  return getUseElement();
-        case -791418107:  return getPatient(); 
-        case -332066046:  return getBillablePeriod(); 
+        case -791418107:  return getPatient();
+        case -332066046:  return getBillablePeriod();
         case 1028554472:  return getCreatedElement();
-        case -1591951995:  return getEnterer(); 
-        case 1957615864:  return getInsurer(); 
-        case -987494927:  return getProvider(); 
-        case -1165461084:  return getPriority(); 
-        case -1688904576:  return getFundsReserveRequested(); 
-        case 1314609806:  return getFundsReserve(); 
+        case -1591951995:  return getEnterer();
+        case 1957615864:  return getInsurer();
+        case -987494927:  return getProvider();
+        case -1165461084:  return getPriority();
+        case -1688904576:  return getFundsReserveRequested();
+        case 1314609806:  return getFundsReserve();
         case 1090493483:  return addRelated(); 
-        case 460301338:  return getPrescription(); 
-        case -1814015861:  return getOriginalPrescription(); 
-        case 106443592:  return getPayee(); 
-        case -722568291:  return getReferral(); 
-        case 501116579:  return getFacility(); 
-        case 94742588:  return getClaim(); 
-        case 689513629:  return getClaimResponse(); 
+        case 460301338:  return getPrescription();
+        case -1814015861:  return getOriginalPrescription();
+        case 106443592:  return getPayee();
+        case -722568291:  return getReferral();
+        case 501116579:  return getFacility();
+        case 94742588:  return getClaim();
+        case 689513629:  return getClaimResponse();
         case -1106507950:  return getOutcomeElement();
         case 583380919:  return getDispositionElement();
         case 522246568:  return addPreAuthRefElement();
@@ -14990,16 +14595,16 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1095204141:  return addProcedure(); 
         case 159695370:  return getPrecedenceElement();
         case 73049818:  return addInsurance(); 
-        case -2143202801:  return getAccident(); 
+        case -2143202801:  return getAccident();
         case 3242771:  return addItem(); 
         case -1148899500:  return addAddItem(); 
         case -231349275:  return addAdjudication(); 
         case 110549828:  return addTotal(); 
-        case -786681338:  return getPayment(); 
-        case 473181393:  return getFormCode(); 
-        case 3148996:  return getForm(); 
+        case -786681338:  return getPayment();
+        case 473181393:  return getFormCode();
+        case 3148996:  return getForm();
         case 202339073:  return addProcessNote(); 
-        case -407369416:  return getBenefitPeriod(); 
+        case -407369416:  return getBenefitPeriod();
         case 596003397:  return addBenefitBalance(); 
         default: return super.makeProperty(hash, name);
         }
@@ -15222,6 +14827,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public ExplanationOfBenefit copy() {
         ExplanationOfBenefit dst = new ExplanationOfBenefit();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExplanationOfBenefit dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -15325,7 +14935,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (BenefitBalanceComponent i : benefitBalance)
             dst.benefitBalance.add(i.copy());
         };
-        return dst;
       }
 
       protected ExplanationOfBenefit typedCopy() {

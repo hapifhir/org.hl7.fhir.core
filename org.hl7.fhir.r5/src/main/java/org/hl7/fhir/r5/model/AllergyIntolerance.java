@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.
  */
@@ -962,12 +964,12 @@ public class AllergyIntolerance extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 530040176:  return getSubstance(); 
+        case 530040176:  return getSubstance();
         case 1115984422:  return addManifestation(); 
         case -1724546052:  return getDescriptionElement();
         case 105901603:  return getOnsetElement();
         case 1478300413:  return getSeverityElement();
-        case 421286274:  return getExposureRoute(); 
+        case 421286274:  return getExposureRoute();
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1021,6 +1023,11 @@ public class AllergyIntolerance extends DomainResource {
       public AllergyIntoleranceReactionComponent copy() {
         AllergyIntoleranceReactionComponent dst = new AllergyIntoleranceReactionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AllergyIntoleranceReactionComponent dst) {
+        super.copyValues(dst);
         dst.substance = substance == null ? null : substance.copy();
         if (manifestation != null) {
           dst.manifestation = new ArrayList<CodeableConcept>();
@@ -1036,7 +1043,6 @@ public class AllergyIntolerance extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1093,7 +1099,7 @@ public class AllergyIntolerance extends DomainResource {
      * Assertion about certainty associated with the propensity, or potential risk, of a reaction to the identified substance (including pharmaceutical product).
      */
     @Child(name = "verificationStatus", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="unconfirmed | confirmed | refuted | entered-in-error", formalDefinition="Assertion about certainty associated with the propensity, or potential risk, of a reaction to the identified substance (including pharmaceutical product)." )
+    @Description(shortDefinition="unconfirmed | presumed | confirmed | refuted | entered-in-error", formalDefinition="Assertion about certainty associated with the propensity, or potential risk, of a reaction to the identified substance (including pharmaceutical product)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/allergyintolerance-verification")
     protected CodeableConcept verificationStatus;
 
@@ -1137,21 +1143,11 @@ public class AllergyIntolerance extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The patient who has the allergy or intolerance.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The encounter when the allergy or intolerance was asserted.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Encounter when the allergy or intolerance was asserted", formalDefinition="The encounter when the allergy or intolerance was asserted." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The encounter when the allergy or intolerance was asserted.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Estimated or actual date,  date-time, or age when allergy or intolerance was identified.
@@ -1175,21 +1171,11 @@ public class AllergyIntolerance extends DomainResource {
     protected Reference recorder;
 
     /**
-     * The actual object that is the target of the reference (Individual who recorded the record and takes responsibility for its content.)
-     */
-    protected Resource recorderTarget;
-
-    /**
      * The source of the information about the allergy that is recorded.
      */
     @Child(name = "asserter", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Source of the information about the allergy", formalDefinition="The source of the information about the allergy that is recorded." )
     protected Reference asserter;
-
-    /**
-     * The actual object that is the target of the reference (The source of the information about the allergy that is recorded.)
-     */
-    protected Resource asserterTarget;
 
     /**
      * Represents the date and/or time of the last known occurrence of a reaction event.
@@ -1212,7 +1198,7 @@ public class AllergyIntolerance extends DomainResource {
     @Description(shortDefinition="Adverse Reaction Events linked to exposure to substance", formalDefinition="Details about each adverse reaction event linked to exposure to the identified substance." )
     protected List<AllergyIntoleranceReactionComponent> reaction;
 
-    private static final long serialVersionUID = 393192289L;
+    private static final long serialVersionUID = 1916833866L;
 
   /**
    * Constructor
@@ -1538,26 +1524,6 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient who has the allergy or intolerance.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AllergyIntolerance.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient who has the allergy or intolerance.)
-     */
-    public AllergyIntolerance setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The encounter when the allergy or intolerance was asserted.)
      */
     public Reference getEncounter() { 
@@ -1578,26 +1544,6 @@ public class AllergyIntolerance extends DomainResource {
      */
     public AllergyIntolerance setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The encounter when the allergy or intolerance was asserted.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AllergyIntolerance.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The encounter when the allergy or intolerance was asserted.)
-     */
-    public AllergyIntolerance setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1771,21 +1717,6 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     /**
-     * @return {@link #recorder} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who recorded the record and takes responsibility for its content.)
-     */
-    public Resource getRecorderTarget() { 
-      return this.recorderTarget;
-    }
-
-    /**
-     * @param value {@link #recorder} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who recorded the record and takes responsibility for its content.)
-     */
-    public AllergyIntolerance setRecorderTarget(Resource value) { 
-      this.recorderTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #asserter} (The source of the information about the allergy that is recorded.)
      */
     public Reference getAsserter() { 
@@ -1806,21 +1737,6 @@ public class AllergyIntolerance extends DomainResource {
      */
     public AllergyIntolerance setAsserter(Reference value) { 
       this.asserter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #asserter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The source of the information about the allergy that is recorded.)
-     */
-    public Resource getAsserterTarget() { 
-      return this.asserterTarget;
-    }
-
-    /**
-     * @param value {@link #asserter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The source of the information about the allergy that is recorded.)
-     */
-    public AllergyIntolerance setAsserterTarget(Resource value) { 
-      this.asserterTarget = value;
       return this;
     }
 
@@ -2158,19 +2074,19 @@ public class AllergyIntolerance extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case -462853915:  return getClinicalStatus(); 
-        case -842509843:  return getVerificationStatus(); 
+        case -462853915:  return getClinicalStatus();
+        case -842509843:  return getVerificationStatus();
         case 3575610:  return getTypeElement();
         case 50511102:  return addCategoryElement();
         case -1608054609:  return getCriticalityElement();
-        case 3059181:  return getCode(); 
-        case -791418107:  return getPatient(); 
-        case 1524132147:  return getEncounter(); 
-        case -1886216323:  return getOnset(); 
-        case 105901603:  return getOnset(); 
+        case 3059181:  return getCode();
+        case -791418107:  return getPatient();
+        case 1524132147:  return getEncounter();
+        case -1886216323:  return getOnset();
+        case 105901603:  return getOnset();
         case -1952893826:  return getRecordedDateElement();
-        case -799233858:  return getRecorder(); 
-        case -373242253:  return getAsserter(); 
+        case -799233858:  return getRecorder();
+        case -373242253:  return getAsserter();
         case 1896977671:  return getLastOccurrenceElement();
         case 3387378:  return addNote(); 
         case -867509719:  return addReaction(); 
@@ -2289,6 +2205,11 @@ public class AllergyIntolerance extends DomainResource {
       public AllergyIntolerance copy() {
         AllergyIntolerance dst = new AllergyIntolerance();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AllergyIntolerance dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2321,7 +2242,6 @@ public class AllergyIntolerance extends DomainResource {
           for (AllergyIntoleranceReactionComponent i : reaction)
             dst.reaction.add(i.copy());
         };
-        return dst;
       }
 
       protected AllergyIntolerance typedCopy() {
@@ -2496,17 +2416,17 @@ public class AllergyIntolerance extends DomainResource {
  /**
    * Search parameter: <b>verification-status</b>
    * <p>
-   * Description: <b>unconfirmed | confirmed | refuted | entered-in-error</b><br>
+   * Description: <b>unconfirmed | presumed | confirmed | refuted | entered-in-error</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AllergyIntolerance.verificationStatus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="verification-status", path="AllergyIntolerance.verificationStatus", description="unconfirmed | confirmed | refuted | entered-in-error", type="token" )
+  @SearchParamDefinition(name="verification-status", path="AllergyIntolerance.verificationStatus", description="unconfirmed | presumed | confirmed | refuted | entered-in-error", type="token" )
   public static final String SP_VERIFICATION_STATUS = "verification-status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>verification-status</b>
    * <p>
-   * Description: <b>unconfirmed | confirmed | refuted | entered-in-error</b><br>
+   * Description: <b>unconfirmed | presumed | confirmed | refuted | entered-in-error</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AllergyIntolerance.verificationStatus</b><br>
    * </p>

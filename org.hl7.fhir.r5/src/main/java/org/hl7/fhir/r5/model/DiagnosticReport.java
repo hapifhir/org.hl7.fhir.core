@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The findings and interpretation of diagnostic  tests performed on patients, groups of patients, devices, and locations, and/or specimens derived from these. The report includes clinical context such as requesting and provider information, and some mix of atomic results, images, textual and coded interpretations, and formatted representation of diagnostic reports.
  */
@@ -301,16 +303,11 @@ public class DiagnosticReport extends DomainResource {
         /**
          * Reference to the image source.
          */
-        @Child(name = "link", type = {Media.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "link", type = {DocumentReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Reference to the image source", formalDefinition="Reference to the image source." )
         protected Reference link;
 
-        /**
-         * The actual object that is the target of the reference (Reference to the image source.)
-         */
-        protected Media linkTarget;
-
-        private static final long serialVersionUID = 935791940L;
+        private static final long serialVersionUID = 1827561947L;
 
     /**
      * Constructor
@@ -400,37 +397,17 @@ public class DiagnosticReport extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #link} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the image source.)
-         */
-        public Media getLinkTarget() { 
-          if (this.linkTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DiagnosticReportMediaComponent.link");
-            else if (Configuration.doAutoCreate())
-              this.linkTarget = new Media(); // aa
-          return this.linkTarget;
-        }
-
-        /**
-         * @param value {@link #link} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the image source.)
-         */
-        public DiagnosticReportMediaComponent setLinkTarget(Media value) { 
-          this.linkTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("comment", "string", "A comment about the image. Typically, this is used to provide an explanation for why the image is included, or to draw the viewer's attention to important features.", 0, 1, comment));
-          children.add(new Property("link", "Reference(Media)", "Reference to the image source.", 0, 1, link));
+          children.add(new Property("link", "Reference(DocumentReference)", "Reference to the image source.", 0, 1, link));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 950398559: /*comment*/  return new Property("comment", "string", "A comment about the image. Typically, this is used to provide an explanation for why the image is included, or to draw the viewer's attention to important features.", 0, 1, comment);
-          case 3321850: /*link*/  return new Property("link", "Reference(Media)", "Reference to the image source.", 0, 1, link);
+          case 3321850: /*link*/  return new Property("link", "Reference(DocumentReference)", "Reference to the image source.", 0, 1, link);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -475,7 +452,7 @@ public class DiagnosticReport extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 950398559:  return getCommentElement();
-        case 3321850:  return getLink(); 
+        case 3321850:  return getLink();
         default: return super.makeProperty(hash, name);
         }
 
@@ -507,9 +484,13 @@ public class DiagnosticReport extends DomainResource {
       public DiagnosticReportMediaComponent copy() {
         DiagnosticReportMediaComponent dst = new DiagnosticReportMediaComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosticReportMediaComponent dst) {
+        super.copyValues(dst);
         dst.comment = comment == null ? null : comment.copy();
         dst.link = link == null ? null : link.copy();
-        return dst;
       }
 
       @Override
@@ -556,11 +537,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "basedOn", type = {CarePlan.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What was requested", formalDefinition="Details concerning a service requested." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (Details concerning a service requested.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * The status of the diagnostic report.
@@ -587,16 +563,11 @@ public class DiagnosticReport extends DomainResource {
     protected CodeableConcept code;
 
     /**
-     * The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.
+     * The subject of the report. Usually, but not always, this is a patient. However, diagnostic services also perform analyses on specimens collected from a variety of other sources.
      */
     @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Location.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The subject of the report - usually, but not always, the patient", formalDefinition="The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources." )
+    @Description(shortDefinition="The subject of the report - usually, but not always, the patient", formalDefinition="The subject of the report. Usually, but not always, this is a patient. However, diagnostic services also perform analyses on specimens collected from a variety of other sources." )
     protected Reference subject;
-
-    /**
-     * The actual object that is the target of the reference (The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.)
-     */
-    protected Resource subjectTarget;
 
     /**
      * The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about.
@@ -604,11 +575,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Health care event when test ordered", formalDefinition="The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The time or time-period the observed values are related to. When the subject of the report is a patient, this is usually either the time of the procedure or of specimen collection(s), but very often the source of the date/time is not known, only the date/time itself.
@@ -630,11 +596,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "performer", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Responsible Diagnostic Service", formalDefinition="The diagnostic service that is responsible for issuing the report." )
     protected List<Reference> performer;
-    /**
-     * The actual objects that are the target of the reference (The diagnostic service that is responsible for issuing the report.)
-     */
-    protected List<Resource> performerTarget;
-
 
     /**
      * The practitioner or organization that is responsible for the report's conclusions and interpretations.
@@ -642,11 +603,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "resultsInterpreter", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Primary result interpreter", formalDefinition="The practitioner or organization that is responsible for the report's conclusions and interpretations." )
     protected List<Reference> resultsInterpreter;
-    /**
-     * The actual objects that are the target of the reference (The practitioner or organization that is responsible for the report's conclusions and interpretations.)
-     */
-    protected List<Resource> resultsInterpreterTarget;
-
 
     /**
      * Details about the specimens on which this diagnostic report is based.
@@ -654,11 +610,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "specimen", type = {Specimen.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Specimens this report is based on", formalDefinition="Details about the specimens on which this diagnostic report is based." )
     protected List<Reference> specimen;
-    /**
-     * The actual objects that are the target of the reference (Details about the specimens on which this diagnostic report is based.)
-     */
-    protected List<Specimen> specimenTarget;
-
 
     /**
      * [Observations](observation.html)  that are part of this diagnostic report.
@@ -666,11 +617,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "result", type = {Observation.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Observations", formalDefinition="[Observations](observation.html)  that are part of this diagnostic report." )
     protected List<Reference> result;
-    /**
-     * The actual objects that are the target of the reference ([Observations](observation.html)  that are part of this diagnostic report.)
-     */
-    protected List<Observation> resultTarget;
-
 
     /**
      * One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images.
@@ -678,11 +624,6 @@ public class DiagnosticReport extends DomainResource {
     @Child(name = "imagingStudy", type = {ImagingStudy.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Reference to full details of imaging associated with the diagnostic report", formalDefinition="One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images." )
     protected List<Reference> imagingStudy;
-    /**
-     * The actual objects that are the target of the reference (One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images.)
-     */
-    protected List<ImagingStudy> imagingStudyTarget;
-
 
     /**
      * A list of key images associated with this report. The images are generally created during the diagnostic process, and may be directly of the patient, or of treated specimens (i.e. slides of interest).
@@ -713,7 +654,7 @@ public class DiagnosticReport extends DomainResource {
     @Description(shortDefinition="Entire report as issued", formalDefinition="Rich text representation of the entire result as issued by the diagnostic service. Multiple formats are allowed but they SHALL be semantically equivalent." )
     protected List<Attachment> presentedForm;
 
-    private static final long serialVersionUID = 589102296L;
+    private static final long serialVersionUID = 251313367L;
 
   /**
    * Constructor
@@ -835,16 +776,6 @@ public class DiagnosticReport extends DomainResource {
         addBasedOn();
       }
       return getBasedOn().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
     }
 
     /**
@@ -970,7 +901,7 @@ public class DiagnosticReport extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.)
+     * @return {@link #subject} (The subject of the report. Usually, but not always, this is a patient. However, diagnostic services also perform analyses on specimens collected from a variety of other sources.)
      */
     public Reference getSubject() { 
       if (this.subject == null)
@@ -986,25 +917,10 @@ public class DiagnosticReport extends DomainResource {
     }
 
     /**
-     * @param value {@link #subject} (The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.)
+     * @param value {@link #subject} (The subject of the report. Usually, but not always, this is a patient. However, diagnostic services also perform analyses on specimens collected from a variety of other sources.)
      */
     public DiagnosticReport setSubject(Reference value) { 
       this.subject = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.)
-     */
-    public DiagnosticReport setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
       return this;
     }
 
@@ -1029,26 +945,6 @@ public class DiagnosticReport extends DomainResource {
      */
     public DiagnosticReport setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DiagnosticReport.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about.)
-     */
-    public DiagnosticReport setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1206,16 +1102,6 @@ public class DiagnosticReport extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPerformerTarget() { 
-      if (this.performerTarget == null)
-        this.performerTarget = new ArrayList<Resource>();
-      return this.performerTarget;
-    }
-
-    /**
      * @return {@link #resultsInterpreter} (The practitioner or organization that is responsible for the report's conclusions and interpretations.)
      */
     public List<Reference> getResultsInterpreter() { 
@@ -1266,16 +1152,6 @@ public class DiagnosticReport extends DomainResource {
         addResultsInterpreter();
       }
       return getResultsInterpreter().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getResultsInterpreterTarget() { 
-      if (this.resultsInterpreterTarget == null)
-        this.resultsInterpreterTarget = new ArrayList<Resource>();
-      return this.resultsInterpreterTarget;
     }
 
     /**
@@ -1332,28 +1208,6 @@ public class DiagnosticReport extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Specimen> getSpecimenTarget() { 
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      return this.specimenTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Specimen addSpecimenTarget() { 
-      Specimen r = new Specimen();
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      this.specimenTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #result} ([Observations](observation.html)  that are part of this diagnostic report.)
      */
     public List<Reference> getResult() { 
@@ -1407,28 +1261,6 @@ public class DiagnosticReport extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Observation> getResultTarget() { 
-      if (this.resultTarget == null)
-        this.resultTarget = new ArrayList<Observation>();
-      return this.resultTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Observation addResultTarget() { 
-      Observation r = new Observation();
-      if (this.resultTarget == null)
-        this.resultTarget = new ArrayList<Observation>();
-      this.resultTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #imagingStudy} (One or more links to full details of any imaging performed during the diagnostic investigation. Typically, this is imaging performed by DICOM enabled modalities, but this is not required. A fully enabled PACS viewer can use this information to provide views of the source images.)
      */
     public List<Reference> getImagingStudy() { 
@@ -1479,28 +1311,6 @@ public class DiagnosticReport extends DomainResource {
         addImagingStudy();
       }
       return getImagingStudy().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ImagingStudy> getImagingStudyTarget() { 
-      if (this.imagingStudyTarget == null)
-        this.imagingStudyTarget = new ArrayList<ImagingStudy>();
-      return this.imagingStudyTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ImagingStudy addImagingStudyTarget() { 
-      ImagingStudy r = new ImagingStudy();
-      if (this.imagingStudyTarget == null)
-        this.imagingStudyTarget = new ArrayList<ImagingStudy>();
-      this.imagingStudyTarget.add(r);
-      return r;
     }
 
     /**
@@ -1718,7 +1528,7 @@ public class DiagnosticReport extends DomainResource {
         children.add(new Property("status", "code", "The status of the diagnostic report.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "A code that classifies the clinical discipline, department or diagnostic service that created the report (e.g. cardiology, biochemistry, hematology, MRI). This is used for searching, sorting and display purposes.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "A code or name that describes this diagnostic report.", 0, 1, code));
-        children.add(new Property("subject", "Reference(Patient|Group|Device|Location)", "The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(Patient|Group|Device|Location)", "The subject of the report. Usually, but not always, this is a patient. However, diagnostic services also perform analyses on specimens collected from a variety of other sources.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about.", 0, 1, encounter));
         children.add(new Property("effective[x]", "dateTime|Period", "The time or time-period the observed values are related to. When the subject of the report is a patient, this is usually either the time of the procedure or of specimen collection(s), but very often the source of the date/time is not known, only the date/time itself.", 0, 1, effective));
         children.add(new Property("issued", "instant", "The date and time that this version of the report was made available to providers, typically after the report was reviewed and verified.", 0, 1, issued));
@@ -1741,7 +1551,7 @@ public class DiagnosticReport extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of the diagnostic report.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the clinical discipline, department or diagnostic service that created the report (e.g. cardiology, biochemistry, hematology, MRI). This is used for searching, sorting and display purposes.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code or name that describes this diagnostic report.", 0, 1, code);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Location)", "The subject of the report. Usually, but not always, this is a patient. However diagnostic services also perform analyses on specimens collected from a variety of other sources.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Location)", "The subject of the report. Usually, but not always, this is a patient. However, diagnostic services also perform analyses on specimens collected from a variety of other sources.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The healthcare event  (e.g. a patient and healthcare provider interaction) which this DiagnosticReport is about.", 0, 1, encounter);
         case 247104889: /*effective[x]*/  return new Property("effective[x]", "dateTime|Period", "The time or time-period the observed values are related to. When the subject of the report is a patient, this is usually either the time of the procedure or of specimen collection(s), but very often the source of the date/time is not known, only the date/time itself.", 0, 1, effective);
         case -1468651097: /*effective*/  return new Property("effective[x]", "dateTime|Period", "The time or time-period the observed values are related to. When the subject of the report is a patient, this is usually either the time of the procedure or of specimen collection(s), but very often the source of the date/time is not known, only the date/time itself.", 0, 1, effective);
@@ -1902,11 +1712,11 @@ public class DiagnosticReport extends DomainResource {
         case -332612366:  return addBasedOn(); 
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case 247104889:  return getEffective(); 
-        case -1468651097:  return getEffective(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
+        case 247104889:  return getEffective();
+        case -1468651097:  return getEffective();
         case -1179159893:  return getIssuedElement();
         case 481140686:  return addPerformer(); 
         case 2134944932:  return addResultsInterpreter(); 
@@ -2024,6 +1834,11 @@ public class DiagnosticReport extends DomainResource {
       public DiagnosticReport copy() {
         DiagnosticReport dst = new DiagnosticReport();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosticReport dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2086,7 +1901,6 @@ public class DiagnosticReport extends DomainResource {
           for (Attachment i : presentedForm)
             dst.presentedForm.add(i.copy());
         };
-        return dst;
       }
 
       protected DiagnosticReport typedCopy() {
@@ -2252,7 +2066,7 @@ public class DiagnosticReport extends DomainResource {
    * Path: <b>DiagnosticReport.media.link</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="media", path="DiagnosticReport.media.link", description="A reference to the image source.", type="reference", target={Media.class } )
+  @SearchParamDefinition(name="media", path="DiagnosticReport.media.link", description="A reference to the image source.", type="reference", target={DocumentReference.class } )
   public static final String SP_MEDIA = "media";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>media</b>

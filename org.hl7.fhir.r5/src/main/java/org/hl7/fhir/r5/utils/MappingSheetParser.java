@@ -404,7 +404,7 @@ public class MappingSheetParser {
           row.name = e.getExtensionString(ToolingExtensions.EXT_MAPPING_NAME);
           row.dataType = e.getExtensionString(ToolingExtensions.EXT_MAPPING_TYPE);
           row.cardinality = e.getExtensionString(ToolingExtensions.EXT_MAPPING_CARD);
-          if (e.getNoMap().booleanValue() == true) {
+          if (e.getNoMap() == true) {
             row.attribute = "N/A";            
           } else {
             OtherElementComponent dep = getDependency(t, "http://hl7.org/fhirpath");

@@ -50,14 +50,22 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBinary;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseBinary;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A resource that represents the data of a single raw artifact as digital content accessible in its native format.  A Binary resource can contain any content, whether text, image, pdf, zip archive, etc.
  */
@@ -73,16 +81,11 @@ public class Binary extends BaseBinary implements IBaseBinary {
     protected CodeType contentType;
 
     /**
-     * This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.
+     * This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.
      */
     @Child(name = "securityContext", type = {Reference.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Identifies another resource to use as proxy when enforcing access control", formalDefinition="This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient." )
+    @Description(shortDefinition="Identifies another resource to use as proxy when enforcing access control", formalDefinition="This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient." )
     protected Reference securityContext;
-
-    /**
-     * The actual object that is the target of the reference (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
-     */
-    protected Resource securityContextTarget;
 
     /**
      * The actual content, base64 encoded.
@@ -91,7 +94,7 @@ public class Binary extends BaseBinary implements IBaseBinary {
     @Description(shortDefinition="The actual content", formalDefinition="The actual content, base64 encoded." )
     protected Base64BinaryType data;
 
-    private static final long serialVersionUID = 1353224198L;
+    private static final long serialVersionUID = 65831526L;
 
   /**
    * Constructor
@@ -154,7 +157,7 @@ public class Binary extends BaseBinary implements IBaseBinary {
     }
 
     /**
-     * @return {@link #securityContext} (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
+     * @return {@link #securityContext} (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
      */
     public Reference getSecurityContext() { 
       if (this.securityContext == null)
@@ -170,25 +173,10 @@ public class Binary extends BaseBinary implements IBaseBinary {
     }
 
     /**
-     * @param value {@link #securityContext} (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
+     * @param value {@link #securityContext} (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
      */
     public Binary setSecurityContext(Reference value) { 
       this.securityContext = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #securityContext} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
-     */
-    public Resource getSecurityContextTarget() { 
-      return this.securityContextTarget;
-    }
-
-    /**
-     * @param value {@link #securityContext} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.)
-     */
-    public Binary setSecurityContextTarget(Resource value) { 
-      this.securityContextTarget = value;
       return this;
     }
 
@@ -244,7 +232,7 @@ public class Binary extends BaseBinary implements IBaseBinary {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("contentType", "code", "MimeType of the binary content represented as a standard MimeType (BCP 13).", 0, 1, contentType));
-        children.add(new Property("securityContext", "Reference(Any)", "This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.", 0, 1, securityContext));
+        children.add(new Property("securityContext", "Reference(Any)", "This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.", 0, 1, securityContext));
         children.add(new Property("data", "base64Binary", "The actual content, base64 encoded.", 0, 1, data));
       }
 
@@ -252,7 +240,7 @@ public class Binary extends BaseBinary implements IBaseBinary {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -389131437: /*contentType*/  return new Property("contentType", "code", "MimeType of the binary content represented as a standard MimeType (BCP 13).", 0, 1, contentType);
-        case -1622888881: /*securityContext*/  return new Property("securityContext", "Reference(Any)", "This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. Media, DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.", 0, 1, securityContext);
+        case -1622888881: /*securityContext*/  return new Property("securityContext", "Reference(Any)", "This element identifies another resource that can be used as a proxy of the security sensitivity to use when deciding and enforcing access control rules for the Binary resource. Given that the Binary resource contains very few elements that can be used to determine the sensitivity of the data and relationships to individuals, the referenced resource stands in as a proxy equivalent for this purpose. This referenced resource may be related to the Binary (e.g. DocumentReference), or may be some non-related Resource purely as a security proxy. E.g. to identify that the binary resource relates to a patient, and access should only be granted to applications that have access to the patient.", 0, 1, securityContext);
         case 3076010: /*data*/  return new Property("data", "base64Binary", "The actual content, base64 encoded.", 0, 1, data);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -304,7 +292,7 @@ public class Binary extends BaseBinary implements IBaseBinary {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -389131437:  return getContentTypeElement();
-        case -1622888881:  return getSecurityContext(); 
+        case -1622888881:  return getSecurityContext();
         case 3076010:  return getDataElement();
         default: return super.makeProperty(hash, name);
         }
@@ -346,10 +334,14 @@ public class Binary extends BaseBinary implements IBaseBinary {
       public Binary copy() {
         Binary dst = new Binary();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Binary dst) {
+        super.copyValues(dst);
         dst.contentType = contentType == null ? null : contentType.copy();
         dst.securityContext = securityContext == null ? null : securityContext.copy();
         dst.data = data == null ? null : data.copy();
-        return dst;
       }
 
       protected Binary typedCopy() {

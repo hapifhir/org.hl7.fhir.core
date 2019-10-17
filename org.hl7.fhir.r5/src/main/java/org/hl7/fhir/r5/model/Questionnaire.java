@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
  */
@@ -1896,6 +1896,11 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemComponent copy() {
         QuestionnaireItemComponent dst = new QuestionnaireItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireItemComponent dst) {
+        super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
         dst.definition = definition == null ? null : definition.copy();
         if (code != null) {
@@ -1932,7 +1937,6 @@ public class Questionnaire extends MetadataResource {
           for (QuestionnaireItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1970,10 +1974,12 @@ public class Questionnaire extends MetadataResource {
           , maxLength, answerValueSet, answerOption, initial, item);
       }
 
-      public String fhirType() {
-        return "Questionnaire.item";
+  public String fhirType() {
+    return "Questionnaire.item";
 
-      }
+  }
+
+// added from java-adornments.txt:
 
       public QuestionnaireItemComponent getQuestion(String linkId) {
         if (linkId == null)
@@ -2010,7 +2016,9 @@ public class Questionnaire extends MetadataResource {
         }
         return false;
       }
+      
 
+// end addition
   }
 
     @Block()
@@ -2395,8 +2403,8 @@ public class Questionnaire extends MetadataResource {
         switch (hash) {
         case -1165870106:  return getQuestionElement();
         case -500553564:  return getOperatorElement();
-        case 1693524994:  return getAnswer(); 
-        case -1412808770:  return getAnswer(); 
+        case 1693524994:  return getAnswer();
+        case -1412808770:  return getAnswer();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2468,10 +2476,14 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemEnableWhenComponent copy() {
         QuestionnaireItemEnableWhenComponent dst = new QuestionnaireItemEnableWhenComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireItemEnableWhenComponent dst) {
+        super.copyValues(dst);
         dst.question = question == null ? null : question.copy();
         dst.operator = operator == null ? null : operator.copy();
         dst.answer = answer == null ? null : answer.copy();
-        return dst;
       }
 
       @Override
@@ -2758,8 +2770,8 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         case -1310184961:  return getInitialSelectedElement();
         default: return super.makeProperty(hash, name);
         }
@@ -2812,9 +2824,13 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemAnswerOptionComponent copy() {
         QuestionnaireItemAnswerOptionComponent dst = new QuestionnaireItemAnswerOptionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireItemAnswerOptionComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         dst.initialSelected = initialSelected == null ? null : initialSelected.copy();
-        return dst;
       }
 
       @Override
@@ -3136,8 +3152,8 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3209,8 +3225,12 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemInitialComponent copy() {
         QuestionnaireItemInitialComponent dst = new QuestionnaireItemInitialComponent();
         copyValues(dst);
-        dst.value = value == null ? null : value.copy();
         return dst;
+      }
+
+      public void copyValues(QuestionnaireItemInitialComponent dst) {
+        super.copyValues(dst);
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -4661,7 +4681,7 @@ public class Questionnaire extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
+        case -403934648:  return getEffectivePeriod();
         case 3059181:  return addCode(); 
         case 3242771:  return addItem(); 
         default: return super.makeProperty(hash, name);
@@ -4780,6 +4800,11 @@ public class Questionnaire extends MetadataResource {
       public Questionnaire copy() {
         Questionnaire dst = new Questionnaire();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Questionnaire dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4834,7 +4859,6 @@ public class Questionnaire extends MetadataResource {
           for (QuestionnaireItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       protected Questionnaire typedCopy() {
@@ -5258,7 +5282,8 @@ public class Questionnaire extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
-  
+// added from java-adornments.txt:
+
   public QuestionnaireItemComponent getQuestion(String linkId) {
     if (linkId == null)
       return null;
@@ -5280,7 +5305,9 @@ public class Questionnaire extends MetadataResource {
     }
     return null;
   }
-  
+
+
+// end addition
 
 }
 

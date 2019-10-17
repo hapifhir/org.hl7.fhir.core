@@ -53,14 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A record of a request for service such as diagnostic investigations, treatments, or operations to be performed.
  */
@@ -594,11 +598,6 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "basedOn", type = {CarePlan.class, ServiceRequest.class, MedicationRequest.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What request fulfills", formalDefinition="Plan/proposal/order fulfilled by this request." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (Plan/proposal/order fulfilled by this request.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * The request takes the place of the referenced completed or terminated request(s).
@@ -606,11 +605,6 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "replaces", type = {ServiceRequest.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What request replaces", formalDefinition="The request takes the place of the referenced completed or terminated request(s)." )
     protected List<Reference> replaces;
-    /**
-     * The actual objects that are the target of the reference (The request takes the place of the referenced completed or terminated request(s).)
-     */
-    protected List<ServiceRequest> replacesTarget;
-
 
     /**
      * A shared identifier common to all service requests that were authorized more or less simultaneously by a single author, representing the composite or group identifier.
@@ -623,7 +617,7 @@ public class ServiceRequest extends DomainResource {
      * The status of the order.
      */
     @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | suspended | completed | entered-in-error | cancelled", formalDefinition="The status of the order." )
+    @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The status of the order." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
     protected Enumeration<ServiceRequestStatus> status;
 
@@ -631,7 +625,7 @@ public class ServiceRequest extends DomainResource {
      * Whether the request is a proposal, plan, an original order or a reflex order.
      */
     @Child(name = "intent", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposal | plan | order +", formalDefinition="Whether the request is a proposal, plan, an original order or a reflex order." )
+    @Description(shortDefinition="proposal | plan | directive | order +", formalDefinition="Whether the request is a proposal, plan, an original order or a reflex order." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
     protected Enumeration<ServiceRequestIntent> intent;
 
@@ -689,21 +683,11 @@ public class ServiceRequest extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (On whom or what the service is to be performed. This is usually a human patient, but can also be requested on animals, groups of humans or animals, devices such as dialysis machines, or even locations (typically for environmental scans).)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * An encounter that provides additional information about the healthcare context in which this request is made.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Encounter in which the request was created", formalDefinition="An encounter that provides additional information about the healthcare context in which this request is made." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (An encounter that provides additional information about the healthcare context in which this request is made.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date/time at which the requested service should occur.
@@ -735,11 +719,6 @@ public class ServiceRequest extends DomainResource {
     protected Reference requester;
 
     /**
-     * The actual object that is the target of the reference (The individual who initiated the request and has responsibility for its activation.)
-     */
-    protected Resource requesterTarget;
-
-    /**
      * Desired type of performer for doing the requested service.
      */
     @Child(name = "performerType", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
@@ -753,11 +732,6 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "performer", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, HealthcareService.class, Patient.class, Device.class, RelatedPerson.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Requested performer", formalDefinition="The desired performer for doing the requested service.  For example, the surgeon, dermatopathologist, endoscopist, etc." )
     protected List<Reference> performer;
-    /**
-     * The actual objects that are the target of the reference (The desired performer for doing the requested service.  For example, the surgeon, dermatopathologist, endoscopist, etc.)
-     */
-    protected List<Resource> performerTarget;
-
 
     /**
      * The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.
@@ -773,31 +747,21 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "locationReference", type = {Location.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Requested location", formalDefinition="A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center." )
     protected List<Reference> locationReference;
-    /**
-     * The actual objects that are the target of the reference (A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.)
-     */
-    protected List<Location> locationReferenceTarget;
-
 
     /**
-     * An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in supportingInformation.
+     * An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.
      */
     @Child(name = "reasonCode", type = {CodeableConcept.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Explanation/Justification for procedure or service", formalDefinition="An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in supportingInformation." )
+    @Description(shortDefinition="Explanation/Justification for procedure or service", formalDefinition="An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-reason")
     protected List<CodeableConcept> reasonCode;
 
     /**
-     * Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in supportingInformation.
+     * Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.
      */
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Explanation/Justification for service or service", formalDefinition="Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in supportingInformation." )
+    @Description(shortDefinition="Explanation/Justification for service or service", formalDefinition="Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in supportingInformation.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.
@@ -805,11 +769,6 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated insurance coverage", formalDefinition="Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service." )
     protected List<Reference> insurance;
-    /**
-     * The actual objects that are the target of the reference (Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.)
-     */
-    protected List<Resource> insuranceTarget;
-
 
     /**
      * Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as "ask at order entry questions (AOEs)".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.
@@ -817,11 +776,6 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "supportingInfo", type = {Reference.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional clinical information", formalDefinition="Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as \"ask at order entry questions (AOEs)\".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements." )
     protected List<Reference> supportingInfo;
-    /**
-     * The actual objects that are the target of the reference (Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as "ask at order entry questions (AOEs)".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.)
-     */
-    protected List<Resource> supportingInfoTarget;
-
 
     /**
      * One or more specimens that the laboratory procedure will use.
@@ -829,11 +783,6 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "specimen", type = {Specimen.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Procedure Samples", formalDefinition="One or more specimens that the laboratory procedure will use." )
     protected List<Reference> specimen;
-    /**
-     * The actual objects that are the target of the reference (One or more specimens that the laboratory procedure will use.)
-     */
-    protected List<Specimen> specimenTarget;
-
 
     /**
      * Anatomic location where the procedure should be performed. This is the target site.
@@ -863,13 +812,8 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "relevantHistory", type = {Provenance.class}, order=32, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Request provenance", formalDefinition="Key events in the history of the request." )
     protected List<Reference> relevantHistory;
-    /**
-     * The actual objects that are the target of the reference (Key events in the history of the request.)
-     */
-    protected List<Provenance> relevantHistoryTarget;
 
-
-    private static final long serialVersionUID = -1202335045L;
+    private static final long serialVersionUID = -1647034321L;
 
   /**
    * Constructor
@@ -1117,16 +1061,6 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #replaces} (The request takes the place of the referenced completed or terminated request(s).)
      */
     public List<Reference> getReplaces() { 
@@ -1177,28 +1111,6 @@ public class ServiceRequest extends DomainResource {
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<ServiceRequest>();
-      return this.replacesTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addReplacesTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<ServiceRequest>();
-      this.replacesTarget.add(r);
-      return r;
     }
 
     /**
@@ -1630,21 +1542,6 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (On whom or what the service is to be performed. This is usually a human patient, but can also be requested on animals, groups of humans or animals, devices such as dialysis machines, or even locations (typically for environmental scans).)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (On whom or what the service is to be performed. This is usually a human patient, but can also be requested on animals, groups of humans or animals, devices such as dialysis machines, or even locations (typically for environmental scans).)
-     */
-    public ServiceRequest setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (An encounter that provides additional information about the healthcare context in which this request is made.)
      */
     public Reference getEncounter() { 
@@ -1665,26 +1562,6 @@ public class ServiceRequest extends DomainResource {
      */
     public ServiceRequest setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (An encounter that provides additional information about the healthcare context in which this request is made.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ServiceRequest.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (An encounter that provides additional information about the healthcare context in which this request is made.)
-     */
-    public ServiceRequest setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1879,21 +1756,6 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #requester} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual who initiated the request and has responsibility for its activation.)
-     */
-    public Resource getRequesterTarget() { 
-      return this.requesterTarget;
-    }
-
-    /**
-     * @param value {@link #requester} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual who initiated the request and has responsibility for its activation.)
-     */
-    public ServiceRequest setRequesterTarget(Resource value) { 
-      this.requesterTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #performerType} (Desired type of performer for doing the requested service.)
      */
     public CodeableConcept getPerformerType() { 
@@ -1968,16 +1830,6 @@ public class ServiceRequest extends DomainResource {
         addPerformer();
       }
       return getPerformer().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPerformerTarget() { 
-      if (this.performerTarget == null)
-        this.performerTarget = new ArrayList<Resource>();
-      return this.performerTarget;
     }
 
     /**
@@ -2087,29 +1939,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getLocationReferenceTarget() { 
-      if (this.locationReferenceTarget == null)
-        this.locationReferenceTarget = new ArrayList<Location>();
-      return this.locationReferenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addLocationReferenceTarget() { 
-      Location r = new Location();
-      if (this.locationReferenceTarget == null)
-        this.locationReferenceTarget = new ArrayList<Location>();
-      this.locationReferenceTarget.add(r);
-      return r;
-    }
-
-    /**
-     * @return {@link #reasonCode} (An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in supportingInformation.)
+     * @return {@link #reasonCode} (An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.)
      */
     public List<CodeableConcept> getReasonCode() { 
       if (this.reasonCode == null)
@@ -2162,7 +1992,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonReference} (Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in supportingInformation.)
+     * @return {@link #reasonReference} (Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.)
      */
     public List<Reference> getReasonReference() { 
       if (this.reasonReference == null)
@@ -2212,16 +2042,6 @@ public class ServiceRequest extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**
@@ -2278,16 +2098,6 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getInsuranceTarget() { 
-      if (this.insuranceTarget == null)
-        this.insuranceTarget = new ArrayList<Resource>();
-      return this.insuranceTarget;
-    }
-
-    /**
      * @return {@link #supportingInfo} (Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as "ask at order entry questions (AOEs)".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.)
      */
     public List<Reference> getSupportingInfo() { 
@@ -2341,16 +2151,6 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInfoTarget() { 
-      if (this.supportingInfoTarget == null)
-        this.supportingInfoTarget = new ArrayList<Resource>();
-      return this.supportingInfoTarget;
-    }
-
-    /**
      * @return {@link #specimen} (One or more specimens that the laboratory procedure will use.)
      */
     public List<Reference> getSpecimen() { 
@@ -2401,28 +2201,6 @@ public class ServiceRequest extends DomainResource {
         addSpecimen();
       }
       return getSpecimen().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Specimen> getSpecimenTarget() { 
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      return this.specimenTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Specimen addSpecimenTarget() { 
-      Specimen r = new Specimen();
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      this.specimenTarget.add(r);
-      return r;
     }
 
     /**
@@ -2633,28 +2411,6 @@ public class ServiceRequest extends DomainResource {
       return getRelevantHistory().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getRelevantHistoryTarget() { 
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      return this.relevantHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addRelevantHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      this.relevantHistoryTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers assigned to this order instance by the orderer and/or the receiver and/or order fulfiller.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -2681,8 +2437,8 @@ public class ServiceRequest extends DomainResource {
         children.add(new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The desired performer for doing the requested service.  For example, the surgeon, dermatopathologist, endoscopist, etc.", 0, java.lang.Integer.MAX_VALUE, performer));
         children.add(new Property("locationCode", "CodeableConcept", "The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationCode));
         children.add(new Property("locationReference", "Reference(Location)", "A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationReference));
-        children.add(new Property("reasonCode", "CodeableConcept", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in supportingInformation.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in supportingInformation.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reasonCode", "CodeableConcept", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
+        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.", 0, java.lang.Integer.MAX_VALUE, insurance));
         children.add(new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as \"ask at order entry questions (AOEs)\".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
         children.add(new Property("specimen", "Reference(Specimen)", "One or more specimens that the laboratory procedure will use.", 0, java.lang.Integer.MAX_VALUE, specimen));
@@ -2730,8 +2486,8 @@ public class ServiceRequest extends DomainResource {
         case 481140686: /*performer*/  return new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The desired performer for doing the requested service.  For example, the surgeon, dermatopathologist, endoscopist, etc.", 0, java.lang.Integer.MAX_VALUE, performer);
         case -58794174: /*locationCode*/  return new Property("locationCode", "CodeableConcept", "The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationCode);
         case 755866390: /*locationReference*/  return new Property("locationReference", "Reference(Location)", "A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationReference);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in supportingInformation.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in supportingInformation.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
+        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.", 0, java.lang.Integer.MAX_VALUE, insurance);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as \"ask at order entry questions (AOEs)\".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
         case -2132868344: /*specimen*/  return new Property("specimen", "Reference(Specimen)", "One or more specimens that the laboratory procedure will use.", 0, java.lang.Integer.MAX_VALUE, specimen);
@@ -2979,25 +2735,25 @@ public class ServiceRequest extends DomainResource {
         case -1926393373:  return addInstantiatesUriElement();
         case -332612366:  return addBasedOn(); 
         case -430332865:  return addReplaces(); 
-        case 395923612:  return getRequisition(); 
+        case 395923612:  return getRequisition();
         case -892481550:  return getStatusElement();
         case -1183762788:  return getIntentElement();
         case 50511102:  return addCategory(); 
         case -1165461084:  return getPriorityElement();
         case -1788508167:  return getDoNotPerformElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 1187338559:  return addOrderDetail(); 
-        case -515002347:  return getQuantity(); 
-        case -1285004149:  return getQuantity(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
-        case -544329575:  return getAsNeeded(); 
-        case -1432923513:  return getAsNeeded(); 
+        case -515002347:  return getQuantity();
+        case -1285004149:  return getQuantity();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
+        case -544329575:  return getAsNeeded();
+        case -1432923513:  return getAsNeeded();
         case -1500852503:  return getAuthoredOnElement();
-        case 693933948:  return getRequester(); 
-        case -901444568:  return getPerformerType(); 
+        case 693933948:  return getRequester();
+        case -901444568:  return getPerformerType();
         case 481140686:  return addPerformer(); 
         case -58794174:  return addLocationCode(); 
         case 755866390:  return addLocationReference(); 
@@ -3198,6 +2954,11 @@ public class ServiceRequest extends DomainResource {
       public ServiceRequest copy() {
         ServiceRequest dst = new ServiceRequest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ServiceRequest dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3303,7 +3064,6 @@ public class ServiceRequest extends DomainResource {
           for (Reference i : relevantHistory)
             dst.relevantHistory.add(i.copy());
         };
-        return dst;
       }
 
       protected ServiceRequest typedCopy() {
@@ -3639,17 +3399,17 @@ public class ServiceRequest extends DomainResource {
  /**
    * Search parameter: <b>intent</b>
    * <p>
-   * Description: <b>proposal | plan | order +</b><br>
+   * Description: <b>proposal | plan | directive | order +</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ServiceRequest.intent</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="intent", path="ServiceRequest.intent", description="proposal | plan | order +", type="token" )
+  @SearchParamDefinition(name="intent", path="ServiceRequest.intent", description="proposal | plan | directive | order +", type="token" )
   public static final String SP_INTENT = "intent";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>intent</b>
    * <p>
-   * Description: <b>proposal | plan | order +</b><br>
+   * Description: <b>proposal | plan | directive | order +</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ServiceRequest.intent</b><br>
    * </p>
@@ -3817,17 +3577,17 @@ public class ServiceRequest extends DomainResource {
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>draft | active | suspended | completed | entered-in-error | cancelled</b><br>
+   * Description: <b>draft | active | on-hold | revoked | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ServiceRequest.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="ServiceRequest.status", description="draft | active | suspended | completed | entered-in-error | cancelled", type="token" )
+  @SearchParamDefinition(name="status", path="ServiceRequest.status", description="draft | active | on-hold | revoked | completed | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>draft | active | suspended | completed | entered-in-error | cancelled</b><br>
+   * Description: <b>draft | active | on-hold | revoked | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ServiceRequest.status</b><br>
    * </p>

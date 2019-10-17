@@ -53,24 +53,24 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The EvidenceVariable resource describes a "PICO" element that knowledge (evidence, assertion, recommendation) is about.
  */
 @ResourceDef(name="EvidenceVariable", profile="http://hl7.org/fhir/StructureDefinition/EvidenceVariable")
-@ChildOrder(names={"url", "identifier", "version", "name", "title", "shortTitle", "subtitle", "status", "date", "publisher", "contact", "description", "note", "useContext", "jurisdiction", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "type", "characteristic"})
+@ChildOrder(names={"url", "identifier", "version", "name", "title", "shortTitle", "subtitle", "status", "date", "publisher", "contact", "description", "note", "useContext", "jurisdiction", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "type", "actual", "characteristic"})
 public class EvidenceVariable extends MetadataResource {
 
     public enum EvidenceVariableType {
@@ -354,42 +354,57 @@ public class EvidenceVariable extends MetadataResource {
         protected Type definition;
 
         /**
-         * Use UsageContext to define the members of the population, such as Age Ranges, Genders, Settings.
+         * Method used for describing characteristic.
          */
-        @Child(name = "usageContext", type = {UsageContext.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="What code/value pairs define members?", formalDefinition="Use UsageContext to define the members of the population, such as Age Ranges, Genders, Settings." )
-        protected List<UsageContext> usageContext;
+        @Child(name = "method", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Method used for describing characteristic", formalDefinition="Method used for describing characteristic." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/characteristic-method")
+        protected CodeableConcept method;
+
+        /**
+         * Device used for determining characteristic.
+         */
+        @Child(name = "device", type = {Device.class, DeviceMetric.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Device used for determining characteristic", formalDefinition="Device used for determining characteristic." )
+        protected Reference device;
+
+        /**
+         * Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.
+         */
+        @Child(name = "booleanSet", type = {StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="What code/value pairs define members?", formalDefinition="Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings." )
+        protected List<StringType> booleanSet;
 
         /**
          * When true, members with this characteristic are excluded from the element.
          */
-        @Child(name = "exclude", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "exclude", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Whether the characteristic includes or excludes members", formalDefinition="When true, members with this characteristic are excluded from the element." )
         protected BooleanType exclude;
 
         /**
          * Indicates what effective period the study covers.
          */
-        @Child(name = "participantEffective", type = {DateTimeType.class, Period.class, Duration.class, Timing.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "participantEffective", type = {DateTimeType.class, Period.class, Duration.class, Timing.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="What time period do participants cover", formalDefinition="Indicates what effective period the study covers." )
         protected Type participantEffective;
 
         /**
          * Indicates duration from the participant's study entry.
          */
-        @Child(name = "timeFromStart", type = {Duration.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "timeFromStart", type = {Duration.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Observation time from study start", formalDefinition="Indicates duration from the participant's study entry." )
         protected Duration timeFromStart;
 
         /**
          * Indicates how elements are aggregated within the study effective period.
          */
-        @Child(name = "groupMeasure", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "groupMeasure", type = {CodeType.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="mean | median | mean-of-mean | mean-of-median | median-of-mean | median-of-median", formalDefinition="Indicates how elements are aggregated within the study effective period." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/group-measure")
         protected Enumeration<GroupMeasure> groupMeasure;
 
-        private static final long serialVersionUID = 1901961318L;
+        private static final long serialVersionUID = 568690866L;
 
     /**
      * Constructor
@@ -567,56 +582,112 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return {@link #usageContext} (Use UsageContext to define the members of the population, such as Age Ranges, Genders, Settings.)
+         * @return {@link #method} (Method used for describing characteristic.)
          */
-        public List<UsageContext> getUsageContext() { 
-          if (this.usageContext == null)
-            this.usageContext = new ArrayList<UsageContext>();
-          return this.usageContext;
+        public CodeableConcept getMethod() { 
+          if (this.method == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicComponent.method");
+            else if (Configuration.doAutoCreate())
+              this.method = new CodeableConcept(); // cc
+          return this.method;
+        }
+
+        public boolean hasMethod() { 
+          return this.method != null && !this.method.isEmpty();
+        }
+
+        /**
+         * @param value {@link #method} (Method used for describing characteristic.)
+         */
+        public EvidenceVariableCharacteristicComponent setMethod(CodeableConcept value) { 
+          this.method = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #device} (Device used for determining characteristic.)
+         */
+        public Reference getDevice() { 
+          if (this.device == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicComponent.device");
+            else if (Configuration.doAutoCreate())
+              this.device = new Reference(); // cc
+          return this.device;
+        }
+
+        public boolean hasDevice() { 
+          return this.device != null && !this.device.isEmpty();
+        }
+
+        /**
+         * @param value {@link #device} (Device used for determining characteristic.)
+         */
+        public EvidenceVariableCharacteristicComponent setDevice(Reference value) { 
+          this.device = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #booleanSet} (Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.)
+         */
+        public List<StringType> getBooleanSet() { 
+          if (this.booleanSet == null)
+            this.booleanSet = new ArrayList<StringType>();
+          return this.booleanSet;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public EvidenceVariableCharacteristicComponent setUsageContext(List<UsageContext> theUsageContext) { 
-          this.usageContext = theUsageContext;
+        public EvidenceVariableCharacteristicComponent setBooleanSet(List<StringType> theBooleanSet) { 
+          this.booleanSet = theBooleanSet;
           return this;
         }
 
-        public boolean hasUsageContext() { 
-          if (this.usageContext == null)
+        public boolean hasBooleanSet() { 
+          if (this.booleanSet == null)
             return false;
-          for (UsageContext item : this.usageContext)
+          for (StringType item : this.booleanSet)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public UsageContext addUsageContext() { //3
-          UsageContext t = new UsageContext();
-          if (this.usageContext == null)
-            this.usageContext = new ArrayList<UsageContext>();
-          this.usageContext.add(t);
+        /**
+         * @return {@link #booleanSet} (Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.)
+         */
+        public StringType addBooleanSetElement() {//2 
+          StringType t = new StringType();
+          if (this.booleanSet == null)
+            this.booleanSet = new ArrayList<StringType>();
+          this.booleanSet.add(t);
           return t;
         }
 
-        public EvidenceVariableCharacteristicComponent addUsageContext(UsageContext t) { //3
-          if (t == null)
-            return this;
-          if (this.usageContext == null)
-            this.usageContext = new ArrayList<UsageContext>();
-          this.usageContext.add(t);
+        /**
+         * @param value {@link #booleanSet} (Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.)
+         */
+        public EvidenceVariableCharacteristicComponent addBooleanSet(String value) { //1
+          StringType t = new StringType();
+          t.setValue(value);
+          if (this.booleanSet == null)
+            this.booleanSet = new ArrayList<StringType>();
+          this.booleanSet.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #usageContext}, creating it if it does not already exist
+         * @param value {@link #booleanSet} (Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.)
          */
-        public UsageContext getUsageContextFirstRep() { 
-          if (getUsageContext().isEmpty()) {
-            addUsageContext();
-          }
-          return getUsageContext().get(0);
+        public boolean hasBooleanSet(String value) { 
+          if (this.booleanSet == null)
+            return false;
+          for (StringType v : this.booleanSet)
+            if (v.getValue().equals(value)) // string
+              return true;
+          return false;
         }
 
         /**
@@ -822,7 +893,9 @@ public class EvidenceVariable extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("description", "string", "A short, natural language description of the characteristic that could be used to communicate the criteria to an end-user.", 0, 1, description));
           children.add(new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition));
-          children.add(new Property("usageContext", "UsageContext", "Use UsageContext to define the members of the population, such as Age Ranges, Genders, Settings.", 0, java.lang.Integer.MAX_VALUE, usageContext));
+          children.add(new Property("method", "CodeableConcept", "Method used for describing characteristic.", 0, 1, method));
+          children.add(new Property("device", "Reference(Device|DeviceMetric)", "Device used for determining characteristic.", 0, 1, device));
+          children.add(new Property("booleanSet", "string", "Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.", 0, java.lang.Integer.MAX_VALUE, booleanSet));
           children.add(new Property("exclude", "boolean", "When true, members with this characteristic are excluded from the element.", 0, 1, exclude));
           children.add(new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective));
           children.add(new Property("timeFromStart", "Duration", "Indicates duration from the participant's study entry.", 0, 1, timeFromStart));
@@ -841,7 +914,9 @@ public class EvidenceVariable extends MetadataResource {
           case 1463703627: /*definitionExpression*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
           case -660350874: /*definitionDataRequirement*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
           case -1130324968: /*definitionTriggerDefinition*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case 907012302: /*usageContext*/  return new Property("usageContext", "UsageContext", "Use UsageContext to define the members of the population, such as Age Ranges, Genders, Settings.", 0, java.lang.Integer.MAX_VALUE, usageContext);
+          case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Method used for describing characteristic.", 0, 1, method);
+          case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "Device used for determining characteristic.", 0, 1, device);
+          case -613382374: /*booleanSet*/  return new Property("booleanSet", "string", "Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.", 0, java.lang.Integer.MAX_VALUE, booleanSet);
           case -1321148966: /*exclude*/  return new Property("exclude", "boolean", "When true, members with this characteristic are excluded from the element.", 0, 1, exclude);
           case 1777308748: /*participantEffective[x]*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
           case 1376306100: /*participantEffective*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
@@ -861,7 +936,9 @@ public class EvidenceVariable extends MetadataResource {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // Type
-        case 907012302: /*usageContext*/ return this.usageContext == null ? new Base[0] : this.usageContext.toArray(new Base[this.usageContext.size()]); // UsageContext
+        case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
+        case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
+        case -613382374: /*booleanSet*/ return this.booleanSet == null ? new Base[0] : this.booleanSet.toArray(new Base[this.booleanSet.size()]); // StringType
         case -1321148966: /*exclude*/ return this.exclude == null ? new Base[0] : new Base[] {this.exclude}; // BooleanType
         case 1376306100: /*participantEffective*/ return this.participantEffective == null ? new Base[0] : new Base[] {this.participantEffective}; // Type
         case 2100140683: /*timeFromStart*/ return this.timeFromStart == null ? new Base[0] : new Base[] {this.timeFromStart}; // Duration
@@ -880,8 +957,14 @@ public class EvidenceVariable extends MetadataResource {
         case -1014418093: // definition
           this.definition = castToType(value); // Type
           return value;
-        case 907012302: // usageContext
-          this.getUsageContext().add(castToUsageContext(value)); // UsageContext
+        case -1077554975: // method
+          this.method = castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1335157162: // device
+          this.device = castToReference(value); // Reference
+          return value;
+        case -613382374: // booleanSet
+          this.getBooleanSet().add(castToString(value)); // StringType
           return value;
         case -1321148966: // exclude
           this.exclude = castToBoolean(value); // BooleanType
@@ -907,8 +990,12 @@ public class EvidenceVariable extends MetadataResource {
           this.description = castToString(value); // StringType
         } else if (name.equals("definition[x]")) {
           this.definition = castToType(value); // Type
-        } else if (name.equals("usageContext")) {
-          this.getUsageContext().add(castToUsageContext(value));
+        } else if (name.equals("method")) {
+          this.method = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("device")) {
+          this.device = castToReference(value); // Reference
+        } else if (name.equals("booleanSet")) {
+          this.getBooleanSet().add(castToString(value));
         } else if (name.equals("exclude")) {
           this.exclude = castToBoolean(value); // BooleanType
         } else if (name.equals("participantEffective[x]")) {
@@ -927,13 +1014,15 @@ public class EvidenceVariable extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
-        case -1139422643:  return getDefinition(); 
-        case -1014418093:  return getDefinition(); 
-        case 907012302:  return addUsageContext(); 
+        case -1139422643:  return getDefinition();
+        case -1014418093:  return getDefinition();
+        case -1077554975:  return getMethod();
+        case -1335157162:  return getDevice();
+        case -613382374:  return addBooleanSetElement();
         case -1321148966:  return getExcludeElement();
-        case 1777308748:  return getParticipantEffective(); 
-        case 1376306100:  return getParticipantEffective(); 
-        case 2100140683:  return getTimeFromStart(); 
+        case 1777308748:  return getParticipantEffective();
+        case 1376306100:  return getParticipantEffective();
+        case 2100140683:  return getTimeFromStart();
         case 588892639:  return getGroupMeasureElement();
         default: return super.makeProperty(hash, name);
         }
@@ -945,7 +1034,9 @@ public class EvidenceVariable extends MetadataResource {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
         case -1014418093: /*definition*/ return new String[] {"Reference", "canonical", "CodeableConcept", "Expression", "DataRequirement", "TriggerDefinition"};
-        case 907012302: /*usageContext*/ return new String[] {"UsageContext"};
+        case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
+        case -1335157162: /*device*/ return new String[] {"Reference"};
+        case -613382374: /*booleanSet*/ return new String[] {"string"};
         case -1321148966: /*exclude*/ return new String[] {"boolean"};
         case 1376306100: /*participantEffective*/ return new String[] {"dateTime", "Period", "Duration", "Timing"};
         case 2100140683: /*timeFromStart*/ return new String[] {"Duration"};
@@ -984,8 +1075,16 @@ public class EvidenceVariable extends MetadataResource {
           this.definition = new TriggerDefinition();
           return this.definition;
         }
-        else if (name.equals("usageContext")) {
-          return addUsageContext();
+        else if (name.equals("method")) {
+          this.method = new CodeableConcept();
+          return this.method;
+        }
+        else if (name.equals("device")) {
+          this.device = new Reference();
+          return this.device;
+        }
+        else if (name.equals("booleanSet")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.booleanSet");
         }
         else if (name.equals("exclude")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.exclude");
@@ -1020,18 +1119,24 @@ public class EvidenceVariable extends MetadataResource {
       public EvidenceVariableCharacteristicComponent copy() {
         EvidenceVariableCharacteristicComponent dst = new EvidenceVariableCharacteristicComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceVariableCharacteristicComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.definition = definition == null ? null : definition.copy();
-        if (usageContext != null) {
-          dst.usageContext = new ArrayList<UsageContext>();
-          for (UsageContext i : usageContext)
-            dst.usageContext.add(i.copy());
+        dst.method = method == null ? null : method.copy();
+        dst.device = device == null ? null : device.copy();
+        if (booleanSet != null) {
+          dst.booleanSet = new ArrayList<StringType>();
+          for (StringType i : booleanSet)
+            dst.booleanSet.add(i.copy());
         };
         dst.exclude = exclude == null ? null : exclude.copy();
         dst.participantEffective = participantEffective == null ? null : participantEffective.copy();
         dst.timeFromStart = timeFromStart == null ? null : timeFromStart.copy();
         dst.groupMeasure = groupMeasure == null ? null : groupMeasure.copy();
-        return dst;
       }
 
       @Override
@@ -1042,7 +1147,8 @@ public class EvidenceVariable extends MetadataResource {
           return false;
         EvidenceVariableCharacteristicComponent o = (EvidenceVariableCharacteristicComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(definition, o.definition, true)
-           && compareDeep(usageContext, o.usageContext, true) && compareDeep(exclude, o.exclude, true) && compareDeep(participantEffective, o.participantEffective, true)
+           && compareDeep(method, o.method, true) && compareDeep(device, o.device, true) && compareDeep(booleanSet, o.booleanSet, true)
+           && compareDeep(exclude, o.exclude, true) && compareDeep(participantEffective, o.participantEffective, true)
            && compareDeep(timeFromStart, o.timeFromStart, true) && compareDeep(groupMeasure, o.groupMeasure, true)
           ;
       }
@@ -1054,13 +1160,14 @@ public class EvidenceVariable extends MetadataResource {
         if (!(other_ instanceof EvidenceVariableCharacteristicComponent))
           return false;
         EvidenceVariableCharacteristicComponent o = (EvidenceVariableCharacteristicComponent) other_;
-        return compareValues(description, o.description, true) && compareValues(exclude, o.exclude, true) && compareValues(groupMeasure, o.groupMeasure, true)
-          ;
+        return compareValues(description, o.description, true) && compareValues(booleanSet, o.booleanSet, true)
+           && compareValues(exclude, o.exclude, true) && compareValues(groupMeasure, o.groupMeasure, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, definition, usageContext
-          , exclude, participantEffective, timeFromStart, groupMeasure);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, definition, method
+          , device, booleanSet, exclude, participantEffective, timeFromStart, groupMeasure
+          );
       }
 
   public String fhirType() {
@@ -1178,13 +1285,20 @@ public class EvidenceVariable extends MetadataResource {
     protected Enumeration<EvidenceVariableType> type;
 
     /**
+     * True if the actual variable measured, false if a conceptual representation of the intended variable.
+     */
+    @Child(name = "actual", type = {BooleanType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Actual or conceptual", formalDefinition="True if the actual variable measured, false if a conceptual representation of the intended variable." )
+    protected BooleanType actual;
+
+    /**
      * A characteristic that defines the members of the evidence element. Multiple characteristics are applied with "and" semantics.
      */
-    @Child(name = "characteristic", type = {}, order=15, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "characteristic", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What defines the members of the evidence element", formalDefinition="A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics." )
     protected List<EvidenceVariableCharacteristicComponent> characteristic;
 
-    private static final long serialVersionUID = -317280154L;
+    private static final long serialVersionUID = 433718448L;
 
   /**
    * Constructor
@@ -2491,6 +2605,51 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
+     * @return {@link #actual} (True if the actual variable measured, false if a conceptual representation of the intended variable.). This is the underlying object with id, value and extensions. The accessor "getActual" gives direct access to the value
+     */
+    public BooleanType getActualElement() { 
+      if (this.actual == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create EvidenceVariable.actual");
+        else if (Configuration.doAutoCreate())
+          this.actual = new BooleanType(); // bb
+      return this.actual;
+    }
+
+    public boolean hasActualElement() { 
+      return this.actual != null && !this.actual.isEmpty();
+    }
+
+    public boolean hasActual() { 
+      return this.actual != null && !this.actual.isEmpty();
+    }
+
+    /**
+     * @param value {@link #actual} (True if the actual variable measured, false if a conceptual representation of the intended variable.). This is the underlying object with id, value and extensions. The accessor "getActual" gives direct access to the value
+     */
+    public EvidenceVariable setActualElement(BooleanType value) { 
+      this.actual = value;
+      return this;
+    }
+
+    /**
+     * @return True if the actual variable measured, false if a conceptual representation of the intended variable.
+     */
+    public boolean getActual() { 
+      return this.actual == null || this.actual.isEmpty() ? false : this.actual.getValue();
+    }
+
+    /**
+     * @param value True if the actual variable measured, false if a conceptual representation of the intended variable.
+     */
+    public EvidenceVariable setActual(boolean value) { 
+        if (this.actual == null)
+          this.actual = new BooleanType();
+        this.actual.setValue(value);
+      return this;
+    }
+
+    /**
      * @return {@link #characteristic} (A characteristic that defines the members of the evidence element. Multiple characteristics are applied with "and" semantics.)
      */
     public List<EvidenceVariableCharacteristicComponent> getCharacteristic() { 
@@ -2571,6 +2730,7 @@ public class EvidenceVariable extends MetadataResource {
         children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("type", "code", "The type of evidence element, a population, an exposure, or an outcome.", 0, 1, type));
+        children.add(new Property("actual", "boolean", "True if the actual variable measured, false if a conceptual representation of the intended variable.", 0, 1, actual));
         children.add(new Property("characteristic", "", "A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics.", 0, java.lang.Integer.MAX_VALUE, characteristic));
       }
 
@@ -2603,6 +2763,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case 3575610: /*type*/  return new Property("type", "code", "The type of evidence element, a population, an exposure, or an outcome.", 0, 1, type);
+        case -1422939762: /*actual*/  return new Property("actual", "boolean", "True if the actual variable measured, false if a conceptual representation of the intended variable.", 0, 1, actual);
         case 366313883: /*characteristic*/  return new Property("characteristic", "", "A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics.", 0, java.lang.Integer.MAX_VALUE, characteristic);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2638,6 +2799,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<EvidenceVariableType>
+        case -1422939762: /*actual*/ return this.actual == null ? new Base[0] : new Base[] {this.actual}; // BooleanType
         case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // EvidenceVariableCharacteristicComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2727,6 +2889,9 @@ public class EvidenceVariable extends MetadataResource {
           value = new EvidenceVariableTypeEnumFactory().fromType(castToCode(value));
           this.type = (Enumeration) value; // Enumeration<EvidenceVariableType>
           return value;
+        case -1422939762: // actual
+          this.actual = castToBoolean(value); // BooleanType
+          return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value); // EvidenceVariableCharacteristicComponent
           return value;
@@ -2791,6 +2956,8 @@ public class EvidenceVariable extends MetadataResource {
         } else if (name.equals("type")) {
           value = new EvidenceVariableTypeEnumFactory().fromType(castToCode(value));
           this.type = (Enumeration) value; // Enumeration<EvidenceVariableType>
+        } else if (name.equals("actual")) {
+          this.actual = castToBoolean(value); // BooleanType
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value);
         } else
@@ -2819,7 +2986,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
+        case -403934648:  return getEffectivePeriod();
         case 110546223:  return addTopic(); 
         case -1406328437:  return addAuthor(); 
         case -1307827859:  return addEditor(); 
@@ -2827,6 +2994,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666:  return addEndorser(); 
         case 666807069:  return addRelatedArtifact(); 
         case 3575610:  return getTypeElement();
+        case -1422939762:  return getActualElement();
         case 366313883:  return addCharacteristic(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2862,6 +3030,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case 3575610: /*type*/ return new String[] {"code"};
+        case -1422939762: /*actual*/ return new String[] {"boolean"};
         case 366313883: /*characteristic*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2949,6 +3118,9 @@ public class EvidenceVariable extends MetadataResource {
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.type");
         }
+        else if (name.equals("actual")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.actual");
+        }
         else if (name.equals("characteristic")) {
           return addCharacteristic();
         }
@@ -2964,6 +3136,11 @@ public class EvidenceVariable extends MetadataResource {
       public EvidenceVariable copy() {
         EvidenceVariable dst = new EvidenceVariable();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceVariable dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -3034,12 +3211,12 @@ public class EvidenceVariable extends MetadataResource {
             dst.relatedArtifact.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
+        dst.actual = actual == null ? null : actual.copy();
         if (characteristic != null) {
           dst.characteristic = new ArrayList<EvidenceVariableCharacteristicComponent>();
           for (EvidenceVariableCharacteristicComponent i : characteristic)
             dst.characteristic.add(i.copy());
         };
-        return dst;
       }
 
       protected EvidenceVariable typedCopy() {
@@ -3058,8 +3235,8 @@ public class EvidenceVariable extends MetadataResource {
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
            && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true)
            && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
-           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(type, o.type, true) && compareDeep(characteristic, o.characteristic, true)
-          ;
+           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(type, o.type, true) && compareDeep(actual, o.actual, true)
+           && compareDeep(characteristic, o.characteristic, true);
       }
 
       @Override
@@ -3071,13 +3248,13 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariable o = (EvidenceVariable) other_;
         return compareValues(shortTitle, o.shortTitle, true) && compareValues(subtitle, o.subtitle, true) && compareValues(copyright, o.copyright, true)
            && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
-           && compareValues(type, o.type, true);
+           && compareValues(type, o.type, true) && compareValues(actual, o.actual, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, shortTitle, subtitle
           , note, copyright, approvalDate, lastReviewDate, effectivePeriod, topic, author
-          , editor, reviewer, endorser, relatedArtifact, type, characteristic);
+          , editor, reviewer, endorser, relatedArtifact, type, actual, characteristic);
       }
 
   @Override
