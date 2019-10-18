@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <StructureDefinition xmlns="http://hl7.org/fhir">
-  <id value="ANY2"/>
+  <id value="SubstanceAdministration"/>
   <text>
     <status value="generated"/>
     <div xmlns="http://www.w3.org/1999/xhtml">
+    logical element which defines a V3 Act id taken for SubstanceAdministration, but just reduces to id
+    
+      <hr/>
       <table border="0" cellpadding="0" cellspacing="0" style="border: 0px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;">
         <tr style="border: 1px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;">
           <th style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
@@ -32,22 +35,13 @@
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(tbl_bck0.png)" class="hierarchy">
             <img src="tbl_spacer.png" alt="." style="background-color: inherit" class="hierarchy"/>
             <img src="icon_element.gif" alt="." style="background-color: white; background-color: inherit" title="Element" class="hierarchy"/> 
-            <span title="null">nullFlavor</span>
-            <a name="ANY.nullFlavor"> </a>
+            <span title="null">SubstanceAdministration</span>
+            <a name="SubstanceAdministration"> </a>
           </td>
           <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
-            <span style="opacity: 0.4">0</span>
-            <span style="opacity: 0.5">..</span>
-            <span style="opacity: 0.4">1</span>
-          </td>
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
-            <a style="opacity: 0.4" href="nulldatatypes.html#code">code</a>
-          </td>
-          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
-            <span style="font-weight:bold">Fixed Value: </span>
-            <span style="color: darkgreen">UNK</span>
-          </td>
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">1..1</td>
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
+          <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"/>
         </tr>
 
         <tr>
@@ -64,30 +58,30 @@
   <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace">
     <valueUri value="urn:hl7-org:v3"/>
   </extension>
-  <url value="http://hl7.org/fhir/cda/StructureDefinition/ANY2"/>
-  <name value="ANY2"/>
-  <title value="ANY2 - constraint on ANY to test out making constraints in specializations"/>
+  <url value="http://hl7.org/fhir/cda/StructureDefinition/SubstanceAdministration"/>
+  <name value="CDAR2.SubstanceAdministration"/>
+  <title value="SubstanceAdministration (CDA Class)"/>
   <status value="active"/>
   <experimental value="false"/>
   <publisher value="HL7"/>
-  <description value="test constraints in specializations"/>
+  <description value="A derivative of the RIM SubstanceAdministration class, used for representing medication-related events such as medication history or planned medication administration orders.&#xA;SubstanceAdministration.negationInd, when set to &quot;true&quot;, is a positive assertion that the SubstanceAdministration as a whole is negated. Some properties such as SubstanceAdministration.id, SubstanceAdministration.moodCode, and the participations are not affected. These properties always have the same meaning: i.e., the author remains the author of the negative SubstanceAdministration. A substance administration statement with negationInd is still a statement about the specific fact described by the SubstanceAdministration. For instance, a negated &quot;aspirin administration&quot; means that the author positively denies that aspirin is being administered, and that he takes the same responsibility for such statement and the same requirement to have evidence for such statement than if he had not used negation.&#xA;SubstanceAdministration.priorityCode categorizes the priority of a substance administration. SubstanceAdministration.doseQuantity indicates how much medication is given per dose. SubstanceAdministration.rateQuantity can be used to indicate the rate at which the dose is to be administered (e.g., the flow rate for intravenous infusions). SubstanceAdministration.maxDoseQuantity is used to capture the maximum dose of the medication that can be given over a stated time interval (e.g., maximum daily dose of morphine, maximum lifetime dose of doxorubicin). SubstanceAdministration.effectiveTime is used to describe the timing of administration. It is modeled using the GTS data type to accommodate various dosing scenarios.&#xA;The capture of medication-related information also involves the interrelationship of SubstanceAdministration with several other classes. The consumable participation is used to bring in the LabeledDrug or Material entity that describes the administered substance. The LabeledDrug class, which is an Entity class playing the Role of Manufactured Product, identifies the drug that is consumed in the substance administration. The medication is identified by means of the LabeledDrug.code or the LabeledDrug.name. The Material entity is used to identify non-drug administered substances such as vaccines and blood products."/>
   <mapping>
     <identity value="rim"/>
     <uri value="http://hl7.org/v3"/>
     <name value="RIM Mapping"/>
   </mapping>
   <kind value="logical"/>
-  <abstract value="true"/>
-  <type value="ANY"/>
-  <baseDefinition value="http://hl7.org/fhir/cda/StructureDefinition/ANY"/>
+  <abstract value="false"/>
+  <type value="SubstanceAdministration"/>
+  <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Element"/>
   <derivation value="specialization"/>
   <snapshot>
-    <element id="ANY">
-      <path value="ANY"/>
+    <element id="SubstanceAdministration">
+      <path value="SubstanceAdministration"/>
       <short value="Base for all elements"/>
-      <definition value="Defines the basic properties of every data value. This is an abstract type, meaning that no value can be just a data value without belonging to any concrete type. Every concrete type is a specialization of this general abstract DataValue type."/>
+      <definition value="Base definition for all elements in a resource."/>
       <min value="1"/>
-      <max value="*"/>
+      <max value="1"/>
       <base>
         <path value="Element"/>
         <min value="0"/>
@@ -100,7 +94,7 @@
         <human value="All FHIR elements must have a @value or children"/>
         <expression value="hasValue() or (children().count() &gt; id.count())"/>
         <xpath value="@value|f:*|h:div"/>
-        <source value="ANY"/>
+        <source value="SubstanceAdministration"/>
       </constraint>
       <isModifier value="false"/>
       <mapping>
@@ -108,23 +102,19 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="ANY.id">
-      <path value="ANY.id"/>
-      <representation value="xmlAttr"/>
+    <element id="SubstanceAdministration.id">
+      <path value="SubstanceAdministration.id"/>
       <short value="Unique id for inter-element referencing"/>
       <definition value="Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces."/>
       <min value="0"/>
-      <max value="1"/>
+      <max value="*"/>
       <base>
-        <path value="Element.id"/>
+        <path value="SubstanceAdministration.id"/>
         <min value="0"/>
-        <max value="1"/>
+        <max value="*"/>
       </base>
       <type>
-        <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type">
-          <valueUrl value="string"/>
-          </extension>
-        <code value="http://hl7.org/fhirpath/System.String"/>
+        <code value="http://hl7.org/fhir/cda/StructureDefinition/II"/>
       </type>
       <isModifier value="false"/>
       <isSummary value="false"/>
@@ -133,8 +123,8 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="ANY.extension">
-      <path value="ANY.extension"/>
+    <element id="SubstanceAdministration.extension">
+      <path value="SubstanceAdministration.extension"/>
       <slicing>
         <discriminator>
           <type value="value"/>
@@ -158,22 +148,6 @@
       <type>
         <code value="Extension"/>
       </type>
-      <constraint>
-        <key value="ele-1"/>
-        <severity value="error"/>
-        <human value="All FHIR elements must have a @value or children"/>
-        <expression value="hasValue() or (children().count() &gt; id.count())"/>
-        <xpath value="@value|f:*|h:div"/>
-        <source value="Element"/>
-      </constraint>
-      <constraint>
-        <key value="ext-1"/>
-        <severity value="error"/>
-        <human value="Must have either extensions or value[x], not both"/>
-        <expression value="extension.exists() != value.exists()"/>
-        <xpath value="exists(f:extension)!=exists(f:*[starts-with(local-name(.), &quot;value&quot;)])"/>
-        <source value="Extension"/>
-      </constraint>
       <isModifier value="false"/>
       <isSummary value="false"/>
       <mapping>
@@ -181,32 +155,20 @@
         <map value="n/a"/>
       </mapping>
     </element>
-    <element id="ANY.nullFlavor">
-      <path value="ANY.nullFlavor"/>
-      <representation value="xmlAttr"/>
-      <label value="Exceptional Value Detail"/>
-      <definition value="If a value is an exceptional value (NULL-value), this specifies in what way and why proper information is missing."/>
-      <min value="0"/>
-      <max value="1"/>
-      <base>
-        <path value="ANY.nullFlavor"/>
-        <min value="0"/>
-        <max value="1"/>
-      </base>
-      <type>
-        <code value="code"/>
-      </type>
-      <fixedCode value="UNK"/>
-      <binding>
-        <strength value="required"/>
-        <valueSet value="http://terminology.hl7.org/ValueSet/v3-NullFlavor"/>
-      </binding>
-    </element>
   </snapshot>
   <differential>
-    <element id="ANY.nullFlavor">
-      <path value="ANY.nullFlavor"/>
-      <fixedCode value="UNK"/>
+    <element id="SubstanceAdministration">
+      <path value="SubstanceAdministration"/>
+      <min value="1"/>
+      <max value="1"/>
+    </element>
+    <element id="SubstanceAdministration.id">
+      <path value="SubstanceAdministration.id"/>
+      <min value="0"/>
+      <max value="*"/>
+      <type>
+        <code value="http://hl7.org/fhir/cda/StructureDefinition/II"/>
+      </type>
     </element>
   </differential>
 </StructureDefinition>
