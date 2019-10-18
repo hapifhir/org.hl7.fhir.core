@@ -40,6 +40,7 @@ import javax.xml.transform.sax.SAXSource;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
@@ -244,8 +245,18 @@ public class XmlParser extends ParserBase {
     if (!Utilities.noString(text)) {
     	Property property = getTextProp(properties);
     	if (property != null) {
-  	    context.getChildren().add(new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));
-    	} else {
+        if ("ED.data[x]".equals(property.getDefinition().getId())) {
+          if ("B64".equals(node.getAttribute("representation"))) {
+            context.getChildren().add(new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line(node), col(node)));
+          } else {
+            context.getChildren().add(new Element("dataString", property, "string", text).markLocation(line(node), col(node)));           
+          }
+        } else {
+          context.getChildren().add(
+              new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));
+        }
+      } 
+    	else {
         logError(line(node), col(node), path, IssueType.STRUCTURE, "Text should not be present", IssueSeverity.ERROR);
     	}    		
     }
