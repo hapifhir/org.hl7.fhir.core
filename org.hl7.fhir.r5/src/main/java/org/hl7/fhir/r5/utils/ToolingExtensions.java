@@ -821,7 +821,7 @@ public class ToolingExtensions {
     if (!StringUtils.isBlank(content)) {
       Extension ex = getExtension(e, url);
       if (ex != null)
-        ex.setValue(new CodeType(content));
+        ex.setValue(new UrlType(content));
       else
         e.getExtension().add(Factory.newExtension(url, new UrlType(content), true));   
     }
@@ -830,9 +830,27 @@ public class ToolingExtensions {
   public static void addUrlExtension(DomainResource dr, String url, String value) {
     Extension ex = getExtension(dr, url);
     if (ex != null)
-      ex.setValue(new CodeType(value));
+      ex.setValue(new UrlType(value));
     else
       dr.getExtension().add(Factory.newExtension(url, new UrlType(value), true));   
+  }
+
+  public static void addUriExtension(Element e, String url, String content) {
+    if (!StringUtils.isBlank(content)) {
+      Extension ex = getExtension(e, url);
+      if (ex != null)
+        ex.setValue(new UriType(content));
+      else
+        e.getExtension().add(Factory.newExtension(url, new UriType(content), true));   
+    }
+  }
+
+  public static void addUriExtension(DomainResource dr, String url, String value) {
+    Extension ex = getExtension(dr, url);
+    if (ex != null)
+      ex.setValue(new UriType(value));
+    else
+      dr.getExtension().add(Factory.newExtension(url, new UriType(value), true));   
   }
 
   
