@@ -187,7 +187,7 @@ public class CDANarrativeFormat {
   private void processRenderMultiMedia(Element e, XhtmlNode xn) throws FHIRException {
     XhtmlNode xc = xn.addTag("img");
     String v = e.getAttribute("referencedObject");
-    xn.attribute("src", v);
+    xc.attribute("src", v);
     processAttributes(e, xc, "ID", "language", "styleCode");
     processChildren(e, xc);
   }
