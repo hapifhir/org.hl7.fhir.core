@@ -179,6 +179,11 @@ public class Utilities {
         if (value.startsWith("+0")  && !"+0".equals(value) && !value.startsWith("+0."))
           return DecimalStatus.SYNTAX;
       }
+
+      // check for trailing dot
+      if (value.endsWith(".")) {
+        return DecimalStatus.SYNTAX;
+      }
       
       boolean havePeriod = false;
       boolean haveExponent = false;
