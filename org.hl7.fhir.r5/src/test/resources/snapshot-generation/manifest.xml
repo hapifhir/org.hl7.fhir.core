@@ -231,6 +231,7 @@
   <test gen="true" id="au3"/>
   <test gen="true" id="dv1"/>
   <test gen="true" id="logical1"/>
-  <test gen="true" id="logical2"/>
+  <test gen="true" id="logical2" register="logical1-expected"/>
   <test gen="true" id="logical3"/>
+  <test gen="true" id="logical4"/>
 </snapshot-generation-tests>
