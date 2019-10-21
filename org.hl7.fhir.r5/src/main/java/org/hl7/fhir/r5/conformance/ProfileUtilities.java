@@ -463,7 +463,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
       StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
       if (derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
-        baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derived.getType());
+        String derivedType = derived.getType();
+        if (StructureDefinitionKind.LOGICAL.equals(derived.getKind()) && derived.getType().contains("/")) {
+          derivedType = derivedType.substring(derivedType.lastIndexOf("/")+1);
+        }
+        baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
       }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, new ArrayList<ElementRedirection>(), base);
