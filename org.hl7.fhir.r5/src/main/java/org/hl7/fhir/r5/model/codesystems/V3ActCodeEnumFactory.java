@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -1220,12 +1219,10 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return V3ActCode.UDE;
     if ("_ActPolicyType".equals(codeString))
       return V3ActCode._ACTPOLICYTYPE;
-    if ("_ActPrivacyPolicy".equals(codeString))
-      return V3ActCode._ACTPRIVACYPOLICY;
-    if ("_ActConsentDirective".equals(codeString))
-      return V3ActCode._ACTCONSENTDIRECTIVE;
-    if ("EMRGONLY".equals(codeString))
-      return V3ActCode.EMRGONLY;
+    if ("_ActConsent".equals(codeString))
+      return V3ActCode._ACTCONSENT;
+    if ("_ActDecision".equals(codeString))
+      return V3ActCode._ACTDECISION;
     if ("GRANTORCHOICE".equals(codeString))
       return V3ActCode.GRANTORCHOICE;
     if ("IMPLIED".equals(codeString))
@@ -1234,8 +1231,6 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return V3ActCode.IMPLIEDD;
     if ("NOCONSENT".equals(codeString))
       return V3ActCode.NOCONSENT;
-    if ("NOPP".equals(codeString))
-      return V3ActCode.NOPP;
     if ("OPTIN".equals(codeString))
       return V3ActCode.OPTIN;
     if ("OPTINR".equals(codeString))
@@ -1244,18 +1239,136 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return V3ActCode.OPTOUT;
     if ("OPTOUTE".equals(codeString))
       return V3ActCode.OPTOUTE;
+    if ("_ActPrivacyConsentDirective".equals(codeString))
+      return V3ActCode._ACTPRIVACYCONSENTDIRECTIVE;
+    if ("_ActGDPRConsentDirective".equals(codeString))
+      return V3ActCode._ACTGDPRCONSENTDIRECTIVE;
+    if ("GDPRCD".equals(codeString))
+      return V3ActCode.GDPRCD;
+    if ("GDPRResearchCD".equals(codeString))
+      return V3ActCode.GDPRRESEARCHCD;
+    if ("_ActGenericConsentDirective".equals(codeString))
+      return V3ActCode._ACTGENERICCONSENTDIRECTIVE;
+    if ("OIC".equals(codeString))
+      return V3ActCode.OIC;
+    if ("OIS".equals(codeString))
+      return V3ActCode.OIS;
+    if ("OOC".equals(codeString))
+      return V3ActCode.OOC;
+    if ("OOS".equals(codeString))
+      return V3ActCode.OOS;
+    if ("_ActUSPrivacyConsentDirective".equals(codeString))
+      return V3ActCode._ACTUSPRIVACYCONSENTDIRECTIVE;
+    if ("42CFRPart2CD".equals(codeString))
+      return V3ActCode._42CFRPART2CD;
+    if ("CompoundResearchCD".equals(codeString))
+      return V3ActCode.COMPOUNDRESEARCHCD;
+    if ("HIPAAAuthCD".equals(codeString))
+      return V3ActCode.HIPAAAUTHCD;
+    if ("HIPAAConsentCD".equals(codeString))
+      return V3ActCode.HIPAACONSENTCD;
+    if ("HIPAAResearchAuthCD".equals(codeString))
+      return V3ActCode.HIPAARESEARCHAUTHCD;
+    if ("HIPAAROAD".equals(codeString))
+      return V3ActCode.HIPAAROAD;
+    if ("MDHHS-5515".equals(codeString))
+      return V3ActCode.MDHHS5515;
+    if ("_ActInformationActionPolicy".equals(codeString))
+      return V3ActCode._ACTINFORMATIONACTIONPOLICY;
+    if ("INFOACCESS".equals(codeString))
+      return V3ActCode.INFOACCESS;
+    if ("INFOCOLLECT".equals(codeString))
+      return V3ActCode.INFOCOLLECT;
+    if ("INFODEIDENTIFIY".equals(codeString))
+      return V3ActCode.INFODEIDENTIFIY;
+    if ("INFODISCLOSE".equals(codeString))
+      return V3ActCode.INFODISCLOSE;
+    if ("INFOMASK".equals(codeString))
+      return V3ActCode.INFOMASK;
+    if ("INFOREADONLY".equals(codeString))
+      return V3ActCode.INFOREADONLY;
+    if ("INFOREDACT".equals(codeString))
+      return V3ActCode.INFOREDACT;
+    if ("INFOREDISCLOSE".equals(codeString))
+      return V3ActCode.INFOREDISCLOSE;
+    if ("INFOREIDENTIFY".equals(codeString))
+      return V3ActCode.INFOREIDENTIFY;
+    if ("INFOUSE".equals(codeString))
+      return V3ActCode.INFOUSE;
+    if ("_ActInformationPolicy".equals(codeString))
+      return V3ActCode._ACTINFORMATIONPOLICY;
+    if ("JurisIP".equals(codeString))
+      return V3ActCode.JURISIP;
+    if ("JurisCUI".equals(codeString))
+      return V3ActCode.JURISCUI;
+    if ("JurisDEID".equals(codeString))
+      return V3ActCode.JURISDEID;
+    if ("JurisLDS".equals(codeString))
+      return V3ActCode.JURISLDS;
+    if ("JurisNSI".equals(codeString))
+      return V3ActCode.JURISNSI;
+    if ("JurisPI".equals(codeString))
+      return V3ActCode.JURISPI;
+    if ("JurisSP-CUI".equals(codeString))
+      return V3ActCode.JURISSPCUI;
+    if ("JurisUUI".equals(codeString))
+      return V3ActCode.JURISUUI;
+    if ("OrgIP".equals(codeString))
+      return V3ActCode.ORGIP;
+    if ("OrgCUI".equals(codeString))
+      return V3ActCode.ORGCUI;
+    if ("OrgDEID".equals(codeString))
+      return V3ActCode.ORGDEID;
+    if ("OrgLDS".equals(codeString))
+      return V3ActCode.ORGLDS;
+    if ("OrgNSI".equals(codeString))
+      return V3ActCode.ORGNSI;
+    if ("OrgPI".equals(codeString))
+      return V3ActCode.ORGPI;
+    if ("OrgSP-CUI".equals(codeString))
+      return V3ActCode.ORGSPCUI;
+    if ("OrgUUI".equals(codeString))
+      return V3ActCode.ORGUUI;
+    if ("PersIP".equals(codeString))
+      return V3ActCode.PERSIP;
+    if ("PersDEID".equals(codeString))
+      return V3ActCode.PERSDEID;
+    if ("PersLDS".equals(codeString))
+      return V3ActCode.PERSLDS;
+    if ("PersNSI".equals(codeString))
+      return V3ActCode.PERSNSI;
+    if ("PersPI".equals(codeString))
+      return V3ActCode.PERSPI;
+    if ("_ActPrivacyPolicy".equals(codeString))
+      return V3ActCode._ACTPRIVACYPOLICY;
+    if ("_ActConsentDirective".equals(codeString))
+      return V3ActCode._ACTCONSENTDIRECTIVE;
+    if ("EMRGONLY".equals(codeString))
+      return V3ActCode.EMRGONLY;
+    if ("NOPP".equals(codeString))
+      return V3ActCode.NOPP;
     if ("_ActPrivacyLaw".equals(codeString))
       return V3ActCode._ACTPRIVACYLAW;
+    if ("_ActGDPRPrivacyLaw".equals(codeString))
+      return V3ActCode._ACTGDPRPRIVACYLAW;
+    if ("GDPRCONSENT".equals(codeString))
+      return V3ActCode.GDPRCONSENT;
     if ("_ActUSPrivacyLaw".equals(codeString))
       return V3ActCode._ACTUSPRIVACYLAW;
     if ("42CFRPart2".equals(codeString))
       return V3ActCode._42CFRPART2;
+    if ("a) HIPAAConsent".equals(codeString))
+      return V3ActCode.A_HIPAACONSENT;
     if ("CommonRule".equals(codeString))
       return V3ActCode.COMMONRULE;
+    if ("HIPAAAuth".equals(codeString))
+      return V3ActCode.HIPAAAUTH;
     if ("HIPAANOPP".equals(codeString))
       return V3ActCode.HIPAANOPP;
     if ("HIPAAPsyNotes".equals(codeString))
       return V3ActCode.HIPAAPSYNOTES;
+    if ("HIPAAROA".equals(codeString))
+      return V3ActCode.HIPAAROA;
     if ("HIPAASelfPay".equals(codeString))
       return V3ActCode.HIPAASELFPAY;
     if ("Title38Section7332".equals(codeString))
@@ -1272,6 +1385,8 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return V3ActCode.HIV;
     if ("MST".equals(codeString))
       return V3ActCode.MST;
+    if ("PREGNANT".equals(codeString))
+      return V3ActCode.PREGNANT;
     if ("SCA".equals(codeString))
       return V3ActCode.SCA;
     if ("SDV".equals(codeString))
@@ -1320,6 +1435,8 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return V3ActCode.LIVARG;
     if ("MARST".equals(codeString))
       return V3ActCode.MARST;
+    if ("PATLOC".equals(codeString))
+      return V3ActCode.PATLOC;
     if ("RACE".equals(codeString))
       return V3ActCode.RACE;
     if ("REL".equals(codeString))
@@ -1450,6 +1567,46 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return V3ActCode.REDACT;
     if ("UPGRDLABEL".equals(codeString))
       return V3ActCode.UPGRDLABEL;
+    if ("PrivacyMark".equals(codeString))
+      return V3ActCode.PRIVACYMARK;
+    if ("ControlledUnclassifiedInformation".equals(codeString))
+      return V3ActCode.CONTROLLEDUNCLASSIFIEDINFORMATION;
+    if ("CONTROLLED".equals(codeString))
+      return V3ActCode.CONTROLLED;
+    if ("CUI".equals(codeString))
+      return V3ActCode.CUI;
+    if ("CUIHLTH".equals(codeString))
+      return V3ActCode.CUIHLTH;
+    if ("CUIHLTHP".equals(codeString))
+      return V3ActCode.CUIHLTHP;
+    if ("CUIP".equals(codeString))
+      return V3ActCode.CUIP;
+    if ("CUIPRVCY".equals(codeString))
+      return V3ActCode.CUIPRVCY;
+    if ("CUIPRVCYP".equals(codeString))
+      return V3ActCode.CUIPRVCYP;
+    if ("CUISP-HLTH".equals(codeString))
+      return V3ActCode.CUISPHLTH;
+    if ("CUISP-HLTHP".equals(codeString))
+      return V3ActCode.CUISPHLTHP;
+    if ("CUISP-PRVCY".equals(codeString))
+      return V3ActCode.CUISPPRVCY;
+    if ("CUISP-PRVCYP".equals(codeString))
+      return V3ActCode.CUISPPRVCYP;
+    if ("UUI".equals(codeString))
+      return V3ActCode.UUI;
+    if ("SecurityLabelMark".equals(codeString))
+      return V3ActCode.SECURITYLABELMARK;
+    if ("ConfidentialMark".equals(codeString))
+      return V3ActCode.CONFIDENTIALMARK;
+    if ("COPYMark".equals(codeString))
+      return V3ActCode.COPYMARK;
+    if ("DeliverToAddresseeOnlyMark".equals(codeString))
+      return V3ActCode.DELIVERTOADDRESSEEONLYMARK;
+    if ("RedisclosureProhibitionMark".equals(codeString))
+      return V3ActCode.REDISCLOSUREPROHIBITIONMARK;
+    if ("RestrictedConfidentialityMark".equals(codeString))
+      return V3ActCode.RESTRICTEDCONFIDENTIALITYMARK;
     if ("RefrainPolicy".equals(codeString))
       return V3ActCode.REFRAINPOLICY;
     if ("NOAUTH".equals(codeString))
@@ -3456,12 +3613,10 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return "UDE";
     if (code == V3ActCode._ACTPOLICYTYPE)
       return "_ActPolicyType";
-    if (code == V3ActCode._ACTPRIVACYPOLICY)
-      return "_ActPrivacyPolicy";
-    if (code == V3ActCode._ACTCONSENTDIRECTIVE)
-      return "_ActConsentDirective";
-    if (code == V3ActCode.EMRGONLY)
-      return "EMRGONLY";
+    if (code == V3ActCode._ACTCONSENT)
+      return "_ActConsent";
+    if (code == V3ActCode._ACTDECISION)
+      return "_ActDecision";
     if (code == V3ActCode.GRANTORCHOICE)
       return "GRANTORCHOICE";
     if (code == V3ActCode.IMPLIED)
@@ -3470,8 +3625,6 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return "IMPLIEDD";
     if (code == V3ActCode.NOCONSENT)
       return "NOCONSENT";
-    if (code == V3ActCode.NOPP)
-      return "NOPP";
     if (code == V3ActCode.OPTIN)
       return "OPTIN";
     if (code == V3ActCode.OPTINR)
@@ -3480,18 +3633,136 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return "OPTOUT";
     if (code == V3ActCode.OPTOUTE)
       return "OPTOUTE";
+    if (code == V3ActCode._ACTPRIVACYCONSENTDIRECTIVE)
+      return "_ActPrivacyConsentDirective";
+    if (code == V3ActCode._ACTGDPRCONSENTDIRECTIVE)
+      return "_ActGDPRConsentDirective";
+    if (code == V3ActCode.GDPRCD)
+      return "GDPRCD";
+    if (code == V3ActCode.GDPRRESEARCHCD)
+      return "GDPRResearchCD";
+    if (code == V3ActCode._ACTGENERICCONSENTDIRECTIVE)
+      return "_ActGenericConsentDirective";
+    if (code == V3ActCode.OIC)
+      return "OIC";
+    if (code == V3ActCode.OIS)
+      return "OIS";
+    if (code == V3ActCode.OOC)
+      return "OOC";
+    if (code == V3ActCode.OOS)
+      return "OOS";
+    if (code == V3ActCode._ACTUSPRIVACYCONSENTDIRECTIVE)
+      return "_ActUSPrivacyConsentDirective";
+    if (code == V3ActCode._42CFRPART2CD)
+      return "42CFRPart2CD";
+    if (code == V3ActCode.COMPOUNDRESEARCHCD)
+      return "CompoundResearchCD";
+    if (code == V3ActCode.HIPAAAUTHCD)
+      return "HIPAAAuthCD";
+    if (code == V3ActCode.HIPAACONSENTCD)
+      return "HIPAAConsentCD";
+    if (code == V3ActCode.HIPAARESEARCHAUTHCD)
+      return "HIPAAResearchAuthCD";
+    if (code == V3ActCode.HIPAAROAD)
+      return "HIPAAROAD";
+    if (code == V3ActCode.MDHHS5515)
+      return "MDHHS-5515";
+    if (code == V3ActCode._ACTINFORMATIONACTIONPOLICY)
+      return "_ActInformationActionPolicy";
+    if (code == V3ActCode.INFOACCESS)
+      return "INFOACCESS";
+    if (code == V3ActCode.INFOCOLLECT)
+      return "INFOCOLLECT";
+    if (code == V3ActCode.INFODEIDENTIFIY)
+      return "INFODEIDENTIFIY";
+    if (code == V3ActCode.INFODISCLOSE)
+      return "INFODISCLOSE";
+    if (code == V3ActCode.INFOMASK)
+      return "INFOMASK";
+    if (code == V3ActCode.INFOREADONLY)
+      return "INFOREADONLY";
+    if (code == V3ActCode.INFOREDACT)
+      return "INFOREDACT";
+    if (code == V3ActCode.INFOREDISCLOSE)
+      return "INFOREDISCLOSE";
+    if (code == V3ActCode.INFOREIDENTIFY)
+      return "INFOREIDENTIFY";
+    if (code == V3ActCode.INFOUSE)
+      return "INFOUSE";
+    if (code == V3ActCode._ACTINFORMATIONPOLICY)
+      return "_ActInformationPolicy";
+    if (code == V3ActCode.JURISIP)
+      return "JurisIP";
+    if (code == V3ActCode.JURISCUI)
+      return "JurisCUI";
+    if (code == V3ActCode.JURISDEID)
+      return "JurisDEID";
+    if (code == V3ActCode.JURISLDS)
+      return "JurisLDS";
+    if (code == V3ActCode.JURISNSI)
+      return "JurisNSI";
+    if (code == V3ActCode.JURISPI)
+      return "JurisPI";
+    if (code == V3ActCode.JURISSPCUI)
+      return "JurisSP-CUI";
+    if (code == V3ActCode.JURISUUI)
+      return "JurisUUI";
+    if (code == V3ActCode.ORGIP)
+      return "OrgIP";
+    if (code == V3ActCode.ORGCUI)
+      return "OrgCUI";
+    if (code == V3ActCode.ORGDEID)
+      return "OrgDEID";
+    if (code == V3ActCode.ORGLDS)
+      return "OrgLDS";
+    if (code == V3ActCode.ORGNSI)
+      return "OrgNSI";
+    if (code == V3ActCode.ORGPI)
+      return "OrgPI";
+    if (code == V3ActCode.ORGSPCUI)
+      return "OrgSP-CUI";
+    if (code == V3ActCode.ORGUUI)
+      return "OrgUUI";
+    if (code == V3ActCode.PERSIP)
+      return "PersIP";
+    if (code == V3ActCode.PERSDEID)
+      return "PersDEID";
+    if (code == V3ActCode.PERSLDS)
+      return "PersLDS";
+    if (code == V3ActCode.PERSNSI)
+      return "PersNSI";
+    if (code == V3ActCode.PERSPI)
+      return "PersPI";
+    if (code == V3ActCode._ACTPRIVACYPOLICY)
+      return "_ActPrivacyPolicy";
+    if (code == V3ActCode._ACTCONSENTDIRECTIVE)
+      return "_ActConsentDirective";
+    if (code == V3ActCode.EMRGONLY)
+      return "EMRGONLY";
+    if (code == V3ActCode.NOPP)
+      return "NOPP";
     if (code == V3ActCode._ACTPRIVACYLAW)
       return "_ActPrivacyLaw";
+    if (code == V3ActCode._ACTGDPRPRIVACYLAW)
+      return "_ActGDPRPrivacyLaw";
+    if (code == V3ActCode.GDPRCONSENT)
+      return "GDPRCONSENT";
     if (code == V3ActCode._ACTUSPRIVACYLAW)
       return "_ActUSPrivacyLaw";
     if (code == V3ActCode._42CFRPART2)
       return "42CFRPart2";
+    if (code == V3ActCode.A_HIPAACONSENT)
+      return "a) HIPAAConsent";
     if (code == V3ActCode.COMMONRULE)
       return "CommonRule";
+    if (code == V3ActCode.HIPAAAUTH)
+      return "HIPAAAuth";
     if (code == V3ActCode.HIPAANOPP)
       return "HIPAANOPP";
     if (code == V3ActCode.HIPAAPSYNOTES)
       return "HIPAAPsyNotes";
+    if (code == V3ActCode.HIPAAROA)
+      return "HIPAAROA";
     if (code == V3ActCode.HIPAASELFPAY)
       return "HIPAASelfPay";
     if (code == V3ActCode.TITLE38SECTION7332)
@@ -3508,6 +3779,8 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return "HIV";
     if (code == V3ActCode.MST)
       return "MST";
+    if (code == V3ActCode.PREGNANT)
+      return "PREGNANT";
     if (code == V3ActCode.SCA)
       return "SCA";
     if (code == V3ActCode.SDV)
@@ -3556,6 +3829,8 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return "LIVARG";
     if (code == V3ActCode.MARST)
       return "MARST";
+    if (code == V3ActCode.PATLOC)
+      return "PATLOC";
     if (code == V3ActCode.RACE)
       return "RACE";
     if (code == V3ActCode.REL)
@@ -3686,6 +3961,46 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
       return "REDACT";
     if (code == V3ActCode.UPGRDLABEL)
       return "UPGRDLABEL";
+    if (code == V3ActCode.PRIVACYMARK)
+      return "PrivacyMark";
+    if (code == V3ActCode.CONTROLLEDUNCLASSIFIEDINFORMATION)
+      return "ControlledUnclassifiedInformation";
+    if (code == V3ActCode.CONTROLLED)
+      return "CONTROLLED";
+    if (code == V3ActCode.CUI)
+      return "CUI";
+    if (code == V3ActCode.CUIHLTH)
+      return "CUIHLTH";
+    if (code == V3ActCode.CUIHLTHP)
+      return "CUIHLTHP";
+    if (code == V3ActCode.CUIP)
+      return "CUIP";
+    if (code == V3ActCode.CUIPRVCY)
+      return "CUIPRVCY";
+    if (code == V3ActCode.CUIPRVCYP)
+      return "CUIPRVCYP";
+    if (code == V3ActCode.CUISPHLTH)
+      return "CUISP-HLTH";
+    if (code == V3ActCode.CUISPHLTHP)
+      return "CUISP-HLTHP";
+    if (code == V3ActCode.CUISPPRVCY)
+      return "CUISP-PRVCY";
+    if (code == V3ActCode.CUISPPRVCYP)
+      return "CUISP-PRVCYP";
+    if (code == V3ActCode.UUI)
+      return "UUI";
+    if (code == V3ActCode.SECURITYLABELMARK)
+      return "SecurityLabelMark";
+    if (code == V3ActCode.CONFIDENTIALMARK)
+      return "ConfidentialMark";
+    if (code == V3ActCode.COPYMARK)
+      return "COPYMark";
+    if (code == V3ActCode.DELIVERTOADDRESSEEONLYMARK)
+      return "DeliverToAddresseeOnlyMark";
+    if (code == V3ActCode.REDISCLOSUREPROHIBITIONMARK)
+      return "RedisclosureProhibitionMark";
+    if (code == V3ActCode.RESTRICTEDCONFIDENTIALITYMARK)
+      return "RestrictedConfidentialityMark";
     if (code == V3ActCode.REFRAINPOLICY)
       return "RefrainPolicy";
     if (code == V3ActCode.NOAUTH)

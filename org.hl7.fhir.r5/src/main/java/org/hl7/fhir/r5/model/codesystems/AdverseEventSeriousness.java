@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -58,37 +57,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 public enum AdverseEventSeriousness {
 
         /**
-         * Non-serious.
+         * This event is considered not to have the potential for persistent or costly injury or consequence.
          */
         NONSERIOUS, 
         /**
-         * Serious.
+         * This event is considered to have the potential for persistent or costly injury or consequence.
          */
         SERIOUS, 
-        /**
-         * Results in death.
-         */
-        SERIOUSRESULTSINDEATH, 
-        /**
-         * Is Life-threatening.
-         */
-        SERIOUSISLIFETHREATENING, 
-        /**
-         * Requires inpatient hospitalization or causes prolongation of existing hospitalization.
-         */
-        SERIOUSRESULTSINHOSPITALIZATION, 
-        /**
-         * Results in persistent or significant disability/incapacity.
-         */
-        SERIOUSRESULTSINDISABILITY, 
-        /**
-         * Is a congenital anomaly/birth defect.
-         */
-        SERIOUSISBIRTHDEFECT, 
-        /**
-         * Requires intervention to prevent permanent impairment or damage (i.e., an important medical event that requires medical judgement).
-         */
-        SERIOUSREQUIRESPREVENTIMPAIRMENT, 
         /**
          * added to help the parsers
          */
@@ -96,34 +71,16 @@ public enum AdverseEventSeriousness {
         public static AdverseEventSeriousness fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("Non-serious".equals(codeString))
+        if ("non-serious".equals(codeString))
           return NONSERIOUS;
-        if ("Serious".equals(codeString))
+        if ("serious".equals(codeString))
           return SERIOUS;
-        if ("SeriousResultsInDeath".equals(codeString))
-          return SERIOUSRESULTSINDEATH;
-        if ("SeriousIsLifeThreatening".equals(codeString))
-          return SERIOUSISLIFETHREATENING;
-        if ("SeriousResultsInHospitalization".equals(codeString))
-          return SERIOUSRESULTSINHOSPITALIZATION;
-        if ("SeriousResultsInDisability".equals(codeString))
-          return SERIOUSRESULTSINDISABILITY;
-        if ("SeriousIsBirthDefect".equals(codeString))
-          return SERIOUSISBIRTHDEFECT;
-        if ("SeriousRequiresPreventImpairment".equals(codeString))
-          return SERIOUSREQUIRESPREVENTIMPAIRMENT;
         throw new FHIRException("Unknown AdverseEventSeriousness code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case NONSERIOUS: return "Non-serious";
-            case SERIOUS: return "Serious";
-            case SERIOUSRESULTSINDEATH: return "SeriousResultsInDeath";
-            case SERIOUSISLIFETHREATENING: return "SeriousIsLifeThreatening";
-            case SERIOUSRESULTSINHOSPITALIZATION: return "SeriousResultsInHospitalization";
-            case SERIOUSRESULTSINDISABILITY: return "SeriousResultsInDisability";
-            case SERIOUSISBIRTHDEFECT: return "SeriousIsBirthDefect";
-            case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "SeriousRequiresPreventImpairment";
+            case NONSERIOUS: return "non-serious";
+            case SERIOUS: return "serious";
             default: return "?";
           }
         }
@@ -132,14 +89,8 @@ public enum AdverseEventSeriousness {
         }
         public String getDefinition() {
           switch (this) {
-            case NONSERIOUS: return "Non-serious.";
-            case SERIOUS: return "Serious.";
-            case SERIOUSRESULTSINDEATH: return "Results in death.";
-            case SERIOUSISLIFETHREATENING: return "Is Life-threatening.";
-            case SERIOUSRESULTSINHOSPITALIZATION: return "Requires inpatient hospitalization or causes prolongation of existing hospitalization.";
-            case SERIOUSRESULTSINDISABILITY: return "Results in persistent or significant disability/incapacity.";
-            case SERIOUSISBIRTHDEFECT: return "Is a congenital anomaly/birth defect.";
-            case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "Requires intervention to prevent permanent impairment or damage (i.e., an important medical event that requires medical judgement).";
+            case NONSERIOUS: return "This event is considered not to have the potential for persistent or costly injury or consequence.";
+            case SERIOUS: return "This event is considered to have the potential for persistent or costly injury or consequence.";
             default: return "?";
           }
         }
@@ -147,12 +98,6 @@ public enum AdverseEventSeriousness {
           switch (this) {
             case NONSERIOUS: return "Non-serious";
             case SERIOUS: return "Serious";
-            case SERIOUSRESULTSINDEATH: return "Results in death";
-            case SERIOUSISLIFETHREATENING: return "Is Life-threatening";
-            case SERIOUSRESULTSINHOSPITALIZATION: return "Requires or prolongs inpatient hospitalization";
-            case SERIOUSRESULTSINDISABILITY: return "Results in persistent or significant disability/incapacity";
-            case SERIOUSISBIRTHDEFECT: return "Is a congenital anomaly/birth defect";
-            case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "Requires intervention to prevent permanent impairment";
             default: return "?";
           }
     }

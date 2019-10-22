@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,16 +53,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A provider issued list of professional services and products which have been provided, or are to be provided, to a patient which is sent to an insurer for reimbursement.
  */
@@ -313,11 +315,6 @@ public class Claim extends DomainResource {
         protected Reference claim;
 
         /**
-         * The actual object that is the target of the reference (Reference to a related claim.)
-         */
-        protected Claim claimTarget;
-
-        /**
          * A code to convey how the claims are related.
          */
         @Child(name = "relationship", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -332,7 +329,7 @@ public class Claim extends DomainResource {
         @Description(shortDefinition="File or case reference", formalDefinition="An alternate organizational reference to the case or file to which this particular claim pertains." )
         protected Identifier reference;
 
-        private static final long serialVersionUID = -379338905L;
+        private static final long serialVersionUID = 1047077926L;
 
     /**
      * Constructor
@@ -362,26 +359,6 @@ public class Claim extends DomainResource {
          */
         public RelatedClaimComponent setClaim(Reference value) { 
           this.claim = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #claim} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to a related claim.)
-         */
-        public Claim getClaimTarget() { 
-          if (this.claimTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create RelatedClaimComponent.claim");
-            else if (Configuration.doAutoCreate())
-              this.claimTarget = new Claim(); // aa
-          return this.claimTarget;
-        }
-
-        /**
-         * @param value {@link #claim} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to a related claim.)
-         */
-        public RelatedClaimComponent setClaimTarget(Claim value) { 
-          this.claimTarget = value;
           return this;
         }
 
@@ -495,9 +472,9 @@ public class Claim extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 94742588:  return getClaim(); 
-        case -261851592:  return getRelationship(); 
-        case -925155509:  return getReference(); 
+        case 94742588:  return getClaim();
+        case -261851592:  return getRelationship();
+        case -925155509:  return getReference();
         default: return super.makeProperty(hash, name);
         }
 
@@ -535,10 +512,14 @@ public class Claim extends DomainResource {
       public RelatedClaimComponent copy() {
         RelatedClaimComponent dst = new RelatedClaimComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedClaimComponent dst) {
+        super.copyValues(dst);
         dst.claim = claim == null ? null : claim.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.reference = reference == null ? null : reference.copy();
-        return dst;
       }
 
       @Override
@@ -591,12 +572,7 @@ public class Claim extends DomainResource {
         @Description(shortDefinition="Recipient reference", formalDefinition="Reference to the individual or organization to whom any payment will be made." )
         protected Reference party;
 
-        /**
-         * The actual object that is the target of the reference (Reference to the individual or organization to whom any payment will be made.)
-         */
-        protected Resource partyTarget;
-
-        private static final long serialVersionUID = 1609484699L;
+        private static final long serialVersionUID = -1948897146L;
 
     /**
      * Constructor
@@ -661,21 +637,6 @@ public class Claim extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #party} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the individual or organization to whom any payment will be made.)
-         */
-        public Resource getPartyTarget() { 
-          return this.partyTarget;
-        }
-
-        /**
-         * @param value {@link #party} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the individual or organization to whom any payment will be made.)
-         */
-        public PayeeComponent setPartyTarget(Resource value) { 
-          this.partyTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Type of Party to be reimbursed: subscriber, provider, other.", 0, 1, type));
@@ -730,8 +691,8 @@ public class Claim extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case 106437350:  return getParty(); 
+        case 3575610:  return getType();
+        case 106437350:  return getParty();
         default: return super.makeProperty(hash, name);
         }
 
@@ -764,9 +725,13 @@ public class Claim extends DomainResource {
       public PayeeComponent copy() {
         PayeeComponent dst = new PayeeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PayeeComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.party = party == null ? null : party.copy();
-        return dst;
       }
 
       @Override
@@ -817,11 +782,6 @@ public class Claim extends DomainResource {
         protected Reference provider;
 
         /**
-         * The actual object that is the target of the reference (Member of the team who provided the product or service.)
-         */
-        protected Resource providerTarget;
-
-        /**
          * The party who is billing and/or responsible for the claimed products or services.
          */
         @Child(name = "responsible", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
@@ -844,7 +804,7 @@ public class Claim extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/provider-qualification")
         protected CodeableConcept qualification;
 
-        private static final long serialVersionUID = 1758966968L;
+        private static final long serialVersionUID = 1479624238L;
 
     /**
      * Constructor
@@ -928,21 +888,6 @@ public class Claim extends DomainResource {
          */
         public CareTeamComponent setProvider(Reference value) { 
           this.provider = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Member of the team who provided the product or service.)
-         */
-        public Resource getProviderTarget() { 
-          return this.providerTarget;
-        }
-
-        /**
-         * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Member of the team who provided the product or service.)
-         */
-        public CareTeamComponent setProviderTarget(Resource value) { 
-          this.providerTarget = value;
           return this;
         }
 
@@ -1118,10 +1063,10 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case -987494927:  return getProvider(); 
+        case -987494927:  return getProvider();
         case 1847674614:  return getResponsibleElement();
-        case 3506294:  return getRole(); 
-        case -631333393:  return getQualification(); 
+        case 3506294:  return getRole();
+        case -631333393:  return getQualification();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1167,12 +1112,16 @@ public class Claim extends DomainResource {
       public CareTeamComponent copy() {
         CareTeamComponent dst = new CareTeamComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CareTeamComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.provider = provider == null ? null : provider.copy();
         dst.responsible = responsible == null ? null : responsible.copy();
         dst.role = role == null ? null : role.copy();
         dst.qualification = qualification == null ? null : qualification.copy();
-        return dst;
       }
 
       @Override
@@ -1634,13 +1583,13 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 50511102:  return getCategory(); 
-        case 3059181:  return getCode(); 
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
-        case -934964668:  return getReason(); 
+        case 50511102:  return getCategory();
+        case 3059181:  return getCode();
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case -934964668:  return getReason();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1712,13 +1661,17 @@ public class Claim extends DomainResource {
       public SupportingInformationComponent copy() {
         SupportingInformationComponent dst = new SupportingInformationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupportingInformationComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.category = category == null ? null : category.copy();
         dst.code = code == null ? null : code.copy();
         dst.timing = timing == null ? null : timing.copy();
         dst.value = value == null ? null : value.copy();
         dst.reason = reason == null ? null : reason.copy();
-        return dst;
       }
 
       @Override
@@ -2093,11 +2046,11 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case -1487009809:  return getDiagnosis(); 
-        case 1196993265:  return getDiagnosis(); 
+        case -1487009809:  return getDiagnosis();
+        case 1196993265:  return getDiagnosis();
         case 3575610:  return addType(); 
-        case -3386134:  return getOnAdmission(); 
-        case 908444499:  return getPackageCode(); 
+        case -3386134:  return getOnAdmission();
+        case 908444499:  return getPackageCode();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2147,6 +2100,11 @@ public class Claim extends DomainResource {
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.diagnosis = diagnosis == null ? null : diagnosis.copy();
         if (type != null) {
@@ -2156,7 +2114,6 @@ public class Claim extends DomainResource {
         };
         dst.onAdmission = onAdmission == null ? null : onAdmission.copy();
         dst.packageCode = packageCode == null ? null : packageCode.copy();
-        return dst;
       }
 
       @Override
@@ -2231,13 +2188,8 @@ public class Claim extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
 
-
-        private static final long serialVersionUID = 935341852L;
+        private static final long serialVersionUID = -1550802443L;
 
     /**
      * Constructor
@@ -2506,28 +2458,6 @@ public class Claim extends DomainResource {
           return getUdi().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify procedure entries.", 0, 1, sequence));
@@ -2612,8 +2542,8 @@ public class Claim extends DomainResource {
         case 1349547969:  return getSequenceElement();
         case 3575610:  return addType(); 
         case 3076014:  return getDateElement();
-        case 1640074445:  return getProcedure(); 
-        case -1095204141:  return getProcedure(); 
+        case 1640074445:  return getProcedure();
+        case -1095204141:  return getProcedure();
         case 115642:  return addUdi(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2662,6 +2592,11 @@ public class Claim extends DomainResource {
       public ProcedureComponent copy() {
         ProcedureComponent dst = new ProcedureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProcedureComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -2675,7 +2610,6 @@ public class Claim extends DomainResource {
           for (Reference i : udi)
             dst.udi.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2742,11 +2676,6 @@ public class Claim extends DomainResource {
         protected Reference coverage;
 
         /**
-         * The actual object that is the target of the reference (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        protected Coverage coverageTarget;
-
-        /**
          * A business agreement number established between the provider and the insurer for special business processing purposes.
          */
         @Child(name = "businessArrangement", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
@@ -2767,12 +2696,7 @@ public class Claim extends DomainResource {
         @Description(shortDefinition="Adjudication results", formalDefinition="The result of the adjudication of the line items for the Coverage specified in this insurance." )
         protected Reference claimResponse;
 
-        /**
-         * The actual object that is the target of the reference (The result of the adjudication of the line items for the Coverage specified in this insurance.)
-         */
-        protected ClaimResponse claimResponseTarget;
-
-        private static final long serialVersionUID = -1711744215L;
+        private static final long serialVersionUID = 481628099L;
 
     /**
      * Constructor
@@ -2930,26 +2854,6 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @return {@link #coverage} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        public Coverage getCoverageTarget() { 
-          if (this.coverageTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsuranceComponent.coverage");
-            else if (Configuration.doAutoCreate())
-              this.coverageTarget = new Coverage(); // aa
-          return this.coverageTarget;
-        }
-
-        /**
-         * @param value {@link #coverage} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.)
-         */
-        public InsuranceComponent setCoverageTarget(Coverage value) { 
-          this.coverageTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #businessArrangement} (A business agreement number established between the provider and the insurer for special business processing purposes.). This is the underlying object with id, value and extensions. The accessor "getBusinessArrangement" gives direct access to the value
          */
         public StringType getBusinessArrangementElement() { 
@@ -3083,26 +2987,6 @@ public class Claim extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #claimResponse} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The result of the adjudication of the line items for the Coverage specified in this insurance.)
-         */
-        public ClaimResponse getClaimResponseTarget() { 
-          if (this.claimResponseTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsuranceComponent.claimResponse");
-            else if (Configuration.doAutoCreate())
-              this.claimResponseTarget = new ClaimResponse(); // aa
-          return this.claimResponseTarget;
-        }
-
-        /**
-         * @param value {@link #claimResponse} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The result of the adjudication of the line items for the Coverage specified in this insurance.)
-         */
-        public InsuranceComponent setClaimResponseTarget(ClaimResponse value) { 
-          this.claimResponseTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify insurance entries and provide a sequence of coverages to convey coordination of benefit order.", 0, 1, sequence));
@@ -3199,11 +3083,11 @@ public class Claim extends DomainResource {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
         case 97604197:  return getFocalElement();
-        case -1618432855:  return getIdentifier(); 
-        case -351767064:  return getCoverage(); 
+        case -1618432855:  return getIdentifier();
+        case -351767064:  return getCoverage();
         case 259920682:  return getBusinessArrangementElement();
         case 522246568:  return addPreAuthRefElement();
-        case 689513629:  return getClaimResponse(); 
+        case 689513629:  return getClaimResponse();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3257,6 +3141,11 @@ public class Claim extends DomainResource {
       public InsuranceComponent copy() {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsuranceComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.focal = focal == null ? null : focal.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
@@ -3268,7 +3157,6 @@ public class Claim extends DomainResource {
             dst.preAuthRef.add(i.copy());
         };
         dst.claimResponse = claimResponse == null ? null : claimResponse.copy();
-        return dst;
       }
 
       @Override
@@ -3534,9 +3422,9 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3076014:  return getDateElement();
-        case 3575610:  return getType(); 
-        case 552316075:  return getLocation(); 
-        case 1901043637:  return getLocation(); 
+        case 3575610:  return getType();
+        case 552316075:  return getLocation();
+        case 1901043637:  return getLocation();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3577,10 +3465,14 @@ public class Claim extends DomainResource {
       public AccidentComponent copy() {
         AccidentComponent dst = new AccidentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccidentComponent dst) {
+        super.copyValues(dst);
         dst.date = date == null ? null : date.copy();
         dst.type = type == null ? null : type.copy();
         dst.location = location == null ? null : location.copy();
-        return dst;
       }
 
       @Override
@@ -3741,11 +3633,6 @@ public class Claim extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
-
 
         /**
          * Physical service site on the patient (limb, tooth, etc.).
@@ -3769,11 +3656,6 @@ public class Claim extends DomainResource {
         @Child(name = "encounter", type = {Encounter.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Encounters related to this billed item", formalDefinition="The Encounters during which this Claim was created or to which the creation of this record is tightly associated." )
         protected List<Reference> encounter;
-        /**
-         * The actual objects that are the target of the reference (The Encounters during which this Claim was created or to which the creation of this record is tightly associated.)
-         */
-        protected List<Encounter> encounterTarget;
-
 
         /**
          * A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.
@@ -3782,7 +3664,7 @@ public class Claim extends DomainResource {
         @Description(shortDefinition="Product or service provided", formalDefinition="A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items." )
         protected List<DetailComponent> detail;
 
-        private static final long serialVersionUID = -329028323L;
+        private static final long serialVersionUID = -687357559L;
 
     /**
      * Constructor
@@ -4577,28 +4459,6 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
          */
         public CodeableConcept getBodySite() { 
@@ -4726,28 +4586,6 @@ public class Claim extends DomainResource {
             addEncounter();
           }
           return getEncounter().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Encounter> getEncounterTarget() { 
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Encounter>();
-          return this.encounterTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Encounter addEncounterTarget() { 
-          Encounter r = new Encounter();
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Encounter>();
-          this.encounterTarget.add(r);
-          return r;
         }
 
         /**
@@ -5021,21 +4859,21 @@ public class Claim extends DomainResource {
         case -909769262:  return addDiagnosisSequenceElement();
         case -808920140:  return addProcedureSequenceElement();
         case -702585587:  return addInformationSequenceElement();
-        case 1099842588:  return getRevenue(); 
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1099842588:  return getRevenue();
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1927922223:  return getServiced(); 
-        case 1379209295:  return getServiced(); 
-        case 552316075:  return getLocation(); 
-        case 1901043637:  return getLocation(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1927922223:  return getServiced();
+        case 1379209295:  return getServiced();
+        case 552316075:  return getLocation();
+        case 1901043637:  return getLocation();
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case 115642:  return addUdi(); 
-        case 1702620169:  return getBodySite(); 
+        case 1702620169:  return getBodySite();
         case -1868566105:  return addSubSite(); 
         case 1524132147:  return addEncounter(); 
         case -1335224239:  return addDetail(); 
@@ -5166,6 +5004,11 @@ public class Claim extends DomainResource {
       public ItemComponent copy() {
         ItemComponent dst = new ItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ItemComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         if (careTeamSequence != null) {
           dst.careTeamSequence = new ArrayList<PositiveIntType>();
@@ -5227,7 +5070,6 @@ public class Claim extends DomainResource {
           for (DetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -5358,11 +5200,6 @@ public class Claim extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
-
 
         /**
          * A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.
@@ -5371,7 +5208,7 @@ public class Claim extends DomainResource {
         @Description(shortDefinition="Product or service provided", formalDefinition="A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items." )
         protected List<SubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = -1245004924L;
+        private static final long serialVersionUID = -1330609683L;
 
     /**
      * Constructor
@@ -5805,28 +5642,6 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #subDetail} (A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.)
          */
         public List<SubDetailComponent> getSubDetail() { 
@@ -6014,15 +5829,15 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 1099842588:  return getRevenue(); 
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1099842588:  return getRevenue();
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case 115642:  return addUdi(); 
         case -828829007:  return addSubDetail(); 
         default: return super.makeProperty(hash, name);
@@ -6101,6 +5916,11 @@ public class Claim extends DomainResource {
       public DetailComponent copy() {
         DetailComponent dst = new DetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetailComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
@@ -6129,7 +5949,6 @@ public class Claim extends DomainResource {
           for (SubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6252,13 +6071,8 @@ public class Claim extends DomainResource {
         @Child(name = "udi", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
-        /**
-         * The actual objects that are the target of the reference (Unique Device Identifiers associated with this line item.)
-         */
-        protected List<Device> udiTarget;
 
-
-        private static final long serialVersionUID = 1133026301L;
+        private static final long serialVersionUID = 1044001716L;
 
     /**
      * Constructor
@@ -6691,28 +6505,6 @@ public class Claim extends DomainResource {
           return getUdi().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence));
@@ -6840,15 +6632,15 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 1099842588:  return getRevenue(); 
-        case 50511102:  return getCategory(); 
-        case 1957227299:  return getProductOrService(); 
+        case 1099842588:  return getRevenue();
+        case 50511102:  return getCategory();
+        case 1957227299:  return getProductOrService();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case 115642:  return addUdi(); 
         default: return super.makeProperty(hash, name);
         }
@@ -6922,6 +6714,11 @@ public class Claim extends DomainResource {
       public SubDetailComponent copy() {
         SubDetailComponent dst = new SubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubDetailComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
@@ -6945,7 +6742,6 @@ public class Claim extends DomainResource {
           for (Reference i : udi)
             dst.udi.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7032,11 +6828,6 @@ public class Claim extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The party to whom the professional services and/or products have been supplied or are being considered and for whom actual or forecast reimbursement is sought.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The period for which charges are being submitted.
      */
     @Child(name = "billablePeriod", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
@@ -7058,11 +6849,6 @@ public class Claim extends DomainResource {
     protected Reference enterer;
 
     /**
-     * The actual object that is the target of the reference (Individual who created the claim, predetermination or preauthorization.)
-     */
-    protected Resource entererTarget;
-
-    /**
      * The Insurer who is target of the request.
      */
     @Child(name = "insurer", type = {Organization.class}, order=9, min=0, max=1, modifier=false, summary=true)
@@ -7070,21 +6856,11 @@ public class Claim extends DomainResource {
     protected Reference insurer;
 
     /**
-     * The actual object that is the target of the reference (The Insurer who is target of the request.)
-     */
-    protected Organization insurerTarget;
-
-    /**
      * The provider which is responsible for the claim, predetermination or preauthorization.
      */
     @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=10, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party responsible for the claim", formalDefinition="The provider which is responsible for the claim, predetermination or preauthorization." )
     protected Reference provider;
-
-    /**
-     * The actual object that is the target of the reference (The provider which is responsible for the claim, predetermination or preauthorization.)
-     */
-    protected Resource providerTarget;
 
     /**
      * The provider-required urgency of processing the request. Typical values include: stat, routine deferred.
@@ -7117,21 +6893,11 @@ public class Claim extends DomainResource {
     protected Reference prescription;
 
     /**
-     * The actual object that is the target of the reference (Prescription to support the dispensing of pharmacy, device or vision products.)
-     */
-    protected Resource prescriptionTarget;
-
-    /**
      * Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.
      */
     @Child(name = "originalPrescription", type = {DeviceRequest.class, MedicationRequest.class, VisionPrescription.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Original prescription if superseded by fulfiller", formalDefinition="Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products." )
     protected Reference originalPrescription;
-
-    /**
-     * The actual object that is the target of the reference (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
-     */
-    protected Resource originalPrescriptionTarget;
 
     /**
      * The party to be reimbursed for cost of the products and services according to the terms of the policy.
@@ -7148,21 +6914,11 @@ public class Claim extends DomainResource {
     protected Reference referral;
 
     /**
-     * The actual object that is the target of the reference (A reference to a referral resource.)
-     */
-    protected ServiceRequest referralTarget;
-
-    /**
      * Facility where the services were provided.
      */
     @Child(name = "facility", type = {Location.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Servicing facility", formalDefinition="Facility where the services were provided." )
     protected Reference facility;
-
-    /**
-     * The actual object that is the target of the reference (Facility where the services were provided.)
-     */
-    protected Location facilityTarget;
 
     /**
      * The members of the team who provided the products and services.
@@ -7220,7 +6976,7 @@ public class Claim extends DomainResource {
     @Description(shortDefinition="Total claim cost", formalDefinition="The total value of the all the items in the claim." )
     protected Money total;
 
-    private static final long serialVersionUID = -80376108L;
+    private static final long serialVersionUID = -13136903L;
 
   /**
    * Constructor
@@ -7459,26 +7215,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party to whom the professional services and/or products have been supplied or are being considered and for whom actual or forecast reimbursement is sought.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Claim.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party to whom the professional services and/or products have been supplied or are being considered and for whom actual or forecast reimbursement is sought.)
-     */
-    public Claim setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #billablePeriod} (The period for which charges are being submitted.)
      */
     public Period getBillablePeriod() { 
@@ -7572,21 +7308,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @return {@link #enterer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who created the claim, predetermination or preauthorization.)
-     */
-    public Resource getEntererTarget() { 
-      return this.entererTarget;
-    }
-
-    /**
-     * @param value {@link #enterer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who created the claim, predetermination or preauthorization.)
-     */
-    public Claim setEntererTarget(Resource value) { 
-      this.entererTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #insurer} (The Insurer who is target of the request.)
      */
     public Reference getInsurer() { 
@@ -7611,26 +7332,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @return {@link #insurer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Insurer who is target of the request.)
-     */
-    public Organization getInsurerTarget() { 
-      if (this.insurerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Claim.insurer");
-        else if (Configuration.doAutoCreate())
-          this.insurerTarget = new Organization(); // aa
-      return this.insurerTarget;
-    }
-
-    /**
-     * @param value {@link #insurer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Insurer who is target of the request.)
-     */
-    public Claim setInsurerTarget(Organization value) { 
-      this.insurerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #provider} (The provider which is responsible for the claim, predetermination or preauthorization.)
      */
     public Reference getProvider() { 
@@ -7651,21 +7352,6 @@ public class Claim extends DomainResource {
      */
     public Claim setProvider(Reference value) { 
       this.provider = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The provider which is responsible for the claim, predetermination or preauthorization.)
-     */
-    public Resource getProviderTarget() { 
-      return this.providerTarget;
-    }
-
-    /**
-     * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The provider which is responsible for the claim, predetermination or preauthorization.)
-     */
-    public Claim setProviderTarget(Resource value) { 
-      this.providerTarget = value;
       return this;
     }
 
@@ -7795,21 +7481,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @return {@link #prescription} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Prescription to support the dispensing of pharmacy, device or vision products.)
-     */
-    public Resource getPrescriptionTarget() { 
-      return this.prescriptionTarget;
-    }
-
-    /**
-     * @param value {@link #prescription} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Prescription to support the dispensing of pharmacy, device or vision products.)
-     */
-    public Claim setPrescriptionTarget(Resource value) { 
-      this.prescriptionTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #originalPrescription} (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
      */
     public Reference getOriginalPrescription() { 
@@ -7830,21 +7501,6 @@ public class Claim extends DomainResource {
      */
     public Claim setOriginalPrescription(Reference value) { 
       this.originalPrescription = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #originalPrescription} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
-     */
-    public Resource getOriginalPrescriptionTarget() { 
-      return this.originalPrescriptionTarget;
-    }
-
-    /**
-     * @param value {@link #originalPrescription} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.)
-     */
-    public Claim setOriginalPrescriptionTarget(Resource value) { 
-      this.originalPrescriptionTarget = value;
       return this;
     }
 
@@ -7897,26 +7553,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @return {@link #referral} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to a referral resource.)
-     */
-    public ServiceRequest getReferralTarget() { 
-      if (this.referralTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Claim.referral");
-        else if (Configuration.doAutoCreate())
-          this.referralTarget = new ServiceRequest(); // aa
-      return this.referralTarget;
-    }
-
-    /**
-     * @param value {@link #referral} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to a referral resource.)
-     */
-    public Claim setReferralTarget(ServiceRequest value) { 
-      this.referralTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #facility} (Facility where the services were provided.)
      */
     public Reference getFacility() { 
@@ -7937,26 +7573,6 @@ public class Claim extends DomainResource {
      */
     public Claim setFacility(Reference value) { 
       this.facility = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #facility} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Facility where the services were provided.)
-     */
-    public Location getFacilityTarget() { 
-      if (this.facilityTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Claim.facility");
-        else if (Configuration.doAutoCreate())
-          this.facilityTarget = new Location(); // aa
-      return this.facilityTarget;
-    }
-
-    /**
-     * @param value {@link #facility} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Facility where the services were provided.)
-     */
-    public Claim setFacilityTarget(Location value) { 
-      this.facilityTarget = value;
       return this;
     }
 
@@ -8586,31 +8202,31 @@ public class Claim extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
-        case -1868521062:  return getSubType(); 
+        case 3575610:  return getType();
+        case -1868521062:  return getSubType();
         case 116103:  return getUseElement();
-        case -791418107:  return getPatient(); 
-        case -332066046:  return getBillablePeriod(); 
+        case -791418107:  return getPatient();
+        case -332066046:  return getBillablePeriod();
         case 1028554472:  return getCreatedElement();
-        case -1591951995:  return getEnterer(); 
-        case 1957615864:  return getInsurer(); 
-        case -987494927:  return getProvider(); 
-        case -1165461084:  return getPriority(); 
-        case 1314609806:  return getFundsReserve(); 
+        case -1591951995:  return getEnterer();
+        case 1957615864:  return getInsurer();
+        case -987494927:  return getProvider();
+        case -1165461084:  return getPriority();
+        case 1314609806:  return getFundsReserve();
         case 1090493483:  return addRelated(); 
-        case 460301338:  return getPrescription(); 
-        case -1814015861:  return getOriginalPrescription(); 
-        case 106443592:  return getPayee(); 
-        case -722568291:  return getReferral(); 
-        case 501116579:  return getFacility(); 
+        case 460301338:  return getPrescription();
+        case -1814015861:  return getOriginalPrescription();
+        case 106443592:  return getPayee();
+        case -722568291:  return getReferral();
+        case 501116579:  return getFacility();
         case -7323378:  return addCareTeam(); 
         case 1922406657:  return addSupportingInfo(); 
         case 1196993265:  return addDiagnosis(); 
         case -1095204141:  return addProcedure(); 
         case 73049818:  return addInsurance(); 
-        case -2143202801:  return getAccident(); 
+        case -2143202801:  return getAccident();
         case 3242771:  return addItem(); 
-        case 110549828:  return getTotal(); 
+        case 110549828:  return getTotal();
         default: return super.makeProperty(hash, name);
         }
 
@@ -8762,6 +8378,11 @@ public class Claim extends DomainResource {
       public Claim copy() {
         Claim dst = new Claim();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Claim dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -8821,7 +8442,6 @@ public class Claim extends DomainResource {
             dst.item.add(i.copy());
         };
         dst.total = total == null ? null : total.copy();
-        return dst;
       }
 
       protected Claim typedCopy() {

@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Describes validation requirements, source(s), status and dates for one or more elements.
  */
@@ -235,11 +237,6 @@ public class VerificationResult extends DomainResource {
         protected Reference who;
 
         /**
-         * The actual object that is the target of the reference (Reference to the primary source.)
-         */
-        protected Resource whoTarget;
-
-        /**
          * Type of primary source (License Board; Primary Education; Continuing Education; Postal Service; Relationship owner; Registration Authority; legal source; issuing source; authoritative source).
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
@@ -286,7 +283,7 @@ public class VerificationResult extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/verificationresult-push-type-available")
         protected List<CodeableConcept> pushTypeAvailable;
 
-        private static final long serialVersionUID = -928858332L;
+        private static final long serialVersionUID = -266994197L;
 
     /**
      * Constructor
@@ -316,21 +313,6 @@ public class VerificationResult extends DomainResource {
          */
         public VerificationResultPrimarySourceComponent setWho(Reference value) { 
           this.who = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #who} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the primary source.)
-         */
-        public Resource getWhoTarget() { 
-          return this.whoTarget;
-        }
-
-        /**
-         * @param value {@link #who} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the primary source.)
-         */
-        public VerificationResultPrimarySourceComponent setWhoTarget(Resource value) { 
-          this.whoTarget = value;
           return this;
         }
 
@@ -684,12 +666,12 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 117694:  return getWho(); 
+        case 117694:  return getWho();
         case 3575610:  return addType(); 
         case 1314116695:  return addCommunicationMethod(); 
-        case 1775633867:  return getValidationStatus(); 
+        case 1775633867:  return getValidationStatus();
         case -280180793:  return getValidationDateElement();
-        case 1463787104:  return getCanPushUpdates(); 
+        case 1463787104:  return getCanPushUpdates();
         case 945223605:  return addPushTypeAvailable(); 
         default: return super.makeProperty(hash, name);
         }
@@ -744,6 +726,11 @@ public class VerificationResult extends DomainResource {
       public VerificationResultPrimarySourceComponent copy() {
         VerificationResultPrimarySourceComponent dst = new VerificationResultPrimarySourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VerificationResultPrimarySourceComponent dst) {
+        super.copyValues(dst);
         dst.who = who == null ? null : who.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -763,7 +750,6 @@ public class VerificationResult extends DomainResource {
           for (CodeableConcept i : pushTypeAvailable)
             dst.pushTypeAvailable.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -811,21 +797,11 @@ public class VerificationResult extends DomainResource {
         protected Reference who;
 
         /**
-         * The actual object that is the target of the reference (The individual or organization attesting to information.)
-         */
-        protected Resource whoTarget;
-
-        /**
          * When the who is asserting on behalf of another (organization or individual).
          */
         @Child(name = "onBehalfOf", type = {Organization.class, Practitioner.class, PractitionerRole.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="When the who is asserting on behalf of another (organization or individual)", formalDefinition="When the who is asserting on behalf of another (organization or individual)." )
         protected Reference onBehalfOf;
-
-        /**
-         * The actual object that is the target of the reference (When the who is asserting on behalf of another (organization or individual).)
-         */
-        protected Resource onBehalfOfTarget;
 
         /**
          * The method by which attested information was submitted/retrieved (manual; API; Push).
@@ -870,7 +846,7 @@ public class VerificationResult extends DomainResource {
         @Description(shortDefinition="Attester signature", formalDefinition="Signed assertion by the attestation source that they have attested to the information." )
         protected Signature sourceSignature;
 
-        private static final long serialVersionUID = -900018800L;
+        private static final long serialVersionUID = -1110142980L;
 
     /**
      * Constructor
@@ -904,21 +880,6 @@ public class VerificationResult extends DomainResource {
         }
 
         /**
-         * @return {@link #who} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual or organization attesting to information.)
-         */
-        public Resource getWhoTarget() { 
-          return this.whoTarget;
-        }
-
-        /**
-         * @param value {@link #who} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual or organization attesting to information.)
-         */
-        public VerificationResultAttestationComponent setWhoTarget(Resource value) { 
-          this.whoTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #onBehalfOf} (When the who is asserting on behalf of another (organization or individual).)
          */
         public Reference getOnBehalfOf() { 
@@ -939,21 +900,6 @@ public class VerificationResult extends DomainResource {
          */
         public VerificationResultAttestationComponent setOnBehalfOf(Reference value) { 
           this.onBehalfOf = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (When the who is asserting on behalf of another (organization or individual).)
-         */
-        public Resource getOnBehalfOfTarget() { 
-          return this.onBehalfOfTarget;
-        }
-
-        /**
-         * @param value {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (When the who is asserting on behalf of another (organization or individual).)
-         */
-        public VerificationResultAttestationComponent setOnBehalfOfTarget(Resource value) { 
-          this.onBehalfOfTarget = value;
           return this;
         }
 
@@ -1278,14 +1224,14 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 117694:  return getWho(); 
-        case -14402964:  return getOnBehalfOf(); 
-        case 1314116695:  return getCommunicationMethod(); 
+        case 117694:  return getWho();
+        case -14402964:  return getOnBehalfOf();
+        case 1314116695:  return getCommunicationMethod();
         case 3076014:  return getDateElement();
         case -799067682:  return getSourceIdentityCertificateElement();
         case 431558827:  return getProxyIdentityCertificateElement();
-        case 1455540714:  return getProxySignature(); 
-        case 1754480349:  return getSourceSignature(); 
+        case 1455540714:  return getProxySignature();
+        case 1754480349:  return getSourceSignature();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1345,6 +1291,11 @@ public class VerificationResult extends DomainResource {
       public VerificationResultAttestationComponent copy() {
         VerificationResultAttestationComponent dst = new VerificationResultAttestationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VerificationResultAttestationComponent dst) {
+        super.copyValues(dst);
         dst.who = who == null ? null : who.copy();
         dst.onBehalfOf = onBehalfOf == null ? null : onBehalfOf.copy();
         dst.communicationMethod = communicationMethod == null ? null : communicationMethod.copy();
@@ -1353,7 +1304,6 @@ public class VerificationResult extends DomainResource {
         dst.proxyIdentityCertificate = proxyIdentityCertificate == null ? null : proxyIdentityCertificate.copy();
         dst.proxySignature = proxySignature == null ? null : proxySignature.copy();
         dst.sourceSignature = sourceSignature == null ? null : sourceSignature.copy();
-        return dst;
       }
 
       @Override
@@ -1403,11 +1353,6 @@ public class VerificationResult extends DomainResource {
         protected Reference organization;
 
         /**
-         * The actual object that is the target of the reference (Reference to the organization validating information.)
-         */
-        protected Organization organizationTarget;
-
-        /**
          * A digital identity certificate associated with the validator.
          */
         @Child(name = "identityCertificate", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -1421,7 +1366,7 @@ public class VerificationResult extends DomainResource {
         @Description(shortDefinition="Validator signature", formalDefinition="Signed assertion by the validator that they have validated the information." )
         protected Signature attestationSignature;
 
-        private static final long serialVersionUID = 35580619L;
+        private static final long serialVersionUID = 335952370L;
 
     /**
      * Constructor
@@ -1459,26 +1404,6 @@ public class VerificationResult extends DomainResource {
          */
         public VerificationResultValidatorComponent setOrganization(Reference value) { 
           this.organization = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #organization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the organization validating information.)
-         */
-        public Organization getOrganizationTarget() { 
-          if (this.organizationTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create VerificationResultValidatorComponent.organization");
-            else if (Configuration.doAutoCreate())
-              this.organizationTarget = new Organization(); // aa
-          return this.organizationTarget;
-        }
-
-        /**
-         * @param value {@link #organization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the organization validating information.)
-         */
-        public VerificationResultValidatorComponent setOrganizationTarget(Organization value) { 
-          this.organizationTarget = value;
           return this;
         }
 
@@ -1617,9 +1542,9 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1178922291:  return getOrganization(); 
+        case 1178922291:  return getOrganization();
         case -854379015:  return getIdentityCertificateElement();
-        case -184196152:  return getAttestationSignature(); 
+        case -184196152:  return getAttestationSignature();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1656,10 +1581,14 @@ public class VerificationResult extends DomainResource {
       public VerificationResultValidatorComponent copy() {
         VerificationResultValidatorComponent dst = new VerificationResultValidatorComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VerificationResultValidatorComponent dst) {
+        super.copyValues(dst);
         dst.organization = organization == null ? null : organization.copy();
         dst.identityCertificate = identityCertificate == null ? null : identityCertificate.copy();
         dst.attestationSignature = attestationSignature == null ? null : attestationSignature.copy();
-        return dst;
       }
 
       @Override
@@ -1701,11 +1630,6 @@ public class VerificationResult extends DomainResource {
     @Child(name = "target", type = {Reference.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A resource that was validated", formalDefinition="A resource that was validated." )
     protected List<Reference> target;
-    /**
-     * The actual objects that are the target of the reference (A resource that was validated.)
-     */
-    protected List<Resource> targetTarget;
-
 
     /**
      * The fhirpath location(s) within the resource that was validated.
@@ -1803,7 +1727,7 @@ public class VerificationResult extends DomainResource {
     @Description(shortDefinition="Information about the entity validating information", formalDefinition="Information about the entity validating information." )
     protected List<VerificationResultValidatorComponent> validator;
 
-    private static final long serialVersionUID = -284059204L;
+    private static final long serialVersionUID = 1344259254L;
 
   /**
    * Constructor
@@ -1871,16 +1795,6 @@ public class VerificationResult extends DomainResource {
         addTarget();
       }
       return getTarget().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTargetTarget() { 
-      if (this.targetTarget == null)
-        this.targetTarget = new ArrayList<Resource>();
-      return this.targetTarget;
     }
 
     /**
@@ -2569,17 +2483,17 @@ public class VerificationResult extends DomainResource {
         switch (hash) {
         case -880905839:  return addTarget(); 
         case 308958310:  return addTargetLocationElement();
-        case 3377302:  return getNeed(); 
+        case 3377302:  return getNeed();
         case -892481550:  return getStatusElement();
         case 247524032:  return getStatusDateElement();
-        case -279681197:  return getValidationType(); 
+        case -279681197:  return getValidationType();
         case 797680566:  return addValidationProcess(); 
-        case -70023844:  return getFrequency(); 
+        case -70023844:  return getFrequency();
         case -1313229366:  return getLastPerformedElement();
         case 1874589434:  return getNextScheduledElement();
-        case 1816382560:  return getFailureAction(); 
+        case 1816382560:  return getFailureAction();
         case -528721731:  return addPrimarySource(); 
-        case -709624112:  return getAttestation(); 
+        case -709624112:  return getAttestation();
         case -1109783726:  return addValidator(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2669,6 +2583,11 @@ public class VerificationResult extends DomainResource {
       public VerificationResult copy() {
         VerificationResult dst = new VerificationResult();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VerificationResult dst) {
+        super.copyValues(dst);
         if (target != null) {
           dst.target = new ArrayList<Reference>();
           for (Reference i : target)
@@ -2703,7 +2622,6 @@ public class VerificationResult extends DomainResource {
           for (VerificationResultValidatorComponent i : validator)
             dst.validator.add(i.copy());
         };
-        return dst;
       }
 
       protected VerificationResult typedCopy() {

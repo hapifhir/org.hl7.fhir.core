@@ -50,14 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A set of ordered Quantities defined by a low and high limit.
  */
@@ -189,8 +193,8 @@ public class Range extends Type implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 107348:  return getLow(); 
-        case 3202466:  return getHigh(); 
+        case 107348:  return getLow();
+        case 3202466:  return getHigh();
         default: return super.makeProperty(hash, name);
         }
 
@@ -228,9 +232,13 @@ public class Range extends Type implements ICompositeType {
       public Range copy() {
         Range dst = new Range();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Range dst) {
+        super.copyValues(dst);
         dst.low = low == null ? null : low.copy();
         dst.high = high == null ? null : high.copy();
-        return dst;
       }
 
       protected Range typedCopy() {

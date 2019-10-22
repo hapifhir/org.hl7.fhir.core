@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -60,34 +59,34 @@ public class AdverseEventCausalityAssessEnumFactory implements EnumFactory<Adver
   public AdverseEventCausalityAssess fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("Certain".equals(codeString))
+    if ("certain".equals(codeString))
       return AdverseEventCausalityAssess.CERTAIN;
-    if ("Probably-Likely".equals(codeString))
+    if ("probably-likely".equals(codeString))
       return AdverseEventCausalityAssess.PROBABLYLIKELY;
-    if ("Possible".equals(codeString))
+    if ("possible".equals(codeString))
       return AdverseEventCausalityAssess.POSSIBLE;
-    if ("Unlikely".equals(codeString))
+    if ("unlikely".equals(codeString))
       return AdverseEventCausalityAssess.UNLIKELY;
-    if ("Conditional-Classified".equals(codeString))
+    if ("conditional-classified".equals(codeString))
       return AdverseEventCausalityAssess.CONDITIONALCLASSIFIED;
-    if ("Unassessable-Unclassifiable".equals(codeString))
+    if ("unassessable-unclassifiable".equals(codeString))
       return AdverseEventCausalityAssess.UNASSESSABLEUNCLASSIFIABLE;
     throw new IllegalArgumentException("Unknown AdverseEventCausalityAssess code '"+codeString+"'");
   }
 
   public String toCode(AdverseEventCausalityAssess code) {
     if (code == AdverseEventCausalityAssess.CERTAIN)
-      return "Certain";
+      return "certain";
     if (code == AdverseEventCausalityAssess.PROBABLYLIKELY)
-      return "Probably-Likely";
+      return "probably-likely";
     if (code == AdverseEventCausalityAssess.POSSIBLE)
-      return "Possible";
+      return "possible";
     if (code == AdverseEventCausalityAssess.UNLIKELY)
-      return "Unlikely";
+      return "unlikely";
     if (code == AdverseEventCausalityAssess.CONDITIONALCLASSIFIED)
-      return "Conditional-Classified";
+      return "conditional-classified";
     if (code == AdverseEventCausalityAssess.UNASSESSABLEUNCLASSIFIABLE)
-      return "Unassessable-Unclassifiable";
+      return "unassessable-unclassifiable";
     return "?";
   }
 

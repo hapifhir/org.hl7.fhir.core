@@ -53,15 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.
  */
@@ -369,7 +372,7 @@ public class CommunicationRequest extends DomainResource {
         /**
          * The communicated content (or for multi-part communications, one portion of the communication).
          */
-        @Child(name = "content", type = {StringType.class, Attachment.class, Reference.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "content", type = {Attachment.class, Reference.class, CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Message part content", formalDefinition="The communicated content (or for multi-part communications, one portion of the communication)." )
         protected Type content;
 
@@ -395,21 +398,6 @@ public class CommunicationRequest extends DomainResource {
          */
         public Type getContent() { 
           return this.content;
-        }
-
-        /**
-         * @return {@link #content} (The communicated content (or for multi-part communications, one portion of the communication).)
-         */
-        public StringType getContentStringType() throws FHIRException { 
-          if (this.content == null)
-            this.content = new StringType();
-          if (!(this.content instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.content.getClass().getName()+" was encountered");
-          return (StringType) this.content;
-        }
-
-        public boolean hasContentStringType() { 
-          return this != null && this.content instanceof StringType;
         }
 
         /**
@@ -442,6 +430,21 @@ public class CommunicationRequest extends DomainResource {
           return this != null && this.content instanceof Reference;
         }
 
+        /**
+         * @return {@link #content} (The communicated content (or for multi-part communications, one portion of the communication).)
+         */
+        public CodeableConcept getContentCodeableConcept() throws FHIRException { 
+          if (this.content == null)
+            this.content = new CodeableConcept();
+          if (!(this.content instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.content.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.content;
+        }
+
+        public boolean hasContentCodeableConcept() { 
+          return this != null && this.content instanceof CodeableConcept;
+        }
+
         public boolean hasContent() { 
           return this.content != null && !this.content.isEmpty();
         }
@@ -450,7 +453,7 @@ public class CommunicationRequest extends DomainResource {
          * @param value {@link #content} (The communicated content (or for multi-part communications, one portion of the communication).)
          */
         public CommunicationRequestPayloadComponent setContent(Type value) { 
-          if (value != null && !(value instanceof StringType || value instanceof Attachment || value instanceof Reference))
+          if (value != null && !(value instanceof Attachment || value instanceof Reference || value instanceof CodeableConcept))
             throw new Error("Not the right type for CommunicationRequest.payload.content[x]: "+value.fhirType());
           this.content = value;
           return this;
@@ -458,17 +461,17 @@ public class CommunicationRequest extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("content[x]", "string|Attachment|Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content));
+          children.add(new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 264548711: /*content[x]*/  return new Property("content[x]", "string|Attachment|Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case 951530617: /*content*/  return new Property("content[x]", "string|Attachment|Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case -326336022: /*contentString*/  return new Property("content[x]", "string|Attachment|Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case -702028164: /*contentAttachment*/  return new Property("content[x]", "string|Attachment|Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case 1193747154: /*contentReference*/  return new Property("content[x]", "string|Attachment|Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case 264548711: /*content[x]*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case 951530617: /*content*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case 1193747154: /*contentReference*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case 1554698728: /*contentCodeableConcept*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -506,8 +509,8 @@ public class CommunicationRequest extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 264548711:  return getContent(); 
-        case 951530617:  return getContent(); 
+        case 264548711:  return getContent();
+        case 951530617:  return getContent();
         default: return super.makeProperty(hash, name);
         }
 
@@ -516,7 +519,7 @@ public class CommunicationRequest extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 951530617: /*content*/ return new String[] {"string", "Attachment", "Reference"};
+        case 951530617: /*content*/ return new String[] {"Attachment", "Reference", "CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -524,16 +527,16 @@ public class CommunicationRequest extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("contentString")) {
-          this.content = new StringType();
-          return this.content;
-        }
-        else if (name.equals("contentAttachment")) {
+        if (name.equals("contentAttachment")) {
           this.content = new Attachment();
           return this.content;
         }
         else if (name.equals("contentReference")) {
           this.content = new Reference();
+          return this.content;
+        }
+        else if (name.equals("contentCodeableConcept")) {
+          this.content = new CodeableConcept();
           return this.content;
         }
         else
@@ -543,8 +546,12 @@ public class CommunicationRequest extends DomainResource {
       public CommunicationRequestPayloadComponent copy() {
         CommunicationRequestPayloadComponent dst = new CommunicationRequestPayloadComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(CommunicationRequestPayloadComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -591,11 +598,6 @@ public class CommunicationRequest extends DomainResource {
     @Child(name = "basedOn", type = {Reference.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Fulfills plan or proposal", formalDefinition="A plan or proposal that is fulfilled in whole or in part by this request." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A plan or proposal that is fulfilled in whole or in part by this request.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * Completed or terminated request(s) whose function is taken by this new request.
@@ -603,11 +605,6 @@ public class CommunicationRequest extends DomainResource {
     @Child(name = "replaces", type = {CommunicationRequest.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Request(s) replaced by this request", formalDefinition="Completed or terminated request(s) whose function is taken by this new request." )
     protected List<Reference> replaces;
-    /**
-     * The actual objects that are the target of the reference (Completed or terminated request(s) whose function is taken by this new request.)
-     */
-    protected List<CommunicationRequest> replacesTarget;
-
 
     /**
      * A shared identifier common to all requests that were authorized more or less simultaneously by a single author, representing the identifier of the requisition, prescription or similar form.
@@ -620,7 +617,7 @@ public class CommunicationRequest extends DomainResource {
      * The status of the proposal or order.
      */
     @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | suspended | cancelled | completed | entered-in-error | unknown", formalDefinition="The status of the proposal or order." )
+    @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The status of the proposal or order." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
     protected Enumeration<CommunicationRequestStatus> status;
 
@@ -629,6 +626,7 @@ public class CommunicationRequest extends DomainResource {
      */
     @Child(name = "statusReason", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Reason for current status", formalDefinition="Captures the reason for the current state of the CommunicationRequest." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/communication-request-status-reason")
     protected CodeableConcept statusReason;
 
     /**
@@ -643,7 +641,7 @@ public class CommunicationRequest extends DomainResource {
      * Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.
      */
     @Child(name = "priority", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Message urgency", formalDefinition="Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine." )
+    @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
     protected Enumeration<CommunicationPriority> priority;
 
@@ -670,33 +668,18 @@ public class CommunicationRequest extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient or group that is the focus of this communication request.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * Other resources that pertain to this communication request and to which this communication request should be associated.
      */
     @Child(name = "about", type = {Reference.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Resources that pertain to this communication request", formalDefinition="Other resources that pertain to this communication request and to which this communication request should be associated." )
     protected List<Reference> about;
-    /**
-     * The actual objects that are the target of the reference (Other resources that pertain to this communication request and to which this communication request should be associated.)
-     */
-    protected List<Resource> aboutTarget;
-
 
     /**
      * The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=12, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated." )
+    @Description(shortDefinition="The Encounter during which this CommunicationRequest was created", formalDefinition="The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Text, attachment(s), or resource(s) to be communicated to the recipient.
@@ -720,40 +703,25 @@ public class CommunicationRequest extends DomainResource {
     protected DateTimeType authoredOn;
 
     /**
-     * The device, individual, or organization who initiated the request and has responsibility for its activation.
+     * The device, individual, or organization who asks for the information to be shared.
      */
     @Child(name = "requester", type = {Practitioner.class, PractitionerRole.class, Organization.class, Patient.class, RelatedPerson.class, Device.class}, order=16, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Who/what is requesting service", formalDefinition="The device, individual, or organization who initiated the request and has responsibility for its activation." )
+    @Description(shortDefinition="Who asks for the information to be shared", formalDefinition="The device, individual, or organization who asks for the information to be shared." )
     protected Reference requester;
-
-    /**
-     * The actual object that is the target of the reference (The device, individual, or organization who initiated the request and has responsibility for its activation.)
-     */
-    protected Resource requesterTarget;
 
     /**
      * The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.
      */
-    @Child(name = "recipient", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Group.class, CareTeam.class, HealthcareService.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Message recipient", formalDefinition="The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication." )
+    @Child(name = "recipient", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Group.class, CareTeam.class, HealthcareService.class, Endpoint.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who to share the information with", formalDefinition="The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication." )
     protected List<Reference> recipient;
-    /**
-     * The actual objects that are the target of the reference (The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.)
-     */
-    protected List<Resource> recipientTarget;
-
 
     /**
      * The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.
      */
-    @Child(name = "sender", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, HealthcareService.class}, order=18, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Message sender", formalDefinition="The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication." )
-    protected Reference sender;
-
-    /**
-     * The actual object that is the target of the reference (The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.)
-     */
-    protected Resource senderTarget;
+    @Child(name = "informationProvider", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, HealthcareService.class, Endpoint.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Who should share the information", formalDefinition="The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication." )
+    protected List<Reference> informationProvider;
 
     /**
      * Describes why the request is being made in coded or textual form.
@@ -766,14 +734,9 @@ public class CommunicationRequest extends DomainResource {
     /**
      * Indicates another resource whose existence justifies this request.
      */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonReference", type = {Reference.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why is communication needed?", formalDefinition="Indicates another resource whose existence justifies this request." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates another resource whose existence justifies this request.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Comments made about the request by the requester, sender, recipient, subject or other participants.
@@ -782,7 +745,7 @@ public class CommunicationRequest extends DomainResource {
     @Description(shortDefinition="Comments made about communication request", formalDefinition="Comments made about the request by the requester, sender, recipient, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 2131096857L;
+    private static final long serialVersionUID = 1016575154L;
 
   /**
    * Constructor
@@ -906,16 +869,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #replaces} (Completed or terminated request(s) whose function is taken by this new request.)
      */
     public List<Reference> getReplaces() { 
@@ -966,28 +919,6 @@ public class CommunicationRequest extends DomainResource {
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CommunicationRequest> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<CommunicationRequest>();
-      return this.replacesTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CommunicationRequest addReplacesTarget() { 
-      CommunicationRequest r = new CommunicationRequest();
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<CommunicationRequest>();
-      this.replacesTarget.add(r);
-      return r;
     }
 
     /**
@@ -1308,21 +1239,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient or group that is the focus of this communication request.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient or group that is the focus of this communication request.)
-     */
-    public CommunicationRequest setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #about} (Other resources that pertain to this communication request and to which this communication request should be associated.)
      */
     public List<Reference> getAbout() { 
@@ -1376,16 +1292,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAboutTarget() { 
-      if (this.aboutTarget == null)
-        this.aboutTarget = new ArrayList<Resource>();
-      return this.aboutTarget;
-    }
-
-    /**
      * @return {@link #encounter} (The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated.)
      */
     public Reference getEncounter() { 
@@ -1406,26 +1312,6 @@ public class CommunicationRequest extends DomainResource {
      */
     public CommunicationRequest setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CommunicationRequest.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated.)
-     */
-    public CommunicationRequest setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1583,7 +1469,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #requester} (The device, individual, or organization who initiated the request and has responsibility for its activation.)
+     * @return {@link #requester} (The device, individual, or organization who asks for the information to be shared.)
      */
     public Reference getRequester() { 
       if (this.requester == null)
@@ -1599,25 +1485,10 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @param value {@link #requester} (The device, individual, or organization who initiated the request and has responsibility for its activation.)
+     * @param value {@link #requester} (The device, individual, or organization who asks for the information to be shared.)
      */
     public CommunicationRequest setRequester(Reference value) { 
       this.requester = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #requester} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device, individual, or organization who initiated the request and has responsibility for its activation.)
-     */
-    public Resource getRequesterTarget() { 
-      return this.requesterTarget;
-    }
-
-    /**
-     * @param value {@link #requester} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device, individual, or organization who initiated the request and has responsibility for its activation.)
-     */
-    public CommunicationRequest setRequesterTarget(Resource value) { 
-      this.requesterTarget = value;
       return this;
     }
 
@@ -1675,52 +1546,56 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
+     * @return {@link #informationProvider} (The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.)
      */
-    @Deprecated
-    public List<Resource> getRecipientTarget() { 
-      if (this.recipientTarget == null)
-        this.recipientTarget = new ArrayList<Resource>();
-      return this.recipientTarget;
+    public List<Reference> getInformationProvider() { 
+      if (this.informationProvider == null)
+        this.informationProvider = new ArrayList<Reference>();
+      return this.informationProvider;
     }
 
     /**
-     * @return {@link #sender} (The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Reference getSender() { 
-      if (this.sender == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CommunicationRequest.sender");
-        else if (Configuration.doAutoCreate())
-          this.sender = new Reference(); // cc
-      return this.sender;
+    public CommunicationRequest setInformationProvider(List<Reference> theInformationProvider) { 
+      this.informationProvider = theInformationProvider;
+      return this;
     }
 
-    public boolean hasSender() { 
-      return this.sender != null && !this.sender.isEmpty();
+    public boolean hasInformationProvider() { 
+      if (this.informationProvider == null)
+        return false;
+      for (Reference item : this.informationProvider)
+        if (!item.isEmpty())
+          return true;
+      return false;
     }
 
-    /**
-     * @param value {@link #sender} (The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.)
-     */
-    public CommunicationRequest setSender(Reference value) { 
-      this.sender = value;
+    public Reference addInformationProvider() { //3
+      Reference t = new Reference();
+      if (this.informationProvider == null)
+        this.informationProvider = new ArrayList<Reference>();
+      this.informationProvider.add(t);
+      return t;
+    }
+
+    public CommunicationRequest addInformationProvider(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.informationProvider == null)
+        this.informationProvider = new ArrayList<Reference>();
+      this.informationProvider.add(t);
       return this;
     }
 
     /**
-     * @return {@link #sender} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.)
+     * @return The first repetition of repeating field {@link #informationProvider}, creating it if it does not already exist
      */
-    public Resource getSenderTarget() { 
-      return this.senderTarget;
-    }
-
-    /**
-     * @param value {@link #sender} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.)
-     */
-    public CommunicationRequest setSenderTarget(Resource value) { 
-      this.senderTarget = value;
-      return this;
+    public Reference getInformationProviderFirstRep() { 
+      if (getInformationProvider().isEmpty()) {
+        addInformationProvider();
+      }
+      return getInformationProvider().get(0);
     }
 
     /**
@@ -1830,16 +1705,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #note} (Comments made about the request by the requester, sender, recipient, subject or other participants.)
      */
     public List<Annotation> getNote() { 
@@ -1910,11 +1775,11 @@ public class CommunicationRequest extends DomainResource {
         children.add(new Property("payload", "", "Text, attachment(s), or resource(s) to be communicated to the recipient.", 0, java.lang.Integer.MAX_VALUE, payload));
         children.add(new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence));
         children.add(new Property("authoredOn", "dateTime", "For draft requests, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation.", 0, 1, authoredOn));
-        children.add(new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who initiated the request and has responsibility for its activation.", 0, 1, requester));
-        children.add(new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient));
-        children.add(new Property("sender", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, 1, sender));
+        children.add(new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who asks for the information to be shared.", 0, 1, requester));
+        children.add(new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient));
+        children.add(new Property("informationProvider", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, java.lang.Integer.MAX_VALUE, informationProvider));
         children.add(new Property("reasonCode", "CodeableConcept", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this request.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reasonReference", "Reference(Any)", "Indicates another resource whose existence justifies this request.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
         children.add(new Property("note", "Annotation", "Comments made about the request by the requester, sender, recipient, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note));
       }
 
@@ -1940,11 +1805,11 @@ public class CommunicationRequest extends DomainResource {
         case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence);
         case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence);
         case -1500852503: /*authoredOn*/  return new Property("authoredOn", "dateTime", "For draft requests, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation.", 0, 1, authoredOn);
-        case 693933948: /*requester*/  return new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who initiated the request and has responsibility for its activation.", 0, 1, requester);
-        case 820081177: /*recipient*/  return new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient);
-        case -905962955: /*sender*/  return new Property("sender", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, 1, sender);
+        case 693933948: /*requester*/  return new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who asks for the information to be shared.", 0, 1, requester);
+        case 820081177: /*recipient*/  return new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient);
+        case 1255338813: /*informationProvider*/  return new Property("informationProvider", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, java.lang.Integer.MAX_VALUE, informationProvider);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this request.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "Indicates another resource whose existence justifies this request.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the request by the requester, sender, recipient, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1972,7 +1837,7 @@ public class CommunicationRequest extends DomainResource {
         case -1500852503: /*authoredOn*/ return this.authoredOn == null ? new Base[0] : new Base[] {this.authoredOn}; // DateTimeType
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
         case 820081177: /*recipient*/ return this.recipient == null ? new Base[0] : this.recipient.toArray(new Base[this.recipient.size()]); // Reference
-        case -905962955: /*sender*/ return this.sender == null ? new Base[0] : new Base[] {this.sender}; // Reference
+        case 1255338813: /*informationProvider*/ return this.informationProvider == null ? new Base[0] : this.informationProvider.toArray(new Base[this.informationProvider.size()]); // Reference
         case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
         case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -2040,8 +1905,8 @@ public class CommunicationRequest extends DomainResource {
         case 820081177: // recipient
           this.getRecipient().add(castToReference(value)); // Reference
           return value;
-        case -905962955: // sender
-          this.sender = castToReference(value); // Reference
+        case 1255338813: // informationProvider
+          this.getInformationProvider().add(castToReference(value)); // Reference
           return value;
         case 722137681: // reasonCode
           this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
@@ -2097,8 +1962,8 @@ public class CommunicationRequest extends DomainResource {
           this.requester = castToReference(value); // Reference
         } else if (name.equals("recipient")) {
           this.getRecipient().add(castToReference(value));
-        } else if (name.equals("sender")) {
-          this.sender = castToReference(value); // Reference
+        } else if (name.equals("informationProvider")) {
+          this.getInformationProvider().add(castToReference(value));
         } else if (name.equals("reasonCode")) {
           this.getReasonCode().add(castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
@@ -2116,23 +1981,23 @@ public class CommunicationRequest extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -332612366:  return addBasedOn(); 
         case -430332865:  return addReplaces(); 
-        case -445338488:  return getGroupIdentifier(); 
+        case -445338488:  return getGroupIdentifier();
         case -892481550:  return getStatusElement();
-        case 2051346646:  return getStatusReason(); 
+        case 2051346646:  return getStatusReason();
         case 50511102:  return addCategory(); 
         case -1165461084:  return getPriorityElement();
         case -1788508167:  return getDoNotPerformElement();
         case -1078030475:  return addMedium(); 
-        case -1867885268:  return getSubject(); 
+        case -1867885268:  return getSubject();
         case 92611469:  return addAbout(); 
-        case 1524132147:  return getEncounter(); 
+        case 1524132147:  return getEncounter();
         case -786701938:  return addPayload(); 
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
         case -1500852503:  return getAuthoredOnElement();
-        case 693933948:  return getRequester(); 
+        case 693933948:  return getRequester();
         case 820081177:  return addRecipient(); 
-        case -905962955:  return getSender(); 
+        case 1255338813:  return addInformationProvider(); 
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 3387378:  return addNote(); 
@@ -2162,7 +2027,7 @@ public class CommunicationRequest extends DomainResource {
         case -1500852503: /*authoredOn*/ return new String[] {"dateTime"};
         case 693933948: /*requester*/ return new String[] {"Reference"};
         case 820081177: /*recipient*/ return new String[] {"Reference"};
-        case -905962955: /*sender*/ return new String[] {"Reference"};
+        case 1255338813: /*informationProvider*/ return new String[] {"Reference"};
         case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
         case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -2237,9 +2102,8 @@ public class CommunicationRequest extends DomainResource {
         else if (name.equals("recipient")) {
           return addRecipient();
         }
-        else if (name.equals("sender")) {
-          this.sender = new Reference();
-          return this.sender;
+        else if (name.equals("informationProvider")) {
+          return addInformationProvider();
         }
         else if (name.equals("reasonCode")) {
           return addReasonCode();
@@ -2262,6 +2126,11 @@ public class CommunicationRequest extends DomainResource {
       public CommunicationRequest copy() {
         CommunicationRequest dst = new CommunicationRequest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CommunicationRequest dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2312,7 +2181,11 @@ public class CommunicationRequest extends DomainResource {
           for (Reference i : recipient)
             dst.recipient.add(i.copy());
         };
-        dst.sender = sender == null ? null : sender.copy();
+        if (informationProvider != null) {
+          dst.informationProvider = new ArrayList<Reference>();
+          for (Reference i : informationProvider)
+            dst.informationProvider.add(i.copy());
+        };
         if (reasonCode != null) {
           dst.reasonCode = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : reasonCode)
@@ -2328,7 +2201,6 @@ public class CommunicationRequest extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected CommunicationRequest typedCopy() {
@@ -2348,8 +2220,9 @@ public class CommunicationRequest extends DomainResource {
            && compareDeep(doNotPerform, o.doNotPerform, true) && compareDeep(medium, o.medium, true) && compareDeep(subject, o.subject, true)
            && compareDeep(about, o.about, true) && compareDeep(encounter, o.encounter, true) && compareDeep(payload, o.payload, true)
            && compareDeep(occurrence, o.occurrence, true) && compareDeep(authoredOn, o.authoredOn, true) && compareDeep(requester, o.requester, true)
-           && compareDeep(recipient, o.recipient, true) && compareDeep(sender, o.sender, true) && compareDeep(reasonCode, o.reasonCode, true)
-           && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(note, o.note, true);
+           && compareDeep(recipient, o.recipient, true) && compareDeep(informationProvider, o.informationProvider, true)
+           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
+           && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -2367,7 +2240,7 @@ public class CommunicationRequest extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, replaces
           , groupIdentifier, status, statusReason, category, priority, doNotPerform, medium
           , subject, about, encounter, payload, occurrence, authoredOn, requester, recipient
-          , sender, reasonCode, reasonReference, note);
+          , informationProvider, reasonCode, reasonReference, note);
       }
 
   @Override
@@ -2378,17 +2251,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>requester</b>
    * <p>
-   * Description: <b>Who/what is requesting service</b><br>
+   * Description: <b>Who asks for the information to be shared</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>CommunicationRequest.requester</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="requester", path="CommunicationRequest.requester", description="Who/what is requesting service", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="requester", path="CommunicationRequest.requester", description="Who asks for the information to be shared", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_REQUESTER = "requester";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>requester</b>
    * <p>
-   * Description: <b>Who/what is requesting service</b><br>
+   * Description: <b>Who asks for the information to be shared</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>CommunicationRequest.requester</b><br>
    * </p>
@@ -2516,17 +2389,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>encounter</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
+   * Description: <b>The Encounter during which this CommunicationRequest was created</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>CommunicationRequest.encounter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="CommunicationRequest.encounter", description="Encounter created as part of", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
+  @SearchParamDefinition(name="encounter", path="CommunicationRequest.encounter", description="The Encounter during which this CommunicationRequest was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
   public static final String SP_ENCOUNTER = "encounter";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
+   * Description: <b>The Encounter during which this CommunicationRequest was created</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>CommunicationRequest.encounter</b><br>
    * </p>
@@ -2544,17 +2417,17 @@ public class CommunicationRequest extends DomainResource {
    * <p>
    * Description: <b>When scheduled</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CommunicationRequest.occurrenceDateTime</b><br>
+   * Path: <b>CommunicationRequest.occurrence[x]</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="occurrence", path="(CommunicationRequest.occurrence as dateTime)", description="When scheduled", type="date" )
+  @SearchParamDefinition(name="occurrence", path="CommunicationRequest.occurrence.as(dateTime) | CommunicationRequest.occurrence.as(Period)", description="When scheduled", type="date" )
   public static final String SP_OCCURRENCE = "occurrence";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
    * <p>
    * Description: <b>When scheduled</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CommunicationRequest.occurrenceDateTime</b><br>
+   * Path: <b>CommunicationRequest.occurrence[x]</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);
@@ -2562,17 +2435,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>priority</b>
    * <p>
-   * Description: <b>Message urgency</b><br>
+   * Description: <b>routine | urgent | asap | stat</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.priority</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="priority", path="CommunicationRequest.priority", description="Message urgency", type="token" )
+  @SearchParamDefinition(name="priority", path="CommunicationRequest.priority", description="routine | urgent | asap | stat", type="token" )
   public static final String SP_PRIORITY = "priority";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>priority</b>
    * <p>
-   * Description: <b>Message urgency</b><br>
+   * Description: <b>routine | urgent | asap | stat</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.priority</b><br>
    * </p>
@@ -2626,32 +2499,6 @@ public class CommunicationRequest extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("CommunicationRequest:based-on").toLocked();
 
  /**
-   * Search parameter: <b>sender</b>
-   * <p>
-   * Description: <b>Message sender</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.sender</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="sender", path="CommunicationRequest.sender", description="Message sender", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_SENDER = "sender";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>sender</b>
-   * <p>
-   * Description: <b>Message sender</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.sender</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SENDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SENDER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:sender</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SENDER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:sender").toLocked();
-
- /**
    * Search parameter: <b>patient</b>
    * <p>
    * Description: <b>Focus of message</b><br>
@@ -2680,17 +2527,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>recipient</b>
    * <p>
-   * Description: <b>Message recipient</b><br>
+   * Description: <b>Who to share the information with</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>CommunicationRequest.recipient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="recipient", path="CommunicationRequest.recipient", description="Message recipient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={CareTeam.class, Device.class, Group.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="recipient", path="CommunicationRequest.recipient", description="Who to share the information with", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={CareTeam.class, Device.class, Endpoint.class, Group.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_RECIPIENT = "recipient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>recipient</b>
    * <p>
-   * Description: <b>Message recipient</b><br>
+   * Description: <b>Who to share the information with</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>CommunicationRequest.recipient</b><br>
    * </p>
@@ -2702,6 +2549,32 @@ public class CommunicationRequest extends DomainResource {
    * the path value of "<b>CommunicationRequest:recipient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_RECIPIENT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:recipient").toLocked();
+
+ /**
+   * Search parameter: <b>information-provider</b>
+   * <p>
+   * Description: <b>Who should share the information</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.informationProvider</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="information-provider", path="CommunicationRequest.informationProvider", description="Who should share the information", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Endpoint.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_INFORMATION_PROVIDER = "information-provider";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>information-provider</b>
+   * <p>
+   * Description: <b>Who should share the information</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.informationProvider</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INFORMATION_PROVIDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INFORMATION_PROVIDER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CommunicationRequest:information-provider</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INFORMATION_PROVIDER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:information-provider").toLocked();
 
  /**
    * Search parameter: <b>category</b>
@@ -2726,17 +2599,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>draft | active | suspended | cancelled | completed | entered-in-error | unknown</b><br>
+   * Description: <b>draft | active | on-hold | revoked | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="CommunicationRequest.status", description="draft | active | suspended | cancelled | completed | entered-in-error | unknown", type="token" )
+  @SearchParamDefinition(name="status", path="CommunicationRequest.status", description="draft | active | on-hold | revoked | completed | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>draft | active | suspended | cancelled | completed | entered-in-error | unknown</b><br>
+   * Description: <b>draft | active | on-hold | revoked | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.status</b><br>
    * </p>

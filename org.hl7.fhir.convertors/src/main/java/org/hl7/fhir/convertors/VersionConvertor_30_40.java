@@ -2949,27 +2949,39 @@ public class VersionConvertor_30_40 {
     throw new FHIRException("Unknown type "+src.fhirType());
   }
 
-  private static void copyDomainResource(org.hl7.fhir.dstu3.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+  private static boolean isExemptExtension(String url, String[] extensionsToIgnore) {
+    boolean ok = false;
+    for (String s : extensionsToIgnore)
+      if (s.equals(url))
+        ok = true;
+    return ok;
+  }
+
+  private static void copyDomainResource(org.hl7.fhir.dstu3.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText())
       tgt.setText(convertNarrative(src.getText()));
     for (org.hl7.fhir.dstu3.model.Resource t1 : src.getContained())
       tgt.addContained(convertResource(t1, false));
     for (org.hl7.fhir.dstu3.model.Extension t2 : src.getExtension())
-      tgt.addExtension(convertExtension(t2));
+      if (!isExemptExtension(t2.getUrl(), extensionsToIgnore))
+        tgt.addExtension(convertExtension(t2));
     for (org.hl7.fhir.dstu3.model.Extension t3 : src.getModifierExtension())
-      tgt.addModifierExtension(convertExtension(t3));
+      if (!isExemptExtension(t3.getUrl(), extensionsToIgnore))
+        tgt.addModifierExtension(convertExtension(t3));
   }
-  private static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.dstu3.model.DomainResource tgt) throws FHIRException {
+  private static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.dstu3.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText())
       tgt.setText(convertNarrative(src.getText()));
     for (org.hl7.fhir.r4.model.Resource t1 : src.getContained())
       tgt.addContained(convertResource(t1, false));
     for (org.hl7.fhir.r4.model.Extension t2 : src.getExtension())
-      tgt.addExtension(convertExtension(t2));
+      if (!isExemptExtension(t2.getUrl(), extensionsToIgnore))
+        tgt.addExtension(convertExtension(t2));
     for (org.hl7.fhir.r4.model.Extension t3 : src.getModifierExtension())
-      tgt.addModifierExtension(convertExtension(t3));
+      if (!isExemptExtension(t3.getUrl(), extensionsToIgnore))
+        tgt.addModifierExtension(convertExtension(t3));
   }
   public static org.hl7.fhir.r4.model.Parameters convertParameters(org.hl7.fhir.dstu3.model.Parameters src) throws FHIRException {
     if (src == null)
@@ -4680,8 +4692,9 @@ public class VersionConvertor_30_40 {
       tgt.setImplementation(convertCapabilityStatementImplementationComponent(src.getImplementation()));
     if (src.hasFhirVersion())
       tgt.setFhirVersion(org.hl7.fhir.r4.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
-//    if (src.hasAcceptUnknown())
-//      tgt.setAcceptUnknown(convertUnknownContentCode(src.getAcceptUnknown()));
+    if (src.hasAcceptUnknown())
+      tgt.addExtension().setUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown").setValue(
+          new org.hl7.fhir.r4.model.CodeType(src.getAcceptUnknownElement().asStringValue()));
     for (org.hl7.fhir.dstu3.model.CodeType t : src.getFormat())
       tgt.addFormat(t.getValue());
     for (org.hl7.fhir.dstu3.model.CodeType t : src.getPatchFormat())
@@ -4704,7 +4717,7 @@ public class VersionConvertor_30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CapabilityStatement tgt = new org.hl7.fhir.dstu3.model.CapabilityStatement();
-    copyDomainResource(src, tgt);
+    copyDomainResource(src, tgt, "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasVersion())
@@ -4743,8 +4756,9 @@ public class VersionConvertor_30_40 {
       tgt.setImplementation(convertCapabilityStatementImplementationComponent(src.getImplementation()));
     if (src.hasFhirVersion())
       tgt.setFhirVersion(src.getFhirVersion().toCode());
-//    if (src.hasAcceptUnknown())
-//      tgt.setAcceptUnknown(convertUnknownContentCode(src.getAcceptUnknown()));
+    if (src.hasExtension("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown"))
+      tgt.setAcceptUnknown(org.hl7.fhir.dstu3.model.CapabilityStatement.UnknownContentCode.fromCode(
+          src.getExtensionByUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown").getValue().primitiveValue()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getFormat())
       tgt.addFormat(t.getValue());
     for (org.hl7.fhir.r4.model.CodeType t : src.getPatchFormat())

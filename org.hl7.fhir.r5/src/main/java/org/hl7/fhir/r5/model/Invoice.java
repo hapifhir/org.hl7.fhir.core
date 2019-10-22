@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,16 +53,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Invoice containing collected ChargeItems from an Account with calculated individual and total price for Billing purpose.
  */
@@ -383,12 +384,7 @@ public class Invoice extends DomainResource {
         @Description(shortDefinition="Individual who was involved", formalDefinition="The device, practitioner, etc. who performed or participated in the service." )
         protected Reference actor;
 
-        /**
-         * The actual object that is the target of the reference (The device, practitioner, etc. who performed or participated in the service.)
-         */
-        protected Resource actorTarget;
-
-        private static final long serialVersionUID = 805521719L;
+        private static final long serialVersionUID = -1684441509L;
 
     /**
      * Constructor
@@ -453,21 +449,6 @@ public class Invoice extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #actor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who performed or participated in the service.)
-         */
-        public Resource getActorTarget() { 
-          return this.actorTarget;
-        }
-
-        /**
-         * @param value {@link #actor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who performed or participated in the service.)
-         */
-        public InvoiceParticipantComponent setActorTarget(Resource value) { 
-          this.actorTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("role", "CodeableConcept", "Describes the type of involvement (e.g. transcriptionist, creator etc.). If the invoice has been created automatically, the Participant may be a billing engine or another kind of device.", 0, 1, role));
@@ -522,8 +503,8 @@ public class Invoice extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3506294:  return getRole(); 
-        case 92645877:  return getActor(); 
+        case 3506294:  return getRole();
+        case 92645877:  return getActor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -556,9 +537,13 @@ public class Invoice extends DomainResource {
       public InvoiceParticipantComponent copy() {
         InvoiceParticipantComponent dst = new InvoiceParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InvoiceParticipantComponent dst) {
+        super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
         dst.actor = actor == null ? null : actor.copy();
-        return dst;
       }
 
       @Override
@@ -847,8 +832,8 @@ public class Invoice extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
-        case 351104825:  return getChargeItem(); 
-        case 1417779175:  return getChargeItem(); 
+        case 351104825:  return getChargeItem();
+        case 1417779175:  return getChargeItem();
         case 1219095988:  return addPriceComponent(); 
         default: return super.makeProperty(hash, name);
         }
@@ -889,6 +874,11 @@ public class Invoice extends DomainResource {
       public InvoiceLineItemComponent copy() {
         InvoiceLineItemComponent dst = new InvoiceLineItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InvoiceLineItemComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.chargeItem = chargeItem == null ? null : chargeItem.copy();
         if (priceComponent != null) {
@@ -896,7 +886,6 @@ public class Invoice extends DomainResource {
           for (InvoiceLineItemPriceComponentComponent i : priceComponent)
             dst.priceComponent.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1213,9 +1202,9 @@ public class Invoice extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1282148017:  return getFactorElement();
-        case -1413853096:  return getAmount(); 
+        case -1413853096:  return getAmount();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1256,11 +1245,15 @@ public class Invoice extends DomainResource {
       public InvoiceLineItemPriceComponentComponent copy() {
         InvoiceLineItemPriceComponentComponent dst = new InvoiceLineItemPriceComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InvoiceLineItemPriceComponentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.code = code == null ? null : code.copy();
         dst.factor = factor == null ? null : factor.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -1333,21 +1326,11 @@ public class Invoice extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The individual or set of individuals receiving the goods and services billed in this invoice.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The individual or Organization responsible for balancing of this invoice.
      */
     @Child(name = "recipient", type = {Organization.class, Patient.class, RelatedPerson.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Recipient of this invoice", formalDefinition="The individual or Organization responsible for balancing of this invoice." )
     protected Reference recipient;
-
-    /**
-     * The actual object that is the target of the reference (The individual or Organization responsible for balancing of this invoice.)
-     */
-    protected Resource recipientTarget;
 
     /**
      * Date/time(s) of when this Invoice was posted.
@@ -1371,21 +1354,11 @@ public class Invoice extends DomainResource {
     protected Reference issuer;
 
     /**
-     * The actual object that is the target of the reference (The organizationissuing the Invoice.)
-     */
-    protected Organization issuerTarget;
-
-    /**
      * Account which is supposed to be balanced with this Invoice.
      */
     @Child(name = "account", type = {Account.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Account that is being balanced", formalDefinition="Account which is supposed to be balanced with this Invoice." )
     protected Reference account;
-
-    /**
-     * The actual object that is the target of the reference (Account which is supposed to be balanced with this Invoice.)
-     */
-    protected Account accountTarget;
 
     /**
      * Each line item represents one charge for goods and services rendered. Details such as date, code and amount are found in the referenced ChargeItem resource.
@@ -1429,7 +1402,7 @@ public class Invoice extends DomainResource {
     @Description(shortDefinition="Comments made about the invoice", formalDefinition="Comments made about the invoice by the issuer, subject, or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -62357265L;
+    private static final long serialVersionUID = -841380390L;
 
   /**
    * Constructor
@@ -1642,21 +1615,6 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual or set of individuals receiving the goods and services billed in this invoice.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual or set of individuals receiving the goods and services billed in this invoice.)
-     */
-    public Invoice setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #recipient} (The individual or Organization responsible for balancing of this invoice.)
      */
     public Reference getRecipient() { 
@@ -1677,21 +1635,6 @@ public class Invoice extends DomainResource {
      */
     public Invoice setRecipient(Reference value) { 
       this.recipient = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #recipient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual or Organization responsible for balancing of this invoice.)
-     */
-    public Resource getRecipientTarget() { 
-      return this.recipientTarget;
-    }
-
-    /**
-     * @param value {@link #recipient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual or Organization responsible for balancing of this invoice.)
-     */
-    public Invoice setRecipientTarget(Resource value) { 
-      this.recipientTarget = value;
       return this;
     }
 
@@ -1822,26 +1765,6 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return {@link #issuer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organizationissuing the Invoice.)
-     */
-    public Organization getIssuerTarget() { 
-      if (this.issuerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Invoice.issuer");
-        else if (Configuration.doAutoCreate())
-          this.issuerTarget = new Organization(); // aa
-      return this.issuerTarget;
-    }
-
-    /**
-     * @param value {@link #issuer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organizationissuing the Invoice.)
-     */
-    public Invoice setIssuerTarget(Organization value) { 
-      this.issuerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #account} (Account which is supposed to be balanced with this Invoice.)
      */
     public Reference getAccount() { 
@@ -1862,26 +1785,6 @@ public class Invoice extends DomainResource {
      */
     public Invoice setAccount(Reference value) { 
       this.account = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #account} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Account which is supposed to be balanced with this Invoice.)
-     */
-    public Account getAccountTarget() { 
-      if (this.accountTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Invoice.account");
-        else if (Configuration.doAutoCreate())
-          this.accountTarget = new Account(); // aa
-      return this.accountTarget;
-    }
-
-    /**
-     * @param value {@link #account} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Account which is supposed to be balanced with this Invoice.)
-     */
-    public Invoice setAccountTarget(Account value) { 
-      this.accountTarget = value;
       return this;
     }
 
@@ -2312,17 +2215,17 @@ public class Invoice extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 1550362357:  return getCancelledReasonElement();
-        case 3575610:  return getType(); 
-        case -1867885268:  return getSubject(); 
-        case 820081177:  return getRecipient(); 
+        case 3575610:  return getType();
+        case -1867885268:  return getSubject();
+        case 820081177:  return getRecipient();
         case 3076014:  return getDateElement();
         case 767422259:  return addParticipant(); 
-        case -1179159879:  return getIssuer(); 
-        case -1177318867:  return getAccount(); 
+        case -1179159879:  return getIssuer();
+        case -1177318867:  return getAccount();
         case 1188332839:  return addLineItem(); 
         case 1731497496:  return addTotalPriceComponent(); 
-        case -849911879:  return getTotalNet(); 
-        case -727607968:  return getTotalGross(); 
+        case -849911879:  return getTotalNet();
+        case -727607968:  return getTotalGross();
         case -507544799:  return getPaymentTermsElement();
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
@@ -2423,6 +2326,11 @@ public class Invoice extends DomainResource {
       public Invoice copy() {
         Invoice dst = new Invoice();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Invoice dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2459,7 +2367,6 @@ public class Invoice extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected Invoice typedCopy() {

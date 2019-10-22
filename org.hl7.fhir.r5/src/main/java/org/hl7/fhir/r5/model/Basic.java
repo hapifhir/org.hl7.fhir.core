@@ -53,13 +53,17 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification.
  */
@@ -89,11 +93,6 @@ public class Basic extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Identifies the patient, practitioner, device or any other resource that is the "focus" of this resource.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * Identifies when the resource was first created.
      */
     @Child(name = "created", type = {DateType.class}, order=3, min=0, max=1, modifier=false, summary=true)
@@ -107,12 +106,7 @@ public class Basic extends DomainResource {
     @Description(shortDefinition="Who created", formalDefinition="Indicates who was responsible for creating the resource instance." )
     protected Reference author;
 
-    /**
-     * The actual object that is the target of the reference (Indicates who was responsible for creating the resource instance.)
-     */
-    protected Resource authorTarget;
-
-    private static final long serialVersionUID = 650756402L;
+    private static final long serialVersionUID = 1468819397L;
 
   /**
    * Constructor
@@ -231,21 +225,6 @@ public class Basic extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the patient, practitioner, device or any other resource that is the "focus" of this resource.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the patient, practitioner, device or any other resource that is the "focus" of this resource.)
-     */
-    public Basic setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #created} (Identifies when the resource was first created.). This is the underlying object with id, value and extensions. The accessor "getCreated" gives direct access to the value
      */
     public DateType getCreatedElement() { 
@@ -315,21 +294,6 @@ public class Basic extends DomainResource {
      */
     public Basic setAuthor(Reference value) { 
       this.author = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates who was responsible for creating the resource instance.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates who was responsible for creating the resource instance.)
-     */
-    public Basic setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
       return this;
     }
 
@@ -412,10 +376,10 @@ public class Basic extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
         case 1028554472:  return getCreatedElement();
-        case -1406328437:  return getAuthor(); 
+        case -1406328437:  return getAuthor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -466,6 +430,11 @@ public class Basic extends DomainResource {
       public Basic copy() {
         Basic dst = new Basic();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Basic dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -475,7 +444,6 @@ public class Basic extends DomainResource {
         dst.subject = subject == null ? null : subject.copy();
         dst.created = created == null ? null : created.copy();
         dst.author = author == null ? null : author.copy();
-        return dst;
       }
 
       protected Basic typedCopy() {

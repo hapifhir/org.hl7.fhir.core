@@ -51,17 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.
  */
@@ -526,7 +530,7 @@ or intervention but are still being followed according to the primary objective 
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1724546052:  return getDescriptionElement();
         default: return super.makeProperty(hash, name);
         }
@@ -563,10 +567,14 @@ or intervention but are still being followed according to the primary objective 
       public ResearchStudyArmComponent copy() {
         ResearchStudyArmComponent dst = new ResearchStudyArmComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchStudyArmComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -756,7 +764,7 @@ or intervention but are still being followed according to the primary objective 
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         default: return super.makeProperty(hash, name);
         }
 
@@ -788,9 +796,13 @@ or intervention but are still being followed according to the primary objective 
       public ResearchStudyObjectiveComponent copy() {
         ResearchStudyObjectiveComponent dst = new ResearchStudyObjectiveComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchStudyObjectiveComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -844,11 +856,6 @@ or intervention but are still being followed according to the primary objective 
     @Child(name = "protocol", type = {PlanDefinition.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Steps followed in executing study", formalDefinition="The set of steps expected to be performed as part of the execution of the study." )
     protected List<Reference> protocol;
-    /**
-     * The actual objects that are the target of the reference (The set of steps expected to be performed as part of the execution of the study.)
-     */
-    protected List<PlanDefinition> protocolTarget;
-
 
     /**
      * A larger research study of which this particular study is a component or step.
@@ -856,11 +863,6 @@ or intervention but are still being followed according to the primary objective 
     @Child(name = "partOf", type = {ResearchStudy.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of larger study", formalDefinition="A larger research study of which this particular study is a component or step." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (A larger research study of which this particular study is a component or step.)
-     */
-    protected List<ResearchStudy> partOfTarget;
-
 
     /**
      * The current state of the study.
@@ -950,11 +952,6 @@ or intervention but are still being followed according to the primary objective 
     @Child(name = "enrollment", type = {Group.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Inclusion & exclusion criteria", formalDefinition="Reference to a Group that defines the criteria for and quantity of subjects participating in the study.  E.g. \" 200 female Europeans between the ages of 20 and 45 with early onset diabetes\"." )
     protected List<Reference> enrollment;
-    /**
-     * The actual objects that are the target of the reference (Reference to a Group that defines the criteria for and quantity of subjects participating in the study.  E.g. " 200 female Europeans between the ages of 20 and 45 with early onset diabetes".)
-     */
-    protected List<Group> enrollmentTarget;
-
 
     /**
      * Identifies the start date and the expected (or actual, depending on status) end date for the study.
@@ -971,11 +968,6 @@ or intervention but are still being followed according to the primary objective 
     protected Reference sponsor;
 
     /**
-     * The actual object that is the target of the reference (An organization that initiates the investigation and is legally responsible for the study.)
-     */
-    protected Organization sponsorTarget;
-
-    /**
      * A researcher in a study who oversees multiple aspects of the study, such as concept development, protocol writing, protocol submission for IRB approval, participant recruitment, informed consent, data collection, analysis, interpretation and presentation.
      */
     @Child(name = "principalInvestigator", type = {Practitioner.class, PractitionerRole.class}, order=18, min=0, max=1, modifier=false, summary=true)
@@ -983,21 +975,11 @@ or intervention but are still being followed according to the primary objective 
     protected Reference principalInvestigator;
 
     /**
-     * The actual object that is the target of the reference (A researcher in a study who oversees multiple aspects of the study, such as concept development, protocol writing, protocol submission for IRB approval, participant recruitment, informed consent, data collection, analysis, interpretation and presentation.)
-     */
-    protected Resource principalInvestigatorTarget;
-
-    /**
      * A facility in which study activities are conducted.
      */
     @Child(name = "site", type = {Location.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Facility where study activities are conducted", formalDefinition="A facility in which study activities are conducted." )
     protected List<Reference> site;
-    /**
-     * The actual objects that are the target of the reference (A facility in which study activities are conducted.)
-     */
-    protected List<Location> siteTarget;
-
 
     /**
      * A description and/or code explaining the premature termination of the study.
@@ -1028,7 +1010,7 @@ or intervention but are still being followed according to the primary objective 
     @Description(shortDefinition="A goal for the study", formalDefinition="A goal that the study is aiming to achieve in terms of a scientific question to be answered by the analysis of data collected during the study." )
     protected List<ResearchStudyObjectiveComponent> objective;
 
-    private static final long serialVersionUID = -911538323L;
+    private static final long serialVersionUID = 513596370L;
 
   /**
    * Constructor
@@ -1201,28 +1183,6 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<PlanDefinition> getProtocolTarget() { 
-      if (this.protocolTarget == null)
-        this.protocolTarget = new ArrayList<PlanDefinition>();
-      return this.protocolTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public PlanDefinition addProtocolTarget() { 
-      PlanDefinition r = new PlanDefinition();
-      if (this.protocolTarget == null)
-        this.protocolTarget = new ArrayList<PlanDefinition>();
-      this.protocolTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #partOf} (A larger research study of which this particular study is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -1273,28 +1233,6 @@ or intervention but are still being followed according to the primary objective 
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ResearchStudy> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<ResearchStudy>();
-      return this.partOfTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ResearchStudy addPartOfTarget() { 
-      ResearchStudy r = new ResearchStudy();
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<ResearchStudy>();
-      this.partOfTarget.add(r);
-      return r;
     }
 
     /**
@@ -1864,28 +1802,6 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Group> getEnrollmentTarget() { 
-      if (this.enrollmentTarget == null)
-        this.enrollmentTarget = new ArrayList<Group>();
-      return this.enrollmentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Group addEnrollmentTarget() { 
-      Group r = new Group();
-      if (this.enrollmentTarget == null)
-        this.enrollmentTarget = new ArrayList<Group>();
-      this.enrollmentTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #period} (Identifies the start date and the expected (or actual, depending on status) end date for the study.)
      */
     public Period getPeriod() { 
@@ -1934,26 +1850,6 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return {@link #sponsor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (An organization that initiates the investigation and is legally responsible for the study.)
-     */
-    public Organization getSponsorTarget() { 
-      if (this.sponsorTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ResearchStudy.sponsor");
-        else if (Configuration.doAutoCreate())
-          this.sponsorTarget = new Organization(); // aa
-      return this.sponsorTarget;
-    }
-
-    /**
-     * @param value {@link #sponsor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (An organization that initiates the investigation and is legally responsible for the study.)
-     */
-    public ResearchStudy setSponsorTarget(Organization value) { 
-      this.sponsorTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #principalInvestigator} (A researcher in a study who oversees multiple aspects of the study, such as concept development, protocol writing, protocol submission for IRB approval, participant recruitment, informed consent, data collection, analysis, interpretation and presentation.)
      */
     public Reference getPrincipalInvestigator() { 
@@ -1974,21 +1870,6 @@ or intervention but are still being followed according to the primary objective 
      */
     public ResearchStudy setPrincipalInvestigator(Reference value) { 
       this.principalInvestigator = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #principalInvestigator} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A researcher in a study who oversees multiple aspects of the study, such as concept development, protocol writing, protocol submission for IRB approval, participant recruitment, informed consent, data collection, analysis, interpretation and presentation.)
-     */
-    public Resource getPrincipalInvestigatorTarget() { 
-      return this.principalInvestigatorTarget;
-    }
-
-    /**
-     * @param value {@link #principalInvestigator} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A researcher in a study who oversees multiple aspects of the study, such as concept development, protocol writing, protocol submission for IRB approval, participant recruitment, informed consent, data collection, analysis, interpretation and presentation.)
-     */
-    public ResearchStudy setPrincipalInvestigatorTarget(Resource value) { 
-      this.principalInvestigatorTarget = value;
       return this;
     }
 
@@ -2043,28 +1924,6 @@ or intervention but are still being followed according to the primary objective 
         addSite();
       }
       return getSite().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getSiteTarget() { 
-      if (this.siteTarget == null)
-        this.siteTarget = new ArrayList<Location>();
-      return this.siteTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addSiteTarget() { 
-      Location r = new Location();
-      if (this.siteTarget == null)
-        this.siteTarget = new ArrayList<Location>();
-      this.siteTarget.add(r);
-      return r;
     }
 
     /**
@@ -2487,8 +2346,8 @@ or intervention but are still being followed according to the primary objective 
         case -989163880:  return addProtocol(); 
         case -995410646:  return addPartOf(); 
         case -892481550:  return getStatusElement();
-        case -2132842986:  return getPrimaryPurposeType(); 
-        case 106629499:  return getPhase(); 
+        case -2132842986:  return getPrimaryPurposeType();
+        case 106629499:  return getPhase();
         case 50511102:  return addCategory(); 
         case 97604824:  return addFocus(); 
         case -861311717:  return addCondition(); 
@@ -2498,11 +2357,11 @@ or intervention but are still being followed according to the primary objective 
         case 1901043637:  return addLocation(); 
         case -1724546052:  return getDescriptionElement();
         case 116089604:  return addEnrollment(); 
-        case -991726143:  return getPeriod(); 
-        case -1998892262:  return getSponsor(); 
-        case 1437117175:  return getPrincipalInvestigator(); 
+        case -991726143:  return getPeriod();
+        case -1998892262:  return getSponsor();
+        case 1437117175:  return getPrincipalInvestigator();
         case 3530567:  return addSite(); 
-        case 1181369065:  return getReasonStopped(); 
+        case 1181369065:  return getReasonStopped();
         case 3387378:  return addNote(); 
         case 96860:  return addArm(); 
         case -1489585863:  return addObjective(); 
@@ -2635,6 +2494,11 @@ or intervention but are still being followed according to the primary objective 
       public ResearchStudy copy() {
         ResearchStudy dst = new ResearchStudy();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchStudy dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2719,7 +2583,6 @@ or intervention but are still being followed according to the primary objective 
           for (ResearchStudyObjectiveComponent i : objective)
             dst.objective.add(i.copy());
         };
-        return dst;
       }
 
       protected ResearchStudy typedCopy() {

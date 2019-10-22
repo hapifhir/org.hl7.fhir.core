@@ -53,17 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
  */
@@ -227,7 +229,7 @@ public class RelatedPerson extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1613589672:  return getLanguage(); 
+        case -1613589672:  return getLanguage();
         case -1294005119:  return getPreferredElement();
         default: return super.makeProperty(hash, name);
         }
@@ -260,9 +262,13 @@ public class RelatedPerson extends DomainResource {
       public RelatedPersonCommunicationComponent copy() {
         RelatedPersonCommunicationComponent dst = new RelatedPersonCommunicationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedPersonCommunicationComponent dst) {
+        super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.preferred = preferred == null ? null : preferred.copy();
-        return dst;
       }
 
       @Override
@@ -316,11 +322,6 @@ public class RelatedPerson extends DomainResource {
     @Child(name = "patient", type = {Patient.class}, order=2, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The patient this person is related to", formalDefinition="The patient this person is related to." )
     protected Reference patient;
-
-    /**
-     * The actual object that is the target of the reference (The patient this person is related to.)
-     */
-    protected Patient patientTarget;
 
     /**
      * The nature of the relationship between a patient and the related person.
@@ -387,7 +388,7 @@ public class RelatedPerson extends DomainResource {
     @Description(shortDefinition="A language which may be used to communicate with about the patient's health", formalDefinition="A language which may be used to communicate with about the patient's health." )
     protected List<RelatedPersonCommunicationComponent> communication;
 
-    private static final long serialVersionUID = -1396330390L;
+    private static final long serialVersionUID = -857475397L;
 
   /**
    * Constructor
@@ -523,26 +524,6 @@ public class RelatedPerson extends DomainResource {
      */
     public RelatedPerson setPatient(Reference value) { 
       this.patient = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient this person is related to.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create RelatedPerson.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient this person is related to.)
-     */
-    public RelatedPerson setPatientTarget(Patient value) { 
-      this.patientTarget = value;
       return this;
     }
 
@@ -1124,7 +1105,7 @@ public class RelatedPerson extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -1422950650:  return getActiveElement();
-        case -791418107:  return getPatient(); 
+        case -791418107:  return getPatient();
         case -261851592:  return addRelationship(); 
         case 3373707:  return addName(); 
         case -1429363305:  return addTelecom(); 
@@ -1132,7 +1113,7 @@ public class RelatedPerson extends DomainResource {
         case -1210031859:  return getBirthDateElement();
         case -1147692044:  return addAddress(); 
         case 106642994:  return addPhoto(); 
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         case -1035284522:  return addCommunication(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1211,6 +1192,11 @@ public class RelatedPerson extends DomainResource {
       public RelatedPerson copy() {
         RelatedPerson dst = new RelatedPerson();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedPerson dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1251,7 +1237,6 @@ public class RelatedPerson extends DomainResource {
           for (RelatedPersonCommunicationComponent i : communication)
             dst.communication.add(i.copy());
         };
-        return dst;
       }
 
       protected RelatedPerson typedCopy() {

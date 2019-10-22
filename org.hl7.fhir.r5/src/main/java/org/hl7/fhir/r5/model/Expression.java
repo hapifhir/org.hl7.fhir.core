@@ -50,15 +50,19 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.
  */
@@ -597,12 +601,16 @@ public class Expression extends Type implements ICompositeType {
       public Expression copy() {
         Expression dst = new Expression();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Expression dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.name = name == null ? null : name.copy();
         dst.language = language == null ? null : language.copy();
         dst.expression = expression == null ? null : expression.copy();
         dst.reference = reference == null ? null : reference.copy();
-        return dst;
       }
 
       protected Expression typedCopy() {

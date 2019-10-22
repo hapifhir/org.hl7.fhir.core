@@ -84,7 +84,7 @@ public class Immunization extends VersionConvertor_40_50 {
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(convertBoolean(src.getPrimarySourceElement()));
     if (src.hasReportOrigin())
-      tgt.setReportOrigin(convertCodeableConcept(src.getReportOrigin()));
+      tgt.setInformationSource(convertCodeableConcept(src.getReportOrigin()));
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
     if (src.hasManufacturer())
@@ -147,8 +147,8 @@ public class Immunization extends VersionConvertor_40_50 {
       tgt.setRecordedElement(convertDateTime(src.getRecordedElement()));
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(convertBoolean(src.getPrimarySourceElement()));
-    if (src.hasReportOrigin())
-      tgt.setReportOrigin(convertCodeableConcept(src.getReportOrigin()));
+    if (src.hasInformationSourceCodeableConcept())
+      tgt.setReportOrigin(convertCodeableConcept(src.getInformationSourceCodeableConcept()));
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
     if (src.hasManufacturer())

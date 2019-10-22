@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).
  */
@@ -307,7 +307,14 @@ public class ValueSet extends MetadataResource {
         @Description(shortDefinition="Explicitly exclude codes from a code system or other value sets", formalDefinition="Exclude one or more codes from the value set based on code system filters and/or other value sets." )
         protected List<ConceptSetComponent> exclude;
 
-        private static final long serialVersionUID = -765941757L;
+        /**
+         * A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.
+         */
+        @Child(name = "property", type = {StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Property to return if client doesn't override", formalDefinition="A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server." )
+        protected List<StringType> property;
+
+        private static final long serialVersionUID = -15414259L;
 
     /**
      * Constructor
@@ -516,12 +523,74 @@ public class ValueSet extends MetadataResource {
           return getExclude().get(0);
         }
 
+        /**
+         * @return {@link #property} (A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.)
+         */
+        public List<StringType> getProperty() { 
+          if (this.property == null)
+            this.property = new ArrayList<StringType>();
+          return this.property;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ValueSetComposeComponent setProperty(List<StringType> theProperty) { 
+          this.property = theProperty;
+          return this;
+        }
+
+        public boolean hasProperty() { 
+          if (this.property == null)
+            return false;
+          for (StringType item : this.property)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #property} (A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.)
+         */
+        public StringType addPropertyElement() {//2 
+          StringType t = new StringType();
+          if (this.property == null)
+            this.property = new ArrayList<StringType>();
+          this.property.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #property} (A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.)
+         */
+        public ValueSetComposeComponent addProperty(String value) { //1
+          StringType t = new StringType();
+          t.setValue(value);
+          if (this.property == null)
+            this.property = new ArrayList<StringType>();
+          this.property.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #property} (A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.)
+         */
+        public boolean hasProperty(String value) { 
+          if (this.property == null)
+            return false;
+          for (StringType v : this.property)
+            if (v.getValue().equals(value)) // string
+              return true;
+          return false;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("lockedDate", "date", "The Locked Date is  the effective date that is used to determine the version of all referenced Code Systems and Value Set Definitions included in the compose that are not already tied to a specific version.", 0, 1, lockedDate));
           children.add(new Property("inactive", "boolean", "Whether inactive codes - codes that are not approved for current use - are in the value set. If inactive = true, inactive codes are to be included in the expansion, if inactive = false, the inactive codes will not be included in the expansion. If absent, the behavior is determined by the implementation, or by the applicable $expand parameters (but generally, inactive codes would be expected to be included).", 0, 1, inactive));
           children.add(new Property("include", "", "Include one or more codes from a code system or other value set(s).", 0, java.lang.Integer.MAX_VALUE, include));
           children.add(new Property("exclude", "@ValueSet.compose.include", "Exclude one or more codes from the value set based on code system filters and/or other value sets.", 0, java.lang.Integer.MAX_VALUE, exclude));
+          children.add(new Property("property", "string", "A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.", 0, java.lang.Integer.MAX_VALUE, property));
         }
 
         @Override
@@ -531,6 +600,7 @@ public class ValueSet extends MetadataResource {
           case 24665195: /*inactive*/  return new Property("inactive", "boolean", "Whether inactive codes - codes that are not approved for current use - are in the value set. If inactive = true, inactive codes are to be included in the expansion, if inactive = false, the inactive codes will not be included in the expansion. If absent, the behavior is determined by the implementation, or by the applicable $expand parameters (but generally, inactive codes would be expected to be included).", 0, 1, inactive);
           case 1942574248: /*include*/  return new Property("include", "", "Include one or more codes from a code system or other value set(s).", 0, java.lang.Integer.MAX_VALUE, include);
           case -1321148966: /*exclude*/  return new Property("exclude", "@ValueSet.compose.include", "Exclude one or more codes from the value set based on code system filters and/or other value sets.", 0, java.lang.Integer.MAX_VALUE, exclude);
+          case -993141291: /*property*/  return new Property("property", "string", "A property to return in the expansion, if the client doesn't ask for any particular properties. May be either a code from the code system definition (convenient) or a the formal URI that refers to the property. The special value '*' means all properties known to the server.", 0, java.lang.Integer.MAX_VALUE, property);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -543,6 +613,7 @@ public class ValueSet extends MetadataResource {
         case 24665195: /*inactive*/ return this.inactive == null ? new Base[0] : new Base[] {this.inactive}; // BooleanType
         case 1942574248: /*include*/ return this.include == null ? new Base[0] : this.include.toArray(new Base[this.include.size()]); // ConceptSetComponent
         case -1321148966: /*exclude*/ return this.exclude == null ? new Base[0] : this.exclude.toArray(new Base[this.exclude.size()]); // ConceptSetComponent
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -563,6 +634,9 @@ public class ValueSet extends MetadataResource {
         case -1321148966: // exclude
           this.getExclude().add((ConceptSetComponent) value); // ConceptSetComponent
           return value;
+        case -993141291: // property
+          this.getProperty().add(castToString(value)); // StringType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -578,6 +652,8 @@ public class ValueSet extends MetadataResource {
           this.getInclude().add((ConceptSetComponent) value);
         } else if (name.equals("exclude")) {
           this.getExclude().add((ConceptSetComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().add(castToString(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -590,6 +666,7 @@ public class ValueSet extends MetadataResource {
         case 24665195:  return getInactiveElement();
         case 1942574248:  return addInclude(); 
         case -1321148966:  return addExclude(); 
+        case -993141291:  return addPropertyElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -602,6 +679,7 @@ public class ValueSet extends MetadataResource {
         case 24665195: /*inactive*/ return new String[] {"boolean"};
         case 1942574248: /*include*/ return new String[] {};
         case -1321148966: /*exclude*/ return new String[] {"@ValueSet.compose.include"};
+        case -993141291: /*property*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -621,6 +699,9 @@ public class ValueSet extends MetadataResource {
         else if (name.equals("exclude")) {
           return addExclude();
         }
+        else if (name.equals("property")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.property");
+        }
         else
           return super.addChild(name);
       }
@@ -628,6 +709,11 @@ public class ValueSet extends MetadataResource {
       public ValueSetComposeComponent copy() {
         ValueSetComposeComponent dst = new ValueSetComposeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetComposeComponent dst) {
+        super.copyValues(dst);
         dst.lockedDate = lockedDate == null ? null : lockedDate.copy();
         dst.inactive = inactive == null ? null : inactive.copy();
         if (include != null) {
@@ -640,7 +726,11 @@ public class ValueSet extends MetadataResource {
           for (ConceptSetComponent i : exclude)
             dst.exclude.add(i.copy());
         };
-        return dst;
+        if (property != null) {
+          dst.property = new ArrayList<StringType>();
+          for (StringType i : property)
+            dst.property.add(i.copy());
+        };
       }
 
       @Override
@@ -651,7 +741,7 @@ public class ValueSet extends MetadataResource {
           return false;
         ValueSetComposeComponent o = (ValueSetComposeComponent) other_;
         return compareDeep(lockedDate, o.lockedDate, true) && compareDeep(inactive, o.inactive, true) && compareDeep(include, o.include, true)
-           && compareDeep(exclude, o.exclude, true);
+           && compareDeep(exclude, o.exclude, true) && compareDeep(property, o.property, true);
       }
 
       @Override
@@ -661,12 +751,13 @@ public class ValueSet extends MetadataResource {
         if (!(other_ instanceof ValueSetComposeComponent))
           return false;
         ValueSetComposeComponent o = (ValueSetComposeComponent) other_;
-        return compareValues(lockedDate, o.lockedDate, true) && compareValues(inactive, o.inactive, true);
+        return compareValues(lockedDate, o.lockedDate, true) && compareValues(inactive, o.inactive, true) && compareValues(property, o.property, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(lockedDate, inactive, include
-          , exclude);
+          , exclude, property);
       }
 
   public String fhirType() {
@@ -686,10 +777,10 @@ public class ValueSet extends MetadataResource {
         protected UriType system;
 
         /**
-         * The version of the code system that the codes are selected from, or the special version "*" for all versions.
+         * The version of the code system that the codes are selected from, or the special version '*' for all versions.
          */
         @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Specific version of the code system referred to", formalDefinition="The version of the code system that the codes are selected from, or the special version \"*\" for all versions." )
+        @Description(shortDefinition="Specific version of the code system referred to", formalDefinition="The version of the code system that the codes are selected from, or the special version '*' for all versions." )
         protected StringType version;
 
         /**
@@ -772,7 +863,7 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
-         * @return {@link #version} (The version of the code system that the codes are selected from, or the special version "*" for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+         * @return {@link #version} (The version of the code system that the codes are selected from, or the special version '*' for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
          */
         public StringType getVersionElement() { 
           if (this.version == null)
@@ -792,7 +883,7 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
-         * @param value {@link #version} (The version of the code system that the codes are selected from, or the special version "*" for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+         * @param value {@link #version} (The version of the code system that the codes are selected from, or the special version '*' for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
          */
         public ConceptSetComponent setVersionElement(StringType value) { 
           this.version = value;
@@ -800,14 +891,14 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
-         * @return The version of the code system that the codes are selected from, or the special version "*" for all versions.
+         * @return The version of the code system that the codes are selected from, or the special version '*' for all versions.
          */
         public String getVersion() { 
           return this.version == null ? null : this.version.getValue();
         }
 
         /**
-         * @param value The version of the code system that the codes are selected from, or the special version "*" for all versions.
+         * @param value The version of the code system that the codes are selected from, or the special version '*' for all versions.
          */
         public ConceptSetComponent setVersion(String value) { 
           if (Utilities.noString(value))
@@ -990,7 +1081,7 @@ public class ValueSet extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("system", "uri", "An absolute URI which is the code system from which the selected codes come from.", 0, 1, system));
-          children.add(new Property("version", "string", "The version of the code system that the codes are selected from, or the special version \"*\" for all versions.", 0, 1, version));
+          children.add(new Property("version", "string", "The version of the code system that the codes are selected from, or the special version '*' for all versions.", 0, 1, version));
           children.add(new Property("concept", "", "Specifies a concept to be included or excluded.", 0, java.lang.Integer.MAX_VALUE, concept));
           children.add(new Property("filter", "", "Select concepts by specify a matching criterion based on the properties (including relationships) defined by the system, or on filters defined by the system. If multiple filters are specified, they SHALL all be true.", 0, java.lang.Integer.MAX_VALUE, filter));
           children.add(new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet));
@@ -1000,7 +1091,7 @@ public class ValueSet extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -887328209: /*system*/  return new Property("system", "uri", "An absolute URI which is the code system from which the selected codes come from.", 0, 1, system);
-          case 351608024: /*version*/  return new Property("version", "string", "The version of the code system that the codes are selected from, or the special version \"*\" for all versions.", 0, 1, version);
+          case 351608024: /*version*/  return new Property("version", "string", "The version of the code system that the codes are selected from, or the special version '*' for all versions.", 0, 1, version);
           case 951024232: /*concept*/  return new Property("concept", "", "Specifies a concept to be included or excluded.", 0, java.lang.Integer.MAX_VALUE, concept);
           case -1274492040: /*filter*/  return new Property("filter", "", "Select concepts by specify a matching criterion based on the properties (including relationships) defined by the system, or on filters defined by the system. If multiple filters are specified, they SHALL all be true.", 0, java.lang.Integer.MAX_VALUE, filter);
           case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet);
@@ -1112,6 +1203,11 @@ public class ValueSet extends MetadataResource {
       public ConceptSetComponent copy() {
         ConceptSetComponent dst = new ConceptSetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptSetComponent dst) {
+        super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
         dst.version = version == null ? null : version.copy();
         if (concept != null) {
@@ -1129,7 +1225,6 @@ public class ValueSet extends MetadataResource {
           for (CanonicalType i : valueSet)
             dst.valueSet.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1451,6 +1546,11 @@ public class ValueSet extends MetadataResource {
       public ConceptReferenceComponent copy() {
         ConceptReferenceComponent dst = new ConceptReferenceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptReferenceComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.display = display == null ? null : display.copy();
         if (designation != null) {
@@ -1458,7 +1558,6 @@ public class ValueSet extends MetadataResource {
           for (ConceptReferenceDesignationComponent i : designation)
             dst.designation.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1717,7 +1816,7 @@ public class ValueSet extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1613589672:  return getLanguageElement();
-        case 116103:  return getUse(); 
+        case 116103:  return getUse();
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1754,10 +1853,14 @@ public class ValueSet extends MetadataResource {
       public ConceptReferenceDesignationComponent copy() {
         ConceptReferenceDesignationComponent dst = new ConceptReferenceDesignationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptReferenceDesignationComponent dst) {
+        super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.use = use == null ? null : use.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2071,10 +2174,14 @@ public class ValueSet extends MetadataResource {
       public ConceptSetFilterComponent copy() {
         ConceptSetFilterComponent dst = new ConceptSetFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptSetFilterComponent dst) {
+        super.copyValues(dst);
         dst.property = property == null ? null : property.copy();
         dst.op = op == null ? null : op.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2148,13 +2255,20 @@ public class ValueSet extends MetadataResource {
         protected List<ValueSetExpansionParameterComponent> parameter;
 
         /**
+         * A property defines an additional slot through which additional information can be provided about a concept.
+         */
+        @Child(name = "property", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Additional information supplied about each concept", formalDefinition="A property defines an additional slot through which additional information can be provided about a concept." )
+        protected List<ValueSetExpansionPropertyComponent> property;
+
+        /**
          * The codes that are contained in the value set expansion.
          */
-        @Child(name = "contains", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "contains", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Codes in the value set", formalDefinition="The codes that are contained in the value set expansion." )
         protected List<ValueSetExpansionContainsComponent> contains;
 
-        private static final long serialVersionUID = -43471993L;
+        private static final long serialVersionUID = 12372258L;
 
     /**
      * Constructor
@@ -2409,6 +2523,59 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
+         * @return {@link #property} (A property defines an additional slot through which additional information can be provided about a concept.)
+         */
+        public List<ValueSetExpansionPropertyComponent> getProperty() { 
+          if (this.property == null)
+            this.property = new ArrayList<ValueSetExpansionPropertyComponent>();
+          return this.property;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ValueSetExpansionComponent setProperty(List<ValueSetExpansionPropertyComponent> theProperty) { 
+          this.property = theProperty;
+          return this;
+        }
+
+        public boolean hasProperty() { 
+          if (this.property == null)
+            return false;
+          for (ValueSetExpansionPropertyComponent item : this.property)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public ValueSetExpansionPropertyComponent addProperty() { //3
+          ValueSetExpansionPropertyComponent t = new ValueSetExpansionPropertyComponent();
+          if (this.property == null)
+            this.property = new ArrayList<ValueSetExpansionPropertyComponent>();
+          this.property.add(t);
+          return t;
+        }
+
+        public ValueSetExpansionComponent addProperty(ValueSetExpansionPropertyComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.property == null)
+            this.property = new ArrayList<ValueSetExpansionPropertyComponent>();
+          this.property.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist
+         */
+        public ValueSetExpansionPropertyComponent getPropertyFirstRep() { 
+          if (getProperty().isEmpty()) {
+            addProperty();
+          }
+          return getProperty().get(0);
+        }
+
+        /**
          * @return {@link #contains} (The codes that are contained in the value set expansion.)
          */
         public List<ValueSetExpansionContainsComponent> getContains() { 
@@ -2468,6 +2635,7 @@ public class ValueSet extends MetadataResource {
           children.add(new Property("total", "integer", "The total number of concepts in the expansion. If the number of concept nodes in this resource is less than the stated number, then the server can return more using the offset parameter.", 0, 1, total));
           children.add(new Property("offset", "integer", "If paging is being used, the offset at which this resource starts.  I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present.", 0, 1, offset));
           children.add(new Property("parameter", "", "A parameter that controlled the expansion process. These parameters may be used by users of expanded value sets to check whether the expansion is suitable for a particular purpose, or to pick the correct expansion.", 0, java.lang.Integer.MAX_VALUE, parameter));
+          children.add(new Property("property", "", "A property defines an additional slot through which additional information can be provided about a concept.", 0, java.lang.Integer.MAX_VALUE, property));
           children.add(new Property("contains", "", "The codes that are contained in the value set expansion.", 0, java.lang.Integer.MAX_VALUE, contains));
         }
 
@@ -2479,6 +2647,7 @@ public class ValueSet extends MetadataResource {
           case 110549828: /*total*/  return new Property("total", "integer", "The total number of concepts in the expansion. If the number of concept nodes in this resource is less than the stated number, then the server can return more using the offset parameter.", 0, 1, total);
           case -1019779949: /*offset*/  return new Property("offset", "integer", "If paging is being used, the offset at which this resource starts.  I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present.", 0, 1, offset);
           case 1954460585: /*parameter*/  return new Property("parameter", "", "A parameter that controlled the expansion process. These parameters may be used by users of expanded value sets to check whether the expansion is suitable for a particular purpose, or to pick the correct expansion.", 0, java.lang.Integer.MAX_VALUE, parameter);
+          case -993141291: /*property*/  return new Property("property", "", "A property defines an additional slot through which additional information can be provided about a concept.", 0, java.lang.Integer.MAX_VALUE, property);
           case -567445985: /*contains*/  return new Property("contains", "", "The codes that are contained in the value set expansion.", 0, java.lang.Integer.MAX_VALUE, contains);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2493,6 +2662,7 @@ public class ValueSet extends MetadataResource {
         case 110549828: /*total*/ return this.total == null ? new Base[0] : new Base[] {this.total}; // IntegerType
         case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // IntegerType
         case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // ValueSetExpansionParameterComponent
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // ValueSetExpansionPropertyComponent
         case -567445985: /*contains*/ return this.contains == null ? new Base[0] : this.contains.toArray(new Base[this.contains.size()]); // ValueSetExpansionContainsComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2517,6 +2687,9 @@ public class ValueSet extends MetadataResource {
         case 1954460585: // parameter
           this.getParameter().add((ValueSetExpansionParameterComponent) value); // ValueSetExpansionParameterComponent
           return value;
+        case -993141291: // property
+          this.getProperty().add((ValueSetExpansionPropertyComponent) value); // ValueSetExpansionPropertyComponent
+          return value;
         case -567445985: // contains
           this.getContains().add((ValueSetExpansionContainsComponent) value); // ValueSetExpansionContainsComponent
           return value;
@@ -2537,6 +2710,8 @@ public class ValueSet extends MetadataResource {
           this.offset = castToInteger(value); // IntegerType
         } else if (name.equals("parameter")) {
           this.getParameter().add((ValueSetExpansionParameterComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().add((ValueSetExpansionPropertyComponent) value);
         } else if (name.equals("contains")) {
           this.getContains().add((ValueSetExpansionContainsComponent) value);
         } else
@@ -2552,6 +2727,7 @@ public class ValueSet extends MetadataResource {
         case 110549828:  return getTotalElement();
         case -1019779949:  return getOffsetElement();
         case 1954460585:  return addParameter(); 
+        case -993141291:  return addProperty(); 
         case -567445985:  return addContains(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2566,6 +2742,7 @@ public class ValueSet extends MetadataResource {
         case 110549828: /*total*/ return new String[] {"integer"};
         case -1019779949: /*offset*/ return new String[] {"integer"};
         case 1954460585: /*parameter*/ return new String[] {};
+        case -993141291: /*property*/ return new String[] {};
         case -567445985: /*contains*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2589,6 +2766,9 @@ public class ValueSet extends MetadataResource {
         else if (name.equals("parameter")) {
           return addParameter();
         }
+        else if (name.equals("property")) {
+          return addProperty();
+        }
         else if (name.equals("contains")) {
           return addContains();
         }
@@ -2599,6 +2779,11 @@ public class ValueSet extends MetadataResource {
       public ValueSetExpansionComponent copy() {
         ValueSetExpansionComponent dst = new ValueSetExpansionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.timestamp = timestamp == null ? null : timestamp.copy();
         dst.total = total == null ? null : total.copy();
@@ -2608,12 +2793,16 @@ public class ValueSet extends MetadataResource {
           for (ValueSetExpansionParameterComponent i : parameter)
             dst.parameter.add(i.copy());
         };
+        if (property != null) {
+          dst.property = new ArrayList<ValueSetExpansionPropertyComponent>();
+          for (ValueSetExpansionPropertyComponent i : property)
+            dst.property.add(i.copy());
+        };
         if (contains != null) {
           dst.contains = new ArrayList<ValueSetExpansionContainsComponent>();
           for (ValueSetExpansionContainsComponent i : contains)
             dst.contains.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2625,7 +2814,7 @@ public class ValueSet extends MetadataResource {
         ValueSetExpansionComponent o = (ValueSetExpansionComponent) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(timestamp, o.timestamp, true)
            && compareDeep(total, o.total, true) && compareDeep(offset, o.offset, true) && compareDeep(parameter, o.parameter, true)
-           && compareDeep(contains, o.contains, true);
+           && compareDeep(property, o.property, true) && compareDeep(contains, o.contains, true);
       }
 
       @Override
@@ -2641,7 +2830,7 @@ public class ValueSet extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, timestamp, total
-          , offset, parameter, contains);
+          , offset, parameter, property, contains);
       }
 
   public String fhirType() {
@@ -2918,8 +3107,8 @@ public class ValueSet extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2975,9 +3164,13 @@ public class ValueSet extends MetadataResource {
       public ValueSetExpansionParameterComponent copy() {
         ValueSetExpansionParameterComponent dst = new ValueSetExpansionParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionParameterComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3006,6 +3199,259 @@ public class ValueSet extends MetadataResource {
 
   public String fhirType() {
     return "ValueSet.expansion.parameter";
+
+  }
+
+  }
+
+    @Block()
+    public static class ValueSetExpansionPropertyComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Identifies the property on the concepts, and when referred to in operations", formalDefinition="A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code." )
+        protected CodeType code;
+
+        /**
+         * Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.
+         */
+        @Child(name = "uri", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Formal identifier for the property", formalDefinition="Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system." )
+        protected UriType uri;
+
+        private static final long serialVersionUID = 929575836L;
+
+    /**
+     * Constructor
+     */
+      public ValueSetExpansionPropertyComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public ValueSetExpansionPropertyComponent(CodeType code) {
+        super();
+        this.code = code;
+      }
+
+        /**
+         * @return {@link #code} (A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public CodeType getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ValueSetExpansionPropertyComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeType(); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public ValueSetExpansionPropertyComponent setCodeElement(CodeType value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.
+         */
+        public String getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.
+         */
+        public ValueSetExpansionPropertyComponent setCode(String value) { 
+            if (this.code == null)
+              this.code = new CodeType();
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #uri} (Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         */
+        public UriType getUriElement() { 
+          if (this.uri == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ValueSetExpansionPropertyComponent.uri");
+            else if (Configuration.doAutoCreate())
+              this.uri = new UriType(); // bb
+          return this.uri;
+        }
+
+        public boolean hasUriElement() { 
+          return this.uri != null && !this.uri.isEmpty();
+        }
+
+        public boolean hasUri() { 
+          return this.uri != null && !this.uri.isEmpty();
+        }
+
+        /**
+         * @param value {@link #uri} (Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         */
+        public ValueSetExpansionPropertyComponent setUriElement(UriType value) { 
+          this.uri = value;
+          return this;
+        }
+
+        /**
+         * @return Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.
+         */
+        public String getUri() { 
+          return this.uri == null ? null : this.uri.getValue();
+        }
+
+        /**
+         * @param value Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.
+         */
+        public ValueSetExpansionPropertyComponent setUri(String value) { 
+          if (Utilities.noString(value))
+            this.uri = null;
+          else {
+            if (this.uri == null)
+              this.uri = new UriType();
+            this.uri.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.", 0, 1, code));
+          children.add(new Property("uri", "uri", "Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.", 0, 1, uri));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.", 0, 1, code);
+          case 116076: /*uri*/  return new Property("uri", "uri", "Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.", 0, 1, uri);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
+        case 116076: /*uri*/ return this.uri == null ? new Base[0] : new Base[] {this.uri}; // UriType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = castToCode(value); // CodeType
+          return value;
+        case 116076: // uri
+          this.uri = castToUri(value); // UriType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = castToCode(value); // CodeType
+        } else if (name.equals("uri")) {
+          this.uri = castToUri(value); // UriType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case 116076:  return getUriElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 116076: /*uri*/ return new String[] {"uri"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.code");
+        }
+        else if (name.equals("uri")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.uri");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ValueSetExpansionPropertyComponent copy() {
+        ValueSetExpansionPropertyComponent dst = new ValueSetExpansionPropertyComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionPropertyComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.uri = uri == null ? null : uri.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ValueSetExpansionPropertyComponent))
+          return false;
+        ValueSetExpansionPropertyComponent o = (ValueSetExpansionPropertyComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(uri, o.uri, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ValueSetExpansionPropertyComponent))
+          return false;
+        ValueSetExpansionPropertyComponent o = (ValueSetExpansionPropertyComponent) other_;
+        return compareValues(code, o.code, true) && compareValues(uri, o.uri, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, uri);
+      }
+
+  public String fhirType() {
+    return "ValueSet.expansion.property";
 
   }
 
@@ -3063,13 +3509,20 @@ public class ValueSet extends MetadataResource {
         protected List<ConceptReferenceDesignationComponent> designation;
 
         /**
+         * A property value for this concept.
+         */
+        @Child(name = "property", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Property value for the concept", formalDefinition="A property value for this concept." )
+        protected List<ConceptPropertyComponent> property;
+
+        /**
          * Other codes and entries contained under this entry in the hierarchy.
          */
-        @Child(name = "contains", type = {ValueSetExpansionContainsComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "contains", type = {ValueSetExpansionContainsComponent.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Codes contained under this entry", formalDefinition="Other codes and entries contained under this entry in the hierarchy." )
         protected List<ValueSetExpansionContainsComponent> contains;
 
-        private static final long serialVersionUID = 719458860L;
+        private static final long serialVersionUID = -1370569439L;
 
     /**
      * Constructor
@@ -3418,6 +3871,59 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
+         * @return {@link #property} (A property value for this concept.)
+         */
+        public List<ConceptPropertyComponent> getProperty() { 
+          if (this.property == null)
+            this.property = new ArrayList<ConceptPropertyComponent>();
+          return this.property;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ValueSetExpansionContainsComponent setProperty(List<ConceptPropertyComponent> theProperty) { 
+          this.property = theProperty;
+          return this;
+        }
+
+        public boolean hasProperty() { 
+          if (this.property == null)
+            return false;
+          for (ConceptPropertyComponent item : this.property)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public ConceptPropertyComponent addProperty() { //3
+          ConceptPropertyComponent t = new ConceptPropertyComponent();
+          if (this.property == null)
+            this.property = new ArrayList<ConceptPropertyComponent>();
+          this.property.add(t);
+          return t;
+        }
+
+        public ValueSetExpansionContainsComponent addProperty(ConceptPropertyComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.property == null)
+            this.property = new ArrayList<ConceptPropertyComponent>();
+          this.property.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist
+         */
+        public ConceptPropertyComponent getPropertyFirstRep() { 
+          if (getProperty().isEmpty()) {
+            addProperty();
+          }
+          return getProperty().get(0);
+        }
+
+        /**
          * @return {@link #contains} (Other codes and entries contained under this entry in the hierarchy.)
          */
         public List<ValueSetExpansionContainsComponent> getContains() { 
@@ -3479,6 +3985,7 @@ public class ValueSet extends MetadataResource {
           children.add(new Property("code", "code", "The code for this item in the expansion hierarchy. If this code is missing the entry in the hierarchy is a place holder (abstract) and does not represent a valid code in the value set.", 0, 1, code));
           children.add(new Property("display", "string", "The recommended display for this item in the expansion.", 0, 1, display));
           children.add(new Property("designation", "@ValueSet.compose.include.concept.designation", "Additional representations for this item - other languages, aliases, specialized purposes, used for particular purposes, etc. These are relevant when the conditions of the expansion do not fix to a single correct representation.", 0, java.lang.Integer.MAX_VALUE, designation));
+          children.add(new Property("property", "", "A property value for this concept.", 0, java.lang.Integer.MAX_VALUE, property));
           children.add(new Property("contains", "@ValueSet.expansion.contains", "Other codes and entries contained under this entry in the hierarchy.", 0, java.lang.Integer.MAX_VALUE, contains));
         }
 
@@ -3492,6 +3999,7 @@ public class ValueSet extends MetadataResource {
           case 3059181: /*code*/  return new Property("code", "code", "The code for this item in the expansion hierarchy. If this code is missing the entry in the hierarchy is a place holder (abstract) and does not represent a valid code in the value set.", 0, 1, code);
           case 1671764162: /*display*/  return new Property("display", "string", "The recommended display for this item in the expansion.", 0, 1, display);
           case -900931593: /*designation*/  return new Property("designation", "@ValueSet.compose.include.concept.designation", "Additional representations for this item - other languages, aliases, specialized purposes, used for particular purposes, etc. These are relevant when the conditions of the expansion do not fix to a single correct representation.", 0, java.lang.Integer.MAX_VALUE, designation);
+          case -993141291: /*property*/  return new Property("property", "", "A property value for this concept.", 0, java.lang.Integer.MAX_VALUE, property);
           case -567445985: /*contains*/  return new Property("contains", "@ValueSet.expansion.contains", "Other codes and entries contained under this entry in the hierarchy.", 0, java.lang.Integer.MAX_VALUE, contains);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -3508,6 +4016,7 @@ public class ValueSet extends MetadataResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
         case 1671764162: /*display*/ return this.display == null ? new Base[0] : new Base[] {this.display}; // StringType
         case -900931593: /*designation*/ return this.designation == null ? new Base[0] : this.designation.toArray(new Base[this.designation.size()]); // ConceptReferenceDesignationComponent
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // ConceptPropertyComponent
         case -567445985: /*contains*/ return this.contains == null ? new Base[0] : this.contains.toArray(new Base[this.contains.size()]); // ValueSetExpansionContainsComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -3538,6 +4047,9 @@ public class ValueSet extends MetadataResource {
         case -900931593: // designation
           this.getDesignation().add((ConceptReferenceDesignationComponent) value); // ConceptReferenceDesignationComponent
           return value;
+        case -993141291: // property
+          this.getProperty().add((ConceptPropertyComponent) value); // ConceptPropertyComponent
+          return value;
         case -567445985: // contains
           this.getContains().add((ValueSetExpansionContainsComponent) value); // ValueSetExpansionContainsComponent
           return value;
@@ -3562,6 +4074,8 @@ public class ValueSet extends MetadataResource {
           this.display = castToString(value); // StringType
         } else if (name.equals("designation")) {
           this.getDesignation().add((ConceptReferenceDesignationComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().add((ConceptPropertyComponent) value);
         } else if (name.equals("contains")) {
           this.getContains().add((ValueSetExpansionContainsComponent) value);
         } else
@@ -3579,6 +4093,7 @@ public class ValueSet extends MetadataResource {
         case 3059181:  return getCodeElement();
         case 1671764162:  return getDisplayElement();
         case -900931593:  return addDesignation(); 
+        case -993141291:  return addProperty(); 
         case -567445985:  return addContains(); 
         default: return super.makeProperty(hash, name);
         }
@@ -3595,6 +4110,7 @@ public class ValueSet extends MetadataResource {
         case 3059181: /*code*/ return new String[] {"code"};
         case 1671764162: /*display*/ return new String[] {"string"};
         case -900931593: /*designation*/ return new String[] {"@ValueSet.compose.include.concept.designation"};
+        case -993141291: /*property*/ return new String[] {};
         case -567445985: /*contains*/ return new String[] {"@ValueSet.expansion.contains"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -3624,6 +4140,9 @@ public class ValueSet extends MetadataResource {
         else if (name.equals("designation")) {
           return addDesignation();
         }
+        else if (name.equals("property")) {
+          return addProperty();
+        }
         else if (name.equals("contains")) {
           return addContains();
         }
@@ -3634,6 +4153,11 @@ public class ValueSet extends MetadataResource {
       public ValueSetExpansionContainsComponent copy() {
         ValueSetExpansionContainsComponent dst = new ValueSetExpansionContainsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionContainsComponent dst) {
+        super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
         dst.abstract_ = abstract_ == null ? null : abstract_.copy();
         dst.inactive = inactive == null ? null : inactive.copy();
@@ -3645,12 +4169,16 @@ public class ValueSet extends MetadataResource {
           for (ConceptReferenceDesignationComponent i : designation)
             dst.designation.add(i.copy());
         };
+        if (property != null) {
+          dst.property = new ArrayList<ConceptPropertyComponent>();
+          for (ConceptPropertyComponent i : property)
+            dst.property.add(i.copy());
+        };
         if (contains != null) {
           dst.contains = new ArrayList<ValueSetExpansionContainsComponent>();
           for (ValueSetExpansionContainsComponent i : contains)
             dst.contains.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3662,7 +4190,8 @@ public class ValueSet extends MetadataResource {
         ValueSetExpansionContainsComponent o = (ValueSetExpansionContainsComponent) other_;
         return compareDeep(system, o.system, true) && compareDeep(abstract_, o.abstract_, true) && compareDeep(inactive, o.inactive, true)
            && compareDeep(version, o.version, true) && compareDeep(code, o.code, true) && compareDeep(display, o.display, true)
-           && compareDeep(designation, o.designation, true) && compareDeep(contains, o.contains, true);
+           && compareDeep(designation, o.designation, true) && compareDeep(property, o.property, true) && compareDeep(contains, o.contains, true)
+          ;
       }
 
       @Override
@@ -3679,11 +4208,376 @@ public class ValueSet extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(system, abstract_, inactive
-          , version, code, display, designation, contains);
+          , version, code, display, designation, property, contains);
       }
 
   public String fhirType() {
     return "ValueSet.expansion.contains";
+
+  }
+
+  }
+
+    @Block()
+    public static class ConceptPropertyComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code that is a reference to ValueSet.expansion.property.code.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Reference to ValueSet.expansion.property.code", formalDefinition="A code that is a reference to ValueSet.expansion.property.code." )
+        protected CodeType code;
+
+        /**
+         * The value of this property.
+         */
+        @Child(name = "value", type = {CodeType.class, Coding.class, StringType.class, IntegerType.class, BooleanType.class, DateTimeType.class, DecimalType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the property for this concept", formalDefinition="The value of this property." )
+        protected Type value;
+
+        private static final long serialVersionUID = 1742812311L;
+
+    /**
+     * Constructor
+     */
+      public ConceptPropertyComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public ConceptPropertyComponent(CodeType code, Type value) {
+        super();
+        this.code = code;
+        this.value = value;
+      }
+
+        /**
+         * @return {@link #code} (A code that is a reference to ValueSet.expansion.property.code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public CodeType getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ConceptPropertyComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeType(); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (A code that is a reference to ValueSet.expansion.property.code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public ConceptPropertyComponent setCodeElement(CodeType value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return A code that is a reference to ValueSet.expansion.property.code.
+         */
+        public String getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value A code that is a reference to ValueSet.expansion.property.code.
+         */
+        public ConceptPropertyComponent setCode(String value) { 
+            if (this.code == null)
+              this.code = new CodeType();
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public Type getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public CodeType getValueCodeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
+        }
+
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this property.)
+         */
+        public DecimalType getValueDecimalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DecimalType();
+          if (!(this.value instanceof DecimalType))
+            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DecimalType) this.value;
+        }
+
+        public boolean hasValueDecimalType() { 
+          return this != null && this.value instanceof DecimalType;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (The value of this property.)
+         */
+        public ConceptPropertyComponent setValue(Type value) { 
+          if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType))
+            throw new Error("Not the right type for ValueSet.expansion.contains.property.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code));
+          children.add(new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = castToCode(value); // CodeType
+          return value;
+        case 111972721: // value
+          this.value = castToType(value); // Type
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = castToCode(value); // CodeType
+        } else if (name.equals("value[x]")) {
+          this.value = castToType(value); // Type
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 111972721: /*value*/ return new String[] {"code", "Coding", "string", "integer", "boolean", "dateTime", "decimal"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.code");
+        }
+        else if (name.equals("valueCode")) {
+          this.value = new CodeType();
+          return this.value;
+        }
+        else if (name.equals("valueCoding")) {
+          this.value = new Coding();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger")) {
+          this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueDateTime")) {
+          this.value = new DateTimeType();
+          return this.value;
+        }
+        else if (name.equals("valueDecimal")) {
+          this.value = new DecimalType();
+          return this.value;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ConceptPropertyComponent copy() {
+        ConceptPropertyComponent dst = new ConceptPropertyComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptPropertyComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ConceptPropertyComponent))
+          return false;
+        ConceptPropertyComponent o = (ConceptPropertyComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ConceptPropertyComponent))
+          return false;
+        ConceptPropertyComponent o = (ConceptPropertyComponent) other_;
+        return compareValues(code, o.code, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value);
+      }
+
+  public String fhirType() {
+    return "ValueSet.expansion.contains.property";
 
   }
 
@@ -4784,8 +5678,8 @@ public class ValueSet extends MetadataResource {
         case 1596987778:  return getImmutableElement();
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
-        case 950497682:  return getCompose(); 
-        case 17878207:  return getExpansion(); 
+        case 950497682:  return getCompose();
+        case 17878207:  return getExpansion();
         default: return super.makeProperty(hash, name);
         }
 
@@ -4887,6 +5781,11 @@ public class ValueSet extends MetadataResource {
       public ValueSet copy() {
         ValueSet dst = new ValueSet();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSet dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4921,7 +5820,6 @@ public class ValueSet extends MetadataResource {
         dst.copyright = copyright == null ? null : copyright.copy();
         dst.compose = compose == null ? null : compose.copy();
         dst.expansion = expansion == null ? null : expansion.copy();
-        return dst;
       }
 
       protected ValueSet typedCopy() {

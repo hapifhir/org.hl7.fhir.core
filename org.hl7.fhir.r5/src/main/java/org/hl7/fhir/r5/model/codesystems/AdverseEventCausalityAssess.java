@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -88,28 +87,28 @@ public enum AdverseEventCausalityAssess {
         public static AdverseEventCausalityAssess fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("Certain".equals(codeString))
+        if ("certain".equals(codeString))
           return CERTAIN;
-        if ("Probably-Likely".equals(codeString))
+        if ("probably-likely".equals(codeString))
           return PROBABLYLIKELY;
-        if ("Possible".equals(codeString))
+        if ("possible".equals(codeString))
           return POSSIBLE;
-        if ("Unlikely".equals(codeString))
+        if ("unlikely".equals(codeString))
           return UNLIKELY;
-        if ("Conditional-Classified".equals(codeString))
+        if ("conditional-classified".equals(codeString))
           return CONDITIONALCLASSIFIED;
-        if ("Unassessable-Unclassifiable".equals(codeString))
+        if ("unassessable-unclassifiable".equals(codeString))
           return UNASSESSABLEUNCLASSIFIABLE;
         throw new FHIRException("Unknown AdverseEventCausalityAssess code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case CERTAIN: return "Certain";
-            case PROBABLYLIKELY: return "Probably-Likely";
-            case POSSIBLE: return "Possible";
-            case UNLIKELY: return "Unlikely";
-            case CONDITIONALCLASSIFIED: return "Conditional-Classified";
-            case UNASSESSABLEUNCLASSIFIABLE: return "Unassessable-Unclassifiable";
+            case CERTAIN: return "certain";
+            case PROBABLYLIKELY: return "probably-likely";
+            case POSSIBLE: return "possible";
+            case UNLIKELY: return "unlikely";
+            case CONDITIONALCLASSIFIED: return "conditional-classified";
+            case UNASSESSABLEUNCLASSIFIABLE: return "unassessable-unclassifiable";
             default: return "?";
           }
         }

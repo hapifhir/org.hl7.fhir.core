@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The Measure resource provides the definition of a quality measure.
  */
@@ -361,7 +361,7 @@ public class Measure extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
         case -2023558323:  return addPopulation(); 
         case 90983669:  return addStratifier(); 
@@ -404,6 +404,11 @@ public class Measure extends MetadataResource {
       public MeasureGroupComponent copy() {
         MeasureGroupComponent dst = new MeasureGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         if (population != null) {
@@ -416,7 +421,6 @@ public class Measure extends MetadataResource {
           for (MeasureGroupStratifierComponent i : stratifier)
             dst.stratifier.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -652,9 +656,9 @@ public class Measure extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
-        case 1952046943:  return getCriteria(); 
+        case 1952046943:  return getCriteria();
         default: return super.makeProperty(hash, name);
         }
 
@@ -691,10 +695,14 @@ public class Measure extends MetadataResource {
       public MeasureGroupPopulationComponent copy() {
         MeasureGroupPopulationComponent dst = new MeasureGroupPopulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupPopulationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
-        return dst;
       }
 
       @Override
@@ -989,9 +997,9 @@ public class Measure extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
-        case 1952046943:  return getCriteria(); 
+        case 1952046943:  return getCriteria();
         case -1399907075:  return addComponent(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1033,6 +1041,11 @@ public class Measure extends MetadataResource {
       public MeasureGroupStratifierComponent copy() {
         MeasureGroupStratifierComponent dst = new MeasureGroupStratifierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupStratifierComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
@@ -1041,7 +1054,6 @@ public class Measure extends MetadataResource {
           for (MeasureGroupStratifierComponentComponent i : component)
             dst.component.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1276,9 +1288,9 @@ public class Measure extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
-        case 1952046943:  return getCriteria(); 
+        case 1952046943:  return getCriteria();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1315,10 +1327,14 @@ public class Measure extends MetadataResource {
       public MeasureGroupStratifierComponentComponent copy() {
         MeasureGroupStratifierComponentComponent dst = new MeasureGroupStratifierComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupStratifierComponentComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
-        return dst;
       }
 
       @Override
@@ -1622,10 +1638,10 @@ public class Measure extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 111574433:  return addUsage(); 
         case -1724546052:  return getDescriptionElement();
-        case 1952046943:  return getCriteria(); 
+        case 1952046943:  return getCriteria();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1666,6 +1682,11 @@ public class Measure extends MetadataResource {
       public MeasureSupplementalDataComponent copy() {
         MeasureSupplementalDataComponent dst = new MeasureSupplementalDataComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureSupplementalDataComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (usage != null) {
           dst.usage = new ArrayList<CodeableConcept>();
@@ -1674,7 +1695,6 @@ public class Measure extends MetadataResource {
         };
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
-        return dst;
       }
 
       @Override
@@ -4294,8 +4314,8 @@ public class Measure extends MetadataResource {
         case -2060497896:  return getSubtitleElement();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
-        case -573640748:  return getSubject(); 
-        case -1867885268:  return getSubject(); 
+        case -573640748:  return getSubject();
+        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
@@ -4307,7 +4327,7 @@ public class Measure extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
+        case -403934648:  return getEffectivePeriod();
         case 110546223:  return addTopic(); 
         case -1406328437:  return addAuthor(); 
         case -1307827859:  return addEditor(); 
@@ -4316,14 +4336,14 @@ public class Measure extends MetadataResource {
         case 666807069:  return addRelatedArtifact(); 
         case 166208699:  return addLibraryElement();
         case 432371099:  return getDisclaimerElement();
-        case 1924005583:  return getScoring(); 
-        case 569347656:  return getCompositeScoring(); 
+        case 1924005583:  return getScoring();
+        case 569347656:  return getCompositeScoring();
         case 3575610:  return addType(); 
         case 93273500:  return getRiskAdjustmentElement();
         case 1254503906:  return getRateAggregationElement();
         case 345689335:  return getRationaleElement();
         case -18631389:  return getClinicalRecommendationStatementElement();
-        case -2085456136:  return getImprovementNotation(); 
+        case -2085456136:  return getImprovementNotation();
         case -1014418093:  return addDefinitionElement();
         case -1314002088:  return getGuidanceElement();
         case 98629247:  return addGroup(); 
@@ -4528,6 +4548,11 @@ public class Measure extends MetadataResource {
       public Measure copy() {
         Measure dst = new Measure();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Measure dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4629,7 +4654,6 @@ public class Measure extends MetadataResource {
           for (MeasureSupplementalDataComponent i : supplementalData)
             dst.supplementalData.add(i.copy());
         };
-        return dst;
       }
 
       protected Measure typedCopy() {

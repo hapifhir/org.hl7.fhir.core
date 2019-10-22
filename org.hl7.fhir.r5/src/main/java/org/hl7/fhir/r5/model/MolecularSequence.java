@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -53,17 +51,21 @@ import java.math.BigDecimal;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Raw data describing a biological sequence.
  */
@@ -651,11 +653,6 @@ public class MolecularSequence extends DomainResource {
         protected Reference referenceSeqPointer;
 
         /**
-         * The actual object that is the target of the reference (A pointer to another MolecularSequence entity as reference sequence.)
-         */
-        protected MolecularSequence referenceSeqPointerTarget;
-
-        /**
          * A string like "ACGT".
          */
         @Child(name = "referenceSeqString", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
@@ -684,7 +681,7 @@ public class MolecularSequence extends DomainResource {
         @Description(shortDefinition="End position of the window on the reference sequence", formalDefinition="End position of the window on the reference sequence. If the coordinate system is 0-based then end is exclusive and does not include the last position. If the coordinate system is 1-base, then end is inclusive and includes the last position." )
         protected IntegerType windowEnd;
 
-        private static final long serialVersionUID = 307364267L;
+        private static final long serialVersionUID = -257666326L;
 
     /**
      * Constructor
@@ -860,26 +857,6 @@ public class MolecularSequence extends DomainResource {
          */
         public MolecularSequenceReferenceSeqComponent setReferenceSeqPointer(Reference value) { 
           this.referenceSeqPointer = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #referenceSeqPointer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A pointer to another MolecularSequence entity as reference sequence.)
-         */
-        public MolecularSequence getReferenceSeqPointerTarget() { 
-          if (this.referenceSeqPointerTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MolecularSequenceReferenceSeqComponent.referenceSeqPointer");
-            else if (Configuration.doAutoCreate())
-              this.referenceSeqPointerTarget = new MolecularSequence(); // aa
-          return this.referenceSeqPointerTarget;
-        }
-
-        /**
-         * @param value {@link #referenceSeqPointer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A pointer to another MolecularSequence entity as reference sequence.)
-         */
-        public MolecularSequenceReferenceSeqComponent setReferenceSeqPointerTarget(MolecularSequence value) { 
-          this.referenceSeqPointerTarget = value;
           return this;
         }
 
@@ -1185,11 +1162,11 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1499470472:  return getChromosome(); 
+        case -1499470472:  return getChromosome();
         case 1061239735:  return getGenomeBuildElement();
         case -1439500848:  return getOrientationElement();
-        case -1911500465:  return getReferenceSeqId(); 
-        case 1923414665:  return getReferenceSeqPointer(); 
+        case -1911500465:  return getReferenceSeqId();
+        case 1923414665:  return getReferenceSeqPointer();
         case -1648301499:  return getReferenceSeqStringElement();
         case -891993594:  return getStrandElement();
         case 1903685202:  return getWindowStartElement();
@@ -1255,6 +1232,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceReferenceSeqComponent copy() {
         MolecularSequenceReferenceSeqComponent dst = new MolecularSequenceReferenceSeqComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceReferenceSeqComponent dst) {
+        super.copyValues(dst);
         dst.chromosome = chromosome == null ? null : chromosome.copy();
         dst.genomeBuild = genomeBuild == null ? null : genomeBuild.copy();
         dst.orientation = orientation == null ? null : orientation.copy();
@@ -1264,7 +1246,6 @@ public class MolecularSequence extends DomainResource {
         dst.strand = strand == null ? null : strand.copy();
         dst.windowStart = windowStart == null ? null : windowStart.copy();
         dst.windowEnd = windowEnd == null ? null : windowEnd.copy();
-        return dst;
       }
 
       @Override
@@ -1350,12 +1331,7 @@ public class MolecularSequence extends DomainResource {
         @Description(shortDefinition="Pointer to observed variant information", formalDefinition="A pointer to an Observation containing variant information." )
         protected Reference variantPointer;
 
-        /**
-         * The actual object that is the target of the reference (A pointer to an Observation containing variant information.)
-         */
-        protected Observation variantPointerTarget;
-
-        private static final long serialVersionUID = 105611837L;
+        private static final long serialVersionUID = -1012918644L;
 
     /**
      * Constructor
@@ -1625,26 +1601,6 @@ public class MolecularSequence extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #variantPointer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A pointer to an Observation containing variant information.)
-         */
-        public Observation getVariantPointerTarget() { 
-          if (this.variantPointerTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MolecularSequenceVariantComponent.variantPointer");
-            else if (Configuration.doAutoCreate())
-              this.variantPointerTarget = new Observation(); // aa
-          return this.variantPointerTarget;
-        }
-
-        /**
-         * @param value {@link #variantPointer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A pointer to an Observation containing variant information.)
-         */
-        public MolecularSequenceVariantComponent setVariantPointerTarget(Observation value) { 
-          this.variantPointerTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("start", "integer", "Start position of the variant on the  reference sequence. If the coordinate system is either 0-based or 1-based, then start position is inclusive.", 0, 1, start));
@@ -1736,7 +1692,7 @@ public class MolecularSequence extends DomainResource {
         case -1418745787:  return getObservedAlleleElement();
         case 364045960:  return getReferenceAlleleElement();
         case 94658738:  return getCigarElement();
-        case -1654319624:  return getVariantPointer(); 
+        case -1654319624:  return getVariantPointer();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1784,13 +1740,17 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceVariantComponent copy() {
         MolecularSequenceVariantComponent dst = new MolecularSequenceVariantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceVariantComponent dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
         dst.observedAllele = observedAllele == null ? null : observedAllele.copy();
         dst.referenceAllele = referenceAllele == null ? null : referenceAllele.copy();
         dst.cigar = cigar == null ? null : cigar.copy();
         dst.variantPointer = variantPointer == null ? null : variantPointer.copy();
-        return dst;
       }
 
       @Override
@@ -2883,11 +2843,11 @@ public class MolecularSequence extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case -1861227106:  return getStandardSequence(); 
+        case -1861227106:  return getStandardSequence();
         case 109757538:  return getStartElement();
         case 100571:  return getEndElement();
-        case 109264530:  return getScore(); 
-        case -1077554975:  return getMethod(); 
+        case 109264530:  return getScore();
+        case -1077554975:  return getMethod();
         case -1048421849:  return getTruthTPElement();
         case 655102276:  return getQueryTPElement();
         case -1048422285:  return getTruthFNElement();
@@ -2896,7 +2856,7 @@ public class MolecularSequence extends DomainResource {
         case -1376177026:  return getPrecisionElement();
         case -934922479:  return getRecallElement();
         case -1295082036:  return getFScoreElement();
-        case 113094:  return getRoc(); 
+        case 113094:  return getRoc();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2983,6 +2943,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceQualityComponent copy() {
         MolecularSequenceQualityComponent dst = new MolecularSequenceQualityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceQualityComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.standardSequence = standardSequence == null ? null : standardSequence.copy();
         dst.start = start == null ? null : start.copy();
@@ -2998,7 +2963,6 @@ public class MolecularSequence extends DomainResource {
         dst.recall = recall == null ? null : recall.copy();
         dst.fScore = fScore == null ? null : fScore.copy();
         dst.roc = roc == null ? null : roc.copy();
-        return dst;
       }
 
       @Override
@@ -3680,6 +3644,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceQualityRocComponent copy() {
         MolecularSequenceQualityRocComponent dst = new MolecularSequenceQualityRocComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceQualityRocComponent dst) {
+        super.copyValues(dst);
         if (score != null) {
           dst.score = new ArrayList<IntegerType>();
           for (IntegerType i : score)
@@ -3715,7 +3684,6 @@ public class MolecularSequence extends DomainResource {
           for (DecimalType i : fMeasure)
             dst.fMeasure.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4246,13 +4214,17 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceRepositoryComponent copy() {
         MolecularSequenceRepositoryComponent dst = new MolecularSequenceRepositoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceRepositoryComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.url = url == null ? null : url.copy();
         dst.name = name == null ? null : name.copy();
         dst.datasetId = datasetId == null ? null : datasetId.copy();
         dst.variantsetId = variantsetId == null ? null : variantsetId.copy();
         dst.readsetId = readsetId == null ? null : readsetId.copy();
-        return dst;
       }
 
       @Override
@@ -4577,11 +4549,11 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1601222305:  return getVariantType(); 
+        case -1601222305:  return getVariantType();
         case 96946943:  return getExactElement();
         case -1106363674:  return getLengthElement();
-        case 106111099:  return getOuter(); 
-        case 100355670:  return getInner(); 
+        case 106111099:  return getOuter();
+        case 100355670:  return getInner();
         default: return super.makeProperty(hash, name);
         }
 
@@ -4627,12 +4599,16 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceStructureVariantComponent copy() {
         MolecularSequenceStructureVariantComponent dst = new MolecularSequenceStructureVariantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceStructureVariantComponent dst) {
+        super.copyValues(dst);
         dst.variantType = variantType == null ? null : variantType.copy();
         dst.exact = exact == null ? null : exact.copy();
         dst.length = length == null ? null : length.copy();
         dst.outer = outer == null ? null : outer.copy();
         dst.inner = inner == null ? null : inner.copy();
-        return dst;
       }
 
       @Override
@@ -4869,9 +4845,13 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceStructureVariantOuterComponent copy() {
         MolecularSequenceStructureVariantOuterComponent dst = new MolecularSequenceStructureVariantOuterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceStructureVariantOuterComponent dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
-        return dst;
       }
 
       @Override
@@ -5106,9 +5086,13 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceStructureVariantInnerComponent copy() {
         MolecularSequenceStructureVariantInnerComponent dst = new MolecularSequenceStructureVariantInnerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceStructureVariantInnerComponent dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
-        return dst;
       }
 
       @Override
@@ -5172,21 +5156,11 @@ public class MolecularSequence extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The patient whose sequencing results are described by this resource.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * Specimen used for sequencing.
      */
     @Child(name = "specimen", type = {Specimen.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specimen used for sequencing", formalDefinition="Specimen used for sequencing." )
     protected Reference specimen;
-
-    /**
-     * The actual object that is the target of the reference (Specimen used for sequencing.)
-     */
-    protected Specimen specimenTarget;
 
     /**
      * The method for sequencing, for example, chip information.
@@ -5196,21 +5170,11 @@ public class MolecularSequence extends DomainResource {
     protected Reference device;
 
     /**
-     * The actual object that is the target of the reference (The method for sequencing, for example, chip information.)
-     */
-    protected Device deviceTarget;
-
-    /**
      * The organization or lab that should be responsible for this result.
      */
     @Child(name = "performer", type = {Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who should be responsible for test result", formalDefinition="The organization or lab that should be responsible for this result." )
     protected Reference performer;
-
-    /**
-     * The actual object that is the target of the reference (The organization or lab that should be responsible for this result.)
-     */
-    protected Organization performerTarget;
 
     /**
      * The number of copies of the sequence of interest. (RNASeq).
@@ -5267,11 +5231,6 @@ public class MolecularSequence extends DomainResource {
     @Child(name = "pointer", type = {MolecularSequence.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Pointer to next atomic sequence", formalDefinition="Pointer to next atomic sequence which at most contains one variant." )
     protected List<Reference> pointer;
-    /**
-     * The actual objects that are the target of the reference (Pointer to next atomic sequence which at most contains one variant.)
-     */
-    protected List<MolecularSequence> pointerTarget;
-
 
     /**
      * Information about chromosome structure variation.
@@ -5280,7 +5239,7 @@ public class MolecularSequence extends DomainResource {
     @Description(shortDefinition="Structural variant", formalDefinition="Information about chromosome structure variation." )
     protected List<MolecularSequenceStructureVariantComponent> structureVariant;
 
-    private static final long serialVersionUID = -1541133500L;
+    private static final long serialVersionUID = -1100594126L;
 
   /**
    * Constructor
@@ -5469,26 +5428,6 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient whose sequencing results are described by this resource.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MolecularSequence.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient whose sequencing results are described by this resource.)
-     */
-    public MolecularSequence setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #specimen} (Specimen used for sequencing.)
      */
     public Reference getSpecimen() { 
@@ -5509,26 +5448,6 @@ public class MolecularSequence extends DomainResource {
      */
     public MolecularSequence setSpecimen(Reference value) { 
       this.specimen = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #specimen} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Specimen used for sequencing.)
-     */
-    public Specimen getSpecimenTarget() { 
-      if (this.specimenTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MolecularSequence.specimen");
-        else if (Configuration.doAutoCreate())
-          this.specimenTarget = new Specimen(); // aa
-      return this.specimenTarget;
-    }
-
-    /**
-     * @param value {@link #specimen} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Specimen used for sequencing.)
-     */
-    public MolecularSequence setSpecimenTarget(Specimen value) { 
-      this.specimenTarget = value;
       return this;
     }
 
@@ -5557,26 +5476,6 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return {@link #device} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The method for sequencing, for example, chip information.)
-     */
-    public Device getDeviceTarget() { 
-      if (this.deviceTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MolecularSequence.device");
-        else if (Configuration.doAutoCreate())
-          this.deviceTarget = new Device(); // aa
-      return this.deviceTarget;
-    }
-
-    /**
-     * @param value {@link #device} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The method for sequencing, for example, chip information.)
-     */
-    public MolecularSequence setDeviceTarget(Device value) { 
-      this.deviceTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #performer} (The organization or lab that should be responsible for this result.)
      */
     public Reference getPerformer() { 
@@ -5597,26 +5496,6 @@ public class MolecularSequence extends DomainResource {
      */
     public MolecularSequence setPerformer(Reference value) { 
       this.performer = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #performer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization or lab that should be responsible for this result.)
-     */
-    public Organization getPerformerTarget() { 
-      if (this.performerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MolecularSequence.performer");
-        else if (Configuration.doAutoCreate())
-          this.performerTarget = new Organization(); // aa
-      return this.performerTarget;
-    }
-
-    /**
-     * @param value {@link #performer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization or lab that should be responsible for this result.)
-     */
-    public MolecularSequence setPerformerTarget(Organization value) { 
-      this.performerTarget = value;
       return this;
     }
 
@@ -5975,28 +5854,6 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<MolecularSequence> getPointerTarget() { 
-      if (this.pointerTarget == null)
-        this.pointerTarget = new ArrayList<MolecularSequence>();
-      return this.pointerTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public MolecularSequence addPointerTarget() { 
-      MolecularSequence r = new MolecularSequence();
-      if (this.pointerTarget == null)
-        this.pointerTarget = new ArrayList<MolecularSequence>();
-      this.pointerTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #structureVariant} (Information about chromosome structure variation.)
      */
     public List<MolecularSequenceStructureVariantComponent> getStructureVariant() { 
@@ -6220,12 +6077,12 @@ public class MolecularSequence extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case 3575610:  return getTypeElement();
         case 354212295:  return getCoordinateSystemElement();
-        case -791418107:  return getPatient(); 
-        case -2132868344:  return getSpecimen(); 
-        case -1335157162:  return getDevice(); 
-        case 481140686:  return getPerformer(); 
-        case -1285004149:  return getQuantity(); 
-        case -502547180:  return getReferenceSeq(); 
+        case -791418107:  return getPatient();
+        case -2132868344:  return getSpecimen();
+        case -1335157162:  return getDevice();
+        case 481140686:  return getPerformer();
+        case -1285004149:  return getQuantity();
+        case -502547180:  return getReferenceSeq();
         case 236785797:  return addVariant(); 
         case 125541495:  return getObservedSeqElement();
         case 651215103:  return addQuality(); 
@@ -6330,6 +6187,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequence copy() {
         MolecularSequence dst = new MolecularSequence();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequence dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -6370,7 +6232,6 @@ public class MolecularSequence extends DomainResource {
           for (MolecularSequenceStructureVariantComponent i : structureVariant)
             dst.structureVariant.add(i.copy());
         };
-        return dst;
       }
 
       protected MolecularSequence typedCopy() {

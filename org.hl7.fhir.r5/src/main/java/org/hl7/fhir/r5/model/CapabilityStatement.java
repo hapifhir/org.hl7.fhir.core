@@ -53,24 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.instance.model.api.IBaseConformance;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
-import org.hl7.fhir.r5.model.Enumerations.SearchParamTypeEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseConformance;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
  */
@@ -1552,10 +1547,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementSoftwareComponent copy() {
         CapabilityStatementSoftwareComponent dst = new CapabilityStatementSoftwareComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementSoftwareComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.version = version == null ? null : version.copy();
         dst.releaseDate = releaseDate == null ? null : releaseDate.copy();
-        return dst;
       }
 
       @Override
@@ -1615,12 +1614,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         @Description(shortDefinition="Organization that manages the data", formalDefinition="The organization responsible for the management of the instance and oversight of the data on the server at the specified URL." )
         protected Reference custodian;
 
-        /**
-         * The actual object that is the target of the reference (The organization responsible for the management of the instance and oversight of the data on the server at the specified URL.)
-         */
-        protected Organization custodianTarget;
-
-        private static final long serialVersionUID = -1705695694L;
+        private static final long serialVersionUID = 1681322786L;
 
     /**
      * Constructor
@@ -1755,26 +1749,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return this;
         }
 
-        /**
-         * @return {@link #custodian} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization responsible for the management of the instance and oversight of the data on the server at the specified URL.)
-         */
-        public Organization getCustodianTarget() { 
-          if (this.custodianTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CapabilityStatementImplementationComponent.custodian");
-            else if (Configuration.doAutoCreate())
-              this.custodianTarget = new Organization(); // aa
-          return this.custodianTarget;
-        }
-
-        /**
-         * @param value {@link #custodian} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization responsible for the management of the instance and oversight of the data on the server at the specified URL.)
-         */
-        public CapabilityStatementImplementationComponent setCustodianTarget(Organization value) { 
-          this.custodianTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("description", "string", "Information about the specific installation that this capability statement relates to.", 0, 1, description));
@@ -1839,7 +1813,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
         case 116079:  return getUrlElement();
-        case 1611297262:  return getCustodian(); 
+        case 1611297262:  return getCustodian();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1875,10 +1849,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementImplementationComponent copy() {
         CapabilityStatementImplementationComponent dst = new CapabilityStatementImplementationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementImplementationComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.url = url == null ? null : url.copy();
         dst.custodian = custodian == null ? null : custodian.copy();
-        return dst;
       }
 
       @Override
@@ -2487,7 +2465,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         switch (hash) {
         case 3357091:  return getModeElement();
         case 1587405498:  return getDocumentationElement();
-        case 949122880:  return getSecurity(); 
+        case 949122880:  return getSecurity();
         case -341064690:  return addResource(); 
         case 1844104722:  return addInteraction(); 
         case -553645115:  return addSearchParam(); 
@@ -2548,6 +2526,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestComponent copy() {
         CapabilityStatementRestComponent dst = new CapabilityStatementRestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
         dst.security = security == null ? null : security.copy();
@@ -2576,7 +2559,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CanonicalType i : compartment)
             dst.compartment.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2892,6 +2874,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestSecurityComponent copy() {
         CapabilityStatementRestSecurityComponent dst = new CapabilityStatementRestSecurityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestSecurityComponent dst) {
+        super.copyValues(dst);
         dst.cors = cors == null ? null : cors.copy();
         if (service != null) {
           dst.service = new ArrayList<CodeableConcept>();
@@ -2899,7 +2886,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             dst.service.add(i.copy());
         };
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -4240,6 +4226,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestResourceComponent copy() {
         CapabilityStatementRestResourceComponent dst = new CapabilityStatementRestResourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestResourceComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.profile = profile == null ? null : profile.copy();
         if (supportedProfile != null) {
@@ -4285,7 +4276,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CapabilityStatementRestResourceOperationComponent i : operation)
             dst.operation.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4550,9 +4540,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public ResourceInteractionComponent copy() {
         ResourceInteractionComponent dst = new ResourceInteractionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResourceInteractionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -4937,11 +4931,15 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestResourceSearchParamComponent copy() {
         CapabilityStatementRestResourceSearchParamComponent dst = new CapabilityStatementRestResourceSearchParamComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestResourceSearchParamComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.type = type == null ? null : type.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -5257,10 +5255,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestResourceOperationComponent copy() {
         CapabilityStatementRestResourceOperationComponent dst = new CapabilityStatementRestResourceOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestResourceOperationComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -5512,9 +5514,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public SystemInteractionComponent copy() {
         SystemInteractionComponent dst = new SystemInteractionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SystemInteractionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -5899,6 +5905,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementMessagingComponent copy() {
         CapabilityStatementMessagingComponent dst = new CapabilityStatementMessagingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementMessagingComponent dst) {
+        super.copyValues(dst);
         if (endpoint != null) {
           dst.endpoint = new ArrayList<CapabilityStatementMessagingEndpointComponent>();
           for (CapabilityStatementMessagingEndpointComponent i : endpoint)
@@ -5911,7 +5922,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CapabilityStatementMessagingSupportedMessageComponent i : supportedMessage)
             dst.supportedMessage.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6107,7 +6117,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -989163880:  return getProtocol(); 
+        case -989163880:  return getProtocol();
         case -1147692044:  return getAddressElement();
         default: return super.makeProperty(hash, name);
         }
@@ -6140,9 +6150,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementMessagingEndpointComponent copy() {
         CapabilityStatementMessagingEndpointComponent dst = new CapabilityStatementMessagingEndpointComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementMessagingEndpointComponent dst) {
+        super.copyValues(dst);
         dst.protocol = protocol == null ? null : protocol.copy();
         dst.address = address == null ? null : address.copy();
-        return dst;
       }
 
       @Override
@@ -6389,9 +6403,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementMessagingSupportedMessageComponent copy() {
         CapabilityStatementMessagingSupportedMessageComponent dst = new CapabilityStatementMessagingSupportedMessageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementMessagingSupportedMessageComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.definition = definition == null ? null : definition.copy();
-        return dst;
       }
 
       @Override
@@ -6707,10 +6725,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementDocumentComponent copy() {
         CapabilityStatementDocumentComponent dst = new CapabilityStatementDocumentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementDocumentComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -8425,8 +8447,8 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         case 3292052:  return getKindElement();
         case -246883639:  return addInstantiatesElement();
         case 1926037870:  return addImportsElement();
-        case 1319330215:  return getSoftware(); 
-        case 1683336114:  return getImplementation(); 
+        case 1319330215:  return getSoftware();
+        case 1683336114:  return getImplementation();
         case 461006061:  return getFhirVersionElement();
         case -1268779017:  return addFormatElement();
         case 172338783:  return addPatchFormatElement();
@@ -8567,6 +8589,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatement copy() {
         CapabilityStatement dst = new CapabilityStatement();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatement dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -8637,7 +8664,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CapabilityStatementDocumentComponent i : document)
             dst.document.add(i.copy());
         };
-        return dst;
       }
 
       protected CapabilityStatement typedCopy() {
@@ -9160,6 +9186,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
+// added from java-adornments.txt:
+
+// end addition
 
 }
 

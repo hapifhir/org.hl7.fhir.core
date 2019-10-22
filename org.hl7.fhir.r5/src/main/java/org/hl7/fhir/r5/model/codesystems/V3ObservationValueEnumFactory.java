@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -250,6 +249,12 @@ public class V3ObservationValueEnumFactory implements EnumFactory<V3ObservationV
       return V3ObservationValue._GENETICOBSERVATIONVALUE;
     if ("Homozygote".equals(codeString))
       return V3ObservationValue.HOMOZYGOTE;
+    if ("_MeasurementImprovementNotation".equals(codeString))
+      return V3ObservationValue._MEASUREMENTIMPROVEMENTNOTATION;
+    if ("DecrIsImp".equals(codeString))
+      return V3ObservationValue.DECRISIMP;
+    if ("IncrIsImp".equals(codeString))
+      return V3ObservationValue.INCRISIMP;
     if ("_ObservationMeasureScoring".equals(codeString))
       return V3ObservationValue._OBSERVATIONMEASURESCORING;
     if ("COHORT".equals(codeString))
@@ -754,6 +759,12 @@ public class V3ObservationValueEnumFactory implements EnumFactory<V3ObservationV
       return "_GeneticObservationValue";
     if (code == V3ObservationValue.HOMOZYGOTE)
       return "Homozygote";
+    if (code == V3ObservationValue._MEASUREMENTIMPROVEMENTNOTATION)
+      return "_MeasurementImprovementNotation";
+    if (code == V3ObservationValue.DECRISIMP)
+      return "DecrIsImp";
+    if (code == V3ObservationValue.INCRISIMP)
+      return "IncrIsImp";
     if (code == V3ObservationValue._OBSERVATIONMEASURESCORING)
       return "_ObservationMeasureScoring";
     if (code == V3ObservationValue.COHORT)

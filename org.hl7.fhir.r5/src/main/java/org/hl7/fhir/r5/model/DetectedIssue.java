@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.
  */
@@ -381,13 +383,8 @@ public class DetectedIssue extends DomainResource {
         @Child(name = "detail", type = {Reference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Supporting information", formalDefinition="Links to resources that constitute evidence for the detected issue such as a GuidanceResponse or MeasureReport." )
         protected List<Reference> detail;
-        /**
-         * The actual objects that are the target of the reference (Links to resources that constitute evidence for the detected issue such as a GuidanceResponse or MeasureReport.)
-         */
-        protected List<Resource> detailTarget;
 
-
-        private static final long serialVersionUID = 1135831276L;
+        private static final long serialVersionUID = -672691342L;
 
     /**
      * Constructor
@@ -502,16 +499,6 @@ public class DetectedIssue extends DomainResource {
           return getDetail().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "A manifestation that led to the recording of this detected issue.", 0, java.lang.Integer.MAX_VALUE, code));
@@ -598,6 +585,11 @@ public class DetectedIssue extends DomainResource {
       public DetectedIssueEvidenceComponent copy() {
         DetectedIssueEvidenceComponent dst = new DetectedIssueEvidenceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetectedIssueEvidenceComponent dst) {
+        super.copyValues(dst);
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : code)
@@ -608,7 +600,6 @@ public class DetectedIssue extends DomainResource {
           for (Reference i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -666,12 +657,7 @@ public class DetectedIssue extends DomainResource {
         @Description(shortDefinition="Who is committing?", formalDefinition="Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring." )
         protected Reference author;
 
-        /**
-         * The actual object that is the target of the reference (Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring.)
-         */
-        protected Resource authorTarget;
-
-        private static final long serialVersionUID = -1928864832L;
+        private static final long serialVersionUID = -1797436956L;
 
     /**
      * Constructor
@@ -785,21 +771,6 @@ public class DetectedIssue extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring.)
-         */
-        public Resource getAuthorTarget() { 
-          return this.authorTarget;
-        }
-
-        /**
-         * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring.)
-         */
-        public DetectedIssueMitigationComponent setAuthorTarget(Resource value) { 
-          this.authorTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("action", "CodeableConcept", "Describes the action that was taken or the observation that was made that reduces/eliminates the risk associated with the identified issue.", 0, 1, action));
@@ -862,9 +833,9 @@ public class DetectedIssue extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1422950858:  return getAction(); 
+        case -1422950858:  return getAction();
         case 3076014:  return getDateElement();
-        case -1406328437:  return getAuthor(); 
+        case -1406328437:  return getAuthor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -901,10 +872,14 @@ public class DetectedIssue extends DomainResource {
       public DetectedIssueMitigationComponent copy() {
         DetectedIssueMitigationComponent dst = new DetectedIssueMitigationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetectedIssueMitigationComponent dst) {
+        super.copyValues(dst);
         dst.action = action == null ? null : action.copy();
         dst.date = date == null ? null : date.copy();
         dst.author = author == null ? null : author.copy();
-        return dst;
       }
 
       @Override
@@ -978,11 +953,6 @@ public class DetectedIssue extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (Indicates the patient whose record the detected issue is associated with.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The date or period when the detected issue was initially identified.
      */
     @Child(name = "identified", type = {DateTimeType.class, Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
@@ -997,21 +967,11 @@ public class DetectedIssue extends DomainResource {
     protected Reference author;
 
     /**
-     * The actual object that is the target of the reference (Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.)
-     */
-    protected Resource authorTarget;
-
-    /**
      * Indicates the resource representing the current activity or proposed activity that is potentially problematic.
      */
     @Child(name = "implicated", type = {Reference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Problem resource", formalDefinition="Indicates the resource representing the current activity or proposed activity that is potentially problematic." )
     protected List<Reference> implicated;
-    /**
-     * The actual objects that are the target of the reference (Indicates the resource representing the current activity or proposed activity that is potentially problematic.)
-     */
-    protected List<Resource> implicatedTarget;
-
 
     /**
      * Supporting evidence or manifestations that provide the basis for identifying the detected issue such as a GuidanceResponse or MeasureReport.
@@ -1041,7 +1001,7 @@ public class DetectedIssue extends DomainResource {
     @Description(shortDefinition="Step taken to address", formalDefinition="Indicates an action that has been taken or is committed to reduce or eliminate the likelihood of the risk identified by the detected issue from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action." )
     protected List<DetectedIssueMitigationComponent> mitigation;
 
-    private static final long serialVersionUID = 1404426283L;
+    private static final long serialVersionUID = 1928503865L;
 
   /**
    * Constructor
@@ -1254,26 +1214,6 @@ public class DetectedIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates the patient whose record the detected issue is associated with.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DetectedIssue.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates the patient whose record the detected issue is associated with.)
-     */
-    public DetectedIssue setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #identified} (The date or period when the detected issue was initially identified.)
      */
     public Type getIdentified() { 
@@ -1349,21 +1289,6 @@ public class DetectedIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.)
-     */
-    public DetectedIssue setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #implicated} (Indicates the resource representing the current activity or proposed activity that is potentially problematic.)
      */
     public List<Reference> getImplicated() { 
@@ -1414,16 +1339,6 @@ public class DetectedIssue extends DomainResource {
         addImplicated();
       }
       return getImplicated().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getImplicatedTarget() { 
-      if (this.implicatedTarget == null)
-        this.implicatedTarget = new ArrayList<Resource>();
-      return this.implicatedTarget;
     }
 
     /**
@@ -1773,12 +1688,12 @@ public class DetectedIssue extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 1478300413:  return getSeverityElement();
-        case -791418107:  return getPatient(); 
-        case 569355781:  return getIdentified(); 
-        case -1618432869:  return getIdentified(); 
-        case -1406328437:  return getAuthor(); 
+        case -791418107:  return getPatient();
+        case 569355781:  return getIdentified();
+        case -1618432869:  return getIdentified();
+        case -1406328437:  return getAuthor();
         case -810216884:  return addImplicated(); 
         case 382967383:  return addEvidence(); 
         case -1335224239:  return getDetailElement();
@@ -1867,6 +1782,11 @@ public class DetectedIssue extends DomainResource {
       public DetectedIssue copy() {
         DetectedIssue dst = new DetectedIssue();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetectedIssue dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1895,7 +1815,6 @@ public class DetectedIssue extends DomainResource {
           for (DetectedIssueMitigationComponent i : mitigation)
             dst.mitigation.add(i.copy());
         };
-        return dst;
       }
 
       protected DetectedIssue typedCopy() {

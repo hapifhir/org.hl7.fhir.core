@@ -3288,8 +3288,8 @@ public class VersionConvertor_40_50 {
       return Account.convertAccount((org.hl7.fhir.r4.model.Account) src);
     if (src instanceof org.hl7.fhir.r4.model.ActivityDefinition)
       return ActivityDefinition.convertActivityDefinition((org.hl7.fhir.r4.model.ActivityDefinition) src);
-    if (src instanceof org.hl7.fhir.r4.model.AdverseEvent)
-      return AdverseEvent.convertAdverseEvent((org.hl7.fhir.r4.model.AdverseEvent) src);
+//    if (src instanceof org.hl7.fhir.r4.model.AdverseEvent)
+//      return AdverseEvent.convertAdverseEvent((org.hl7.fhir.r4.model.AdverseEvent) src);
     if (src instanceof org.hl7.fhir.r4.model.AllergyIntolerance)
       return AllergyIntolerance.convertAllergyIntolerance((org.hl7.fhir.r4.model.AllergyIntolerance) src);
     if (src instanceof org.hl7.fhir.r4.model.Appointment)
@@ -3314,8 +3314,8 @@ public class VersionConvertor_40_50 {
       return CarePlan.convertCarePlan((org.hl7.fhir.r4.model.CarePlan) src);
     if (src instanceof org.hl7.fhir.r4.model.CareTeam)
       return CareTeam.convertCareTeam((org.hl7.fhir.r4.model.CareTeam) src);
-    if (src instanceof org.hl7.fhir.r4.model.CatalogEntry)
-      return CatalogEntry.convertCatalogEntry((org.hl7.fhir.r4.model.CatalogEntry) src);
+//    if (src instanceof org.hl7.fhir.r4.model.CatalogEntry)
+//      return CatalogEntry.convertCatalogEntry((org.hl7.fhir.r4.model.CatalogEntry) src);
     if (src instanceof org.hl7.fhir.r4.model.ChargeItem)
       return ChargeItem.convertChargeItem((org.hl7.fhir.r4.model.ChargeItem) src);
     if (src instanceof org.hl7.fhir.r4.model.ChargeItemDefinition)
@@ -3368,8 +3368,6 @@ public class VersionConvertor_40_50 {
       return DocumentManifest.convertDocumentManifest((org.hl7.fhir.r4.model.DocumentManifest) src);
     if (src instanceof org.hl7.fhir.r4.model.DocumentReference)
       return DocumentReference.convertDocumentReference((org.hl7.fhir.r4.model.DocumentReference) src);
-    if (src instanceof org.hl7.fhir.r4.model.EffectEvidenceSynthesis)
-      return EffectEvidenceSynthesis.convertEffectEvidenceSynthesis((org.hl7.fhir.r4.model.EffectEvidenceSynthesis) src);
     if (src instanceof org.hl7.fhir.r4.model.Encounter)
       return Encounter.convertEncounter((org.hl7.fhir.r4.model.Encounter) src);
     if (src instanceof org.hl7.fhir.r4.model.Endpoint)
@@ -3382,10 +3380,6 @@ public class VersionConvertor_40_50 {
       return EpisodeOfCare.convertEpisodeOfCare((org.hl7.fhir.r4.model.EpisodeOfCare) src);
     if (src instanceof org.hl7.fhir.r4.model.EventDefinition)
       return EventDefinition.convertEventDefinition((org.hl7.fhir.r4.model.EventDefinition) src);
-    if (src instanceof org.hl7.fhir.r4.model.Evidence)
-      return Evidence.convertEvidence((org.hl7.fhir.r4.model.Evidence) src);
-    if (src instanceof org.hl7.fhir.r4.model.EvidenceVariable)
-      return EvidenceVariable.convertEvidenceVariable((org.hl7.fhir.r4.model.EvidenceVariable) src);
     if (src instanceof org.hl7.fhir.r4.model.ExampleScenario)
       return ExampleScenario.convertExampleScenario((org.hl7.fhir.r4.model.ExampleScenario) src);
     if (src instanceof org.hl7.fhir.r4.model.ExplanationOfBenefit)
@@ -3444,26 +3438,6 @@ public class VersionConvertor_40_50 {
       return MedicationRequest.convertMedicationRequest((org.hl7.fhir.r4.model.MedicationRequest) src);
     if (src instanceof org.hl7.fhir.r4.model.MedicationStatement)
       return MedicationStatement.convertMedicationStatement((org.hl7.fhir.r4.model.MedicationStatement) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProduct)
-      return MedicinalProduct.convertMedicinalProduct((org.hl7.fhir.r4.model.MedicinalProduct) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductAuthorization)
-      return MedicinalProductAuthorization.convertMedicinalProductAuthorization((org.hl7.fhir.r4.model.MedicinalProductAuthorization) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductContraindication)
-      return MedicinalProductContraindication.convertMedicinalProductContraindication((org.hl7.fhir.r4.model.MedicinalProductContraindication) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductIndication)
-      return MedicinalProductIndication.convertMedicinalProductIndication((org.hl7.fhir.r4.model.MedicinalProductIndication) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductIngredient)
-      return MedicinalProductIngredient.convertMedicinalProductIngredient((org.hl7.fhir.r4.model.MedicinalProductIngredient) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductInteraction)
-      return MedicinalProductInteraction.convertMedicinalProductInteraction((org.hl7.fhir.r4.model.MedicinalProductInteraction) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductManufactured)
-      return MedicinalProductManufactured.convertMedicinalProductManufactured((org.hl7.fhir.r4.model.MedicinalProductManufactured) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductPackaged)
-      return MedicinalProductPackaged.convertMedicinalProductPackaged((org.hl7.fhir.r4.model.MedicinalProductPackaged) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductPharmaceutical)
-      return MedicinalProductPharmaceutical.convertMedicinalProductPharmaceutical((org.hl7.fhir.r4.model.MedicinalProductPharmaceutical) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProductUndesirableEffect)
-      return MedicinalProductUndesirableEffect.convertMedicinalProductUndesirableEffect((org.hl7.fhir.r4.model.MedicinalProductUndesirableEffect) src);
     if (src instanceof org.hl7.fhir.r4.model.MessageDefinition)
       return MessageDefinition.convertMessageDefinition((org.hl7.fhir.r4.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.MessageHeader)
@@ -3512,18 +3486,12 @@ public class VersionConvertor_40_50 {
       return RelatedPerson.convertRelatedPerson((org.hl7.fhir.r4.model.RelatedPerson) src);
     if (src instanceof org.hl7.fhir.r4.model.RequestGroup)
       return RequestGroup.convertRequestGroup((org.hl7.fhir.r4.model.RequestGroup) src);
-    if (src instanceof org.hl7.fhir.r4.model.ResearchDefinition)
-      return ResearchDefinition.convertResearchDefinition((org.hl7.fhir.r4.model.ResearchDefinition) src);
-    if (src instanceof org.hl7.fhir.r4.model.ResearchElementDefinition)
-      return ResearchElementDefinition.convertResearchElementDefinition((org.hl7.fhir.r4.model.ResearchElementDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.ResearchStudy)
       return ResearchStudy.convertResearchStudy((org.hl7.fhir.r4.model.ResearchStudy) src);
     if (src instanceof org.hl7.fhir.r4.model.ResearchSubject)
       return ResearchSubject.convertResearchSubject((org.hl7.fhir.r4.model.ResearchSubject) src);
     if (src instanceof org.hl7.fhir.r4.model.RiskAssessment)
       return RiskAssessment.convertRiskAssessment((org.hl7.fhir.r4.model.RiskAssessment) src);
-    if (src instanceof org.hl7.fhir.r4.model.RiskEvidenceSynthesis)
-      return RiskEvidenceSynthesis.convertRiskEvidenceSynthesis((org.hl7.fhir.r4.model.RiskEvidenceSynthesis) src);
     if (src instanceof org.hl7.fhir.r4.model.Schedule)
       return Schedule.convertSchedule((org.hl7.fhir.r4.model.Schedule) src);
     if (src instanceof org.hl7.fhir.r4.model.SearchParameter)
@@ -3540,8 +3508,8 @@ public class VersionConvertor_40_50 {
       return StructureDefinition.convertStructureDefinition((org.hl7.fhir.r4.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.StructureMap)
       return StructureMap.convertStructureMap((org.hl7.fhir.r4.model.StructureMap) src);
-    if (src instanceof org.hl7.fhir.r4.model.Subscription)
-      return Subscription.convertSubscription((org.hl7.fhir.r4.model.Subscription) src);
+//    if (src instanceof org.hl7.fhir.r4.model.Subscription)
+//      return Subscription.convertSubscription((org.hl7.fhir.r4.model.Subscription) src);
     if (src instanceof org.hl7.fhir.r4.model.Substance)
       return Substance.convertSubstance((org.hl7.fhir.r4.model.Substance) src);
     if (src instanceof org.hl7.fhir.r4.model.SubstanceNucleicAcid)
@@ -3554,8 +3522,6 @@ public class VersionConvertor_40_50 {
       return SubstanceReferenceInformation.convertSubstanceReferenceInformation((org.hl7.fhir.r4.model.SubstanceReferenceInformation) src);
     if (src instanceof org.hl7.fhir.r4.model.SubstanceSourceMaterial)
       return SubstanceSourceMaterial.convertSubstanceSourceMaterial((org.hl7.fhir.r4.model.SubstanceSourceMaterial) src);
-    if (src instanceof org.hl7.fhir.r4.model.SubstanceSpecification)
-      return SubstanceSpecification.convertSubstanceSpecification((org.hl7.fhir.r4.model.SubstanceSpecification) src);
     if (src instanceof org.hl7.fhir.r4.model.SupplyDelivery)
       return SupplyDelivery.convertSupplyDelivery((org.hl7.fhir.r4.model.SupplyDelivery) src);
     if (src instanceof org.hl7.fhir.r4.model.SupplyRequest)
@@ -3586,8 +3552,8 @@ public class VersionConvertor_40_50 {
       return Account.convertAccount((org.hl7.fhir.r5.model.Account) src);
     if (src instanceof org.hl7.fhir.r5.model.ActivityDefinition)
       return ActivityDefinition.convertActivityDefinition((org.hl7.fhir.r5.model.ActivityDefinition) src);
-    if (src instanceof org.hl7.fhir.r5.model.AdverseEvent)
-      return AdverseEvent.convertAdverseEvent((org.hl7.fhir.r5.model.AdverseEvent) src);
+//    if (src instanceof org.hl7.fhir.r5.model.AdverseEvent)
+//      return AdverseEvent.convertAdverseEvent((org.hl7.fhir.r5.model.AdverseEvent) src);
     if (src instanceof org.hl7.fhir.r5.model.AllergyIntolerance)
       return AllergyIntolerance.convertAllergyIntolerance((org.hl7.fhir.r5.model.AllergyIntolerance) src);
     if (src instanceof org.hl7.fhir.r5.model.Appointment)
@@ -3612,8 +3578,8 @@ public class VersionConvertor_40_50 {
       return CarePlan.convertCarePlan((org.hl7.fhir.r5.model.CarePlan) src);
     if (src instanceof org.hl7.fhir.r5.model.CareTeam)
       return CareTeam.convertCareTeam((org.hl7.fhir.r5.model.CareTeam) src);
-    if (src instanceof org.hl7.fhir.r5.model.CatalogEntry)
-      return CatalogEntry.convertCatalogEntry((org.hl7.fhir.r5.model.CatalogEntry) src);
+//    if (src instanceof org.hl7.fhir.r5.model.CatalogEntry)
+//      return CatalogEntry.convertCatalogEntry((org.hl7.fhir.r5.model.CatalogEntry) src);
     if (src instanceof org.hl7.fhir.r5.model.ChargeItem)
       return ChargeItem.convertChargeItem((org.hl7.fhir.r5.model.ChargeItem) src);
     if (src instanceof org.hl7.fhir.r5.model.ChargeItemDefinition)
@@ -3666,8 +3632,6 @@ public class VersionConvertor_40_50 {
       return DocumentManifest.convertDocumentManifest((org.hl7.fhir.r5.model.DocumentManifest) src);
     if (src instanceof org.hl7.fhir.r5.model.DocumentReference)
       return DocumentReference.convertDocumentReference((org.hl7.fhir.r5.model.DocumentReference) src);
-    if (src instanceof org.hl7.fhir.r5.model.EffectEvidenceSynthesis)
-      return EffectEvidenceSynthesis.convertEffectEvidenceSynthesis((org.hl7.fhir.r5.model.EffectEvidenceSynthesis) src);
     if (src instanceof org.hl7.fhir.r5.model.Encounter)
       return Encounter.convertEncounter((org.hl7.fhir.r5.model.Encounter) src);
     if (src instanceof org.hl7.fhir.r5.model.Endpoint)
@@ -3680,10 +3644,6 @@ public class VersionConvertor_40_50 {
       return EpisodeOfCare.convertEpisodeOfCare((org.hl7.fhir.r5.model.EpisodeOfCare) src);
     if (src instanceof org.hl7.fhir.r5.model.EventDefinition)
       return EventDefinition.convertEventDefinition((org.hl7.fhir.r5.model.EventDefinition) src);
-    if (src instanceof org.hl7.fhir.r5.model.Evidence)
-      return Evidence.convertEvidence((org.hl7.fhir.r5.model.Evidence) src);
-    if (src instanceof org.hl7.fhir.r5.model.EvidenceVariable)
-      return EvidenceVariable.convertEvidenceVariable((org.hl7.fhir.r5.model.EvidenceVariable) src);
     if (src instanceof org.hl7.fhir.r5.model.ExampleScenario)
       return ExampleScenario.convertExampleScenario((org.hl7.fhir.r5.model.ExampleScenario) src);
     if (src instanceof org.hl7.fhir.r5.model.ExplanationOfBenefit)
@@ -3728,8 +3688,8 @@ public class VersionConvertor_40_50 {
       return Measure.convertMeasure((org.hl7.fhir.r5.model.Measure) src);
     if (src instanceof org.hl7.fhir.r5.model.MeasureReport)
       return MeasureReport.convertMeasureReport((org.hl7.fhir.r5.model.MeasureReport) src);
-    if (src instanceof org.hl7.fhir.r5.model.Media)
-      return Media.convertMedia((org.hl7.fhir.r5.model.Media) src);
+    if (src instanceof org.hl7.fhir.r5.model.DocumentReference) // todo: will never get here (doesn't work anyway)
+      return Media.convertMedia((org.hl7.fhir.r5.model.DocumentReference) src);
     if (src instanceof org.hl7.fhir.r5.model.Medication)
       return Medication.convertMedication((org.hl7.fhir.r5.model.Medication) src);
     if (src instanceof org.hl7.fhir.r5.model.MedicationAdministration)
@@ -3740,28 +3700,8 @@ public class VersionConvertor_40_50 {
       return MedicationKnowledge.convertMedicationKnowledge((org.hl7.fhir.r5.model.MedicationKnowledge) src);
     if (src instanceof org.hl7.fhir.r5.model.MedicationRequest)
       return MedicationRequest.convertMedicationRequest((org.hl7.fhir.r5.model.MedicationRequest) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicationStatement)
-      return MedicationStatement.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationStatement) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProduct)
-      return MedicinalProduct.convertMedicinalProduct((org.hl7.fhir.r5.model.MedicinalProduct) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductAuthorization)
-      return MedicinalProductAuthorization.convertMedicinalProductAuthorization((org.hl7.fhir.r5.model.MedicinalProductAuthorization) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductContraindication)
-      return MedicinalProductContraindication.convertMedicinalProductContraindication((org.hl7.fhir.r5.model.MedicinalProductContraindication) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductIndication)
-      return MedicinalProductIndication.convertMedicinalProductIndication((org.hl7.fhir.r5.model.MedicinalProductIndication) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductIngredient)
-      return MedicinalProductIngredient.convertMedicinalProductIngredient((org.hl7.fhir.r5.model.MedicinalProductIngredient) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductInteraction)
-      return MedicinalProductInteraction.convertMedicinalProductInteraction((org.hl7.fhir.r5.model.MedicinalProductInteraction) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductManufactured)
-      return MedicinalProductManufactured.convertMedicinalProductManufactured((org.hl7.fhir.r5.model.MedicinalProductManufactured) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductPackaged)
-      return MedicinalProductPackaged.convertMedicinalProductPackaged((org.hl7.fhir.r5.model.MedicinalProductPackaged) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductPharmaceutical)
-      return MedicinalProductPharmaceutical.convertMedicinalProductPharmaceutical((org.hl7.fhir.r5.model.MedicinalProductPharmaceutical) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductUndesirableEffect)
-      return MedicinalProductUndesirableEffect.convertMedicinalProductUndesirableEffect((org.hl7.fhir.r5.model.MedicinalProductUndesirableEffect) src);
+    if (src instanceof org.hl7.fhir.r5.model.MedicationUsage)
+      return MedicationStatement.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationUsage) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageDefinition)
       return MessageDefinition.convertMessageDefinition((org.hl7.fhir.r5.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageHeader)
@@ -3810,18 +3750,12 @@ public class VersionConvertor_40_50 {
       return RelatedPerson.convertRelatedPerson((org.hl7.fhir.r5.model.RelatedPerson) src);
     if (src instanceof org.hl7.fhir.r5.model.RequestGroup)
       return RequestGroup.convertRequestGroup((org.hl7.fhir.r5.model.RequestGroup) src);
-    if (src instanceof org.hl7.fhir.r5.model.ResearchDefinition)
-      return ResearchDefinition.convertResearchDefinition((org.hl7.fhir.r5.model.ResearchDefinition) src);
-    if (src instanceof org.hl7.fhir.r5.model.ResearchElementDefinition)
-      return ResearchElementDefinition.convertResearchElementDefinition((org.hl7.fhir.r5.model.ResearchElementDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.ResearchStudy)
       return ResearchStudy.convertResearchStudy((org.hl7.fhir.r5.model.ResearchStudy) src);
     if (src instanceof org.hl7.fhir.r5.model.ResearchSubject)
       return ResearchSubject.convertResearchSubject((org.hl7.fhir.r5.model.ResearchSubject) src);
     if (src instanceof org.hl7.fhir.r5.model.RiskAssessment)
       return RiskAssessment.convertRiskAssessment((org.hl7.fhir.r5.model.RiskAssessment) src);
-    if (src instanceof org.hl7.fhir.r5.model.RiskEvidenceSynthesis)
-      return RiskEvidenceSynthesis.convertRiskEvidenceSynthesis((org.hl7.fhir.r5.model.RiskEvidenceSynthesis) src);
     if (src instanceof org.hl7.fhir.r5.model.Schedule)
       return Schedule.convertSchedule((org.hl7.fhir.r5.model.Schedule) src);
     if (src instanceof org.hl7.fhir.r5.model.SearchParameter)
@@ -3838,8 +3772,8 @@ public class VersionConvertor_40_50 {
       return StructureDefinition.convertStructureDefinition((org.hl7.fhir.r5.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.StructureMap)
       return StructureMap.convertStructureMap((org.hl7.fhir.r5.model.StructureMap) src);
-    if (src instanceof org.hl7.fhir.r5.model.Subscription)
-      return Subscription.convertSubscription((org.hl7.fhir.r5.model.Subscription) src);
+//    if (src instanceof org.hl7.fhir.r5.model.Subscription)
+//      return Subscription.convertSubscription((org.hl7.fhir.r5.model.Subscription) src);
     if (src instanceof org.hl7.fhir.r5.model.Substance)
       return Substance.convertSubstance((org.hl7.fhir.r5.model.Substance) src);
     if (src instanceof org.hl7.fhir.r5.model.SubstanceNucleicAcid)
@@ -3852,8 +3786,6 @@ public class VersionConvertor_40_50 {
       return SubstanceReferenceInformation.convertSubstanceReferenceInformation((org.hl7.fhir.r5.model.SubstanceReferenceInformation) src);
     if (src instanceof org.hl7.fhir.r5.model.SubstanceSourceMaterial)
       return SubstanceSourceMaterial.convertSubstanceSourceMaterial((org.hl7.fhir.r5.model.SubstanceSourceMaterial) src);
-    if (src instanceof org.hl7.fhir.r5.model.SubstanceSpecification)
-      return SubstanceSpecification.convertSubstanceSpecification((org.hl7.fhir.r5.model.SubstanceSpecification) src);
     if (src instanceof org.hl7.fhir.r5.model.SupplyDelivery)
       return SupplyDelivery.convertSupplyDelivery((org.hl7.fhir.r5.model.SupplyDelivery) src);
     if (src instanceof org.hl7.fhir.r5.model.SupplyRequest)

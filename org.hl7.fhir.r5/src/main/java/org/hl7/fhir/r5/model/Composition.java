@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.).
  */
@@ -729,12 +731,7 @@ public class Composition extends DomainResource {
         @Description(shortDefinition="Who attested the composition", formalDefinition="Who attested the composition in the specified way." )
         protected Reference party;
 
-        /**
-         * The actual object that is the target of the reference (Who attested the composition in the specified way.)
-         */
-        protected Resource partyTarget;
-
-        private static final long serialVersionUID = -1917768205L;
+        private static final long serialVersionUID = 1917167918L;
 
     /**
      * Constructor
@@ -869,21 +866,6 @@ public class Composition extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #party} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who attested the composition in the specified way.)
-         */
-        public Resource getPartyTarget() { 
-          return this.partyTarget;
-        }
-
-        /**
-         * @param value {@link #party} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who attested the composition in the specified way.)
-         */
-        public CompositionAttesterComponent setPartyTarget(Resource value) { 
-          this.partyTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("mode", "code", "The type of attestation the authenticator offers.", 0, 1, mode));
@@ -950,7 +932,7 @@ public class Composition extends DomainResource {
         switch (hash) {
         case 3357091:  return getModeElement();
         case 3560141:  return getTimeElement();
-        case 106437350:  return getParty(); 
+        case 106437350:  return getParty();
         default: return super.makeProperty(hash, name);
         }
 
@@ -986,10 +968,14 @@ public class Composition extends DomainResource {
       public CompositionAttesterComponent copy() {
         CompositionAttesterComponent dst = new CompositionAttesterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CompositionAttesterComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.time = time == null ? null : time.copy();
         dst.party = party == null ? null : party.copy();
-        return dst;
       }
 
       @Override
@@ -1215,8 +1201,8 @@ public class Composition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return getCodeElement();
-        case -815579825:  return getTarget(); 
-        case -880905839:  return getTarget(); 
+        case -815579825:  return getTarget();
+        case -880905839:  return getTarget();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1252,9 +1238,13 @@ public class Composition extends DomainResource {
       public CompositionRelatesToComponent copy() {
         CompositionRelatesToComponent dst = new CompositionRelatesToComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CompositionRelatesToComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.target = target == null ? null : target.copy();
-        return dst;
       }
 
       @Override
@@ -1311,13 +1301,8 @@ public class Composition extends DomainResource {
         @Child(name = "detail", type = {Reference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="The event(s) being documented", formalDefinition="The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy." )
         protected List<Reference> detail;
-        /**
-         * The actual objects that are the target of the reference (The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy.)
-         */
-        protected List<Resource> detailTarget;
 
-
-        private static final long serialVersionUID = -1581379774L;
+        private static final long serialVersionUID = 1593079240L;
 
     /**
      * Constructor
@@ -1456,16 +1441,6 @@ public class Composition extends DomainResource {
           return getDetail().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, code));
@@ -1529,7 +1504,7 @@ public class Composition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return addCode(); 
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1566,6 +1541,11 @@ public class Composition extends DomainResource {
       public CompositionEventComponent copy() {
         CompositionEventComponent dst = new CompositionEventComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CompositionEventComponent dst) {
+        super.copyValues(dst);
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : code)
@@ -1577,7 +1557,6 @@ public class Composition extends DomainResource {
           for (Reference i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1635,11 +1614,6 @@ public class Composition extends DomainResource {
         @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Device.class, Patient.class, RelatedPerson.class, Organization.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Who and/or what authored the section", formalDefinition="Identifies who is responsible for the information in this section, not necessarily who typed it in." )
         protected List<Reference> author;
-        /**
-         * The actual objects that are the target of the reference (Identifies who is responsible for the information in this section, not necessarily who typed it in.)
-         */
-        protected List<Resource> authorTarget;
-
 
         /**
          * The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).
@@ -1647,11 +1621,6 @@ public class Composition extends DomainResource {
         @Child(name = "focus", type = {Reference.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who/what the section is about, when it is not about the subject of composition", formalDefinition="The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources)." )
         protected Reference focus;
-
-        /**
-         * The actual object that is the target of the reference (The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).)
-         */
-        protected Resource focusTarget;
 
         /**
          * A human-readable narrative that contains the attested content of the section, used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it "clinically safe" for a human to just read the narrative.
@@ -1682,11 +1651,6 @@ public class Composition extends DomainResource {
         @Child(name = "entry", type = {Reference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A reference to data that supports this section", formalDefinition="A reference to the actual resource from which the narrative in the section is derived." )
         protected List<Reference> entry;
-        /**
-         * The actual objects that are the target of the reference (A reference to the actual resource from which the narrative in the section is derived.)
-         */
-        protected List<Resource> entryTarget;
-
 
         /**
          * If the section is empty, why the list is empty. An empty section typically has some text explaining the empty reason.
@@ -1703,7 +1667,7 @@ public class Composition extends DomainResource {
         @Description(shortDefinition="Nested Section", formalDefinition="A nested sub-section within this section." )
         protected List<SectionComponent> section;
 
-        private static final long serialVersionUID = -797396954L;
+        private static final long serialVersionUID = -847581996L;
 
     /**
      * Constructor
@@ -1839,16 +1803,6 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getAuthorTarget() { 
-          if (this.authorTarget == null)
-            this.authorTarget = new ArrayList<Resource>();
-          return this.authorTarget;
-        }
-
-        /**
          * @return {@link #focus} (The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).)
          */
         public Reference getFocus() { 
@@ -1869,21 +1823,6 @@ public class Composition extends DomainResource {
          */
         public SectionComponent setFocus(Reference value) { 
           this.focus = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #focus} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).)
-         */
-        public Resource getFocusTarget() { 
-          return this.focusTarget;
-        }
-
-        /**
-         * @param value {@link #focus} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).)
-         */
-        public SectionComponent setFocusTarget(Resource value) { 
-          this.focusTarget = value;
           return this;
         }
 
@@ -2035,16 +1974,6 @@ public class Composition extends DomainResource {
             addEntry();
           }
           return getEntry().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getEntryTarget() { 
-          if (this.entryTarget == null)
-            this.entryTarget = new ArrayList<Resource>();
-          return this.entryTarget;
         }
 
         /**
@@ -2245,14 +2174,14 @@ public class Composition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 110371416:  return getTitleElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1406328437:  return addAuthor(); 
-        case 97604824:  return getFocus(); 
-        case 3556653:  return getText(); 
+        case 97604824:  return getFocus();
+        case 3556653:  return getText();
         case 3357091:  return getModeElement();
-        case -391079516:  return getOrderedBy(); 
+        case -391079516:  return getOrderedBy();
         case 96667762:  return addEntry(); 
-        case 1140135409:  return getEmptyReason(); 
+        case 1140135409:  return getEmptyReason();
         case 1970241253:  return addSection(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2321,6 +2250,11 @@ public class Composition extends DomainResource {
       public SectionComponent copy() {
         SectionComponent dst = new SectionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SectionComponent dst) {
+        super.copyValues(dst);
         dst.title = title == null ? null : title.copy();
         dst.code = code == null ? null : code.copy();
         if (author != null) {
@@ -2343,7 +2277,6 @@ public class Composition extends DomainResource {
           for (SectionComponent i : section)
             dst.section.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2420,21 +2353,11 @@ public class Composition extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Who or what the composition is about. The composition can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of livestock, or a set of patients that share a common exposure).)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * Describes the clinical encounter or type of care this documentation is associated with.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Context of the Composition", formalDefinition="Describes the clinical encounter or type of care this documentation is associated with." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (Describes the clinical encounter or type of care this documentation is associated with.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The composition editing time, when the composition was last logically changed by the author.
@@ -2449,11 +2372,6 @@ public class Composition extends DomainResource {
     @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Device.class, Patient.class, RelatedPerson.class, Organization.class}, order=7, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who and/or what authored the composition", formalDefinition="Identifies who is responsible for the information in the composition, not necessarily who typed it in." )
     protected List<Reference> author;
-    /**
-     * The actual objects that are the target of the reference (Identifies who is responsible for the information in the composition, not necessarily who typed it in.)
-     */
-    protected List<Resource> authorTarget;
-
 
     /**
      * Official human-readable label for the composition.
@@ -2485,11 +2403,6 @@ public class Composition extends DomainResource {
     protected Reference custodian;
 
     /**
-     * The actual object that is the target of the reference (Identifies the organization or group who is responsible for ongoing maintenance of and access to the composition/document information.)
-     */
-    protected Organization custodianTarget;
-
-    /**
      * Relationships that this composition has with other compositions or documents that already exist.
      */
     @Child(name = "relatesTo", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -2510,7 +2423,7 @@ public class Composition extends DomainResource {
     @Description(shortDefinition="Composition is broken into sections", formalDefinition="The root of the sections that make up the composition." )
     protected List<SectionComponent> section;
 
-    private static final long serialVersionUID = -1490206663L;
+    private static final long serialVersionUID = -860310749L;
 
   /**
    * Constructor
@@ -2701,21 +2614,6 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who or what the composition is about. The composition can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of livestock, or a set of patients that share a common exposure).)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who or what the composition is about. The composition can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of livestock, or a set of patients that share a common exposure).)
-     */
-    public Composition setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (Describes the clinical encounter or type of care this documentation is associated with.)
      */
     public Reference getEncounter() { 
@@ -2736,26 +2634,6 @@ public class Composition extends DomainResource {
      */
     public Composition setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Describes the clinical encounter or type of care this documentation is associated with.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Composition.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Describes the clinical encounter or type of care this documentation is associated with.)
-     */
-    public Composition setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -2855,16 +2733,6 @@ public class Composition extends DomainResource {
         addAuthor();
       }
       return getAuthor().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
     }
 
     /**
@@ -3035,26 +2903,6 @@ public class Composition extends DomainResource {
      */
     public Composition setCustodian(Reference value) { 
       this.custodian = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #custodian} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the organization or group who is responsible for ongoing maintenance of and access to the composition/document information.)
-     */
-    public Organization getCustodianTarget() { 
-      if (this.custodianTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Composition.custodian");
-        else if (Configuration.doAutoCreate())
-          this.custodianTarget = new Organization(); // aa
-      return this.custodianTarget;
-    }
-
-    /**
-     * @param value {@link #custodian} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the organization or group who is responsible for ongoing maintenance of and access to the composition/document information.)
-     */
-    public Composition setCustodianTarget(Organization value) { 
-      this.custodianTarget = value;
       return this;
     }
 
@@ -3379,18 +3227,18 @@ public class Composition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 50511102:  return addCategory(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
         case 3076014:  return getDateElement();
         case -1406328437:  return addAuthor(); 
         case 110371416:  return getTitleElement();
         case -1923018202:  return getConfidentialityElement();
         case 542920370:  return addAttester(); 
-        case 1611297262:  return getCustodian(); 
+        case 1611297262:  return getCustodian();
         case -7765931:  return addRelatesTo(); 
         case 96891546:  return addEvent(); 
         case 1970241253:  return addSection(); 
@@ -3486,6 +3334,11 @@ public class Composition extends DomainResource {
       public Composition copy() {
         Composition dst = new Composition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Composition dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.status = status == null ? null : status.copy();
         dst.type = type == null ? null : type.copy();
@@ -3525,7 +3378,6 @@ public class Composition extends DomainResource {
           for (SectionComponent i : section)
             dst.section.add(i.copy());
         };
-        return dst;
       }
 
       protected Composition typedCopy() {

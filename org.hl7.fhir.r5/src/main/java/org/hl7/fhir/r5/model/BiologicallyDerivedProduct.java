@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -53,16 +51,21 @@ import java.math.BigDecimal;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A material substance originating from a biological entity intended to be transplanted or infused
 into another (possibly the same) biological entity.
@@ -420,21 +423,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
         protected Reference collector;
 
         /**
-         * The actual object that is the target of the reference (Healthcare professional who is performing the collection.)
-         */
-        protected Resource collectorTarget;
-
-        /**
          * The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.
          */
         @Child(name = "source", type = {Patient.class, Organization.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who is product from", formalDefinition="The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product." )
         protected Reference source;
-
-        /**
-         * The actual object that is the target of the reference (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
-         */
-        protected Resource sourceTarget;
 
         /**
          * Time of product collection.
@@ -443,7 +436,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         @Description(shortDefinition="Time of product collection", formalDefinition="Time of product collection." )
         protected Type collected;
 
-        private static final long serialVersionUID = 892130089L;
+        private static final long serialVersionUID = -2115607425L;
 
     /**
      * Constructor
@@ -477,21 +470,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @return {@link #collector} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Healthcare professional who is performing the collection.)
-         */
-        public Resource getCollectorTarget() { 
-          return this.collectorTarget;
-        }
-
-        /**
-         * @param value {@link #collector} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Healthcare professional who is performing the collection.)
-         */
-        public BiologicallyDerivedProductCollectionComponent setCollectorTarget(Resource value) { 
-          this.collectorTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #source} (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
          */
         public Reference getSource() { 
@@ -512,21 +490,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         public BiologicallyDerivedProductCollectionComponent setSource(Reference value) { 
           this.source = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
-         */
-        public Resource getSourceTarget() { 
-          return this.sourceTarget;
-        }
-
-        /**
-         * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
-         */
-        public BiologicallyDerivedProductCollectionComponent setSourceTarget(Resource value) { 
-          this.sourceTarget = value;
           return this;
         }
 
@@ -646,10 +609,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1883491469:  return getCollector(); 
-        case -896505829:  return getSource(); 
-        case 1632037015:  return getCollected(); 
-        case 1883491145:  return getCollected(); 
+        case 1883491469:  return getCollector();
+        case -896505829:  return getSource();
+        case 1632037015:  return getCollected();
+        case 1883491145:  return getCollected();
         default: return super.makeProperty(hash, name);
         }
 
@@ -691,10 +654,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductCollectionComponent copy() {
         BiologicallyDerivedProductCollectionComponent dst = new BiologicallyDerivedProductCollectionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductCollectionComponent dst) {
+        super.copyValues(dst);
         dst.collector = collector == null ? null : collector.copy();
         dst.source = source == null ? null : source.copy();
         dst.collected = collected == null ? null : collected.copy();
-        return dst;
       }
 
       @Override
@@ -755,18 +722,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
         protected Reference additive;
 
         /**
-         * The actual object that is the target of the reference (Substance added during processing.)
-         */
-        protected Substance additiveTarget;
-
-        /**
          * Time of processing.
          */
         @Child(name = "time", type = {DateTimeType.class, Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time of processing", formalDefinition="Time of processing." )
         protected Type time;
 
-        private static final long serialVersionUID = -1007041216L;
+        private static final long serialVersionUID = 1933636455L;
 
     /**
      * Constructor
@@ -869,26 +831,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         public BiologicallyDerivedProductProcessingComponent setAdditive(Reference value) { 
           this.additive = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #additive} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Substance added during processing.)
-         */
-        public Substance getAdditiveTarget() { 
-          if (this.additiveTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductProcessingComponent.additive");
-            else if (Configuration.doAutoCreate())
-              this.additiveTarget = new Substance(); // aa
-          return this.additiveTarget;
-        }
-
-        /**
-         * @param value {@link #additive} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Substance added during processing.)
-         */
-        public BiologicallyDerivedProductProcessingComponent setAdditiveTarget(Substance value) { 
-          this.additiveTarget = value;
           return this;
         }
 
@@ -1017,10 +959,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
-        case -1095204141:  return getProcedure(); 
-        case -1226589236:  return getAdditive(); 
-        case -1313930605:  return getTime(); 
-        case 3560141:  return getTime(); 
+        case -1095204141:  return getProcedure();
+        case -1226589236:  return getAdditive();
+        case -1313930605:  return getTime();
+        case 3560141:  return getTime();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1066,11 +1008,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductProcessingComponent copy() {
         BiologicallyDerivedProductProcessingComponent dst = new BiologicallyDerivedProductProcessingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductProcessingComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.procedure = procedure == null ? null : procedure.copy();
         dst.additive = additive == null ? null : additive.copy();
         dst.time = time == null ? null : time.copy();
-        return dst;
       }
 
       @Override
@@ -1289,8 +1235,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
-        case -1313930605:  return getTime(); 
-        case 3560141:  return getTime(); 
+        case -1313930605:  return getTime();
+        case 3560141:  return getTime();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1326,9 +1272,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductManipulationComponent copy() {
         BiologicallyDerivedProductManipulationComponent dst = new BiologicallyDerivedProductManipulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductManipulationComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.time = time == null ? null : time.copy();
-        return dst;
       }
 
       @Override
@@ -1666,7 +1616,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -1724546052:  return getDescriptionElement();
         case 321701236:  return getTemperatureElement();
         case 109250890:  return getScaleElement();
-        case -1992012396:  return getDuration(); 
+        case -1992012396:  return getDuration();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1706,11 +1656,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductStorageComponent copy() {
         BiologicallyDerivedProductStorageComponent dst = new BiologicallyDerivedProductStorageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductStorageComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.temperature = temperature == null ? null : temperature.copy();
         dst.scale = scale == null ? null : scale.copy();
         dst.duration = duration == null ? null : duration.copy();
-        return dst;
       }
 
       @Override
@@ -1783,11 +1737,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Child(name = "request", type = {ServiceRequest.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Procedure request", formalDefinition="Procedure request to obtain this biologically derived product." )
     protected List<Reference> request;
-    /**
-     * The actual objects that are the target of the reference (Procedure request to obtain this biologically derived product.)
-     */
-    protected List<ServiceRequest> requestTarget;
-
 
     /**
      * Number of discrete units within this product.
@@ -1802,11 +1751,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Child(name = "parent", type = {BiologicallyDerivedProduct.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="BiologicallyDerivedProduct parent", formalDefinition="Parent product (if any)." )
     protected List<Reference> parent;
-    /**
-     * The actual objects that are the target of the reference (Parent product (if any).)
-     */
-    protected List<BiologicallyDerivedProduct> parentTarget;
-
 
     /**
      * How this product was collected.
@@ -1836,7 +1780,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Description(shortDefinition="Product storage", formalDefinition="Product storage." )
     protected List<BiologicallyDerivedProductStorageComponent> storage;
 
-    private static final long serialVersionUID = -1367034547L;
+    private static final long serialVersionUID = 921278650L;
 
   /**
    * Constructor
@@ -2074,28 +2018,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getRequestTarget() { 
-      if (this.requestTarget == null)
-        this.requestTarget = new ArrayList<ServiceRequest>();
-      return this.requestTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addRequestTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.requestTarget == null)
-        this.requestTarget = new ArrayList<ServiceRequest>();
-      this.requestTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #quantity} (Number of discrete units within this product.). This is the underlying object with id, value and extensions. The accessor "getQuantity" gives direct access to the value
      */
     public IntegerType getQuantityElement() { 
@@ -2191,28 +2113,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
         addParent();
       }
       return getParent().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<BiologicallyDerivedProduct> getParentTarget() { 
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
-      return this.parentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public BiologicallyDerivedProduct addParentTarget() { 
-      BiologicallyDerivedProduct r = new BiologicallyDerivedProduct();
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
-      this.parentTarget.add(r);
-      return r;
     }
 
     /**
@@ -2501,14 +2401,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case 197299981:  return getProductCategoryElement();
-        case -1492131972:  return getProductCode(); 
+        case -1492131972:  return getProductCode();
         case -892481550:  return getStatusElement();
         case 1095692943:  return addRequest(); 
         case -1285004149:  return getQuantityElement();
         case -995424086:  return addParent(); 
-        case -1741312354:  return getCollection(); 
+        case -1741312354:  return getCollection();
         case 422194963:  return addProcessing(); 
-        case -696214627:  return getManipulation(); 
+        case -696214627:  return getManipulation();
         case -1884274053:  return addStorage(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2584,6 +2484,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProduct copy() {
         BiologicallyDerivedProduct dst = new BiologicallyDerivedProduct();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProduct dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2615,7 +2520,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
           for (BiologicallyDerivedProductStorageComponent i : storage)
             dst.storage.add(i.copy());
         };
-        return dst;
       }
 
       protected BiologicallyDerivedProduct typedCopy() {

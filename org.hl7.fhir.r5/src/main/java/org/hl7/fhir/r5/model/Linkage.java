@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Identifies two or more records (resource instances) that refer to the same real-world "occurrence".
  */
@@ -192,12 +196,7 @@ public class Linkage extends DomainResource {
         @Description(shortDefinition="Resource being linked", formalDefinition="The resource instance being linked as part of the group." )
         protected Reference resource;
 
-        /**
-         * The actual object that is the target of the reference (The resource instance being linked as part of the group.)
-         */
-        protected Resource resourceTarget;
-
-        private static final long serialVersionUID = -209332008L;
+        private static final long serialVersionUID = 527428511L;
 
     /**
      * Constructor
@@ -284,21 +283,6 @@ public class Linkage extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #resource} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The resource instance being linked as part of the group.)
-         */
-        public Resource getResourceTarget() { 
-          return this.resourceTarget;
-        }
-
-        /**
-         * @param value {@link #resource} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The resource instance being linked as part of the group.)
-         */
-        public LinkageItemComponent setResourceTarget(Resource value) { 
-          this.resourceTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "code", "Distinguishes which item is \"source of truth\" (if any) and which items are no longer considered to be current representations.", 0, 1, type));
@@ -356,7 +340,7 @@ public class Linkage extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case -341064690:  return getResource(); 
+        case -341064690:  return getResource();
         default: return super.makeProperty(hash, name);
         }
 
@@ -388,9 +372,13 @@ public class Linkage extends DomainResource {
       public LinkageItemComponent copy() {
         LinkageItemComponent dst = new LinkageItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(LinkageItemComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.resource = resource == null ? null : resource.copy();
-        return dst;
       }
 
       @Override
@@ -439,18 +427,13 @@ public class Linkage extends DomainResource {
     protected Reference author;
 
     /**
-     * The actual object that is the target of the reference (Identifies the user or organization responsible for asserting the linkages as well as the user or organization who establishes the context in which the nature of each linkage is evaluated.)
-     */
-    protected Resource authorTarget;
-
-    /**
      * Identifies which record considered as the reference to the same real-world occurrence as well as how the items should be evaluated within the collection of linked items.
      */
     @Child(name = "item", type = {}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Item to be linked", formalDefinition="Identifies which record considered as the reference to the same real-world occurrence as well as how the items should be evaluated within the collection of linked items." )
     protected List<LinkageItemComponent> item;
 
-    private static final long serialVersionUID = 25900306L;
+    private static final long serialVersionUID = 810520886L;
 
   /**
    * Constructor
@@ -525,21 +508,6 @@ public class Linkage extends DomainResource {
      */
     public Linkage setAuthor(Reference value) { 
       this.author = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the user or organization responsible for asserting the linkages as well as the user or organization who establishes the context in which the nature of each linkage is evaluated.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the user or organization responsible for asserting the linkages as well as the user or organization who establishes the context in which the nature of each linkage is evaluated.)
-     */
-    public Linkage setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
       return this;
     }
 
@@ -659,7 +627,7 @@ public class Linkage extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1422950650:  return getActiveElement();
-        case -1406328437:  return getAuthor(); 
+        case -1406328437:  return getAuthor();
         case 3242771:  return addItem(); 
         default: return super.makeProperty(hash, name);
         }
@@ -701,6 +669,11 @@ public class Linkage extends DomainResource {
       public Linkage copy() {
         Linkage dst = new Linkage();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Linkage dst) {
+        super.copyValues(dst);
         dst.active = active == null ? null : active.copy();
         dst.author = author == null ? null : author.copy();
         if (item != null) {
@@ -708,7 +681,6 @@ public class Linkage extends DomainResource {
           for (LinkageItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       protected Linkage typedCopy() {

@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -76,19 +75,19 @@ public enum AdverseEventCausalityMethod {
         public static AdverseEventCausalityMethod fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("ProbabilityScale".equals(codeString))
+        if ("probability-scale".equals(codeString))
           return PROBABILITYSCALE;
-        if ("Bayesian".equals(codeString))
+        if ("bayesian".equals(codeString))
           return BAYESIAN;
-        if ("Checklist".equals(codeString))
+        if ("checklist".equals(codeString))
           return CHECKLIST;
         throw new FHIRException("Unknown AdverseEventCausalityMethod code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case PROBABILITYSCALE: return "ProbabilityScale";
-            case BAYESIAN: return "Bayesian";
-            case CHECKLIST: return "Checklist";
+            case PROBABILITYSCALE: return "probability-scale";
+            case BAYESIAN: return "bayesian";
+            case CHECKLIST: return "checklist";
             default: return "?";
           }
         }

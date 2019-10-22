@@ -53,17 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Demographics and other administrative information about an individual or animal receiving care or other health-related services.
  */
@@ -241,18 +243,13 @@ public class Patient extends DomainResource {
         protected Reference organization;
 
         /**
-         * The actual object that is the target of the reference (Organization on behalf of which the contact is acting or for which the contact is working.)
-         */
-        protected Organization organizationTarget;
-
-        /**
          * The period during which this contact person or organization is valid to be contacted relating to this patient.
          */
         @Child(name = "period", type = {Period.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The period during which this contact person or organization is valid to be contacted relating to this patient", formalDefinition="The period during which this contact person or organization is valid to be contacted relating to this patient." )
         protected Period period;
 
-        private static final long serialVersionUID = 364269017L;
+        private static final long serialVersionUID = 117984384L;
 
     /**
      * Constructor
@@ -489,26 +486,6 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @return {@link #organization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Organization on behalf of which the contact is acting or for which the contact is working.)
-         */
-        public Organization getOrganizationTarget() { 
-          if (this.organizationTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ContactComponent.organization");
-            else if (Configuration.doAutoCreate())
-              this.organizationTarget = new Organization(); // aa
-          return this.organizationTarget;
-        }
-
-        /**
-         * @param value {@link #organization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Organization on behalf of which the contact is acting or for which the contact is working.)
-         */
-        public ContactComponent setOrganizationTarget(Organization value) { 
-          this.organizationTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #period} (The period during which this contact person or organization is valid to be contacted relating to this patient.)
          */
         public Period getPeriod() { 
@@ -629,12 +606,12 @@ public class Patient extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -261851592:  return addRelationship(); 
-        case 3373707:  return getName(); 
+        case 3373707:  return getName();
         case -1429363305:  return addTelecom(); 
-        case -1147692044:  return getAddress(); 
+        case -1147692044:  return getAddress();
         case -1249512767:  return getGenderElement();
-        case 1178922291:  return getOrganization(); 
-        case -991726143:  return getPeriod(); 
+        case 1178922291:  return getOrganization();
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -689,6 +666,11 @@ public class Patient extends DomainResource {
       public ContactComponent copy() {
         ContactComponent dst = new ContactComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContactComponent dst) {
+        super.copyValues(dst);
         if (relationship != null) {
           dst.relationship = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : relationship)
@@ -704,7 +686,6 @@ public class Patient extends DomainResource {
         dst.gender = gender == null ? null : gender.copy();
         dst.organization = organization == null ? null : organization.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -898,7 +879,7 @@ public class Patient extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1613589672:  return getLanguage(); 
+        case -1613589672:  return getLanguage();
         case -1294005119:  return getPreferredElement();
         default: return super.makeProperty(hash, name);
         }
@@ -931,9 +912,13 @@ public class Patient extends DomainResource {
       public PatientCommunicationComponent copy() {
         PatientCommunicationComponent dst = new PatientCommunicationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PatientCommunicationComponent dst) {
+        super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.preferred = preferred == null ? null : preferred.copy();
-        return dst;
       }
 
       @Override
@@ -977,11 +962,6 @@ public class Patient extends DomainResource {
         protected Reference other;
 
         /**
-         * The actual object that is the target of the reference (The other patient resource that the link refers to.)
-         */
-        protected Resource otherTarget;
-
-        /**
          * The type of link between this patient resource and another patient resource.
          */
         @Child(name = "type", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
@@ -989,7 +969,7 @@ public class Patient extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/link-type")
         protected Enumeration<LinkType> type;
 
-        private static final long serialVersionUID = 1083576633L;
+        private static final long serialVersionUID = 182421394L;
 
     /**
      * Constructor
@@ -1028,21 +1008,6 @@ public class Patient extends DomainResource {
          */
         public PatientLinkComponent setOther(Reference value) { 
           this.other = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #other} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The other patient resource that the link refers to.)
-         */
-        public Resource getOtherTarget() { 
-          return this.otherTarget;
-        }
-
-        /**
-         * @param value {@link #other} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The other patient resource that the link refers to.)
-         */
-        public PatientLinkComponent setOtherTarget(Resource value) { 
-          this.otherTarget = value;
           return this;
         }
 
@@ -1147,7 +1112,7 @@ public class Patient extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 106069776:  return getOther(); 
+        case 106069776:  return getOther();
         case 3575610:  return getTypeElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1180,9 +1145,13 @@ public class Patient extends DomainResource {
       public PatientLinkComponent copy() {
         PatientLinkComponent dst = new PatientLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PatientLinkComponent dst) {
+        super.copyValues(dst);
         dst.other = other == null ? null : other.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -1320,11 +1289,6 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     @Child(name = "generalPractitioner", type = {Organization.class, Practitioner.class, PractitionerRole.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Patient's nominated primary care provider", formalDefinition="Patient's nominated care provider." )
     protected List<Reference> generalPractitioner;
-    /**
-     * The actual objects that are the target of the reference (Patient's nominated care provider.)
-     */
-    protected List<Resource> generalPractitionerTarget;
-
 
     /**
      * Organization that is the custodian of the patient record.
@@ -1334,18 +1298,13 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     protected Reference managingOrganization;
 
     /**
-     * The actual object that is the target of the reference (Organization that is the custodian of the patient record.)
-     */
-    protected Organization managingOrganizationTarget;
-
-    /**
      * Link to another patient resource that concerns the same actual patient.
      */
     @Child(name = "link", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=true, summary=true)
     @Description(shortDefinition="Link to another patient resource that concerns the same actual person", formalDefinition="Link to another patient resource that concerns the same actual patient." )
     protected List<PatientLinkComponent> link;
 
-    private static final long serialVersionUID = 2138656939L;
+    private static final long serialVersionUID = -643781945L;
 
   /**
    * Constructor
@@ -2068,16 +2027,6 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getGeneralPractitionerTarget() { 
-      if (this.generalPractitionerTarget == null)
-        this.generalPractitionerTarget = new ArrayList<Resource>();
-      return this.generalPractitionerTarget;
-    }
-
-    /**
      * @return {@link #managingOrganization} (Organization that is the custodian of the patient record.)
      */
     public Reference getManagingOrganization() { 
@@ -2098,26 +2047,6 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
      */
     public Patient setManagingOrganization(Reference value) { 
       this.managingOrganization = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Organization that is the custodian of the patient record.)
-     */
-    public Organization getManagingOrganizationTarget() { 
-      if (this.managingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Patient.managingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization(); // aa
-      return this.managingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Organization that is the custodian of the patient record.)
-     */
-    public Patient setManagingOrganizationTarget(Organization value) { 
-      this.managingOrganizationTarget = value;
       return this;
     }
 
@@ -2354,17 +2283,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
         case -1429363305:  return addTelecom(); 
         case -1249512767:  return getGenderElement();
         case -1210031859:  return getBirthDateElement();
-        case -1311442804:  return getDeceased(); 
-        case 561497972:  return getDeceased(); 
+        case -1311442804:  return getDeceased();
+        case 561497972:  return getDeceased();
         case -1147692044:  return addAddress(); 
-        case 1756919302:  return getMaritalStatus(); 
-        case -1764672111:  return getMultipleBirth(); 
-        case -677369713:  return getMultipleBirth(); 
+        case 1756919302:  return getMaritalStatus();
+        case -1764672111:  return getMultipleBirth();
+        case -677369713:  return getMultipleBirth();
         case 106642994:  return addPhoto(); 
         case 951526432:  return addContact(); 
         case -1035284522:  return addCommunication(); 
         case 1488292898:  return addGeneralPractitioner(); 
-        case -2058947787:  return getManagingOrganization(); 
+        case -2058947787:  return getManagingOrganization();
         case 3321850:  return addLink(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2469,6 +2398,11 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
       public Patient copy() {
         Patient dst = new Patient();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Patient dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2521,7 +2455,6 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
           for (PatientLinkComponent i : link)
             dst.link.add(i.copy());
         };
-        return dst;
       }
 
       protected Patient typedCopy() {

@@ -51,16 +51,24 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+
+import java.util.Collections;
+import org.hl7.fhir.instance.model.api.IDomainResource;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
-import org.hl7.fhir.instance.model.api.IDomainResource;
-
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A resource that includes narrative, extensions, and contained resources.
  */
@@ -352,7 +360,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3556653:  return getText(); 
+        case 3556653:  return getText();
         case -410956685: throw new FHIRException("Cannot make property contained as it is not a complex type"); // Resource
         case -612557761:  return addExtension(); 
         case -298878168:  return addModifierExtension(); 
@@ -447,47 +455,46 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
 // added from java-adornments.txt:
 
-      public void checkNoModifiers(String noun, String verb) throws FHIRException {
+  public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {
           throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);
         }
+        
+  }
 
-      }
-
-      public void addExtension(String url, Type value) {
-        Extension ex = new Extension();
-        ex.setUrl(url);
-        ex.setValue(value);
-        getExtension().add(ex);    
-      }
-
-
-
-
-      public boolean hasExtension(String url) {
-        for (Extension e : getExtension())
-          if (url.equals(e.getUrl()))
-            return true;
-        return false;
-      }
-
-      public Extension getExtensionByUrl(String theUrl) {
-        org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-        ArrayList<Extension> retVal = new ArrayList<Extension>();
-        for (Extension next : getExtension()) {
-          if (theUrl.equals(next.getUrl())) {
-            retVal.add(next);
-          }
-        }
-        if (retVal.size() == 0)
-          return null;
-        else {
-          org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
-          return retVal.get(0);
-        }
-      }
+  public void addExtension(String url, Type value) {
+    Extension ex = new Extension();
+    ex.setUrl(url);
+    ex.setValue(value);
+    getExtension().add(ex);    
+  }
+  
 
 
+
+  public boolean hasExtension(String url) {
+    for (Extension e : getExtension())
+      if (url.equals(e.getUrl()))
+        return true;
+    return false;
+    }
+    
+       public Extension getExtensionByUrl(String theUrl) {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     for (Extension next : getExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     if (retVal.size() == 0)
+       return null;
+     else {
+       org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+       return retVal.get(0);
+     }
+   }
+  
       public Resource getContained(String ref) {
         if (ref == null)
           return null;

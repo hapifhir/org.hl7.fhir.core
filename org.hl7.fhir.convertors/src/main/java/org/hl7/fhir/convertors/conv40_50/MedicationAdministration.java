@@ -22,7 +22,10 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatus;
+import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -68,25 +71,25 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
     for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates())
-      tgt.getInstantiates().add(convertUri(t));
+      tgt.getInstantiatesUri().add(convertUri(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
       tgt.addPartOf(convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCode(src.getStatusElement()));
+      tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(convertCodeableConcept(t));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.addCategory(convertCodeableConcept(src.getCategory()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
+      tgt.setEncounter(convertReference(src.getContext()));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     if (src.hasEffective())
-      tgt.setEffective(convertType(src.getEffective()));
+      tgt.setOccurence(convertType(src.getEffective()));
     for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -113,26 +116,26 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
     copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiates())
+    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
       tgt.getInstantiates().add(convertUri(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
       tgt.addPartOf(convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCode(src.getStatusElement()));
+      tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(convertCodeableConcept(t));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
+    if (src.hasEncounter())
+      tgt.setContext(convertReference(src.getEncounter()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
-    if (src.hasEffective())
-      tgt.setEffective(convertType(src.getEffective()));
+    if (src.hasOccurence())
+      tgt.setEffective(convertType(src.getOccurence()));
     for (org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
@@ -149,6 +152,24 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
       tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
     for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(convertReference(t));
+    return tgt;
+  }
+
+  private static CodeType convertMedicationAdministrationStatus(Enumeration<MedicationAdministrationStatus> src) {
+    if (src == null)
+      return null;
+    CodeType tgt = new CodeType();
+    copyElement(src, tgt);
+    tgt.setValue(src.getCode());
+    return tgt;
+  }
+
+  private static Enumeration<MedicationAdministrationStatus> convertMedicationAdministrationStatus(CodeType src) {
+    if (src == null)
+      return null;
+    Enumeration<MedicationAdministrationStatus> tgt = new Enumeration<MedicationAdministrationStatus>();
+    copyElement(src, tgt);
+    tgt.setValue(MedicationAdministrationStatus.fromCode(src.getCode()));
     return tgt;
   }
 

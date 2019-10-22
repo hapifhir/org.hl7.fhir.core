@@ -51,17 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.
  */
@@ -538,11 +541,11 @@ public class Group extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case 3059181:  return getCode();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         case -1321148966:  return getExcludeElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -600,11 +603,15 @@ public class Group extends DomainResource {
       public GroupCharacteristicComponent copy() {
         GroupCharacteristicComponent dst = new GroupCharacteristicComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GroupCharacteristicComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
         dst.exclude = exclude == null ? null : exclude.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -650,11 +657,6 @@ public class Group extends DomainResource {
         protected Reference entity;
 
         /**
-         * The actual object that is the target of the reference (A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.)
-         */
-        protected Resource entityTarget;
-
-        /**
          * The period that the member was in the group, if known.
          */
         @Child(name = "period", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -668,7 +670,7 @@ public class Group extends DomainResource {
         @Description(shortDefinition="If member is no longer in group", formalDefinition="A flag to indicate that the member is no longer in the group, but previously may have been a member." )
         protected BooleanType inactive;
 
-        private static final long serialVersionUID = -333869055L;
+        private static final long serialVersionUID = -1206153083L;
 
     /**
      * Constructor
@@ -706,21 +708,6 @@ public class Group extends DomainResource {
          */
         public GroupMemberComponent setEntity(Reference value) { 
           this.entity = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #entity} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.)
-         */
-        public Resource getEntityTarget() { 
-          return this.entityTarget;
-        }
-
-        /**
-         * @param value {@link #entity} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.)
-         */
-        public GroupMemberComponent setEntityTarget(Resource value) { 
-          this.entityTarget = value;
           return this;
         }
 
@@ -855,8 +842,8 @@ public class Group extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1298275357:  return getEntity(); 
-        case -991726143:  return getPeriod(); 
+        case -1298275357:  return getEntity();
+        case -991726143:  return getPeriod();
         case 24665195:  return getInactiveElement();
         default: return super.makeProperty(hash, name);
         }
@@ -894,10 +881,14 @@ public class Group extends DomainResource {
       public GroupMemberComponent copy() {
         GroupMemberComponent dst = new GroupMemberComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GroupMemberComponent dst) {
+        super.copyValues(dst);
         dst.entity = entity == null ? null : entity.copy();
         dst.period = period == null ? null : period.copy();
         dst.inactive = inactive == null ? null : inactive.copy();
-        return dst;
       }
 
       @Override
@@ -991,11 +982,6 @@ public class Group extends DomainResource {
     protected Reference managingEntity;
 
     /**
-     * The actual object that is the target of the reference (Entity responsible for defining and maintaining Group characteristics and/or registered members.)
-     */
-    protected Resource managingEntityTarget;
-
-    /**
      * Identifies traits whose presence r absence is shared by members of the group.
      */
     @Child(name = "characteristic", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -1009,7 +995,7 @@ public class Group extends DomainResource {
     @Description(shortDefinition="Who or what is in group", formalDefinition="Identifies the resource instances that are members of the group." )
     protected List<GroupMemberComponent> member;
 
-    private static final long serialVersionUID = -550945963L;
+    private static final long serialVersionUID = -236079789L;
 
   /**
    * Constructor
@@ -1358,21 +1344,6 @@ public class Group extends DomainResource {
     }
 
     /**
-     * @return {@link #managingEntity} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Entity responsible for defining and maintaining Group characteristics and/or registered members.)
-     */
-    public Resource getManagingEntityTarget() { 
-      return this.managingEntityTarget;
-    }
-
-    /**
-     * @param value {@link #managingEntity} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Entity responsible for defining and maintaining Group characteristics and/or registered members.)
-     */
-    public Group setManagingEntityTarget(Resource value) { 
-      this.managingEntityTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #characteristic} (Identifies traits whose presence r absence is shared by members of the group.)
      */
     public List<GroupCharacteristicComponent> getCharacteristic() { 
@@ -1602,10 +1573,10 @@ public class Group extends DomainResource {
         case -1422950650:  return getActiveElement();
         case 3575610:  return getTypeElement();
         case -1422939762:  return getActualElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 3373707:  return getNameElement();
         case -1285004149:  return getQuantityElement();
-        case -988474523:  return getManagingEntity(); 
+        case -988474523:  return getManagingEntity();
         case 366313883:  return addCharacteristic(); 
         case -1077769574:  return addMember(); 
         default: return super.makeProperty(hash, name);
@@ -1677,6 +1648,11 @@ public class Group extends DomainResource {
       public Group copy() {
         Group dst = new Group();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Group dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1699,7 +1675,6 @@ public class Group extends DomainResource {
           for (GroupMemberComponent i : member)
             dst.member.add(i.copy());
         };
-        return dst;
       }
 
       protected Group typedCopy() {

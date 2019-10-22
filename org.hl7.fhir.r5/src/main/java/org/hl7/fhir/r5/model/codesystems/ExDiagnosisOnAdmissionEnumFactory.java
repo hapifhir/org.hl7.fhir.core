@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -60,26 +59,22 @@ public class ExDiagnosisOnAdmissionEnumFactory implements EnumFactory<ExDiagnosi
   public ExDiagnosisOnAdmission fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("y".equals(codeString))
-      return ExDiagnosisOnAdmission.Y;
-    if ("n".equals(codeString))
-      return ExDiagnosisOnAdmission.N;
-    if ("u".equals(codeString))
-      return ExDiagnosisOnAdmission.U;
-    if ("w".equals(codeString))
-      return ExDiagnosisOnAdmission.W;
+    if ("yes".equals(codeString))
+      return ExDiagnosisOnAdmission.YES;
+    if ("no".equals(codeString))
+      return ExDiagnosisOnAdmission.NO;
+    if ("unknown".equals(codeString))
+      return ExDiagnosisOnAdmission.UNKNOWN;
     throw new IllegalArgumentException("Unknown ExDiagnosisOnAdmission code '"+codeString+"'");
   }
 
   public String toCode(ExDiagnosisOnAdmission code) {
-    if (code == ExDiagnosisOnAdmission.Y)
-      return "y";
-    if (code == ExDiagnosisOnAdmission.N)
-      return "n";
-    if (code == ExDiagnosisOnAdmission.U)
-      return "u";
-    if (code == ExDiagnosisOnAdmission.W)
-      return "w";
+    if (code == ExDiagnosisOnAdmission.YES)
+      return "yes";
+    if (code == ExDiagnosisOnAdmission.NO)
+      return "no";
+    if (code == ExDiagnosisOnAdmission.UNKNOWN)
+      return "unknown";
     return "?";
   }
 

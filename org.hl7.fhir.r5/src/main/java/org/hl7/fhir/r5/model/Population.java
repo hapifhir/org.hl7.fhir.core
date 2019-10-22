@@ -50,14 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A populatioof people with some set of grouping criteria.
  */
@@ -297,11 +301,11 @@ public class Population extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1419716831:  return getAge(); 
-        case 96511:  return getAge(); 
-        case -1249512767:  return getGender(); 
-        case 3492561:  return getRace(); 
-        case -62715190:  return getPhysiologicalCondition(); 
+        case -1419716831:  return getAge();
+        case 96511:  return getAge();
+        case -1249512767:  return getGender();
+        case 3492561:  return getRace();
+        case -62715190:  return getPhysiologicalCondition();
         default: return super.makeProperty(hash, name);
         }
 
@@ -353,11 +357,15 @@ public class Population extends BackboneType implements ICompositeType {
       public Population copy() {
         Population dst = new Population();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Population dst) {
+        super.copyValues(dst);
         dst.age = age == null ? null : age.copy();
         dst.gender = gender == null ? null : gender.copy();
         dst.race = race == null ? null : race.copy();
         dst.physiologicalCondition = physiologicalCondition == null ? null : physiologicalCondition.copy();
-        return dst;
       }
 
       protected Population typedCopy() {

@@ -51,16 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.
  */
@@ -73,25 +78,17 @@ public class Encounter extends DomainResource {
          */
         PLANNED, 
         /**
-         * The Patient is present for the encounter, however is not currently meeting with a practitioner.
-         */
-        ARRIVED, 
-        /**
-         * The patient has been assessed for the priority of their treatment based on the severity of their condition.
-         */
-        TRIAGED, 
-        /**
          * The Encounter has begun and the patient is present / the practitioner and the patient are meeting.
          */
         INPROGRESS, 
         /**
-         * The Encounter has begun, but the patient is temporarily on leave.
+         * The Encounter has begun, but is currently on hold, e.g. because the patient is temporarily on leave.
          */
-        ONLEAVE, 
+        ONHOLD, 
         /**
          * The Encounter has ended.
          */
-        FINISHED, 
+        COMPLETED, 
         /**
          * The Encounter has ended before it has begun.
          */
@@ -113,16 +110,12 @@ public class Encounter extends DomainResource {
                 return null;
         if ("planned".equals(codeString))
           return PLANNED;
-        if ("arrived".equals(codeString))
-          return ARRIVED;
-        if ("triaged".equals(codeString))
-          return TRIAGED;
         if ("in-progress".equals(codeString))
           return INPROGRESS;
-        if ("onleave".equals(codeString))
-          return ONLEAVE;
-        if ("finished".equals(codeString))
-          return FINISHED;
+        if ("onhold".equals(codeString))
+          return ONHOLD;
+        if ("completed".equals(codeString))
+          return COMPLETED;
         if ("cancelled".equals(codeString))
           return CANCELLED;
         if ("entered-in-error".equals(codeString))
@@ -137,11 +130,9 @@ public class Encounter extends DomainResource {
         public String toCode() {
           switch (this) {
             case PLANNED: return "planned";
-            case ARRIVED: return "arrived";
-            case TRIAGED: return "triaged";
             case INPROGRESS: return "in-progress";
-            case ONLEAVE: return "onleave";
-            case FINISHED: return "finished";
+            case ONHOLD: return "onhold";
+            case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
@@ -151,11 +142,9 @@ public class Encounter extends DomainResource {
         public String getSystem() {
           switch (this) {
             case PLANNED: return "http://hl7.org/fhir/encounter-status";
-            case ARRIVED: return "http://hl7.org/fhir/encounter-status";
-            case TRIAGED: return "http://hl7.org/fhir/encounter-status";
             case INPROGRESS: return "http://hl7.org/fhir/encounter-status";
-            case ONLEAVE: return "http://hl7.org/fhir/encounter-status";
-            case FINISHED: return "http://hl7.org/fhir/encounter-status";
+            case ONHOLD: return "http://hl7.org/fhir/encounter-status";
+            case COMPLETED: return "http://hl7.org/fhir/encounter-status";
             case CANCELLED: return "http://hl7.org/fhir/encounter-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/encounter-status";
             case UNKNOWN: return "http://hl7.org/fhir/encounter-status";
@@ -165,11 +154,9 @@ public class Encounter extends DomainResource {
         public String getDefinition() {
           switch (this) {
             case PLANNED: return "The Encounter has not yet started.";
-            case ARRIVED: return "The Patient is present for the encounter, however is not currently meeting with a practitioner.";
-            case TRIAGED: return "The patient has been assessed for the priority of their treatment based on the severity of their condition.";
             case INPROGRESS: return "The Encounter has begun and the patient is present / the practitioner and the patient are meeting.";
-            case ONLEAVE: return "The Encounter has begun, but the patient is temporarily on leave.";
-            case FINISHED: return "The Encounter has ended.";
+            case ONHOLD: return "The Encounter has begun, but is currently on hold, e.g. because the patient is temporarily on leave.";
+            case COMPLETED: return "The Encounter has ended.";
             case CANCELLED: return "The Encounter has ended before it has begun.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case UNKNOWN: return "The encounter status is unknown. Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
@@ -179,11 +166,9 @@ public class Encounter extends DomainResource {
         public String getDisplay() {
           switch (this) {
             case PLANNED: return "Planned";
-            case ARRIVED: return "Arrived";
-            case TRIAGED: return "Triaged";
             case INPROGRESS: return "In Progress";
-            case ONLEAVE: return "On Leave";
-            case FINISHED: return "Finished";
+            case ONHOLD: return "On Hold";
+            case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
@@ -199,16 +184,12 @@ public class Encounter extends DomainResource {
                 return null;
         if ("planned".equals(codeString))
           return EncounterStatus.PLANNED;
-        if ("arrived".equals(codeString))
-          return EncounterStatus.ARRIVED;
-        if ("triaged".equals(codeString))
-          return EncounterStatus.TRIAGED;
         if ("in-progress".equals(codeString))
           return EncounterStatus.INPROGRESS;
-        if ("onleave".equals(codeString))
-          return EncounterStatus.ONLEAVE;
-        if ("finished".equals(codeString))
-          return EncounterStatus.FINISHED;
+        if ("onhold".equals(codeString))
+          return EncounterStatus.ONHOLD;
+        if ("completed".equals(codeString))
+          return EncounterStatus.COMPLETED;
         if ("cancelled".equals(codeString))
           return EncounterStatus.CANCELLED;
         if ("entered-in-error".equals(codeString))
@@ -227,16 +208,12 @@ public class Encounter extends DomainResource {
             return null;
         if ("planned".equals(codeString))
           return new Enumeration<EncounterStatus>(this, EncounterStatus.PLANNED);
-        if ("arrived".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ARRIVED);
-        if ("triaged".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.TRIAGED);
         if ("in-progress".equals(codeString))
           return new Enumeration<EncounterStatus>(this, EncounterStatus.INPROGRESS);
-        if ("onleave".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ONLEAVE);
-        if ("finished".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.FINISHED);
+        if ("onhold".equals(codeString))
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.ONHOLD);
+        if ("completed".equals(codeString))
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.COMPLETED);
         if ("cancelled".equals(codeString))
           return new Enumeration<EncounterStatus>(this, EncounterStatus.CANCELLED);
         if ("entered-in-error".equals(codeString))
@@ -248,16 +225,12 @@ public class Encounter extends DomainResource {
     public String toCode(EncounterStatus code) {
       if (code == EncounterStatus.PLANNED)
         return "planned";
-      if (code == EncounterStatus.ARRIVED)
-        return "arrived";
-      if (code == EncounterStatus.TRIAGED)
-        return "triaged";
       if (code == EncounterStatus.INPROGRESS)
         return "in-progress";
-      if (code == EncounterStatus.ONLEAVE)
-        return "onleave";
-      if (code == EncounterStatus.FINISHED)
-        return "finished";
+      if (code == EncounterStatus.ONHOLD)
+        return "onhold";
+      if (code == EncounterStatus.COMPLETED)
+        return "completed";
       if (code == EncounterStatus.CANCELLED)
         return "cancelled";
       if (code == EncounterStatus.ENTEREDINERROR)
@@ -277,9 +250,7 @@ public class Encounter extends DomainResource {
          */
         PLANNED, 
         /**
-         * The patient is currently at this location, or was between the period specified.
-
-A system may update these records when the patient leaves the location to either reserved, or completed.
+         * The patient is currently at this location, or was between the period specified.A system may update these records when the patient leaves the location to either reserved, or completed.
          */
         ACTIVE, 
         /**
@@ -287,9 +258,7 @@ A system may update these records when the patient leaves the location to either
          */
         RESERVED, 
         /**
-         * The patient was at this location during the period specified.
-
-Not to be used when the patient is currently at the location.
+         * The patient was at this location during the period specified.Not to be used when the patient is currently at the location.
          */
         COMPLETED, 
         /**
@@ -402,10 +371,10 @@ Not to be used when the patient is currently at the location.
     @Block()
     public static class StatusHistoryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+         * planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.
          */
         @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="planned | arrived | triaged | in-progress | onleave | finished | cancelled +", formalDefinition="planned | arrived | triaged | in-progress | onleave | finished | cancelled +." )
+        @Description(shortDefinition="planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown", formalDefinition="planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-status")
         protected Enumeration<EncounterStatus> status;
 
@@ -435,7 +404,7 @@ Not to be used when the patient is currently at the location.
       }
 
         /**
-         * @return {@link #status} (planned | arrived | triaged | in-progress | onleave | finished | cancelled +.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+         * @return {@link #status} (planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
         public Enumeration<EncounterStatus> getStatusElement() { 
           if (this.status == null)
@@ -455,7 +424,7 @@ Not to be used when the patient is currently at the location.
         }
 
         /**
-         * @param value {@link #status} (planned | arrived | triaged | in-progress | onleave | finished | cancelled +.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+         * @param value {@link #status} (planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
         public StatusHistoryComponent setStatusElement(Enumeration<EncounterStatus> value) { 
           this.status = value;
@@ -463,14 +432,14 @@ Not to be used when the patient is currently at the location.
         }
 
         /**
-         * @return planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+         * @return planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.
          */
         public EncounterStatus getStatus() { 
           return this.status == null ? null : this.status.getValue();
         }
 
         /**
-         * @param value planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+         * @param value planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.
          */
         public StatusHistoryComponent setStatus(EncounterStatus value) { 
             if (this.status == null)
@@ -505,14 +474,14 @@ Not to be used when the patient is currently at the location.
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("status", "code", "planned | arrived | triaged | in-progress | onleave | finished | cancelled +.", 0, 1, status));
+          children.add(new Property("status", "code", "planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.", 0, 1, status));
           children.add(new Property("period", "Period", "The time that the episode was in the specified status.", 0, 1, period));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -892481550: /*status*/  return new Property("status", "code", "planned | arrived | triaged | in-progress | onleave | finished | cancelled +.", 0, 1, status);
+          case -892481550: /*status*/  return new Property("status", "code", "planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.", 0, 1, status);
           case -991726143: /*period*/  return new Property("period", "Period", "The time that the episode was in the specified status.", 0, 1, period);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -560,7 +529,7 @@ Not to be used when the patient is currently at the location.
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -892481550:  return getStatusElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -592,9 +561,13 @@ Not to be used when the patient is currently at the location.
       public StatusHistoryComponent copy() {
         StatusHistoryComponent dst = new StatusHistoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StatusHistoryComponent dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -765,8 +738,8 @@ Not to be used when the patient is currently at the location.
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 94742904:  return getClass_(); 
-        case -991726143:  return getPeriod(); 
+        case 94742904:  return getClass_();
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -799,9 +772,13 @@ Not to be used when the patient is currently at the location.
       public ClassHistoryComponent copy() {
         ClassHistoryComponent dst = new ClassHistoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClassHistoryComponent dst) {
+        super.copyValues(dst);
         dst.class_ = class_ == null ? null : class_.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -859,12 +836,7 @@ Not to be used when the patient is currently at the location.
         @Description(shortDefinition="Persons involved in the encounter other than the patient", formalDefinition="Persons involved in the encounter other than the patient." )
         protected Reference individual;
 
-        /**
-         * The actual object that is the target of the reference (Persons involved in the encounter other than the patient.)
-         */
-        protected Resource individualTarget;
-
-        private static final long serialVersionUID = 317095765L;
+        private static final long serialVersionUID = -678291961L;
 
     /**
      * Constructor
@@ -974,21 +946,6 @@ Not to be used when the patient is currently at the location.
           return this;
         }
 
-        /**
-         * @return {@link #individual} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Persons involved in the encounter other than the patient.)
-         */
-        public Resource getIndividualTarget() { 
-          return this.individualTarget;
-        }
-
-        /**
-         * @param value {@link #individual} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Persons involved in the encounter other than the patient.)
-         */
-        public EncounterParticipantComponent setIndividualTarget(Resource value) { 
-          this.individualTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Role of participant in encounter.", 0, java.lang.Integer.MAX_VALUE, type));
@@ -1052,8 +1009,8 @@ Not to be used when the patient is currently at the location.
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return addType(); 
-        case -991726143:  return getPeriod(); 
-        case -46292327:  return getIndividual(); 
+        case -991726143:  return getPeriod();
+        case -46292327:  return getIndividual();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1090,6 +1047,11 @@ Not to be used when the patient is currently at the location.
       public EncounterParticipantComponent copy() {
         EncounterParticipantComponent dst = new EncounterParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EncounterParticipantComponent dst) {
+        super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : type)
@@ -1097,7 +1059,6 @@ Not to be used when the patient is currently at the location.
         };
         dst.period = period == null ? null : period.copy();
         dst.individual = individual == null ? null : individual.copy();
-        return dst;
       }
 
       @Override
@@ -1143,11 +1104,6 @@ Not to be used when the patient is currently at the location.
         protected Reference condition;
 
         /**
-         * The actual object that is the target of the reference (Reason the encounter takes place, as specified using information from another resource. For admissions, this is the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.)
-         */
-        protected Resource conditionTarget;
-
-        /**
          * Role that this diagnosis has within the encounter (e.g. admission, billing, discharge …).
          */
         @Child(name = "use", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -1162,7 +1118,7 @@ Not to be used when the patient is currently at the location.
         @Description(shortDefinition="Ranking of the diagnosis (for each role type)", formalDefinition="Ranking of the diagnosis (for each role type)." )
         protected PositiveIntType rank;
 
-        private static final long serialVersionUID = 128213376L;
+        private static final long serialVersionUID = 1748818180L;
 
     /**
      * Constructor
@@ -1200,21 +1156,6 @@ Not to be used when the patient is currently at the location.
          */
         public DiagnosisComponent setCondition(Reference value) { 
           this.condition = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #condition} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reason the encounter takes place, as specified using information from another resource. For admissions, this is the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.)
-         */
-        public Resource getConditionTarget() { 
-          return this.conditionTarget;
-        }
-
-        /**
-         * @param value {@link #condition} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reason the encounter takes place, as specified using information from another resource. For admissions, this is the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.)
-         */
-        public DiagnosisComponent setConditionTarget(Resource value) { 
-          this.conditionTarget = value;
           return this;
         }
 
@@ -1349,8 +1290,8 @@ Not to be used when the patient is currently at the location.
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -861311717:  return getCondition(); 
-        case 116103:  return getUse(); 
+        case -861311717:  return getCondition();
+        case 116103:  return getUse();
         case 3492908:  return getRankElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1388,10 +1329,14 @@ Not to be used when the patient is currently at the location.
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
         dst.condition = condition == null ? null : condition.copy();
         dst.use = use == null ? null : use.copy();
         dst.rank = rank == null ? null : rank.copy();
-        return dst;
       }
 
       @Override
@@ -1443,11 +1388,6 @@ Not to be used when the patient is currently at the location.
         protected Reference origin;
 
         /**
-         * The actual object that is the target of the reference (The location/organization from which the patient came before admission.)
-         */
-        protected Resource originTarget;
-
-        /**
          * From where patient was admitted (physician referral, transfer).
          */
         @Child(name = "admitSource", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
@@ -1495,11 +1435,6 @@ Not to be used when the patient is currently at the location.
         protected Reference destination;
 
         /**
-         * The actual object that is the target of the reference (Location/organization to which the patient is discharged.)
-         */
-        protected Resource destinationTarget;
-
-        /**
          * Category or kind of location after discharge.
          */
         @Child(name = "dischargeDisposition", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
@@ -1507,7 +1442,7 @@ Not to be used when the patient is currently at the location.
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-discharge-disposition")
         protected CodeableConcept dischargeDisposition;
 
-        private static final long serialVersionUID = 1350555270L;
+        private static final long serialVersionUID = -1173601498L;
 
     /**
      * Constructor
@@ -1561,21 +1496,6 @@ Not to be used when the patient is currently at the location.
          */
         public EncounterHospitalizationComponent setOrigin(Reference value) { 
           this.origin = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #origin} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The location/organization from which the patient came before admission.)
-         */
-        public Resource getOriginTarget() { 
-          return this.originTarget;
-        }
-
-        /**
-         * @param value {@link #origin} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The location/organization from which the patient came before admission.)
-         */
-        public EncounterHospitalizationComponent setOriginTarget(Resource value) { 
-          this.originTarget = value;
           return this;
         }
 
@@ -1811,21 +1731,6 @@ Not to be used when the patient is currently at the location.
         }
 
         /**
-         * @return {@link #destination} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Location/organization to which the patient is discharged.)
-         */
-        public Resource getDestinationTarget() { 
-          return this.destinationTarget;
-        }
-
-        /**
-         * @param value {@link #destination} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Location/organization to which the patient is discharged.)
-         */
-        public EncounterHospitalizationComponent setDestinationTarget(Resource value) { 
-          this.destinationTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #dischargeDisposition} (Category or kind of location after discharge.)
          */
         public CodeableConcept getDischargeDisposition() { 
@@ -1959,15 +1864,15 @@ Not to be used when the patient is currently at the location.
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -965394961:  return getPreAdmissionIdentifier(); 
-        case -1008619738:  return getOrigin(); 
-        case 538887120:  return getAdmitSource(); 
-        case 669348630:  return getReAdmission(); 
+        case -965394961:  return getPreAdmissionIdentifier();
+        case -1008619738:  return getOrigin();
+        case 538887120:  return getAdmitSource();
+        case 669348630:  return getReAdmission();
         case -1360641041:  return addDietPreference(); 
         case 1583588345:  return addSpecialCourtesy(); 
         case 47410321:  return addSpecialArrangement(); 
-        case -1429847026:  return getDestination(); 
-        case 528065941:  return getDischargeDisposition(); 
+        case -1429847026:  return getDestination();
+        case 528065941:  return getDischargeDisposition();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2032,6 +1937,11 @@ Not to be used when the patient is currently at the location.
       public EncounterHospitalizationComponent copy() {
         EncounterHospitalizationComponent dst = new EncounterHospitalizationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EncounterHospitalizationComponent dst) {
+        super.copyValues(dst);
         dst.preAdmissionIdentifier = preAdmissionIdentifier == null ? null : preAdmissionIdentifier.copy();
         dst.origin = origin == null ? null : origin.copy();
         dst.admitSource = admitSource == null ? null : admitSource.copy();
@@ -2053,7 +1963,6 @@ Not to be used when the patient is currently at the location.
         };
         dst.destination = destination == null ? null : destination.copy();
         dst.dischargeDisposition = dischargeDisposition == null ? null : dischargeDisposition.copy();
-        return dst;
       }
 
       @Override
@@ -2103,11 +2012,6 @@ Not to be used when the patient is currently at the location.
         protected Reference location;
 
         /**
-         * The actual object that is the target of the reference (The location where the encounter takes place.)
-         */
-        protected Location locationTarget;
-
-        /**
          * The status of the participants' presence at the specified location during the period specified. If the participant is no longer at the location, then the period will have an end date/time.
          */
         @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -2130,7 +2034,7 @@ Not to be used when the patient is currently at the location.
         @Description(shortDefinition="Time period during which the patient was present at the location", formalDefinition="Time period during which the patient was present at the location." )
         protected Period period;
 
-        private static final long serialVersionUID = -755081862L;
+        private static final long serialVersionUID = 1804020723L;
 
     /**
      * Constructor
@@ -2168,26 +2072,6 @@ Not to be used when the patient is currently at the location.
          */
         public EncounterLocationComponent setLocation(Reference value) { 
           this.location = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The location where the encounter takes place.)
-         */
-        public Location getLocationTarget() { 
-          if (this.locationTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EncounterLocationComponent.location");
-            else if (Configuration.doAutoCreate())
-              this.locationTarget = new Location(); // aa
-          return this.locationTarget;
-        }
-
-        /**
-         * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The location where the encounter takes place.)
-         */
-        public EncounterLocationComponent setLocationTarget(Location value) { 
-          this.locationTarget = value;
           return this;
         }
 
@@ -2360,10 +2244,10 @@ Not to be used when the patient is currently at the location.
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1901043637:  return getLocation(); 
+        case 1901043637:  return getLocation();
         case -892481550:  return getStatusElement();
-        case -1474715471:  return getPhysicalType(); 
-        case -991726143:  return getPeriod(); 
+        case -1474715471:  return getPhysicalType();
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2405,11 +2289,15 @@ Not to be used when the patient is currently at the location.
       public EncounterLocationComponent copy() {
         EncounterLocationComponent dst = new EncounterLocationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EncounterLocationComponent dst) {
+        super.copyValues(dst);
         dst.location = location == null ? null : location.copy();
         dst.status = status == null ? null : status.copy();
         dst.physicalType = physicalType == null ? null : physicalType.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -2453,10 +2341,10 @@ Not to be used when the patient is currently at the location.
     protected List<Identifier> identifier;
 
     /**
-     * planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+     * planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="planned | arrived | triaged | in-progress | onleave | finished | cancelled +", formalDefinition="planned | arrived | triaged | in-progress | onleave | finished | cancelled +." )
+    @Description(shortDefinition="planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown", formalDefinition="planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-status")
     protected Enumeration<EncounterStatus> status;
 
@@ -2514,71 +2402,59 @@ Not to be used when the patient is currently at the location.
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient or group present at the encounter.)
+     * The subjectStatus value can be used to track the patient's status within the encounter. It details whether the patient has arrived or departed, has been triaged or is currently in a waiting status.
      */
-    protected Resource subjectTarget;
+    @Child(name = "subjectStatus", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The current status of the subject in relation to the Encounter", formalDefinition="The subjectStatus value can be used to track the patient's status within the encounter. It details whether the patient has arrived or departed, has been triaged or is currently in a waiting status." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-subject-status")
+    protected CodeableConcept subjectStatus;
 
     /**
      * Where a specific encounter should be classified as a part of a specific episode(s) of care this field should be used. This association can facilitate grouping of related encounters together for a specific purpose, such as government reporting, issue tracking, association via a common problem.  The association is recorded on the encounter as these are typically created after the episode of care and grouped on entry rather than editing the episode of care to append another encounter to it (the episode of care could span years).
      */
-    @Child(name = "episodeOfCare", type = {EpisodeOfCare.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "episodeOfCare", type = {EpisodeOfCare.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Episode(s) of care that this encounter should be recorded against", formalDefinition="Where a specific encounter should be classified as a part of a specific episode(s) of care this field should be used. This association can facilitate grouping of related encounters together for a specific purpose, such as government reporting, issue tracking, association via a common problem.  The association is recorded on the encounter as these are typically created after the episode of care and grouped on entry rather than editing the episode of care to append another encounter to it (the episode of care could span years)." )
     protected List<Reference> episodeOfCare;
-    /**
-     * The actual objects that are the target of the reference (Where a specific encounter should be classified as a part of a specific episode(s) of care this field should be used. This association can facilitate grouping of related encounters together for a specific purpose, such as government reporting, issue tracking, association via a common problem.  The association is recorded on the encounter as these are typically created after the episode of care and grouped on entry rather than editing the episode of care to append another encounter to it (the episode of care could span years).)
-     */
-    protected List<EpisodeOfCare> episodeOfCareTarget;
-
 
     /**
      * The request this encounter satisfies (e.g. incoming referral or procedure request).
      */
-    @Child(name = "basedOn", type = {ServiceRequest.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "basedOn", type = {ServiceRequest.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The ServiceRequest that initiated this encounter", formalDefinition="The request this encounter satisfies (e.g. incoming referral or procedure request)." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (The request this encounter satisfies (e.g. incoming referral or procedure request).)
-     */
-    protected List<ServiceRequest> basedOnTarget;
-
 
     /**
      * The list of people responsible for providing the service.
      */
-    @Child(name = "participant", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "participant", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="List of participants involved in the encounter", formalDefinition="The list of people responsible for providing the service." )
     protected List<EncounterParticipantComponent> participant;
 
     /**
      * The appointment that scheduled this encounter.
      */
-    @Child(name = "appointment", type = {Appointment.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "appointment", type = {Appointment.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The appointment that scheduled this encounter", formalDefinition="The appointment that scheduled this encounter." )
     protected List<Reference> appointment;
-    /**
-     * The actual objects that are the target of the reference (The appointment that scheduled this encounter.)
-     */
-    protected List<Appointment> appointmentTarget;
-
 
     /**
      * The start and end time of the encounter.
      */
-    @Child(name = "period", type = {Period.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "period", type = {Period.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The start and end time of the encounter", formalDefinition="The start and end time of the encounter." )
     protected Period period;
 
     /**
      * Quantity of time the encounter lasted. This excludes the time during leaves of absence.
      */
-    @Child(name = "length", type = {Duration.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "length", type = {Duration.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Quantity of time the encounter lasted (less time absent)", formalDefinition="Quantity of time the encounter lasted. This excludes the time during leaves of absence." )
     protected Duration length;
 
     /**
      * Reason the encounter takes place, expressed as a code. For admissions, this can be used for a coded admission diagnosis.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Coded reason the encounter takes place", formalDefinition="Reason the encounter takes place, expressed as a code. For admissions, this can be used for a coded admission diagnosis." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-reason")
     protected List<CodeableConcept> reasonCode;
@@ -2586,73 +2462,53 @@ Not to be used when the patient is currently at the location.
     /**
      * Reason the encounter takes place, expressed as a code. For admissions, this can be used for a coded admission diagnosis.
      */
-    @Child(name = "reasonReference", type = {Condition.class, Procedure.class, Observation.class, ImmunizationRecommendation.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonReference", type = {Condition.class, Procedure.class, Observation.class, ImmunizationRecommendation.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Reason the encounter takes place (reference)", formalDefinition="Reason the encounter takes place, expressed as a code. For admissions, this can be used for a coded admission diagnosis." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Reason the encounter takes place, expressed as a code. For admissions, this can be used for a coded admission diagnosis.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * The list of diagnosis relevant to this encounter.
      */
-    @Child(name = "diagnosis", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "diagnosis", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The list of diagnosis relevant to this encounter", formalDefinition="The list of diagnosis relevant to this encounter." )
     protected List<DiagnosisComponent> diagnosis;
 
     /**
      * The set of accounts that may be used for billing for this Encounter.
      */
-    @Child(name = "account", type = {Account.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "account", type = {Account.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The set of accounts that may be used for billing for this Encounter", formalDefinition="The set of accounts that may be used for billing for this Encounter." )
     protected List<Reference> account;
-    /**
-     * The actual objects that are the target of the reference (The set of accounts that may be used for billing for this Encounter.)
-     */
-    protected List<Account> accountTarget;
-
 
     /**
      * Details about the admission to a healthcare service.
      */
-    @Child(name = "hospitalization", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "hospitalization", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Details about the admission to a healthcare service", formalDefinition="Details about the admission to a healthcare service." )
     protected EncounterHospitalizationComponent hospitalization;
 
     /**
      * List of locations where  the patient has been during this encounter.
      */
-    @Child(name = "location", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "location", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="List of locations where the patient has been", formalDefinition="List of locations where  the patient has been during this encounter." )
     protected List<EncounterLocationComponent> location;
 
     /**
      * The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy.
      */
-    @Child(name = "serviceProvider", type = {Organization.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "serviceProvider", type = {Organization.class}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The organization (facility) responsible for this encounter", formalDefinition="The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy." )
     protected Reference serviceProvider;
 
     /**
-     * The actual object that is the target of the reference (The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy.)
-     */
-    protected Organization serviceProviderTarget;
-
-    /**
      * Another Encounter of which this encounter is a part of (administratively or in time).
      */
-    @Child(name = "partOf", type = {Encounter.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "partOf", type = {Encounter.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Another Encounter this encounter is part of", formalDefinition="Another Encounter of which this encounter is a part of (administratively or in time)." )
     protected Reference partOf;
 
-    /**
-     * The actual object that is the target of the reference (Another Encounter of which this encounter is a part of (administratively or in time).)
-     */
-    protected Encounter partOfTarget;
-
-    private static final long serialVersionUID = 1358318037L;
+    private static final long serialVersionUID = 706203329L;
 
   /**
    * Constructor
@@ -2724,7 +2580,7 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @return {@link #status} (planned | arrived | triaged | in-progress | onleave | finished | cancelled +.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<EncounterStatus> getStatusElement() { 
       if (this.status == null)
@@ -2744,7 +2600,7 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @param value {@link #status} (planned | arrived | triaged | in-progress | onleave | finished | cancelled +.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Encounter setStatusElement(Enumeration<EncounterStatus> value) { 
       this.status = value;
@@ -2752,14 +2608,14 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @return planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+     * @return planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.
      */
     public EncounterStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+     * @param value planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.
      */
     public Encounter setStatus(EncounterStatus value) { 
         if (this.status == null)
@@ -3024,17 +2880,26 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient or group present at the encounter.)
+     * @return {@link #subjectStatus} (The subjectStatus value can be used to track the patient's status within the encounter. It details whether the patient has arrived or departed, has been triaged or is currently in a waiting status.)
      */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
+    public CodeableConcept getSubjectStatus() { 
+      if (this.subjectStatus == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Encounter.subjectStatus");
+        else if (Configuration.doAutoCreate())
+          this.subjectStatus = new CodeableConcept(); // cc
+      return this.subjectStatus;
+    }
+
+    public boolean hasSubjectStatus() { 
+      return this.subjectStatus != null && !this.subjectStatus.isEmpty();
     }
 
     /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient or group present at the encounter.)
+     * @param value {@link #subjectStatus} (The subjectStatus value can be used to track the patient's status within the encounter. It details whether the patient has arrived or departed, has been triaged or is currently in a waiting status.)
      */
-    public Encounter setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
+    public Encounter setSubjectStatus(CodeableConcept value) { 
+      this.subjectStatus = value;
       return this;
     }
 
@@ -3092,28 +2957,6 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<EpisodeOfCare> getEpisodeOfCareTarget() { 
-      if (this.episodeOfCareTarget == null)
-        this.episodeOfCareTarget = new ArrayList<EpisodeOfCare>();
-      return this.episodeOfCareTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public EpisodeOfCare addEpisodeOfCareTarget() { 
-      EpisodeOfCare r = new EpisodeOfCare();
-      if (this.episodeOfCareTarget == null)
-        this.episodeOfCareTarget = new ArrayList<EpisodeOfCare>();
-      this.episodeOfCareTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #basedOn} (The request this encounter satisfies (e.g. incoming referral or procedure request).)
      */
     public List<Reference> getBasedOn() { 
@@ -3164,28 +3007,6 @@ Not to be used when the patient is currently at the location.
         addBasedOn();
       }
       return getBasedOn().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<ServiceRequest>();
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addBasedOnTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<ServiceRequest>();
-      this.basedOnTarget.add(r);
-      return r;
     }
 
     /**
@@ -3292,28 +3113,6 @@ Not to be used when the patient is currently at the location.
         addAppointment();
       }
       return getAppointment().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Appointment> getAppointmentTarget() { 
-      if (this.appointmentTarget == null)
-        this.appointmentTarget = new ArrayList<Appointment>();
-      return this.appointmentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Appointment addAppointmentTarget() { 
-      Appointment r = new Appointment();
-      if (this.appointmentTarget == null)
-        this.appointmentTarget = new ArrayList<Appointment>();
-      this.appointmentTarget.add(r);
-      return r;
     }
 
     /**
@@ -3471,16 +3270,6 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #diagnosis} (The list of diagnosis relevant to this encounter.)
      */
     public List<DiagnosisComponent> getDiagnosis() { 
@@ -3587,28 +3376,6 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Account> getAccountTarget() { 
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      return this.accountTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Account addAccountTarget() { 
-      Account r = new Account();
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      this.accountTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #hospitalization} (Details about the admission to a healthcare service.)
      */
     public EncounterHospitalizationComponent getHospitalization() { 
@@ -3710,26 +3477,6 @@ Not to be used when the patient is currently at the location.
     }
 
     /**
-     * @return {@link #serviceProvider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy.)
-     */
-    public Organization getServiceProviderTarget() { 
-      if (this.serviceProviderTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Encounter.serviceProvider");
-        else if (Configuration.doAutoCreate())
-          this.serviceProviderTarget = new Organization(); // aa
-      return this.serviceProviderTarget;
-    }
-
-    /**
-     * @param value {@link #serviceProvider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy.)
-     */
-    public Encounter setServiceProviderTarget(Organization value) { 
-      this.serviceProviderTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #partOf} (Another Encounter of which this encounter is a part of (administratively or in time).)
      */
     public Reference getPartOf() { 
@@ -3753,30 +3500,10 @@ Not to be used when the patient is currently at the location.
       return this;
     }
 
-    /**
-     * @return {@link #partOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Another Encounter of which this encounter is a part of (administratively or in time).)
-     */
-    public Encounter getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Encounter.partOf");
-        else if (Configuration.doAutoCreate())
-          this.partOfTarget = new Encounter(); // aa
-      return this.partOfTarget;
-    }
-
-    /**
-     * @param value {@link #partOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Another Encounter of which this encounter is a part of (administratively or in time).)
-     */
-    public Encounter setPartOfTarget(Encounter value) { 
-      this.partOfTarget = value;
-      return this;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier(s) by which this encounter is known.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "planned | arrived | triaged | in-progress | onleave | finished | cancelled +.", 0, 1, status));
+        children.add(new Property("status", "code", "planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.", 0, 1, status));
         children.add(new Property("statusHistory", "", "The status history permits the encounter resource to contain the status history without needing to read through the historical versions of the resource, or even have the server store them.", 0, java.lang.Integer.MAX_VALUE, statusHistory));
         children.add(new Property("class", "Coding", "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.", 0, 1, class_));
         children.add(new Property("classHistory", "", "The class history permits the tracking of the encounters transitions without needing to go  through the resource history.  This would be used for a case where an admission starts of as an emergency encounter, then transitions into an inpatient scenario. Doing this and not restarting a new encounter ensures that any lab/diagnostic results can more easily follow the patient and not require re-processing and not get lost or cancelled during a kind of discharge from emergency to inpatient.", 0, java.lang.Integer.MAX_VALUE, classHistory));
@@ -3784,6 +3511,7 @@ Not to be used when the patient is currently at the location.
         children.add(new Property("serviceType", "CodeableConcept", "Broad categorization of the service that is to be provided (e.g. cardiology).", 0, 1, serviceType));
         children.add(new Property("priority", "CodeableConcept", "Indicates the urgency of the encounter.", 0, 1, priority));
         children.add(new Property("subject", "Reference(Patient|Group)", "The patient or group present at the encounter.", 0, 1, subject));
+        children.add(new Property("subjectStatus", "CodeableConcept", "The subjectStatus value can be used to track the patient's status within the encounter. It details whether the patient has arrived or departed, has been triaged or is currently in a waiting status.", 0, 1, subjectStatus));
         children.add(new Property("episodeOfCare", "Reference(EpisodeOfCare)", "Where a specific encounter should be classified as a part of a specific episode(s) of care this field should be used. This association can facilitate grouping of related encounters together for a specific purpose, such as government reporting, issue tracking, association via a common problem.  The association is recorded on the encounter as these are typically created after the episode of care and grouped on entry rather than editing the episode of care to append another encounter to it (the episode of care could span years).", 0, java.lang.Integer.MAX_VALUE, episodeOfCare));
         children.add(new Property("basedOn", "Reference(ServiceRequest)", "The request this encounter satisfies (e.g. incoming referral or procedure request).", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("participant", "", "The list of people responsible for providing the service.", 0, java.lang.Integer.MAX_VALUE, participant));
@@ -3804,7 +3532,7 @@ Not to be used when the patient is currently at the location.
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier(s) by which this encounter is known.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "planned | arrived | triaged | in-progress | onleave | finished | cancelled +.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown.", 0, 1, status);
         case -986695614: /*statusHistory*/  return new Property("statusHistory", "", "The status history permits the encounter resource to contain the status history without needing to read through the historical versions of the resource, or even have the server store them.", 0, java.lang.Integer.MAX_VALUE, statusHistory);
         case 94742904: /*class*/  return new Property("class", "Coding", "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.", 0, 1, class_);
         case 962575356: /*classHistory*/  return new Property("classHistory", "", "The class history permits the tracking of the encounters transitions without needing to go  through the resource history.  This would be used for a case where an admission starts of as an emergency encounter, then transitions into an inpatient scenario. Doing this and not restarting a new encounter ensures that any lab/diagnostic results can more easily follow the patient and not require re-processing and not get lost or cancelled during a kind of discharge from emergency to inpatient.", 0, java.lang.Integer.MAX_VALUE, classHistory);
@@ -3812,6 +3540,7 @@ Not to be used when the patient is currently at the location.
         case -1928370289: /*serviceType*/  return new Property("serviceType", "CodeableConcept", "Broad categorization of the service that is to be provided (e.g. cardiology).", 0, 1, serviceType);
         case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "Indicates the urgency of the encounter.", 0, 1, priority);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The patient or group present at the encounter.", 0, 1, subject);
+        case 110854206: /*subjectStatus*/  return new Property("subjectStatus", "CodeableConcept", "The subjectStatus value can be used to track the patient's status within the encounter. It details whether the patient has arrived or departed, has been triaged or is currently in a waiting status.", 0, 1, subjectStatus);
         case -1892140189: /*episodeOfCare*/  return new Property("episodeOfCare", "Reference(EpisodeOfCare)", "Where a specific encounter should be classified as a part of a specific episode(s) of care this field should be used. This association can facilitate grouping of related encounters together for a specific purpose, such as government reporting, issue tracking, association via a common problem.  The association is recorded on the encounter as these are typically created after the episode of care and grouped on entry rather than editing the episode of care to append another encounter to it (the episode of care could span years).", 0, java.lang.Integer.MAX_VALUE, episodeOfCare);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(ServiceRequest)", "The request this encounter satisfies (e.g. incoming referral or procedure request).", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case 767422259: /*participant*/  return new Property("participant", "", "The list of people responsible for providing the service.", 0, java.lang.Integer.MAX_VALUE, participant);
@@ -3843,6 +3572,7 @@ Not to be used when the patient is currently at the location.
         case -1928370289: /*serviceType*/ return this.serviceType == null ? new Base[0] : new Base[] {this.serviceType}; // CodeableConcept
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
+        case 110854206: /*subjectStatus*/ return this.subjectStatus == null ? new Base[0] : new Base[] {this.subjectStatus}; // CodeableConcept
         case -1892140189: /*episodeOfCare*/ return this.episodeOfCare == null ? new Base[0] : this.episodeOfCare.toArray(new Base[this.episodeOfCare.size()]); // Reference
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // EncounterParticipantComponent
@@ -3892,6 +3622,9 @@ Not to be used when the patient is currently at the location.
           return value;
         case -1867885268: // subject
           this.subject = castToReference(value); // Reference
+          return value;
+        case 110854206: // subjectStatus
+          this.subjectStatus = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1892140189: // episodeOfCare
           this.getEpisodeOfCare().add(castToReference(value)); // Reference
@@ -3961,6 +3694,8 @@ Not to be used when the patient is currently at the location.
           this.priority = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
           this.subject = castToReference(value); // Reference
+        } else if (name.equals("subjectStatus")) {
+          this.subjectStatus = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("episodeOfCare")) {
           this.getEpisodeOfCare().add(castToReference(value));
         } else if (name.equals("basedOn")) {
@@ -4000,26 +3735,27 @@ Not to be used when the patient is currently at the location.
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case -986695614:  return addStatusHistory(); 
-        case 94742904:  return getClass_(); 
+        case 94742904:  return getClass_();
         case 962575356:  return addClassHistory(); 
         case 3575610:  return addType(); 
-        case -1928370289:  return getServiceType(); 
-        case -1165461084:  return getPriority(); 
-        case -1867885268:  return getSubject(); 
+        case -1928370289:  return getServiceType();
+        case -1165461084:  return getPriority();
+        case -1867885268:  return getSubject();
+        case 110854206:  return getSubjectStatus();
         case -1892140189:  return addEpisodeOfCare(); 
         case -332612366:  return addBasedOn(); 
         case 767422259:  return addParticipant(); 
         case -1474995297:  return addAppointment(); 
-        case -991726143:  return getPeriod(); 
-        case -1106363674:  return getLength(); 
+        case -991726143:  return getPeriod();
+        case -1106363674:  return getLength();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 1196993265:  return addDiagnosis(); 
         case -1177318867:  return addAccount(); 
-        case 1057894634:  return getHospitalization(); 
+        case 1057894634:  return getHospitalization();
         case 1901043637:  return addLocation(); 
-        case 243182534:  return getServiceProvider(); 
-        case -995410646:  return getPartOf(); 
+        case 243182534:  return getServiceProvider();
+        case -995410646:  return getPartOf();
         default: return super.makeProperty(hash, name);
         }
 
@@ -4037,6 +3773,7 @@ Not to be used when the patient is currently at the location.
         case -1928370289: /*serviceType*/ return new String[] {"CodeableConcept"};
         case -1165461084: /*priority*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
+        case 110854206: /*subjectStatus*/ return new String[] {"CodeableConcept"};
         case -1892140189: /*episodeOfCare*/ return new String[] {"Reference"};
         case -332612366: /*basedOn*/ return new String[] {"Reference"};
         case 767422259: /*participant*/ return new String[] {};
@@ -4088,6 +3825,10 @@ Not to be used when the patient is currently at the location.
         else if (name.equals("subject")) {
           this.subject = new Reference();
           return this.subject;
+        }
+        else if (name.equals("subjectStatus")) {
+          this.subjectStatus = new CodeableConcept();
+          return this.subjectStatus;
         }
         else if (name.equals("episodeOfCare")) {
           return addEpisodeOfCare();
@@ -4148,6 +3889,11 @@ Not to be used when the patient is currently at the location.
       public Encounter copy() {
         Encounter dst = new Encounter();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Encounter dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4173,6 +3919,7 @@ Not to be used when the patient is currently at the location.
         dst.serviceType = serviceType == null ? null : serviceType.copy();
         dst.priority = priority == null ? null : priority.copy();
         dst.subject = subject == null ? null : subject.copy();
+        dst.subjectStatus = subjectStatus == null ? null : subjectStatus.copy();
         if (episodeOfCare != null) {
           dst.episodeOfCare = new ArrayList<Reference>();
           for (Reference i : episodeOfCare)
@@ -4223,7 +3970,6 @@ Not to be used when the patient is currently at the location.
         };
         dst.serviceProvider = serviceProvider == null ? null : serviceProvider.copy();
         dst.partOf = partOf == null ? null : partOf.copy();
-        return dst;
       }
 
       protected Encounter typedCopy() {
@@ -4240,10 +3986,11 @@ Not to be used when the patient is currently at the location.
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(statusHistory, o.statusHistory, true)
            && compareDeep(class_, o.class_, true) && compareDeep(classHistory, o.classHistory, true) && compareDeep(type, o.type, true)
            && compareDeep(serviceType, o.serviceType, true) && compareDeep(priority, o.priority, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(episodeOfCare, o.episodeOfCare, true) && compareDeep(basedOn, o.basedOn, true) && compareDeep(participant, o.participant, true)
-           && compareDeep(appointment, o.appointment, true) && compareDeep(period, o.period, true) && compareDeep(length, o.length, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(account, o.account, true) && compareDeep(hospitalization, o.hospitalization, true)
+           && compareDeep(subjectStatus, o.subjectStatus, true) && compareDeep(episodeOfCare, o.episodeOfCare, true)
+           && compareDeep(basedOn, o.basedOn, true) && compareDeep(participant, o.participant, true) && compareDeep(appointment, o.appointment, true)
+           && compareDeep(period, o.period, true) && compareDeep(length, o.length, true) && compareDeep(reasonCode, o.reasonCode, true)
+           && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(diagnosis, o.diagnosis, true)
+           && compareDeep(account, o.account, true) && compareDeep(hospitalization, o.hospitalization, true)
            && compareDeep(location, o.location, true) && compareDeep(serviceProvider, o.serviceProvider, true)
            && compareDeep(partOf, o.partOf, true);
       }
@@ -4260,9 +4007,9 @@ Not to be used when the patient is currently at the location.
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, statusHistory
-          , class_, classHistory, type, serviceType, priority, subject, episodeOfCare, basedOn
-          , participant, appointment, period, length, reasonCode, reasonReference, diagnosis
-          , account, hospitalization, location, serviceProvider, partOf);
+          , class_, classHistory, type, serviceType, priority, subject, subjectStatus, episodeOfCare
+          , basedOn, participant, appointment, period, length, reasonCode, reasonReference
+          , diagnosis, account, hospitalization, location, serviceProvider, partOf);
       }
 
   @Override
@@ -4355,6 +4102,26 @@ Not to be used when the patient is currently at the location.
    * the path value of "<b>Encounter:practitioner</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("Encounter:practitioner").toLocked();
+
+ /**
+   * Search parameter: <b>subject-status</b>
+   * <p>
+   * Description: <b>The current status of the subject in relation to the Encounter</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Encounter.subjectStatus</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject-status", path="Encounter.subjectStatus", description="The current status of the subject in relation to the Encounter", type="token" )
+  public static final String SP_SUBJECT_STATUS = "subject-status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject-status</b>
+   * <p>
+   * Description: <b>The current status of the subject in relation to the Encounter</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Encounter.subjectStatus</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SUBJECT_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SUBJECT_STATUS);
 
  /**
    * Search parameter: <b>subject</b>
@@ -4791,17 +4558,17 @@ Not to be used when the patient is currently at the location.
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>planned | arrived | triaged | in-progress | onleave | finished | cancelled +</b><br>
+   * Description: <b>planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Encounter.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Encounter.status", description="planned | arrived | triaged | in-progress | onleave | finished | cancelled +", type="token" )
+  @SearchParamDefinition(name="status", path="Encounter.status", description="planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>planned | arrived | triaged | in-progress | onleave | finished | cancelled +</b><br>
+   * Description: <b>planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Encounter.status</b><br>
    * </p>

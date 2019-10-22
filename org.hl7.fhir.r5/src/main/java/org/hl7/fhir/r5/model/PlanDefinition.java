@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.
  */
@@ -1611,10 +1611,10 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategory(); 
-        case -1724546052:  return getDescription(); 
-        case -1165461084:  return getPriority(); 
-        case 109757538:  return getStart(); 
+        case 50511102:  return getCategory();
+        case -1724546052:  return getDescription();
+        case -1165461084:  return getPriority();
+        case 109757538:  return getStart();
         case 874544034:  return addAddresses(); 
         case 1587405498:  return addDocumentation(); 
         case -880905839:  return addTarget(); 
@@ -1672,6 +1672,11 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionGoalComponent copy() {
         PlanDefinitionGoalComponent dst = new PlanDefinitionGoalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionGoalComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.description = description == null ? null : description.copy();
         dst.priority = priority == null ? null : priority.copy();
@@ -1691,7 +1696,6 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionGoalTargetComponent i : target)
             dst.target.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1941,10 +1945,10 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 938321246:  return getMeasure(); 
-        case -1973084529:  return getDetail(); 
-        case -1335224239:  return getDetail(); 
-        case 99828:  return getDue(); 
+        case 938321246:  return getMeasure();
+        case -1973084529:  return getDetail();
+        case -1335224239:  return getDetail();
+        case 99828:  return getDue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1990,10 +1994,14 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionGoalTargetComponent copy() {
         PlanDefinitionGoalTargetComponent dst = new PlanDefinitionGoalTargetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionGoalTargetComponent dst) {
+        super.copyValues(dst);
         dst.measure = measure == null ? null : measure.copy();
         dst.detail = detail == null ? null : detail.copy();
         dst.due = due == null ? null : due.copy();
-        return dst;
       }
 
       @Override
@@ -3944,24 +3952,24 @@ public class PlanDefinition extends MetadataResource {
         case -934964668:  return addReason(); 
         case 1587405498:  return addDocumentation(); 
         case -1240658034:  return addGoalIdElement();
-        case -573640748:  return getSubject(); 
-        case -1867885268:  return getSubject(); 
+        case -573640748:  return getSubject();
+        case -1867885268:  return getSubject();
         case -1059891784:  return addTrigger(); 
         case -861311717:  return addCondition(); 
         case 100358090:  return addInput(); 
         case -1005512447:  return addOutput(); 
         case -384107967:  return addRelatedAction(); 
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
         case 767422259:  return addParticipant(); 
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 586678389:  return getGroupingBehaviorElement();
         case 168639486:  return getSelectionBehaviorElement();
         case -1163906287:  return getRequiredBehaviorElement();
         case -1174249033:  return getPrecheckBehaviorElement();
         case -922577408:  return getCardinalityBehaviorElement();
-        case -1139422643:  return getDefinition(); 
-        case -1014418093:  return getDefinition(); 
+        case -1139422643:  return getDefinition();
+        case -1014418093:  return getDefinition();
         case 1052666732:  return getTransformElement();
         case 572625010:  return addDynamicValue(); 
         case -1422950858:  return addAction(); 
@@ -4125,6 +4133,11 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionComponent copy() {
         PlanDefinitionActionComponent dst = new PlanDefinitionActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionComponent dst) {
+        super.copyValues(dst);
         dst.prefix = prefix == null ? null : prefix.copy();
         dst.title = title == null ? null : title.copy();
         dst.description = description == null ? null : description.copy();
@@ -4200,7 +4213,6 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4413,7 +4425,7 @@ public class PlanDefinition extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3292052:  return getKindElement();
-        case -1795452264:  return getExpression(); 
+        case -1795452264:  return getExpression();
         default: return super.makeProperty(hash, name);
         }
 
@@ -4445,9 +4457,13 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionConditionComponent copy() {
         PlanDefinitionActionConditionComponent dst = new PlanDefinitionActionConditionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionConditionComponent dst) {
+        super.copyValues(dst);
         dst.kind = kind == null ? null : kind.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -4733,8 +4749,8 @@ public class PlanDefinition extends MetadataResource {
         switch (hash) {
         case -1656172047:  return getActionIdElement();
         case -261851592:  return getRelationshipElement();
-        case -1960684787:  return getOffset(); 
-        case -1019779949:  return getOffset(); 
+        case -1960684787:  return getOffset();
+        case -1019779949:  return getOffset();
         default: return super.makeProperty(hash, name);
         }
 
@@ -4774,10 +4790,14 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionRelatedActionComponent copy() {
         PlanDefinitionActionRelatedActionComponent dst = new PlanDefinitionActionRelatedActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionRelatedActionComponent dst) {
+        super.copyValues(dst);
         dst.actionId = actionId == null ? null : actionId.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.offset = offset == null ? null : offset.copy();
-        return dst;
       }
 
       @Override
@@ -4975,7 +4995,7 @@ public class PlanDefinition extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case 3506294:  return getRole(); 
+        case 3506294:  return getRole();
         default: return super.makeProperty(hash, name);
         }
 
@@ -5007,9 +5027,13 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionParticipantComponent copy() {
         PlanDefinitionActionParticipantComponent dst = new PlanDefinitionActionParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionParticipantComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -5196,7 +5220,7 @@ public class PlanDefinition extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3433509:  return getPathElement();
-        case -1795452264:  return getExpression(); 
+        case -1795452264:  return getExpression();
         default: return super.makeProperty(hash, name);
         }
 
@@ -5228,9 +5252,13 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionDynamicValueComponent copy() {
         PlanDefinitionActionDynamicValueComponent dst = new PlanDefinitionActionDynamicValueComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionDynamicValueComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -7237,11 +7265,11 @@ public class PlanDefinition extends MetadataResource {
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -2060497896:  return getSubtitleElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
-        case -573640748:  return getSubject(); 
-        case -1867885268:  return getSubject(); 
+        case -573640748:  return getSubject();
+        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
@@ -7253,7 +7281,7 @@ public class PlanDefinition extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
+        case -403934648:  return getEffectivePeriod();
         case 110546223:  return addTopic(); 
         case -1406328437:  return addAuthor(); 
         case -1307827859:  return addEditor(); 
@@ -7421,6 +7449,11 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinition copy() {
         PlanDefinition dst = new PlanDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -7504,7 +7537,6 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       protected PlanDefinition typedCopy() {

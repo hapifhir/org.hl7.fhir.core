@@ -298,3 +298,5 @@ local.properties
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/au2-actual.xml
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/au3-actual.xml
 /org.hl7.fhir.r5/src/test/resources/snapshot-generation/t29b-input.xml
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/logical1-actual.xml
+/org.hl7.fhir.r5/src/test/resources/snapshot-generation/logical2-actual.xml

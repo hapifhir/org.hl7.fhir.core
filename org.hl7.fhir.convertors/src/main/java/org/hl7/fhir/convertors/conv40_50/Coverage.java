@@ -76,7 +76,7 @@ public class Coverage extends VersionConvertor_40_50 {
     if (src.hasSubscriber())
       tgt.setSubscriber(convertReference(src.getSubscriber()));
     if (src.hasSubscriberId())
-      tgt.setSubscriberIdElement(convertString(src.getSubscriberIdElement()));
+      tgt.getSubscriberId().setValueElement(convertString(src.getSubscriberIdElement()));
     if (src.hasBeneficiary())
       tgt.setBeneficiary(convertReference(src.getBeneficiary()));
     if (src.hasDependent())
@@ -118,7 +118,7 @@ public class Coverage extends VersionConvertor_40_50 {
     if (src.hasSubscriber())
       tgt.setSubscriber(convertReference(src.getSubscriber()));
     if (src.hasSubscriberId())
-      tgt.setSubscriberIdElement(convertString(src.getSubscriberIdElement()));
+      tgt.setSubscriberIdElement(convertString(src.getSubscriberId().getValueElement()));
     if (src.hasBeneficiary())
       tgt.setBeneficiary(convertReference(src.getBeneficiary()));
     if (src.hasDependent())
