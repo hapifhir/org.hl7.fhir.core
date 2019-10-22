@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -437,6 +436,18 @@ public enum V3ObservationValue {
          * Description: An individual having different alleles at one or more loci regarding a specific character
          */
         HOMOZYGOTE, 
+        /**
+         * Observation values that indicate what change in a measurement value or score is indicative of an improvement in the measured item or scored issue.
+         */
+        _MEASUREMENTIMPROVEMENTNOTATION, 
+        /**
+         * Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality)
+         */
+        DECRISIMP, 
+        /**
+         * Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality)
+         */
+        INCRISIMP, 
         /**
          * Observation values used to indicate the type of scoring (e.g. proportion, ratio) used by a health quality measure.
          */
@@ -1376,6 +1387,12 @@ Long-term shared authentication secrets, if used, are never revealed to any part
           return _GENETICOBSERVATIONVALUE;
         if ("Homozygote".equals(codeString))
           return HOMOZYGOTE;
+        if ("_MeasurementImprovementNotation".equals(codeString))
+          return _MEASUREMENTIMPROVEMENTNOTATION;
+        if ("DecrIsImp".equals(codeString))
+          return DECRISIMP;
+        if ("IncrIsImp".equals(codeString))
+          return INCRISIMP;
         if ("_ObservationMeasureScoring".equals(codeString))
           return _OBSERVATIONMEASURESCORING;
         if ("COHORT".equals(codeString))
@@ -1785,6 +1802,9 @@ Long-term shared authentication secrets, if used, are never revealed to any part
             case UNEMPLOYED: return "Unemployed";
             case _GENETICOBSERVATIONVALUE: return "_GeneticObservationValue";
             case HOMOZYGOTE: return "Homozygote";
+            case _MEASUREMENTIMPROVEMENTNOTATION: return "_MeasurementImprovementNotation";
+            case DECRISIMP: return "DecrIsImp";
+            case INCRISIMP: return "IncrIsImp";
             case _OBSERVATIONMEASURESCORING: return "_ObservationMeasureScoring";
             case COHORT: return "COHORT";
             case CONTVAR: return "CONTVAR";
@@ -2043,6 +2063,9 @@ Long-term shared authentication secrets, if used, are never revealed to any part
             case UNEMPLOYED: return "Persons who currently have no employment, but are available for work and have made specific efforts to find employment.";
             case _GENETICOBSERVATIONVALUE: return "Description: The domain contains genetic analysis specific observation values, e.g. Homozygote, Heterozygote, etc.";
             case HOMOZYGOTE: return "Description: An individual having different alleles at one or more loci regarding a specific character";
+            case _MEASUREMENTIMPROVEMENTNOTATION: return "Observation values that indicate what change in a measurement value or score is indicative of an improvement in the measured item or scored issue.";
+            case DECRISIMP: return "Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality)";
+            case INCRISIMP: return "Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality)";
             case _OBSERVATIONMEASURESCORING: return "Observation values used to indicate the type of scoring (e.g. proportion, ratio) used by a health quality measure.";
             case COHORT: return "A measure in which either short-term cross-section or long-term longitudinal analysis is performed over a group of subjects defined by a set of common properties or defining characteristics (e.g., Male smokers between the ages of 40 and 50 years, exposure to treatment, exposure duration).";
             case CONTVAR: return "A measure score in which each individual value for the measure can fall anywhere along a continuous scale (e.g., mean time to thrombolytics which aggregates the time in minutes from a case presenting with chest pain to the time of administration of thrombolytics).";
@@ -2298,6 +2321,9 @@ Long-term shared authentication secrets, if used, are never revealed to any part
             case UNEMPLOYED: return "Unemployed";
             case _GENETICOBSERVATIONVALUE: return "GeneticObservationValue";
             case HOMOZYGOTE: return "HOMO";
+            case _MEASUREMENTIMPROVEMENTNOTATION: return "Measurement Improvement Notation";
+            case DECRISIMP: return "Decreased score indicates improvement";
+            case INCRISIMP: return "Increased score indicates improvement";
             case _OBSERVATIONMEASURESCORING: return "ObservationMeasureScoring";
             case COHORT: return "cohort measure scoring";
             case CONTVAR: return "continuous variable measure scoring";

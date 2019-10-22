@@ -84,13 +84,11 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
     if (src.hasDate())
       tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasAssessor())
-      tgt.setAssessor(convertReference(src.getAssessor()));
+      tgt.setPerformer(convertReference(src.getAssessor()));
     if (src.hasPrevious())
       tgt.setPrevious(convertReference(src.getPrevious()));
     for (org.hl7.fhir.r4.model.Reference t : src.getProblem())
       tgt.addProblem(convertReference(t));
-    for (org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent t : src.getInvestigation())
-      tgt.addInvestigation(convertClinicalImpressionInvestigationComponent(t));
     for (org.hl7.fhir.r4.model.UriType t : src.getProtocol())
       tgt.getProtocol().add(convertUri(t));
     if (src.hasSummary())
@@ -131,14 +129,12 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
       tgt.setEffective(convertType(src.getEffective()));
     if (src.hasDate())
       tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasAssessor())
-      tgt.setAssessor(convertReference(src.getAssessor()));
+    if (src.hasPerformer())
+      tgt.setAssessor(convertReference(src.getPerformer()));
     if (src.hasPrevious())
       tgt.setPrevious(convertReference(src.getPrevious()));
     for (org.hl7.fhir.r5.model.Reference t : src.getProblem())
       tgt.addProblem(convertReference(t));
-    for (org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionInvestigationComponent t : src.getInvestigation())
-      tgt.addInvestigation(convertClinicalImpressionInvestigationComponent(t));
     for (org.hl7.fhir.r5.model.UriType t : src.getProtocol())
       tgt.getProtocol().add(convertUri(t));
     if (src.hasSummary())
@@ -177,30 +173,6 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
     default: return org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.NULL;
   }
 }
-
-  public static org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionInvestigationComponent convertClinicalImpressionInvestigationComponent(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionInvestigationComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionInvestigationComponent();
-    copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getItem())
-      tgt.addItem(convertReference(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent convertClinicalImpressionInvestigationComponent(org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionInvestigationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent();
-    copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getItem())
-      tgt.addItem(convertReference(t));
-    return tgt;
-  }
 
   public static org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent convertClinicalImpressionFindingComponent(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent src) throws FHIRException {
     if (src == null)

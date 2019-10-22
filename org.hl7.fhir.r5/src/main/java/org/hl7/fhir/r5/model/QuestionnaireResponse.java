@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to.
  */
@@ -637,6 +639,11 @@ public class QuestionnaireResponse extends DomainResource {
       public QuestionnaireResponseItemComponent copy() {
         QuestionnaireResponseItemComponent dst = new QuestionnaireResponseItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireResponseItemComponent dst) {
+        super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.text = text == null ? null : text.copy();
@@ -650,7 +657,6 @@ public class QuestionnaireResponse extends DomainResource {
           for (QuestionnaireResponseItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1034,8 +1040,8 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         case 3242771:  return addItem(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1112,13 +1118,17 @@ public class QuestionnaireResponse extends DomainResource {
       public QuestionnaireResponseItemAnswerComponent copy() {
         QuestionnaireResponseItemAnswerComponent dst = new QuestionnaireResponseItemAnswerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireResponseItemAnswerComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         if (item != null) {
           dst.item = new ArrayList<QuestionnaireResponseItemComponent>();
           for (QuestionnaireResponseItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1165,11 +1175,6 @@ public class QuestionnaireResponse extends DomainResource {
     @Child(name = "basedOn", type = {CarePlan.class, ServiceRequest.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Request fulfilled by this QuestionnaireResponse", formalDefinition="The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.
@@ -1177,11 +1182,6 @@ public class QuestionnaireResponse extends DomainResource {
     @Child(name = "partOf", type = {Observation.class, Procedure.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of this action", formalDefinition="A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.)
-     */
-    protected List<Resource> partOfTarget;
-
 
     /**
      * The Questionnaire that defines and organizes the questions for which answers are being provided.
@@ -1206,21 +1206,11 @@ public class QuestionnaireResponse extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date and/or time that this set of answers were last changed.
@@ -1237,21 +1227,11 @@ public class QuestionnaireResponse extends DomainResource {
     protected Reference author;
 
     /**
-     * The actual object that is the target of the reference (Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
-     */
-    protected Resource authorTarget;
-
-    /**
      * The person who answered the questions about the subject.
      */
     @Child(name = "source", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The person who answered the questions", formalDefinition="The person who answered the questions about the subject." )
     protected Reference source;
-
-    /**
-     * The actual object that is the target of the reference (The person who answered the questions about the subject.)
-     */
-    protected Resource sourceTarget;
 
     /**
      * A group or question item from the original questionnaire for which answers are provided.
@@ -1260,7 +1240,7 @@ public class QuestionnaireResponse extends DomainResource {
     @Description(shortDefinition="Groups and questions", formalDefinition="A group or question item from the original questionnaire for which answers are provided." )
     protected List<QuestionnaireResponseItemComponent> item;
 
-    private static final long serialVersionUID = -259908687L;
+    private static final long serialVersionUID = 764655391L;
 
   /**
    * Constructor
@@ -1355,16 +1335,6 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #partOf} (A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.)
      */
     public List<Reference> getPartOf() { 
@@ -1415,16 +1385,6 @@ public class QuestionnaireResponse extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1546,21 +1506,6 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.)
-     */
-    public QuestionnaireResponse setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.)
      */
     public Reference getEncounter() { 
@@ -1581,26 +1526,6 @@ public class QuestionnaireResponse extends DomainResource {
      */
     public QuestionnaireResponse setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create QuestionnaireResponse.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.)
-     */
-    public QuestionnaireResponse setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1678,21 +1603,6 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
-     */
-    public QuestionnaireResponse setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #source} (The person who answered the questions about the subject.)
      */
     public Reference getSource() { 
@@ -1713,21 +1623,6 @@ public class QuestionnaireResponse extends DomainResource {
      */
     public QuestionnaireResponse setSource(Reference value) { 
       this.source = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person who answered the questions about the subject.)
-     */
-    public Resource getSourceTarget() { 
-      return this.sourceTarget;
-    }
-
-    /**
-     * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person who answered the questions about the subject.)
-     */
-    public QuestionnaireResponse setSourceTarget(Resource value) { 
-      this.sourceTarget = value;
       return this;
     }
 
@@ -1912,16 +1807,16 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case -332612366:  return addBasedOn(); 
         case -995410646:  return addPartOf(); 
         case -1017049693:  return getQuestionnaireElement();
         case -892481550:  return getStatusElement();
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
         case 1433073514:  return getAuthoredElement();
-        case -1406328437:  return getAuthor(); 
-        case -896505829:  return getSource(); 
+        case -1406328437:  return getAuthor();
+        case -896505829:  return getSource();
         case 3242771:  return addItem(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1999,6 +1894,11 @@ public class QuestionnaireResponse extends DomainResource {
       public QuestionnaireResponse copy() {
         QuestionnaireResponse dst = new QuestionnaireResponse();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireResponse dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         if (basedOn != null) {
           dst.basedOn = new ArrayList<Reference>();
@@ -2022,7 +1922,6 @@ public class QuestionnaireResponse extends DomainResource {
           for (QuestionnaireResponseItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       protected QuestionnaireResponse typedCopy() {

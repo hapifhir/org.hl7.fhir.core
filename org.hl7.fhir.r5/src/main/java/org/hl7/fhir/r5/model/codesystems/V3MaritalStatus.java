@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -78,13 +77,15 @@ public enum V3MaritalStatus {
          */
         M, 
         /**
+         * a marriage recognized in some jurisdictions and based on the parties' agreement to consider themselves married and can also be based on documentation of cohabitation.
+
+                        This definition was based on https://www.merriam-webster.com/dictionary/common-law%20marriage.
+         */
+        C, 
+        /**
          * More than 1 current spouse
          */
         P, 
-        /**
-         * No marriage contract has ever been entered
-         */
-        S, 
         /**
          * Person declares that a domestic partner relationship exists.
          */
@@ -93,6 +94,10 @@ public enum V3MaritalStatus {
          * Currently not in a marriage contract.
          */
         U, 
+        /**
+         * No marriage contract has ever been entered
+         */
+        S, 
         /**
          * The spouse has died
          */
@@ -114,14 +119,16 @@ public enum V3MaritalStatus {
           return L;
         if ("M".equals(codeString))
           return M;
+        if ("C".equals(codeString))
+          return C;
         if ("P".equals(codeString))
           return P;
-        if ("S".equals(codeString))
-          return S;
         if ("T".equals(codeString))
           return T;
         if ("U".equals(codeString))
           return U;
+        if ("S".equals(codeString))
+          return S;
         if ("W".equals(codeString))
           return W;
         throw new FHIRException("Unknown V3MaritalStatus code '"+codeString+"'");
@@ -133,10 +140,11 @@ public enum V3MaritalStatus {
             case I: return "I";
             case L: return "L";
             case M: return "M";
+            case C: return "C";
             case P: return "P";
-            case S: return "S";
             case T: return "T";
             case U: return "U";
+            case S: return "S";
             case W: return "W";
             default: return "?";
           }
@@ -151,10 +159,11 @@ public enum V3MaritalStatus {
             case I: return "Subject to an Interlocutory Decree.";
             case L: return "Legally Separated";
             case M: return "A current marriage contract is active";
+            case C: return "a marriage recognized in some jurisdictions and based on the parties' agreement to consider themselves married and can also be based on documentation of cohabitation.\r\n\n                        This definition was based on https://www.merriam-webster.com/dictionary/common-law%20marriage.";
             case P: return "More than 1 current spouse";
-            case S: return "No marriage contract has ever been entered";
             case T: return "Person declares that a domestic partner relationship exists.";
             case U: return "Currently not in a marriage contract.";
+            case S: return "No marriage contract has ever been entered";
             case W: return "The spouse has died";
             default: return "?";
           }
@@ -166,10 +175,11 @@ public enum V3MaritalStatus {
             case I: return "Interlocutory";
             case L: return "Legally Separated";
             case M: return "Married";
+            case C: return "Common Law";
             case P: return "Polygamous";
-            case S: return "Never Married";
             case T: return "Domestic partner";
             case U: return "unmarried";
+            case S: return "Never Married";
             case W: return "Widowed";
             default: return "?";
           }

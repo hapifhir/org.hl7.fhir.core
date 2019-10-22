@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A SubstanceProtein is defined as a single unit of a linear amino acid sequence, or a combination of subunits that are either covalently linked or have a defined invariant stoichiometric relationship. This includes all synthetic, recombinant and purified SubstanceProteins of defined sequence, whether the use is therapeutic or prophylactic. This set of elements will be used to describe albumins, coagulation factors, cytokines, growth factors, peptide/SubstanceProtein hormones, enzymes, toxins, toxoids, recombinant vaccines, and immunomodulators.
  */
@@ -548,10 +552,10 @@ public class SubstanceProtein extends DomainResource {
         case -1867548732:  return getSubunitElement();
         case 1349547969:  return getSequenceElement();
         case -1106363674:  return getLengthElement();
-        case 364621764:  return getSequenceAttachment(); 
-        case -182796415:  return getNTerminalModificationId(); 
+        case 364621764:  return getSequenceAttachment();
+        case -182796415:  return getNTerminalModificationId();
         case -1497395258:  return getNTerminalModificationElement();
-        case -990303818:  return getCTerminalModificationId(); 
+        case -990303818:  return getCTerminalModificationId();
         case 472711995:  return getCTerminalModificationElement();
         default: return super.makeProperty(hash, name);
         }
@@ -610,6 +614,11 @@ public class SubstanceProtein extends DomainResource {
       public SubstanceProteinSubunitComponent copy() {
         SubstanceProteinSubunitComponent dst = new SubstanceProteinSubunitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceProteinSubunitComponent dst) {
+        super.copyValues(dst);
         dst.subunit = subunit == null ? null : subunit.copy();
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.length = length == null ? null : length.copy();
@@ -618,7 +627,6 @@ public class SubstanceProtein extends DomainResource {
         dst.nTerminalModification = nTerminalModification == null ? null : nTerminalModification.copy();
         dst.cTerminalModificationId = cTerminalModificationId == null ? null : cTerminalModificationId.copy();
         dst.cTerminalModification = cTerminalModification == null ? null : cTerminalModification.copy();
-        return dst;
       }
 
       @Override
@@ -949,7 +957,7 @@ public class SubstanceProtein extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 807711387:  return getSequenceType(); 
+        case 807711387:  return getSequenceType();
         case -847111089:  return getNumberOfSubunitsElement();
         case -1996102436:  return addDisulfideLinkageElement();
         case -1867548732:  return addSubunit(); 
@@ -997,6 +1005,11 @@ public class SubstanceProtein extends DomainResource {
       public SubstanceProtein copy() {
         SubstanceProtein dst = new SubstanceProtein();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceProtein dst) {
+        super.copyValues(dst);
         dst.sequenceType = sequenceType == null ? null : sequenceType.copy();
         dst.numberOfSubunits = numberOfSubunits == null ? null : numberOfSubunits.copy();
         if (disulfideLinkage != null) {
@@ -1009,7 +1022,6 @@ public class SubstanceProtein extends DomainResource {
           for (SubstanceProteinSubunitComponent i : subunit)
             dst.subunit.add(i.copy());
         };
-        return dst;
       }
 
       protected SubstanceProtein typedCopy() {

@@ -53,20 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.NoteType;
-import org.hl7.fhir.r5.model.Enumerations.NoteTypeEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome;
-import org.hl7.fhir.r5.model.Enumerations.RemittanceOutcomeEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource provides the details including amount of a payment and allocates the payment items being paid.
  */
@@ -229,11 +228,6 @@ public class PaymentReconciliation extends DomainResource {
         protected Reference request;
 
         /**
-         * The actual object that is the target of the reference (A resource, such as a Claim, the evaluation of which could lead to payment.)
-         */
-        protected Resource requestTarget;
-
-        /**
          * The party which submitted the claim or financial transaction.
          */
         @Child(name = "submitter", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=5, min=0, max=1, modifier=false, summary=false)
@@ -241,21 +235,11 @@ public class PaymentReconciliation extends DomainResource {
         protected Reference submitter;
 
         /**
-         * The actual object that is the target of the reference (The party which submitted the claim or financial transaction.)
-         */
-        protected Resource submitterTarget;
-
-        /**
          * A resource, such as a ClaimResponse, which contains a commitment to payment.
          */
         @Child(name = "response", type = {Reference.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Response committing to a payment", formalDefinition="A resource, such as a ClaimResponse, which contains a commitment to payment." )
         protected Reference response;
-
-        /**
-         * The actual object that is the target of the reference (A resource, such as a ClaimResponse, which contains a commitment to payment.)
-         */
-        protected Resource responseTarget;
 
         /**
          * The date from the response resource containing a commitment to pay.
@@ -272,21 +256,11 @@ public class PaymentReconciliation extends DomainResource {
         protected Reference responsible;
 
         /**
-         * The actual object that is the target of the reference (A reference to the individual who is responsible for inquiries regarding the response and its payment.)
-         */
-        protected PractitionerRole responsibleTarget;
-
-        /**
          * The party which is receiving the payment.
          */
         @Child(name = "payee", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Recipient of the payment", formalDefinition="The party which is receiving the payment." )
         protected Reference payee;
-
-        /**
-         * The actual object that is the target of the reference (The party which is receiving the payment.)
-         */
-        protected Resource payeeTarget;
 
         /**
          * The monetary amount allocated from the total payment to the payable.
@@ -295,7 +269,7 @@ public class PaymentReconciliation extends DomainResource {
         @Description(shortDefinition="Amount allocated to this payable", formalDefinition="The monetary amount allocated from the total payment to the payable." )
         protected Money amount;
 
-        private static final long serialVersionUID = -1361848619L;
+        private static final long serialVersionUID = 1747960963L;
 
     /**
      * Constructor
@@ -409,21 +383,6 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         /**
-         * @return {@link #request} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A resource, such as a Claim, the evaluation of which could lead to payment.)
-         */
-        public Resource getRequestTarget() { 
-          return this.requestTarget;
-        }
-
-        /**
-         * @param value {@link #request} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A resource, such as a Claim, the evaluation of which could lead to payment.)
-         */
-        public DetailsComponent setRequestTarget(Resource value) { 
-          this.requestTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #submitter} (The party which submitted the claim or financial transaction.)
          */
         public Reference getSubmitter() { 
@@ -448,21 +407,6 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         /**
-         * @return {@link #submitter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party which submitted the claim or financial transaction.)
-         */
-        public Resource getSubmitterTarget() { 
-          return this.submitterTarget;
-        }
-
-        /**
-         * @param value {@link #submitter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party which submitted the claim or financial transaction.)
-         */
-        public DetailsComponent setSubmitterTarget(Resource value) { 
-          this.submitterTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #response} (A resource, such as a ClaimResponse, which contains a commitment to payment.)
          */
         public Reference getResponse() { 
@@ -483,21 +427,6 @@ public class PaymentReconciliation extends DomainResource {
          */
         public DetailsComponent setResponse(Reference value) { 
           this.response = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #response} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A resource, such as a ClaimResponse, which contains a commitment to payment.)
-         */
-        public Resource getResponseTarget() { 
-          return this.responseTarget;
-        }
-
-        /**
-         * @param value {@link #response} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A resource, such as a ClaimResponse, which contains a commitment to payment.)
-         */
-        public DetailsComponent setResponseTarget(Resource value) { 
-          this.responseTarget = value;
           return this;
         }
 
@@ -575,26 +504,6 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         /**
-         * @return {@link #responsible} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to the individual who is responsible for inquiries regarding the response and its payment.)
-         */
-        public PractitionerRole getResponsibleTarget() { 
-          if (this.responsibleTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DetailsComponent.responsible");
-            else if (Configuration.doAutoCreate())
-              this.responsibleTarget = new PractitionerRole(); // aa
-          return this.responsibleTarget;
-        }
-
-        /**
-         * @param value {@link #responsible} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to the individual who is responsible for inquiries regarding the response and its payment.)
-         */
-        public DetailsComponent setResponsibleTarget(PractitionerRole value) { 
-          this.responsibleTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #payee} (The party which is receiving the payment.)
          */
         public Reference getPayee() { 
@@ -615,21 +524,6 @@ public class PaymentReconciliation extends DomainResource {
          */
         public DetailsComponent setPayee(Reference value) { 
           this.payee = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #payee} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party which is receiving the payment.)
-         */
-        public Resource getPayeeTarget() { 
-          return this.payeeTarget;
-        }
-
-        /**
-         * @param value {@link #payee} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party which is receiving the payment.)
-         */
-        public DetailsComponent setPayeeTarget(Resource value) { 
-          this.payeeTarget = value;
           return this;
         }
 
@@ -775,16 +669,16 @@ public class PaymentReconciliation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
-        case -1925032183:  return getPredecessor(); 
-        case 3575610:  return getType(); 
-        case 1095692943:  return getRequest(); 
-        case 348678409:  return getSubmitter(); 
-        case -340323263:  return getResponse(); 
+        case -1618432855:  return getIdentifier();
+        case -1925032183:  return getPredecessor();
+        case 3575610:  return getType();
+        case 1095692943:  return getRequest();
+        case 348678409:  return getSubmitter();
+        case -340323263:  return getResponse();
         case 3076014:  return getDateElement();
-        case 1847674614:  return getResponsible(); 
-        case 106443592:  return getPayee(); 
-        case -1413853096:  return getAmount(); 
+        case 1847674614:  return getResponsible();
+        case 106443592:  return getPayee();
+        case -1413853096:  return getAmount();
         default: return super.makeProperty(hash, name);
         }
 
@@ -856,6 +750,11 @@ public class PaymentReconciliation extends DomainResource {
       public DetailsComponent copy() {
         DetailsComponent dst = new DetailsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetailsComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.predecessor = predecessor == null ? null : predecessor.copy();
         dst.type = type == null ? null : type.copy();
@@ -866,7 +765,6 @@ public class PaymentReconciliation extends DomainResource {
         dst.responsible = responsible == null ? null : responsible.copy();
         dst.payee = payee == null ? null : payee.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -1116,9 +1014,13 @@ public class PaymentReconciliation extends DomainResource {
       public NotesComponent copy() {
         NotesComponent dst = new NotesComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NotesComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.text = text == null ? null : text.copy();
-        return dst;
       }
 
       @Override
@@ -1189,11 +1091,6 @@ public class PaymentReconciliation extends DomainResource {
     protected Reference paymentIssuer;
 
     /**
-     * The actual object that is the target of the reference (The party who generated the payment.)
-     */
-    protected Organization paymentIssuerTarget;
-
-    /**
      * Original request resource reference.
      */
     @Child(name = "request", type = {Task.class}, order=5, min=0, max=1, modifier=false, summary=false)
@@ -1201,21 +1098,11 @@ public class PaymentReconciliation extends DomainResource {
     protected Reference request;
 
     /**
-     * The actual object that is the target of the reference (Original request resource reference.)
-     */
-    protected Task requestTarget;
-
-    /**
      * The practitioner who is responsible for the services rendered to the patient.
      */
     @Child(name = "requestor", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=6, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference requestor;
-
-    /**
-     * The actual object that is the target of the reference (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    protected Resource requestorTarget;
 
     /**
      * The outcome of a request for a reconciliation.
@@ -1275,7 +1162,7 @@ public class PaymentReconciliation extends DomainResource {
     @Description(shortDefinition="Note concerning processing", formalDefinition="A note that describes or explains the processing in a human readable form." )
     protected List<NotesComponent> processNote;
 
-    private static final long serialVersionUID = -1620965037L;
+    private static final long serialVersionUID = -111567260L;
 
   /**
    * Constructor
@@ -1487,26 +1374,6 @@ public class PaymentReconciliation extends DomainResource {
     }
 
     /**
-     * @return {@link #paymentIssuer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who generated the payment.)
-     */
-    public Organization getPaymentIssuerTarget() { 
-      if (this.paymentIssuerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PaymentReconciliation.paymentIssuer");
-        else if (Configuration.doAutoCreate())
-          this.paymentIssuerTarget = new Organization(); // aa
-      return this.paymentIssuerTarget;
-    }
-
-    /**
-     * @param value {@link #paymentIssuer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who generated the payment.)
-     */
-    public PaymentReconciliation setPaymentIssuerTarget(Organization value) { 
-      this.paymentIssuerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #request} (Original request resource reference.)
      */
     public Reference getRequest() { 
@@ -1531,26 +1398,6 @@ public class PaymentReconciliation extends DomainResource {
     }
 
     /**
-     * @return {@link #request} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
-     */
-    public Task getRequestTarget() { 
-      if (this.requestTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PaymentReconciliation.request");
-        else if (Configuration.doAutoCreate())
-          this.requestTarget = new Task(); // aa
-      return this.requestTarget;
-    }
-
-    /**
-     * @param value {@link #request} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Original request resource reference.)
-     */
-    public PaymentReconciliation setRequestTarget(Task value) { 
-      this.requestTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #requestor} (The practitioner who is responsible for the services rendered to the patient.)
      */
     public Reference getRequestor() { 
@@ -1571,21 +1418,6 @@ public class PaymentReconciliation extends DomainResource {
      */
     public PaymentReconciliation setRequestor(Reference value) { 
       this.requestor = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #requestor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    public Resource getRequestorTarget() { 
-      return this.requestorTarget;
-    }
-
-    /**
-     * @param value {@link #requestor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    public PaymentReconciliation setRequestorTarget(Resource value) { 
-      this.requestorTarget = value;
       return this;
     }
 
@@ -2074,18 +1906,18 @@ public class PaymentReconciliation extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         case 1028554472:  return getCreatedElement();
-        case 1144026207:  return getPaymentIssuer(); 
-        case 1095692943:  return getRequest(); 
-        case 693934258:  return getRequestor(); 
+        case 1144026207:  return getPaymentIssuer();
+        case 1095692943:  return getRequest();
+        case 693934258:  return getRequestor();
         case -1106507950:  return getOutcomeElement();
         case 583380919:  return getDispositionElement();
         case -1540873516:  return getPaymentDateElement();
-        case 909332990:  return getPaymentAmount(); 
-        case 1555852111:  return getPaymentIdentifier(); 
+        case 909332990:  return getPaymentAmount();
+        case 1555852111:  return getPaymentIdentifier();
         case -1335224239:  return addDetail(); 
-        case 473181393:  return getFormCode(); 
+        case 473181393:  return getFormCode();
         case 202339073:  return addProcessNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2181,6 +2013,11 @@ public class PaymentReconciliation extends DomainResource {
       public PaymentReconciliation copy() {
         PaymentReconciliation dst = new PaymentReconciliation();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PaymentReconciliation dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2208,7 +2045,6 @@ public class PaymentReconciliation extends DomainResource {
           for (NotesComponent i : processNote)
             dst.processNote.add(i.copy());
         };
-        return dst;
       }
 
       protected PaymentReconciliation typedCopy() {

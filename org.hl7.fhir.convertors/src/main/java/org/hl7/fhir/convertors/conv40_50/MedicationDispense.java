@@ -22,7 +22,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -70,17 +72,17 @@ public class MedicationDispense extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
       tgt.addPartOf(convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCode(src.getStatusElement()));
+      tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
     if (src.hasStatusReason())
       tgt.setStatusReason(convertType(src.getStatusReason()));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.addCategory(convertCodeableConcept(src.getCategory()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
+      tgt.setEncounter(convertReference(src.getContext()));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     for (org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent t : src.getPerformer())
@@ -126,17 +128,17 @@ public class MedicationDispense extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
       tgt.addPartOf(convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCode(src.getStatusElement()));
+      tgt.setStatusElement(convertStatus(src.getStatusElement()));
     if (src.hasStatusReason())
       tgt.setStatusReason(convertType(src.getStatusReason()));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
+    if (src.hasEncounter())
+      tgt.setContext(convertReference(src.getEncounter()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(convertReference(t));
     for (org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent t : src.getPerformer())
@@ -172,6 +174,26 @@ public class MedicationDispense extends VersionConvertor_40_50 {
     return tgt;
   }
 
+  private static CodeType convertStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> src) {
+    if (src == null)
+      return null;
+    CodeType tgt = new CodeType();
+    copyElement(src, tgt);
+    if (src.getValue() == MedicationDispenseStatus.DECLINED)
+      tgt.setValue("stopped");
+    else
+      tgt.setValue(src.getValueAsString());
+    return tgt;
+  }
+
+  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> convertMedicationStatus(org.hl7.fhir.r4.model.CodeType src) {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus>();
+    copyElement(src, tgt);
+    tgt.setValue(MedicationDispenseStatus.fromCode(src.getCode()));
+    return tgt;
+  }
   public static org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent convertMedicationDispensePerformerComponent(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent src) throws FHIRException {
     if (src == null)
       return null;
@@ -208,7 +230,7 @@ public class MedicationDispense extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason())
       tgt.addReason(convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getResponsibleParty())
-      tgt.addResponsibleParty(convertReference(t));
+      tgt.setResponsibleParty(convertReference(t));
     return tgt;
   }
 
@@ -223,8 +245,8 @@ public class MedicationDispense extends VersionConvertor_40_50 {
       tgt.setType(convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason())
       tgt.addReason(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getResponsibleParty())
-      tgt.addResponsibleParty(convertReference(t));
+    if (src.hasResponsibleParty())
+      tgt.addResponsibleParty(convertReference(src.getResponsibleParty()));
     return tgt;
   }
 

@@ -53,17 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Demographics and administrative information about a person independent of a specific health-related context.
  */
@@ -204,11 +206,6 @@ public class Person extends DomainResource {
         protected Reference target;
 
         /**
-         * The actual object that is the target of the reference (The resource to which this actual person is associated.)
-         */
-        protected Resource targetTarget;
-
-        /**
          * Level of assurance that this link is associated with the target resource.
          */
         @Child(name = "assurance", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -216,7 +213,7 @@ public class Person extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/identity-assuranceLevel")
         protected Enumeration<IdentityAssuranceLevel> assurance;
 
-        private static final long serialVersionUID = 508763647L;
+        private static final long serialVersionUID = -1393523223L;
 
     /**
      * Constructor
@@ -254,21 +251,6 @@ public class Person extends DomainResource {
          */
         public PersonLinkComponent setTarget(Reference value) { 
           this.target = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #target} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The resource to which this actual person is associated.)
-         */
-        public Resource getTargetTarget() { 
-          return this.targetTarget;
-        }
-
-        /**
-         * @param value {@link #target} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The resource to which this actual person is associated.)
-         */
-        public PersonLinkComponent setTargetTarget(Resource value) { 
-          this.targetTarget = value;
           return this;
         }
 
@@ -377,7 +359,7 @@ public class Person extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -880905839:  return getTarget(); 
+        case -880905839:  return getTarget();
         case 1771900717:  return getAssuranceElement();
         default: return super.makeProperty(hash, name);
         }
@@ -410,9 +392,13 @@ public class Person extends DomainResource {
       public PersonLinkComponent copy() {
         PersonLinkComponent dst = new PersonLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PersonLinkComponent dst) {
+        super.copyValues(dst);
         dst.target = target == null ? null : target.copy();
         dst.assurance = assurance == null ? null : assurance.copy();
-        return dst;
       }
 
       @Override
@@ -504,11 +490,6 @@ public class Person extends DomainResource {
     protected Reference managingOrganization;
 
     /**
-     * The actual object that is the target of the reference (The organization that is the custodian of the person record.)
-     */
-    protected Organization managingOrganizationTarget;
-
-    /**
      * Whether this person's record is in active use.
      */
     @Child(name = "active", type = {BooleanType.class}, order=8, min=0, max=1, modifier=true, summary=true)
@@ -522,7 +503,7 @@ public class Person extends DomainResource {
     @Description(shortDefinition="Link to a resource that concerns the same actual person", formalDefinition="Link to a resource that concerns the same actual person." )
     protected List<PersonLinkComponent> link;
 
-    private static final long serialVersionUID = -117464654L;
+    private static final long serialVersionUID = -237141861L;
 
   /**
    * Constructor
@@ -890,26 +871,6 @@ public class Person extends DomainResource {
     }
 
     /**
-     * @return {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization that is the custodian of the person record.)
-     */
-    public Organization getManagingOrganizationTarget() { 
-      if (this.managingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Person.managingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization(); // aa
-      return this.managingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization that is the custodian of the person record.)
-     */
-    public Person setManagingOrganizationTarget(Organization value) { 
-      this.managingOrganizationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #active} (Whether this person's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
      */
     public BooleanType getActiveElement() { 
@@ -1133,8 +1094,8 @@ public class Person extends DomainResource {
         case -1249512767:  return getGenderElement();
         case -1210031859:  return getBirthDateElement();
         case -1147692044:  return addAddress(); 
-        case 106642994:  return getPhoto(); 
-        case -2058947787:  return getManagingOrganization(); 
+        case 106642994:  return getPhoto();
+        case -2058947787:  return getManagingOrganization();
         case -1422950650:  return getActiveElement();
         case 3321850:  return addLink(); 
         default: return super.makeProperty(hash, name);
@@ -1206,6 +1167,11 @@ public class Person extends DomainResource {
       public Person copy() {
         Person dst = new Person();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Person dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1236,7 +1202,6 @@ public class Person extends DomainResource {
           for (PersonLinkComponent i : link)
             dst.link.add(i.copy());
         };
-        return dst;
       }
 
       protected Person typedCopy() {

@@ -53,21 +53,21 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-// added from java-adornments.txt:
-import org.hl7.fhir.r5.utils.StructureMapUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+// added from java-adornments.txt:
+import org.hl7.fhir.r5.utils.StructureMapUtilities;
 
 // end addition
 /**
@@ -1440,11 +1440,15 @@ public class StructureMap extends MetadataResource {
       public StructureMapStructureComponent copy() {
         StructureMapStructureComponent dst = new StructureMapStructureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapStructureComponent dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.mode = mode == null ? null : mode.copy();
         dst.alias = alias == null ? null : alias.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -1978,6 +1982,11 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupComponent copy() {
         StructureMapGroupComponent dst = new StructureMapGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapGroupComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.extends_ = extends_ == null ? null : extends_.copy();
         dst.typeMode = typeMode == null ? null : typeMode.copy();
@@ -1992,7 +2001,6 @@ public class StructureMap extends MetadataResource {
           for (StructureMapGroupRuleComponent i : rule)
             dst.rule.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2389,11 +2397,15 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupInputComponent copy() {
         StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapGroupInputComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
         dst.mode = mode == null ? null : mode.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -2935,6 +2947,11 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupRuleComponent copy() {
         StructureMapGroupRuleComponent dst = new StructureMapGroupRuleComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapGroupRuleComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         if (source != null) {
           dst.source = new ArrayList<StructureMapGroupRuleSourceComponent>();
@@ -2957,7 +2974,6 @@ public class StructureMap extends MetadataResource {
             dst.dependent.add(i.copy());
         };
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -3082,7 +3098,7 @@ public class StructureMap extends MetadataResource {
         @Description(shortDefinition="Message to put in log if source exists (FHIRPath)", formalDefinition="A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found." )
         protected StringType logMessage;
 
-        private static final long serialVersionUID = 736427977L;
+        private static final long serialVersionUID = -1881515992L;
 
     /**
      * Constructor
@@ -3769,8 +3785,8 @@ public class StructureMap extends MetadataResource {
         case 108114:  return getMinElement();
         case 107876:  return getMaxElement();
         case 3575610:  return getTypeElement();
-        case 587922128:  return getDefaultValue(); 
-        case -659125328:  return getDefaultValue(); 
+        case 587922128:  return getDefaultValue();
+        case -659125328:  return getDefaultValue();
         case -1662836996:  return getElementElement();
         case 1345445729:  return getListModeElement();
         case -1249586564:  return getVariableElement();
@@ -4011,6 +4027,10 @@ public class StructureMap extends MetadataResource {
           this.defaultValue = new Dosage();
           return this.defaultValue;
         }
+        else if (name.equals("defaultValueMeta")) {
+          this.defaultValue = new Meta();
+          return this.defaultValue;
+        }
         else if (name.equals("element")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.element");
         }
@@ -4036,6 +4056,11 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupRuleSourceComponent copy() {
         StructureMapGroupRuleSourceComponent dst = new StructureMapGroupRuleSourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapGroupRuleSourceComponent dst) {
+        super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
         dst.min = min == null ? null : min.copy();
         dst.max = max == null ? null : max.copy();
@@ -4047,7 +4072,6 @@ public class StructureMap extends MetadataResource {
         dst.condition = condition == null ? null : condition.copy();
         dst.check = check == null ? null : check.copy();
         dst.logMessage = logMessage == null ? null : logMessage.copy();
-        return dst;
       }
 
       @Override
@@ -4744,6 +4768,11 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupRuleTargetComponent copy() {
         StructureMapGroupRuleTargetComponent dst = new StructureMapGroupRuleTargetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapGroupRuleTargetComponent dst) {
+        super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
         dst.contextType = contextType == null ? null : contextType.copy();
         dst.element = element == null ? null : element.copy();
@@ -4760,7 +4789,6 @@ public class StructureMap extends MetadataResource {
           for (StructureMapGroupRuleTargetParameterComponent i : parameter)
             dst.parameter.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4981,8 +5009,8 @@ public class StructureMap extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -5026,8 +5054,12 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupRuleTargetParameterComponent copy() {
         StructureMapGroupRuleTargetParameterComponent dst = new StructureMapGroupRuleTargetParameterComponent();
         copyValues(dst);
-        dst.value = value == null ? null : value.copy();
         return dst;
+      }
+
+      public void copyValues(StructureMapGroupRuleTargetParameterComponent dst) {
+        super.copyValues(dst);
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -5295,13 +5327,17 @@ public class StructureMap extends MetadataResource {
       public StructureMapGroupRuleDependentComponent copy() {
         StructureMapGroupRuleDependentComponent dst = new StructureMapGroupRuleDependentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMapGroupRuleDependentComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         if (variable != null) {
           dst.variable = new ArrayList<StringType>();
           for (StringType i : variable)
             dst.variable.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6599,6 +6635,11 @@ public class StructureMap extends MetadataResource {
       public StructureMap copy() {
         StructureMap dst = new StructureMap();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StructureMap dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -6645,7 +6686,6 @@ public class StructureMap extends MetadataResource {
           for (StructureMapGroupComponent i : group)
             dst.group.add(i.copy());
         };
-        return dst;
       }
 
       protected StructureMap typedCopy() {

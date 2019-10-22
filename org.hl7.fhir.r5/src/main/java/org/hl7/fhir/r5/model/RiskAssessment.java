@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -53,17 +51,21 @@ import java.math.BigDecimal;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * An assessment of the likely outcome(s) for a patient or other subject as well as the likelihood of each outcome.
  */
@@ -670,13 +672,13 @@ public class RiskAssessment extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1106507950:  return getOutcome(); 
-        case 1430185003:  return getProbability(); 
-        case -1290561483:  return getProbability(); 
-        case 123308730:  return getQualitativeRisk(); 
+        case -1106507950:  return getOutcome();
+        case 1430185003:  return getProbability();
+        case -1290561483:  return getProbability();
+        case 123308730:  return getQualitativeRisk();
         case -70741061:  return getRelativeRiskElement();
-        case 1312831238:  return getWhen(); 
-        case 3648314:  return getWhen(); 
+        case 1312831238:  return getWhen();
+        case 3648314:  return getWhen();
         case 345689335:  return getRationaleElement();
         default: return super.makeProperty(hash, name);
         }
@@ -736,13 +738,17 @@ public class RiskAssessment extends DomainResource {
       public RiskAssessmentPredictionComponent copy() {
         RiskAssessmentPredictionComponent dst = new RiskAssessmentPredictionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RiskAssessmentPredictionComponent dst) {
+        super.copyValues(dst);
         dst.outcome = outcome == null ? null : outcome.copy();
         dst.probability = probability == null ? null : probability.copy();
         dst.qualitativeRisk = qualitativeRisk == null ? null : qualitativeRisk.copy();
         dst.relativeRisk = relativeRisk == null ? null : relativeRisk.copy();
         dst.when = when == null ? null : when.copy();
         dst.rationale = rationale == null ? null : rationale.copy();
-        return dst;
       }
 
       @Override
@@ -795,21 +801,11 @@ public class RiskAssessment extends DomainResource {
     protected Reference basedOn;
 
     /**
-     * The actual object that is the target of the reference (A reference to the request that is fulfilled by this risk assessment.)
-     */
-    protected Resource basedOnTarget;
-
-    /**
      * A reference to a resource that this risk assessment is part of, such as a Procedure.
      */
     @Child(name = "parent", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Part of this occurrence", formalDefinition="A reference to a resource that this risk assessment is part of, such as a Procedure." )
     protected Reference parent;
-
-    /**
-     * The actual object that is the target of the reference (A reference to a resource that this risk assessment is part of, such as a Procedure.)
-     */
-    protected Resource parentTarget;
 
     /**
      * The status of the RiskAssessment, using the same statuses as an Observation.
@@ -841,21 +837,11 @@ public class RiskAssessment extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient or group the risk assessment applies to.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The encounter where the assessment was performed.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Where was assessment performed?", formalDefinition="The encounter where the assessment was performed." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The encounter where the assessment was performed.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date (and possibly time) the risk assessment was performed.
@@ -872,21 +858,11 @@ public class RiskAssessment extends DomainResource {
     protected Reference condition;
 
     /**
-     * The actual object that is the target of the reference (For assessments or prognosis specific to a particular condition, indicates the condition being assessed.)
-     */
-    protected Condition conditionTarget;
-
-    /**
      * The provider or software application that performed the assessment.
      */
     @Child(name = "performer", type = {Practitioner.class, PractitionerRole.class, Device.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who did assessment?", formalDefinition="The provider or software application that performed the assessment." )
     protected Reference performer;
-
-    /**
-     * The actual object that is the target of the reference (The provider or software application that performed the assessment.)
-     */
-    protected Resource performerTarget;
 
     /**
      * The reason the risk assessment was performed.
@@ -901,11 +877,6 @@ public class RiskAssessment extends DomainResource {
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why the assessment was necessary?", formalDefinition="Resources supporting the reason the risk assessment was performed." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Resources supporting the reason the risk assessment was performed.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Indicates the source data considered as part of the assessment (for example, FamilyHistory, Observations, Procedures, Conditions, etc.).
@@ -913,11 +884,6 @@ public class RiskAssessment extends DomainResource {
     @Child(name = "basis", type = {Reference.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information used in assessment", formalDefinition="Indicates the source data considered as part of the assessment (for example, FamilyHistory, Observations, Procedures, Conditions, etc.)." )
     protected List<Reference> basis;
-    /**
-     * The actual objects that are the target of the reference (Indicates the source data considered as part of the assessment (for example, FamilyHistory, Observations, Procedures, Conditions, etc.).)
-     */
-    protected List<Resource> basisTarget;
-
 
     /**
      * Describes the expected outcome for the subject.
@@ -940,7 +906,7 @@ public class RiskAssessment extends DomainResource {
     @Description(shortDefinition="Comments on the risk assessment", formalDefinition="Additional comments about the risk assessment." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -2137260218L;
+    private static final long serialVersionUID = -1871538581L;
 
   /**
    * Constructor
@@ -1036,21 +1002,6 @@ public class RiskAssessment extends DomainResource {
     }
 
     /**
-     * @return {@link #basedOn} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to the request that is fulfilled by this risk assessment.)
-     */
-    public Resource getBasedOnTarget() { 
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @param value {@link #basedOn} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to the request that is fulfilled by this risk assessment.)
-     */
-    public RiskAssessment setBasedOnTarget(Resource value) { 
-      this.basedOnTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #parent} (A reference to a resource that this risk assessment is part of, such as a Procedure.)
      */
     public Reference getParent() { 
@@ -1071,21 +1022,6 @@ public class RiskAssessment extends DomainResource {
      */
     public RiskAssessment setParent(Reference value) { 
       this.parent = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #parent} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to a resource that this risk assessment is part of, such as a Procedure.)
-     */
-    public Resource getParentTarget() { 
-      return this.parentTarget;
-    }
-
-    /**
-     * @param value {@link #parent} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to a resource that this risk assessment is part of, such as a Procedure.)
-     */
-    public RiskAssessment setParentTarget(Resource value) { 
-      this.parentTarget = value;
       return this;
     }
 
@@ -1207,21 +1143,6 @@ public class RiskAssessment extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient or group the risk assessment applies to.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient or group the risk assessment applies to.)
-     */
-    public RiskAssessment setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The encounter where the assessment was performed.)
      */
     public Reference getEncounter() { 
@@ -1242,26 +1163,6 @@ public class RiskAssessment extends DomainResource {
      */
     public RiskAssessment setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The encounter where the assessment was performed.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create RiskAssessment.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The encounter where the assessment was performed.)
-     */
-    public RiskAssessment setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1341,26 +1242,6 @@ public class RiskAssessment extends DomainResource {
     }
 
     /**
-     * @return {@link #condition} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (For assessments or prognosis specific to a particular condition, indicates the condition being assessed.)
-     */
-    public Condition getConditionTarget() { 
-      if (this.conditionTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create RiskAssessment.condition");
-        else if (Configuration.doAutoCreate())
-          this.conditionTarget = new Condition(); // aa
-      return this.conditionTarget;
-    }
-
-    /**
-     * @param value {@link #condition} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (For assessments or prognosis specific to a particular condition, indicates the condition being assessed.)
-     */
-    public RiskAssessment setConditionTarget(Condition value) { 
-      this.conditionTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #performer} (The provider or software application that performed the assessment.)
      */
     public Reference getPerformer() { 
@@ -1381,21 +1262,6 @@ public class RiskAssessment extends DomainResource {
      */
     public RiskAssessment setPerformer(Reference value) { 
       this.performer = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #performer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The provider or software application that performed the assessment.)
-     */
-    public Resource getPerformerTarget() { 
-      return this.performerTarget;
-    }
-
-    /**
-     * @param value {@link #performer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The provider or software application that performed the assessment.)
-     */
-    public RiskAssessment setPerformerTarget(Resource value) { 
-      this.performerTarget = value;
       return this;
     }
 
@@ -1506,16 +1372,6 @@ public class RiskAssessment extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #basis} (Indicates the source data considered as part of the assessment (for example, FamilyHistory, Observations, Procedures, Conditions, etc.).)
      */
     public List<Reference> getBasis() { 
@@ -1566,16 +1422,6 @@ public class RiskAssessment extends DomainResource {
         addBasis();
       }
       return getBasis().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasisTarget() { 
-      if (this.basisTarget == null)
-        this.basisTarget = new ArrayList<Resource>();
-      return this.basisTarget;
     }
 
     /**
@@ -1913,17 +1759,17 @@ public class RiskAssessment extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case -332612366:  return getBasedOn(); 
-        case -995424086:  return getParent(); 
+        case -332612366:  return getBasedOn();
+        case -995424086:  return getParent();
         case -892481550:  return getStatusElement();
-        case -1077554975:  return getMethod(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
-        case -861311717:  return getCondition(); 
-        case 481140686:  return getPerformer(); 
+        case -1077554975:  return getMethod();
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
+        case -861311717:  return getCondition();
+        case 481140686:  return getPerformer();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 93508670:  return addBasis(); 
@@ -2038,6 +1884,11 @@ public class RiskAssessment extends DomainResource {
       public RiskAssessment copy() {
         RiskAssessment dst = new RiskAssessment();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RiskAssessment dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2079,7 +1930,6 @@ public class RiskAssessment extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected RiskAssessment typedCopy() {

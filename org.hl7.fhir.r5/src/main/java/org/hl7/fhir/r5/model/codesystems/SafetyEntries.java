@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -196,7 +195,7 @@ public enum SafetyEntries {
         /**
          * My system [validates all input received](validation.html) (whether in resource format or other) from other actors so that it data is well-formed and does not contain content that would cause unwanted system behavior
          */
-        CHECKVALIDATION,
+        CHECK_VALIDATION, 
         /**
          * My system makes the right [Provenance](provenance.html) statements and [AuditEvent](auditevent.html) logs, and uses the right [security labels](security-labels.html#core) where appropriate
          */
@@ -297,7 +296,7 @@ public enum SafetyEntries {
         if ("render-narratives".equals(codeString))
           return RENDERNARRATIVES;
         if ("check=validation".equals(codeString))
-          return CHECKVALIDATION;
+          return CHECK_VALIDATION;
         if ("use-provenance".equals(codeString))
           return USEPROVENANCE;
         if ("enable-cors".equals(codeString))
@@ -348,7 +347,7 @@ public enum SafetyEntries {
             case USERBAC: return "use-rbac";
             case USELABELS: return "use-labels";
             case RENDERNARRATIVES: return "render-narratives";
-            case CHECKVALIDATION: return "check=validation";
+            case CHECK_VALIDATION: return "check=validation";
             case USEPROVENANCE: return "use-provenance";
             case ENABLECORS: return "enable-cors";
             case USEJSON: return "use-json";
@@ -397,7 +396,7 @@ public enum SafetyEntries {
             case USERBAC: return "My system applies appropriate access control to every request, using a combination of requester’s clearance (ABAC) and/or roles (RBAC)";
             case USELABELS: return "My system considers [security labels](security-labels.html) on the affected resources when making access control decisions ";
             case RENDERNARRATIVES: return "My system can [render narratives properly](narrative.html#css) and [securely](security.html#narrative)(where they are used)";
-            case CHECKVALIDATION: return "My system [validates all input received](validation.html) (whether in resource format or other) from other actors so that it data is well-formed and does not contain content that would cause unwanted system behavior";
+            case CHECK_VALIDATION: return "My system [validates all input received](validation.html) (whether in resource format or other) from other actors so that it data is well-formed and does not contain content that would cause unwanted system behavior";
             case USEPROVENANCE: return "My system makes the right [Provenance](provenance.html) statements and [AuditEvent](auditevent.html) logs, and uses the right [security labels](security-labels.html#core) where appropriate";
             case ENABLECORS: return "Server: CORS ([cross-origin resource sharing](http://enable-cors.org/)) is appropriately enabled (many clients are Javascript apps running in a browser)";
             case USEJSON: return "JSON is supported (many clients are Javascript apps running in a browser; XML is inconvenient at best)";
@@ -443,7 +442,7 @@ public enum SafetyEntries {
             case USERBAC: return "use-rbac";
             case USELABELS: return "use-labels";
             case RENDERNARRATIVES: return "render-narratives";
-            case CHECKVALIDATION: return "check=validation";
+            case CHECK_VALIDATION: return "check=validation";
             case USEPROVENANCE: return "use-provenance";
             case ENABLECORS: return "enable-cors";
             case USEJSON: return "use-json";

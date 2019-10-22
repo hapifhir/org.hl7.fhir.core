@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,19 +53,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.
  */
@@ -509,10 +508,14 @@ public class ChargeItemDefinition extends MetadataResource {
       public ChargeItemDefinitionApplicabilityComponent copy() {
         ChargeItemDefinitionApplicabilityComponent dst = new ChargeItemDefinitionApplicabilityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ChargeItemDefinitionApplicabilityComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.language = language == null ? null : language.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -766,6 +769,11 @@ public class ChargeItemDefinition extends MetadataResource {
       public ChargeItemDefinitionPropertyGroupComponent copy() {
         ChargeItemDefinitionPropertyGroupComponent dst = new ChargeItemDefinitionPropertyGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ChargeItemDefinitionPropertyGroupComponent dst) {
+        super.copyValues(dst);
         if (applicability != null) {
           dst.applicability = new ArrayList<ChargeItemDefinitionApplicabilityComponent>();
           for (ChargeItemDefinitionApplicabilityComponent i : applicability)
@@ -776,7 +784,6 @@ public class ChargeItemDefinition extends MetadataResource {
           for (ChargeItemDefinitionPropertyGroupPriceComponentComponent i : priceComponent)
             dst.priceComponent.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1093,9 +1100,9 @@ public class ChargeItemDefinition extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1282148017:  return getFactorElement();
-        case -1413853096:  return getAmount(); 
+        case -1413853096:  return getAmount();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1136,11 +1143,15 @@ public class ChargeItemDefinition extends MetadataResource {
       public ChargeItemDefinitionPropertyGroupPriceComponentComponent copy() {
         ChargeItemDefinitionPropertyGroupPriceComponentComponent dst = new ChargeItemDefinitionPropertyGroupPriceComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ChargeItemDefinitionPropertyGroupPriceComponentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.code = code == null ? null : code.copy();
         dst.factor = factor == null ? null : factor.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -1246,11 +1257,6 @@ public class ChargeItemDefinition extends MetadataResource {
     @Child(name = "instance", type = {Medication.class, Substance.class, Device.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instances this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given product instance(s)." )
     protected List<Reference> instance;
-    /**
-     * The actual objects that are the target of the reference (The defined billing details in this resource pertain to the given product instance(s).)
-     */
-    protected List<Resource> instanceTarget;
-
 
     /**
      * Expressions that describe applicability criteria for the billing code.
@@ -1266,7 +1272,7 @@ public class ChargeItemDefinition extends MetadataResource {
     @Description(shortDefinition="Group of properties which are applicable under the same conditions", formalDefinition="Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply." )
     protected List<ChargeItemDefinitionPropertyGroupComponent> propertyGroup;
 
-    private static final long serialVersionUID = -583681330L;
+    private static final long serialVersionUID = -699176936L;
 
   /**
    * Constructor
@@ -2308,16 +2314,6 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getInstanceTarget() { 
-      if (this.instanceTarget == null)
-        this.instanceTarget = new ArrayList<Resource>();
-      return this.instanceTarget;
-    }
-
-    /**
      * @return {@link #applicability} (Expressions that describe applicability criteria for the billing code.)
      */
     public List<ChargeItemDefinitionApplicabilityComponent> getApplicability() { 
@@ -2665,8 +2661,8 @@ public class ChargeItemDefinition extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
-        case 3059181:  return getCode(); 
+        case -403934648:  return getEffectivePeriod();
+        case 3059181:  return getCode();
         case 555127957:  return addInstance(); 
         case -1526770491:  return addApplicability(); 
         case -1041594966:  return addPropertyGroup(); 
@@ -2791,6 +2787,11 @@ public class ChargeItemDefinition extends MetadataResource {
       public ChargeItemDefinition copy() {
         ChargeItemDefinition dst = new ChargeItemDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ChargeItemDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -2854,7 +2855,6 @@ public class ChargeItemDefinition extends MetadataResource {
           for (ChargeItemDefinitionPropertyGroupComponent i : propertyGroup)
             dst.propertyGroup.add(i.copy());
         };
-        return dst;
       }
 
       protected ChargeItemDefinition typedCopy() {

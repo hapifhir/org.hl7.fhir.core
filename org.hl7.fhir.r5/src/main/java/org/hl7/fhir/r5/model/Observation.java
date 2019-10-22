@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Measurements and simple assertions made about a patient, device or other subject.
  */
@@ -596,11 +598,11 @@ public class Observation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 107348:  return getLow(); 
-        case 3202466:  return getHigh(); 
-        case 3575610:  return getType(); 
+        case 107348:  return getLow();
+        case 3202466:  return getHigh();
+        case 3575610:  return getType();
         case -2089924569:  return addAppliesTo(); 
-        case 96511:  return getAge(); 
+        case 96511:  return getAge();
         case 3556653:  return getTextElement();
         default: return super.makeProperty(hash, name);
         }
@@ -652,6 +654,11 @@ public class Observation extends DomainResource {
       public ObservationReferenceRangeComponent copy() {
         ObservationReferenceRangeComponent dst = new ObservationReferenceRangeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ObservationReferenceRangeComponent dst) {
+        super.copyValues(dst);
         dst.low = low == null ? null : low.copy();
         dst.high = high == null ? null : high.copy();
         dst.type = type == null ? null : type.copy();
@@ -662,7 +669,6 @@ public class Observation extends DomainResource {
         };
         dst.age = age == null ? null : age.copy();
         dst.text = text == null ? null : text.copy();
-        return dst;
       }
 
       @Override
@@ -1186,10 +1192,10 @@ public class Observation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
-        case 1034315687:  return getDataAbsentReason(); 
+        case 3059181:  return getCode();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case 1034315687:  return getDataAbsentReason();
         case -297950712:  return addInterpretation(); 
         case -1912545102:  return addReferenceRange(); 
         default: return super.makeProperty(hash, name);
@@ -1277,6 +1283,11 @@ public class Observation extends DomainResource {
       public ObservationComponentComponent copy() {
         ObservationComponentComponent dst = new ObservationComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ObservationComponentComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
         dst.dataAbsentReason = dataAbsentReason == null ? null : dataAbsentReason.copy();
@@ -1290,7 +1301,6 @@ public class Observation extends DomainResource {
           for (ObservationReferenceRangeComponent i : referenceRange)
             dst.referenceRange.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1340,23 +1350,13 @@ public class Observation extends DomainResource {
     @Child(name = "basedOn", type = {CarePlan.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Fulfills plan, proposal or order", formalDefinition="A plan, proposal or order that is fulfilled in whole or in part by this event.  For example, a MedicationRequest may require a patient to have laboratory test performed before  it is dispensed." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A plan, proposal or order that is fulfilled in whole or in part by this event.  For example, a MedicationRequest may require a patient to have laboratory test performed before  it is dispensed.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.
      */
-    @Child(name = "partOf", type = {MedicationAdministration.class, MedicationDispense.class, MedicationStatement.class, Procedure.class, Immunization.class, ImagingStudy.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "partOf", type = {MedicationAdministration.class, MedicationDispense.class, MedicationUsage.class, Procedure.class, Immunization.class, ImagingStudy.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of referenced event", formalDefinition="A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.)
-     */
-    protected List<Resource> partOfTarget;
-
 
     /**
      * The status of the result value.
@@ -1390,21 +1390,11 @@ public class Observation extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient, or group of patients, location, or device this observation is about and into whose record the observation is placed. If the actual focus of the observation is different from the subject (or a sample of, part, or region of the subject), the `focus` element or the `code` itself specifies the actual focus of the observation.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.
      */
     @Child(name = "focus", type = {Reference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What the observation is about, when it is not about the subject of record", formalDefinition="The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus." )
     protected List<Reference> focus;
-    /**
-     * The actual objects that are the target of the reference (The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.)
-     */
-    protected List<Resource> focusTarget;
-
 
     /**
      * The healthcare event  (e.g. a patient and healthcare provider interaction) during which this observation is made.
@@ -1412,11 +1402,6 @@ public class Observation extends DomainResource {
     @Child(name = "encounter", type = {Encounter.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Healthcare event during which this observation is made", formalDefinition="The healthcare event  (e.g. a patient and healthcare provider interaction) during which this observation is made." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this observation is made.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The time or time-period the observed value is asserted as being true. For biological subjects - e.g. human patients - this is usually called the "physiologically relevant time". This is usually either the time of the procedure or of specimen collection, but very often the source of the date/time is not known, only the date/time itself.
@@ -1438,11 +1423,6 @@ public class Observation extends DomainResource {
     @Child(name = "performer", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, Patient.class, RelatedPerson.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who is responsible for the observation", formalDefinition="Who was responsible for asserting the observed value as \"true\"." )
     protected List<Reference> performer;
-    /**
-     * The actual objects that are the target of the reference (Who was responsible for asserting the observed value as "true".)
-     */
-    protected List<Resource> performerTarget;
-
 
     /**
      * The information determined as a result of making the observation, if the information has a simple value.
@@ -1498,21 +1478,11 @@ public class Observation extends DomainResource {
     protected Reference specimen;
 
     /**
-     * The actual object that is the target of the reference (The specimen that was used when this observation was made.)
-     */
-    protected Specimen specimenTarget;
-
-    /**
      * The device used to generate the observation data.
      */
     @Child(name = "device", type = {Device.class, DeviceMetric.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="(Measurement) Device", formalDefinition="The device used to generate the observation data." )
     protected Reference device;
-
-    /**
-     * The actual object that is the target of the reference (The device used to generate the observation data.)
-     */
-    protected Resource deviceTarget;
 
     /**
      * Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an "OR".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.
@@ -1527,23 +1497,13 @@ public class Observation extends DomainResource {
     @Child(name = "hasMember", type = {Observation.class, QuestionnaireResponse.class, MolecularSequence.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Related resource that belongs to the Observation group", formalDefinition="This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group." )
     protected List<Reference> hasMember;
-    /**
-     * The actual objects that are the target of the reference (This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.)
-     */
-    protected List<Resource> hasMemberTarget;
-
 
     /**
      * The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.
      */
-    @Child(name = "derivedFrom", type = {DocumentReference.class, ImagingStudy.class, Media.class, QuestionnaireResponse.class, Observation.class, MolecularSequence.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "derivedFrom", type = {DocumentReference.class, ImagingStudy.class, QuestionnaireResponse.class, Observation.class, MolecularSequence.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Related measurements the observation is made from", formalDefinition="The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image." )
     protected List<Reference> derivedFrom;
-    /**
-     * The actual objects that are the target of the reference (The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.)
-     */
-    protected List<Resource> derivedFromTarget;
-
 
     /**
      * Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations.
@@ -1552,7 +1512,7 @@ public class Observation extends DomainResource {
     @Description(shortDefinition="Component results", formalDefinition="Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations." )
     protected List<ObservationComponentComponent> component;
 
-    private static final long serialVersionUID = -2036786355L;
+    private static final long serialVersionUID = -1633908682L;
 
   /**
    * Constructor
@@ -1677,16 +1637,6 @@ public class Observation extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.)
      */
     public List<Reference> getPartOf() { 
@@ -1737,16 +1687,6 @@ public class Observation extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1896,21 +1836,6 @@ public class Observation extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient, or group of patients, location, or device this observation is about and into whose record the observation is placed. If the actual focus of the observation is different from the subject (or a sample of, part, or region of the subject), the `focus` element or the `code` itself specifies the actual focus of the observation.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient, or group of patients, location, or device this observation is about and into whose record the observation is placed. If the actual focus of the observation is different from the subject (or a sample of, part, or region of the subject), the `focus` element or the `code` itself specifies the actual focus of the observation.)
-     */
-    public Observation setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #focus} (The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.)
      */
     public List<Reference> getFocus() { 
@@ -1964,16 +1889,6 @@ public class Observation extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getFocusTarget() { 
-      if (this.focusTarget == null)
-        this.focusTarget = new ArrayList<Resource>();
-      return this.focusTarget;
-    }
-
-    /**
      * @return {@link #encounter} (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this observation is made.)
      */
     public Reference getEncounter() { 
@@ -1994,26 +1909,6 @@ public class Observation extends DomainResource {
      */
     public Observation setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this observation is made.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Observation.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this observation is made.)
-     */
-    public Observation setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -2198,16 +2093,6 @@ public class Observation extends DomainResource {
         addPerformer();
       }
       return getPerformer().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPerformerTarget() { 
-      if (this.performerTarget == null)
-        this.performerTarget = new ArrayList<Resource>();
-      return this.performerTarget;
     }
 
     /**
@@ -2599,26 +2484,6 @@ public class Observation extends DomainResource {
     }
 
     /**
-     * @return {@link #specimen} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The specimen that was used when this observation was made.)
-     */
-    public Specimen getSpecimenTarget() { 
-      if (this.specimenTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Observation.specimen");
-        else if (Configuration.doAutoCreate())
-          this.specimenTarget = new Specimen(); // aa
-      return this.specimenTarget;
-    }
-
-    /**
-     * @param value {@link #specimen} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The specimen that was used when this observation was made.)
-     */
-    public Observation setSpecimenTarget(Specimen value) { 
-      this.specimenTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #device} (The device used to generate the observation data.)
      */
     public Reference getDevice() { 
@@ -2639,21 +2504,6 @@ public class Observation extends DomainResource {
      */
     public Observation setDevice(Reference value) { 
       this.device = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #device} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device used to generate the observation data.)
-     */
-    public Resource getDeviceTarget() { 
-      return this.deviceTarget;
-    }
-
-    /**
-     * @param value {@link #device} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device used to generate the observation data.)
-     */
-    public Observation setDeviceTarget(Resource value) { 
-      this.deviceTarget = value;
       return this;
     }
 
@@ -2764,16 +2614,6 @@ public class Observation extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getHasMemberTarget() { 
-      if (this.hasMemberTarget == null)
-        this.hasMemberTarget = new ArrayList<Resource>();
-      return this.hasMemberTarget;
-    }
-
-    /**
      * @return {@link #derivedFrom} (The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.)
      */
     public List<Reference> getDerivedFrom() { 
@@ -2824,16 +2664,6 @@ public class Observation extends DomainResource {
         addDerivedFrom();
       }
       return getDerivedFrom().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDerivedFromTarget() { 
-      if (this.derivedFromTarget == null)
-        this.derivedFromTarget = new ArrayList<Resource>();
-      return this.derivedFromTarget;
     }
 
     /**
@@ -2893,7 +2723,7 @@ public class Observation extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A unique identifier assigned to this observation.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.  For example, a MedicationRequest may require a patient to have laboratory test performed before  it is dispensed.", 0, java.lang.Integer.MAX_VALUE, basedOn));
-        children.add(new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationStatement|Procedure|Immunization|ImagingStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf));
+        children.add(new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationUsage|Procedure|Immunization|ImagingStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "The status of the result value.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "A code that classifies the general type of observation being made.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "Describes what was observed. Sometimes this is called the observation \"name\".", 0, 1, code));
@@ -2913,7 +2743,7 @@ public class Observation extends DomainResource {
         children.add(new Property("device", "Reference(Device|DeviceMetric)", "The device used to generate the observation data.", 0, 1, device));
         children.add(new Property("referenceRange", "", "Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an \"OR\".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.", 0, java.lang.Integer.MAX_VALUE, referenceRange));
         children.add(new Property("hasMember", "Reference(Observation|QuestionnaireResponse|MolecularSequence)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember));
-        children.add(new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|Media|QuestionnaireResponse|Observation|MolecularSequence)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
+        children.add(new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|QuestionnaireResponse|Observation|MolecularSequence)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
         children.add(new Property("component", "", "Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations.", 0, java.lang.Integer.MAX_VALUE, component));
       }
 
@@ -2922,7 +2752,7 @@ public class Observation extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A unique identifier assigned to this observation.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.  For example, a MedicationRequest may require a patient to have laboratory test performed before  it is dispensed.", 0, java.lang.Integer.MAX_VALUE, basedOn);
-        case -995410646: /*partOf*/  return new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationStatement|Procedure|Immunization|ImagingStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf);
+        case -995410646: /*partOf*/  return new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationUsage|Procedure|Immunization|ImagingStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "The status of the result value.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the general type of observation being made.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what was observed. Sometimes this is called the observation \"name\".", 0, 1, code);
@@ -2959,7 +2789,7 @@ public class Observation extends DomainResource {
         case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "The device used to generate the observation data.", 0, 1, device);
         case -1912545102: /*referenceRange*/  return new Property("referenceRange", "", "Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an \"OR\".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.", 0, java.lang.Integer.MAX_VALUE, referenceRange);
         case -458019372: /*hasMember*/  return new Property("hasMember", "Reference(Observation|QuestionnaireResponse|MolecularSequence)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember);
-        case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|Media|QuestionnaireResponse|Observation|MolecularSequence)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
+        case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|QuestionnaireResponse|Observation|MolecularSequence)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
         case -1399907075: /*component*/  return new Property("component", "", "Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations.", 0, java.lang.Integer.MAX_VALUE, component);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -3143,23 +2973,23 @@ public class Observation extends DomainResource {
         case -995410646:  return addPartOf(); 
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
         case 97604824:  return addFocus(); 
-        case 1524132147:  return getEncounter(); 
-        case 247104889:  return getEffective(); 
-        case -1468651097:  return getEffective(); 
+        case 1524132147:  return getEncounter();
+        case 247104889:  return getEffective();
+        case -1468651097:  return getEffective();
         case -1179159893:  return getIssuedElement();
         case 481140686:  return addPerformer(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
-        case 1034315687:  return getDataAbsentReason(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case 1034315687:  return getDataAbsentReason();
         case -297950712:  return addInterpretation(); 
         case 3387378:  return addNote(); 
-        case 1702620169:  return getBodySite(); 
-        case -1077554975:  return getMethod(); 
-        case -2132868344:  return getSpecimen(); 
-        case -1335157162:  return getDevice(); 
+        case 1702620169:  return getBodySite();
+        case -1077554975:  return getMethod();
+        case -2132868344:  return getSpecimen();
+        case -1335157162:  return getDevice();
         case -1912545102:  return addReferenceRange(); 
         case -458019372:  return addHasMember(); 
         case 1077922663:  return addDerivedFrom(); 
@@ -3349,6 +3179,11 @@ public class Observation extends DomainResource {
       public Observation copy() {
         Observation dst = new Observation();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Observation dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3421,7 +3256,6 @@ public class Observation extends DomainResource {
           for (ObservationComponentComponent i : component)
             dst.component.add(i.copy());
         };
-        return dst;
       }
 
       protected Observation typedCopy() {
@@ -3668,7 +3502,7 @@ public class Observation extends DomainResource {
    * Path: <b>Observation.derivedFrom</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="Observation.derivedFrom", description="Related measurements the observation is made from", type="reference", target={DocumentReference.class, ImagingStudy.class, Media.class, MolecularSequence.class, Observation.class, QuestionnaireResponse.class } )
+  @SearchParamDefinition(name="derived-from", path="Observation.derivedFrom", description="Related measurements the observation is made from", type="reference", target={DocumentReference.class, ImagingStudy.class, MolecularSequence.class, Observation.class, QuestionnaireResponse.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -3694,7 +3528,7 @@ public class Observation extends DomainResource {
    * Path: <b>Observation.partOf</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="part-of", path="Observation.partOf", description="Part of referenced event", type="reference", target={ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, MedicationStatement.class, Procedure.class } )
+  @SearchParamDefinition(name="part-of", path="Observation.partOf", description="Part of referenced event", type="reference", target={ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, MedicationUsage.class, Procedure.class } )
   public static final String SP_PART_OF = "part-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>part-of</b>

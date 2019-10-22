@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
  */
@@ -540,11 +542,6 @@ A specific time might or might not be pre-allocated.
         protected Reference actor;
 
         /**
-         * The actual object that is the target of the reference (A Person, Location/HealthcareService or Device that is participating in the appointment.)
-         */
-        protected Resource actorTarget;
-
-        /**
          * Whether this participant is required to be present at the meeting. This covers a use-case where two doctors need to meet to discuss the results for a specific patient, and the patient is not required to be present.
          */
         @Child(name = "required", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
@@ -567,7 +564,7 @@ A specific time might or might not be pre-allocated.
         @Description(shortDefinition="Participation period of the actor", formalDefinition="Participation period of the actor." )
         protected Period period;
 
-        private static final long serialVersionUID = -1939292177L;
+        private static final long serialVersionUID = -1993862145L;
 
     /**
      * Constructor
@@ -658,21 +655,6 @@ A specific time might or might not be pre-allocated.
          */
         public AppointmentParticipantComponent setActor(Reference value) { 
           this.actor = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #actor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A Person, Location/HealthcareService or Device that is participating in the appointment.)
-         */
-        public Resource getActorTarget() { 
-          return this.actorTarget;
-        }
-
-        /**
-         * @param value {@link #actor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A Person, Location/HealthcareService or Device that is participating in the appointment.)
-         */
-        public AppointmentParticipantComponent setActorTarget(Resource value) { 
-          this.actorTarget = value;
           return this;
         }
 
@@ -877,10 +859,10 @@ A specific time might or might not be pre-allocated.
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return addType(); 
-        case 92645877:  return getActor(); 
+        case 92645877:  return getActor();
         case -393139297:  return getRequiredElement();
         case -892481550:  return getStatusElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -925,6 +907,11 @@ A specific time might or might not be pre-allocated.
       public AppointmentParticipantComponent copy() {
         AppointmentParticipantComponent dst = new AppointmentParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AppointmentParticipantComponent dst) {
+        super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : type)
@@ -934,7 +921,6 @@ A specific time might or might not be pre-allocated.
         dst.required = required == null ? null : required.copy();
         dst.status = status == null ? null : status.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -1039,11 +1025,6 @@ A specific time might or might not be pre-allocated.
     @Child(name = "reasonReference", type = {Condition.class, Procedure.class, Observation.class, ImmunizationRecommendation.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Reason the appointment is to take place (resource)", formalDefinition="Reason the appointment has been scheduled to take place, as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Reason the appointment has been scheduled to take place, as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).
@@ -1065,11 +1046,6 @@ A specific time might or might not be pre-allocated.
     @Child(name = "supportingInformation", type = {Reference.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional information to support the appointment", formalDefinition="Additional information to support the appointment provided when making the appointment." )
     protected List<Reference> supportingInformation;
-    /**
-     * The actual objects that are the target of the reference (Additional information to support the appointment provided when making the appointment.)
-     */
-    protected List<Resource> supportingInformationTarget;
-
 
     /**
      * Date/Time that the appointment is to take place.
@@ -1098,11 +1074,6 @@ A specific time might or might not be pre-allocated.
     @Child(name = "slot", type = {Slot.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The slots that this appointment is filling", formalDefinition="The slots from the participants' schedules that will be filled by the appointment." )
     protected List<Reference> slot;
-    /**
-     * The actual objects that are the target of the reference (The slots from the participants' schedules that will be filled by the appointment.)
-     */
-    protected List<Slot> slotTarget;
-
 
     /**
      * The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.
@@ -1131,11 +1102,6 @@ A specific time might or might not be pre-allocated.
     @Child(name = "basedOn", type = {ServiceRequest.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The service request this appointment is allocated to assess", formalDefinition="The service request this appointment is allocated to assess (e.g. incoming referral or procedure request)." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (The service request this appointment is allocated to assess (e.g. incoming referral or procedure request).)
-     */
-    protected List<ServiceRequest> basedOnTarget;
-
 
     /**
      * List of participants involved in the appointment.
@@ -1153,7 +1119,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     @Description(shortDefinition="Potential date/time interval(s) requested to allocate the appointment within", formalDefinition="A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system." )
     protected List<Period> requestedPeriod;
 
-    private static final long serialVersionUID = -1096822339L;
+    private static final long serialVersionUID = 267666863L;
 
   /**
    * Constructor
@@ -1582,16 +1548,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #priority} (The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
     public UnsignedIntType getPriorityElement() { 
@@ -1736,16 +1692,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
         addSupportingInformation();
       }
       return getSupportingInformation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
     }
 
     /**
@@ -1942,28 +1888,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
         addSlot();
       }
       return getSlot().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Slot> getSlotTarget() { 
-      if (this.slotTarget == null)
-        this.slotTarget = new ArrayList<Slot>();
-      return this.slotTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Slot addSlotTarget() { 
-      Slot r = new Slot();
-      if (this.slotTarget == null)
-        this.slotTarget = new ArrayList<Slot>();
-      this.slotTarget.add(r);
-      return r;
     }
 
     /**
@@ -2164,28 +2088,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
         addBasedOn();
       }
       return getBasedOn().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<ServiceRequest>();
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addBasedOnTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<ServiceRequest>();
-      this.basedOnTarget.add(r);
-      return r;
     }
 
     /**
@@ -2514,11 +2416,11 @@ The duration (usually in minutes) could also be provided to indicate the length 
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 987811551:  return getCancelationReason(); 
+        case 987811551:  return getCancelationReason();
         case 1281188563:  return addServiceCategory(); 
         case -1928370289:  return addServiceType(); 
         case -1694759682:  return addSpecialty(); 
-        case -1596426375:  return getAppointmentType(); 
+        case -1596426375:  return getAppointmentType();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case -1165461084:  return getPriorityElement();
@@ -2651,6 +2553,11 @@ The duration (usually in minutes) could also be provided to indicate the length 
       public Appointment copy() {
         Appointment dst = new Appointment();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Appointment dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2717,7 +2624,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
           for (Period i : requestedPeriod)
             dst.requestedPeriod.add(i.copy());
         };
-        return dst;
       }
 
       protected Appointment typedCopy() {

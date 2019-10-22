@@ -273,7 +273,12 @@ public class JsonParser extends ParserBase {
 				context.getChildren().add(n);
 				if (main != null) {
 					JsonPrimitive p = (JsonPrimitive) main;
-					n.setValue(p.getAsString());
+					if (p.isNumber() && p.getAsNumber() instanceof JsonTrackingParser.PresentedBigDecimal) {
+					  String rawValue = ((JsonTrackingParser.PresentedBigDecimal) p.getAsNumber()).getPresentation();
+					  n.setValue(rawValue);
+          } else {
+            n.setValue(p.getAsString());
+          }
 					if (!n.getProperty().isChoice() && n.getType().equals("xhtml")) {
 						try {
           	  n.setXhtml(new XhtmlParser().setValidatorMode(policy == ValidationPolicy.EVERYTHING).parse(n.getValue(), null).getDocumentElement());

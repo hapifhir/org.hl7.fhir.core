@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.
  */
@@ -654,11 +654,15 @@ public class MessageDefinition extends MetadataResource {
       public MessageDefinitionFocusComponent copy() {
         MessageDefinitionFocusComponent dst = new MessageDefinitionFocusComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDefinitionFocusComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.profile = profile == null ? null : profile.copy();
         dst.min = min == null ? null : min.copy();
         dst.max = max == null ? null : max.copy();
-        return dst;
       }
 
       @Override
@@ -908,9 +912,13 @@ public class MessageDefinition extends MetadataResource {
       public MessageDefinitionAllowedResponseComponent copy() {
         MessageDefinitionAllowedResponseComponent dst = new MessageDefinitionAllowedResponseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDefinitionAllowedResponseComponent dst) {
+        super.copyValues(dst);
         dst.message = message == null ? null : message.copy();
         dst.situation = situation == null ? null : situation.copy();
-        return dst;
       }
 
       @Override
@@ -2533,8 +2541,8 @@ public class MessageDefinition extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 3016401:  return getBaseElement();
         case -995424086:  return addParentElement();
-        case 278115238:  return getEvent(); 
-        case 96891546:  return getEvent(); 
+        case 278115238:  return getEvent();
+        case 96891546:  return getEvent();
         case 50511102:  return getCategoryElement();
         case 97604824:  return addFocus(); 
         case 791597824:  return getResponseRequiredElement();
@@ -2668,6 +2676,11 @@ public class MessageDefinition extends MetadataResource {
       public MessageDefinition copy() {
         MessageDefinition dst = new MessageDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -2728,7 +2741,6 @@ public class MessageDefinition extends MetadataResource {
           for (CanonicalType i : graph)
             dst.graph.add(i.copy());
         };
-        return dst;
       }
 
       protected MessageDefinition typedCopy() {
@@ -2815,21 +2827,27 @@ public class MessageDefinition extends MetadataResource {
    * Search parameter: <b>parent</b>
    * <p>
    * Description: <b>A resource that is the parent of the definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MessageDefinition.parent</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="parent", path="", description="A resource that is the parent of the definition", type="token" )
+  @SearchParamDefinition(name="parent", path="MessageDefinition.parent", description="A resource that is the parent of the definition", type="reference", target={ActivityDefinition.class, PlanDefinition.class } )
   public static final String SP_PARENT = "parent";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>parent</b>
    * <p>
    * Description: <b>A resource that is the parent of the definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MessageDefinition.parent</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARENT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MessageDefinition:parent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("MessageDefinition:parent").toLocked();
 
  /**
    * Search parameter: <b>context-type-value</b>

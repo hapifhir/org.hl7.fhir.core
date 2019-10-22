@@ -102,7 +102,7 @@ public class CarePlan extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam())
       tgt.addCareTeam(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getAddresses())
-      tgt.addAddresses(convertReference(t));
+      tgt.addAddressesReference(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getGoal())
@@ -155,7 +155,7 @@ public class CarePlan extends VersionConvertor_40_50 {
       tgt.addContributor(convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam())
       tgt.addCareTeam(convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getAddresses())
+    for (org.hl7.fhir.r5.model.Reference t : src.getAddressesReference())
       tgt.addAddresses(convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(convertReference(t));

@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -66,7 +65,10 @@ public enum V3AdministrativeGender {
          */
         M, 
         /**
-         * The gender of a person could not be uniquely defined as male or female, such as hermaphrodite.
+         * En: The gender of a person could not be uniquely defined as male or female, such as intersex.  Nl: Het geslacht van een persoon kan niet uniek worden gedefinieerd als man of vrouw, zoals een intersekse-conditie.
+
+                        
+                           Open Issue: This is a short-term stopgap solution to the definition issue, full solutions are being worked out by the Gender Harmony project launched in 2019.
          */
         UN, 
         /**
@@ -99,7 +101,7 @@ public enum V3AdministrativeGender {
           switch (this) {
             case F: return "Female";
             case M: return "Male";
-            case UN: return "The gender of a person could not be uniquely defined as male or female, such as hermaphrodite.";
+            case UN: return "En: The gender of a person could not be uniquely defined as male or female, such as intersex.  Nl: Het geslacht van een persoon kan niet uniek worden gedefinieerd als man of vrouw, zoals een intersekse-conditie.\r\n\n                        \n                           Open Issue: This is a short-term stopgap solution to the definition issue, full solutions are being worked out by the Gender Harmony project launched in 2019.";
             default: return "?";
           }
         }

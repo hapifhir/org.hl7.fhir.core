@@ -51,17 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A financial tool for tracking value accrued for a particular purpose.  In the healthcare field, used to track charges for a patient, cost centers, etc.
  */
@@ -220,20 +223,13 @@ A coverage may only be responsible for specific types of charges, and the sequen
         protected Reference coverage;
 
         /**
-         * The actual object that is the target of the reference (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
-
-A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
-         */
-        protected Coverage coverageTarget;
-
-        /**
          * The priority of the coverage in the context of this account.
          */
         @Child(name = "priority", type = {PositiveIntType.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The priority of the coverage in the context of this account", formalDefinition="The priority of the coverage in the context of this account." )
         protected PositiveIntType priority;
 
-        private static final long serialVersionUID = -1046265008L;
+        private static final long serialVersionUID = 1695665065L;
 
     /**
      * Constructor
@@ -275,30 +271,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
          */
         public CoverageComponent setCoverage(Reference value) { 
           this.coverage = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #coverage} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
-
-A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
-         */
-        public Coverage getCoverageTarget() { 
-          if (this.coverageTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CoverageComponent.coverage");
-            else if (Configuration.doAutoCreate())
-              this.coverageTarget = new Coverage(); // aa
-          return this.coverageTarget;
-        }
-
-        /**
-         * @param value {@link #coverage} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
-
-A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
-         */
-        public CoverageComponent setCoverageTarget(Coverage value) { 
-          this.coverageTarget = value;
           return this;
         }
 
@@ -434,9 +406,13 @@ A coverage may only be responsible for specific types of charges, and the sequen
       public CoverageComponent copy() {
         CoverageComponent dst = new CoverageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CoverageComponent dst) {
+        super.copyValues(dst);
         dst.coverage = coverage == null ? null : coverage.copy();
         dst.priority = priority == null ? null : priority.copy();
-        return dst;
       }
 
       @Override
@@ -480,11 +456,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
         protected Reference party;
 
         /**
-         * The actual object that is the target of the reference (The entity who is responsible.)
-         */
-        protected Resource partyTarget;
-
-        /**
          * A guarantor may be placed on credit hold or otherwise have their role temporarily suspended.
          */
         @Child(name = "onHold", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -498,7 +469,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
         @Description(shortDefinition="Guarantee account during", formalDefinition="The timeframe during which the guarantor accepts responsibility for the account." )
         protected Period period;
 
-        private static final long serialVersionUID = -1012345396L;
+        private static final long serialVersionUID = -523056773L;
 
     /**
      * Constructor
@@ -536,21 +507,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
          */
         public GuarantorComponent setParty(Reference value) { 
           this.party = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #party} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity who is responsible.)
-         */
-        public Resource getPartyTarget() { 
-          return this.partyTarget;
-        }
-
-        /**
-         * @param value {@link #party} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity who is responsible.)
-         */
-        public GuarantorComponent setPartyTarget(Resource value) { 
-          this.partyTarget = value;
           return this;
         }
 
@@ -724,10 +680,14 @@ A coverage may only be responsible for specific types of charges, and the sequen
       public GuarantorComponent copy() {
         GuarantorComponent dst = new GuarantorComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GuarantorComponent dst) {
+        super.copyValues(dst);
         dst.party = party == null ? null : party.copy();
         dst.onHold = onHold == null ? null : onHold.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -798,11 +758,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
     @Child(name = "subject", type = {Patient.class, Device.class, Practitioner.class, PractitionerRole.class, Location.class, HealthcareService.class, Organization.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The entity that caused the expenses", formalDefinition="Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account." )
     protected List<Reference> subject;
-    /**
-     * The actual objects that are the target of the reference (Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.)
-     */
-    protected List<Resource> subjectTarget;
-
 
     /**
      * The date range of services associated with this account.
@@ -826,11 +781,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected Reference owner;
 
     /**
-     * The actual object that is the target of the reference (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
-     */
-    protected Organization ownerTarget;
-
-    /**
      * Provides additional information about what the account tracks and how it is used.
      */
     @Child(name = "description", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
@@ -851,12 +801,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
     @Description(shortDefinition="Reference to a parent Account", formalDefinition="Reference to a parent Account." )
     protected Reference partOf;
 
-    /**
-     * The actual object that is the target of the reference (Reference to a parent Account.)
-     */
-    protected Account partOfTarget;
-
-    private static final long serialVersionUID = 1211238069L;
+    private static final long serialVersionUID = 1572782679L;
 
   /**
    * Constructor
@@ -1098,16 +1043,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSubjectTarget() { 
-      if (this.subjectTarget == null)
-        this.subjectTarget = new ArrayList<Resource>();
-      return this.subjectTarget;
-    }
-
-    /**
      * @return {@link #servicePeriod} (The date range of services associated with this account.)
      */
     public Period getServicePeriod() { 
@@ -1205,26 +1140,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
      */
     public Account setOwner(Reference value) { 
       this.owner = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #owner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
-     */
-    public Organization getOwnerTarget() { 
-      if (this.ownerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Account.owner");
-        else if (Configuration.doAutoCreate())
-          this.ownerTarget = new Organization(); // aa
-      return this.ownerTarget;
-    }
-
-    /**
-     * @param value {@link #owner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
-     */
-    public Account setOwnerTarget(Organization value) { 
-      this.ownerTarget = value;
       return this;
     }
 
@@ -1351,26 +1266,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
      */
     public Account setPartOf(Reference value) { 
       this.partOf = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #partOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to a parent Account.)
-     */
-    public Account getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Account.partOf");
-        else if (Configuration.doAutoCreate())
-          this.partOfTarget = new Account(); // aa
-      return this.partOfTarget;
-    }
-
-    /**
-     * @param value {@link #partOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to a parent Account.)
-     */
-    public Account setPartOfTarget(Account value) { 
-      this.partOfTarget = value;
       return this;
     }
 
@@ -1588,6 +1483,11 @@ A coverage may only be responsible for specific types of charges, and the sequen
       public Account copy() {
         Account dst = new Account();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Account dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1615,7 +1515,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
             dst.guarantor.add(i.copy());
         };
         dst.partOf = partOf == null ? null : partOf.copy();
-        return dst;
       }
 
       protected Account typedCopy() {

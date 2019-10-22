@@ -53,13 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource provides the status of the payment for goods and services rendered, and the request and response resource references.
  */
@@ -213,21 +218,11 @@ public class PaymentNotice extends DomainResource {
     protected Reference request;
 
     /**
-     * The actual object that is the target of the reference (Reference of resource for which payment is being made.)
-     */
-    protected Resource requestTarget;
-
-    /**
      * Reference of response to resource for which payment is being made.
      */
     @Child(name = "response", type = {Reference.class}, order=3, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Response reference", formalDefinition="Reference of response to resource for which payment is being made." )
     protected Reference response;
-
-    /**
-     * The actual object that is the target of the reference (Reference of response to resource for which payment is being made.)
-     */
-    protected Resource responseTarget;
 
     /**
      * The date when this resource was created.
@@ -244,21 +239,11 @@ public class PaymentNotice extends DomainResource {
     protected Reference provider;
 
     /**
-     * The actual object that is the target of the reference (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    protected Resource providerTarget;
-
-    /**
      * A reference to the payment which is the subject of this notice.
      */
     @Child(name = "payment", type = {PaymentReconciliation.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Payment reference", formalDefinition="A reference to the payment which is the subject of this notice." )
     protected Reference payment;
-
-    /**
-     * The actual object that is the target of the reference (A reference to the payment which is the subject of this notice.)
-     */
-    protected PaymentReconciliation paymentTarget;
 
     /**
      * The date when the above payment action occurred.
@@ -275,21 +260,11 @@ public class PaymentNotice extends DomainResource {
     protected Reference payee;
 
     /**
-     * The actual object that is the target of the reference (The party who will receive or has received payment that is the subject of this notification.)
-     */
-    protected Resource payeeTarget;
-
-    /**
      * The party who is notified of the payment status.
      */
     @Child(name = "recipient", type = {Organization.class}, order=9, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party being notified", formalDefinition="The party who is notified of the payment status." )
     protected Reference recipient;
-
-    /**
-     * The actual object that is the target of the reference (The party who is notified of the payment status.)
-     */
-    protected Organization recipientTarget;
 
     /**
      * The amount sent to the payee.
@@ -306,7 +281,7 @@ public class PaymentNotice extends DomainResource {
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/payment-status")
     protected CodeableConcept paymentStatus;
 
-    private static final long serialVersionUID = -545198613L;
+    private static final long serialVersionUID = 1533089621L;
 
   /**
    * Constructor
@@ -450,21 +425,6 @@ public class PaymentNotice extends DomainResource {
     }
 
     /**
-     * @return {@link #request} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference of resource for which payment is being made.)
-     */
-    public Resource getRequestTarget() { 
-      return this.requestTarget;
-    }
-
-    /**
-     * @param value {@link #request} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference of resource for which payment is being made.)
-     */
-    public PaymentNotice setRequestTarget(Resource value) { 
-      this.requestTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #response} (Reference of response to resource for which payment is being made.)
      */
     public Reference getResponse() { 
@@ -485,21 +445,6 @@ public class PaymentNotice extends DomainResource {
      */
     public PaymentNotice setResponse(Reference value) { 
       this.response = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #response} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference of response to resource for which payment is being made.)
-     */
-    public Resource getResponseTarget() { 
-      return this.responseTarget;
-    }
-
-    /**
-     * @param value {@link #response} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference of response to resource for which payment is being made.)
-     */
-    public PaymentNotice setResponseTarget(Resource value) { 
-      this.responseTarget = value;
       return this;
     }
 
@@ -573,21 +518,6 @@ public class PaymentNotice extends DomainResource {
     }
 
     /**
-     * @return {@link #provider} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    public Resource getProviderTarget() { 
-      return this.providerTarget;
-    }
-
-    /**
-     * @param value {@link #provider} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner who is responsible for the services rendered to the patient.)
-     */
-    public PaymentNotice setProviderTarget(Resource value) { 
-      this.providerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #payment} (A reference to the payment which is the subject of this notice.)
      */
     public Reference getPayment() { 
@@ -608,26 +538,6 @@ public class PaymentNotice extends DomainResource {
      */
     public PaymentNotice setPayment(Reference value) { 
       this.payment = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #payment} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to the payment which is the subject of this notice.)
-     */
-    public PaymentReconciliation getPaymentTarget() { 
-      if (this.paymentTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PaymentNotice.payment");
-        else if (Configuration.doAutoCreate())
-          this.paymentTarget = new PaymentReconciliation(); // aa
-      return this.paymentTarget;
-    }
-
-    /**
-     * @param value {@link #payment} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to the payment which is the subject of this notice.)
-     */
-    public PaymentNotice setPaymentTarget(PaymentReconciliation value) { 
-      this.paymentTarget = value;
       return this;
     }
 
@@ -705,21 +615,6 @@ public class PaymentNotice extends DomainResource {
     }
 
     /**
-     * @return {@link #payee} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who will receive or has received payment that is the subject of this notification.)
-     */
-    public Resource getPayeeTarget() { 
-      return this.payeeTarget;
-    }
-
-    /**
-     * @param value {@link #payee} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who will receive or has received payment that is the subject of this notification.)
-     */
-    public PaymentNotice setPayeeTarget(Resource value) { 
-      this.payeeTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #recipient} (The party who is notified of the payment status.)
      */
     public Reference getRecipient() { 
@@ -740,26 +635,6 @@ public class PaymentNotice extends DomainResource {
      */
     public PaymentNotice setRecipient(Reference value) { 
       this.recipient = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #recipient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who is notified of the payment status.)
-     */
-    public Organization getRecipientTarget() { 
-      if (this.recipientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PaymentNotice.recipient");
-        else if (Configuration.doAutoCreate())
-          this.recipientTarget = new Organization(); // aa
-      return this.recipientTarget;
-    }
-
-    /**
-     * @param value {@link #recipient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who is notified of the payment status.)
-     */
-    public PaymentNotice setRecipientTarget(Organization value) { 
-      this.recipientTarget = value;
       return this;
     }
 
@@ -949,16 +824,16 @@ public class PaymentNotice extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 1095692943:  return getRequest(); 
-        case -340323263:  return getResponse(); 
+        case 1095692943:  return getRequest();
+        case -340323263:  return getResponse();
         case 1028554472:  return getCreatedElement();
-        case -987494927:  return getProvider(); 
-        case -786681338:  return getPayment(); 
+        case -987494927:  return getProvider();
+        case -786681338:  return getPayment();
         case -1540873516:  return getPaymentDateElement();
-        case 106443592:  return getPayee(); 
-        case 820081177:  return getRecipient(); 
-        case -1413853096:  return getAmount(); 
-        case 1430704536:  return getPaymentStatus(); 
+        case 106443592:  return getPayee();
+        case 820081177:  return getRecipient();
+        case -1413853096:  return getAmount();
+        case 1430704536:  return getPaymentStatus();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1042,6 +917,11 @@ public class PaymentNotice extends DomainResource {
       public PaymentNotice copy() {
         PaymentNotice dst = new PaymentNotice();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PaymentNotice dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1058,7 +938,6 @@ public class PaymentNotice extends DomainResource {
         dst.recipient = recipient == null ? null : recipient.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.paymentStatus = paymentStatus == null ? null : paymentStatus.copy();
-        return dst;
       }
 
       protected PaymentNotice typedCopy() {

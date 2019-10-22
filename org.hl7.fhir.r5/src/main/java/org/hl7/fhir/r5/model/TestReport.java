@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,16 +53,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A summary of information based on the results of executing a TestScript.
  */
@@ -849,10 +850,14 @@ public class TestReport extends DomainResource {
       public TestReportParticipantComponent copy() {
         TestReportParticipantComponent dst = new TestReportParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportParticipantComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.uri = uri == null ? null : uri.copy();
         dst.display = display == null ? null : display.copy();
-        return dst;
       }
 
       @Override
@@ -1032,12 +1037,16 @@ public class TestReport extends DomainResource {
       public TestReportSetupComponent copy() {
         TestReportSetupComponent dst = new TestReportSetupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportSetupComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<SetupActionComponent>();
           for (SetupActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1198,8 +1207,8 @@ public class TestReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1662702951:  return getOperation(); 
-        case -1408208058:  return getAssert(); 
+        case 1662702951:  return getOperation();
+        case -1408208058:  return getAssert();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1232,9 +1241,13 @@ public class TestReport extends DomainResource {
       public SetupActionComponent copy() {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -1553,10 +1566,14 @@ public class TestReport extends DomainResource {
       public SetupActionOperationComponent copy() {
         SetupActionOperationComponent dst = new SetupActionOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionOperationComponent dst) {
+        super.copyValues(dst);
         dst.result = result == null ? null : result.copy();
         dst.message = message == null ? null : message.copy();
         dst.detail = detail == null ? null : detail.copy();
-        return dst;
       }
 
       @Override
@@ -1878,10 +1895,14 @@ public class TestReport extends DomainResource {
       public SetupActionAssertComponent copy() {
         SetupActionAssertComponent dst = new SetupActionAssertComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionAssertComponent dst) {
+        super.copyValues(dst);
         dst.result = result == null ? null : result.copy();
         dst.message = message == null ? null : message.copy();
         dst.detail = detail == null ? null : detail.copy();
-        return dst;
       }
 
       @Override
@@ -2200,6 +2221,11 @@ public class TestReport extends DomainResource {
       public TestReportTestComponent copy() {
         TestReportTestComponent dst = new TestReportTestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportTestComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
         if (action != null) {
@@ -2207,7 +2233,6 @@ public class TestReport extends DomainResource {
           for (TestActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2370,8 +2395,8 @@ public class TestReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1662702951:  return getOperation(); 
-        case -1408208058:  return getAssert(); 
+        case 1662702951:  return getOperation();
+        case -1408208058:  return getAssert();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2404,9 +2429,13 @@ public class TestReport extends DomainResource {
       public TestActionComponent copy() {
         TestActionComponent dst = new TestActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -2584,12 +2613,16 @@ public class TestReport extends DomainResource {
       public TestReportTeardownComponent copy() {
         TestReportTeardownComponent dst = new TestReportTeardownComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportTeardownComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<TeardownActionComponent>();
           for (TeardownActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2719,7 +2752,7 @@ public class TestReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1662702951:  return getOperation(); 
+        case 1662702951:  return getOperation();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2747,8 +2780,12 @@ public class TestReport extends DomainResource {
       public TeardownActionComponent copy() {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
-        dst.operation = operation == null ? null : operation.copy();
         return dst;
+      }
+
+      public void copyValues(TeardownActionComponent dst) {
+        super.copyValues(dst);
+        dst.operation = operation == null ? null : operation.copy();
       }
 
       @Override
@@ -2812,11 +2849,6 @@ public class TestReport extends DomainResource {
     protected Reference testScript;
 
     /**
-     * The actual object that is the target of the reference (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.)
-     */
-    protected TestScript testScriptTarget;
-
-    /**
      * The overall result from the execution of the TestScript.
      */
     @Child(name = "result", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
@@ -2873,7 +2905,7 @@ public class TestReport extends DomainResource {
     @Description(shortDefinition="The results of running the series of required clean up steps", formalDefinition="The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise)." )
     protected TestReportTeardownComponent teardown;
 
-    private static final long serialVersionUID = 79474516L;
+    private static final long serialVersionUID = 1713142733L;
 
   /**
    * Constructor
@@ -3031,26 +3063,6 @@ public class TestReport extends DomainResource {
      */
     public TestReport setTestScript(Reference value) { 
       this.testScript = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #testScript} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.)
-     */
-    public TestScript getTestScriptTarget() { 
-      if (this.testScriptTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create TestReport.testScript");
-        else if (Configuration.doAutoCreate())
-          this.testScriptTarget = new TestScript(); // aa
-      return this.testScriptTarget;
-    }
-
-    /**
-     * @param value {@link #testScript} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.)
-     */
-    public TestReport setTestScriptTarget(TestScript value) { 
-      this.testScriptTarget = value;
       return this;
     }
 
@@ -3556,18 +3568,18 @@ public class TestReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case 3373707:  return getNameElement();
         case -892481550:  return getStatusElement();
-        case 1712049149:  return getTestScript(); 
+        case 1712049149:  return getTestScript();
         case -934426595:  return getResultElement();
         case 109264530:  return getScoreElement();
         case -877169473:  return getTesterElement();
         case -1179159893:  return getIssuedElement();
         case 767422259:  return addParticipant(); 
-        case 109329021:  return getSetup(); 
+        case 109329021:  return getSetup();
         case 3556498:  return addTest(); 
-        case -1663474172:  return getTeardown(); 
+        case -1663474172:  return getTeardown();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3647,6 +3659,11 @@ public class TestReport extends DomainResource {
       public TestReport copy() {
         TestReport dst = new TestReport();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReport dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.name = name == null ? null : name.copy();
         dst.status = status == null ? null : status.copy();
@@ -3667,7 +3684,6 @@ public class TestReport extends DomainResource {
             dst.test.add(i.copy());
         };
         dst.teardown = teardown == null ? null : teardown.copy();
-        return dst;
       }
 
       protected TestReport typedCopy() {

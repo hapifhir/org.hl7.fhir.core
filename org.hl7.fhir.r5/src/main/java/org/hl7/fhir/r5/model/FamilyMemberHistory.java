@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Significant health conditions for a person related to the patient relevant in the context of care for the patient.
  */
@@ -559,11 +561,11 @@ public class FamilyMemberHistory extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
-        case -1106507950:  return getOutcome(); 
+        case 3059181:  return getCode();
+        case -1106507950:  return getOutcome();
         case -363644638:  return getContributedToDeathElement();
-        case -1886216323:  return getOnset(); 
-        case 105901603:  return getOnset(); 
+        case -1886216323:  return getOnset();
+        case 105901603:  return getOnset();
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -622,6 +624,11 @@ public class FamilyMemberHistory extends DomainResource {
       public FamilyMemberHistoryConditionComponent copy() {
         FamilyMemberHistoryConditionComponent dst = new FamilyMemberHistoryConditionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(FamilyMemberHistoryConditionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
         dst.contributedToDeath = contributedToDeath == null ? null : contributedToDeath.copy();
@@ -631,7 +638,6 @@ public class FamilyMemberHistory extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -662,6 +668,504 @@ public class FamilyMemberHistory extends DomainResource {
 
   public String fhirType() {
     return "FamilyMemberHistory.condition";
+
+  }
+
+  }
+
+    @Block()
+    public static class FamilyMemberHistoryProcedureComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The actual procedure specified. Could be a coded procedure or a less specific string depending on how much is known about the procedure and the capabilities of the creating system.
+         */
+        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Procedures performed on the related person", formalDefinition="The actual procedure specified. Could be a coded procedure or a less specific string depending on how much is known about the procedure and the capabilities of the creating system." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-code")
+        protected CodeableConcept code;
+
+        /**
+         * Indicates what happened following the procedure. If the procedure resulted in death, deceased date is captured on the relation.
+         */
+        @Child(name = "outcome", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What happened following the procedure", formalDefinition="Indicates what happened following the procedure. If the procedure resulted in death, deceased date is captured on the relation." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinical-findings")
+        protected CodeableConcept outcome;
+
+        /**
+         * This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.
+         */
+        @Child(name = "contributedToDeath", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Whether the procedure contributed to the cause of death", formalDefinition="This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown." )
+        protected BooleanType contributedToDeath;
+
+        /**
+         * Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.
+         */
+        @Child(name = "performed", type = {Age.class, Range.class, Period.class, StringType.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="When the procedure was performed", formalDefinition="Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured." )
+        protected Type performed;
+
+        /**
+         * An area where general notes can be placed about this specific procedure.
+         */
+        @Child(name = "note", type = {Annotation.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Extra information about the procedure", formalDefinition="An area where general notes can be placed about this specific procedure." )
+        protected List<Annotation> note;
+
+        private static final long serialVersionUID = 554158496L;
+
+    /**
+     * Constructor
+     */
+      public FamilyMemberHistoryProcedureComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public FamilyMemberHistoryProcedureComponent(CodeableConcept code) {
+        super();
+        this.code = code;
+      }
+
+        /**
+         * @return {@link #code} (The actual procedure specified. Could be a coded procedure or a less specific string depending on how much is known about the procedure and the capabilities of the creating system.)
+         */
+        public CodeableConcept getCode() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create FamilyMemberHistoryProcedureComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeableConcept(); // cc
+          return this.code;
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (The actual procedure specified. Could be a coded procedure or a less specific string depending on how much is known about the procedure and the capabilities of the creating system.)
+         */
+        public FamilyMemberHistoryProcedureComponent setCode(CodeableConcept value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #outcome} (Indicates what happened following the procedure. If the procedure resulted in death, deceased date is captured on the relation.)
+         */
+        public CodeableConcept getOutcome() { 
+          if (this.outcome == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create FamilyMemberHistoryProcedureComponent.outcome");
+            else if (Configuration.doAutoCreate())
+              this.outcome = new CodeableConcept(); // cc
+          return this.outcome;
+        }
+
+        public boolean hasOutcome() { 
+          return this.outcome != null && !this.outcome.isEmpty();
+        }
+
+        /**
+         * @param value {@link #outcome} (Indicates what happened following the procedure. If the procedure resulted in death, deceased date is captured on the relation.)
+         */
+        public FamilyMemberHistoryProcedureComponent setOutcome(CodeableConcept value) { 
+          this.outcome = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #contributedToDeath} (This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.). This is the underlying object with id, value and extensions. The accessor "getContributedToDeath" gives direct access to the value
+         */
+        public BooleanType getContributedToDeathElement() { 
+          if (this.contributedToDeath == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create FamilyMemberHistoryProcedureComponent.contributedToDeath");
+            else if (Configuration.doAutoCreate())
+              this.contributedToDeath = new BooleanType(); // bb
+          return this.contributedToDeath;
+        }
+
+        public boolean hasContributedToDeathElement() { 
+          return this.contributedToDeath != null && !this.contributedToDeath.isEmpty();
+        }
+
+        public boolean hasContributedToDeath() { 
+          return this.contributedToDeath != null && !this.contributedToDeath.isEmpty();
+        }
+
+        /**
+         * @param value {@link #contributedToDeath} (This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.). This is the underlying object with id, value and extensions. The accessor "getContributedToDeath" gives direct access to the value
+         */
+        public FamilyMemberHistoryProcedureComponent setContributedToDeathElement(BooleanType value) { 
+          this.contributedToDeath = value;
+          return this;
+        }
+
+        /**
+         * @return This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.
+         */
+        public boolean getContributedToDeath() { 
+          return this.contributedToDeath == null || this.contributedToDeath.isEmpty() ? false : this.contributedToDeath.getValue();
+        }
+
+        /**
+         * @param value This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.
+         */
+        public FamilyMemberHistoryProcedureComponent setContributedToDeath(boolean value) { 
+            if (this.contributedToDeath == null)
+              this.contributedToDeath = new BooleanType();
+            this.contributedToDeath.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public Type getPerformed() { 
+          return this.performed;
+        }
+
+        /**
+         * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public Age getPerformedAge() throws FHIRException { 
+          if (this.performed == null)
+            this.performed = new Age();
+          if (!(this.performed instanceof Age))
+            throw new FHIRException("Type mismatch: the type Age was expected, but "+this.performed.getClass().getName()+" was encountered");
+          return (Age) this.performed;
+        }
+
+        public boolean hasPerformedAge() { 
+          return this != null && this.performed instanceof Age;
+        }
+
+        /**
+         * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public Range getPerformedRange() throws FHIRException { 
+          if (this.performed == null)
+            this.performed = new Range();
+          if (!(this.performed instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.performed.getClass().getName()+" was encountered");
+          return (Range) this.performed;
+        }
+
+        public boolean hasPerformedRange() { 
+          return this != null && this.performed instanceof Range;
+        }
+
+        /**
+         * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public Period getPerformedPeriod() throws FHIRException { 
+          if (this.performed == null)
+            this.performed = new Period();
+          if (!(this.performed instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.performed.getClass().getName()+" was encountered");
+          return (Period) this.performed;
+        }
+
+        public boolean hasPerformedPeriod() { 
+          return this != null && this.performed instanceof Period;
+        }
+
+        /**
+         * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public StringType getPerformedStringType() throws FHIRException { 
+          if (this.performed == null)
+            this.performed = new StringType();
+          if (!(this.performed instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.performed.getClass().getName()+" was encountered");
+          return (StringType) this.performed;
+        }
+
+        public boolean hasPerformedStringType() { 
+          return this != null && this.performed instanceof StringType;
+        }
+
+        /**
+         * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public DateTimeType getPerformedDateTimeType() throws FHIRException { 
+          if (this.performed == null)
+            this.performed = new DateTimeType();
+          if (!(this.performed instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.performed.getClass().getName()+" was encountered");
+          return (DateTimeType) this.performed;
+        }
+
+        public boolean hasPerformedDateTimeType() { 
+          return this != null && this.performed instanceof DateTimeType;
+        }
+
+        public boolean hasPerformed() { 
+          return this.performed != null && !this.performed.isEmpty();
+        }
+
+        /**
+         * @param value {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+         */
+        public FamilyMemberHistoryProcedureComponent setPerformed(Type value) { 
+          if (value != null && !(value instanceof Age || value instanceof Range || value instanceof Period || value instanceof StringType || value instanceof DateTimeType))
+            throw new Error("Not the right type for FamilyMemberHistory.procedure.performed[x]: "+value.fhirType());
+          this.performed = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #note} (An area where general notes can be placed about this specific procedure.)
+         */
+        public List<Annotation> getNote() { 
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          return this.note;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public FamilyMemberHistoryProcedureComponent setNote(List<Annotation> theNote) { 
+          this.note = theNote;
+          return this;
+        }
+
+        public boolean hasNote() { 
+          if (this.note == null)
+            return false;
+          for (Annotation item : this.note)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Annotation addNote() { //3
+          Annotation t = new Annotation();
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return t;
+        }
+
+        public FamilyMemberHistoryProcedureComponent addNote(Annotation t) { //3
+          if (t == null)
+            return this;
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+         */
+        public Annotation getNoteFirstRep() { 
+          if (getNote().isEmpty()) {
+            addNote();
+          }
+          return getNote().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "CodeableConcept", "The actual procedure specified. Could be a coded procedure or a less specific string depending on how much is known about the procedure and the capabilities of the creating system.", 0, 1, code));
+          children.add(new Property("outcome", "CodeableConcept", "Indicates what happened following the procedure. If the procedure resulted in death, deceased date is captured on the relation.", 0, 1, outcome));
+          children.add(new Property("contributedToDeath", "boolean", "This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.", 0, 1, contributedToDeath));
+          children.add(new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed));
+          children.add(new Property("note", "Annotation", "An area where general notes can be placed about this specific procedure.", 0, java.lang.Integer.MAX_VALUE, note));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The actual procedure specified. Could be a coded procedure or a less specific string depending on how much is known about the procedure and the capabilities of the creating system.", 0, 1, code);
+          case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Indicates what happened following the procedure. If the procedure resulted in death, deceased date is captured on the relation.", 0, 1, outcome);
+          case -363644638: /*contributedToDeath*/  return new Property("contributedToDeath", "boolean", "This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.", 0, 1, contributedToDeath);
+          case 1355984064: /*performed[x]*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 481140672: /*performed*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 1355958559: /*performedAge*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 1716617565: /*performedRange*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 1622094241: /*performedPeriod*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 1721834481: /*performedString*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 1118270331: /*performedDateTime*/  return new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+          case 3387378: /*note*/  return new Property("note", "Annotation", "An area where general notes can be placed about this specific procedure.", 0, java.lang.Integer.MAX_VALUE, note);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
+        case -363644638: /*contributedToDeath*/ return this.contributedToDeath == null ? new Base[0] : new Base[] {this.contributedToDeath}; // BooleanType
+        case 481140672: /*performed*/ return this.performed == null ? new Base[0] : new Base[] {this.performed}; // Type
+        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1106507950: // outcome
+          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -363644638: // contributedToDeath
+          this.contributedToDeath = castToBoolean(value); // BooleanType
+          return value;
+        case 481140672: // performed
+          this.performed = castToType(value); // Type
+          return value;
+        case 3387378: // note
+          this.getNote().add(castToAnnotation(value)); // Annotation
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("outcome")) {
+          this.outcome = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("contributedToDeath")) {
+          this.contributedToDeath = castToBoolean(value); // BooleanType
+        } else if (name.equals("performed[x]")) {
+          this.performed = castToType(value); // Type
+        } else if (name.equals("note")) {
+          this.getNote().add(castToAnnotation(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCode();
+        case -1106507950:  return getOutcome();
+        case -363644638:  return getContributedToDeathElement();
+        case 1355984064:  return getPerformed();
+        case 481140672:  return getPerformed();
+        case 3387378:  return addNote(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
+        case -363644638: /*contributedToDeath*/ return new String[] {"boolean"};
+        case 481140672: /*performed*/ return new String[] {"Age", "Range", "Period", "string", "dateTime"};
+        case 3387378: /*note*/ return new String[] {"Annotation"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
+        }
+        else if (name.equals("outcome")) {
+          this.outcome = new CodeableConcept();
+          return this.outcome;
+        }
+        else if (name.equals("contributedToDeath")) {
+          throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.contributedToDeath");
+        }
+        else if (name.equals("performedAge")) {
+          this.performed = new Age();
+          return this.performed;
+        }
+        else if (name.equals("performedRange")) {
+          this.performed = new Range();
+          return this.performed;
+        }
+        else if (name.equals("performedPeriod")) {
+          this.performed = new Period();
+          return this.performed;
+        }
+        else if (name.equals("performedString")) {
+          this.performed = new StringType();
+          return this.performed;
+        }
+        else if (name.equals("performedDateTime")) {
+          this.performed = new DateTimeType();
+          return this.performed;
+        }
+        else if (name.equals("note")) {
+          return addNote();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public FamilyMemberHistoryProcedureComponent copy() {
+        FamilyMemberHistoryProcedureComponent dst = new FamilyMemberHistoryProcedureComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(FamilyMemberHistoryProcedureComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.outcome = outcome == null ? null : outcome.copy();
+        dst.contributedToDeath = contributedToDeath == null ? null : contributedToDeath.copy();
+        dst.performed = performed == null ? null : performed.copy();
+        if (note != null) {
+          dst.note = new ArrayList<Annotation>();
+          for (Annotation i : note)
+            dst.note.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof FamilyMemberHistoryProcedureComponent))
+          return false;
+        FamilyMemberHistoryProcedureComponent o = (FamilyMemberHistoryProcedureComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(outcome, o.outcome, true) && compareDeep(contributedToDeath, o.contributedToDeath, true)
+           && compareDeep(performed, o.performed, true) && compareDeep(note, o.note, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof FamilyMemberHistoryProcedureComponent))
+          return false;
+        FamilyMemberHistoryProcedureComponent o = (FamilyMemberHistoryProcedureComponent) other_;
+        return compareValues(contributedToDeath, o.contributedToDeath, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, outcome, contributedToDeath
+          , performed, note);
+      }
+
+  public String fhirType() {
+    return "FamilyMemberHistory.procedure";
 
   }
 
@@ -712,11 +1216,6 @@ public class FamilyMemberHistory extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The person who this history concerns.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The date (and possibly time) when the family member history was recorded or last updated.
      */
     @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
@@ -743,6 +1242,7 @@ public class FamilyMemberHistory extends DomainResource {
      */
     @Child(name = "sex", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="The birth sex of the family member." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administrative-gender")
     protected CodeableConcept sex;
 
     /**
@@ -787,11 +1287,6 @@ public class FamilyMemberHistory extends DomainResource {
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, AllergyIntolerance.class, QuestionnaireResponse.class, DiagnosticReport.class, DocumentReference.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why was family member history performed?", formalDefinition="Indicates a Condition, Observation, AllergyIntolerance, or QuestionnaireResponse that justifies this family member history event." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates a Condition, Observation, AllergyIntolerance, or QuestionnaireResponse that justifies this family member history event.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * This property allows a non condition-specific note to the made about the related person. Ideally, the note would be in the condition property, but this is not always possible.
@@ -807,7 +1302,14 @@ public class FamilyMemberHistory extends DomainResource {
     @Description(shortDefinition="Condition that the related person had", formalDefinition="The significant Conditions (or condition) that the family member had. This is a repeating section to allow a system to represent more than one condition per resource, though there is nothing stopping multiple resources - one per condition." )
     protected List<FamilyMemberHistoryConditionComponent> condition;
 
-    private static final long serialVersionUID = -455261406L;
+    /**
+     * The significant Procedures (or procedure) that the family member had. This is a repeating section to allow a system to represent more than one procedure per resource, though there is nothing stopping multiple resources - one per procedure.
+     */
+    @Child(name = "procedure", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Procedures that the related person had", formalDefinition="The significant Procedures (or procedure) that the family member had. This is a repeating section to allow a system to represent more than one procedure per resource, though there is nothing stopping multiple resources - one per procedure." )
+    protected List<FamilyMemberHistoryProcedureComponent> procedure;
+
+    private static final long serialVersionUID = -1028782354L;
 
   /**
    * Constructor
@@ -1091,26 +1593,6 @@ public class FamilyMemberHistory extends DomainResource {
      */
     public FamilyMemberHistory setPatient(Reference value) { 
       this.patient = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person who this history concerns.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create FamilyMemberHistory.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person who this history concerns.)
-     */
-    public FamilyMemberHistory setPatientTarget(Patient value) { 
-      this.patientTarget = value;
       return this;
     }
 
@@ -1640,16 +2122,6 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #note} (This property allows a non condition-specific note to the made about the related person. Ideally, the note would be in the condition property, but this is not always possible.)
      */
     public List<Annotation> getNote() { 
@@ -1755,6 +2227,59 @@ public class FamilyMemberHistory extends DomainResource {
       return getCondition().get(0);
     }
 
+    /**
+     * @return {@link #procedure} (The significant Procedures (or procedure) that the family member had. This is a repeating section to allow a system to represent more than one procedure per resource, though there is nothing stopping multiple resources - one per procedure.)
+     */
+    public List<FamilyMemberHistoryProcedureComponent> getProcedure() { 
+      if (this.procedure == null)
+        this.procedure = new ArrayList<FamilyMemberHistoryProcedureComponent>();
+      return this.procedure;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public FamilyMemberHistory setProcedure(List<FamilyMemberHistoryProcedureComponent> theProcedure) { 
+      this.procedure = theProcedure;
+      return this;
+    }
+
+    public boolean hasProcedure() { 
+      if (this.procedure == null)
+        return false;
+      for (FamilyMemberHistoryProcedureComponent item : this.procedure)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public FamilyMemberHistoryProcedureComponent addProcedure() { //3
+      FamilyMemberHistoryProcedureComponent t = new FamilyMemberHistoryProcedureComponent();
+      if (this.procedure == null)
+        this.procedure = new ArrayList<FamilyMemberHistoryProcedureComponent>();
+      this.procedure.add(t);
+      return t;
+    }
+
+    public FamilyMemberHistory addProcedure(FamilyMemberHistoryProcedureComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.procedure == null)
+        this.procedure = new ArrayList<FamilyMemberHistoryProcedureComponent>();
+      this.procedure.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #procedure}, creating it if it does not already exist
+     */
+    public FamilyMemberHistoryProcedureComponent getProcedureFirstRep() { 
+      if (getProcedure().isEmpty()) {
+        addProcedure();
+      }
+      return getProcedure().get(0);
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this family member history by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -1775,6 +2300,7 @@ public class FamilyMemberHistory extends DomainResource {
         children.add(new Property("reasonReference", "Reference(Condition|Observation|AllergyIntolerance|QuestionnaireResponse|DiagnosticReport|DocumentReference)", "Indicates a Condition, Observation, AllergyIntolerance, or QuestionnaireResponse that justifies this family member history event.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
         children.add(new Property("note", "Annotation", "This property allows a non condition-specific note to the made about the related person. Ideally, the note would be in the condition property, but this is not always possible.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("condition", "", "The significant Conditions (or condition) that the family member had. This is a repeating section to allow a system to represent more than one condition per resource, though there is nothing stopping multiple resources - one per condition.", 0, java.lang.Integer.MAX_VALUE, condition));
+        children.add(new Property("procedure", "", "The significant Procedures (or procedure) that the family member had. This is a repeating section to allow a system to represent more than one procedure per resource, though there is nothing stopping multiple resources - one per procedure.", 0, java.lang.Integer.MAX_VALUE, procedure));
       }
 
       @Override
@@ -1812,6 +2338,7 @@ public class FamilyMemberHistory extends DomainResource {
         case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|AllergyIntolerance|QuestionnaireResponse|DiagnosticReport|DocumentReference)", "Indicates a Condition, Observation, AllergyIntolerance, or QuestionnaireResponse that justifies this family member history event.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
         case 3387378: /*note*/  return new Property("note", "Annotation", "This property allows a non condition-specific note to the made about the related person. Ideally, the note would be in the condition property, but this is not always possible.", 0, java.lang.Integer.MAX_VALUE, note);
         case -861311717: /*condition*/  return new Property("condition", "", "The significant Conditions (or condition) that the family member had. This is a repeating section to allow a system to represent more than one condition per resource, though there is nothing stopping multiple resources - one per condition.", 0, java.lang.Integer.MAX_VALUE, condition);
+        case -1095204141: /*procedure*/  return new Property("procedure", "", "The significant Procedures (or procedure) that the family member had. This is a repeating section to allow a system to represent more than one procedure per resource, though there is nothing stopping multiple resources - one per procedure.", 0, java.lang.Integer.MAX_VALUE, procedure);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1838,6 +2365,7 @@ public class FamilyMemberHistory extends DomainResource {
         case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // FamilyMemberHistoryConditionComponent
+        case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : this.procedure.toArray(new Base[this.procedure.size()]); // FamilyMemberHistoryProcedureComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1901,6 +2429,9 @@ public class FamilyMemberHistory extends DomainResource {
         case -861311717: // condition
           this.getCondition().add((FamilyMemberHistoryConditionComponent) value); // FamilyMemberHistoryConditionComponent
           return value;
+        case -1095204141: // procedure
+          this.getProcedure().add((FamilyMemberHistoryProcedureComponent) value); // FamilyMemberHistoryProcedureComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -1945,6 +2476,8 @@ public class FamilyMemberHistory extends DomainResource {
           this.getNote().add(castToAnnotation(value));
         } else if (name.equals("condition")) {
           this.getCondition().add((FamilyMemberHistoryConditionComponent) value);
+        } else if (name.equals("procedure")) {
+          this.getProcedure().add((FamilyMemberHistoryProcedureComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1957,23 +2490,24 @@ public class FamilyMemberHistory extends DomainResource {
         case 8911915:  return addInstantiatesCanonicalElement();
         case -1926393373:  return addInstantiatesUriElement();
         case -892481550:  return getStatusElement();
-        case 1034315687:  return getDataAbsentReason(); 
-        case -791418107:  return getPatient(); 
+        case 1034315687:  return getDataAbsentReason();
+        case -791418107:  return getPatient();
         case 3076014:  return getDateElement();
         case 3373707:  return getNameElement();
-        case -261851592:  return getRelationship(); 
-        case 113766:  return getSex(); 
-        case 67532951:  return getBorn(); 
-        case 3029833:  return getBorn(); 
-        case -1419716831:  return getAge(); 
-        case 96511:  return getAge(); 
+        case -261851592:  return getRelationship();
+        case 113766:  return getSex();
+        case 67532951:  return getBorn();
+        case 3029833:  return getBorn();
+        case -1419716831:  return getAge();
+        case 96511:  return getAge();
         case 2130167587:  return getEstimatedAgeElement();
-        case -1311442804:  return getDeceased(); 
-        case 561497972:  return getDeceased(); 
+        case -1311442804:  return getDeceased();
+        case 561497972:  return getDeceased();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 3387378:  return addNote(); 
         case -861311717:  return addCondition(); 
+        case -1095204141:  return addProcedure(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2000,6 +2534,7 @@ public class FamilyMemberHistory extends DomainResource {
         case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -861311717: /*condition*/ return new String[] {};
+        case -1095204141: /*procedure*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2100,6 +2635,9 @@ public class FamilyMemberHistory extends DomainResource {
         else if (name.equals("condition")) {
           return addCondition();
         }
+        else if (name.equals("procedure")) {
+          return addProcedure();
+        }
         else
           return super.addChild(name);
       }
@@ -2112,6 +2650,11 @@ public class FamilyMemberHistory extends DomainResource {
       public FamilyMemberHistory copy() {
         FamilyMemberHistory dst = new FamilyMemberHistory();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(FamilyMemberHistory dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2158,7 +2701,11 @@ public class FamilyMemberHistory extends DomainResource {
           for (FamilyMemberHistoryConditionComponent i : condition)
             dst.condition.add(i.copy());
         };
-        return dst;
+        if (procedure != null) {
+          dst.procedure = new ArrayList<FamilyMemberHistoryProcedureComponent>();
+          for (FamilyMemberHistoryProcedureComponent i : procedure)
+            dst.procedure.add(i.copy());
+        };
       }
 
       protected FamilyMemberHistory typedCopy() {
@@ -2179,7 +2726,7 @@ public class FamilyMemberHistory extends DomainResource {
            && compareDeep(sex, o.sex, true) && compareDeep(born, o.born, true) && compareDeep(age, o.age, true)
            && compareDeep(estimatedAge, o.estimatedAge, true) && compareDeep(deceased, o.deceased, true) && compareDeep(reasonCode, o.reasonCode, true)
            && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(note, o.note, true) && compareDeep(condition, o.condition, true)
-          ;
+           && compareDeep(procedure, o.procedure, true);
       }
 
       @Override
@@ -2198,7 +2745,7 @@ public class FamilyMemberHistory extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, status, dataAbsentReason, patient, date, name, relationship
           , sex, born, age, estimatedAge, deceased, reasonCode, reasonReference, note
-          , condition);
+          , condition, procedure);
       }
 
   @Override
@@ -2267,26 +2814,6 @@ public class FamilyMemberHistory extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
-   * Search parameter: <b>gender</b>
-   * <p>
-   * Description: <b>A search by a gender code of a family member</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="gender", path="", description="A search by a gender code of a family member", type="token" )
-  public static final String SP_GENDER = "gender";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>gender</b>
-   * <p>
-   * Description: <b>A search by a gender code of a family member</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GENDER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GENDER);
-
- /**
    * Search parameter: <b>patient</b>
    * <p>
    * Description: <b>The identity of a subject to list family member history items for</b><br>
@@ -2311,6 +2838,26 @@ public class FamilyMemberHistory extends DomainResource {
    * the path value of "<b>FamilyMemberHistory:patient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("FamilyMemberHistory:patient").toLocked();
+
+ /**
+   * Search parameter: <b>sex</b>
+   * <p>
+   * Description: <b>A search by a sex code of a family member</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>FamilyMemberHistory.sex</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="sex", path="FamilyMemberHistory.sex", description="A search by a sex code of a family member", type="token" )
+  public static final String SP_SEX = "sex";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>sex</b>
+   * <p>
+   * Description: <b>A search by a sex code of a family member</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>FamilyMemberHistory.sex</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SEX = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SEX);
 
  /**
    * Search parameter: <b>instantiates-canonical</b>

@@ -452,7 +452,8 @@ public class SnapShotGenerationTests {
       pu.setIds(test.included, false);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
       pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
-      TestingUtilities.context().cacheResource(test.included);
+      if (!TestingUtilities.context().hasResource(StructureDefinition.class, test.included.getUrl()))
+        TestingUtilities.context().cacheResource(test.included);
     }
     StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
     if (!base.getUrl().equals(test.getSource().getBaseDefinition()))

@@ -67,7 +67,7 @@ import com.google.gson.JsonObject;
 public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
 
   @Parameters(name = "{index}: id {0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
+  public static Iterable<Object[]> data() throws IOException {
     
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
     JsonObject json =  (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(TestUtilities.resourceNameToFile("validation-examples", "manifest.json")));

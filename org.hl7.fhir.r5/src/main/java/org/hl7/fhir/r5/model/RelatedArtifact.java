@@ -50,15 +50,19 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Related artifacts such as additional documentation, justification, or bibliographic references.
  */
@@ -735,7 +739,7 @@ public class RelatedArtifact extends Type implements ICompositeType {
         case 1671764162:  return getDisplayElement();
         case -1442706713:  return getCitationElement();
         case 116079:  return getUrlElement();
-        case 861720859:  return getDocument(); 
+        case 861720859:  return getDocument();
         case -341064690:  return getResourceElement();
         default: return super.makeProperty(hash, name);
         }
@@ -793,6 +797,11 @@ public class RelatedArtifact extends Type implements ICompositeType {
       public RelatedArtifact copy() {
         RelatedArtifact dst = new RelatedArtifact();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedArtifact dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.label = label == null ? null : label.copy();
         dst.display = display == null ? null : display.copy();
@@ -800,7 +809,6 @@ public class RelatedArtifact extends Type implements ICompositeType {
         dst.url = url == null ? null : url.copy();
         dst.document = document == null ? null : document.copy();
         dst.resource = resource == null ? null : resource.copy();
-        return dst;
       }
 
       protected RelatedArtifact typedCopy() {

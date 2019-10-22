@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A sample to be used for analysis.
  */
@@ -203,11 +205,6 @@ public class Specimen extends DomainResource {
         protected Reference collector;
 
         /**
-         * The actual object that is the target of the reference (Person who collected the specimen.)
-         */
-        protected Resource collectorTarget;
-
-        /**
          * Time when specimen was collected from subject - the physiologically relevant time.
          */
         @Child(name = "collected", type = {DateTimeType.class, Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
@@ -252,7 +249,7 @@ public class Specimen extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0916")
         protected Type fastingStatus;
 
-        private static final long serialVersionUID = -719430195L;
+        private static final long serialVersionUID = -193148073L;
 
     /**
      * Constructor
@@ -282,21 +279,6 @@ public class Specimen extends DomainResource {
          */
         public SpecimenCollectionComponent setCollector(Reference value) { 
           this.collector = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #collector} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Person who collected the specimen.)
-         */
-        public Resource getCollectorTarget() { 
-          return this.collectorTarget;
-        }
-
-        /**
-         * @param value {@link #collector} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Person who collected the specimen.)
-         */
-        public SpecimenCollectionComponent setCollectorTarget(Resource value) { 
-          this.collectorTarget = value;
           return this;
         }
 
@@ -598,15 +580,15 @@ public class Specimen extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1883491469:  return getCollector(); 
-        case 1632037015:  return getCollected(); 
-        case 1883491145:  return getCollected(); 
-        case -1992012396:  return getDuration(); 
-        case -1285004149:  return getQuantity(); 
-        case -1077554975:  return getMethod(); 
-        case 1702620169:  return getBodySite(); 
-        case -570577944:  return getFastingStatus(); 
-        case -701550184:  return getFastingStatus(); 
+        case 1883491469:  return getCollector();
+        case 1632037015:  return getCollected();
+        case 1883491145:  return getCollected();
+        case -1992012396:  return getDuration();
+        case -1285004149:  return getQuantity();
+        case -1077554975:  return getMethod();
+        case 1702620169:  return getBodySite();
+        case -570577944:  return getFastingStatus();
+        case -701550184:  return getFastingStatus();
         default: return super.makeProperty(hash, name);
         }
 
@@ -672,6 +654,11 @@ public class Specimen extends DomainResource {
       public SpecimenCollectionComponent copy() {
         SpecimenCollectionComponent dst = new SpecimenCollectionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenCollectionComponent dst) {
+        super.copyValues(dst);
         dst.collector = collector == null ? null : collector.copy();
         dst.collected = collected == null ? null : collected.copy();
         dst.duration = duration == null ? null : duration.copy();
@@ -679,7 +666,6 @@ public class Specimen extends DomainResource {
         dst.method = method == null ? null : method.copy();
         dst.bodySite = bodySite == null ? null : bodySite.copy();
         dst.fastingStatus = fastingStatus == null ? null : fastingStatus.copy();
-        return dst;
       }
 
       @Override
@@ -739,11 +725,6 @@ public class Specimen extends DomainResource {
         @Child(name = "additive", type = {Substance.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Material used in the processing step", formalDefinition="Material used in the processing step." )
         protected List<Reference> additive;
-        /**
-         * The actual objects that are the target of the reference (Material used in the processing step.)
-         */
-        protected List<Substance> additiveTarget;
-
 
         /**
          * A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin.
@@ -752,7 +733,7 @@ public class Specimen extends DomainResource {
         @Description(shortDefinition="Date and time of specimen processing", formalDefinition="A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin." )
         protected Type time;
 
-        private static final long serialVersionUID = 1467214742L;
+        private static final long serialVersionUID = 1180205613L;
 
     /**
      * Constructor
@@ -888,28 +869,6 @@ public class Specimen extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Substance> getAdditiveTarget() { 
-          if (this.additiveTarget == null)
-            this.additiveTarget = new ArrayList<Substance>();
-          return this.additiveTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Substance addAdditiveTarget() { 
-          Substance r = new Substance();
-          if (this.additiveTarget == null)
-            this.additiveTarget = new ArrayList<Substance>();
-          this.additiveTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #time} (A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin.)
          */
         public Type getTime() { 
@@ -1034,10 +993,10 @@ public class Specimen extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
-        case -1095204141:  return getProcedure(); 
+        case -1095204141:  return getProcedure();
         case -1226589236:  return addAdditive(); 
-        case -1313930605:  return getTime(); 
-        case 3560141:  return getTime(); 
+        case -1313930605:  return getTime();
+        case 3560141:  return getTime();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1082,6 +1041,11 @@ public class Specimen extends DomainResource {
       public SpecimenProcessingComponent copy() {
         SpecimenProcessingComponent dst = new SpecimenProcessingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenProcessingComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.procedure = procedure == null ? null : procedure.copy();
         if (additive != null) {
@@ -1090,7 +1054,6 @@ public class Specimen extends DomainResource {
             dst.additive.add(i.copy());
         };
         dst.time = time == null ? null : time.copy();
-        return dst;
       }
 
       @Override
@@ -1497,11 +1460,11 @@ public class Specimen extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -1724546052:  return getDescriptionElement();
-        case 3575610:  return getType(); 
-        case -67824454:  return getCapacity(); 
-        case 1485980595:  return getSpecimenQuantity(); 
-        case 261915956:  return getAdditive(); 
-        case -1226589236:  return getAdditive(); 
+        case 3575610:  return getType();
+        case -67824454:  return getCapacity();
+        case 1485980595:  return getSpecimenQuantity();
+        case 261915956:  return getAdditive();
+        case -1226589236:  return getAdditive();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1556,6 +1519,11 @@ public class Specimen extends DomainResource {
       public SpecimenContainerComponent copy() {
         SpecimenContainerComponent dst = new SpecimenContainerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenContainerComponent dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1566,7 +1534,6 @@ public class Specimen extends DomainResource {
         dst.capacity = capacity == null ? null : capacity.copy();
         dst.specimenQuantity = specimenQuantity == null ? null : specimenQuantity.copy();
         dst.additive = additive == null ? null : additive.copy();
-        return dst;
       }
 
       @Override
@@ -1634,16 +1601,11 @@ public class Specimen extends DomainResource {
     protected CodeableConcept type;
 
     /**
-     * Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.
+     * Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.
      */
     @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Substance.class, Location.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device", formalDefinition="Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device." )
+    @Description(shortDefinition="Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device", formalDefinition="Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device." )
     protected Reference subject;
-
-    /**
-     * The actual object that is the target of the reference (Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
-     */
-    protected Resource subjectTarget;
 
     /**
      * Time when specimen was received for processing or testing.
@@ -1658,11 +1620,6 @@ public class Specimen extends DomainResource {
     @Child(name = "parent", type = {Specimen.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Specimen from which this specimen originated", formalDefinition="Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of another specimen." )
     protected List<Reference> parent;
-    /**
-     * The actual objects that are the target of the reference (Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of another specimen.)
-     */
-    protected List<Specimen> parentTarget;
-
 
     /**
      * Details concerning a service request that required a specimen to be collected.
@@ -1670,11 +1627,6 @@ public class Specimen extends DomainResource {
     @Child(name = "request", type = {ServiceRequest.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why the specimen was collected", formalDefinition="Details concerning a service request that required a specimen to be collected." )
     protected List<Reference> request;
-    /**
-     * The actual objects that are the target of the reference (Details concerning a service request that required a specimen to be collected.)
-     */
-    protected List<ServiceRequest> requestTarget;
-
 
     /**
      * Details concerning the specimen collection.
@@ -1712,7 +1664,7 @@ public class Specimen extends DomainResource {
     @Description(shortDefinition="Comments", formalDefinition="To communicate any details or issues about the specimen or during the specimen collection. (for example: broken vial, sent with patient, frozen)." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1441502239L;
+    private static final long serialVersionUID = -1069243129L;
 
   /**
    * Constructor
@@ -1872,7 +1824,7 @@ public class Specimen extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
+     * @return {@link #subject} (Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
      */
     public Reference getSubject() { 
       if (this.subject == null)
@@ -1888,25 +1840,10 @@ public class Specimen extends DomainResource {
     }
 
     /**
-     * @param value {@link #subject} (Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
+     * @param value {@link #subject} (Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
      */
     public Specimen setSubject(Reference value) { 
       this.subject = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.)
-     */
-    public Specimen setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
       return this;
     }
 
@@ -2013,28 +1950,6 @@ public class Specimen extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Specimen> getParentTarget() { 
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<Specimen>();
-      return this.parentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Specimen addParentTarget() { 
-      Specimen r = new Specimen();
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<Specimen>();
-      this.parentTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #request} (Details concerning a service request that required a specimen to be collected.)
      */
     public List<Reference> getRequest() { 
@@ -2085,28 +2000,6 @@ public class Specimen extends DomainResource {
         addRequest();
       }
       return getRequest().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ServiceRequest> getRequestTarget() { 
-      if (this.requestTarget == null)
-        this.requestTarget = new ArrayList<ServiceRequest>();
-      return this.requestTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ServiceRequest addRequestTarget() { 
-      ServiceRequest r = new ServiceRequest();
-      if (this.requestTarget == null)
-        this.requestTarget = new ArrayList<ServiceRequest>();
-      this.requestTarget.add(r);
-      return r;
     }
 
     /**
@@ -2351,7 +2244,7 @@ public class Specimen extends DomainResource {
         children.add(new Property("accessionIdentifier", "Identifier", "The identifier assigned by the lab when accessioning specimen(s). This is not necessarily the same as the specimen identifier, depending on local lab procedures.", 0, 1, accessionIdentifier));
         children.add(new Property("status", "code", "The availability of the specimen.", 0, 1, status));
         children.add(new Property("type", "CodeableConcept", "The kind of material that forms the specimen.", 0, 1, type));
-        children.add(new Property("subject", "Reference(Patient|Group|Device|Substance|Location)", "Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(Patient|Group|Device|Substance|Location)", "Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.", 0, 1, subject));
         children.add(new Property("receivedTime", "dateTime", "Time when specimen was received for processing or testing.", 0, 1, receivedTime));
         children.add(new Property("parent", "Reference(Specimen)", "Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of another specimen.", 0, java.lang.Integer.MAX_VALUE, parent));
         children.add(new Property("request", "Reference(ServiceRequest)", "Details concerning a service request that required a specimen to be collected.", 0, java.lang.Integer.MAX_VALUE, request));
@@ -2369,7 +2262,7 @@ public class Specimen extends DomainResource {
         case 818734061: /*accessionIdentifier*/  return new Property("accessionIdentifier", "Identifier", "The identifier assigned by the lab when accessioning specimen(s). This is not necessarily the same as the specimen identifier, depending on local lab procedures.", 0, 1, accessionIdentifier);
         case -892481550: /*status*/  return new Property("status", "code", "The availability of the specimen.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind of material that forms the specimen.", 0, 1, type);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Substance|Location)", "Where the specimen came from. This may be from patient(s),from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Substance|Location)", "Where the specimen came from. This may be from patient(s), from a location (e.g., the source of an environmental sample), or a sampling of a substance or a device.", 0, 1, subject);
         case -767961010: /*receivedTime*/  return new Property("receivedTime", "dateTime", "Time when specimen was received for processing or testing.", 0, 1, receivedTime);
         case -995424086: /*parent*/  return new Property("parent", "Reference(Specimen)", "Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of another specimen.", 0, java.lang.Integer.MAX_VALUE, parent);
         case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Details concerning a service request that required a specimen to be collected.", 0, java.lang.Integer.MAX_VALUE, request);
@@ -2490,14 +2383,14 @@ public class Specimen extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 818734061:  return getAccessionIdentifier(); 
+        case 818734061:  return getAccessionIdentifier();
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
-        case -1867885268:  return getSubject(); 
+        case 3575610:  return getType();
+        case -1867885268:  return getSubject();
         case -767961010:  return getReceivedTimeElement();
         case -995424086:  return addParent(); 
         case 1095692943:  return addRequest(); 
-        case -1741312354:  return getCollection(); 
+        case -1741312354:  return getCollection();
         case 422194963:  return addProcessing(); 
         case -410956671:  return addContainer(); 
         case -861311717:  return addCondition(); 
@@ -2585,6 +2478,11 @@ public class Specimen extends DomainResource {
       public Specimen copy() {
         Specimen dst = new Specimen();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Specimen dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2626,7 +2524,6 @@ public class Specimen extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected Specimen typedCopy() {

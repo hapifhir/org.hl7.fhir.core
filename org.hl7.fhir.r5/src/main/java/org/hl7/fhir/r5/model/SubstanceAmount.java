@@ -50,17 +50,19 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.
  */
@@ -194,8 +196,8 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1841058617:  return getLowLimit(); 
-        case -710757575:  return getHighLimit(); 
+        case -1841058617:  return getLowLimit();
+        case -710757575:  return getHighLimit();
         default: return super.makeProperty(hash, name);
         }
 
@@ -228,9 +230,13 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       public SubstanceAmountReferenceRangeComponent copy() {
         SubstanceAmountReferenceRangeComponent dst = new SubstanceAmountReferenceRangeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceAmountReferenceRangeComponent dst) {
+        super.copyValues(dst);
         dst.lowLimit = lowLimit == null ? null : lowLimit.copy();
         dst.highLimit = highLimit == null ? null : highLimit.copy();
-        return dst;
       }
 
       @Override
@@ -538,11 +544,11 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 646780200:  return getAmount(); 
-        case -1413853096:  return getAmount(); 
-        case -1424857166:  return getAmountType(); 
+        case 646780200:  return getAmount();
+        case -1413853096:  return getAmount();
+        case -1424857166:  return getAmountType();
         case -1424876123:  return getAmountTextElement();
-        case -1912545102:  return getReferenceRange(); 
+        case -1912545102:  return getReferenceRange();
         default: return super.makeProperty(hash, name);
         }
 
@@ -597,11 +603,15 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       public SubstanceAmount copy() {
         SubstanceAmount dst = new SubstanceAmount();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceAmount dst) {
+        super.copyValues(dst);
         dst.amount = amount == null ? null : amount.copy();
         dst.amountType = amountType == null ? null : amountType.copy();
         dst.amountText = amountText == null ? null : amountText.copy();
         dst.referenceRange = referenceRange == null ? null : referenceRange.copy();
-        return dst;
       }
 
       protected SubstanceAmount typedCopy() {

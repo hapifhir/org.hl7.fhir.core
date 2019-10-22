@@ -1,33 +1,13 @@
 package org.hl7.fhir.r5.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Thu, Oct 17, 2019 19:56+1100 for FHIR v4.1.0
 
 public enum ResourceType {
     Account,
     ActivityDefinition,
+    AdministrableProductDefinition,
     AdverseEvent,
     AllergyIntolerance,
     Appointment,
@@ -39,6 +19,7 @@ public enum ResourceType {
     BodyStructure,
     Bundle,
     CapabilityStatement,
+    CapabilityStatement2,
     CarePlan,
     CareTeam,
     CatalogEntry,
@@ -47,6 +28,7 @@ public enum ResourceType {
     Claim,
     ClaimResponse,
     ClinicalImpression,
+    ClinicalUseIssue,
     CodeSystem,
     Communication,
     CommunicationRequest,
@@ -54,6 +36,7 @@ public enum ResourceType {
     Composition,
     ConceptMap,
     Condition,
+    ConditionDefinition,
     Consent,
     Contract,
     Coverage,
@@ -68,7 +51,6 @@ public enum ResourceType {
     DiagnosticReport,
     DocumentManifest,
     DocumentReference,
-    EffectEvidenceSynthesis,
     Encounter,
     Endpoint,
     EnrollmentRequest,
@@ -91,35 +73,28 @@ public enum ResourceType {
     ImmunizationEvaluation,
     ImmunizationRecommendation,
     ImplementationGuide,
+    Ingredient,
     InsurancePlan,
     Invoice,
     Library,
     Linkage,
     List,
     Location,
+    ManufacturedItemDefinition,
     Measure,
     MeasureReport,
-    Media,
     Medication,
     MedicationAdministration,
     MedicationDispense,
     MedicationKnowledge,
     MedicationRequest,
-    MedicationStatement,
-    MedicinalProduct,
-    MedicinalProductAuthorization,
-    MedicinalProductContraindication,
-    MedicinalProductIndication,
-    MedicinalProductIngredient,
-    MedicinalProductInteraction,
-    MedicinalProductManufactured,
-    MedicinalProductPackaged,
-    MedicinalProductPharmaceutical,
-    MedicinalProductUndesirableEffect,
+    MedicationUsage,
+    MedicinalProductDefinition,
     MessageDefinition,
     MessageHeader,
     MolecularSequence,
     NamingSystem,
+    NutritionIntake,
     NutritionOrder,
     Observation,
     ObservationDefinition,
@@ -127,6 +102,7 @@ public enum ResourceType {
     OperationOutcome,
     Organization,
     OrganizationAffiliation,
+    PackagedProductDefinition,
     Parameters,
     Patient,
     PaymentNotice,
@@ -139,14 +115,12 @@ public enum ResourceType {
     Provenance,
     Questionnaire,
     QuestionnaireResponse,
+    RegulatedAuthorization,
     RelatedPerson,
     RequestGroup,
-    ResearchDefinition,
-    ResearchElementDefinition,
     ResearchStudy,
     ResearchSubject,
     RiskAssessment,
-    RiskEvidenceSynthesis,
     Schedule,
     SearchParameter,
     ServiceRequest,
@@ -157,18 +131,19 @@ public enum ResourceType {
     StructureMap,
     Subscription,
     Substance,
+    SubstanceDefinition,
     SubstanceNucleicAcid,
     SubstancePolymer,
     SubstanceProtein,
     SubstanceReferenceInformation,
     SubstanceSourceMaterial,
-    SubstanceSpecification,
     SupplyDelivery,
     SupplyRequest,
     Task,
     TerminologyCapabilities,
     TestReport,
     TestScript,
+    Topic,
     ValueSet,
     VerificationResult,
     VisionPrescription;
@@ -180,6 +155,8 @@ public enum ResourceType {
       return "account";
     case ActivityDefinition:
       return "activitydefinition";
+    case AdministrableProductDefinition:
+      return "administrableproductdefinition";
     case AdverseEvent:
       return "adverseevent";
     case AllergyIntolerance:
@@ -202,6 +179,8 @@ public enum ResourceType {
       return "bundle";
     case CapabilityStatement:
       return "capabilitystatement";
+    case CapabilityStatement2:
+      return "capabilitystatement2";
     case CarePlan:
       return "careplan";
     case CareTeam:
@@ -218,6 +197,8 @@ public enum ResourceType {
       return "claimresponse";
     case ClinicalImpression:
       return "clinicalimpression";
+    case ClinicalUseIssue:
+      return "clinicaluseissue";
     case CodeSystem:
       return "codesystem";
     case Communication:
@@ -232,6 +213,8 @@ public enum ResourceType {
       return "conceptmap";
     case Condition:
       return "condition";
+    case ConditionDefinition:
+      return "conditiondefinition";
     case Consent:
       return "consent";
     case Contract:
@@ -260,8 +243,6 @@ public enum ResourceType {
       return "documentmanifest";
     case DocumentReference:
       return "documentreference";
-    case EffectEvidenceSynthesis:
-      return "effectevidencesynthesis";
     case Encounter:
       return "encounter";
     case Endpoint:
@@ -306,6 +287,8 @@ public enum ResourceType {
       return "immunizationrecommendation";
     case ImplementationGuide:
       return "implementationguide";
+    case Ingredient:
+      return "ingredient";
     case InsurancePlan:
       return "insuranceplan";
     case Invoice:
@@ -318,12 +301,12 @@ public enum ResourceType {
       return "list";
     case Location:
       return "location";
+    case ManufacturedItemDefinition:
+      return "manufactureditemdefinition";
     case Measure:
       return "measure";
     case MeasureReport:
       return "measurereport";
-    case Media:
-      return "media";
     case Medication:
       return "medication";
     case MedicationAdministration:
@@ -334,28 +317,10 @@ public enum ResourceType {
       return "medicationknowledge";
     case MedicationRequest:
       return "medicationrequest";
-    case MedicationStatement:
-      return "medicationstatement";
-    case MedicinalProduct:
-      return "medicinalproduct";
-    case MedicinalProductAuthorization:
-      return "medicinalproductauthorization";
-    case MedicinalProductContraindication:
-      return "medicinalproductcontraindication";
-    case MedicinalProductIndication:
-      return "medicinalproductindication";
-    case MedicinalProductIngredient:
-      return "medicinalproductingredient";
-    case MedicinalProductInteraction:
-      return "medicinalproductinteraction";
-    case MedicinalProductManufactured:
-      return "medicinalproductmanufactured";
-    case MedicinalProductPackaged:
-      return "medicinalproductpackaged";
-    case MedicinalProductPharmaceutical:
-      return "medicinalproductpharmaceutical";
-    case MedicinalProductUndesirableEffect:
-      return "medicinalproductundesirableeffect";
+    case MedicationUsage:
+      return "medicationusage";
+    case MedicinalProductDefinition:
+      return "medicinalproductdefinition";
     case MessageDefinition:
       return "messagedefinition";
     case MessageHeader:
@@ -364,6 +329,8 @@ public enum ResourceType {
       return "molecularsequence";
     case NamingSystem:
       return "namingsystem";
+    case NutritionIntake:
+      return "nutritionintake";
     case NutritionOrder:
       return "nutritionorder";
     case Observation:
@@ -378,6 +345,8 @@ public enum ResourceType {
       return "organization";
     case OrganizationAffiliation:
       return "organizationaffiliation";
+    case PackagedProductDefinition:
+      return "packagedproductdefinition";
     case Parameters:
       return "parameters";
     case Patient:
@@ -402,22 +371,18 @@ public enum ResourceType {
       return "questionnaire";
     case QuestionnaireResponse:
       return "questionnaireresponse";
+    case RegulatedAuthorization:
+      return "regulatedauthorization";
     case RelatedPerson:
       return "relatedperson";
     case RequestGroup:
       return "requestgroup";
-    case ResearchDefinition:
-      return "researchdefinition";
-    case ResearchElementDefinition:
-      return "researchelementdefinition";
     case ResearchStudy:
       return "researchstudy";
     case ResearchSubject:
       return "researchsubject";
     case RiskAssessment:
       return "riskassessment";
-    case RiskEvidenceSynthesis:
-      return "riskevidencesynthesis";
     case Schedule:
       return "schedule";
     case SearchParameter:
@@ -438,6 +403,8 @@ public enum ResourceType {
       return "subscription";
     case Substance:
       return "substance";
+    case SubstanceDefinition:
+      return "substancedefinition";
     case SubstanceNucleicAcid:
       return "substancenucleicacid";
     case SubstancePolymer:
@@ -448,8 +415,6 @@ public enum ResourceType {
       return "substancereferenceinformation";
     case SubstanceSourceMaterial:
       return "substancesourcematerial";
-    case SubstanceSpecification:
-      return "substancespecification";
     case SupplyDelivery:
       return "supplydelivery";
     case SupplyRequest:
@@ -462,6 +427,8 @@ public enum ResourceType {
       return "testreport";
     case TestScript:
       return "testscript";
+    case Topic:
+      return "topic";
     case ValueSet:
       return "valueset";
     case VerificationResult:
@@ -478,6 +445,8 @@ public enum ResourceType {
       return Account;
     if ("ActivityDefinition".equals(code))
       return ActivityDefinition;
+    if ("AdministrableProductDefinition".equals(code))
+      return AdministrableProductDefinition;
     if ("AdverseEvent".equals(code))
       return AdverseEvent;
     if ("AllergyIntolerance".equals(code))
@@ -500,6 +469,8 @@ public enum ResourceType {
       return Bundle;
     if ("CapabilityStatement".equals(code))
       return CapabilityStatement;
+    if ("CapabilityStatement2".equals(code))
+      return CapabilityStatement2;
     if ("CarePlan".equals(code))
       return CarePlan;
     if ("CareTeam".equals(code))
@@ -516,6 +487,8 @@ public enum ResourceType {
       return ClaimResponse;
     if ("ClinicalImpression".equals(code))
       return ClinicalImpression;
+    if ("ClinicalUseIssue".equals(code))
+      return ClinicalUseIssue;
     if ("CodeSystem".equals(code))
       return CodeSystem;
     if ("Communication".equals(code))
@@ -530,6 +503,8 @@ public enum ResourceType {
       return ConceptMap;
     if ("Condition".equals(code))
       return Condition;
+    if ("ConditionDefinition".equals(code))
+      return ConditionDefinition;
     if ("Consent".equals(code))
       return Consent;
     if ("Contract".equals(code))
@@ -558,8 +533,6 @@ public enum ResourceType {
       return DocumentManifest;
     if ("DocumentReference".equals(code))
       return DocumentReference;
-    if ("EffectEvidenceSynthesis".equals(code))
-      return EffectEvidenceSynthesis;
     if ("Encounter".equals(code))
       return Encounter;
     if ("Endpoint".equals(code))
@@ -604,6 +577,8 @@ public enum ResourceType {
       return ImmunizationRecommendation;
     if ("ImplementationGuide".equals(code))
       return ImplementationGuide;
+    if ("Ingredient".equals(code))
+      return Ingredient;
     if ("InsurancePlan".equals(code))
       return InsurancePlan;
     if ("Invoice".equals(code))
@@ -616,12 +591,12 @@ public enum ResourceType {
       return List;
     if ("Location".equals(code))
       return Location;
+    if ("ManufacturedItemDefinition".equals(code))
+      return ManufacturedItemDefinition;
     if ("Measure".equals(code))
       return Measure;
     if ("MeasureReport".equals(code))
       return MeasureReport;
-    if ("Media".equals(code))
-      return Media;
     if ("Medication".equals(code))
       return Medication;
     if ("MedicationAdministration".equals(code))
@@ -632,28 +607,10 @@ public enum ResourceType {
       return MedicationKnowledge;
     if ("MedicationRequest".equals(code))
       return MedicationRequest;
-    if ("MedicationStatement".equals(code))
-      return MedicationStatement;
-    if ("MedicinalProduct".equals(code))
-      return MedicinalProduct;
-    if ("MedicinalProductAuthorization".equals(code))
-      return MedicinalProductAuthorization;
-    if ("MedicinalProductContraindication".equals(code))
-      return MedicinalProductContraindication;
-    if ("MedicinalProductIndication".equals(code))
-      return MedicinalProductIndication;
-    if ("MedicinalProductIngredient".equals(code))
-      return MedicinalProductIngredient;
-    if ("MedicinalProductInteraction".equals(code))
-      return MedicinalProductInteraction;
-    if ("MedicinalProductManufactured".equals(code))
-      return MedicinalProductManufactured;
-    if ("MedicinalProductPackaged".equals(code))
-      return MedicinalProductPackaged;
-    if ("MedicinalProductPharmaceutical".equals(code))
-      return MedicinalProductPharmaceutical;
-    if ("MedicinalProductUndesirableEffect".equals(code))
-      return MedicinalProductUndesirableEffect;
+    if ("MedicationUsage".equals(code))
+      return MedicationUsage;
+    if ("MedicinalProductDefinition".equals(code))
+      return MedicinalProductDefinition;
     if ("MessageDefinition".equals(code))
       return MessageDefinition;
     if ("MessageHeader".equals(code))
@@ -662,6 +619,8 @@ public enum ResourceType {
       return MolecularSequence;
     if ("NamingSystem".equals(code))
       return NamingSystem;
+    if ("NutritionIntake".equals(code))
+      return NutritionIntake;
     if ("NutritionOrder".equals(code))
       return NutritionOrder;
     if ("Observation".equals(code))
@@ -676,6 +635,8 @@ public enum ResourceType {
       return Organization;
     if ("OrganizationAffiliation".equals(code))
       return OrganizationAffiliation;
+    if ("PackagedProductDefinition".equals(code))
+      return PackagedProductDefinition;
     if ("Parameters".equals(code))
       return Parameters;
     if ("Patient".equals(code))
@@ -700,22 +661,18 @@ public enum ResourceType {
       return Questionnaire;
     if ("QuestionnaireResponse".equals(code))
       return QuestionnaireResponse;
+    if ("RegulatedAuthorization".equals(code))
+      return RegulatedAuthorization;
     if ("RelatedPerson".equals(code))
       return RelatedPerson;
     if ("RequestGroup".equals(code))
       return RequestGroup;
-    if ("ResearchDefinition".equals(code))
-      return ResearchDefinition;
-    if ("ResearchElementDefinition".equals(code))
-      return ResearchElementDefinition;
     if ("ResearchStudy".equals(code))
       return ResearchStudy;
     if ("ResearchSubject".equals(code))
       return ResearchSubject;
     if ("RiskAssessment".equals(code))
       return RiskAssessment;
-    if ("RiskEvidenceSynthesis".equals(code))
-      return RiskEvidenceSynthesis;
     if ("Schedule".equals(code))
       return Schedule;
     if ("SearchParameter".equals(code))
@@ -736,6 +693,8 @@ public enum ResourceType {
       return Subscription;
     if ("Substance".equals(code))
       return Substance;
+    if ("SubstanceDefinition".equals(code))
+      return SubstanceDefinition;
     if ("SubstanceNucleicAcid".equals(code))
       return SubstanceNucleicAcid;
     if ("SubstancePolymer".equals(code))
@@ -746,8 +705,6 @@ public enum ResourceType {
       return SubstanceReferenceInformation;
     if ("SubstanceSourceMaterial".equals(code))
       return SubstanceSourceMaterial;
-    if ("SubstanceSpecification".equals(code))
-      return SubstanceSpecification;
     if ("SupplyDelivery".equals(code))
       return SupplyDelivery;
     if ("SupplyRequest".equals(code))
@@ -760,6 +717,8 @@ public enum ResourceType {
       return TestReport;
     if ("TestScript".equals(code))
       return TestScript;
+    if ("Topic".equals(code))
+      return Topic;
     if ("ValueSet".equals(code))
       return ValueSet;
     if ("VerificationResult".equals(code))

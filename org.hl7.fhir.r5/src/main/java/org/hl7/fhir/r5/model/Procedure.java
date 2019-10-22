@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * An action that is or was performed on or for a patient. This can be a physical intervention like an operation, or less invasive like long term services, counseling, or hypnotherapy.
  */
@@ -266,16 +270,11 @@ public class Procedure extends DomainResource {
         protected CodeableConcept function;
 
         /**
-         * The practitioner who was involved in the procedure.
+         * Indicates who or what performed the procedure.
          */
-        @Child(name = "actor", type = {Practitioner.class, PractitionerRole.class, Organization.class, Patient.class, RelatedPerson.class, Device.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The reference to the practitioner", formalDefinition="The practitioner who was involved in the procedure." )
+        @Child(name = "actor", type = {Practitioner.class, PractitionerRole.class, Organization.class, Patient.class, RelatedPerson.class, Device.class, CareTeam.class, HealthcareService.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Who performed the procedure", formalDefinition="Indicates who or what performed the procedure." )
         protected Reference actor;
-
-        /**
-         * The actual object that is the target of the reference (The practitioner who was involved in the procedure.)
-         */
-        protected Resource actorTarget;
 
         /**
          * The organization the device or practitioner was acting on behalf of.
@@ -284,12 +283,7 @@ public class Procedure extends DomainResource {
         @Description(shortDefinition="Organization the device or practitioner was acting for", formalDefinition="The organization the device or practitioner was acting on behalf of." )
         protected Reference onBehalfOf;
 
-        /**
-         * The actual object that is the target of the reference (The organization the device or practitioner was acting on behalf of.)
-         */
-        protected Organization onBehalfOfTarget;
-
-        private static final long serialVersionUID = -997772724L;
+        private static final long serialVersionUID = -1804820116L;
 
     /**
      * Constructor
@@ -331,7 +325,7 @@ public class Procedure extends DomainResource {
         }
 
         /**
-         * @return {@link #actor} (The practitioner who was involved in the procedure.)
+         * @return {@link #actor} (Indicates who or what performed the procedure.)
          */
         public Reference getActor() { 
           if (this.actor == null)
@@ -347,25 +341,10 @@ public class Procedure extends DomainResource {
         }
 
         /**
-         * @param value {@link #actor} (The practitioner who was involved in the procedure.)
+         * @param value {@link #actor} (Indicates who or what performed the procedure.)
          */
         public ProcedurePerformerComponent setActor(Reference value) { 
           this.actor = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #actor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The practitioner who was involved in the procedure.)
-         */
-        public Resource getActorTarget() { 
-          return this.actorTarget;
-        }
-
-        /**
-         * @param value {@link #actor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The practitioner who was involved in the procedure.)
-         */
-        public ProcedurePerformerComponent setActorTarget(Resource value) { 
-          this.actorTarget = value;
           return this;
         }
 
@@ -393,30 +372,10 @@ public class Procedure extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization the device or practitioner was acting on behalf of.)
-         */
-        public Organization getOnBehalfOfTarget() { 
-          if (this.onBehalfOfTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ProcedurePerformerComponent.onBehalfOf");
-            else if (Configuration.doAutoCreate())
-              this.onBehalfOfTarget = new Organization(); // aa
-          return this.onBehalfOfTarget;
-        }
-
-        /**
-         * @param value {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization the device or practitioner was acting on behalf of.)
-         */
-        public ProcedurePerformerComponent setOnBehalfOfTarget(Organization value) { 
-          this.onBehalfOfTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the procedure. For example, surgeon, anaesthetist, endoscopist.", 0, 1, function));
-          children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The practitioner who was involved in the procedure.", 0, 1, actor));
+          children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device|CareTeam|HealthcareService)", "Indicates who or what performed the procedure.", 0, 1, actor));
           children.add(new Property("onBehalfOf", "Reference(Organization)", "The organization the device or practitioner was acting on behalf of.", 0, 1, onBehalfOf));
         }
 
@@ -424,7 +383,7 @@ public class Procedure extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the procedure. For example, surgeon, anaesthetist, endoscopist.", 0, 1, function);
-          case 92645877: /*actor*/  return new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The practitioner who was involved in the procedure.", 0, 1, actor);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device|CareTeam|HealthcareService)", "Indicates who or what performed the procedure.", 0, 1, actor);
           case -14402964: /*onBehalfOf*/  return new Property("onBehalfOf", "Reference(Organization)", "The organization the device or practitioner was acting on behalf of.", 0, 1, onBehalfOf);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -475,9 +434,9 @@ public class Procedure extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1380938712:  return getFunction(); 
-        case 92645877:  return getActor(); 
-        case -14402964:  return getOnBehalfOf(); 
+        case 1380938712:  return getFunction();
+        case 92645877:  return getActor();
+        case -14402964:  return getOnBehalfOf();
         default: return super.makeProperty(hash, name);
         }
 
@@ -515,10 +474,14 @@ public class Procedure extends DomainResource {
       public ProcedurePerformerComponent copy() {
         ProcedurePerformerComponent dst = new ProcedurePerformerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProcedurePerformerComponent dst) {
+        super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
         dst.actor = actor == null ? null : actor.copy();
         dst.onBehalfOf = onBehalfOf == null ? null : onBehalfOf.copy();
-        return dst;
       }
 
       @Override
@@ -571,12 +534,7 @@ public class Procedure extends DomainResource {
         @Description(shortDefinition="Device that was changed", formalDefinition="The device that was manipulated (changed) during the procedure." )
         protected Reference manipulated;
 
-        /**
-         * The actual object that is the target of the reference (The device that was manipulated (changed) during the procedure.)
-         */
-        protected Device manipulatedTarget;
-
-        private static final long serialVersionUID = 1779937807L;
+        private static final long serialVersionUID = -217582010L;
 
     /**
      * Constructor
@@ -641,26 +599,6 @@ public class Procedure extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #manipulated} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device that was manipulated (changed) during the procedure.)
-         */
-        public Device getManipulatedTarget() { 
-          if (this.manipulatedTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ProcedureFocalDeviceComponent.manipulated");
-            else if (Configuration.doAutoCreate())
-              this.manipulatedTarget = new Device(); // aa
-          return this.manipulatedTarget;
-        }
-
-        /**
-         * @param value {@link #manipulated} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device that was manipulated (changed) during the procedure.)
-         */
-        public ProcedureFocalDeviceComponent setManipulatedTarget(Device value) { 
-          this.manipulatedTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("action", "CodeableConcept", "The kind of change that happened to the device during the procedure.", 0, 1, action));
@@ -715,8 +653,8 @@ public class Procedure extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1422950858:  return getAction(); 
-        case 947372650:  return getManipulated(); 
+        case -1422950858:  return getAction();
+        case 947372650:  return getManipulated();
         default: return super.makeProperty(hash, name);
         }
 
@@ -749,9 +687,13 @@ public class Procedure extends DomainResource {
       public ProcedureFocalDeviceComponent copy() {
         ProcedureFocalDeviceComponent dst = new ProcedureFocalDeviceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProcedureFocalDeviceComponent dst) {
+        super.copyValues(dst);
         dst.action = action == null ? null : action.copy();
         dst.manipulated = manipulated == null ? null : manipulated.copy();
-        return dst;
       }
 
       @Override
@@ -812,11 +754,6 @@ public class Procedure extends DomainResource {
     @Child(name = "basedOn", type = {CarePlan.class, ServiceRequest.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A request for this procedure", formalDefinition="A reference to a resource that contains details of the request for this procedure." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A reference to a resource that contains details of the request for this procedure.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * A larger event of which this particular procedure is a component or step.
@@ -824,17 +761,12 @@ public class Procedure extends DomainResource {
     @Child(name = "partOf", type = {Procedure.class, Observation.class, MedicationAdministration.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of referenced event", formalDefinition="A larger event of which this particular procedure is a component or step." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (A larger event of which this particular procedure is a component or step.)
-     */
-    protected List<Resource> partOfTarget;
-
 
     /**
      * A code specifying the state of the procedure. Generally, this will be the in-progress or completed state.
      */
     @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="preparation | in-progress | not-done | suspended | aborted | completed | entered-in-error | unknown", formalDefinition="A code specifying the state of the procedure. Generally, this will be the in-progress or completed state." )
+    @Description(shortDefinition="preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown", formalDefinition="A code specifying the state of the procedure. Generally, this will be the in-progress or completed state." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/event-status")
     protected Enumeration<ProcedureStatus> status;
 
@@ -849,10 +781,10 @@ public class Procedure extends DomainResource {
     /**
      * A code that classifies the procedure for searching, sorting and display purposes (e.g. "Surgical Procedure").
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Classification of the procedure", formalDefinition="A code that classifies the procedure for searching, sorting and display purposes (e.g. \"Surgical Procedure\")." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-category")
-    protected CodeableConcept category;
+    protected List<CodeableConcept> category;
 
     /**
      * The specific procedure that is performed. Use text if the exact nature of the procedure cannot be coded (e.g. "Laparoscopic Appendectomy").
@@ -870,76 +802,58 @@ public class Procedure extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The person, animal or group on which the procedure was performed.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated." )
+    @Description(shortDefinition="The Encounter during which this Procedure was created", formalDefinition="The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated." )
     protected Reference encounter;
 
     /**
-     * The actual object that is the target of the reference (The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.)
+     * Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.
      */
-    protected Encounter encounterTarget;
+    @Child(name = "occurrence", type = {DateTimeType.class, Period.class, StringType.class, Age.class, Range.class, Timing.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the procedure occurred or is occurring", formalDefinition="Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured." )
+    protected Type occurrence;
 
     /**
-     * Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.
+     * The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.
      */
-    @Child(name = "performed", type = {DateTimeType.class, Period.class, StringType.class, Age.class, Range.class}, order=11, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When the procedure was performed", formalDefinition="Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured." )
-    protected Type performed;
+    @Child(name = "recorded", type = {DateTimeType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the procedure was first captured in the subject's record", formalDefinition="The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event." )
+    protected DateTimeType recorded;
 
     /**
      * Individual who recorded the record and takes responsibility for its content.
      */
-    @Child(name = "recorder", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "recorder", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who recorded the procedure", formalDefinition="Individual who recorded the record and takes responsibility for its content." )
     protected Reference recorder;
 
     /**
-     * The actual object that is the target of the reference (Individual who recorded the record and takes responsibility for its content.)
+     * Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.
      */
-    protected Resource recorderTarget;
-
-    /**
-     * Individual who is making the procedure statement.
-     */
-    @Child(name = "asserter", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class}, order=13, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Person who asserts this procedure", formalDefinition="Individual who is making the procedure statement." )
-    protected Reference asserter;
-
-    /**
-     * The actual object that is the target of the reference (Individual who is making the procedure statement.)
-     */
-    protected Resource asserterTarget;
+    @Child(name = "reported", type = {BooleanType.class, Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Organization.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Reported rather than primary record", formalDefinition="Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report." )
+    protected Type reported;
 
     /**
      * Limited to "real" people rather than equipment.
      */
-    @Child(name = "performer", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "performer", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The people who performed the procedure", formalDefinition="Limited to \"real\" people rather than equipment." )
     protected List<ProcedurePerformerComponent> performer;
 
     /**
      * The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.
      */
-    @Child(name = "location", type = {Location.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "location", type = {Location.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Where the procedure happened", formalDefinition="The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant." )
     protected Reference location;
 
     /**
-     * The actual object that is the target of the reference (The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.)
-     */
-    protected Location locationTarget;
-
-    /**
      * The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Coded reason procedure performed", formalDefinition="The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-reason")
     protected List<CodeableConcept> reasonCode;
@@ -947,19 +861,14 @@ public class Procedure extends DomainResource {
     /**
      * The justification of why the procedure was performed.
      */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, Procedure.class, DiagnosticReport.class, DocumentReference.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonReference", type = {Condition.class, Observation.class, Procedure.class, DiagnosticReport.class, DocumentReference.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The justification that the procedure was performed", formalDefinition="The justification of why the procedure was performed." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (The justification of why the procedure was performed.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Target body sites", formalDefinition="Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected List<CodeableConcept> bodySite;
@@ -967,7 +876,7 @@ public class Procedure extends DomainResource {
     /**
      * The outcome of the procedure - did it resolve the reasons for the procedure being performed?
      */
-    @Child(name = "outcome", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "outcome", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The result of procedure", formalDefinition="The outcome of the procedure - did it resolve the reasons for the procedure being performed?" )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-outcome")
     protected CodeableConcept outcome;
@@ -975,19 +884,14 @@ public class Procedure extends DomainResource {
     /**
      * This could be a histology result, pathology report, surgical report, etc.
      */
-    @Child(name = "report", type = {DiagnosticReport.class, DocumentReference.class, Composition.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "report", type = {DiagnosticReport.class, DocumentReference.class, Composition.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Any report resulting from the procedure", formalDefinition="This could be a histology result, pathology report, surgical report, etc." )
     protected List<Reference> report;
-    /**
-     * The actual objects that are the target of the reference (This could be a histology result, pathology report, surgical report, etc.)
-     */
-    protected List<Resource> reportTarget;
-
 
     /**
      * Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.
      */
-    @Child(name = "complication", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "complication", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Complication following the procedure", formalDefinition="Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
     protected List<CodeableConcept> complication;
@@ -995,19 +899,14 @@ public class Procedure extends DomainResource {
     /**
      * Any complications that occurred during the procedure, or in the immediate post-performance period.
      */
-    @Child(name = "complicationDetail", type = {Condition.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "complicationDetail", type = {Condition.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A condition that is a result of the procedure", formalDefinition="Any complications that occurred during the procedure, or in the immediate post-performance period." )
     protected List<Reference> complicationDetail;
-    /**
-     * The actual objects that are the target of the reference (Any complications that occurred during the procedure, or in the immediate post-performance period.)
-     */
-    protected List<Condition> complicationDetailTarget;
-
 
     /**
      * If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.
      */
-    @Child(name = "followUp", type = {CodeableConcept.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "followUp", type = {CodeableConcept.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instructions for follow up", formalDefinition="If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-followup")
     protected List<CodeableConcept> followUp;
@@ -1015,38 +914,33 @@ public class Procedure extends DomainResource {
     /**
      * Any other notes and comments about the procedure.
      */
-    @Child(name = "note", type = {Annotation.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional information about the procedure", formalDefinition="Any other notes and comments about the procedure." )
     protected List<Annotation> note;
 
     /**
      * A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.
      */
-    @Child(name = "focalDevice", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "focalDevice", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Manipulated, implanted, or removed device", formalDefinition="A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure." )
     protected List<ProcedureFocalDeviceComponent> focalDevice;
 
     /**
      * Identifies medications, devices and any other substance used as part of the procedure.
      */
-    @Child(name = "usedReference", type = {Device.class, Medication.class, Substance.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "usedReference", type = {Device.class, Medication.class, Substance.class, BiologicallyDerivedProduct.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Items used during procedure", formalDefinition="Identifies medications, devices and any other substance used as part of the procedure." )
     protected List<Reference> usedReference;
-    /**
-     * The actual objects that are the target of the reference (Identifies medications, devices and any other substance used as part of the procedure.)
-     */
-    protected List<Resource> usedReferenceTarget;
-
 
     /**
      * Identifies coded items that were used as part of the procedure.
      */
-    @Child(name = "usedCode", type = {CodeableConcept.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "usedCode", type = {CodeableConcept.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Coded items used during the procedure", formalDefinition="Identifies coded items that were used as part of the procedure." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-kind")
     protected List<CodeableConcept> usedCode;
 
-    private static final long serialVersionUID = -29072720L;
+    private static final long serialVersionUID = 296075988L;
 
   /**
    * Constructor
@@ -1293,16 +1187,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular procedure is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -1353,16 +1237,6 @@ public class Procedure extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1437,25 +1311,54 @@ public class Procedure extends DomainResource {
     /**
      * @return {@link #category} (A code that classifies the procedure for searching, sorting and display purposes (e.g. "Surgical Procedure").)
      */
-    public CodeableConcept getCategory() { 
+    public List<CodeableConcept> getCategory() { 
       if (this.category == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Procedure.category");
-        else if (Configuration.doAutoCreate())
-          this.category = new CodeableConcept(); // cc
+        this.category = new ArrayList<CodeableConcept>();
       return this.category;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Procedure setCategory(List<CodeableConcept> theCategory) { 
+      this.category = theCategory;
+      return this;
+    }
+
     public boolean hasCategory() { 
-      return this.category != null && !this.category.isEmpty();
+      if (this.category == null)
+        return false;
+      for (CodeableConcept item : this.category)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addCategory() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      this.category.add(t);
+      return t;
+    }
+
+    public Procedure addCategory(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      this.category.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #category} (A code that classifies the procedure for searching, sorting and display purposes (e.g. "Surgical Procedure").)
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
      */
-    public Procedure setCategory(CodeableConcept value) { 
-      this.category = value;
-      return this;
+    public CodeableConcept getCategoryFirstRep() { 
+      if (getCategory().isEmpty()) {
+        addCategory();
+      }
+      return getCategory().get(0);
     }
 
     /**
@@ -1507,21 +1410,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person, animal or group on which the procedure was performed.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person, animal or group on which the procedure was performed.)
-     */
-    public Procedure setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.)
      */
     public Reference getEncounter() { 
@@ -1546,118 +1434,162 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.)
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
      */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Procedure.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
+    public Type getOccurrence() { 
+      return this.occurrence;
     }
 
     /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.)
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
      */
-    public Procedure setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
+    public DateTimeType getOccurrenceDateTimeType() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new DateTimeType();
+      if (!(this.occurrence instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (DateTimeType) this.occurrence;
+    }
+
+    public boolean hasOccurrenceDateTimeType() { 
+      return this != null && this.occurrence instanceof DateTimeType;
+    }
+
+    /**
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     */
+    public Period getOccurrencePeriod() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Period();
+      if (!(this.occurrence instanceof Period))
+        throw new FHIRException("Type mismatch: the type Period was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (Period) this.occurrence;
+    }
+
+    public boolean hasOccurrencePeriod() { 
+      return this != null && this.occurrence instanceof Period;
+    }
+
+    /**
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     */
+    public StringType getOccurrenceStringType() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new StringType();
+      if (!(this.occurrence instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (StringType) this.occurrence;
+    }
+
+    public boolean hasOccurrenceStringType() { 
+      return this != null && this.occurrence instanceof StringType;
+    }
+
+    /**
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     */
+    public Age getOccurrenceAge() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Age();
+      if (!(this.occurrence instanceof Age))
+        throw new FHIRException("Type mismatch: the type Age was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (Age) this.occurrence;
+    }
+
+    public boolean hasOccurrenceAge() { 
+      return this != null && this.occurrence instanceof Age;
+    }
+
+    /**
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     */
+    public Range getOccurrenceRange() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Range();
+      if (!(this.occurrence instanceof Range))
+        throw new FHIRException("Type mismatch: the type Range was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (Range) this.occurrence;
+    }
+
+    public boolean hasOccurrenceRange() { 
+      return this != null && this.occurrence instanceof Range;
+    }
+
+    /**
+     * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     */
+    public Timing getOccurrenceTiming() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Timing();
+      if (!(this.occurrence instanceof Timing))
+        throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (Timing) this.occurrence;
+    }
+
+    public boolean hasOccurrenceTiming() { 
+      return this != null && this.occurrence instanceof Timing;
+    }
+
+    public boolean hasOccurrence() { 
+      return this.occurrence != null && !this.occurrence.isEmpty();
+    }
+
+    /**
+     * @param value {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     */
+    public Procedure setOccurrence(Type value) { 
+      if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof StringType || value instanceof Age || value instanceof Range || value instanceof Timing))
+        throw new Error("Not the right type for Procedure.occurrence[x]: "+value.fhirType());
+      this.occurrence = value;
       return this;
     }
 
     /**
-     * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     * @return {@link #recorded} (The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.). This is the underlying object with id, value and extensions. The accessor "getRecorded" gives direct access to the value
      */
-    public Type getPerformed() { 
-      return this.performed;
+    public DateTimeType getRecordedElement() { 
+      if (this.recorded == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Procedure.recorded");
+        else if (Configuration.doAutoCreate())
+          this.recorded = new DateTimeType(); // bb
+      return this.recorded;
+    }
+
+    public boolean hasRecordedElement() { 
+      return this.recorded != null && !this.recorded.isEmpty();
+    }
+
+    public boolean hasRecorded() { 
+      return this.recorded != null && !this.recorded.isEmpty();
     }
 
     /**
-     * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     * @param value {@link #recorded} (The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.). This is the underlying object with id, value and extensions. The accessor "getRecorded" gives direct access to the value
      */
-    public DateTimeType getPerformedDateTimeType() throws FHIRException { 
-      if (this.performed == null)
-        this.performed = new DateTimeType();
-      if (!(this.performed instanceof DateTimeType))
-        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.performed.getClass().getName()+" was encountered");
-      return (DateTimeType) this.performed;
-    }
-
-    public boolean hasPerformedDateTimeType() { 
-      return this != null && this.performed instanceof DateTimeType;
+    public Procedure setRecordedElement(DateTimeType value) { 
+      this.recorded = value;
+      return this;
     }
 
     /**
-     * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     * @return The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.
      */
-    public Period getPerformedPeriod() throws FHIRException { 
-      if (this.performed == null)
-        this.performed = new Period();
-      if (!(this.performed instanceof Period))
-        throw new FHIRException("Type mismatch: the type Period was expected, but "+this.performed.getClass().getName()+" was encountered");
-      return (Period) this.performed;
-    }
-
-    public boolean hasPerformedPeriod() { 
-      return this != null && this.performed instanceof Period;
+    public Date getRecorded() { 
+      return this.recorded == null ? null : this.recorded.getValue();
     }
 
     /**
-     * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
+     * @param value The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.
      */
-    public StringType getPerformedStringType() throws FHIRException { 
-      if (this.performed == null)
-        this.performed = new StringType();
-      if (!(this.performed instanceof StringType))
-        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.performed.getClass().getName()+" was encountered");
-      return (StringType) this.performed;
-    }
-
-    public boolean hasPerformedStringType() { 
-      return this != null && this.performed instanceof StringType;
-    }
-
-    /**
-     * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
-     */
-    public Age getPerformedAge() throws FHIRException { 
-      if (this.performed == null)
-        this.performed = new Age();
-      if (!(this.performed instanceof Age))
-        throw new FHIRException("Type mismatch: the type Age was expected, but "+this.performed.getClass().getName()+" was encountered");
-      return (Age) this.performed;
-    }
-
-    public boolean hasPerformedAge() { 
-      return this != null && this.performed instanceof Age;
-    }
-
-    /**
-     * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
-     */
-    public Range getPerformedRange() throws FHIRException { 
-      if (this.performed == null)
-        this.performed = new Range();
-      if (!(this.performed instanceof Range))
-        throw new FHIRException("Type mismatch: the type Range was expected, but "+this.performed.getClass().getName()+" was encountered");
-      return (Range) this.performed;
-    }
-
-    public boolean hasPerformedRange() { 
-      return this != null && this.performed instanceof Range;
-    }
-
-    public boolean hasPerformed() { 
-      return this.performed != null && !this.performed.isEmpty();
-    }
-
-    /**
-     * @param value {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
-     */
-    public Procedure setPerformed(Type value) { 
-      if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof StringType || value instanceof Age || value instanceof Range))
-        throw new Error("Not the right type for Procedure.performed[x]: "+value.fhirType());
-      this.performed = value;
+    public Procedure setRecorded(Date value) { 
+      if (value == null)
+        this.recorded = null;
+      else {
+        if (this.recorded == null)
+          this.recorded = new DateTimeType();
+        this.recorded.setValue(value);
+      }
       return this;
     }
 
@@ -1686,56 +1618,53 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @return {@link #recorder} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who recorded the record and takes responsibility for its content.)
+     * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Resource getRecorderTarget() { 
-      return this.recorderTarget;
+    public Type getReported() { 
+      return this.reported;
     }
 
     /**
-     * @param value {@link #recorder} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who recorded the record and takes responsibility for its content.)
+     * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Procedure setRecorderTarget(Resource value) { 
-      this.recorderTarget = value;
-      return this;
+    public BooleanType getReportedBooleanType() throws FHIRException { 
+      if (this.reported == null)
+        this.reported = new BooleanType();
+      if (!(this.reported instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.reported.getClass().getName()+" was encountered");
+      return (BooleanType) this.reported;
+    }
+
+    public boolean hasReportedBooleanType() { 
+      return this != null && this.reported instanceof BooleanType;
     }
 
     /**
-     * @return {@link #asserter} (Individual who is making the procedure statement.)
+     * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Reference getAsserter() { 
-      if (this.asserter == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Procedure.asserter");
-        else if (Configuration.doAutoCreate())
-          this.asserter = new Reference(); // cc
-      return this.asserter;
+    public Reference getReportedReference() throws FHIRException { 
+      if (this.reported == null)
+        this.reported = new Reference();
+      if (!(this.reported instanceof Reference))
+        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.reported.getClass().getName()+" was encountered");
+      return (Reference) this.reported;
     }
 
-    public boolean hasAsserter() { 
-      return this.asserter != null && !this.asserter.isEmpty();
+    public boolean hasReportedReference() { 
+      return this != null && this.reported instanceof Reference;
     }
 
-    /**
-     * @param value {@link #asserter} (Individual who is making the procedure statement.)
-     */
-    public Procedure setAsserter(Reference value) { 
-      this.asserter = value;
-      return this;
+    public boolean hasReported() { 
+      return this.reported != null && !this.reported.isEmpty();
     }
 
     /**
-     * @return {@link #asserter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who is making the procedure statement.)
+     * @param value {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Resource getAsserterTarget() { 
-      return this.asserterTarget;
-    }
-
-    /**
-     * @param value {@link #asserter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who is making the procedure statement.)
-     */
-    public Procedure setAsserterTarget(Resource value) { 
-      this.asserterTarget = value;
+    public Procedure setReported(Type value) { 
+      if (value != null && !(value instanceof BooleanType || value instanceof Reference))
+        throw new Error("Not the right type for Procedure.reported[x]: "+value.fhirType());
+      this.reported = value;
       return this;
     }
 
@@ -1813,26 +1742,6 @@ public class Procedure extends DomainResource {
      */
     public Procedure setLocation(Reference value) { 
       this.location = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.)
-     */
-    public Location getLocationTarget() { 
-      if (this.locationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Procedure.location");
-        else if (Configuration.doAutoCreate())
-          this.locationTarget = new Location(); // aa
-      return this.locationTarget;
-    }
-
-    /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.)
-     */
-    public Procedure setLocationTarget(Location value) { 
-      this.locationTarget = value;
       return this;
     }
 
@@ -1940,16 +1849,6 @@ public class Procedure extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**
@@ -2083,16 +1982,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReportTarget() { 
-      if (this.reportTarget == null)
-        this.reportTarget = new ArrayList<Resource>();
-      return this.reportTarget;
-    }
-
-    /**
      * @return {@link #complication} (Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.)
      */
     public List<CodeableConcept> getComplication() { 
@@ -2196,28 +2085,6 @@ public class Procedure extends DomainResource {
         addComplicationDetail();
       }
       return getComplicationDetail().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Condition> getComplicationDetailTarget() { 
-      if (this.complicationDetailTarget == null)
-        this.complicationDetailTarget = new ArrayList<Condition>();
-      return this.complicationDetailTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Condition addComplicationDetailTarget() { 
-      Condition r = new Condition();
-      if (this.complicationDetailTarget == null)
-        this.complicationDetailTarget = new ArrayList<Condition>();
-      this.complicationDetailTarget.add(r);
-      return r;
     }
 
     /**
@@ -2433,16 +2300,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getUsedReferenceTarget() { 
-      if (this.usedReferenceTarget == null)
-        this.usedReferenceTarget = new ArrayList<Resource>();
-      return this.usedReferenceTarget;
-    }
-
-    /**
      * @return {@link #usedCode} (Identifies coded items that were used as part of the procedure.)
      */
     public List<CodeableConcept> getUsedCode() { 
@@ -2504,13 +2361,14 @@ public class Procedure extends DomainResource {
         children.add(new Property("partOf", "Reference(Procedure|Observation|MedicationAdministration)", "A larger event of which this particular procedure is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "A code specifying the state of the procedure. Generally, this will be the in-progress or completed state.", 0, 1, status));
         children.add(new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the procedure.", 0, 1, statusReason));
-        children.add(new Property("category", "CodeableConcept", "A code that classifies the procedure for searching, sorting and display purposes (e.g. \"Surgical Procedure\").", 0, 1, category));
+        children.add(new Property("category", "CodeableConcept", "A code that classifies the procedure for searching, sorting and display purposes (e.g. \"Surgical Procedure\").", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "The specific procedure that is performed. Use text if the exact nature of the procedure cannot be coded (e.g. \"Laparoscopic Appendectomy\").", 0, 1, code));
         children.add(new Property("subject", "Reference(Patient|Group)", "The person, animal or group on which the procedure was performed.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.", 0, 1, encounter));
-        children.add(new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed));
+        children.add(new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence));
+        children.add(new Property("recorded", "dateTime", "The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.", 0, 1, recorded));
         children.add(new Property("recorder", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole)", "Individual who recorded the record and takes responsibility for its content.", 0, 1, recorder));
-        children.add(new Property("asserter", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole)", "Individual who is making the procedure statement.", 0, 1, asserter));
+        children.add(new Property("reported[x]", "boolean|Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported));
         children.add(new Property("performer", "", "Limited to \"real\" people rather than equipment.", 0, java.lang.Integer.MAX_VALUE, performer));
         children.add(new Property("location", "Reference(Location)", "The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.", 0, 1, location));
         children.add(new Property("reasonCode", "CodeableConcept", "The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
@@ -2523,7 +2381,7 @@ public class Procedure extends DomainResource {
         children.add(new Property("followUp", "CodeableConcept", "If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.", 0, java.lang.Integer.MAX_VALUE, followUp));
         children.add(new Property("note", "Annotation", "Any other notes and comments about the procedure.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDevice));
-        children.add(new Property("usedReference", "Reference(Device|Medication|Substance)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedReference));
+        children.add(new Property("usedReference", "Reference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedReference));
         children.add(new Property("usedCode", "CodeableConcept", "Identifies coded items that were used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedCode));
       }
 
@@ -2537,19 +2395,24 @@ public class Procedure extends DomainResource {
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Procedure|Observation|MedicationAdministration)", "A larger event of which this particular procedure is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "A code specifying the state of the procedure. Generally, this will be the in-progress or completed state.", 0, 1, status);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the procedure.", 0, 1, statusReason);
-        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the procedure for searching, sorting and display purposes (e.g. \"Surgical Procedure\").", 0, 1, category);
+        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the procedure for searching, sorting and display purposes (e.g. \"Surgical Procedure\").", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The specific procedure that is performed. Use text if the exact nature of the procedure cannot be coded (e.g. \"Laparoscopic Appendectomy\").", 0, 1, code);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The person, animal or group on which the procedure was performed.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which this Procedure was created or performed or to which the creation of this record is tightly associated.", 0, 1, encounter);
-        case 1355984064: /*performed[x]*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
-        case 481140672: /*performed*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
-        case 1118270331: /*performedDateTime*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
-        case 1622094241: /*performedPeriod*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
-        case 1721834481: /*performedString*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
-        case 1355958559: /*performedAge*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
-        case 1716617565: /*performedRange*/  return new Property("performed[x]", "dateTime|Period|string|Age|Range", "Estimated or actual date, date-time, period, or age when the procedure was performed.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed);
+        case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case 1496896834: /*occurrenceString*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case -2022672018: /*occurrenceAge*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case 1847908844: /*occurrenceRange*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "dateTime|Period|string|Age|Range|Timing", "Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, occurrence);
+        case -799233872: /*recorded*/  return new Property("recorded", "dateTime", "The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.", 0, 1, recorded);
         case -799233858: /*recorder*/  return new Property("recorder", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole)", "Individual who recorded the record and takes responsibility for its content.", 0, 1, recorder);
-        case -373242253: /*asserter*/  return new Property("asserter", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole)", "Individual who is making the procedure statement.", 0, 1, asserter);
+        case -241505587: /*reported[x]*/  return new Property("reported[x]", "boolean|Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported);
+        case -427039533: /*reported*/  return new Property("reported[x]", "boolean|Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported);
+        case 1219992533: /*reportedBoolean*/  return new Property("reported[x]", "boolean|Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported);
+        case 1198143416: /*reportedReference*/  return new Property("reported[x]", "boolean|Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported);
         case 481140686: /*performer*/  return new Property("performer", "", "Limited to \"real\" people rather than equipment.", 0, java.lang.Integer.MAX_VALUE, performer);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.", 0, 1, location);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
@@ -2562,7 +2425,7 @@ public class Procedure extends DomainResource {
         case 301801004: /*followUp*/  return new Property("followUp", "CodeableConcept", "If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.", 0, java.lang.Integer.MAX_VALUE, followUp);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Any other notes and comments about the procedure.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1129235173: /*focalDevice*/  return new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDevice);
-        case -504932338: /*usedReference*/  return new Property("usedReference", "Reference(Device|Medication|Substance)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedReference);
+        case -504932338: /*usedReference*/  return new Property("usedReference", "Reference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedReference);
         case -279910582: /*usedCode*/  return new Property("usedCode", "CodeableConcept", "Identifies coded items that were used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedCode);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2579,13 +2442,14 @@ public class Procedure extends DomainResource {
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ProcedureStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
-        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
-        case 481140672: /*performed*/ return this.performed == null ? new Base[0] : new Base[] {this.performed}; // Type
+        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // Type
+        case -799233872: /*recorded*/ return this.recorded == null ? new Base[0] : new Base[] {this.recorded}; // DateTimeType
         case -799233858: /*recorder*/ return this.recorder == null ? new Base[0] : new Base[] {this.recorder}; // Reference
-        case -373242253: /*asserter*/ return this.asserter == null ? new Base[0] : new Base[] {this.asserter}; // Reference
+        case -427039533: /*reported*/ return this.reported == null ? new Base[0] : new Base[] {this.reported}; // Type
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // ProcedurePerformerComponent
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
@@ -2631,7 +2495,7 @@ public class Procedure extends DomainResource {
           this.statusReason = castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
           this.code = castToCodeableConcept(value); // CodeableConcept
@@ -2642,14 +2506,17 @@ public class Procedure extends DomainResource {
         case 1524132147: // encounter
           this.encounter = castToReference(value); // Reference
           return value;
-        case 481140672: // performed
-          this.performed = castToType(value); // Type
+        case 1687874001: // occurrence
+          this.occurrence = castToType(value); // Type
+          return value;
+        case -799233872: // recorded
+          this.recorded = castToDateTime(value); // DateTimeType
           return value;
         case -799233858: // recorder
           this.recorder = castToReference(value); // Reference
           return value;
-        case -373242253: // asserter
-          this.asserter = castToReference(value); // Reference
+        case -427039533: // reported
+          this.reported = castToType(value); // Type
           return value;
         case 481140686: // performer
           this.getPerformer().add((ProcedurePerformerComponent) value); // ProcedurePerformerComponent
@@ -2716,19 +2583,21 @@ public class Procedure extends DomainResource {
         } else if (name.equals("statusReason")) {
           this.statusReason = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.getCategory().add(castToCodeableConcept(value));
         } else if (name.equals("code")) {
           this.code = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
           this.subject = castToReference(value); // Reference
         } else if (name.equals("encounter")) {
           this.encounter = castToReference(value); // Reference
-        } else if (name.equals("performed[x]")) {
-          this.performed = castToType(value); // Type
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = castToType(value); // Type
+        } else if (name.equals("recorded")) {
+          this.recorded = castToDateTime(value); // DateTimeType
         } else if (name.equals("recorder")) {
           this.recorder = castToReference(value); // Reference
-        } else if (name.equals("asserter")) {
-          this.asserter = castToReference(value); // Reference
+        } else if (name.equals("reported[x]")) {
+          this.reported = castToType(value); // Type
         } else if (name.equals("performer")) {
           this.getPerformer().add((ProcedurePerformerComponent) value);
         } else if (name.equals("location")) {
@@ -2771,21 +2640,23 @@ public class Procedure extends DomainResource {
         case -332612366:  return addBasedOn(); 
         case -995410646:  return addPartOf(); 
         case -892481550:  return getStatusElement();
-        case 2051346646:  return getStatusReason(); 
-        case 50511102:  return getCategory(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case 1355984064:  return getPerformed(); 
-        case 481140672:  return getPerformed(); 
-        case -799233858:  return getRecorder(); 
-        case -373242253:  return getAsserter(); 
+        case 2051346646:  return getStatusReason();
+        case 50511102:  return addCategory(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
+        case -799233872:  return getRecordedElement();
+        case -799233858:  return getRecorder();
+        case -241505587:  return getReported();
+        case -427039533:  return getReported();
         case 481140686:  return addPerformer(); 
-        case 1901043637:  return getLocation(); 
+        case 1901043637:  return getLocation();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 1702620169:  return addBodySite(); 
-        case -1106507950:  return getOutcome(); 
+        case -1106507950:  return getOutcome();
         case -934521548:  return addReport(); 
         case -1644401602:  return addComplication(); 
         case -1685272017:  return addComplicationDetail(); 
@@ -2813,9 +2684,10 @@ public class Procedure extends DomainResource {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
-        case 481140672: /*performed*/ return new String[] {"dateTime", "Period", "string", "Age", "Range"};
+        case 1687874001: /*occurrence*/ return new String[] {"dateTime", "Period", "string", "Age", "Range", "Timing"};
+        case -799233872: /*recorded*/ return new String[] {"dateTime"};
         case -799233858: /*recorder*/ return new String[] {"Reference"};
-        case -373242253: /*asserter*/ return new String[] {"Reference"};
+        case -427039533: /*reported*/ return new String[] {"boolean", "Reference"};
         case 481140686: /*performer*/ return new String[] {};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
@@ -2860,8 +2732,7 @@ public class Procedure extends DomainResource {
           return this.statusReason;
         }
         else if (name.equals("category")) {
-          this.category = new CodeableConcept();
-          return this.category;
+          return addCategory();
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -2875,33 +2746,44 @@ public class Procedure extends DomainResource {
           this.encounter = new Reference();
           return this.encounter;
         }
-        else if (name.equals("performedDateTime")) {
-          this.performed = new DateTimeType();
-          return this.performed;
+        else if (name.equals("occurrenceDateTime")) {
+          this.occurrence = new DateTimeType();
+          return this.occurrence;
         }
-        else if (name.equals("performedPeriod")) {
-          this.performed = new Period();
-          return this.performed;
+        else if (name.equals("occurrencePeriod")) {
+          this.occurrence = new Period();
+          return this.occurrence;
         }
-        else if (name.equals("performedString")) {
-          this.performed = new StringType();
-          return this.performed;
+        else if (name.equals("occurrenceString")) {
+          this.occurrence = new StringType();
+          return this.occurrence;
         }
-        else if (name.equals("performedAge")) {
-          this.performed = new Age();
-          return this.performed;
+        else if (name.equals("occurrenceAge")) {
+          this.occurrence = new Age();
+          return this.occurrence;
         }
-        else if (name.equals("performedRange")) {
-          this.performed = new Range();
-          return this.performed;
+        else if (name.equals("occurrenceRange")) {
+          this.occurrence = new Range();
+          return this.occurrence;
+        }
+        else if (name.equals("occurrenceTiming")) {
+          this.occurrence = new Timing();
+          return this.occurrence;
+        }
+        else if (name.equals("recorded")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Procedure.recorded");
         }
         else if (name.equals("recorder")) {
           this.recorder = new Reference();
           return this.recorder;
         }
-        else if (name.equals("asserter")) {
-          this.asserter = new Reference();
-          return this.asserter;
+        else if (name.equals("reportedBoolean")) {
+          this.reported = new BooleanType();
+          return this.reported;
+        }
+        else if (name.equals("reportedReference")) {
+          this.reported = new Reference();
+          return this.reported;
         }
         else if (name.equals("performer")) {
           return addPerformer();
@@ -2959,6 +2841,11 @@ public class Procedure extends DomainResource {
       public Procedure copy() {
         Procedure dst = new Procedure();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Procedure dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2986,13 +2873,18 @@ public class Procedure extends DomainResource {
         };
         dst.status = status == null ? null : status.copy();
         dst.statusReason = statusReason == null ? null : statusReason.copy();
-        dst.category = category == null ? null : category.copy();
+        if (category != null) {
+          dst.category = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : category)
+            dst.category.add(i.copy());
+        };
         dst.code = code == null ? null : code.copy();
         dst.subject = subject == null ? null : subject.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
-        dst.performed = performed == null ? null : performed.copy();
+        dst.occurrence = occurrence == null ? null : occurrence.copy();
+        dst.recorded = recorded == null ? null : recorded.copy();
         dst.recorder = recorder == null ? null : recorder.copy();
-        dst.asserter = asserter == null ? null : asserter.copy();
+        dst.reported = reported == null ? null : reported.copy();
         if (performer != null) {
           dst.performer = new ArrayList<ProcedurePerformerComponent>();
           for (ProcedurePerformerComponent i : performer)
@@ -3055,7 +2947,6 @@ public class Procedure extends DomainResource {
           for (CodeableConcept i : usedCode)
             dst.usedCode.add(i.copy());
         };
-        return dst;
       }
 
       protected Procedure typedCopy() {
@@ -3073,9 +2964,9 @@ public class Procedure extends DomainResource {
            && compareDeep(instantiatesUri, o.instantiatesUri, true) && compareDeep(basedOn, o.basedOn, true)
            && compareDeep(partOf, o.partOf, true) && compareDeep(status, o.status, true) && compareDeep(statusReason, o.statusReason, true)
            && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(encounter, o.encounter, true) && compareDeep(performed, o.performed, true) && compareDeep(recorder, o.recorder, true)
-           && compareDeep(asserter, o.asserter, true) && compareDeep(performer, o.performer, true) && compareDeep(location, o.location, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
+           && compareDeep(encounter, o.encounter, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(recorded, o.recorded, true)
+           && compareDeep(recorder, o.recorder, true) && compareDeep(reported, o.reported, true) && compareDeep(performer, o.performer, true)
+           && compareDeep(location, o.location, true) && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
            && compareDeep(bodySite, o.bodySite, true) && compareDeep(outcome, o.outcome, true) && compareDeep(report, o.report, true)
            && compareDeep(complication, o.complication, true) && compareDeep(complicationDetail, o.complicationDetail, true)
            && compareDeep(followUp, o.followUp, true) && compareDeep(note, o.note, true) && compareDeep(focalDevice, o.focalDevice, true)
@@ -3091,15 +2982,15 @@ public class Procedure extends DomainResource {
           return false;
         Procedure o = (Procedure) other_;
         return compareValues(instantiatesUri, o.instantiatesUri, true) && compareValues(status, o.status, true)
-          ;
+           && compareValues(recorded, o.recorded, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, partOf, status, statusReason, category, code, subject
-          , encounter, performed, recorder, asserter, performer, location, reasonCode, reasonReference
-          , bodySite, outcome, report, complication, complicationDetail, followUp, note
-          , focalDevice, usedReference, usedCode);
+          , encounter, occurrence, recorded, recorder, reported, performer, location, reasonCode
+          , reasonReference, bodySite, outcome, report, complication, complicationDetail, followUp
+          , note, focalDevice, usedReference, usedCode);
       }
 
   @Override
@@ -3110,19 +3001,19 @@ public class Procedure extends DomainResource {
  /**
    * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>When the procedure was performed</b><br>
+   * Description: <b>When the procedure occurred or is occurring</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Procedure.performed[x]</b><br>
+   * Path: <b>Procedure.occurrence[x]</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="Procedure.performed", description="When the procedure was performed", type="date" )
+  @SearchParamDefinition(name="date", path="Procedure.occurrence", description="When the procedure occurred or is occurring", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>When the procedure was performed</b><br>
+   * Description: <b>When the procedure occurred or is occurring</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Procedure.performed[x]</b><br>
+   * Path: <b>Procedure.occurrence[x]</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -3170,17 +3061,17 @@ public class Procedure extends DomainResource {
  /**
    * Search parameter: <b>performer</b>
    * <p>
-   * Description: <b>The reference to the practitioner</b><br>
+   * Description: <b>Who performed the procedure</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Procedure.performer.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="performer", path="Procedure.performer.actor", description="The reference to the practitioner", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="performer", path="Procedure.performer.actor", description="Who performed the procedure", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PERFORMER = "performer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>performer</b>
    * <p>
-   * Description: <b>The reference to the practitioner</b><br>
+   * Description: <b>Who performed the procedure</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Procedure.performer.actor</b><br>
    * </p>
@@ -3274,17 +3165,17 @@ public class Procedure extends DomainResource {
  /**
    * Search parameter: <b>encounter</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
+   * Description: <b>The Encounter during which this Procedure was created</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Procedure.encounter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="Procedure.encounter", description="Encounter created as part of", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
+  @SearchParamDefinition(name="encounter", path="Procedure.encounter", description="The Encounter during which this Procedure was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
   public static final String SP_ENCOUNTER = "encounter";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
+   * Description: <b>The Encounter during which this Procedure was created</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Procedure.encounter</b><br>
    * </p>
@@ -3464,17 +3355,17 @@ public class Procedure extends DomainResource {
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>preparation | in-progress | not-done | suspended | aborted | completed | entered-in-error | unknown</b><br>
+   * Description: <b>preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Procedure.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Procedure.status", description="preparation | in-progress | not-done | suspended | aborted | completed | entered-in-error | unknown", type="token" )
+  @SearchParamDefinition(name="status", path="Procedure.status", description="preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>preparation | in-progress | not-done | suspended | aborted | completed | entered-in-error | unknown</b><br>
+   * Description: <b>preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Procedure.status</b><br>
    * </p>

@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,16 +53,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Legally enforceable, formally recorded unilateral or bilateral directive i.e., a policy or agreement.
  */
@@ -697,11 +698,6 @@ public class Contract extends DomainResource {
         protected Reference publisher;
 
         /**
-         * The actual object that is the target of the reference (The  individual or organization that published the Contract precursor content.)
-         */
-        protected Resource publisherTarget;
-
-        /**
          * The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
          */
         @Child(name = "publicationDate", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
@@ -709,10 +705,10 @@ public class Contract extends DomainResource {
         protected DateTimeType publicationDate;
 
         /**
-         * draft | active | retired | unknown.
+         * amended | appended | cancelled | disputed | entered-in-error | executable +.
          */
         @Child(name = "publicationStatus", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="draft | active | retired | unknown." )
+        @Description(shortDefinition="amended | appended | cancelled | disputed | entered-in-error | executable +", formalDefinition="amended | appended | cancelled | disputed | entered-in-error | executable +." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-publicationstatus")
         protected Enumeration<ContractPublicationStatus> publicationStatus;
 
@@ -723,7 +719,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Publication Ownership", formalDefinition="A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content." )
         protected MarkdownType copyright;
 
-        private static final long serialVersionUID = -699592864L;
+        private static final long serialVersionUID = -1586317331L;
 
     /**
      * Constructor
@@ -814,21 +810,6 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #publisher} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The  individual or organization that published the Contract precursor content.)
-         */
-        public Resource getPublisherTarget() { 
-          return this.publisherTarget;
-        }
-
-        /**
-         * @param value {@link #publisher} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The  individual or organization that published the Contract precursor content.)
-         */
-        public ContentDefinitionComponent setPublisherTarget(Resource value) { 
-          this.publisherTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #publicationDate} (The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
          */
         public DateTimeType getPublicationDateElement() { 
@@ -878,7 +859,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #publicationStatus} (draft | active | retired | unknown.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
+         * @return {@link #publicationStatus} (amended | appended | cancelled | disputed | entered-in-error | executable +.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
          */
         public Enumeration<ContractPublicationStatus> getPublicationStatusElement() { 
           if (this.publicationStatus == null)
@@ -898,7 +879,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @param value {@link #publicationStatus} (draft | active | retired | unknown.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
+         * @param value {@link #publicationStatus} (amended | appended | cancelled | disputed | entered-in-error | executable +.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
          */
         public ContentDefinitionComponent setPublicationStatusElement(Enumeration<ContractPublicationStatus> value) { 
           this.publicationStatus = value;
@@ -906,14 +887,14 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return draft | active | retired | unknown.
+         * @return amended | appended | cancelled | disputed | entered-in-error | executable +.
          */
         public ContractPublicationStatus getPublicationStatus() { 
           return this.publicationStatus == null ? null : this.publicationStatus.getValue();
         }
 
         /**
-         * @param value draft | active | retired | unknown.
+         * @param value amended | appended | cancelled | disputed | entered-in-error | executable +.
          */
         public ContentDefinitionComponent setPublicationStatus(ContractPublicationStatus value) { 
             if (this.publicationStatus == null)
@@ -977,7 +958,7 @@ public class Contract extends DomainResource {
           children.add(new Property("subType", "CodeableConcept", "Detailed Precusory content type.", 0, 1, subType));
           children.add(new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "The  individual or organization that published the Contract precursor content.", 0, 1, publisher));
           children.add(new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate));
-          children.add(new Property("publicationStatus", "code", "draft | active | retired | unknown.", 0, 1, publicationStatus));
+          children.add(new Property("publicationStatus", "code", "amended | appended | cancelled | disputed | entered-in-error | executable +.", 0, 1, publicationStatus));
           children.add(new Property("copyright", "markdown", "A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.", 0, 1, copyright));
         }
 
@@ -988,7 +969,7 @@ public class Contract extends DomainResource {
           case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "Detailed Precusory content type.", 0, 1, subType);
           case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "The  individual or organization that published the Contract precursor content.", 0, 1, publisher);
           case 1470566394: /*publicationDate*/  return new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate);
-          case 616500542: /*publicationStatus*/  return new Property("publicationStatus", "code", "draft | active | retired | unknown.", 0, 1, publicationStatus);
+          case 616500542: /*publicationStatus*/  return new Property("publicationStatus", "code", "amended | appended | cancelled | disputed | entered-in-error | executable +.", 0, 1, publicationStatus);
           case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.", 0, 1, copyright);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1059,9 +1040,9 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1868521062:  return getSubType(); 
-        case 1447404028:  return getPublisher(); 
+        case 3575610:  return getType();
+        case -1868521062:  return getSubType();
+        case 1447404028:  return getPublisher();
         case 1470566394:  return getPublicationDateElement();
         case 616500542:  return getPublicationStatusElement();
         case 1522889671:  return getCopyrightElement();
@@ -1114,13 +1095,17 @@ public class Contract extends DomainResource {
       public ContentDefinitionComponent copy() {
         ContentDefinitionComponent dst = new ContentDefinitionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContentDefinitionComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.subType = subType == null ? null : subType.copy();
         dst.publisher = publisher == null ? null : publisher.copy();
         dst.publicationDate = publicationDate == null ? null : publicationDate.copy();
         dst.publicationStatus = publicationStatus == null ? null : publicationStatus.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
-        return dst;
       }
 
       @Override
@@ -1881,16 +1866,16 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case -1179159893:  return getIssuedElement();
-        case -793235316:  return getApplies(); 
-        case -957295375:  return getTopic(); 
-        case 110546223:  return getTopic(); 
-        case 3575610:  return getType(); 
-        case -1868521062:  return getSubType(); 
+        case -793235316:  return getApplies();
+        case -957295375:  return getTopic();
+        case 110546223:  return getTopic();
+        case 3575610:  return getType();
+        case -1868521062:  return getSubType();
         case 3556653:  return getTextElement();
         case -722296940:  return addSecurityLabel(); 
-        case 105650780:  return getOffer(); 
+        case 105650780:  return getOffer();
         case 93121264:  return addAsset(); 
         case -1422950858:  return addAction(); 
         case 98629247:  return addGroup(); 
@@ -1974,6 +1959,11 @@ public class Contract extends DomainResource {
       public TermComponent copy() {
         TermComponent dst = new TermComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TermComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.issued = issued == null ? null : issued.copy();
         dst.applies = applies == null ? null : applies.copy();
@@ -2002,7 +1992,6 @@ public class Contract extends DomainResource {
           for (TermComponent i : group)
             dst.group.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2353,7 +2342,7 @@ public class Contract extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1034364087:  return addNumberElement();
-        case 382350310:  return getClassification(); 
+        case 382350310:  return getClassification();
         case 50511102:  return addCategory(); 
         case 951543133:  return addControl(); 
         default: return super.makeProperty(hash, name);
@@ -2395,6 +2384,11 @@ public class Contract extends DomainResource {
       public SecurityLabelComponent copy() {
         SecurityLabelComponent dst = new SecurityLabelComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SecurityLabelComponent dst) {
+        super.copyValues(dst);
         if (number != null) {
           dst.number = new ArrayList<UnsignedIntType>();
           for (UnsignedIntType i : number)
@@ -2411,7 +2405,6 @@ public class Contract extends DomainResource {
           for (Coding i : control)
             dst.control.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2471,11 +2464,6 @@ public class Contract extends DomainResource {
         protected Reference topic;
 
         /**
-         * The actual object that is the target of the reference (The owner of an asset has the residual control rights over the asset: the right to decide all usages of the asset in any way not inconsistent with a prior contract, custom, or law (Hart, 1995, p. 30).)
-         */
-        protected Resource topicTarget;
-
-        /**
          * Type of Contract Provision such as specific requirements, purposes for actions, obligations, prohibitions, e.g. life time maximum benefit.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
@@ -2527,7 +2515,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Offer restriction numbers", formalDefinition="Security labels that protects the offer." )
         protected List<UnsignedIntType> securityLabelNumber;
 
-        private static final long serialVersionUID = -395674449L;
+        private static final long serialVersionUID = -852140711L;
 
     /**
      * Constructor
@@ -2663,21 +2651,6 @@ public class Contract extends DomainResource {
          */
         public ContractOfferComponent setTopic(Reference value) { 
           this.topic = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #topic} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The owner of an asset has the residual control rights over the asset: the right to decide all usages of the asset in any way not inconsistent with a prior contract, custom, or law (Hart, 1995, p. 30).)
-         */
-        public Resource getTopicTarget() { 
-          return this.topicTarget;
-        }
-
-        /**
-         * @param value {@link #topic} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The owner of an asset has the residual control rights over the asset: the right to decide all usages of the asset in any way not inconsistent with a prior contract, custom, or law (Hart, 1995, p. 30).)
-         */
-        public ContractOfferComponent setTopicTarget(Resource value) { 
-          this.topicTarget = value;
           return this;
         }
 
@@ -3126,9 +3099,9 @@ public class Contract extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case 106437350:  return addParty(); 
-        case 110546223:  return getTopic(); 
-        case 3575610:  return getType(); 
-        case 565719004:  return getDecision(); 
+        case 110546223:  return getTopic();
+        case 3575610:  return getType();
+        case 565719004:  return getDecision();
         case 675909535:  return addDecisionMode(); 
         case -1412808770:  return addAnswer(); 
         case 3556653:  return getTextElement();
@@ -3199,6 +3172,11 @@ public class Contract extends DomainResource {
       public ContractOfferComponent copy() {
         ContractOfferComponent dst = new ContractOfferComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContractOfferComponent dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3233,7 +3211,6 @@ public class Contract extends DomainResource {
           for (UnsignedIntType i : securityLabelNumber)
             dst.securityLabelNumber.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3280,11 +3257,6 @@ public class Contract extends DomainResource {
         @Child(name = "reference", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Device.class, Group.class, Organization.class}, order=1, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Referenced entity", formalDefinition="Participant in the offer." )
         protected List<Reference> reference;
-        /**
-         * The actual objects that are the target of the reference (Participant in the offer.)
-         */
-        protected List<Resource> referenceTarget;
-
 
         /**
          * How the party participates in the offer.
@@ -3294,7 +3266,7 @@ public class Contract extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-party-role")
         protected CodeableConcept role;
 
-        private static final long serialVersionUID = 128949255L;
+        private static final long serialVersionUID = -1599592477L;
 
     /**
      * Constructor
@@ -3362,16 +3334,6 @@ public class Contract extends DomainResource {
             addReference();
           }
           return getReference().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getReferenceTarget() { 
-          if (this.referenceTarget == null)
-            this.referenceTarget = new ArrayList<Resource>();
-          return this.referenceTarget;
         }
 
         /**
@@ -3453,7 +3415,7 @@ public class Contract extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -925155509:  return addReference(); 
-        case 3506294:  return getRole(); 
+        case 3506294:  return getRole();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3485,13 +3447,17 @@ public class Contract extends DomainResource {
       public ContractPartyComponent copy() {
         ContractPartyComponent dst = new ContractPartyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContractPartyComponent dst) {
+        super.copyValues(dst);
         if (reference != null) {
           dst.reference = new ArrayList<Reference>();
           for (Reference i : reference)
             dst.reference.add(i.copy());
         };
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -3811,8 +3777,8 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3884,8 +3850,12 @@ public class Contract extends DomainResource {
       public AnswerComponent copy() {
         AnswerComponent dst = new AnswerComponent();
         copyValues(dst);
-        dst.value = value == null ? null : value.copy();
         return dst;
+      }
+
+      public void copyValues(AnswerComponent dst) {
+        super.copyValues(dst);
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -3943,11 +3913,6 @@ public class Contract extends DomainResource {
         @Child(name = "typeReference", type = {Reference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Associated entities", formalDefinition="Associated entities." )
         protected List<Reference> typeReference;
-        /**
-         * The actual objects that are the target of the reference (Associated entities.)
-         */
-        protected List<Resource> typeReferenceTarget;
-
 
         /**
          * May be a subtype or part of an offered asset.
@@ -4036,7 +4001,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Contract Valued Item List", formalDefinition="Contract Valued Item List." )
         protected List<ValuedItemComponent> valuedItem;
 
-        private static final long serialVersionUID = -1080398792L;
+        private static final long serialVersionUID = -581986730L;
 
     /**
      * Constructor
@@ -4173,16 +4138,6 @@ public class Contract extends DomainResource {
             addTypeReference();
           }
           return getTypeReference().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getTypeReferenceTarget() { 
-          if (this.typeReferenceTarget == null)
-            this.typeReferenceTarget = new ArrayList<Resource>();
-          return this.typeReferenceTarget;
         }
 
         /**
@@ -4958,11 +4913,11 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 109264468:  return getScope(); 
+        case 109264468:  return getScope();
         case 3575610:  return addType(); 
         case 2074825009:  return addTypeReference(); 
         case -1867567750:  return addSubtype(); 
-        case -261851592:  return getRelationship(); 
+        case -261851592:  return getRelationship();
         case 951530927:  return addContext(); 
         case -861311717:  return getConditionElement();
         case 384348315:  return addPeriodType(); 
@@ -5057,6 +5012,11 @@ public class Contract extends DomainResource {
       public ContractAssetComponent copy() {
         ContractAssetComponent dst = new ContractAssetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContractAssetComponent dst) {
+        super.copyValues(dst);
         dst.scope = scope == null ? null : scope.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -5116,7 +5076,6 @@ public class Contract extends DomainResource {
           for (ValuedItemComponent i : valuedItem)
             dst.valuedItem.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -5168,11 +5127,6 @@ public class Contract extends DomainResource {
         protected Reference reference;
 
         /**
-         * The actual object that is the target of the reference (Asset context reference may include the creator, custodian, or owning Person or Organization (e.g., bank, repository),  location held, e.g., building,  jurisdiction.)
-         */
-        protected Resource referenceTarget;
-
-        /**
          * Coded representation of the context generally or of the Referenced entity, such as the asset holder type or location.
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -5187,7 +5141,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Context description", formalDefinition="Context description." )
         protected StringType text;
 
-        private static final long serialVersionUID = -634115628L;
+        private static final long serialVersionUID = -388598648L;
 
     /**
      * Constructor
@@ -5217,21 +5171,6 @@ public class Contract extends DomainResource {
          */
         public AssetContextComponent setReference(Reference value) { 
           this.reference = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #reference} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Asset context reference may include the creator, custodian, or owning Person or Organization (e.g., bank, repository),  location held, e.g., building,  jurisdiction.)
-         */
-        public Resource getReferenceTarget() { 
-          return this.referenceTarget;
-        }
-
-        /**
-         * @param value {@link #reference} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Asset context reference may include the creator, custodian, or owning Person or Organization (e.g., bank, repository),  location held, e.g., building,  jurisdiction.)
-         */
-        public AssetContextComponent setReferenceTarget(Resource value) { 
-          this.referenceTarget = value;
           return this;
         }
 
@@ -5399,7 +5338,7 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -925155509:  return getReference(); 
+        case -925155509:  return getReference();
         case 3059181:  return addCode(); 
         case 3556653:  return getTextElement();
         default: return super.makeProperty(hash, name);
@@ -5437,6 +5376,11 @@ public class Contract extends DomainResource {
       public AssetContextComponent copy() {
         AssetContextComponent dst = new AssetContextComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AssetContextComponent dst) {
+        super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
@@ -5444,7 +5388,6 @@ public class Contract extends DomainResource {
             dst.code.add(i.copy());
         };
         dst.text = text == null ? null : text.copy();
-        return dst;
       }
 
       @Override
@@ -5559,21 +5502,11 @@ public class Contract extends DomainResource {
         protected Reference responsible;
 
         /**
-         * The actual object that is the target of the reference (Who will make payment.)
-         */
-        protected Resource responsibleTarget;
-
-        /**
          * Who will receive payment.
          */
         @Child(name = "recipient", type = {Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who will receive payment", formalDefinition="Who will receive payment." )
         protected Reference recipient;
-
-        /**
-         * The actual object that is the target of the reference (Who will receive payment.)
-         */
-        protected Resource recipientTarget;
 
         /**
          * Id  of the clause or question text related to the context of this valuedItem in the referenced form or QuestionnaireResponse.
@@ -5589,7 +5522,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Security Labels that define affected terms", formalDefinition="A set of security labels that define which terms are controlled by this condition." )
         protected List<UnsignedIntType> securityLabelNumber;
 
-        private static final long serialVersionUID = 1894951601L;
+        private static final long serialVersionUID = -1559329888L;
 
     /**
      * Constructor
@@ -6051,21 +5984,6 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #responsible} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who will make payment.)
-         */
-        public Resource getResponsibleTarget() { 
-          return this.responsibleTarget;
-        }
-
-        /**
-         * @param value {@link #responsible} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who will make payment.)
-         */
-        public ValuedItemComponent setResponsibleTarget(Resource value) { 
-          this.responsibleTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #recipient} (Who will receive payment.)
          */
         public Reference getRecipient() { 
@@ -6086,21 +6004,6 @@ public class Contract extends DomainResource {
          */
         public ValuedItemComponent setRecipient(Reference value) { 
           this.recipient = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #recipient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Who will receive payment.)
-         */
-        public Resource getRecipientTarget() { 
-          return this.recipientTarget;
-        }
-
-        /**
-         * @param value {@link #recipient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Who will receive payment.)
-         */
-        public ValuedItemComponent setRecipientTarget(Resource value) { 
-          this.recipientTarget = value;
           return this;
         }
 
@@ -6379,19 +6282,19 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -740568643:  return getEntity(); 
-        case -1298275357:  return getEntity(); 
-        case -1618432855:  return getIdentifier(); 
+        case -740568643:  return getEntity();
+        case -1298275357:  return getEntity();
+        case -1618432855:  return getIdentifier();
         case -929905388:  return getEffectiveTimeElement();
-        case -1285004149:  return getQuantity(); 
-        case -486196699:  return getUnitPrice(); 
+        case -1285004149:  return getQuantity();
+        case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
         case -982754077:  return getPointsElement();
-        case 108957:  return getNet(); 
+        case 108957:  return getNet();
         case -786681338:  return getPaymentElement();
         case -1540873516:  return getPaymentDateElement();
-        case 1847674614:  return getResponsible(); 
-        case 820081177:  return getRecipient(); 
+        case 1847674614:  return getResponsible();
+        case 820081177:  return getRecipient();
         case -1102667083:  return addLinkIdElement();
         case -149460995:  return addSecurityLabelNumberElement();
         default: return super.makeProperty(hash, name);
@@ -6483,6 +6386,11 @@ public class Contract extends DomainResource {
       public ValuedItemComponent copy() {
         ValuedItemComponent dst = new ValuedItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValuedItemComponent dst) {
+        super.copyValues(dst);
         dst.entity = entity == null ? null : entity.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.effectiveTime = effectiveTime == null ? null : effectiveTime.copy();
@@ -6505,7 +6413,6 @@ public class Contract extends DomainResource {
           for (UnsignedIntType i : securityLabelNumber)
             dst.securityLabelNumber.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6604,11 +6511,6 @@ public class Contract extends DomainResource {
         protected Reference context;
 
         /**
-         * The actual object that is the target of the reference (Encounter or Episode with primary association to specified term activity.)
-         */
-        protected Resource contextTarget;
-
-        /**
          * Id [identifier??] of the clause or question text related to the requester of this action in the referenced form or QuestionnaireResponse.
          */
         @Child(name = "contextLinkId", type = {StringType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -6628,11 +6530,6 @@ public class Contract extends DomainResource {
         @Child(name = "requester", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Device.class, Group.class, Organization.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Who asked for action", formalDefinition="Who or what initiated the action and has responsibility for its activation." )
         protected List<Reference> requester;
-        /**
-         * The actual objects that are the target of the reference (Who or what initiated the action and has responsibility for its activation.)
-         */
-        protected List<Resource> requesterTarget;
-
 
         /**
          * Id [identifier??] of the clause or question text related to the requester of this action in the referenced form or QuestionnaireResponse.
@@ -6665,11 +6562,6 @@ public class Contract extends DomainResource {
         protected Reference performer;
 
         /**
-         * The actual object that is the target of the reference (Indicates who or what is being asked to perform (or not perform) the ction.)
-         */
-        protected Resource performerTarget;
-
-        /**
          * Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse.
          */
         @Child(name = "performerLinkId", type = {StringType.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -6690,11 +6582,6 @@ public class Contract extends DomainResource {
         @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class, Questionnaire.class, QuestionnaireResponse.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Why is action (not) needed?", formalDefinition="Indicates another resource whose existence justifies permitting or not permitting this action." )
         protected List<Reference> reasonReference;
-        /**
-         * The actual objects that are the target of the reference (Indicates another resource whose existence justifies permitting or not permitting this action.)
-         */
-        protected List<Resource> reasonReferenceTarget;
-
 
         /**
          * Describes why the action is to be performed or not performed in textual form.
@@ -6724,7 +6611,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Action restriction numbers", formalDefinition="Security labels that protects the action." )
         protected List<UnsignedIntType> securityLabelNumber;
 
-        private static final long serialVersionUID = -178728180L;
+        private static final long serialVersionUID = 2009887830L;
 
     /**
      * Constructor
@@ -6999,21 +6886,6 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #context} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Encounter or Episode with primary association to specified term activity.)
-         */
-        public Resource getContextTarget() { 
-          return this.contextTarget;
-        }
-
-        /**
-         * @param value {@link #context} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Encounter or Episode with primary association to specified term activity.)
-         */
-        public ActionComponent setContextTarget(Resource value) { 
-          this.contextTarget = value;
-          return this;
-        }
-
-        /**
          * @return {@link #contextLinkId} (Id [identifier??] of the clause or question text related to the requester of this action in the referenced form or QuestionnaireResponse.)
          */
         public List<StringType> getContextLinkId() { 
@@ -7194,16 +7066,6 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getRequesterTarget() { 
-          if (this.requesterTarget == null)
-            this.requesterTarget = new ArrayList<Resource>();
-          return this.requesterTarget;
-        }
-
-        /**
          * @return {@link #requesterLinkId} (Id [identifier??] of the clause or question text related to the requester of this action in the referenced form or QuestionnaireResponse.)
          */
         public List<StringType> getRequesterLinkId() { 
@@ -7362,21 +7224,6 @@ public class Contract extends DomainResource {
          */
         public ActionComponent setPerformer(Reference value) { 
           this.performer = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #performer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates who or what is being asked to perform (or not perform) the ction.)
-         */
-        public Resource getPerformerTarget() { 
-          return this.performerTarget;
-        }
-
-        /**
-         * @param value {@link #performer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates who or what is being asked to perform (or not perform) the ction.)
-         */
-        public ActionComponent setPerformerTarget(Resource value) { 
-          this.performerTarget = value;
           return this;
         }
 
@@ -7545,16 +7392,6 @@ public class Contract extends DomainResource {
             addReasonReference();
           }
           return getReasonReference().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getReasonReferenceTarget() { 
-          if (this.reasonReferenceTarget == null)
-            this.reasonReferenceTarget = new ArrayList<Resource>();
-          return this.reasonReferenceTarget;
         }
 
         /**
@@ -8004,20 +7841,20 @@ public class Contract extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1788508167:  return getDoNotPerformElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1867885268:  return addSubject(); 
-        case -1183762788:  return getIntent(); 
+        case -1183762788:  return getIntent();
         case -1102667083:  return addLinkIdElement();
-        case -892481550:  return getStatus(); 
-        case 951530927:  return getContext(); 
+        case -892481550:  return getStatus();
+        case 951530927:  return getContext();
         case -288783036:  return addContextLinkIdElement();
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
         case 693933948:  return addRequester(); 
         case -1468032687:  return addRequesterLinkIdElement();
         case -901444568:  return addPerformerType(); 
-        case -901513884:  return getPerformerRole(); 
-        case 481140686:  return getPerformer(); 
+        case -901513884:  return getPerformerRole();
+        case 481140686:  return getPerformer();
         case 1051302947:  return addPerformerLinkIdElement();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
@@ -8146,6 +7983,11 @@ public class Contract extends DomainResource {
       public ActionComponent copy() {
         ActionComponent dst = new ActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActionComponent dst) {
+        super.copyValues(dst);
         dst.doNotPerform = doNotPerform == null ? null : doNotPerform.copy();
         dst.type = type == null ? null : type.copy();
         if (subject != null) {
@@ -8219,7 +8061,6 @@ public class Contract extends DomainResource {
           for (UnsignedIntType i : securityLabelNumber)
             dst.securityLabelNumber.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -8275,11 +8116,6 @@ public class Contract extends DomainResource {
         @Child(name = "reference", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Device.class, Group.class, Organization.class}, order=1, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Entity of the action", formalDefinition="The entity the action is performed or not performed on or for." )
         protected List<Reference> reference;
-        /**
-         * The actual objects that are the target of the reference (The entity the action is performed or not performed on or for.)
-         */
-        protected List<Resource> referenceTarget;
-
 
         /**
          * Role type of agent assigned roles in this Contract.
@@ -8289,7 +8125,7 @@ public class Contract extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-actorrole")
         protected CodeableConcept role;
 
-        private static final long serialVersionUID = 128949255L;
+        private static final long serialVersionUID = -1599592477L;
 
     /**
      * Constructor
@@ -8349,16 +8185,6 @@ public class Contract extends DomainResource {
             addReference();
           }
           return getReference().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getReferenceTarget() { 
-          if (this.referenceTarget == null)
-            this.referenceTarget = new ArrayList<Resource>();
-          return this.referenceTarget;
         }
 
         /**
@@ -8440,7 +8266,7 @@ public class Contract extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -925155509:  return addReference(); 
-        case 3506294:  return getRole(); 
+        case 3506294:  return getRole();
         default: return super.makeProperty(hash, name);
         }
 
@@ -8472,13 +8298,17 @@ public class Contract extends DomainResource {
       public ActionSubjectComponent copy() {
         ActionSubjectComponent dst = new ActionSubjectComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActionSubjectComponent dst) {
+        super.copyValues(dst);
         if (reference != null) {
           dst.reference = new ArrayList<Reference>();
           for (Reference i : reference)
             dst.reference.add(i.copy());
         };
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -8530,18 +8360,13 @@ public class Contract extends DomainResource {
         protected Reference party;
 
         /**
-         * The actual object that is the target of the reference (Party which is a signator to this Contract.)
-         */
-        protected Resource partyTarget;
-
-        /**
          * Legally binding Contract DSIG signature contents in Base64.
          */
         @Child(name = "signature", type = {Signature.class}, order=3, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Contract Documentation Signature", formalDefinition="Legally binding Contract DSIG signature contents in Base64." )
         protected List<Signature> signature;
 
-        private static final long serialVersionUID = 1948139228L;
+        private static final long serialVersionUID = 1384929729L;
 
     /**
      * Constructor
@@ -8604,21 +8429,6 @@ public class Contract extends DomainResource {
          */
         public SignatoryComponent setParty(Reference value) { 
           this.party = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #party} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Party which is a signator to this Contract.)
-         */
-        public Resource getPartyTarget() { 
-          return this.partyTarget;
-        }
-
-        /**
-         * @param value {@link #party} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Party which is a signator to this Contract.)
-         */
-        public SignatoryComponent setPartyTarget(Resource value) { 
-          this.partyTarget = value;
           return this;
         }
 
@@ -8737,8 +8547,8 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case 106437350:  return getParty(); 
+        case 3575610:  return getType();
+        case 106437350:  return getParty();
         case 1073584312:  return addSignature(); 
         default: return super.makeProperty(hash, name);
         }
@@ -8776,6 +8586,11 @@ public class Contract extends DomainResource {
       public SignatoryComponent copy() {
         SignatoryComponent dst = new SignatoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SignatoryComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.party = party == null ? null : party.copy();
         if (signature != null) {
@@ -8783,7 +8598,6 @@ public class Contract extends DomainResource {
           for (Signature i : signature)
             dst.signature.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -8944,8 +8758,8 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 264548711:  return getContent(); 
-        case 951530617:  return getContent(); 
+        case 264548711:  return getContent();
+        case 951530617:  return getContent();
         default: return super.makeProperty(hash, name);
         }
 
@@ -8977,8 +8791,12 @@ public class Contract extends DomainResource {
       public FriendlyLanguageComponent copy() {
         FriendlyLanguageComponent dst = new FriendlyLanguageComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(FriendlyLanguageComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -9138,8 +8956,8 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 264548711:  return getContent(); 
-        case 951530617:  return getContent(); 
+        case 264548711:  return getContent();
+        case 951530617:  return getContent();
         default: return super.makeProperty(hash, name);
         }
 
@@ -9171,8 +8989,12 @@ public class Contract extends DomainResource {
       public LegalLanguageComponent copy() {
         LegalLanguageComponent dst = new LegalLanguageComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(LegalLanguageComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -9332,8 +9154,8 @@ public class Contract extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 264548711:  return getContent(); 
-        case 951530617:  return getContent(); 
+        case 264548711:  return getContent();
+        case 951530617:  return getContent();
         default: return super.makeProperty(hash, name);
         }
 
@@ -9365,8 +9187,12 @@ public class Contract extends DomainResource {
       public ComputableLanguageComponent copy() {
         ComputableLanguageComponent dst = new ComputableLanguageComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(ComputableLanguageComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -9425,7 +9251,7 @@ public class Contract extends DomainResource {
      * The status of the resource instance.
      */
     @Child(name = "status", type = {CodeType.class}, order=3, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | suspended | cancelled | completed | entered-in-error | unknown", formalDefinition="The status of the resource instance." )
+    @Description(shortDefinition="amended | appended | cancelled | disputed | entered-in-error | executable +", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-status")
     protected Enumeration<ContractStatus> status;
 
@@ -9443,11 +9269,6 @@ public class Contract extends DomainResource {
     @Child(name = "instantiatesCanonical", type = {Contract.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Source Contract Definition", formalDefinition="The URL pointing to a FHIR-defined Contract Definition that is adhered to in whole or part by this Contract." )
     protected Reference instantiatesCanonical;
-
-    /**
-     * The actual object that is the target of the reference (The URL pointing to a FHIR-defined Contract Definition that is adhered to in whole or part by this Contract.)
-     */
-    protected Contract instantiatesCanonicalTarget;
 
     /**
      * The URL pointing to an externally maintained definition that is adhered to in whole or in part by this Contract.
@@ -9492,11 +9313,6 @@ public class Contract extends DomainResource {
     @Child(name = "subject", type = {Reference.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contract Target Entity", formalDefinition="The target entity impacted by or of interest to parties to the agreement." )
     protected List<Reference> subject;
-    /**
-     * The actual objects that are the target of the reference (The target entity impacted by or of interest to parties to the agreement.)
-     */
-    protected List<Resource> subjectTarget;
-
 
     /**
      * A formally or informally recognized grouping of people, principals, organizations, or jurisdictions formed for the purpose of achieving some form of collective action such as the promulgation, administration and enforcement of contracts and policies.
@@ -9504,11 +9320,6 @@ public class Contract extends DomainResource {
     @Child(name = "authority", type = {Organization.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Authority under which this Contract has standing", formalDefinition="A formally or informally recognized grouping of people, principals, organizations, or jurisdictions formed for the purpose of achieving some form of collective action such as the promulgation, administration and enforcement of contracts and policies." )
     protected List<Reference> authority;
-    /**
-     * The actual objects that are the target of the reference (A formally or informally recognized grouping of people, principals, organizations, or jurisdictions formed for the purpose of achieving some form of collective action such as the promulgation, administration and enforcement of contracts and policies.)
-     */
-    protected List<Organization> authorityTarget;
-
 
     /**
      * Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources.
@@ -9516,11 +9327,6 @@ public class Contract extends DomainResource {
     @Child(name = "domain", type = {Location.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A sphere of control governed by an authoritative jurisdiction, organization, or person", formalDefinition="Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources." )
     protected List<Reference> domain;
-    /**
-     * The actual objects that are the target of the reference (Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources.)
-     */
-    protected List<Location> domainTarget;
-
 
     /**
      * Sites in which the contract is complied with,  exercised, or in force.
@@ -9528,11 +9334,6 @@ public class Contract extends DomainResource {
     @Child(name = "site", type = {Location.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Specific Location", formalDefinition="Sites in which the contract is complied with,  exercised, or in force." )
     protected List<Reference> site;
-    /**
-     * The actual objects that are the target of the reference (Sites in which the contract is complied with,  exercised, or in force.)
-     */
-    protected List<Location> siteTarget;
-
 
     /**
      * A natural language name identifying this Contract definition, derivative, or instance in any legal state. Provides additional information about its content. This name should be usable as an identifier for the module by machine processing applications such as code generation.
@@ -9568,11 +9369,6 @@ public class Contract extends DomainResource {
     @Child(name = "author", type = {Patient.class, Practitioner.class, PractitionerRole.class, Organization.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Source of Contract", formalDefinition="The individual or organization that authored the Contract definition, derivative, or instance in any legal state." )
     protected Reference author;
-
-    /**
-     * The actual object that is the target of the reference (The individual or organization that authored the Contract definition, derivative, or instance in any legal state.)
-     */
-    protected Resource authorTarget;
 
     /**
      * A selector of legal concerns for this Contract definition, derivative, or instance in any legal state.
@@ -9625,11 +9421,6 @@ public class Contract extends DomainResource {
     @Child(name = "supportingInfo", type = {Reference.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Extra Information", formalDefinition="Information that may be needed by/relevant to the performer in their execution of this term action." )
     protected List<Reference> supportingInfo;
-    /**
-     * The actual objects that are the target of the reference (Information that may be needed by/relevant to the performer in their execution of this term action.)
-     */
-    protected List<Resource> supportingInfoTarget;
-
 
     /**
      * Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.
@@ -9637,11 +9428,6 @@ public class Contract extends DomainResource {
     @Child(name = "relevantHistory", type = {Provenance.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Key event in Contract History", formalDefinition="Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity." )
     protected List<Reference> relevantHistory;
-    /**
-     * The actual objects that are the target of the reference (Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.)
-     */
-    protected List<Provenance> relevantHistoryTarget;
-
 
     /**
      * Parties with legal standing in the Contract, including the principal parties, the grantor(s) and grantee(s), which are any person or organization bound by the contract, and any ancillary parties, which facilitate the execution of the contract such as a notary or witness.
@@ -9678,7 +9464,7 @@ public class Contract extends DomainResource {
     @Description(shortDefinition="Binding Contract", formalDefinition="Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract." )
     protected Type legallyBinding;
 
-    private static final long serialVersionUID = -1388892487L;
+    private static final long serialVersionUID = 1448103871L;
 
   /**
    * Constructor
@@ -9936,26 +9722,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return {@link #instantiatesCanonical} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The URL pointing to a FHIR-defined Contract Definition that is adhered to in whole or part by this Contract.)
-     */
-    public Contract getInstantiatesCanonicalTarget() { 
-      if (this.instantiatesCanonicalTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Contract.instantiatesCanonical");
-        else if (Configuration.doAutoCreate())
-          this.instantiatesCanonicalTarget = new Contract(); // aa
-      return this.instantiatesCanonicalTarget;
-    }
-
-    /**
-     * @param value {@link #instantiatesCanonical} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The URL pointing to a FHIR-defined Contract Definition that is adhered to in whole or part by this Contract.)
-     */
-    public Contract setInstantiatesCanonicalTarget(Contract value) { 
-      this.instantiatesCanonicalTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #instantiatesUri} (The URL pointing to an externally maintained definition that is adhered to in whole or in part by this Contract.). This is the underlying object with id, value and extensions. The accessor "getInstantiatesUri" gives direct access to the value
      */
     public UriType getInstantiatesUriElement() { 
@@ -10179,16 +9945,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSubjectTarget() { 
-      if (this.subjectTarget == null)
-        this.subjectTarget = new ArrayList<Resource>();
-      return this.subjectTarget;
-    }
-
-    /**
      * @return {@link #authority} (A formally or informally recognized grouping of people, principals, organizations, or jurisdictions formed for the purpose of achieving some form of collective action such as the promulgation, administration and enforcement of contracts and policies.)
      */
     public List<Reference> getAuthority() { 
@@ -10239,28 +9995,6 @@ public class Contract extends DomainResource {
         addAuthority();
       }
       return getAuthority().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getAuthorityTarget() { 
-      if (this.authorityTarget == null)
-        this.authorityTarget = new ArrayList<Organization>();
-      return this.authorityTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addAuthorityTarget() { 
-      Organization r = new Organization();
-      if (this.authorityTarget == null)
-        this.authorityTarget = new ArrayList<Organization>();
-      this.authorityTarget.add(r);
-      return r;
     }
 
     /**
@@ -10317,28 +10051,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getDomainTarget() { 
-      if (this.domainTarget == null)
-        this.domainTarget = new ArrayList<Location>();
-      return this.domainTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addDomainTarget() { 
-      Location r = new Location();
-      if (this.domainTarget == null)
-        this.domainTarget = new ArrayList<Location>();
-      this.domainTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #site} (Sites in which the contract is complied with,  exercised, or in force.)
      */
     public List<Reference> getSite() { 
@@ -10389,28 +10101,6 @@ public class Contract extends DomainResource {
         addSite();
       }
       return getSite().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getSiteTarget() { 
-      if (this.siteTarget == null)
-        this.siteTarget = new ArrayList<Location>();
-      return this.siteTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addSiteTarget() { 
-      Location r = new Location();
-      if (this.siteTarget == null)
-        this.siteTarget = new ArrayList<Location>();
-      this.siteTarget.add(r);
-      return r;
     }
 
     /**
@@ -10642,21 +10332,6 @@ public class Contract extends DomainResource {
      */
     public Contract setAuthor(Reference value) { 
       this.author = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual or organization that authored the Contract definition, derivative, or instance in any legal state.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual or organization that authored the Contract definition, derivative, or instance in any legal state.)
-     */
-    public Contract setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
       return this;
     }
 
@@ -10943,16 +10618,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInfoTarget() { 
-      if (this.supportingInfoTarget == null)
-        this.supportingInfoTarget = new ArrayList<Resource>();
-      return this.supportingInfoTarget;
-    }
-
-    /**
      * @return {@link #relevantHistory} (Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.)
      */
     public List<Reference> getRelevantHistory() { 
@@ -11003,28 +10668,6 @@ public class Contract extends DomainResource {
         addRelevantHistory();
       }
       return getRelevantHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getRelevantHistoryTarget() { 
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      return this.relevantHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addRelevantHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      this.relevantHistoryTarget.add(r);
-      return r;
     }
 
     /**
@@ -11604,13 +11247,13 @@ public class Contract extends DomainResource {
         case 116079:  return getUrlElement();
         case 351608024:  return getVersionElement();
         case -892481550:  return getStatusElement();
-        case 568606040:  return getLegalState(); 
-        case 8911915:  return getInstantiatesCanonical(); 
+        case 568606040:  return getLegalState();
+        case 8911915:  return getInstantiatesCanonical();
         case -1926393373:  return getInstantiatesUriElement();
-        case -92412192:  return getContentDerivative(); 
+        case -92412192:  return getContentDerivative();
         case -1179159893:  return getIssuedElement();
-        case -793235316:  return getApplies(); 
-        case -668311927:  return getExpirationType(); 
+        case -793235316:  return getApplies();
+        case -668311927:  return getExpirationType();
         case -1867885268:  return addSubject(); 
         case 1475610435:  return addAuthority(); 
         case -1326197564:  return addDomain(); 
@@ -11619,13 +11262,13 @@ public class Contract extends DomainResource {
         case 110371416:  return getTitleElement();
         case -2060497896:  return getSubtitleElement();
         case 92902992:  return addAliasElement();
-        case -1406328437:  return getAuthor(); 
-        case 109264468:  return getScope(); 
-        case -957295375:  return getTopic(); 
-        case 110546223:  return getTopic(); 
-        case 3575610:  return getType(); 
+        case -1406328437:  return getAuthor();
+        case 109264468:  return getScope();
+        case -957295375:  return getTopic();
+        case 110546223:  return getTopic();
+        case 3575610:  return getType();
         case -1868521062:  return addSubType(); 
-        case 247055020:  return getContentDefinition(); 
+        case 247055020:  return getContentDefinition();
         case 3556460:  return addTerm(); 
         case 1922406657:  return addSupportingInfo(); 
         case 1538891575:  return addRelevantHistory(); 
@@ -11633,8 +11276,8 @@ public class Contract extends DomainResource {
         case -1423054677:  return addFriendly(); 
         case 102851257:  return addLegal(); 
         case 3512060:  return addRule(); 
-        case -772497791:  return getLegallyBinding(); 
-        case -126751329:  return getLegallyBinding(); 
+        case -772497791:  return getLegallyBinding();
+        case -126751329:  return getLegallyBinding();
         default: return super.makeProperty(hash, name);
         }
 
@@ -11813,6 +11456,11 @@ public class Contract extends DomainResource {
       public Contract copy() {
         Contract dst = new Contract();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Contract dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -11902,7 +11550,6 @@ public class Contract extends DomainResource {
             dst.rule.add(i.copy());
         };
         dst.legallyBinding = legallyBinding == null ? null : legallyBinding.copy();
-        return dst;
       }
 
       protected Contract typedCopy() {

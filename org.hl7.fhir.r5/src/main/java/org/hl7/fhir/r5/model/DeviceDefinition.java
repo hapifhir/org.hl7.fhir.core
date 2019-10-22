@@ -51,17 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The characteristics, operational status and capabilities of a medical-related component of a medical device.
  */
@@ -500,10 +503,14 @@ public class DeviceDefinition extends DomainResource {
       public DeviceDefinitionUdiDeviceIdentifierComponent copy() {
         DeviceDefinitionUdiDeviceIdentifierComponent dst = new DeviceDefinitionUdiDeviceIdentifierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionUdiDeviceIdentifierComponent dst) {
+        super.copyValues(dst);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
         dst.issuer = issuer == null ? null : issuer.copy();
         dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
-        return dst;
       }
 
       @Override
@@ -758,9 +765,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionDeviceNameComponent copy() {
         DeviceDefinitionDeviceNameComponent dst = new DeviceDefinitionDeviceNameComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionDeviceNameComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -1007,9 +1018,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionSpecializationComponent copy() {
         DeviceDefinitionSpecializationComponent dst = new DeviceDefinitionSpecializationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionSpecializationComponent dst) {
+        super.copyValues(dst);
         dst.systemType = systemType == null ? null : systemType.copy();
         dst.version = version == null ? null : version.copy();
-        return dst;
       }
 
       @Override
@@ -1207,7 +1222,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1724546052:  return addDescription(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1240,13 +1255,17 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionCapabilityComponent copy() {
         DeviceDefinitionCapabilityComponent dst = new DeviceDefinitionCapabilityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionCapabilityComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (description != null) {
           dst.description = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : description)
             dst.description.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1512,7 +1531,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -2029823716:  return addValueQuantity(); 
         case -766209282:  return addValueCode(); 
         default: return super.makeProperty(hash, name);
@@ -1550,6 +1569,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionPropertyComponent copy() {
         DeviceDefinitionPropertyComponent dst = new DeviceDefinitionPropertyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionPropertyComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (valueQuantity != null) {
           dst.valueQuantity = new ArrayList<Quantity>();
@@ -1561,7 +1585,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           for (CodeableConcept i : valueCode)
             dst.valueCode.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1813,7 +1836,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 530040176:  return getSubstance(); 
+        case 530040176:  return getSubstance();
         case -1408024454:  return getAlternateElement();
         case 75406931:  return getAllergenicIndicatorElement();
         default: return super.makeProperty(hash, name);
@@ -1851,10 +1874,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionMaterialComponent copy() {
         DeviceDefinitionMaterialComponent dst = new DeviceDefinitionMaterialComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionMaterialComponent dst) {
+        super.copyValues(dst);
         dst.substance = substance == null ? null : substance.copy();
         dst.alternate = alternate == null ? null : alternate.copy();
         dst.allergenicIndicator = allergenicIndicator == null ? null : allergenicIndicator.copy();
-        return dst;
       }
 
       @Override
@@ -1999,11 +2026,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected Reference owner;
 
     /**
-     * The actual object that is the target of the reference (An organization that is responsible for the provision and ongoing maintenance of the device.)
-     */
-    protected Organization ownerTarget;
-
-    /**
      * Contact details for an organization or a particular human that is responsible for the device.
      */
     @Child(name = "contact", type = {ContactPoint.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -2046,18 +2068,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected Reference parentDevice;
 
     /**
-     * The actual object that is the target of the reference (The parent device it can be part of.)
-     */
-    protected DeviceDefinition parentDeviceTarget;
-
-    /**
      * A substance used to create the material(s) of which the device is made.
      */
     @Child(name = "material", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A substance used to create the material(s) of which the device is made", formalDefinition="A substance used to create the material(s) of which the device is made." )
     protected List<DeviceDefinitionMaterialComponent> material;
 
-    private static final long serialVersionUID = -2041532433L;
+    private static final long serialVersionUID = 1684072748L;
 
   /**
    * Constructor
@@ -2777,26 +2794,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #owner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (An organization that is responsible for the provision and ongoing maintenance of the device.)
-     */
-    public Organization getOwnerTarget() { 
-      if (this.ownerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceDefinition.owner");
-        else if (Configuration.doAutoCreate())
-          this.ownerTarget = new Organization(); // aa
-      return this.ownerTarget;
-    }
-
-    /**
-     * @param value {@link #owner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (An organization that is responsible for the provision and ongoing maintenance of the device.)
-     */
-    public DeviceDefinition setOwnerTarget(Organization value) { 
-      this.ownerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #contact} (Contact details for an organization or a particular human that is responsible for the device.)
      */
     public List<ContactPoint> getContact() { 
@@ -3045,26 +3042,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
     public DeviceDefinition setParentDevice(Reference value) { 
       this.parentDevice = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #parentDevice} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The parent device it can be part of.)
-     */
-    public DeviceDefinition getParentDeviceTarget() { 
-      if (this.parentDeviceTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceDefinition.parentDevice");
-        else if (Configuration.doAutoCreate())
-          this.parentDeviceTarget = new DeviceDefinition(); // aa
-      return this.parentDeviceTarget;
-    }
-
-    /**
-     * @param value {@link #parentDevice} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The parent device it can be part of.)
-     */
-    public DeviceDefinition setParentDeviceTarget(DeviceDefinition value) { 
-      this.parentDeviceTarget = value;
       return this;
     }
 
@@ -3340,26 +3317,26 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -99121287:  return addUdiDeviceIdentifier(); 
-        case 418079503:  return getManufacturer(); 
-        case -1969347631:  return getManufacturer(); 
+        case 418079503:  return getManufacturer();
+        case -1969347631:  return getManufacturer();
         case 780988929:  return addDeviceName(); 
         case 346619858:  return getModelNumberElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 682815883:  return addSpecialization(); 
         case 351608024:  return addVersionElement();
         case -909893934:  return addSafety(); 
         case 172049237:  return addShelfLifeStorage(); 
-        case -1599676319:  return getPhysicalCharacteristics(); 
+        case -1599676319:  return getPhysicalCharacteristics();
         case -2092349083:  return addLanguageCode(); 
         case -783669992:  return addCapability(); 
         case -993141291:  return addProperty(); 
-        case 106164915:  return getOwner(); 
+        case 106164915:  return getOwner();
         case 951526432:  return addContact(); 
         case 116079:  return getUrlElement();
         case -788511527:  return getOnlineInformationElement();
         case 3387378:  return addNote(); 
-        case -1285004149:  return getQuantity(); 
-        case 620260256:  return getParentDevice(); 
+        case -1285004149:  return getQuantity();
+        case 620260256:  return getParentDevice();
         case 299066663:  return addMaterial(); 
         default: return super.makeProperty(hash, name);
         }
@@ -3486,6 +3463,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinition copy() {
         DeviceDefinition dst = new DeviceDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinition dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3560,7 +3542,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           for (DeviceDefinitionMaterialComponent i : material)
             dst.material.add(i.copy());
         };
-        return dst;
       }
 
       protected DeviceDefinition typedCopy() {

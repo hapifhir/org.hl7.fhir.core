@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -162,6 +161,10 @@ public enum DataTypes {
          */
         NARRATIVE, 
         /**
+         * An ordered list (distribution) of statistics.
+         */
+        ORDEREDDISTRIBUTION, 
+        /**
          * The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
          */
         PARAMETERDEFINITION, 
@@ -213,6 +216,10 @@ public enum DataTypes {
          * null
          */
         SIMPLEQUANTITY, 
+        /**
+         * A fact or piece of data from a  study of a large quantity of numerical data.  A mathematical or quantified characteristic of a group of observations.
+         */
+        STATISTIC, 
         /**
          * Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.
          */
@@ -368,6 +375,8 @@ public enum DataTypes {
           return MONEYQUANTITY;
         if ("Narrative".equals(codeString))
           return NARRATIVE;
+        if ("OrderedDistribution".equals(codeString))
+          return ORDEREDDISTRIBUTION;
         if ("ParameterDefinition".equals(codeString))
           return PARAMETERDEFINITION;
         if ("Period".equals(codeString))
@@ -394,6 +403,8 @@ public enum DataTypes {
           return SIGNATURE;
         if ("SimpleQuantity".equals(codeString))
           return SIMPLEQUANTITY;
+        if ("Statistic".equals(codeString))
+          return STATISTIC;
         if ("SubstanceAmount".equals(codeString))
           return SUBSTANCEAMOUNT;
         if ("Timing".equals(codeString))
@@ -472,6 +483,7 @@ public enum DataTypes {
             case MONEY: return "Money";
             case MONEYQUANTITY: return "MoneyQuantity";
             case NARRATIVE: return "Narrative";
+            case ORDEREDDISTRIBUTION: return "OrderedDistribution";
             case PARAMETERDEFINITION: return "ParameterDefinition";
             case PERIOD: return "Period";
             case POPULATION: return "Population";
@@ -485,6 +497,7 @@ public enum DataTypes {
             case SAMPLEDDATA: return "SampledData";
             case SIGNATURE: return "Signature";
             case SIMPLEQUANTITY: return "SimpleQuantity";
+            case STATISTIC: return "Statistic";
             case SUBSTANCEAMOUNT: return "SubstanceAmount";
             case TIMING: return "Timing";
             case TRIGGERDEFINITION: return "TriggerDefinition";
@@ -543,6 +556,7 @@ public enum DataTypes {
             case MONEY: return "An amount of economic utility in some recognized currency.";
             case MONEYQUANTITY: return "";
             case NARRATIVE: return "A human-readable summary of the resource conveying the essential clinical and business information for the resource.";
+            case ORDEREDDISTRIBUTION: return "An ordered list (distribution) of statistics.";
             case PARAMETERDEFINITION: return "The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.";
             case PERIOD: return "A time period defined by a start and end date and optionally time.";
             case POPULATION: return "A populatioof people with some set of grouping criteria.";
@@ -556,6 +570,7 @@ public enum DataTypes {
             case SAMPLEDDATA: return "A series of measurements taken by a device, with upper and lower limits. There may be more than one dimension in the data.";
             case SIGNATURE: return "A signature along with supporting context. The signature may be a digital signature that is cryptographic in nature, or some other signature acceptable to the domain. This other signature may be as simple as a graphical image representing a hand-written signature, or a signature ceremony Different signature approaches have different utilities.";
             case SIMPLEQUANTITY: return "";
+            case STATISTIC: return "A fact or piece of data from a  study of a large quantity of numerical data.  A mathematical or quantified characteristic of a group of observations.";
             case SUBSTANCEAMOUNT: return "Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.";
             case TIMING: return "Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.";
             case TRIGGERDEFINITION: return "A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.";
@@ -611,6 +626,7 @@ public enum DataTypes {
             case MONEY: return "Money";
             case MONEYQUANTITY: return "MoneyQuantity";
             case NARRATIVE: return "Narrative";
+            case ORDEREDDISTRIBUTION: return "OrderedDistribution";
             case PARAMETERDEFINITION: return "ParameterDefinition";
             case PERIOD: return "Period";
             case POPULATION: return "Population";
@@ -624,6 +640,7 @@ public enum DataTypes {
             case SAMPLEDDATA: return "SampledData";
             case SIGNATURE: return "Signature";
             case SIMPLEQUANTITY: return "SimpleQuantity";
+            case STATISTIC: return "Statistic";
             case SUBSTANCEAMOUNT: return "SubstanceAmount";
             case TIMING: return "Timing";
             case TRIGGERDEFINITION: return "TriggerDefinition";

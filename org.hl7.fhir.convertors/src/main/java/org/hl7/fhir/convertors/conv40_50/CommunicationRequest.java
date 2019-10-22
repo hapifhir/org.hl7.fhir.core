@@ -102,7 +102,7 @@ public class CommunicationRequest extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getRecipient())
       tgt.addRecipient(convertReference(t));
     if (src.hasSender())
-      tgt.setSender(convertReference(src.getSender()));
+      tgt.addInformationProvider(convertReference(src.getSender()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
       tgt.addReasonCode(convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
@@ -153,8 +153,8 @@ public class CommunicationRequest extends VersionConvertor_40_50 {
       tgt.setRequester(convertReference(src.getRequester()));
     for (org.hl7.fhir.r5.model.Reference t : src.getRecipient())
       tgt.addRecipient(convertReference(t));
-    if (src.hasSender())
-      tgt.setSender(convertReference(src.getSender()));
+    if (src.hasInformationProvider())
+      tgt.setSender(convertReference(src.getInformationProviderFirstRep()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
       tgt.addReasonCode(convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())

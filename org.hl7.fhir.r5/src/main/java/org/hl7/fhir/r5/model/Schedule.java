@@ -51,15 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A container for slots of time that may be available for booking appointments.
  */
@@ -110,11 +115,6 @@ public class Schedule extends DomainResource {
     @Child(name = "actor", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=5, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Resource(s) that availability information is being provided for", formalDefinition="Slots that reference this schedule resource provide the availability details to these referenced resource(s)." )
     protected List<Reference> actor;
-    /**
-     * The actual objects that are the target of the reference (Slots that reference this schedule resource provide the availability details to these referenced resource(s).)
-     */
-    protected List<Resource> actorTarget;
-
 
     /**
      * The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a "template" for planning outside these dates.
@@ -130,7 +130,7 @@ public class Schedule extends DomainResource {
     @Description(shortDefinition="Comments on availability", formalDefinition="Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated." )
     protected StringType comment;
 
-    private static final long serialVersionUID = 203182600L;
+    private static final long serialVersionUID = -1624500976L;
 
   /**
    * Constructor
@@ -450,16 +450,6 @@ public class Schedule extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getActorTarget() { 
-      if (this.actorTarget == null)
-        this.actorTarget = new ArrayList<Resource>();
-      return this.actorTarget;
-    }
-
-    /**
      * @return {@link #planningHorizon} (The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a "template" for planning outside these dates.)
      */
     public Period getPlanningHorizon() { 
@@ -640,7 +630,7 @@ public class Schedule extends DomainResource {
         case -1928370289:  return addServiceType(); 
         case -1694759682:  return addSpecialty(); 
         case 92645877:  return addActor(); 
-        case -1718507650:  return getPlanningHorizon(); 
+        case -1718507650:  return getPlanningHorizon();
         case 950398559:  return getCommentElement();
         default: return super.makeProperty(hash, name);
         }
@@ -702,6 +692,11 @@ public class Schedule extends DomainResource {
       public Schedule copy() {
         Schedule dst = new Schedule();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Schedule dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -730,7 +725,6 @@ public class Schedule extends DomainResource {
         };
         dst.planningHorizon = planningHorizon == null ? null : planningHorizon.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       protected Schedule typedCopy() {

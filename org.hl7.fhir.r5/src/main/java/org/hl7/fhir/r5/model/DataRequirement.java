@@ -51,17 +51,19 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
  */
@@ -511,6 +513,11 @@ public class DataRequirement extends Type implements ICompositeType {
       public DataRequirementCodeFilterComponent copy() {
         DataRequirementCodeFilterComponent dst = new DataRequirementCodeFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementCodeFilterComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.searchParam = searchParam == null ? null : searchParam.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
@@ -519,7 +526,6 @@ public class DataRequirement extends Type implements ICompositeType {
           for (Coding i : code)
             dst.code.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -819,8 +825,8 @@ public class DataRequirement extends Type implements ICompositeType {
         switch (hash) {
         case 3433509:  return getPathElement();
         case -553645115:  return getSearchParamElement();
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -864,10 +870,14 @@ public class DataRequirement extends Type implements ICompositeType {
       public DataRequirementDateFilterComponent copy() {
         DataRequirementDateFilterComponent dst = new DataRequirementDateFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementDateFilterComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.searchParam = searchParam == null ? null : searchParam.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1116,9 +1126,13 @@ public class DataRequirement extends Type implements ICompositeType {
       public DataRequirementSortComponent copy() {
         DataRequirementSortComponent dst = new DataRequirementSortComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementSortComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.direction = direction == null ? null : direction.copy();
-        return dst;
       }
 
       @Override
@@ -1766,8 +1780,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         switch (hash) {
         case 3575610:  return getTypeElement();
         case -309425751:  return addProfileElement();
-        case -573640748:  return getSubject(); 
-        case -1867885268:  return getSubject(); 
+        case -573640748:  return getSubject();
+        case -1867885268:  return getSubject();
         case -1402857082:  return addMustSupportElement();
         case -1303674939:  return addCodeFilter(); 
         case 149531846:  return addDateFilter(); 
@@ -1837,6 +1851,11 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       public DataRequirement copy() {
         DataRequirement dst = new DataRequirement();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirement dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (profile != null) {
           dst.profile = new ArrayList<CanonicalType>();
@@ -1865,7 +1884,6 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
           for (DataRequirementSortComponent i : sort)
             dst.sort.add(i.copy());
         };
-        return dst;
       }
 
       protected DataRequirement typedCopy() {

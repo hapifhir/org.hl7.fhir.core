@@ -51,15 +51,18 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.
  */
@@ -646,10 +649,10 @@ public class TriggerDefinition extends Type implements ICompositeType {
         switch (hash) {
         case 3575610:  return getTypeElement();
         case 3373707:  return getNameElement();
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
         case 3076010:  return addData(); 
-        case -861311717:  return getCondition(); 
+        case -861311717:  return getCondition();
         default: return super.makeProperty(hash, name);
         }
 
@@ -711,6 +714,11 @@ public class TriggerDefinition extends Type implements ICompositeType {
       public TriggerDefinition copy() {
         TriggerDefinition dst = new TriggerDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TriggerDefinition dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
         dst.timing = timing == null ? null : timing.copy();
@@ -720,7 +728,6 @@ public class TriggerDefinition extends Type implements ICompositeType {
             dst.data.add(i.copy());
         };
         dst.condition = condition == null ? null : condition.copy();
-        return dst;
       }
 
       protected TriggerDefinition typedCopy() {

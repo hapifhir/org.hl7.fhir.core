@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A task to be performed.
  */
@@ -671,13 +673,8 @@ public class Task extends DomainResource {
         @Child(name = "recipient", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Group.class, Organization.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="For whom is fulfillment sought?", formalDefinition="For requests that are targeted to more than on potential recipient/target, for whom is fulfillment sought?" )
         protected List<Reference> recipient;
-        /**
-         * The actual objects that are the target of the reference (For requests that are targeted to more than on potential recipient/target, for whom is fulfillment sought?)
-         */
-        protected List<Resource> recipientTarget;
 
-
-        private static final long serialVersionUID = 1503908360L;
+        private static final long serialVersionUID = 1673996066L;
 
     /**
      * Constructor
@@ -808,16 +805,6 @@ public class Task extends DomainResource {
           return getRecipient().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getRecipientTarget() { 
-          if (this.recipientTarget == null)
-            this.recipientTarget = new ArrayList<Resource>();
-          return this.recipientTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("repetitions", "positiveInt", "Indicates the number of times the requested action should occur.", 0, 1, repetitions));
@@ -881,7 +868,7 @@ public class Task extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 984367650:  return getRepetitionsElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         case 820081177:  return addRecipient(); 
         default: return super.makeProperty(hash, name);
         }
@@ -918,6 +905,11 @@ public class Task extends DomainResource {
       public TaskRestrictionComponent copy() {
         TaskRestrictionComponent dst = new TaskRestrictionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TaskRestrictionComponent dst) {
+        super.copyValues(dst);
         dst.repetitions = repetitions == null ? null : repetitions.copy();
         dst.period = period == null ? null : period.copy();
         if (recipient != null) {
@@ -925,7 +917,6 @@ public class Task extends DomainResource {
           for (Reference i : recipient)
             dst.recipient.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -977,7 +968,7 @@ public class Task extends DomainResource {
         @Description(shortDefinition="Content to use in performing the task", formalDefinition="The value of the input parameter as a basic type." )
         protected org.hl7.fhir.r5.model.Type value;
 
-        private static final long serialVersionUID = -850267045L;
+        private static final long serialVersionUID = -638916132L;
 
     /**
      * Constructor
@@ -1129,9 +1120,9 @@ public class Task extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case 3575610:  return getType();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1349,6 +1340,10 @@ public class Task extends DomainResource {
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
@@ -1356,9 +1351,13 @@ public class Task extends DomainResource {
       public ParameterComponent copy() {
         ParameterComponent dst = new ParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ParameterComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1408,7 +1407,7 @@ public class Task extends DomainResource {
         @Description(shortDefinition="Result of output", formalDefinition="The value of the Output parameter as a basic type." )
         protected org.hl7.fhir.r5.model.Type value;
 
-        private static final long serialVersionUID = -850267045L;
+        private static final long serialVersionUID = -638916132L;
 
     /**
      * Constructor
@@ -1560,9 +1559,9 @@ public class Task extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case 3575610:  return getType();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1780,6 +1779,10 @@ public class Task extends DomainResource {
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
@@ -1787,9 +1790,13 @@ public class Task extends DomainResource {
       public TaskOutputComponent copy() {
         TaskOutputComponent dst = new TaskOutputComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TaskOutputComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1850,11 +1857,6 @@ public class Task extends DomainResource {
     @Child(name = "basedOn", type = {Reference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Request fulfilled by this task", formalDefinition="BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a "request" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the "request" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * An identifier that links together multiple tasks and other requests that were created in the same context.
@@ -1869,11 +1871,6 @@ public class Task extends DomainResource {
     @Child(name = "partOf", type = {Task.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Composite task", formalDefinition="Task that this particular task is part of." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (Task that this particular task is part of.)
-     */
-    protected List<Task> partOfTarget;
-
 
     /**
      * The current status of the task.
@@ -1918,6 +1915,7 @@ public class Task extends DomainResource {
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Task Type", formalDefinition="A name or code (or both) briefly describing what the task involves." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/task-code")
     protected CodeableConcept code;
 
     /**
@@ -1935,11 +1933,6 @@ public class Task extends DomainResource {
     protected Reference focus;
 
     /**
-     * The actual object that is the target of the reference (The request being actioned or the resource being manipulated by this task.)
-     */
-    protected Resource focusTarget;
-
-    /**
      * The entity who benefits from the performance of the service specified in the task (e.g., the patient).
      */
     @Child(name = "for", type = {Reference.class}, order=14, min=0, max=1, modifier=false, summary=true)
@@ -1947,21 +1940,11 @@ public class Task extends DomainResource {
     protected Reference for_;
 
     /**
-     * The actual object that is the target of the reference (The entity who benefits from the performance of the service specified in the task (e.g., the patient).)
-     */
-    protected Resource for_Target;
-
-    /**
      * The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Healthcare event during which this task originated", formalDefinition="The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Identifies the time action was first taken against the task (start) and/or the time final action was taken against the task prior to marking it as completed (end).
@@ -1992,11 +1975,6 @@ public class Task extends DomainResource {
     protected Reference requester;
 
     /**
-     * The actual object that is the target of the reference (The creator of the task.)
-     */
-    protected Resource requesterTarget;
-
-    /**
      * The kind of participant that should perform the task.
      */
     @Child(name = "performerType", type = {CodeableConcept.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -2012,21 +1990,11 @@ public class Task extends DomainResource {
     protected Reference owner;
 
     /**
-     * The actual object that is the target of the reference (Individual organization or Device currently responsible for task execution.)
-     */
-    protected Resource ownerTarget;
-
-    /**
-     * The principal physical location where the this task is performed.
+     * Principal physical location where the this task is performed.
      */
     @Child(name = "location", type = {Location.class}, order=22, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where task occurs", formalDefinition="The principal physical location where the this task is performed." )
+    @Description(shortDefinition="Where task occurs", formalDefinition="Principal physical location where the this task is performed." )
     protected Reference location;
-
-    /**
-     * The actual object that is the target of the reference (The principal physical location where the this task is performed.)
-     */
-    protected Location locationTarget;
 
     /**
      * A description or code indicating why this task needs to be performed.
@@ -2043,21 +2011,11 @@ public class Task extends DomainResource {
     protected Reference reasonReference;
 
     /**
-     * The actual object that is the target of the reference (A resource reference indicating why this task needs to be performed.)
-     */
-    protected Resource reasonReferenceTarget;
-
-    /**
      * Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.
      */
     @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated insurance coverage", formalDefinition="Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task." )
     protected List<Reference> insurance;
-    /**
-     * The actual objects that are the target of the reference (Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.)
-     */
-    protected List<Resource> insuranceTarget;
-
 
     /**
      * Free-text information captured about the task as it progresses.
@@ -2072,11 +2030,6 @@ public class Task extends DomainResource {
     @Child(name = "relevantHistory", type = {Provenance.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Key events in history of the Task", formalDefinition="Links to Provenance records for past versions of this Task that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the task." )
     protected List<Reference> relevantHistory;
-    /**
-     * The actual objects that are the target of the reference (Links to Provenance records for past versions of this Task that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the task.)
-     */
-    protected List<Provenance> relevantHistoryTarget;
-
 
     /**
      * If the Task.focus is a request resource and the task is seeking fulfillment (i.e. is asking for the request to be actioned), this element identifies any limitations on what parts of the referenced request should be actioned.
@@ -2099,7 +2052,7 @@ public class Task extends DomainResource {
     @Description(shortDefinition="Information produced as part of task", formalDefinition="Outputs produced by the Task." )
     protected List<TaskOutputComponent> output;
 
-    private static final long serialVersionUID = -765029272L;
+    private static final long serialVersionUID = 931729108L;
 
   /**
    * Constructor
@@ -2322,16 +2275,6 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #groupIdentifier} (An identifier that links together multiple tasks and other requests that were created in the same context.)
      */
     public Identifier getGroupIdentifier() { 
@@ -2406,28 +2349,6 @@ public class Task extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Task> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Task>();
-      return this.partOfTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Task addPartOfTarget() { 
-      Task r = new Task();
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Task>();
-      this.partOfTarget.add(r);
-      return r;
     }
 
     /**
@@ -2715,21 +2636,6 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #focus} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The request being actioned or the resource being manipulated by this task.)
-     */
-    public Resource getFocusTarget() { 
-      return this.focusTarget;
-    }
-
-    /**
-     * @param value {@link #focus} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The request being actioned or the resource being manipulated by this task.)
-     */
-    public Task setFocusTarget(Resource value) { 
-      this.focusTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #for_} (The entity who benefits from the performance of the service specified in the task (e.g., the patient).)
      */
     public Reference getFor() { 
@@ -2754,21 +2660,6 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #for_} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity who benefits from the performance of the service specified in the task (e.g., the patient).)
-     */
-    public Resource getForTarget() { 
-      return this.for_Target;
-    }
-
-    /**
-     * @param value {@link #for_} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity who benefits from the performance of the service specified in the task (e.g., the patient).)
-     */
-    public Task setForTarget(Resource value) { 
-      this.for_Target = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.)
      */
     public Reference getEncounter() { 
@@ -2789,26 +2680,6 @@ public class Task extends DomainResource {
      */
     public Task setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Task.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.)
-     */
-    public Task setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -2959,21 +2830,6 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #requester} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The creator of the task.)
-     */
-    public Resource getRequesterTarget() { 
-      return this.requesterTarget;
-    }
-
-    /**
-     * @param value {@link #requester} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The creator of the task.)
-     */
-    public Task setRequesterTarget(Resource value) { 
-      this.requesterTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #performerType} (The kind of participant that should perform the task.)
      */
     public List<CodeableConcept> getPerformerType() { 
@@ -3051,22 +2907,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #owner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual organization or Device currently responsible for task execution.)
-     */
-    public Resource getOwnerTarget() { 
-      return this.ownerTarget;
-    }
-
-    /**
-     * @param value {@link #owner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual organization or Device currently responsible for task execution.)
-     */
-    public Task setOwnerTarget(Resource value) { 
-      this.ownerTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #location} (The principal physical location where the this task is performed.)
+     * @return {@link #location} (Principal physical location where the this task is performed.)
      */
     public Reference getLocation() { 
       if (this.location == null)
@@ -3082,30 +2923,10 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @param value {@link #location} (The principal physical location where the this task is performed.)
+     * @param value {@link #location} (Principal physical location where the this task is performed.)
      */
     public Task setLocation(Reference value) { 
       this.location = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The principal physical location where the this task is performed.)
-     */
-    public Location getLocationTarget() { 
-      if (this.locationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Task.location");
-        else if (Configuration.doAutoCreate())
-          this.locationTarget = new Location(); // aa
-      return this.locationTarget;
-    }
-
-    /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The principal physical location where the this task is performed.)
-     */
-    public Task setLocationTarget(Location value) { 
-      this.locationTarget = value;
       return this;
     }
 
@@ -3154,21 +2975,6 @@ public class Task extends DomainResource {
      */
     public Task setReasonReference(Reference value) { 
       this.reasonReference = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #reasonReference} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A resource reference indicating why this task needs to be performed.)
-     */
-    public Resource getReasonReferenceTarget() { 
-      return this.reasonReferenceTarget;
-    }
-
-    /**
-     * @param value {@link #reasonReference} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A resource reference indicating why this task needs to be performed.)
-     */
-    public Task setReasonReferenceTarget(Resource value) { 
-      this.reasonReferenceTarget = value;
       return this;
     }
 
@@ -3223,16 +3029,6 @@ public class Task extends DomainResource {
         addInsurance();
       }
       return getInsurance().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getInsuranceTarget() { 
-      if (this.insuranceTarget == null)
-        this.insuranceTarget = new ArrayList<Resource>();
-      return this.insuranceTarget;
     }
 
     /**
@@ -3339,28 +3135,6 @@ public class Task extends DomainResource {
         addRelevantHistory();
       }
       return getRelevantHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getRelevantHistoryTarget() { 
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      return this.relevantHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addRelevantHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      this.relevantHistoryTarget.add(r);
-      return r;
     }
 
     /**
@@ -3517,7 +3291,7 @@ public class Task extends DomainResource {
         children.add(new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the task.", 0, 1, requester));
         children.add(new Property("performerType", "CodeableConcept", "The kind of participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, performerType));
         children.add(new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for task execution.", 0, 1, owner));
-        children.add(new Property("location", "Reference(Location)", "The principal physical location where the this task is performed.", 0, 1, location));
+        children.add(new Property("location", "Reference(Location)", "Principal physical location where the this task is performed.", 0, 1, location));
         children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this task needs to be performed.", 0, 1, reasonCode));
         children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this task needs to be performed.", 0, 1, reasonReference));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.", 0, java.lang.Integer.MAX_VALUE, insurance));
@@ -3553,7 +3327,7 @@ public class Task extends DomainResource {
         case 693933948: /*requester*/  return new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the task.", 0, 1, requester);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The kind of participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, performerType);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for task execution.", 0, 1, owner);
-        case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The principal physical location where the this task is performed.", 0, 1, location);
+        case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Principal physical location where the this task is performed.", 0, 1, location);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this task needs to be performed.", 0, 1, reasonCode);
         case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this task needs to be performed.", 0, 1, reasonReference);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.", 0, java.lang.Integer.MAX_VALUE, insurance);
@@ -3789,31 +3563,31 @@ public class Task extends DomainResource {
         case 8911915:  return getInstantiatesCanonicalElement();
         case -1926393373:  return getInstantiatesUriElement();
         case -332612366:  return addBasedOn(); 
-        case -445338488:  return getGroupIdentifier(); 
+        case -445338488:  return getGroupIdentifier();
         case -995410646:  return addPartOf(); 
         case -892481550:  return getStatusElement();
-        case 2051346646:  return getStatusReason(); 
-        case 2008591314:  return getBusinessStatus(); 
+        case 2051346646:  return getStatusReason();
+        case 2008591314:  return getBusinessStatus();
         case -1183762788:  return getIntentElement();
         case -1165461084:  return getPriorityElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
-        case 97604824:  return getFocus(); 
-        case 101577:  return getFor(); 
-        case 1524132147:  return getEncounter(); 
-        case 1218624249:  return getExecutionPeriod(); 
+        case 97604824:  return getFocus();
+        case 101577:  return getFor();
+        case 1524132147:  return getEncounter();
+        case 1218624249:  return getExecutionPeriod();
         case -1500852503:  return getAuthoredOnElement();
         case 1959003007:  return getLastModifiedElement();
-        case 693933948:  return getRequester(); 
+        case 693933948:  return getRequester();
         case -901444568:  return addPerformerType(); 
-        case 106164915:  return getOwner(); 
-        case 1901043637:  return getLocation(); 
-        case 722137681:  return getReasonCode(); 
-        case -1146218137:  return getReasonReference(); 
+        case 106164915:  return getOwner();
+        case 1901043637:  return getLocation();
+        case 722137681:  return getReasonCode();
+        case -1146218137:  return getReasonReference();
         case 73049818:  return addInsurance(); 
         case 3387378:  return addNote(); 
         case 1538891575:  return addRelevantHistory(); 
-        case -1561062452:  return getRestriction(); 
+        case -1561062452:  return getRestriction();
         case 100358090:  return addInput(); 
         case -1005512447:  return addOutput(); 
         default: return super.makeProperty(hash, name);
@@ -3981,6 +3755,11 @@ public class Task extends DomainResource {
       public Task copy() {
         Task dst = new Task();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Task dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4048,7 +3827,6 @@ public class Task extends DomainResource {
           for (TaskOutputComponent i : output)
             dst.output.add(i.copy());
         };
-        return dst;
       }
 
       protected Task typedCopy() {

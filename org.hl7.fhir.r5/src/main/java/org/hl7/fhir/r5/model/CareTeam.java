@@ -51,19 +51,22 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
- * The Care Team includes all the people and organizations who plan to participate in the coordination and delivery of care for a patient.
+ * The Care Team includes all the people and organizations who plan to participate in the coordination and delivery of care.
  */
 @ResourceDef(name="CareTeam", profile="http://hl7.org/fhir/StructureDefinition/CareTeam")
 public class CareTeam extends DomainResource {
@@ -213,10 +216,10 @@ public class CareTeam extends DomainResource {
         /**
          * Indicates specific responsibility of an individual within the care team, such as "Primary care physician", "Trained social worker counselor", "Caregiver", etc.
          */
-        @Child(name = "role", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "role", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Type of involvement", formalDefinition="Indicates specific responsibility of an individual within the care team, such as \"Primary care physician\", \"Trained social worker counselor\", \"Caregiver\", etc." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participant-role")
-        protected List<CodeableConcept> role;
+        protected CodeableConcept role;
 
         /**
          * The specific person or organization who is participating/expected to participate in the care team.
@@ -226,11 +229,6 @@ public class CareTeam extends DomainResource {
         protected Reference member;
 
         /**
-         * The actual object that is the target of the reference (The specific person or organization who is participating/expected to participate in the care team.)
-         */
-        protected Resource memberTarget;
-
-        /**
          * The organization of the practitioner.
          */
         @Child(name = "onBehalfOf", type = {Organization.class}, order=3, min=0, max=1, modifier=false, summary=true)
@@ -238,18 +236,13 @@ public class CareTeam extends DomainResource {
         protected Reference onBehalfOf;
 
         /**
-         * The actual object that is the target of the reference (The organization of the practitioner.)
+         * When the member is generally available within this care team.
          */
-        protected Organization onBehalfOfTarget;
+        @Child(name = "coverage", type = {Period.class, Timing.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="When the member is generally available within this care team", formalDefinition="When the member is generally available within this care team." )
+        protected Type coverage;
 
-        /**
-         * Indicates when the specific member or organization did (or is intended to) come into effect and end.
-         */
-        @Child(name = "period", type = {Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Time period of participant", formalDefinition="Indicates when the specific member or organization did (or is intended to) come into effect and end." )
-        protected Period period;
-
-        private static final long serialVersionUID = -575634410L;
+        private static final long serialVersionUID = 1513990203L;
 
     /**
      * Constructor
@@ -261,54 +254,25 @@ public class CareTeam extends DomainResource {
         /**
          * @return {@link #role} (Indicates specific responsibility of an individual within the care team, such as "Primary care physician", "Trained social worker counselor", "Caregiver", etc.)
          */
-        public List<CodeableConcept> getRole() { 
+        public CodeableConcept getRole() { 
           if (this.role == null)
-            this.role = new ArrayList<CodeableConcept>();
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CareTeamParticipantComponent.role");
+            else if (Configuration.doAutoCreate())
+              this.role = new CodeableConcept(); // cc
           return this.role;
         }
 
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CareTeamParticipantComponent setRole(List<CodeableConcept> theRole) { 
-          this.role = theRole;
-          return this;
-        }
-
         public boolean hasRole() { 
-          if (this.role == null)
-            return false;
-          for (CodeableConcept item : this.role)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addRole() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.role == null)
-            this.role = new ArrayList<CodeableConcept>();
-          this.role.add(t);
-          return t;
-        }
-
-        public CareTeamParticipantComponent addRole(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.role == null)
-            this.role = new ArrayList<CodeableConcept>();
-          this.role.add(t);
-          return this;
+          return this.role != null && !this.role.isEmpty();
         }
 
         /**
-         * @return The first repetition of repeating field {@link #role}, creating it if it does not already exist
+         * @param value {@link #role} (Indicates specific responsibility of an individual within the care team, such as "Primary care physician", "Trained social worker counselor", "Caregiver", etc.)
          */
-        public CodeableConcept getRoleFirstRep() { 
-          if (getRole().isEmpty()) {
-            addRole();
-          }
-          return getRole().get(0);
+        public CareTeamParticipantComponent setRole(CodeableConcept value) { 
+          this.role = value;
+          return this;
         }
 
         /**
@@ -332,21 +296,6 @@ public class CareTeam extends DomainResource {
          */
         public CareTeamParticipantComponent setMember(Reference value) { 
           this.member = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #member} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The specific person or organization who is participating/expected to participate in the care team.)
-         */
-        public Resource getMemberTarget() { 
-          return this.memberTarget;
-        }
-
-        /**
-         * @param value {@link #member} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The specific person or organization who is participating/expected to participate in the care team.)
-         */
-        public CareTeamParticipantComponent setMemberTarget(Resource value) { 
-          this.memberTarget = value;
           return this;
         }
 
@@ -375,64 +324,74 @@ public class CareTeam extends DomainResource {
         }
 
         /**
-         * @return {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization of the practitioner.)
+         * @return {@link #coverage} (When the member is generally available within this care team.)
          */
-        public Organization getOnBehalfOfTarget() { 
-          if (this.onBehalfOfTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CareTeamParticipantComponent.onBehalfOf");
-            else if (Configuration.doAutoCreate())
-              this.onBehalfOfTarget = new Organization(); // aa
-          return this.onBehalfOfTarget;
+        public Type getCoverage() { 
+          return this.coverage;
         }
 
         /**
-         * @param value {@link #onBehalfOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization of the practitioner.)
+         * @return {@link #coverage} (When the member is generally available within this care team.)
          */
-        public CareTeamParticipantComponent setOnBehalfOfTarget(Organization value) { 
-          this.onBehalfOfTarget = value;
-          return this;
+        public Period getCoveragePeriod() throws FHIRException { 
+          if (this.coverage == null)
+            this.coverage = new Period();
+          if (!(this.coverage instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.coverage.getClass().getName()+" was encountered");
+          return (Period) this.coverage;
+        }
+
+        public boolean hasCoveragePeriod() { 
+          return this != null && this.coverage instanceof Period;
         }
 
         /**
-         * @return {@link #period} (Indicates when the specific member or organization did (or is intended to) come into effect and end.)
+         * @return {@link #coverage} (When the member is generally available within this care team.)
          */
-        public Period getPeriod() { 
-          if (this.period == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CareTeamParticipantComponent.period");
-            else if (Configuration.doAutoCreate())
-              this.period = new Period(); // cc
-          return this.period;
+        public Timing getCoverageTiming() throws FHIRException { 
+          if (this.coverage == null)
+            this.coverage = new Timing();
+          if (!(this.coverage instanceof Timing))
+            throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.coverage.getClass().getName()+" was encountered");
+          return (Timing) this.coverage;
         }
 
-        public boolean hasPeriod() { 
-          return this.period != null && !this.period.isEmpty();
+        public boolean hasCoverageTiming() { 
+          return this != null && this.coverage instanceof Timing;
+        }
+
+        public boolean hasCoverage() { 
+          return this.coverage != null && !this.coverage.isEmpty();
         }
 
         /**
-         * @param value {@link #period} (Indicates when the specific member or organization did (or is intended to) come into effect and end.)
+         * @param value {@link #coverage} (When the member is generally available within this care team.)
          */
-        public CareTeamParticipantComponent setPeriod(Period value) { 
-          this.period = value;
+        public CareTeamParticipantComponent setCoverage(Type value) { 
+          if (value != null && !(value instanceof Period || value instanceof Timing))
+            throw new Error("Not the right type for CareTeam.participant.coverage[x]: "+value.fhirType());
+          this.coverage = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("role", "CodeableConcept", "Indicates specific responsibility of an individual within the care team, such as \"Primary care physician\", \"Trained social worker counselor\", \"Caregiver\", etc.", 0, java.lang.Integer.MAX_VALUE, role));
+          children.add(new Property("role", "CodeableConcept", "Indicates specific responsibility of an individual within the care team, such as \"Primary care physician\", \"Trained social worker counselor\", \"Caregiver\", etc.", 0, 1, role));
           children.add(new Property("member", "Reference(Practitioner|PractitionerRole|RelatedPerson|Patient|Organization|CareTeam)", "The specific person or organization who is participating/expected to participate in the care team.", 0, 1, member));
           children.add(new Property("onBehalfOf", "Reference(Organization)", "The organization of the practitioner.", 0, 1, onBehalfOf));
-          children.add(new Property("period", "Period", "Indicates when the specific member or organization did (or is intended to) come into effect and end.", 0, 1, period));
+          children.add(new Property("coverage[x]", "Period|Timing", "When the member is generally available within this care team.", 0, 1, coverage));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "Indicates specific responsibility of an individual within the care team, such as \"Primary care physician\", \"Trained social worker counselor\", \"Caregiver\", etc.", 0, java.lang.Integer.MAX_VALUE, role);
+          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "Indicates specific responsibility of an individual within the care team, such as \"Primary care physician\", \"Trained social worker counselor\", \"Caregiver\", etc.", 0, 1, role);
           case -1077769574: /*member*/  return new Property("member", "Reference(Practitioner|PractitionerRole|RelatedPerson|Patient|Organization|CareTeam)", "The specific person or organization who is participating/expected to participate in the care team.", 0, 1, member);
           case -14402964: /*onBehalfOf*/  return new Property("onBehalfOf", "Reference(Organization)", "The organization of the practitioner.", 0, 1, onBehalfOf);
-          case -991726143: /*period*/  return new Property("period", "Period", "Indicates when the specific member or organization did (or is intended to) come into effect and end.", 0, 1, period);
+          case 227689880: /*coverage[x]*/  return new Property("coverage[x]", "Period|Timing", "When the member is generally available within this care team.", 0, 1, coverage);
+          case -351767064: /*coverage*/  return new Property("coverage[x]", "Period|Timing", "When the member is generally available within this care team.", 0, 1, coverage);
+          case 1024117193: /*coveragePeriod*/  return new Property("coverage[x]", "Period|Timing", "When the member is generally available within this care team.", 0, 1, coverage);
+          case 1142178898: /*coverageTiming*/  return new Property("coverage[x]", "Period|Timing", "When the member is generally available within this care team.", 0, 1, coverage);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -441,10 +400,10 @@ public class CareTeam extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3506294: /*role*/ return this.role == null ? new Base[0] : this.role.toArray(new Base[this.role.size()]); // CodeableConcept
+        case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         case -1077769574: /*member*/ return this.member == null ? new Base[0] : new Base[] {this.member}; // Reference
         case -14402964: /*onBehalfOf*/ return this.onBehalfOf == null ? new Base[0] : new Base[] {this.onBehalfOf}; // Reference
-        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
+        case -351767064: /*coverage*/ return this.coverage == null ? new Base[0] : new Base[] {this.coverage}; // Type
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -454,7 +413,7 @@ public class CareTeam extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          this.getRole().add(castToCodeableConcept(value)); // CodeableConcept
+          this.role = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1077769574: // member
           this.member = castToReference(value); // Reference
@@ -462,8 +421,8 @@ public class CareTeam extends DomainResource {
         case -14402964: // onBehalfOf
           this.onBehalfOf = castToReference(value); // Reference
           return value;
-        case -991726143: // period
-          this.period = castToPeriod(value); // Period
+        case -351767064: // coverage
+          this.coverage = castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -473,13 +432,13 @@ public class CareTeam extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          this.getRole().add(castToCodeableConcept(value));
+          this.role = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("member")) {
           this.member = castToReference(value); // Reference
         } else if (name.equals("onBehalfOf")) {
           this.onBehalfOf = castToReference(value); // Reference
-        } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+        } else if (name.equals("coverage[x]")) {
+          this.coverage = castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -488,10 +447,11 @@ public class CareTeam extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3506294:  return addRole(); 
-        case -1077769574:  return getMember(); 
-        case -14402964:  return getOnBehalfOf(); 
-        case -991726143:  return getPeriod(); 
+        case 3506294:  return getRole();
+        case -1077769574:  return getMember();
+        case -14402964:  return getOnBehalfOf();
+        case 227689880:  return getCoverage();
+        case -351767064:  return getCoverage();
         default: return super.makeProperty(hash, name);
         }
 
@@ -503,7 +463,7 @@ public class CareTeam extends DomainResource {
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
         case -1077769574: /*member*/ return new String[] {"Reference"};
         case -14402964: /*onBehalfOf*/ return new String[] {"Reference"};
-        case -991726143: /*period*/ return new String[] {"Period"};
+        case -351767064: /*coverage*/ return new String[] {"Period", "Timing"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -512,7 +472,8 @@ public class CareTeam extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("role")) {
-          return addRole();
+          this.role = new CodeableConcept();
+          return this.role;
         }
         else if (name.equals("member")) {
           this.member = new Reference();
@@ -522,9 +483,13 @@ public class CareTeam extends DomainResource {
           this.onBehalfOf = new Reference();
           return this.onBehalfOf;
         }
-        else if (name.equals("period")) {
-          this.period = new Period();
-          return this.period;
+        else if (name.equals("coveragePeriod")) {
+          this.coverage = new Period();
+          return this.coverage;
+        }
+        else if (name.equals("coverageTiming")) {
+          this.coverage = new Timing();
+          return this.coverage;
         }
         else
           return super.addChild(name);
@@ -533,15 +498,15 @@ public class CareTeam extends DomainResource {
       public CareTeamParticipantComponent copy() {
         CareTeamParticipantComponent dst = new CareTeamParticipantComponent();
         copyValues(dst);
-        if (role != null) {
-          dst.role = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : role)
-            dst.role.add(i.copy());
-        };
+        return dst;
+      }
+
+      public void copyValues(CareTeamParticipantComponent dst) {
+        super.copyValues(dst);
+        dst.role = role == null ? null : role.copy();
         dst.member = member == null ? null : member.copy();
         dst.onBehalfOf = onBehalfOf == null ? null : onBehalfOf.copy();
-        dst.period = period == null ? null : period.copy();
-        return dst;
+        dst.coverage = coverage == null ? null : coverage.copy();
       }
 
       @Override
@@ -552,7 +517,7 @@ public class CareTeam extends DomainResource {
           return false;
         CareTeamParticipantComponent o = (CareTeamParticipantComponent) other_;
         return compareDeep(role, o.role, true) && compareDeep(member, o.member, true) && compareDeep(onBehalfOf, o.onBehalfOf, true)
-           && compareDeep(period, o.period, true);
+           && compareDeep(coverage, o.coverage, true);
       }
 
       @Override
@@ -567,7 +532,7 @@ public class CareTeam extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(role, member, onBehalfOf
-          , period);
+          , coverage);
       }
 
   public String fhirType() {
@@ -615,40 +580,23 @@ public class CareTeam extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Identifies the patient or group whose intended care is handled by the team.)
-     */
-    protected Resource subjectTarget;
-
-    /**
-     * The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.
-     */
-    @Child(name = "encounter", type = {Encounter.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated." )
-    protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.)
-     */
-    protected Encounter encounterTarget;
-
-    /**
      * Indicates when the team did (or is intended to) come into effect and end.
      */
-    @Child(name = "period", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "period", type = {Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Time period team covers", formalDefinition="Indicates when the team did (or is intended to) come into effect and end." )
     protected Period period;
 
     /**
      * Identifies all people and organizations who are expected to be involved in the care team.
      */
-    @Child(name = "participant", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "participant", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Members of the team", formalDefinition="Identifies all people and organizations who are expected to be involved in the care team." )
     protected List<CareTeamParticipantComponent> participant;
 
     /**
      * Describes why the care team exists.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why the care team exists", formalDefinition="Describes why the care team exists." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinical-findings")
     protected List<CodeableConcept> reasonCode;
@@ -656,42 +604,32 @@ public class CareTeam extends DomainResource {
     /**
      * Condition(s) that this care team addresses.
      */
-    @Child(name = "reasonReference", type = {Condition.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reasonReference", type = {Condition.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why the care team exists", formalDefinition="Condition(s) that this care team addresses." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Condition(s) that this care team addresses.)
-     */
-    protected List<Condition> reasonReferenceTarget;
-
 
     /**
      * The organization responsible for the care team.
      */
-    @Child(name = "managingOrganization", type = {Organization.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "managingOrganization", type = {Organization.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Organization responsible for the care team", formalDefinition="The organization responsible for the care team." )
     protected List<Reference> managingOrganization;
-    /**
-     * The actual objects that are the target of the reference (The organization responsible for the care team.)
-     */
-    protected List<Organization> managingOrganizationTarget;
-
 
     /**
      * A central contact detail for the care team (that applies to all members).
      */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "telecom", type = {ContactPoint.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A contact detail for the care team (that applies to all members)", formalDefinition="A central contact detail for the care team (that applies to all members)." )
     protected List<ContactPoint> telecom;
 
     /**
      * Comments made about the CareTeam.
      */
-    @Child(name = "note", type = {Annotation.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments made about the CareTeam", formalDefinition="Comments made about the CareTeam." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1793069286L;
+    private static final long serialVersionUID = -1665007774L;
 
   /**
    * Constructor
@@ -929,65 +867,6 @@ public class CareTeam extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the patient or group whose intended care is handled by the team.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the patient or group whose intended care is handled by the team.)
-     */
-    public CareTeam setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} (The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.)
-     */
-    public Reference getEncounter() { 
-      if (this.encounter == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CareTeam.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounter = new Reference(); // cc
-      return this.encounter;
-    }
-
-    public boolean hasEncounter() { 
-      return this.encounter != null && !this.encounter.isEmpty();
-    }
-
-    /**
-     * @param value {@link #encounter} (The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.)
-     */
-    public CareTeam setEncounter(Reference value) { 
-      this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CareTeam.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.)
-     */
-    public CareTeam setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #period} (Indicates when the team did (or is intended to) come into effect and end.)
      */
     public Period getPeriod() { 
@@ -1171,28 +1050,6 @@ public class CareTeam extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Condition> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Condition>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Condition addReasonReferenceTarget() { 
-      Condition r = new Condition();
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Condition>();
-      this.reasonReferenceTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #managingOrganization} (The organization responsible for the care team.)
      */
     public List<Reference> getManagingOrganization() { 
@@ -1243,28 +1100,6 @@ public class CareTeam extends DomainResource {
         addManagingOrganization();
       }
       return getManagingOrganization().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getManagingOrganizationTarget() { 
-      if (this.managingOrganizationTarget == null)
-        this.managingOrganizationTarget = new ArrayList<Organization>();
-      return this.managingOrganizationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addManagingOrganizationTarget() { 
-      Organization r = new Organization();
-      if (this.managingOrganizationTarget == null)
-        this.managingOrganizationTarget = new ArrayList<Organization>();
-      this.managingOrganizationTarget.add(r);
-      return r;
     }
 
     /**
@@ -1380,7 +1215,6 @@ public class CareTeam extends DomainResource {
         children.add(new Property("category", "CodeableConcept", "Identifies what kind of team.  This is to support differentiation between multiple co-existing teams, such as care plan team, episode of care team, longitudinal care team.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("name", "string", "A label for human use intended to distinguish like teams.  E.g. the \"red\" vs. \"green\" trauma teams.", 0, 1, name));
         children.add(new Property("subject", "Reference(Patient|Group)", "Identifies the patient or group whose intended care is handled by the team.", 0, 1, subject));
-        children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
         children.add(new Property("period", "Period", "Indicates when the team did (or is intended to) come into effect and end.", 0, 1, period));
         children.add(new Property("participant", "", "Identifies all people and organizations who are expected to be involved in the care team.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("reasonCode", "CodeableConcept", "Describes why the care team exists.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
@@ -1398,7 +1232,6 @@ public class CareTeam extends DomainResource {
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Identifies what kind of team.  This is to support differentiation between multiple co-existing teams, such as care plan team, episode of care team, longitudinal care team.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3373707: /*name*/  return new Property("name", "string", "A label for human use intended to distinguish like teams.  E.g. the \"red\" vs. \"green\" trauma teams.", 0, 1, name);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "Identifies the patient or group whose intended care is handled by the team.", 0, 1, subject);
-        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which this CareTeam was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
         case -991726143: /*period*/  return new Property("period", "Period", "Indicates when the team did (or is intended to) come into effect and end.", 0, 1, period);
         case 767422259: /*participant*/  return new Property("participant", "", "Identifies all people and organizations who are expected to be involved in the care team.", 0, java.lang.Integer.MAX_VALUE, participant);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Describes why the care team exists.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
@@ -1419,7 +1252,6 @@ public class CareTeam extends DomainResource {
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
-        case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // CareTeamParticipantComponent
         case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
@@ -1450,9 +1282,6 @@ public class CareTeam extends DomainResource {
           return value;
         case -1867885268: // subject
           this.subject = castToReference(value); // Reference
-          return value;
-        case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
           return value;
         case -991726143: // period
           this.period = castToPeriod(value); // Period
@@ -1493,8 +1322,6 @@ public class CareTeam extends DomainResource {
           this.name = castToString(value); // StringType
         } else if (name.equals("subject")) {
           this.subject = castToReference(value); // Reference
-        } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
         } else if (name.equals("period")) {
           this.period = castToPeriod(value); // Period
         } else if (name.equals("participant")) {
@@ -1521,9 +1348,8 @@ public class CareTeam extends DomainResource {
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
         case 3373707:  return getNameElement();
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case -991726143:  return getPeriod(); 
+        case -1867885268:  return getSubject();
+        case -991726143:  return getPeriod();
         case 767422259:  return addParticipant(); 
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
@@ -1543,7 +1369,6 @@ public class CareTeam extends DomainResource {
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
-        case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case -991726143: /*period*/ return new String[] {"Period"};
         case 767422259: /*participant*/ return new String[] {};
         case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
@@ -1573,10 +1398,6 @@ public class CareTeam extends DomainResource {
         else if (name.equals("subject")) {
           this.subject = new Reference();
           return this.subject;
-        }
-        else if (name.equals("encounter")) {
-          this.encounter = new Reference();
-          return this.encounter;
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1612,6 +1433,11 @@ public class CareTeam extends DomainResource {
       public CareTeam copy() {
         CareTeam dst = new CareTeam();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CareTeam dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1625,7 +1451,6 @@ public class CareTeam extends DomainResource {
         };
         dst.name = name == null ? null : name.copy();
         dst.subject = subject == null ? null : subject.copy();
-        dst.encounter = encounter == null ? null : encounter.copy();
         dst.period = period == null ? null : period.copy();
         if (participant != null) {
           dst.participant = new ArrayList<CareTeamParticipantComponent>();
@@ -1657,7 +1482,6 @@ public class CareTeam extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected CareTeam typedCopy() {
@@ -1672,8 +1496,8 @@ public class CareTeam extends DomainResource {
           return false;
         CareTeam o = (CareTeam) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(category, o.category, true)
-           && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true)
-           && compareDeep(period, o.period, true) && compareDeep(participant, o.participant, true) && compareDeep(reasonCode, o.reasonCode, true)
+           && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true) && compareDeep(period, o.period, true)
+           && compareDeep(participant, o.participant, true) && compareDeep(reasonCode, o.reasonCode, true)
            && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(managingOrganization, o.managingOrganization, true)
            && compareDeep(telecom, o.telecom, true) && compareDeep(note, o.note, true);
       }
@@ -1690,7 +1514,7 @@ public class CareTeam extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, category
-          , name, subject, encounter, period, participant, reasonCode, reasonReference, managingOrganization
+          , name, subject, period, participant, reasonCode, reasonReference, managingOrganization
           , telecom, note);
       }
 
@@ -1702,19 +1526,19 @@ public class CareTeam extends DomainResource {
  /**
    * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>Time period team covers</b><br>
+   * Description: <b>A date within the coverage time period.</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CareTeam.period</b><br>
+   * Path: <b></b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="CareTeam.period", description="Time period team covers", type="date" )
+  @SearchParamDefinition(name="date", path="", description="A date within the coverage time period.", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>Time period team covers</b><br>
+   * Description: <b>A date within the coverage time period.</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CareTeam.period</b><br>
+   * Path: <b></b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -1792,30 +1616,24 @@ public class CareTeam extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("CareTeam:subject").toLocked();
 
  /**
-   * Search parameter: <b>encounter</b>
+   * Search parameter: <b>name</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CareTeam.encounter</b><br>
+   * Description: <b>Name of the team, such as crisis assessment team</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CareTeam.name</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="CareTeam.encounter", description="Encounter created as part of", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="name", path="CareTeam.name", description="Name of the team, such as crisis assessment team", type="string" )
+  public static final String SP_NAME = "name";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CareTeam.encounter</b><br>
+   * Description: <b>Name of the team, such as crisis assessment team</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CareTeam.name</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CareTeam:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("CareTeam:encounter").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
    * Search parameter: <b>category</b>

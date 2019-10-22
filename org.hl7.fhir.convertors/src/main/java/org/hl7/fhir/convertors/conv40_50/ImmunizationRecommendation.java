@@ -104,7 +104,7 @@ public class ImmunizationRecommendation extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getVaccineCode())
       tgt.addVaccineCode(convertCodeableConcept(t));
     if (src.hasTargetDisease())
-      tgt.setTargetDisease(convertCodeableConcept(src.getTargetDisease()));
+      tgt.addTargetDisease(convertCodeableConcept(src.getTargetDisease()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getContraindicatedVaccineCode())
       tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
     if (src.hasForecastStatus())
@@ -136,7 +136,7 @@ public class ImmunizationRecommendation extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getVaccineCode())
       tgt.addVaccineCode(convertCodeableConcept(t));
     if (src.hasTargetDisease())
-      tgt.setTargetDisease(convertCodeableConcept(src.getTargetDisease()));
+      tgt.setTargetDisease(convertCodeableConcept(src.getTargetDiseaseFirstRep()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getContraindicatedVaccineCode())
       tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
     if (src.hasForecastStatus())

@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,17 +53,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+
+import java.math.*;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A container for a collection of resources.
  */
@@ -750,9 +750,13 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleLinkComponent copy() {
         BundleLinkComponent dst = new BundleLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleLinkComponent dst) {
+        super.copyValues(dst);
         dst.relation = relation == null ? null : relation.copy();
         dst.url = url == null ? null : url.copy();
-        return dst;
       }
 
       @Override
@@ -1178,9 +1182,9 @@ public class Bundle extends Resource implements IBaseBundle {
         case 3321850:  return addLink(); 
         case -511251360:  return getFullUrlElement();
         case -341064690: throw new FHIRException("Cannot make property resource as it is not a complex type"); // Resource
-        case -906336856:  return getSearch(); 
-        case 1095692943:  return getRequest(); 
-        case -340323263:  return getResponse(); 
+        case -906336856:  return getSearch();
+        case 1095692943:  return getRequest();
+        case -340323263:  return getResponse();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1230,6 +1234,11 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntryComponent copy() {
         BundleEntryComponent dst = new BundleEntryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntryComponent dst) {
+        super.copyValues(dst);
         if (link != null) {
           dst.link = new ArrayList<BundleLinkComponent>();
           for (BundleLinkComponent i : link)
@@ -1240,7 +1249,6 @@ public class Bundle extends Resource implements IBaseBundle {
         dst.search = search == null ? null : search.copy();
         dst.request = request == null ? null : request.copy();
         dst.response = response == null ? null : response.copy();
-        return dst;
       }
 
       @Override
@@ -1507,9 +1515,13 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntrySearchComponent copy() {
         BundleEntrySearchComponent dst = new BundleEntrySearchComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntrySearchComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.score = score == null ? null : score.copy();
-        return dst;
       }
 
       @Override
@@ -2032,13 +2044,17 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntryRequestComponent copy() {
         BundleEntryRequestComponent dst = new BundleEntryRequestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntryRequestComponent dst) {
+        super.copyValues(dst);
         dst.method = method == null ? null : method.copy();
         dst.url = url == null ? null : url.copy();
         dst.ifNoneMatch = ifNoneMatch == null ? null : ifNoneMatch.copy();
         dst.ifModifiedSince = ifModifiedSince == null ? null : ifModifiedSince.copy();
         dst.ifMatch = ifMatch == null ? null : ifMatch.copy();
         dst.ifNoneExist = ifNoneExist == null ? null : ifNoneExist.copy();
-        return dst;
       }
 
       @Override
@@ -2467,12 +2483,16 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntryResponseComponent copy() {
         BundleEntryResponseComponent dst = new BundleEntryResponseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntryResponseComponent dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         dst.location = location == null ? null : location.copy();
         dst.etag = etag == null ? null : etag.copy();
         dst.lastModified = lastModified == null ? null : lastModified.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
-        return dst;
       }
 
       @Override
@@ -3012,13 +3032,13 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case 3575610:  return getTypeElement();
         case 55126294:  return getTimestampElement();
         case 110549828:  return getTotalElement();
         case 3321850:  return addLink(); 
         case 96667762:  return addEntry(); 
-        case 1073584312:  return getSignature(); 
+        case 1073584312:  return getSignature();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3076,6 +3096,11 @@ public class Bundle extends Resource implements IBaseBundle {
       public Bundle copy() {
         Bundle dst = new Bundle();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Bundle dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.type = type == null ? null : type.copy();
         dst.timestamp = timestamp == null ? null : timestamp.copy();
@@ -3091,7 +3116,6 @@ public class Bundle extends Resource implements IBaseBundle {
             dst.entry.add(i.copy());
         };
         dst.signature = signature == null ? null : signature.copy();
-        return dst;
       }
 
       protected Bundle typedCopy() {

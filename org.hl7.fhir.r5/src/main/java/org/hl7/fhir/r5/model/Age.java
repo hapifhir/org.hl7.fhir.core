@@ -50,12 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A duration of time during which an organism (or a process) has existed.
  */
@@ -134,6 +140,10 @@ public class Age extends Quantity implements ICompositeType {
         Age dst = new Age();
         copyValues(dst);
         return dst;
+      }
+
+      public void copyValues(Age dst) {
+        super.copyValues(dst);
       }
 
       protected Age typedCopy() {

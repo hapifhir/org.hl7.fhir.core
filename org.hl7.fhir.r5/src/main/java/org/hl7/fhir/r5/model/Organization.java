@@ -51,17 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, payer/insurer, etc.
  */
@@ -303,10 +306,10 @@ public class Organization extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -220463842:  return getPurpose(); 
-        case 3373707:  return getName(); 
+        case -220463842:  return getPurpose();
+        case 3373707:  return getName();
         case -1429363305:  return addTelecom(); 
-        case -1147692044:  return getAddress(); 
+        case -1147692044:  return getAddress();
         default: return super.makeProperty(hash, name);
         }
 
@@ -348,6 +351,11 @@ public class Organization extends DomainResource {
       public OrganizationContactComponent copy() {
         OrganizationContactComponent dst = new OrganizationContactComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OrganizationContactComponent dst) {
+        super.copyValues(dst);
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.name = name == null ? null : name.copy();
         if (telecom != null) {
@@ -356,7 +364,6 @@ public class Organization extends DomainResource {
             dst.telecom.add(i.copy());
         };
         dst.address = address == null ? null : address.copy();
-        return dst;
       }
 
       @Override
@@ -450,11 +457,6 @@ public class Organization extends DomainResource {
     protected Reference partOf;
 
     /**
-     * The actual object that is the target of the reference (The organization of which this organization forms a part.)
-     */
-    protected Organization partOfTarget;
-
-    /**
      * Contact for the organization for a certain purpose.
      */
     @Child(name = "contact", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -467,13 +469,8 @@ public class Organization extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to services operated for the organization", formalDefinition="Technical endpoints providing access to services operated for the organization." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (Technical endpoints providing access to services operated for the organization.)
-     */
-    protected List<Endpoint> endpointTarget;
 
-
-    private static final long serialVersionUID = -2113244111L;
+    private static final long serialVersionUID = -1305337184L;
 
   /**
    * Constructor
@@ -874,26 +871,6 @@ public class Organization extends DomainResource {
     }
 
     /**
-     * @return {@link #partOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization of which this organization forms a part.)
-     */
-    public Organization getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Organization.partOf");
-        else if (Configuration.doAutoCreate())
-          this.partOfTarget = new Organization(); // aa
-      return this.partOfTarget;
-    }
-
-    /**
-     * @param value {@link #partOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization of which this organization forms a part.)
-     */
-    public Organization setPartOfTarget(Organization value) { 
-      this.partOfTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #contact} (Contact for the organization for a certain purpose.)
      */
     public List<OrganizationContactComponent> getContact() { 
@@ -997,28 +974,6 @@ public class Organization extends DomainResource {
         addEndpoint();
       }
       return getEndpoint().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {
@@ -1146,7 +1101,7 @@ public class Organization extends DomainResource {
         case 92902992:  return addAliasElement();
         case -1429363305:  return addTelecom(); 
         case -1147692044:  return addAddress(); 
-        case -995410646:  return getPartOf(); 
+        case -995410646:  return getPartOf();
         case 951526432:  return addContact(); 
         case 1741102485:  return addEndpoint(); 
         default: return super.makeProperty(hash, name);
@@ -1217,6 +1172,11 @@ public class Organization extends DomainResource {
       public Organization copy() {
         Organization dst = new Organization();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Organization dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1255,7 +1215,6 @@ public class Organization extends DomainResource {
           for (Reference i : endpoint)
             dst.endpoint.add(i.copy());
         };
-        return dst;
       }
 
       protected Organization typedCopy() {

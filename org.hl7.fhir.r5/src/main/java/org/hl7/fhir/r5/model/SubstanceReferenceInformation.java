@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Todo.
  */
@@ -89,13 +93,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         @Child(name = "source", type = {DocumentReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected List<Reference> source;
-        /**
-         * The actual objects that are the target of the reference (Todo.)
-         */
-        protected List<DocumentReference> sourceTarget;
 
-
-        private static final long serialVersionUID = 1615185105L;
+        private static final long serialVersionUID = -1733820939L;
 
     /**
      * Constructor
@@ -205,28 +204,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           return getSource().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<DocumentReference> getSourceTarget() { 
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          return this.sourceTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public DocumentReference addSourceTarget() { 
-          DocumentReference r = new DocumentReference();
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          this.sourceTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("geneSequenceOrigin", "CodeableConcept", "Todo.", 0, 1, geneSequenceOrigin));
@@ -289,8 +266,8 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1089463108:  return getGeneSequenceOrigin(); 
-        case 3169045:  return getGene(); 
+        case -1089463108:  return getGeneSequenceOrigin();
+        case 3169045:  return getGene();
         case -896505829:  return addSource(); 
         default: return super.makeProperty(hash, name);
         }
@@ -328,6 +305,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       public SubstanceReferenceInformationGeneComponent copy() {
         SubstanceReferenceInformationGeneComponent dst = new SubstanceReferenceInformationGeneComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceReferenceInformationGeneComponent dst) {
+        super.copyValues(dst);
         dst.geneSequenceOrigin = geneSequenceOrigin == null ? null : geneSequenceOrigin.copy();
         dst.gene = gene == null ? null : gene.copy();
         if (source != null) {
@@ -335,7 +317,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -393,13 +374,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         @Child(name = "source", type = {DocumentReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected List<Reference> source;
-        /**
-         * The actual objects that are the target of the reference (Todo.)
-         */
-        protected List<DocumentReference> sourceTarget;
 
-
-        private static final long serialVersionUID = 2055145950L;
+        private static final long serialVersionUID = 261257288L;
 
     /**
      * Constructor
@@ -509,28 +485,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           return getSource().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<DocumentReference> getSourceTarget() { 
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          return this.sourceTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public DocumentReference addSourceTarget() { 
-          DocumentReference r = new DocumentReference();
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          this.sourceTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Todo.", 0, 1, type));
@@ -593,8 +547,8 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1662836996:  return getElement(); 
+        case 3575610:  return getType();
+        case -1662836996:  return getElement();
         case -896505829:  return addSource(); 
         default: return super.makeProperty(hash, name);
         }
@@ -632,6 +586,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       public SubstanceReferenceInformationGeneElementComponent copy() {
         SubstanceReferenceInformationGeneElementComponent dst = new SubstanceReferenceInformationGeneElementComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceReferenceInformationGeneElementComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.element = element == null ? null : element.copy();
         if (source != null) {
@@ -639,7 +598,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -703,13 +661,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         @Child(name = "source", type = {DocumentReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected List<Reference> source;
-        /**
-         * The actual objects that are the target of the reference (Todo.)
-         */
-        protected List<DocumentReference> sourceTarget;
 
-
-        private static final long serialVersionUID = -430084579L;
+        private static final long serialVersionUID = 185411369L;
 
     /**
      * Constructor
@@ -872,28 +825,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           return getSource().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<DocumentReference> getSourceTarget() { 
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          return this.sourceTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public DocumentReference addSourceTarget() { 
-          DocumentReference r = new DocumentReference();
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          this.sourceTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("domain", "CodeableConcept", "Todo.", 0, 1, domain));
@@ -964,8 +895,8 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1326197564:  return getDomain(); 
-        case 382350310:  return getClassification(); 
+        case -1326197564:  return getDomain();
+        case 382350310:  return getClassification();
         case -1867567750:  return addSubtype(); 
         case -896505829:  return addSource(); 
         default: return super.makeProperty(hash, name);
@@ -1008,6 +939,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       public SubstanceReferenceInformationClassificationComponent copy() {
         SubstanceReferenceInformationClassificationComponent dst = new SubstanceReferenceInformationClassificationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceReferenceInformationClassificationComponent dst) {
+        super.copyValues(dst);
         dst.domain = domain == null ? null : domain.copy();
         dst.classification = classification == null ? null : classification.copy();
         if (subtype != null) {
@@ -1020,7 +956,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1113,13 +1048,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         @Child(name = "source", type = {DocumentReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected List<Reference> source;
-        /**
-         * The actual objects that are the target of the reference (Todo.)
-         */
-        protected List<DocumentReference> sourceTarget;
 
-
-        private static final long serialVersionUID = -1682270197L;
+        private static final long serialVersionUID = 1848845691L;
 
     /**
      * Constructor
@@ -1391,28 +1321,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           return getSource().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<DocumentReference> getSourceTarget() { 
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          return this.sourceTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public DocumentReference addSourceTarget() { 
-          DocumentReference r = new DocumentReference();
-          if (this.sourceTarget == null)
-            this.sourceTarget = new ArrayList<DocumentReference>();
-          this.sourceTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("target", "Identifier", "Todo.", 0, 1, target));
@@ -1519,14 +1427,14 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -880905839:  return getTarget(); 
-        case 3575610:  return getType(); 
-        case 1844104722:  return getInteraction(); 
-        case 1316389074:  return getOrganism(); 
-        case 988662572:  return getOrganismType(); 
-        case 646780200:  return getAmount(); 
-        case -1413853096:  return getAmount(); 
-        case -1424857166:  return getAmountType(); 
+        case -880905839:  return getTarget();
+        case 3575610:  return getType();
+        case 1844104722:  return getInteraction();
+        case 1316389074:  return getOrganism();
+        case 988662572:  return getOrganismType();
+        case 646780200:  return getAmount();
+        case -1413853096:  return getAmount();
+        case -1424857166:  return getAmountType();
         case -896505829:  return addSource(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1597,6 +1505,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       public SubstanceReferenceInformationTargetComponent copy() {
         SubstanceReferenceInformationTargetComponent dst = new SubstanceReferenceInformationTargetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceReferenceInformationTargetComponent dst) {
+        super.copyValues(dst);
         dst.target = target == null ? null : target.copy();
         dst.type = type == null ? null : type.copy();
         dst.interaction = interaction == null ? null : interaction.copy();
@@ -1609,7 +1522,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2081,6 +1993,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       public SubstanceReferenceInformation copy() {
         SubstanceReferenceInformation dst = new SubstanceReferenceInformation();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceReferenceInformation dst) {
+        super.copyValues(dst);
         dst.comment = comment == null ? null : comment.copy();
         if (gene != null) {
           dst.gene = new ArrayList<SubstanceReferenceInformationGeneComponent>();
@@ -2102,7 +2019,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           for (SubstanceReferenceInformationTargetComponent i : target)
             dst.target.add(i.copy());
         };
-        return dst;
       }
 
       protected SubstanceReferenceInformation typedCopy() {

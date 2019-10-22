@@ -53,14 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.
  */
@@ -206,11 +210,6 @@ public class AppointmentResponse extends DomainResource {
     protected Reference appointment;
 
     /**
-     * The actual object that is the target of the reference (Appointment that this response is replying to.)
-     */
-    protected Appointment appointmentTarget;
-
-    /**
      * Date/Time that the appointment is to take place, or requested new start time.
      */
     @Child(name = "start", type = {InstantType.class}, order=2, min=0, max=1, modifier=false, summary=false)
@@ -240,15 +239,10 @@ public class AppointmentResponse extends DomainResource {
     protected Reference actor;
 
     /**
-     * The actual object that is the target of the reference (A Person, Location, HealthcareService, or Device that is participating in the appointment.)
-     */
-    protected Resource actorTarget;
-
-    /**
      * Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.
      */
     @Child(name = "participantStatus", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="accepted | declined | tentative | in-process | completed | needs-action | entered-in-error", formalDefinition="Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty." )
+    @Description(shortDefinition="accepted | declined | tentative | needs-action", formalDefinition="Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participationstatus")
     protected Enumeration<ParticipantStatus> participantStatus;
 
@@ -259,7 +253,7 @@ public class AppointmentResponse extends DomainResource {
     @Description(shortDefinition="Additional comments", formalDefinition="Additional comments about the appointment." )
     protected StringType comment;
 
-    private static final long serialVersionUID = 248548635L;
+    private static final long serialVersionUID = -206747026L;
 
   /**
    * Constructor
@@ -351,26 +345,6 @@ public class AppointmentResponse extends DomainResource {
      */
     public AppointmentResponse setAppointment(Reference value) { 
       this.appointment = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #appointment} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Appointment that this response is replying to.)
-     */
-    public Appointment getAppointmentTarget() { 
-      if (this.appointmentTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AppointmentResponse.appointment");
-        else if (Configuration.doAutoCreate())
-          this.appointmentTarget = new Appointment(); // aa
-      return this.appointmentTarget;
-    }
-
-    /**
-     * @param value {@link #appointment} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Appointment that this response is replying to.)
-     */
-    public AppointmentResponse setAppointmentTarget(Appointment value) { 
-      this.appointmentTarget = value;
       return this;
     }
 
@@ -546,21 +520,6 @@ public class AppointmentResponse extends DomainResource {
      */
     public AppointmentResponse setActor(Reference value) { 
       this.actor = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #actor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A Person, Location, HealthcareService, or Device that is participating in the appointment.)
-     */
-    public Resource getActorTarget() { 
-      return this.actorTarget;
-    }
-
-    /**
-     * @param value {@link #actor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A Person, Location, HealthcareService, or Device that is participating in the appointment.)
-     */
-    public AppointmentResponse setActorTarget(Resource value) { 
-      this.actorTarget = value;
       return this;
     }
 
@@ -763,11 +722,11 @@ public class AppointmentResponse extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case -1474995297:  return getAppointment(); 
+        case -1474995297:  return getAppointment();
         case 109757538:  return getStartElement();
         case 100571:  return getEndElement();
         case 841294093:  return addParticipantType(); 
-        case 92645877:  return getActor(); 
+        case 92645877:  return getActor();
         case 996096261:  return getParticipantStatusElement();
         case 950398559:  return getCommentElement();
         default: return super.makeProperty(hash, name);
@@ -831,6 +790,11 @@ public class AppointmentResponse extends DomainResource {
       public AppointmentResponse copy() {
         AppointmentResponse dst = new AppointmentResponse();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AppointmentResponse dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -847,7 +811,6 @@ public class AppointmentResponse extends DomainResource {
         dst.actor = actor == null ? null : actor.copy();
         dst.participantStatus = participantStatus == null ? null : participantStatus.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       protected AppointmentResponse typedCopy() {

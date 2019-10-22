@@ -51,19 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Details of a Health Insurance product/plan provided by an organization.
  */
@@ -305,10 +307,10 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -220463842:  return getPurpose(); 
-        case 3373707:  return getName(); 
+        case -220463842:  return getPurpose();
+        case 3373707:  return getName();
         case -1429363305:  return addTelecom(); 
-        case -1147692044:  return getAddress(); 
+        case -1147692044:  return getAddress();
         default: return super.makeProperty(hash, name);
         }
 
@@ -350,6 +352,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanContactComponent copy() {
         InsurancePlanContactComponent dst = new InsurancePlanContactComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanContactComponent dst) {
+        super.copyValues(dst);
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.name = name == null ? null : name.copy();
         if (telecom != null) {
@@ -358,7 +365,6 @@ public class InsurancePlan extends DomainResource {
             dst.telecom.add(i.copy());
         };
         dst.address = address == null ? null : address.copy();
-        return dst;
       }
 
       @Override
@@ -409,11 +415,6 @@ public class InsurancePlan extends DomainResource {
         @Child(name = "network", type = {Organization.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="What networks provide coverage", formalDefinition="Reference to the network that providing the type of coverage." )
         protected List<Reference> network;
-        /**
-         * The actual objects that are the target of the reference (Reference to the network that providing the type of coverage.)
-         */
-        protected List<Organization> networkTarget;
-
 
         /**
          * Specific benefits under this type of coverage.
@@ -422,7 +423,7 @@ public class InsurancePlan extends DomainResource {
         @Description(shortDefinition="List of benefits", formalDefinition="Specific benefits under this type of coverage." )
         protected List<CoverageBenefitComponent> benefit;
 
-        private static final long serialVersionUID = -1186191877L;
+        private static final long serialVersionUID = 79927205L;
 
     /**
      * Constructor
@@ -514,28 +515,6 @@ public class InsurancePlan extends DomainResource {
             addNetwork();
           }
           return getNetwork().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Organization> getNetworkTarget() { 
-          if (this.networkTarget == null)
-            this.networkTarget = new ArrayList<Organization>();
-          return this.networkTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Organization addNetworkTarget() { 
-          Organization r = new Organization();
-          if (this.networkTarget == null)
-            this.networkTarget = new ArrayList<Organization>();
-          this.networkTarget.add(r);
-          return r;
         }
 
         /**
@@ -653,7 +632,7 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 1843485230:  return addNetwork(); 
         case -222710633:  return addBenefit(); 
         default: return super.makeProperty(hash, name);
@@ -691,6 +670,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanCoverageComponent copy() {
         InsurancePlanCoverageComponent dst = new InsurancePlanCoverageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanCoverageComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (network != null) {
           dst.network = new ArrayList<Reference>();
@@ -702,7 +686,6 @@ public class InsurancePlan extends DomainResource {
           for (CoverageBenefitComponent i : benefit)
             dst.benefit.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -965,7 +948,7 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 363387971:  return getRequirementElement();
         case 102976443:  return addLimit(); 
         default: return super.makeProperty(hash, name);
@@ -1003,6 +986,11 @@ public class InsurancePlan extends DomainResource {
       public CoverageBenefitComponent copy() {
         CoverageBenefitComponent dst = new CoverageBenefitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CoverageBenefitComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.requirement = requirement == null ? null : requirement.copy();
         if (limit != null) {
@@ -1010,7 +998,6 @@ public class InsurancePlan extends DomainResource {
           for (CoverageBenefitLimitComponent i : limit)
             dst.limit.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1173,8 +1160,8 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 111972721:  return getValue(); 
-        case 3059181:  return getCode(); 
+        case 111972721:  return getValue();
+        case 3059181:  return getCode();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1207,9 +1194,13 @@ public class InsurancePlan extends DomainResource {
       public CoverageBenefitLimitComponent copy() {
         CoverageBenefitLimitComponent dst = new CoverageBenefitLimitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CoverageBenefitLimitComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         dst.code = code == null ? null : code.copy();
-        return dst;
       }
 
       @Override
@@ -1265,11 +1256,6 @@ public class InsurancePlan extends DomainResource {
         @Child(name = "coverageArea", type = {Location.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Where product applies", formalDefinition="The geographic region in which a health insurance plan's benefits apply." )
         protected List<Reference> coverageArea;
-        /**
-         * The actual objects that are the target of the reference (The geographic region in which a health insurance plan's benefits apply.)
-         */
-        protected List<Location> coverageAreaTarget;
-
 
         /**
          * Reference to the network that providing the type of coverage.
@@ -1277,11 +1263,6 @@ public class InsurancePlan extends DomainResource {
         @Child(name = "network", type = {Organization.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="What networks provide coverage", formalDefinition="Reference to the network that providing the type of coverage." )
         protected List<Reference> network;
-        /**
-         * The actual objects that are the target of the reference (Reference to the network that providing the type of coverage.)
-         */
-        protected List<Organization> networkTarget;
-
 
         /**
          * Overall costs associated with the plan.
@@ -1297,7 +1278,7 @@ public class InsurancePlan extends DomainResource {
         @Description(shortDefinition="Specific costs", formalDefinition="Costs associated with the coverage provided by the product." )
         protected List<InsurancePlanPlanSpecificCostComponent> specificCost;
 
-        private static final long serialVersionUID = -2063324071L;
+        private static final long serialVersionUID = -782831938L;
 
     /**
      * Constructor
@@ -1437,28 +1418,6 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Location> getCoverageAreaTarget() { 
-          if (this.coverageAreaTarget == null)
-            this.coverageAreaTarget = new ArrayList<Location>();
-          return this.coverageAreaTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Location addCoverageAreaTarget() { 
-          Location r = new Location();
-          if (this.coverageAreaTarget == null)
-            this.coverageAreaTarget = new ArrayList<Location>();
-          this.coverageAreaTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #network} (Reference to the network that providing the type of coverage.)
          */
         public List<Reference> getNetwork() { 
@@ -1509,28 +1468,6 @@ public class InsurancePlan extends DomainResource {
             addNetwork();
           }
           return getNetwork().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Organization> getNetworkTarget() { 
-          if (this.networkTarget == null)
-            this.networkTarget = new ArrayList<Organization>();
-          return this.networkTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Organization addNetworkTarget() { 
-          Organization r = new Organization();
-          if (this.networkTarget == null)
-            this.networkTarget = new ArrayList<Organization>();
-          this.networkTarget.add(r);
-          return r;
         }
 
         /**
@@ -1726,7 +1663,7 @@ public class InsurancePlan extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1532328299:  return addCoverageArea(); 
         case 1843485230:  return addNetwork(); 
         case 878344405:  return addGeneralCost(); 
@@ -1778,6 +1715,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanPlanComponent copy() {
         InsurancePlanPlanComponent dst = new InsurancePlanPlanComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanPlanComponent dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1804,7 +1746,6 @@ public class InsurancePlan extends DomainResource {
           for (InsurancePlanPlanSpecificCostComponent i : specificCost)
             dst.specificCost.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2092,9 +2033,9 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1483017440:  return getGroupSizeElement();
-        case 3059661:  return getCost(); 
+        case 3059661:  return getCost();
         case 950398559:  return getCommentElement();
         default: return super.makeProperty(hash, name);
         }
@@ -2136,11 +2077,15 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanPlanGeneralCostComponent copy() {
         InsurancePlanPlanGeneralCostComponent dst = new InsurancePlanPlanGeneralCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanPlanGeneralCostComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.groupSize = groupSize == null ? null : groupSize.copy();
         dst.cost = cost == null ? null : cost.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       @Override
@@ -2340,7 +2285,7 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategory(); 
+        case 50511102:  return getCategory();
         case -222710633:  return addBenefit(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2373,13 +2318,17 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanPlanSpecificCostComponent copy() {
         InsurancePlanPlanSpecificCostComponent dst = new InsurancePlanPlanSpecificCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanPlanSpecificCostComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         if (benefit != null) {
           dst.benefit = new ArrayList<PlanBenefitComponent>();
           for (PlanBenefitComponent i : benefit)
             dst.benefit.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2577,7 +2526,7 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 3059661:  return addCost(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2610,13 +2559,17 @@ public class InsurancePlan extends DomainResource {
       public PlanBenefitComponent copy() {
         PlanBenefitComponent dst = new PlanBenefitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanBenefitComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (cost != null) {
           dst.cost = new ArrayList<PlanBenefitCostComponent>();
           for (PlanBenefitCostComponent i : cost)
             dst.cost.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2893,10 +2846,10 @@ public class InsurancePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1526770491:  return getApplicability(); 
+        case 3575610:  return getType();
+        case -1526770491:  return getApplicability();
         case -31447799:  return addQualifiers(); 
-        case 111972721:  return getValue(); 
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2938,6 +2891,11 @@ public class InsurancePlan extends DomainResource {
       public PlanBenefitCostComponent copy() {
         PlanBenefitCostComponent dst = new PlanBenefitCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanBenefitCostComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.applicability = applicability == null ? null : applicability.copy();
         if (qualifiers != null) {
@@ -2946,7 +2904,6 @@ public class InsurancePlan extends DomainResource {
             dst.qualifiers.add(i.copy());
         };
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3034,11 +2991,6 @@ public class InsurancePlan extends DomainResource {
     protected Reference ownedBy;
 
     /**
-     * The actual object that is the target of the reference (The entity that is providing  the health insurance product and underwriting the risk.  This is typically an insurance carriers, other third-party payers, or health plan sponsors comonly referred to as 'payers'.)
-     */
-    protected Organization ownedByTarget;
-
-    /**
      * An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.
      */
     @Child(name = "administeredBy", type = {Organization.class}, order=7, min=0, max=1, modifier=false, summary=true)
@@ -3046,21 +2998,11 @@ public class InsurancePlan extends DomainResource {
     protected Reference administeredBy;
 
     /**
-     * The actual object that is the target of the reference (An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.)
-     */
-    protected Organization administeredByTarget;
-
-    /**
      * The geographic region in which a health insurance product's benefits apply.
      */
     @Child(name = "coverageArea", type = {Location.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Where product applies", formalDefinition="The geographic region in which a health insurance product's benefits apply." )
     protected List<Reference> coverageArea;
-    /**
-     * The actual objects that are the target of the reference (The geographic region in which a health insurance product's benefits apply.)
-     */
-    protected List<Location> coverageAreaTarget;
-
 
     /**
      * The contact for the health insurance product for a certain purpose.
@@ -3075,11 +3017,6 @@ public class InsurancePlan extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoint", formalDefinition="The technical endpoints providing access to services operated for the health insurance product." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (The technical endpoints providing access to services operated for the health insurance product.)
-     */
-    protected List<Endpoint> endpointTarget;
-
 
     /**
      * Reference to the network included in the health insurance product.
@@ -3087,11 +3024,6 @@ public class InsurancePlan extends DomainResource {
     @Child(name = "network", type = {Organization.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What networks are Included", formalDefinition="Reference to the network included in the health insurance product." )
     protected List<Reference> network;
-    /**
-     * The actual objects that are the target of the reference (Reference to the network included in the health insurance product.)
-     */
-    protected List<Organization> networkTarget;
-
 
     /**
      * Details about the coverage offered by the insurance product.
@@ -3107,7 +3039,7 @@ public class InsurancePlan extends DomainResource {
     @Description(shortDefinition="Plan details", formalDefinition="Details about an insurance plan." )
     protected List<InsurancePlanPlanComponent> plan;
 
-    private static final long serialVersionUID = -1910594688L;
+    private static final long serialVersionUID = -947586130L;
 
   /**
    * Constructor
@@ -3430,26 +3362,6 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return {@link #ownedBy} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity that is providing  the health insurance product and underwriting the risk.  This is typically an insurance carriers, other third-party payers, or health plan sponsors comonly referred to as 'payers'.)
-     */
-    public Organization getOwnedByTarget() { 
-      if (this.ownedByTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create InsurancePlan.ownedBy");
-        else if (Configuration.doAutoCreate())
-          this.ownedByTarget = new Organization(); // aa
-      return this.ownedByTarget;
-    }
-
-    /**
-     * @param value {@link #ownedBy} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity that is providing  the health insurance product and underwriting the risk.  This is typically an insurance carriers, other third-party payers, or health plan sponsors comonly referred to as 'payers'.)
-     */
-    public InsurancePlan setOwnedByTarget(Organization value) { 
-      this.ownedByTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #administeredBy} (An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.)
      */
     public Reference getAdministeredBy() { 
@@ -3470,26 +3382,6 @@ public class InsurancePlan extends DomainResource {
      */
     public InsurancePlan setAdministeredBy(Reference value) { 
       this.administeredBy = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #administeredBy} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.)
-     */
-    public Organization getAdministeredByTarget() { 
-      if (this.administeredByTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create InsurancePlan.administeredBy");
-        else if (Configuration.doAutoCreate())
-          this.administeredByTarget = new Organization(); // aa
-      return this.administeredByTarget;
-    }
-
-    /**
-     * @param value {@link #administeredBy} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.)
-     */
-    public InsurancePlan setAdministeredByTarget(Organization value) { 
-      this.administeredByTarget = value;
       return this;
     }
 
@@ -3544,28 +3436,6 @@ public class InsurancePlan extends DomainResource {
         addCoverageArea();
       }
       return getCoverageArea().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getCoverageAreaTarget() { 
-      if (this.coverageAreaTarget == null)
-        this.coverageAreaTarget = new ArrayList<Location>();
-      return this.coverageAreaTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addCoverageAreaTarget() { 
-      Location r = new Location();
-      if (this.coverageAreaTarget == null)
-        this.coverageAreaTarget = new ArrayList<Location>();
-      this.coverageAreaTarget.add(r);
-      return r;
     }
 
     /**
@@ -3675,28 +3545,6 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #network} (Reference to the network included in the health insurance product.)
      */
     public List<Reference> getNetwork() { 
@@ -3747,28 +3595,6 @@ public class InsurancePlan extends DomainResource {
         addNetwork();
       }
       return getNetwork().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getNetworkTarget() { 
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      return this.networkTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addNetworkTarget() { 
-      Organization r = new Organization();
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      this.networkTarget.add(r);
-      return r;
     }
 
     /**
@@ -4034,9 +3860,9 @@ public class InsurancePlan extends DomainResource {
         case 3575610:  return addType(); 
         case 3373707:  return getNameElement();
         case 92902992:  return addAliasElement();
-        case -991726143:  return getPeriod(); 
-        case -1054743076:  return getOwnedBy(); 
-        case 898770462:  return getAdministeredBy(); 
+        case -991726143:  return getPeriod();
+        case -1054743076:  return getOwnedBy();
+        case 898770462:  return getAdministeredBy();
         case -1532328299:  return addCoverageArea(); 
         case 951526432:  return addContact(); 
         case 1741102485:  return addEndpoint(); 
@@ -4129,6 +3955,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlan copy() {
         InsurancePlan dst = new InsurancePlan();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlan dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4179,7 +4010,6 @@ public class InsurancePlan extends DomainResource {
           for (InsurancePlanPlanComponent i : plan)
             dst.plan.add(i.copy());
         };
-        return dst;
       }
 
       protected InsurancePlan typedCopy() {

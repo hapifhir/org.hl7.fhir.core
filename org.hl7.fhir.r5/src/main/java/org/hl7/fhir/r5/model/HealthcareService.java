@@ -51,17 +51,21 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The details of a healthcare service available at a location.
  */
@@ -392,7 +396,7 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 950398559:  return getCommentElement();
         default: return super.makeProperty(hash, name);
         }
@@ -425,9 +429,13 @@ public class HealthcareService extends DomainResource {
       public HealthcareServiceEligibilityComponent copy() {
         HealthcareServiceEligibilityComponent dst = new HealthcareServiceEligibilityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(HealthcareServiceEligibilityComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       @Override
@@ -819,6 +827,11 @@ public class HealthcareService extends DomainResource {
       public HealthcareServiceAvailableTimeComponent copy() {
         HealthcareServiceAvailableTimeComponent dst = new HealthcareServiceAvailableTimeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(HealthcareServiceAvailableTimeComponent dst) {
+        super.copyValues(dst);
         if (daysOfWeek != null) {
           dst.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
           for (Enumeration<DaysOfWeek> i : daysOfWeek)
@@ -827,7 +840,6 @@ public class HealthcareService extends DomainResource {
         dst.allDay = allDay == null ? null : allDay.copy();
         dst.availableStartTime = availableStartTime == null ? null : availableStartTime.copy();
         dst.availableEndTime = availableEndTime == null ? null : availableEndTime.copy();
-        return dst;
       }
 
       @Override
@@ -1021,7 +1033,7 @@ public class HealthcareService extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
-        case -1320499647:  return getDuring(); 
+        case -1320499647:  return getDuring();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1053,9 +1065,13 @@ public class HealthcareService extends DomainResource {
       public HealthcareServiceNotAvailableComponent copy() {
         HealthcareServiceNotAvailableComponent dst = new HealthcareServiceNotAvailableComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(HealthcareServiceNotAvailableComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.during = during == null ? null : during.copy();
-        return dst;
       }
 
       @Override
@@ -1111,11 +1127,6 @@ public class HealthcareService extends DomainResource {
     protected Reference providedBy;
 
     /**
-     * The actual object that is the target of the reference (The organization that provides this healthcare service.)
-     */
-    protected Organization providedByTarget;
-
-    /**
      * Identifies the broad category of service being performed or delivered.
      */
     @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
@@ -1145,11 +1156,6 @@ public class HealthcareService extends DomainResource {
     @Child(name = "location", type = {Location.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Location(s) where service may be provided", formalDefinition="The location(s) where this healthcare service may be provided." )
     protected List<Reference> location;
-    /**
-     * The actual objects that are the target of the reference (The location(s) where this healthcare service may be provided.)
-     */
-    protected List<Location> locationTarget;
-
 
     /**
      * Further description of the service as it would be presented to a consumer while searching.
@@ -1192,11 +1198,6 @@ public class HealthcareService extends DomainResource {
     @Child(name = "coverageArea", type = {Location.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Location(s) service is intended for/available to", formalDefinition="The location(s) that this service is available to (not where the service is provided)." )
     protected List<Reference> coverageArea;
-    /**
-     * The actual objects that are the target of the reference (The location(s) that this service is available to (not where the service is provided).)
-     */
-    protected List<Location> coverageAreaTarget;
-
 
     /**
      * The code(s) that detail the conditions under which the healthcare service is available/offered.
@@ -1278,13 +1279,8 @@ public class HealthcareService extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to electronic services operated for the healthcare service", formalDefinition="Technical endpoints providing access to services operated for the specific healthcare services defined at this resource." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (Technical endpoints providing access to services operated for the specific healthcare services defined at this resource.)
-     */
-    protected List<Endpoint> endpointTarget;
 
-
-    private static final long serialVersionUID = -2002412666L;
+    private static final long serialVersionUID = 25501899L;
 
   /**
    * Constructor
@@ -1412,26 +1408,6 @@ public class HealthcareService extends DomainResource {
      */
     public HealthcareService setProvidedBy(Reference value) { 
       this.providedBy = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #providedBy} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization that provides this healthcare service.)
-     */
-    public Organization getProvidedByTarget() { 
-      if (this.providedByTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create HealthcareService.providedBy");
-        else if (Configuration.doAutoCreate())
-          this.providedByTarget = new Organization(); // aa
-      return this.providedByTarget;
-    }
-
-    /**
-     * @param value {@link #providedBy} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization that provides this healthcare service.)
-     */
-    public HealthcareService setProvidedByTarget(Organization value) { 
-      this.providedByTarget = value;
       return this;
     }
 
@@ -1645,28 +1621,6 @@ public class HealthcareService extends DomainResource {
         addLocation();
       }
       return getLocation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getLocationTarget() { 
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      return this.locationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addLocationTarget() { 
-      Location r = new Location();
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      this.locationTarget.add(r);
-      return r;
     }
 
     /**
@@ -1944,28 +1898,6 @@ public class HealthcareService extends DomainResource {
         addCoverageArea();
       }
       return getCoverageArea().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getCoverageAreaTarget() { 
-      if (this.coverageAreaTarget == null)
-        this.coverageAreaTarget = new ArrayList<Location>();
-      return this.coverageAreaTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addCoverageAreaTarget() { 
-      Location r = new Location();
-      if (this.coverageAreaTarget == null)
-        this.coverageAreaTarget = new ArrayList<Location>();
-      this.coverageAreaTarget.add(r);
-      return r;
     }
 
     /**
@@ -2539,28 +2471,6 @@ public class HealthcareService extends DomainResource {
       return getEndpoint().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "External identifiers for this item.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -2793,7 +2703,7 @@ public class HealthcareService extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -1422950650:  return getActiveElement();
-        case 205136282:  return getProvidedBy(); 
+        case 205136282:  return getProvidedBy();
         case 50511102:  return addCategory(); 
         case 3575610:  return addType(); 
         case -1694759682:  return addSpecialty(); 
@@ -2801,7 +2711,7 @@ public class HealthcareService extends DomainResource {
         case 3373707:  return getNameElement();
         case 950398559:  return getCommentElement();
         case -1469168622:  return getExtraDetailsElement();
-        case 106642994:  return getPhoto(); 
+        case 106642994:  return getPhoto();
         case -1429363305:  return addTelecom(); 
         case -1532328299:  return addCoverageArea(); 
         case 1504575405:  return addServiceProvisionCode(); 
@@ -2940,6 +2850,11 @@ public class HealthcareService extends DomainResource {
       public HealthcareService copy() {
         HealthcareService dst = new HealthcareService();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(HealthcareService dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3028,7 +2943,6 @@ public class HealthcareService extends DomainResource {
           for (Reference i : endpoint)
             dst.endpoint.add(i.copy());
         };
-        return dst;
       }
 
       protected HealthcareService typedCopy() {

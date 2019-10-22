@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -70,14 +69,16 @@ public class V3MaritalStatusEnumFactory implements EnumFactory<V3MaritalStatus> 
       return V3MaritalStatus.L;
     if ("M".equals(codeString))
       return V3MaritalStatus.M;
+    if ("C".equals(codeString))
+      return V3MaritalStatus.C;
     if ("P".equals(codeString))
       return V3MaritalStatus.P;
-    if ("S".equals(codeString))
-      return V3MaritalStatus.S;
     if ("T".equals(codeString))
       return V3MaritalStatus.T;
     if ("U".equals(codeString))
       return V3MaritalStatus.U;
+    if ("S".equals(codeString))
+      return V3MaritalStatus.S;
     if ("W".equals(codeString))
       return V3MaritalStatus.W;
     throw new IllegalArgumentException("Unknown V3MaritalStatus code '"+codeString+"'");
@@ -94,14 +95,16 @@ public class V3MaritalStatusEnumFactory implements EnumFactory<V3MaritalStatus> 
       return "L";
     if (code == V3MaritalStatus.M)
       return "M";
+    if (code == V3MaritalStatus.C)
+      return "C";
     if (code == V3MaritalStatus.P)
       return "P";
-    if (code == V3MaritalStatus.S)
-      return "S";
     if (code == V3MaritalStatus.T)
       return "T";
     if (code == V3MaritalStatus.U)
       return "U";
+    if (code == V3MaritalStatus.S)
+      return "S";
     if (code == V3MaritalStatus.W)
       return "W";
     return "?";

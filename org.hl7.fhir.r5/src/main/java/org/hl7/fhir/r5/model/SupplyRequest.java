@@ -53,15 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A record of a request for a medication, substance or device used in the healthcare setting.
  */
@@ -553,9 +556,9 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case 3059181:  return getCode();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -600,9 +603,13 @@ public class SupplyRequest extends DomainResource {
       public SupplyRequestParameterComponent copy() {
         SupplyRequestParameterComponent dst = new SupplyRequestParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupplyRequestParameterComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -711,21 +718,11 @@ public class SupplyRequest extends DomainResource {
     protected Reference requester;
 
     /**
-     * The actual object that is the target of the reference (The device, practitioner, etc. who initiated the request.)
-     */
-    protected Resource requesterTarget;
-
-    /**
      * Who is intended to fulfill the request.
      */
     @Child(name = "supplier", type = {Organization.class, HealthcareService.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who is intended to fulfill the request", formalDefinition="Who is intended to fulfill the request." )
     protected List<Reference> supplier;
-    /**
-     * The actual objects that are the target of the reference (Who is intended to fulfill the request.)
-     */
-    protected List<Resource> supplierTarget;
-
 
     /**
      * The reason why the supply item was requested.
@@ -741,11 +738,6 @@ public class SupplyRequest extends DomainResource {
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The reason why the supply item was requested", formalDefinition="The reason why the supply item was requested." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (The reason why the supply item was requested.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Where the supply is expected to come from.
@@ -755,23 +747,13 @@ public class SupplyRequest extends DomainResource {
     protected Reference deliverFrom;
 
     /**
-     * The actual object that is the target of the reference (Where the supply is expected to come from.)
-     */
-    protected Resource deliverFromTarget;
-
-    /**
      * Where the supply is destined to go.
      */
     @Child(name = "deliverTo", type = {Organization.class, Location.class, Patient.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The destination of the supply", formalDefinition="Where the supply is destined to go." )
     protected Reference deliverTo;
 
-    /**
-     * The actual object that is the target of the reference (Where the supply is destined to go.)
-     */
-    protected Resource deliverToTarget;
-
-    private static final long serialVersionUID = 1456312151L;
+    private static final long serialVersionUID = -864721244L;
 
   /**
    * Constructor
@@ -1232,21 +1214,6 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #requester} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who initiated the request.)
-     */
-    public Resource getRequesterTarget() { 
-      return this.requesterTarget;
-    }
-
-    /**
-     * @param value {@link #requester} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who initiated the request.)
-     */
-    public SupplyRequest setRequesterTarget(Resource value) { 
-      this.requesterTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #supplier} (Who is intended to fulfill the request.)
      */
     public List<Reference> getSupplier() { 
@@ -1297,16 +1264,6 @@ public class SupplyRequest extends DomainResource {
         addSupplier();
       }
       return getSupplier().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupplierTarget() { 
-      if (this.supplierTarget == null)
-        this.supplierTarget = new ArrayList<Resource>();
-      return this.supplierTarget;
     }
 
     /**
@@ -1416,16 +1373,6 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #deliverFrom} (Where the supply is expected to come from.)
      */
     public Reference getDeliverFrom() { 
@@ -1450,21 +1397,6 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #deliverFrom} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where the supply is expected to come from.)
-     */
-    public Resource getDeliverFromTarget() { 
-      return this.deliverFromTarget;
-    }
-
-    /**
-     * @param value {@link #deliverFrom} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where the supply is expected to come from.)
-     */
-    public SupplyRequest setDeliverFromTarget(Resource value) { 
-      this.deliverFromTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #deliverTo} (Where the supply is destined to go.)
      */
     public Reference getDeliverTo() { 
@@ -1485,21 +1417,6 @@ public class SupplyRequest extends DomainResource {
      */
     public SupplyRequest setDeliverTo(Reference value) { 
       this.deliverTo = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #deliverTo} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where the supply is destined to go.)
-     */
-    public Resource getDeliverToTarget() { 
-      return this.deliverToTarget;
-    }
-
-    /**
-     * @param value {@link #deliverTo} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where the supply is destined to go.)
-     */
-    public SupplyRequest setDeliverToTarget(Resource value) { 
-      this.deliverToTarget = value;
       return this;
     }
 
@@ -1674,21 +1591,21 @@ public class SupplyRequest extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 50511102:  return getCategory(); 
+        case 50511102:  return getCategory();
         case -1165461084:  return getPriorityElement();
-        case 2116201613:  return getItem(); 
-        case 3242771:  return getItem(); 
-        case -1285004149:  return getQuantity(); 
+        case 2116201613:  return getItem();
+        case 3242771:  return getItem();
+        case -1285004149:  return getQuantity();
         case 1954460585:  return addParameter(); 
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
         case -1500852503:  return getAuthoredOnElement();
-        case 693933948:  return getRequester(); 
+        case 693933948:  return getRequester();
         case -1663305268:  return addSupplier(); 
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
-        case -949323153:  return getDeliverFrom(); 
-        case -242327936:  return getDeliverTo(); 
+        case -949323153:  return getDeliverFrom();
+        case -242327936:  return getDeliverTo();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1795,6 +1712,11 @@ public class SupplyRequest extends DomainResource {
       public SupplyRequest copy() {
         SupplyRequest dst = new SupplyRequest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupplyRequest dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1830,7 +1752,6 @@ public class SupplyRequest extends DomainResource {
         };
         dst.deliverFrom = deliverFrom == null ? null : deliverFrom.copy();
         dst.deliverTo = deliverTo == null ? null : deliverTo.copy();
-        return dst;
       }
 
       protected SupplyRequest typedCopy() {
