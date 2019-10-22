@@ -50,15 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A  text note which also  contains information about who made the statement and when.
  */
@@ -313,8 +316,8 @@ public class Annotation extends Type implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1475597077:  return getAuthor(); 
-        case -1406328437:  return getAuthor(); 
+        case 1475597077:  return getAuthor();
+        case -1406328437:  return getAuthor();
         case 3560141:  return getTimeElement();
         case 3556653:  return getTextElement();
         default: return super.makeProperty(hash, name);
@@ -361,10 +364,14 @@ public class Annotation extends Type implements ICompositeType {
       public Annotation copy() {
         Annotation dst = new Annotation();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Annotation dst) {
+        super.copyValues(dst);
         dst.author = author == null ? null : author.copy();
         dst.time = time == null ? null : time.copy();
         dst.text = text == null ? null : text.copy();
-        return dst;
       }
 
       protected Annotation typedCopy() {

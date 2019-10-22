@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.instance.model.api.IBaseParameters;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseParameters;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.
  */
@@ -97,7 +101,7 @@ public class Parameters extends Resource implements IBaseParameters {
         @Description(shortDefinition="Named part of a multi-part parameter", formalDefinition="A named part of a multi-part parameter." )
         protected List<ParametersParameterComponent> part;
 
-        private static final long serialVersionUID = -1265707999L;
+        private static final long serialVersionUID = -1906794142L;
 
     /**
      * Constructor
@@ -358,8 +362,8 @@ public class Parameters extends Resource implements IBaseParameters {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         case -341064690: throw new FHIRException("Cannot make property resource as it is not a complex type"); // Resource
         case 3433459:  return addPart(); 
         default: return super.makeProperty(hash, name);
@@ -580,6 +584,10 @@ public class Parameters extends Resource implements IBaseParameters {
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else if (name.equals("resource")) {
           throw new FHIRException("Cannot call addChild on an abstract type Parameters.resource");
         }
@@ -593,6 +601,11 @@ public class Parameters extends Resource implements IBaseParameters {
       public ParametersParameterComponent copy() {
         ParametersParameterComponent dst = new ParametersParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ParametersParameterComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.value = value == null ? null : value.copy();
         dst.resource = resource == null ? null : resource.copy();
@@ -601,7 +614,6 @@ public class Parameters extends Resource implements IBaseParameters {
           for (ParametersParameterComponent i : part)
             dst.part.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -784,12 +796,16 @@ public class Parameters extends Resource implements IBaseParameters {
       public Parameters copy() {
         Parameters dst = new Parameters();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Parameters dst) {
+        super.copyValues(dst);
         if (parameter != null) {
           dst.parameter = new ArrayList<ParametersParameterComponent>();
           for (ParametersParameterComponent i : parameter)
             dst.parameter.add(i.copy());
         };
-        return dst;
       }
 
       protected Parameters typedCopy() {

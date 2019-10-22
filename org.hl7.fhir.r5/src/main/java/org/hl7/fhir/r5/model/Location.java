@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -53,17 +51,21 @@ import java.math.BigDecimal;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Details and position information for a physical place where services are provided and resources and participants may be stored, found, contained, or accommodated.
  */
@@ -775,10 +777,14 @@ public class Location extends DomainResource {
       public LocationPositionComponent copy() {
         LocationPositionComponent dst = new LocationPositionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(LocationPositionComponent dst) {
+        super.copyValues(dst);
         dst.longitude = longitude == null ? null : longitude.copy();
         dst.latitude = latitude == null ? null : latitude.copy();
         dst.altitude = altitude == null ? null : altitude.copy();
-        return dst;
       }
 
       @Override
@@ -1173,6 +1179,11 @@ public class Location extends DomainResource {
       public LocationHoursOfOperationComponent copy() {
         LocationHoursOfOperationComponent dst = new LocationHoursOfOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(LocationHoursOfOperationComponent dst) {
+        super.copyValues(dst);
         if (daysOfWeek != null) {
           dst.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
           for (Enumeration<DaysOfWeek> i : daysOfWeek)
@@ -1181,7 +1192,6 @@ public class Location extends DomainResource {
         dst.allDay = allDay == null ? null : allDay.copy();
         dst.openingTime = openingTime == null ? null : openingTime.copy();
         dst.closingTime = closingTime == null ? null : closingTime.copy();
-        return dst;
       }
 
       @Override
@@ -1315,21 +1325,11 @@ public class Location extends DomainResource {
     protected Reference managingOrganization;
 
     /**
-     * The actual object that is the target of the reference (The organization responsible for the provisioning and upkeep of the location.)
-     */
-    protected Organization managingOrganizationTarget;
-
-    /**
      * Another Location of which this Location is physically a part of.
      */
     @Child(name = "partOf", type = {Location.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Another Location this one is physically a part of", formalDefinition="Another Location of which this Location is physically a part of." )
     protected Reference partOf;
-
-    /**
-     * The actual object that is the target of the reference (Another Location of which this Location is physically a part of.)
-     */
-    protected Location partOfTarget;
 
     /**
      * What days/times during a week is this location usually open.
@@ -1351,13 +1351,8 @@ public class Location extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to services operated for the location", formalDefinition="Technical endpoints providing access to services operated for the location." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (Technical endpoints providing access to services operated for the location.)
-     */
-    protected List<Endpoint> endpointTarget;
 
-
-    private static final long serialVersionUID = -2126621333L;
+    private static final long serialVersionUID = -1479198769L;
 
   /**
    * Constructor
@@ -1903,26 +1898,6 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization responsible for the provisioning and upkeep of the location.)
-     */
-    public Organization getManagingOrganizationTarget() { 
-      if (this.managingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Location.managingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.managingOrganizationTarget = new Organization(); // aa
-      return this.managingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #managingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization responsible for the provisioning and upkeep of the location.)
-     */
-    public Location setManagingOrganizationTarget(Organization value) { 
-      this.managingOrganizationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #partOf} (Another Location of which this Location is physically a part of.)
      */
     public Reference getPartOf() { 
@@ -1943,26 +1918,6 @@ public class Location extends DomainResource {
      */
     public Location setPartOf(Reference value) { 
       this.partOf = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #partOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Another Location of which this Location is physically a part of.)
-     */
-    public Location getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Location.partOf");
-        else if (Configuration.doAutoCreate())
-          this.partOfTarget = new Location(); // aa
-      return this.partOfTarget;
-    }
-
-    /**
-     * @param value {@link #partOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Another Location of which this Location is physically a part of.)
-     */
-    public Location setPartOfTarget(Location value) { 
-      this.partOfTarget = value;
       return this;
     }
 
@@ -2119,28 +2074,6 @@ public class Location extends DomainResource {
         addEndpoint();
       }
       return getEndpoint().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {
@@ -2323,18 +2256,18 @@ public class Location extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case -2103166364:  return getOperationalStatus(); 
+        case -2103166364:  return getOperationalStatus();
         case 3373707:  return getNameElement();
         case 92902992:  return addAliasElement();
         case -1724546052:  return getDescriptionElement();
         case 3357091:  return getModeElement();
         case 3575610:  return addType(); 
         case -1429363305:  return addTelecom(); 
-        case -1147692044:  return getAddress(); 
-        case -1474715471:  return getPhysicalType(); 
-        case 747804969:  return getPosition(); 
-        case -2058947787:  return getManagingOrganization(); 
-        case -995410646:  return getPartOf(); 
+        case -1147692044:  return getAddress();
+        case -1474715471:  return getPhysicalType();
+        case 747804969:  return getPosition();
+        case -2058947787:  return getManagingOrganization();
+        case -995410646:  return getPartOf();
         case -1588872511:  return addHoursOfOperation(); 
         case -1149143617:  return getAvailabilityExceptionsElement();
         case 1741102485:  return addEndpoint(); 
@@ -2439,6 +2372,11 @@ public class Location extends DomainResource {
       public Location copy() {
         Location dst = new Location();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Location dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2480,7 +2418,6 @@ public class Location extends DomainResource {
           for (Reference i : endpoint)
             dst.endpoint.add(i.copy());
         };
-        return dst;
       }
 
       protected Location typedCopy() {
@@ -2813,8 +2750,7 @@ Requires the near-distance parameter to be provided also</b><br>
    * Path: <b>Location.position</b><br>
    * </p>
    */
-// GDG - not sure what to do with this (when generating R4)
-// public static final ca.uhn.fhir.rest.gclient.SpecialClientParam NEAR = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_NEAR);
+  public static final ca.uhn.fhir.rest.gclient.SpecialClientParam NEAR = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_NEAR);
 
  /**
    * Search parameter: <b>address-city</b>

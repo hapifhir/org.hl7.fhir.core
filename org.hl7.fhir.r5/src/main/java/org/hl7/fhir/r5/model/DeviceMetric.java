@@ -53,15 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Describes a measurement, calculation or setting capability of a medical device.
  */
@@ -1036,10 +1039,14 @@ public class DeviceMetric extends DomainResource {
       public DeviceMetricCalibrationComponent copy() {
         DeviceMetricCalibrationComponent dst = new DeviceMetricCalibrationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceMetricCalibrationComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.state = state == null ? null : state.copy();
         dst.time = time == null ? null : time.copy();
-        return dst;
       }
 
       @Override
@@ -1106,21 +1113,11 @@ public class DeviceMetric extends DomainResource {
     protected Reference source;
 
     /**
-     * The actual object that is the target of the reference (Describes the link to the  Device that this DeviceMetric belongs to and that contains administrative device information such as manufacturer, serial number, etc.)
-     */
-    protected Device sourceTarget;
-
-    /**
      * Describes the link to the  Device that this DeviceMetric belongs to and that provide information about the location of this DeviceMetric in the containment structure of the parent Device. An example would be a Device that represents a Channel. This reference can be used by a client application to distinguish DeviceMetrics that have the same type, but should be interpreted based on their containment location.
      */
     @Child(name = "parent", type = {Device.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Describes the link to the parent Device", formalDefinition="Describes the link to the  Device that this DeviceMetric belongs to and that provide information about the location of this DeviceMetric in the containment structure of the parent Device. An example would be a Device that represents a Channel. This reference can be used by a client application to distinguish DeviceMetrics that have the same type, but should be interpreted based on their containment location." )
     protected Reference parent;
-
-    /**
-     * The actual object that is the target of the reference (Describes the link to the  Device that this DeviceMetric belongs to and that provide information about the location of this DeviceMetric in the containment structure of the parent Device. An example would be a Device that represents a Channel. This reference can be used by a client application to distinguish DeviceMetrics that have the same type, but should be interpreted based on their containment location.)
-     */
-    protected Device parentTarget;
 
     /**
      * Indicates current operational state of the device. For example: On, Off, Standby, etc.
@@ -1160,7 +1157,7 @@ public class DeviceMetric extends DomainResource {
     @Description(shortDefinition="Describes the calibrations that have been performed or that are required to be performed", formalDefinition="Describes the calibrations that have been performed or that are required to be performed." )
     protected List<DeviceMetricCalibrationComponent> calibration;
 
-    private static final long serialVersionUID = 1309955219L;
+    private static final long serialVersionUID = 2132964036L;
 
   /**
    * Constructor
@@ -1304,26 +1301,6 @@ public class DeviceMetric extends DomainResource {
     }
 
     /**
-     * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Describes the link to the  Device that this DeviceMetric belongs to and that contains administrative device information such as manufacturer, serial number, etc.)
-     */
-    public Device getSourceTarget() { 
-      if (this.sourceTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceMetric.source");
-        else if (Configuration.doAutoCreate())
-          this.sourceTarget = new Device(); // aa
-      return this.sourceTarget;
-    }
-
-    /**
-     * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Describes the link to the  Device that this DeviceMetric belongs to and that contains administrative device information such as manufacturer, serial number, etc.)
-     */
-    public DeviceMetric setSourceTarget(Device value) { 
-      this.sourceTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #parent} (Describes the link to the  Device that this DeviceMetric belongs to and that provide information about the location of this DeviceMetric in the containment structure of the parent Device. An example would be a Device that represents a Channel. This reference can be used by a client application to distinguish DeviceMetrics that have the same type, but should be interpreted based on their containment location.)
      */
     public Reference getParent() { 
@@ -1344,26 +1321,6 @@ public class DeviceMetric extends DomainResource {
      */
     public DeviceMetric setParent(Reference value) { 
       this.parent = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #parent} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Describes the link to the  Device that this DeviceMetric belongs to and that provide information about the location of this DeviceMetric in the containment structure of the parent Device. An example would be a Device that represents a Channel. This reference can be used by a client application to distinguish DeviceMetrics that have the same type, but should be interpreted based on their containment location.)
-     */
-    public Device getParentTarget() { 
-      if (this.parentTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceMetric.parent");
-        else if (Configuration.doAutoCreate())
-          this.parentTarget = new Device(); // aa
-      return this.parentTarget;
-    }
-
-    /**
-     * @param value {@link #parent} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Describes the link to the  Device that this DeviceMetric belongs to and that provide information about the location of this DeviceMetric in the containment structure of the parent Device. An example would be a Device that represents a Channel. This reference can be used by a client application to distinguish DeviceMetrics that have the same type, but should be interpreted based on their containment location.)
-     */
-    public DeviceMetric setParentTarget(Device value) { 
-      this.parentTarget = value;
       return this;
     }
 
@@ -1712,14 +1669,14 @@ public class DeviceMetric extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 3575610:  return getType(); 
-        case 3594628:  return getUnit(); 
-        case -896505829:  return getSource(); 
-        case -995424086:  return getParent(); 
+        case 3575610:  return getType();
+        case 3594628:  return getUnit();
+        case -896505829:  return getSource();
+        case -995424086:  return getParent();
         case -2103166364:  return getOperationalStatusElement();
         case 94842723:  return getColorElement();
         case 50511102:  return getCategoryElement();
-        case -1300332387:  return getMeasurementPeriod(); 
+        case -1300332387:  return getMeasurementPeriod();
         case 1421318634:  return addCalibration(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1793,6 +1750,11 @@ public class DeviceMetric extends DomainResource {
       public DeviceMetric copy() {
         DeviceMetric dst = new DeviceMetric();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceMetric dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1811,7 +1773,6 @@ public class DeviceMetric extends DomainResource {
           for (DeviceMetricCalibrationComponent i : calibration)
             dst.calibration.add(i.copy());
         };
-        return dst;
       }
 
       protected DeviceMetric typedCopy() {

@@ -51,14 +51,19 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Defines an affiliation/assotiation/relationship between 2 distinct oganizations, that is not a part-of relationship/sub-division relationship.
  */
@@ -94,11 +99,6 @@ public class OrganizationAffiliation extends DomainResource {
     protected Reference organization;
 
     /**
-     * The actual object that is the target of the reference (Organization where the role is available (primary organization/has members).)
-     */
-    protected Organization organizationTarget;
-
-    /**
      * The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).
      */
     @Child(name = "participatingOrganization", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
@@ -106,21 +106,11 @@ public class OrganizationAffiliation extends DomainResource {
     protected Reference participatingOrganization;
 
     /**
-     * The actual object that is the target of the reference (The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).)
-     */
-    protected Organization participatingOrganizationTarget;
-
-    /**
      * Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).
      */
     @Child(name = "network", type = {Organization.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)", formalDefinition="Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)." )
     protected List<Reference> network;
-    /**
-     * The actual objects that are the target of the reference (Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).)
-     */
-    protected List<Organization> networkTarget;
-
 
     /**
      * Definition of the role the participatingOrganization plays in the association.
@@ -144,11 +134,6 @@ public class OrganizationAffiliation extends DomainResource {
     @Child(name = "location", type = {Location.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The location(s) at which the role occurs", formalDefinition="The location(s) at which the role occurs." )
     protected List<Reference> location;
-    /**
-     * The actual objects that are the target of the reference (The location(s) at which the role occurs.)
-     */
-    protected List<Location> locationTarget;
-
 
     /**
      * Healthcare services provided through the role.
@@ -156,11 +141,6 @@ public class OrganizationAffiliation extends DomainResource {
     @Child(name = "healthcareService", type = {HealthcareService.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Healthcare services provided through the role", formalDefinition="Healthcare services provided through the role." )
     protected List<Reference> healthcareService;
-    /**
-     * The actual objects that are the target of the reference (Healthcare services provided through the role.)
-     */
-    protected List<HealthcareService> healthcareServiceTarget;
-
 
     /**
      * Contact details at the participatingOrganization relevant to this Affiliation.
@@ -175,13 +155,8 @@ public class OrganizationAffiliation extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to services operated for this role", formalDefinition="Technical endpoints providing access to services operated for this role." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (Technical endpoints providing access to services operated for this role.)
-     */
-    protected List<Endpoint> endpointTarget;
 
-
-    private static final long serialVersionUID = -62510821L;
+    private static final long serialVersionUID = 522401879L;
 
   /**
    * Constructor
@@ -337,26 +312,6 @@ public class OrganizationAffiliation extends DomainResource {
     }
 
     /**
-     * @return {@link #organization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Organization where the role is available (primary organization/has members).)
-     */
-    public Organization getOrganizationTarget() { 
-      if (this.organizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create OrganizationAffiliation.organization");
-        else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization(); // aa
-      return this.organizationTarget;
-    }
-
-    /**
-     * @param value {@link #organization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Organization where the role is available (primary organization/has members).)
-     */
-    public OrganizationAffiliation setOrganizationTarget(Organization value) { 
-      this.organizationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #participatingOrganization} (The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).)
      */
     public Reference getParticipatingOrganization() { 
@@ -377,26 +332,6 @@ public class OrganizationAffiliation extends DomainResource {
      */
     public OrganizationAffiliation setParticipatingOrganization(Reference value) { 
       this.participatingOrganization = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #participatingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).)
-     */
-    public Organization getParticipatingOrganizationTarget() { 
-      if (this.participatingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create OrganizationAffiliation.participatingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.participatingOrganizationTarget = new Organization(); // aa
-      return this.participatingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #participatingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).)
-     */
-    public OrganizationAffiliation setParticipatingOrganizationTarget(Organization value) { 
-      this.participatingOrganizationTarget = value;
       return this;
     }
 
@@ -451,28 +386,6 @@ public class OrganizationAffiliation extends DomainResource {
         addNetwork();
       }
       return getNetwork().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getNetworkTarget() { 
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      return this.networkTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addNetworkTarget() { 
-      Organization r = new Organization();
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      this.networkTarget.add(r);
-      return r;
     }
 
     /**
@@ -635,28 +548,6 @@ public class OrganizationAffiliation extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getLocationTarget() { 
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      return this.locationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addLocationTarget() { 
-      Location r = new Location();
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      this.locationTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #healthcareService} (Healthcare services provided through the role.)
      */
     public List<Reference> getHealthcareService() { 
@@ -707,28 +598,6 @@ public class OrganizationAffiliation extends DomainResource {
         addHealthcareService();
       }
       return getHealthcareService().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<HealthcareService> getHealthcareServiceTarget() { 
-      if (this.healthcareServiceTarget == null)
-        this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-      return this.healthcareServiceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public HealthcareService addHealthcareServiceTarget() { 
-      HealthcareService r = new HealthcareService();
-      if (this.healthcareServiceTarget == null)
-        this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-      this.healthcareServiceTarget.add(r);
-      return r;
     }
 
     /**
@@ -835,28 +704,6 @@ public class OrganizationAffiliation extends DomainResource {
         addEndpoint();
       }
       return getEndpoint().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {
@@ -995,9 +842,9 @@ public class OrganizationAffiliation extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -1422950650:  return getActiveElement();
-        case -991726143:  return getPeriod(); 
-        case 1178922291:  return getOrganization(); 
-        case 1593310702:  return getParticipatingOrganization(); 
+        case -991726143:  return getPeriod();
+        case 1178922291:  return getOrganization();
+        case 1593310702:  return getParticipatingOrganization();
         case 1843485230:  return addNetwork(); 
         case 3059181:  return addCode(); 
         case -1694759682:  return addSpecialty(); 
@@ -1083,6 +930,11 @@ public class OrganizationAffiliation extends DomainResource {
       public OrganizationAffiliation copy() {
         OrganizationAffiliation dst = new OrganizationAffiliation();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OrganizationAffiliation dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1127,7 +979,6 @@ public class OrganizationAffiliation extends DomainResource {
           for (Reference i : endpoint)
             dst.endpoint.add(i.copy());
         };
-        return dst;
       }
 
       protected OrganizationAffiliation typedCopy() {

@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -64,6 +63,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.ACCOUNT;
     if ("ActivityDefinition".equals(codeString))
       return ResourceTypes.ACTIVITYDEFINITION;
+    if ("AdministrableProductDefinition".equals(codeString))
+      return ResourceTypes.ADMINISTRABLEPRODUCTDEFINITION;
     if ("AdverseEvent".equals(codeString))
       return ResourceTypes.ADVERSEEVENT;
     if ("AllergyIntolerance".equals(codeString))
@@ -152,8 +153,6 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.DOCUMENTREFERENCE;
     if ("DomainResource".equals(codeString))
       return ResourceTypes.DOMAINRESOURCE;
-    if ("EffectEvidenceSynthesis".equals(codeString))
-      return ResourceTypes.EFFECTEVIDENCESYNTHESIS;
     if ("Encounter".equals(codeString))
       return ResourceTypes.ENCOUNTER;
     if ("Endpoint".equals(codeString))
@@ -212,12 +211,12 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.LIST;
     if ("Location".equals(codeString))
       return ResourceTypes.LOCATION;
+    if ("ManufacturedItemDefinition".equals(codeString))
+      return ResourceTypes.MANUFACTUREDITEMDEFINITION;
     if ("Measure".equals(codeString))
       return ResourceTypes.MEASURE;
     if ("MeasureReport".equals(codeString))
       return ResourceTypes.MEASUREREPORT;
-    if ("Media".equals(codeString))
-      return ResourceTypes.MEDIA;
     if ("Medication".equals(codeString))
       return ResourceTypes.MEDICATION;
     if ("MedicationAdministration".equals(codeString))
@@ -230,6 +229,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.MEDICATIONREQUEST;
     if ("MedicationUsage".equals(codeString))
       return ResourceTypes.MEDICATIONUSAGE;
+    if ("MedicinalProductDefinition".equals(codeString))
+      return ResourceTypes.MEDICINALPRODUCTDEFINITION;
     if ("MessageDefinition".equals(codeString))
       return ResourceTypes.MESSAGEDEFINITION;
     if ("MessageHeader".equals(codeString))
@@ -238,6 +239,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.MOLECULARSEQUENCE;
     if ("NamingSystem".equals(codeString))
       return ResourceTypes.NAMINGSYSTEM;
+    if ("NutritionIntake".equals(codeString))
+      return ResourceTypes.NUTRITIONINTAKE;
     if ("NutritionOrder".equals(codeString))
       return ResourceTypes.NUTRITIONORDER;
     if ("Observation".equals(codeString))
@@ -252,6 +255,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.ORGANIZATION;
     if ("OrganizationAffiliation".equals(codeString))
       return ResourceTypes.ORGANIZATIONAFFILIATION;
+    if ("PackagedProductDefinition".equals(codeString))
+      return ResourceTypes.PACKAGEDPRODUCTDEFINITION;
     if ("Parameters".equals(codeString))
       return ResourceTypes.PARAMETERS;
     if ("Patient".equals(codeString))
@@ -276,24 +281,12 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.QUESTIONNAIRE;
     if ("QuestionnaireResponse".equals(codeString))
       return ResourceTypes.QUESTIONNAIRERESPONSE;
-    if ("RegulatedAdministrableProduct".equals(codeString))
-      return ResourceTypes.REGULATEDADMINISTRABLEPRODUCT;
     if ("RegulatedAuthorization".equals(codeString))
       return ResourceTypes.REGULATEDAUTHORIZATION;
-    if ("RegulatedManufacturedItem".equals(codeString))
-      return ResourceTypes.REGULATEDMANUFACTUREDITEM;
-    if ("RegulatedMedicinalProduct".equals(codeString))
-      return ResourceTypes.REGULATEDMEDICINALPRODUCT;
-    if ("RegulatedPackagedProduct".equals(codeString))
-      return ResourceTypes.REGULATEDPACKAGEDPRODUCT;
     if ("RelatedPerson".equals(codeString))
       return ResourceTypes.RELATEDPERSON;
     if ("RequestGroup".equals(codeString))
       return ResourceTypes.REQUESTGROUP;
-    if ("ResearchDefinition".equals(codeString))
-      return ResourceTypes.RESEARCHDEFINITION;
-    if ("ResearchElementDefinition".equals(codeString))
-      return ResourceTypes.RESEARCHELEMENTDEFINITION;
     if ("ResearchStudy".equals(codeString))
       return ResourceTypes.RESEARCHSTUDY;
     if ("ResearchSubject".equals(codeString))
@@ -302,8 +295,6 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.RESOURCE;
     if ("RiskAssessment".equals(codeString))
       return ResourceTypes.RISKASSESSMENT;
-    if ("RiskEvidenceSynthesis".equals(codeString))
-      return ResourceTypes.RISKEVIDENCESYNTHESIS;
     if ("Schedule".equals(codeString))
       return ResourceTypes.SCHEDULE;
     if ("SearchParameter".equals(codeString))
@@ -316,8 +307,6 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.SPECIMEN;
     if ("SpecimenDefinition".equals(codeString))
       return ResourceTypes.SPECIMENDEFINITION;
-    if ("Statistic".equals(codeString))
-      return ResourceTypes.STATISTIC;
     if ("StructureDefinition".equals(codeString))
       return ResourceTypes.STRUCTUREDEFINITION;
     if ("StructureMap".equals(codeString))
@@ -350,6 +339,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.TESTREPORT;
     if ("TestScript".equals(codeString))
       return ResourceTypes.TESTSCRIPT;
+    if ("Topic".equals(codeString))
+      return ResourceTypes.TOPIC;
     if ("ValueSet".equals(codeString))
       return ResourceTypes.VALUESET;
     if ("VerificationResult".equals(codeString))
@@ -364,6 +355,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "Account";
     if (code == ResourceTypes.ACTIVITYDEFINITION)
       return "ActivityDefinition";
+    if (code == ResourceTypes.ADMINISTRABLEPRODUCTDEFINITION)
+      return "AdministrableProductDefinition";
     if (code == ResourceTypes.ADVERSEEVENT)
       return "AdverseEvent";
     if (code == ResourceTypes.ALLERGYINTOLERANCE)
@@ -452,8 +445,6 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "DocumentReference";
     if (code == ResourceTypes.DOMAINRESOURCE)
       return "DomainResource";
-    if (code == ResourceTypes.EFFECTEVIDENCESYNTHESIS)
-      return "EffectEvidenceSynthesis";
     if (code == ResourceTypes.ENCOUNTER)
       return "Encounter";
     if (code == ResourceTypes.ENDPOINT)
@@ -512,12 +503,12 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "List";
     if (code == ResourceTypes.LOCATION)
       return "Location";
+    if (code == ResourceTypes.MANUFACTUREDITEMDEFINITION)
+      return "ManufacturedItemDefinition";
     if (code == ResourceTypes.MEASURE)
       return "Measure";
     if (code == ResourceTypes.MEASUREREPORT)
       return "MeasureReport";
-    if (code == ResourceTypes.MEDIA)
-      return "Media";
     if (code == ResourceTypes.MEDICATION)
       return "Medication";
     if (code == ResourceTypes.MEDICATIONADMINISTRATION)
@@ -530,6 +521,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "MedicationRequest";
     if (code == ResourceTypes.MEDICATIONUSAGE)
       return "MedicationUsage";
+    if (code == ResourceTypes.MEDICINALPRODUCTDEFINITION)
+      return "MedicinalProductDefinition";
     if (code == ResourceTypes.MESSAGEDEFINITION)
       return "MessageDefinition";
     if (code == ResourceTypes.MESSAGEHEADER)
@@ -538,6 +531,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "MolecularSequence";
     if (code == ResourceTypes.NAMINGSYSTEM)
       return "NamingSystem";
+    if (code == ResourceTypes.NUTRITIONINTAKE)
+      return "NutritionIntake";
     if (code == ResourceTypes.NUTRITIONORDER)
       return "NutritionOrder";
     if (code == ResourceTypes.OBSERVATION)
@@ -552,6 +547,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "Organization";
     if (code == ResourceTypes.ORGANIZATIONAFFILIATION)
       return "OrganizationAffiliation";
+    if (code == ResourceTypes.PACKAGEDPRODUCTDEFINITION)
+      return "PackagedProductDefinition";
     if (code == ResourceTypes.PARAMETERS)
       return "Parameters";
     if (code == ResourceTypes.PATIENT)
@@ -576,24 +573,12 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "Questionnaire";
     if (code == ResourceTypes.QUESTIONNAIRERESPONSE)
       return "QuestionnaireResponse";
-    if (code == ResourceTypes.REGULATEDADMINISTRABLEPRODUCT)
-      return "RegulatedAdministrableProduct";
     if (code == ResourceTypes.REGULATEDAUTHORIZATION)
       return "RegulatedAuthorization";
-    if (code == ResourceTypes.REGULATEDMANUFACTUREDITEM)
-      return "RegulatedManufacturedItem";
-    if (code == ResourceTypes.REGULATEDMEDICINALPRODUCT)
-      return "RegulatedMedicinalProduct";
-    if (code == ResourceTypes.REGULATEDPACKAGEDPRODUCT)
-      return "RegulatedPackagedProduct";
     if (code == ResourceTypes.RELATEDPERSON)
       return "RelatedPerson";
     if (code == ResourceTypes.REQUESTGROUP)
       return "RequestGroup";
-    if (code == ResourceTypes.RESEARCHDEFINITION)
-      return "ResearchDefinition";
-    if (code == ResourceTypes.RESEARCHELEMENTDEFINITION)
-      return "ResearchElementDefinition";
     if (code == ResourceTypes.RESEARCHSTUDY)
       return "ResearchStudy";
     if (code == ResourceTypes.RESEARCHSUBJECT)
@@ -602,8 +587,6 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "Resource";
     if (code == ResourceTypes.RISKASSESSMENT)
       return "RiskAssessment";
-    if (code == ResourceTypes.RISKEVIDENCESYNTHESIS)
-      return "RiskEvidenceSynthesis";
     if (code == ResourceTypes.SCHEDULE)
       return "Schedule";
     if (code == ResourceTypes.SEARCHPARAMETER)
@@ -616,8 +599,6 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "Specimen";
     if (code == ResourceTypes.SPECIMENDEFINITION)
       return "SpecimenDefinition";
-    if (code == ResourceTypes.STATISTIC)
-      return "Statistic";
     if (code == ResourceTypes.STRUCTUREDEFINITION)
       return "StructureDefinition";
     if (code == ResourceTypes.STRUCTUREMAP)
@@ -650,6 +631,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return "TestReport";
     if (code == ResourceTypes.TESTSCRIPT)
       return "TestScript";
+    if (code == ResourceTypes.TOPIC)
+      return "Topic";
     if (code == ResourceTypes.VALUESET)
       return "ValueSet";
     if (code == ResourceTypes.VERIFICATIONRESULT)

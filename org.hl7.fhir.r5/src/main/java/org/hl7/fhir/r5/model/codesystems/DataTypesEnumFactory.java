@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -112,6 +111,8 @@ public class DataTypesEnumFactory implements EnumFactory<DataTypes> {
       return DataTypes.MONEYQUANTITY;
     if ("Narrative".equals(codeString))
       return DataTypes.NARRATIVE;
+    if ("OrderedDistribution".equals(codeString))
+      return DataTypes.ORDEREDDISTRIBUTION;
     if ("ParameterDefinition".equals(codeString))
       return DataTypes.PARAMETERDEFINITION;
     if ("Period".equals(codeString))
@@ -138,6 +139,8 @@ public class DataTypesEnumFactory implements EnumFactory<DataTypes> {
       return DataTypes.SIGNATURE;
     if ("SimpleQuantity".equals(codeString))
       return DataTypes.SIMPLEQUANTITY;
+    if ("Statistic".equals(codeString))
+      return DataTypes.STATISTIC;
     if ("SubstanceAmount".equals(codeString))
       return DataTypes.SUBSTANCEAMOUNT;
     if ("Timing".equals(codeString))
@@ -242,6 +245,8 @@ public class DataTypesEnumFactory implements EnumFactory<DataTypes> {
       return "MoneyQuantity";
     if (code == DataTypes.NARRATIVE)
       return "Narrative";
+    if (code == DataTypes.ORDEREDDISTRIBUTION)
+      return "OrderedDistribution";
     if (code == DataTypes.PARAMETERDEFINITION)
       return "ParameterDefinition";
     if (code == DataTypes.PERIOD)
@@ -268,6 +273,8 @@ public class DataTypesEnumFactory implements EnumFactory<DataTypes> {
       return "Signature";
     if (code == DataTypes.SIMPLEQUANTITY)
       return "SimpleQuantity";
+    if (code == DataTypes.STATISTIC)
+      return "Statistic";
     if (code == DataTypes.SUBSTANCEAMOUNT)
       return "SubstanceAmount";
     if (code == DataTypes.TIMING)

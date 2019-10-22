@@ -51,14 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Prospective warnings of potential issues when providing care to the patient.
  */
@@ -207,14 +213,9 @@ public class Flag extends DomainResource {
     /**
      * The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.
      */
-    @Child(name = "subject", type = {Patient.class, Location.class, Group.class, Organization.class, Practitioner.class, PlanDefinition.class, Medication.class, Procedure.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Location.class, Group.class, Organization.class, Practitioner.class, PractitionerRole.class, PlanDefinition.class, Medication.class, Procedure.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who/What is flag about?", formalDefinition="The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with." )
     protected Reference subject;
-
-    /**
-     * The actual object that is the target of the reference (The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.)
-     */
-    protected Resource subjectTarget;
 
     /**
      * The period of time from the activation of the flag to inactivation of the flag. If the flag is active, the end of the period should be unspecified.
@@ -231,23 +232,13 @@ public class Flag extends DomainResource {
     protected Reference encounter;
 
     /**
-     * The actual object that is the target of the reference (This alert is only relevant during the encounter.)
-     */
-    protected Encounter encounterTarget;
-
-    /**
      * The person, organization or device that created the flag.
      */
     @Child(name = "author", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Flag creator", formalDefinition="The person, organization or device that created the flag." )
     protected Reference author;
 
-    /**
-     * The actual object that is the target of the reference (The person, organization or device that created the flag.)
-     */
-    protected Resource authorTarget;
-
-    private static final long serialVersionUID = 163791439L;
+    private static final long serialVersionUID = -901823137L;
 
   /**
    * Constructor
@@ -466,21 +457,6 @@ public class Flag extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.)
-     */
-    public Flag setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #period} (The period of time from the activation of the flag to inactivation of the flag. If the flag is active, the end of the period should be unspecified.)
      */
     public Period getPeriod() { 
@@ -529,26 +505,6 @@ public class Flag extends DomainResource {
     }
 
     /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (This alert is only relevant during the encounter.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Flag.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (This alert is only relevant during the encounter.)
-     */
-    public Flag setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #author} (The person, organization or device that created the flag.)
      */
     public Reference getAuthor() { 
@@ -572,28 +528,13 @@ public class Flag extends DomainResource {
       return this;
     }
 
-    /**
-     * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The person, organization or device that created the flag.)
-     */
-    public Resource getAuthorTarget() { 
-      return this.authorTarget;
-    }
-
-    /**
-     * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The person, organization or device that created the flag.)
-     */
-    public Flag setAuthorTarget(Resource value) { 
-      this.authorTarget = value;
-      return this;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this flag by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "Supports basic workflow.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "Allows a flag to be divided into different categories like clinical, administrative etc. Intended to be used as a means of filtering which flags are displayed to particular user or in a given context.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "The coded value or textual component of the flag to display to the user.", 0, 1, code));
-        children.add(new Property("subject", "Reference(Patient|Location|Group|Organization|Practitioner|PlanDefinition|Medication|Procedure)", "The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(Patient|Location|Group|Organization|Practitioner|PractitionerRole|PlanDefinition|Medication|Procedure)", "The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.", 0, 1, subject));
         children.add(new Property("period", "Period", "The period of time from the activation of the flag to inactivation of the flag. If the flag is active, the end of the period should be unspecified.", 0, 1, period));
         children.add(new Property("encounter", "Reference(Encounter)", "This alert is only relevant during the encounter.", 0, 1, encounter));
         children.add(new Property("author", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole)", "The person, organization or device that created the flag.", 0, 1, author));
@@ -606,7 +547,7 @@ public class Flag extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "Supports basic workflow.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Allows a flag to be divided into different categories like clinical, administrative etc. Intended to be used as a means of filtering which flags are displayed to particular user or in a given context.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The coded value or textual component of the flag to display to the user.", 0, 1, code);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Location|Group|Organization|Practitioner|PlanDefinition|Medication|Procedure)", "The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Location|Group|Organization|Practitioner|PractitionerRole|PlanDefinition|Medication|Procedure)", "The patient, location, group, organization, or practitioner etc. this is about record this flag is associated with.", 0, 1, subject);
         case -991726143: /*period*/  return new Property("period", "Period", "The period of time from the activation of the flag to inactivation of the flag. If the flag is active, the end of the period should be unspecified.", 0, 1, period);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "This alert is only relevant during the encounter.", 0, 1, encounter);
         case -1406328437: /*author*/  return new Property("author", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole)", "The person, organization or device that created the flag.", 0, 1, author);
@@ -694,11 +635,11 @@ public class Flag extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case -991726143:  return getPeriod(); 
-        case 1524132147:  return getEncounter(); 
-        case -1406328437:  return getAuthor(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case -991726143:  return getPeriod();
+        case 1524132147:  return getEncounter();
+        case -1406328437:  return getAuthor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -763,6 +704,11 @@ public class Flag extends DomainResource {
       public Flag copy() {
         Flag dst = new Flag();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Flag dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -779,7 +725,6 @@ public class Flag extends DomainResource {
         dst.period = period == null ? null : period.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
         dst.author = author == null ? null : author.copy();
-        return dst;
       }
 
       protected Flag typedCopy() {
@@ -866,7 +811,7 @@ public class Flag extends DomainResource {
    * Path: <b>Flag.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="Flag.subject", description="The identity of a subject to list flags for", type="reference", target={Group.class, Location.class, Medication.class, Organization.class, Patient.class, PlanDefinition.class, Practitioner.class, Procedure.class } )
+  @SearchParamDefinition(name="subject", path="Flag.subject", description="The identity of a subject to list flags for", type="reference", target={Group.class, Location.class, Medication.class, Organization.class, Patient.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -961,6 +906,26 @@ public class Flag extends DomainResource {
    * the path value of "<b>Flag:encounter</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Flag:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Flag.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Flag.status", description="active | inactive | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Flag.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

@@ -362,7 +362,7 @@ public class XhtmlNode implements IBaseXhtml {
       return null;
     }
     try {
-      String retVal = new XhtmlComposer(XhtmlComposer.HTML).compose(this);
+      String retVal = new XhtmlComposer(XhtmlComposer.XML).compose(this);
       retVal = XhtmlDt.preprocessXhtmlNamespaceDeclaration(retVal);
       return retVal;
     } catch (Exception e) {

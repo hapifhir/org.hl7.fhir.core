@@ -53,15 +53,17 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A clinical condition, problem, diagnosis, or other event, situation, issue, or clinical concept that has risen to a level of concern.
  */
@@ -84,11 +86,6 @@ public class Condition extends DomainResource {
         @Child(name = "assessment", type = {ClinicalImpression.class, DiagnosticReport.class, Observation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Formal record of assessment", formalDefinition="Reference to a formal record of the evidence on which the staging assessment is based." )
         protected List<Reference> assessment;
-        /**
-         * The actual objects that are the target of the reference (Reference to a formal record of the evidence on which the staging assessment is based.)
-         */
-        protected List<Resource> assessmentTarget;
-
 
         /**
          * The kind of staging, such as pathological or clinical staging.
@@ -98,7 +95,7 @@ public class Condition extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-stage-type")
         protected CodeableConcept type;
 
-        private static final long serialVersionUID = 668627986L;
+        private static final long serialVersionUID = -394541797L;
 
     /**
      * Constructor
@@ -182,16 +179,6 @@ public class Condition extends DomainResource {
             addAssessment();
           }
           return getAssessment().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getAssessmentTarget() { 
-          if (this.assessmentTarget == null)
-            this.assessmentTarget = new ArrayList<Resource>();
-          return this.assessmentTarget;
         }
 
         /**
@@ -280,9 +267,9 @@ public class Condition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1857640538:  return getSummary(); 
+        case -1857640538:  return getSummary();
         case 2119382722:  return addAssessment(); 
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         default: return super.makeProperty(hash, name);
         }
 
@@ -319,6 +306,11 @@ public class Condition extends DomainResource {
       public ConditionStageComponent copy() {
         ConditionStageComponent dst = new ConditionStageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConditionStageComponent dst) {
+        super.copyValues(dst);
         dst.summary = summary == null ? null : summary.copy();
         if (assessment != null) {
           dst.assessment = new ArrayList<Reference>();
@@ -326,7 +318,6 @@ public class Condition extends DomainResource {
             dst.assessment.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -378,13 +369,8 @@ public class Condition extends DomainResource {
         @Child(name = "detail", type = {Reference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Supporting information found elsewhere", formalDefinition="Links to other relevant information, including pathology reports." )
         protected List<Reference> detail;
-        /**
-         * The actual objects that are the target of the reference (Links to other relevant information, including pathology reports.)
-         */
-        protected List<Resource> detailTarget;
 
-
-        private static final long serialVersionUID = 1135831276L;
+        private static final long serialVersionUID = -672691342L;
 
     /**
      * Constructor
@@ -499,16 +485,6 @@ public class Condition extends DomainResource {
           return getDetail().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "A manifestation or symptom that led to the recording of this condition.", 0, java.lang.Integer.MAX_VALUE, code));
@@ -595,6 +571,11 @@ public class Condition extends DomainResource {
       public ConditionEvidenceComponent copy() {
         ConditionEvidenceComponent dst = new ConditionEvidenceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConditionEvidenceComponent dst) {
+        super.copyValues(dst);
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : code)
@@ -605,7 +586,6 @@ public class Condition extends DomainResource {
           for (Reference i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -702,21 +682,11 @@ public class Condition extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Indicates the patient or group who the condition record is associated with.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The Encounter during which this Condition was created or to which the creation of this record is tightly associated.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which this Condition was created or to which the creation of this record is tightly associated." )
+    @Description(shortDefinition="The Encounter during which this Condition was created", formalDefinition="The Encounter during which this Condition was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The Encounter during which this Condition was created or to which the creation of this record is tightly associated.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Estimated or actual date or date-time  the condition began, in the opinion of the clinician.
@@ -747,21 +717,11 @@ public class Condition extends DomainResource {
     protected Reference recorder;
 
     /**
-     * The actual object that is the target of the reference (Individual who recorded the record and takes responsibility for its content.)
+     * Individual or device that is making the condition statement.
      */
-    protected Resource recorderTarget;
-
-    /**
-     * Individual who is making the condition statement.
-     */
-    @Child(name = "asserter", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=13, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Person who asserts this condition", formalDefinition="Individual who is making the condition statement." )
+    @Child(name = "asserter", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class, Device.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Person or device that asserts this condition", formalDefinition="Individual or device that is making the condition statement." )
     protected Reference asserter;
-
-    /**
-     * The actual object that is the target of the reference (Individual who is making the condition statement.)
-     */
-    protected Resource asserterTarget;
 
     /**
      * Clinical stage or grade of a condition. May include formal severity assessments.
@@ -784,7 +744,7 @@ public class Condition extends DomainResource {
     @Description(shortDefinition="Additional information about the Condition", formalDefinition="Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 186776568L;
+    private static final long serialVersionUID = 205655247L;
 
   /**
    * Constructor
@@ -1081,21 +1041,6 @@ public class Condition extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates the patient or group who the condition record is associated with.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates the patient or group who the condition record is associated with.)
-     */
-    public Condition setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The Encounter during which this Condition was created or to which the creation of this record is tightly associated.)
      */
     public Reference getEncounter() { 
@@ -1116,26 +1061,6 @@ public class Condition extends DomainResource {
      */
     public Condition setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Encounter during which this Condition was created or to which the creation of this record is tightly associated.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Condition.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Encounter during which this Condition was created or to which the creation of this record is tightly associated.)
-     */
-    public Condition setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1405,22 +1330,7 @@ public class Condition extends DomainResource {
     }
 
     /**
-     * @return {@link #recorder} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who recorded the record and takes responsibility for its content.)
-     */
-    public Resource getRecorderTarget() { 
-      return this.recorderTarget;
-    }
-
-    /**
-     * @param value {@link #recorder} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who recorded the record and takes responsibility for its content.)
-     */
-    public Condition setRecorderTarget(Resource value) { 
-      this.recorderTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #asserter} (Individual who is making the condition statement.)
+     * @return {@link #asserter} (Individual or device that is making the condition statement.)
      */
     public Reference getAsserter() { 
       if (this.asserter == null)
@@ -1436,25 +1346,10 @@ public class Condition extends DomainResource {
     }
 
     /**
-     * @param value {@link #asserter} (Individual who is making the condition statement.)
+     * @param value {@link #asserter} (Individual or device that is making the condition statement.)
      */
     public Condition setAsserter(Reference value) { 
       this.asserter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #asserter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Individual who is making the condition statement.)
-     */
-    public Resource getAsserterTarget() { 
-      return this.asserterTarget;
-    }
-
-    /**
-     * @param value {@link #asserter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Individual who is making the condition statement.)
-     */
-    public Condition setAsserterTarget(Resource value) { 
-      this.asserterTarget = value;
       return this;
     }
 
@@ -1632,7 +1527,7 @@ public class Condition extends DomainResource {
         children.add(new Property("abatement[x]", "dateTime|Age|Period|Range|string", "The date or estimated date that the condition resolved or went into remission. This is called \"abatement\" because of the many overloaded connotations associated with \"remission\" or \"resolution\" - Conditions are never really resolved, but they can abate.", 0, 1, abatement));
         children.add(new Property("recordedDate", "dateTime", "The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.", 0, 1, recordedDate));
         children.add(new Property("recorder", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who recorded the record and takes responsibility for its content.", 0, 1, recorder));
-        children.add(new Property("asserter", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who is making the condition statement.", 0, 1, asserter));
+        children.add(new Property("asserter", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Device)", "Individual or device that is making the condition statement.", 0, 1, asserter));
         children.add(new Property("stage", "", "Clinical stage or grade of a condition. May include formal severity assessments.", 0, java.lang.Integer.MAX_VALUE, stage));
         children.add(new Property("evidence", "", "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.", 0, java.lang.Integer.MAX_VALUE, evidence));
         children.add(new Property("note", "Annotation", "Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1666,7 +1561,7 @@ public class Condition extends DomainResource {
         case -822296416: /*abatementString*/  return new Property("abatement[x]", "dateTime|Age|Period|Range|string", "The date or estimated date that the condition resolved or went into remission. This is called \"abatement\" because of the many overloaded connotations associated with \"remission\" or \"resolution\" - Conditions are never really resolved, but they can abate.", 0, 1, abatement);
         case -1952893826: /*recordedDate*/  return new Property("recordedDate", "dateTime", "The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.", 0, 1, recordedDate);
         case -799233858: /*recorder*/  return new Property("recorder", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who recorded the record and takes responsibility for its content.", 0, 1, recorder);
-        case -373242253: /*asserter*/  return new Property("asserter", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who is making the condition statement.", 0, 1, asserter);
+        case -373242253: /*asserter*/  return new Property("asserter", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Device)", "Individual or device that is making the condition statement.", 0, 1, asserter);
         case 109757182: /*stage*/  return new Property("stage", "", "Clinical stage or grade of a condition. May include formal severity assessments.", 0, java.lang.Integer.MAX_VALUE, stage);
         case 382967383: /*evidence*/  return new Property("evidence", "", "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.", 0, java.lang.Integer.MAX_VALUE, evidence);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -1804,21 +1699,21 @@ public class Condition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case -462853915:  return getClinicalStatus(); 
-        case -842509843:  return getVerificationStatus(); 
+        case -462853915:  return getClinicalStatus();
+        case -842509843:  return getVerificationStatus();
         case 50511102:  return addCategory(); 
-        case 1478300413:  return getSeverity(); 
-        case 3059181:  return getCode(); 
+        case 1478300413:  return getSeverity();
+        case 3059181:  return getCode();
         case 1702620169:  return addBodySite(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case -1886216323:  return getOnset(); 
-        case 105901603:  return getOnset(); 
-        case -584196495:  return getAbatement(); 
-        case -921554001:  return getAbatement(); 
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
+        case -1886216323:  return getOnset();
+        case 105901603:  return getOnset();
+        case -584196495:  return getAbatement();
+        case -921554001:  return getAbatement();
         case -1952893826:  return getRecordedDateElement();
-        case -799233858:  return getRecorder(); 
-        case -373242253:  return getAsserter(); 
+        case -799233858:  return getRecorder();
+        case -373242253:  return getAsserter();
         case 109757182:  return addStage(); 
         case 382967383:  return addEvidence(); 
         case 3387378:  return addNote(); 
@@ -1959,6 +1854,11 @@ public class Condition extends DomainResource {
       public Condition copy() {
         Condition dst = new Condition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Condition dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2000,7 +1900,6 @@ public class Condition extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected Condition typedCopy() {
@@ -2259,17 +2158,17 @@ public class Condition extends DomainResource {
  /**
    * Search parameter: <b>encounter</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
+   * Description: <b>The Encounter during which this Condition was created</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Condition.encounter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="Condition.encounter", description="Encounter created as part of", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
+  @SearchParamDefinition(name="encounter", path="Condition.encounter", description="The Encounter during which this Condition was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
   public static final String SP_ENCOUNTER = "encounter";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
    * <p>
-   * Description: <b>Encounter created as part of</b><br>
+   * Description: <b>The Encounter during which this Condition was created</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Condition.encounter</b><br>
    * </p>
@@ -2325,17 +2224,17 @@ public class Condition extends DomainResource {
  /**
    * Search parameter: <b>asserter</b>
    * <p>
-   * Description: <b>Person who asserts this condition</b><br>
+   * Description: <b>Person or device that asserts this condition</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Condition.asserter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="asserter", path="Condition.asserter", description="Person who asserts this condition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="asserter", path="Condition.asserter", description="Person or device that asserts this condition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_ASSERTER = "asserter";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>asserter</b>
    * <p>
-   * Description: <b>Person who asserts this condition</b><br>
+   * Description: <b>Person or device that asserts this condition</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Condition.asserter</b><br>
    * </p>

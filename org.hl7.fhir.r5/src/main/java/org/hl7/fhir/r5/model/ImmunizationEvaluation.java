@@ -53,14 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Describes a comparison of an immunization event against published recommendations to determine if the administration is "valid" in relation to those  recommendations.
  */
@@ -182,11 +186,6 @@ public class ImmunizationEvaluation extends DomainResource {
     protected Reference patient;
 
     /**
-     * The actual object that is the target of the reference (The individual for whom the evaluation is being done.)
-     */
-    protected Patient patientTarget;
-
-    /**
      * The date the evaluation of the vaccine administration event was performed.
      */
     @Child(name = "date", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
@@ -199,11 +198,6 @@ public class ImmunizationEvaluation extends DomainResource {
     @Child(name = "authority", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Who is responsible for publishing the recommendations", formalDefinition="Indicates the authority who published the protocol (e.g. ACIP)." )
     protected Reference authority;
-
-    /**
-     * The actual object that is the target of the reference (Indicates the authority who published the protocol (e.g. ACIP).)
-     */
-    protected Organization authorityTarget;
 
     /**
      * The vaccine preventable disease the dose is being evaluated against.
@@ -219,11 +213,6 @@ public class ImmunizationEvaluation extends DomainResource {
     @Child(name = "immunizationEvent", type = {Immunization.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Immunization being evaluated", formalDefinition="The vaccine administration event being evaluated." )
     protected Reference immunizationEvent;
-
-    /**
-     * The actual object that is the target of the reference (The vaccine administration event being evaluated.)
-     */
-    protected Immunization immunizationEventTarget;
 
     /**
      * Indicates if the dose is valid or not valid with respect to the published recommendations.
@@ -269,7 +258,7 @@ public class ImmunizationEvaluation extends DomainResource {
     @Description(shortDefinition="Recommended number of doses for immunity", formalDefinition="The recommended number of doses to achieve immunity." )
     protected Type seriesDoses;
 
-    private static final long serialVersionUID = 1248741226L;
+    private static final long serialVersionUID = 604368905L;
 
   /**
    * Constructor
@@ -413,26 +402,6 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual for whom the evaluation is being done.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ImmunizationEvaluation.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual for whom the evaluation is being done.)
-     */
-    public ImmunizationEvaluation setPatientTarget(Patient value) { 
-      this.patientTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #date} (The date the evaluation of the vaccine administration event was performed.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public DateTimeType getDateElement() { 
@@ -506,26 +475,6 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @return {@link #authority} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates the authority who published the protocol (e.g. ACIP).)
-     */
-    public Organization getAuthorityTarget() { 
-      if (this.authorityTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ImmunizationEvaluation.authority");
-        else if (Configuration.doAutoCreate())
-          this.authorityTarget = new Organization(); // aa
-      return this.authorityTarget;
-    }
-
-    /**
-     * @param value {@link #authority} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates the authority who published the protocol (e.g. ACIP).)
-     */
-    public ImmunizationEvaluation setAuthorityTarget(Organization value) { 
-      this.authorityTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #targetDisease} (The vaccine preventable disease the dose is being evaluated against.)
      */
     public CodeableConcept getTargetDisease() { 
@@ -570,26 +519,6 @@ public class ImmunizationEvaluation extends DomainResource {
      */
     public ImmunizationEvaluation setImmunizationEvent(Reference value) { 
       this.immunizationEvent = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #immunizationEvent} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The vaccine administration event being evaluated.)
-     */
-    public Immunization getImmunizationEventTarget() { 
-      if (this.immunizationEventTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ImmunizationEvaluation.immunizationEvent");
-        else if (Configuration.doAutoCreate())
-          this.immunizationEventTarget = new Immunization(); // aa
-      return this.immunizationEventTarget;
-    }
-
-    /**
-     * @param value {@link #immunizationEvent} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The vaccine administration event being evaluated.)
-     */
-    public ImmunizationEvaluation setImmunizationEventTarget(Immunization value) { 
-      this.immunizationEventTarget = value;
       return this;
     }
 
@@ -1022,19 +951,19 @@ public class ImmunizationEvaluation extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case -791418107:  return getPatient(); 
+        case -791418107:  return getPatient();
         case 3076014:  return getDateElement();
-        case 1475610435:  return getAuthority(); 
-        case -319593813:  return getTargetDisease(); 
-        case 1081446840:  return getImmunizationEvent(); 
-        case -745826705:  return getDoseStatus(); 
+        case 1475610435:  return getAuthority();
+        case -319593813:  return getTargetDisease();
+        case 1081446840:  return getImmunizationEvent();
+        case -745826705:  return getDoseStatus();
         case 662783379:  return addDoseStatusReason(); 
         case -1724546052:  return getDescriptionElement();
         case -905838985:  return getSeriesElement();
-        case -1632295686:  return getDoseNumber(); 
-        case -887709242:  return getDoseNumber(); 
-        case 1553560673:  return getSeriesDoses(); 
-        case -1936727105:  return getSeriesDoses(); 
+        case -1632295686:  return getDoseNumber();
+        case -887709242:  return getDoseNumber();
+        case 1553560673:  return getSeriesDoses();
+        case -1936727105:  return getSeriesDoses();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1129,6 +1058,11 @@ public class ImmunizationEvaluation extends DomainResource {
       public ImmunizationEvaluation copy() {
         ImmunizationEvaluation dst = new ImmunizationEvaluation();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImmunizationEvaluation dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1150,7 +1084,6 @@ public class ImmunizationEvaluation extends DomainResource {
         dst.series = series == null ? null : series.copy();
         dst.doseNumber = doseNumber == null ? null : doseNumber.copy();
         dst.seriesDoses = seriesDoses == null ? null : seriesDoses.copy();
-        return dst;
       }
 
       protected ImmunizationEvaluation typedCopy() {

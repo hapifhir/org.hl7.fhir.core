@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A list is a curated collection of resources.
  */
@@ -316,12 +318,7 @@ public class ListResource extends DomainResource {
         @Description(shortDefinition="Actual entry", formalDefinition="A reference to the actual resource from which data was derived." )
         protected Reference item;
 
-        /**
-         * The actual object that is the target of the reference (A reference to the actual resource from which data was derived.)
-         */
-        protected Resource itemTarget;
-
-        private static final long serialVersionUID = -758164425L;
+        private static final long serialVersionUID = -872672029L;
 
     /**
      * Constructor
@@ -480,21 +477,6 @@ public class ListResource extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #item} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A reference to the actual resource from which data was derived.)
-         */
-        public Resource getItemTarget() { 
-          return this.itemTarget;
-        }
-
-        /**
-         * @param value {@link #item} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A reference to the actual resource from which data was derived.)
-         */
-        public ListEntryComponent setItemTarget(Resource value) { 
-          this.itemTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("flag", "CodeableConcept", "The flag allows the system constructing the list to indicate the role and significance of the item in the list.", 0, 1, flag));
@@ -565,10 +547,10 @@ public class ListResource extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3145580:  return getFlag(); 
+        case 3145580:  return getFlag();
         case 1550463001:  return getDeletedElement();
         case 3076014:  return getDateElement();
-        case 3242771:  return getItem(); 
+        case 3242771:  return getItem();
         default: return super.makeProperty(hash, name);
         }
 
@@ -609,11 +591,15 @@ public class ListResource extends DomainResource {
       public ListEntryComponent copy() {
         ListEntryComponent dst = new ListEntryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ListEntryComponent dst) {
+        super.copyValues(dst);
         dst.flag = flag == null ? null : flag.copy();
         dst.deleted = deleted == null ? null : deleted.copy();
         dst.date = date == null ? null : date.copy();
         dst.item = item == null ? null : item.copy();
-        return dst;
       }
 
       @Override
@@ -695,21 +681,11 @@ public class ListResource extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The common subject (or patient) of the resources that are in the list if there is one.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The encounter that is the context in which this list was created.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Context in which list created", formalDefinition="The encounter that is the context in which this list was created." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The encounter that is the context in which this list was created.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date that the list was prepared.
@@ -724,11 +700,6 @@ public class ListResource extends DomainResource {
     @Child(name = "source", type = {Practitioner.class, PractitionerRole.class, Patient.class, Device.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who and/or what defined the list contents (aka Author)", formalDefinition="The entity responsible for deciding what the contents of the list were. Where the list was created by a human, this is the same as the author of the list." )
     protected Reference source;
-
-    /**
-     * The actual object that is the target of the reference (The entity responsible for deciding what the contents of the list were. Where the list was created by a human, this is the same as the author of the list.)
-     */
-    protected Resource sourceTarget;
 
     /**
      * What order applies to the items in the list.
@@ -760,7 +731,7 @@ public class ListResource extends DomainResource {
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/list-empty-reason")
     protected CodeableConcept emptyReason;
 
-    private static final long serialVersionUID = 2071342704L;
+    private static final long serialVersionUID = -2116034034L;
 
   /**
    * Constructor
@@ -1019,21 +990,6 @@ public class ListResource extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The common subject (or patient) of the resources that are in the list if there is one.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The common subject (or patient) of the resources that are in the list if there is one.)
-     */
-    public ListResource setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The encounter that is the context in which this list was created.)
      */
     public Reference getEncounter() { 
@@ -1054,26 +1010,6 @@ public class ListResource extends DomainResource {
      */
     public ListResource setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The encounter that is the context in which this list was created.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The encounter that is the context in which this list was created.)
-     */
-    public ListResource setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -1147,21 +1083,6 @@ public class ListResource extends DomainResource {
      */
     public ListResource setSource(Reference value) { 
       this.source = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The entity responsible for deciding what the contents of the list were. Where the list was created by a human, this is the same as the author of the list.)
-     */
-    public Resource getSourceTarget() { 
-      return this.sourceTarget;
-    }
-
-    /**
-     * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The entity responsible for deciding what the contents of the list were. Where the list was created by a human, this is the same as the author of the list.)
-     */
-    public ListResource setSourceTarget(Resource value) { 
-      this.sourceTarget = value;
       return this;
     }
 
@@ -1469,15 +1390,15 @@ public class ListResource extends DomainResource {
         case -892481550:  return getStatusElement();
         case 3357091:  return getModeElement();
         case 110371416:  return getTitleElement();
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
         case 3076014:  return getDateElement();
-        case -896505829:  return getSource(); 
-        case -391079516:  return getOrderedBy(); 
+        case -896505829:  return getSource();
+        case -391079516:  return getOrderedBy();
         case 3387378:  return addNote(); 
         case 96667762:  return addEntry(); 
-        case 1140135409:  return getEmptyReason(); 
+        case 1140135409:  return getEmptyReason();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1563,6 +1484,11 @@ public class ListResource extends DomainResource {
       public ListResource copy() {
         ListResource dst = new ListResource();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ListResource dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1588,7 +1514,6 @@ public class ListResource extends DomainResource {
             dst.entry.add(i.copy());
         };
         dst.emptyReason = emptyReason == null ? null : emptyReason.copy();
-        return dst;
       }
 
       protected ListResource typedCopy() {

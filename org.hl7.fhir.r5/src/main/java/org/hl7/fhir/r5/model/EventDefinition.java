@@ -53,17 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The EventDefinition resource provides a reusable description of when a particular event can occur.
  */
@@ -1862,8 +1864,8 @@ public class EventDefinition extends MetadataResource {
         case -2060497896:  return getSubtitleElement();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
-        case -573640748:  return getSubject(); 
-        case -1867885268:  return getSubject(); 
+        case -573640748:  return getSubject();
+        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
@@ -1875,7 +1877,7 @@ public class EventDefinition extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
+        case -403934648:  return getEffectivePeriod();
         case 110546223:  return addTopic(); 
         case -1406328437:  return addAuthor(); 
         case -1307827859:  return addEditor(); 
@@ -2028,6 +2030,11 @@ public class EventDefinition extends MetadataResource {
       public EventDefinition copy() {
         EventDefinition dst = new EventDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EventDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -2100,7 +2107,6 @@ public class EventDefinition extends MetadataResource {
           for (TriggerDefinition i : trigger)
             dst.trigger.add(i.copy());
         };
-        return dst;
       }
 
       protected EventDefinition typedCopy() {

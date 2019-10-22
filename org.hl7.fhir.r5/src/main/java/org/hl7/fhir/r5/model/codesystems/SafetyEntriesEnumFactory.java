@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -129,7 +128,7 @@ public class SafetyEntriesEnumFactory implements EnumFactory<SafetyEntries> {
     if ("render-narratives".equals(codeString))
       return SafetyEntries.RENDERNARRATIVES;
     if ("check=validation".equals(codeString))
-      return SafetyEntries.CHECKVALIDATION;
+      return SafetyEntries.CHECK_VALIDATION;
     if ("use-provenance".equals(codeString))
       return SafetyEntries.USEPROVENANCE;
     if ("enable-cors".equals(codeString))
@@ -214,7 +213,7 @@ public class SafetyEntriesEnumFactory implements EnumFactory<SafetyEntries> {
       return "use-labels";
     if (code == SafetyEntries.RENDERNARRATIVES)
       return "render-narratives";
-    if (code == SafetyEntries.CHECKVALIDATION)
+    if (code == SafetyEntries.CHECK_VALIDATION)
       return "check=validation";
     if (code == SafetyEntries.USEPROVENANCE)
       return "use-provenance";

@@ -53,16 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Representation of the content produced in a DICOM imaging study. A study comprises a set of series, each of which includes a set of Service-Object Pair Instances (SOP Instances - images or other data) acquired or produced in a common context.  A series is of only one modality (e.g. X-ray, CT, MR, ultrasound), but a study may have multiple series of different modalities.
  */
@@ -253,11 +255,6 @@ public class ImagingStudy extends DomainResource {
         @Child(name = "endpoint", type = {Endpoint.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Series access endpoint", formalDefinition="The network service providing access (e.g., query, view, or retrieval) for this series. See implementation notes for information about using DICOM endpoints. A series-level endpoint, if present, has precedence over a study-level endpoint with the same Endpoint.connectionType." )
         protected List<Reference> endpoint;
-        /**
-         * The actual objects that are the target of the reference (The network service providing access (e.g., query, view, or retrieval) for this series. See implementation notes for information about using DICOM endpoints. A series-level endpoint, if present, has precedence over a study-level endpoint with the same Endpoint.connectionType.)
-         */
-        protected List<Endpoint> endpointTarget;
-
 
         /**
          * The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings. The bodySite may indicate the laterality of body part imaged; if so, it shall be consistent with any content of ImagingStudy.series.laterality.
@@ -281,11 +278,6 @@ public class ImagingStudy extends DomainResource {
         @Child(name = "specimen", type = {Specimen.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Specimen imaged", formalDefinition="The specimen imaged, e.g., for whole slide imaging of a biopsy." )
         protected List<Reference> specimen;
-        /**
-         * The actual objects that are the target of the reference (The specimen imaged, e.g., for whole slide imaging of a biopsy.)
-         */
-        protected List<Specimen> specimenTarget;
-
 
         /**
          * The date and time the series was started.
@@ -308,7 +300,7 @@ public class ImagingStudy extends DomainResource {
         @Description(shortDefinition="A single SOP instance from the series", formalDefinition="A single SOP instance within the series, e.g. an image, or presentation state." )
         protected List<ImagingStudySeriesInstanceComponent> instance;
 
-        private static final long serialVersionUID = -11423429L;
+        private static final long serialVersionUID = 198247349L;
 
     /**
      * Constructor
@@ -588,28 +580,6 @@ public class ImagingStudy extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Endpoint> getEndpointTarget() { 
-          if (this.endpointTarget == null)
-            this.endpointTarget = new ArrayList<Endpoint>();
-          return this.endpointTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Endpoint addEndpointTarget() { 
-          Endpoint r = new Endpoint();
-          if (this.endpointTarget == null)
-            this.endpointTarget = new ArrayList<Endpoint>();
-          this.endpointTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #bodySite} (The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings. The bodySite may indicate the laterality of body part imaged; if so, it shall be consistent with any content of ImagingStudy.series.laterality.)
          */
         public Coding getBodySite() { 
@@ -708,28 +678,6 @@ public class ImagingStudy extends DomainResource {
             addSpecimen();
           }
           return getSpecimen().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Specimen> getSpecimenTarget() { 
-          if (this.specimenTarget == null)
-            this.specimenTarget = new ArrayList<Specimen>();
-          return this.specimenTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Specimen addSpecimenTarget() { 
-          Specimen r = new Specimen();
-          if (this.specimenTarget == null)
-            this.specimenTarget = new ArrayList<Specimen>();
-          this.specimenTarget.add(r);
-          return r;
         }
 
         /**
@@ -1023,12 +971,12 @@ public class ImagingStudy extends DomainResource {
         switch (hash) {
         case 115792:  return getUidElement();
         case -1034364087:  return getNumberElement();
-        case -622722335:  return getModality(); 
+        case -622722335:  return getModality();
         case -1724546052:  return getDescriptionElement();
         case -1043544226:  return getNumberOfInstancesElement();
         case 1741102485:  return addEndpoint(); 
-        case 1702620169:  return getBodySite(); 
-        case -170291817:  return getLaterality(); 
+        case 1702620169:  return getBodySite();
+        case -170291817:  return getLaterality();
         case -2132868344:  return addSpecimen(); 
         case -1897185151:  return getStartedElement();
         case 481140686:  return addPerformer(); 
@@ -1106,6 +1054,11 @@ public class ImagingStudy extends DomainResource {
       public ImagingStudySeriesComponent copy() {
         ImagingStudySeriesComponent dst = new ImagingStudySeriesComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImagingStudySeriesComponent dst) {
+        super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();
         dst.number = number == null ? null : number.copy();
         dst.modality = modality == null ? null : modality.copy();
@@ -1134,7 +1087,6 @@ public class ImagingStudy extends DomainResource {
           for (ImagingStudySeriesInstanceComponent i : instance)
             dst.instance.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1193,12 +1145,7 @@ public class ImagingStudy extends DomainResource {
         @Description(shortDefinition="Who performed the series", formalDefinition="Indicates who or what performed the series." )
         protected Reference actor;
 
-        /**
-         * The actual object that is the target of the reference (Indicates who or what performed the series.)
-         */
-        protected Resource actorTarget;
-
-        private static final long serialVersionUID = 1424001049L;
+        private static final long serialVersionUID = -576943815L;
 
     /**
      * Constructor
@@ -1263,21 +1210,6 @@ public class ImagingStudy extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #actor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates who or what performed the series.)
-         */
-        public Resource getActorTarget() { 
-          return this.actorTarget;
-        }
-
-        /**
-         * @param value {@link #actor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates who or what performed the series.)
-         */
-        public ImagingStudySeriesPerformerComponent setActorTarget(Resource value) { 
-          this.actorTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the series.", 0, 1, function));
@@ -1332,8 +1264,8 @@ public class ImagingStudy extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1380938712:  return getFunction(); 
-        case 92645877:  return getActor(); 
+        case 1380938712:  return getFunction();
+        case 92645877:  return getActor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1366,9 +1298,13 @@ public class ImagingStudy extends DomainResource {
       public ImagingStudySeriesPerformerComponent copy() {
         ImagingStudySeriesPerformerComponent dst = new ImagingStudySeriesPerformerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImagingStudySeriesPerformerComponent dst) {
+        super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
         dst.actor = actor == null ? null : actor.copy();
-        return dst;
       }
 
       @Override
@@ -1684,7 +1620,7 @@ public class ImagingStudy extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 115792:  return getUidElement();
-        case 1560041540:  return getSopClass(); 
+        case 1560041540:  return getSopClass();
         case -1034364087:  return getNumberElement();
         case 110371416:  return getTitleElement();
         default: return super.makeProperty(hash, name);
@@ -1726,11 +1662,15 @@ public class ImagingStudy extends DomainResource {
       public ImagingStudySeriesInstanceComponent copy() {
         ImagingStudySeriesInstanceComponent dst = new ImagingStudySeriesInstanceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImagingStudySeriesInstanceComponent dst) {
+        super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();
         dst.sopClass = sopClass == null ? null : sopClass.copy();
         dst.number = number == null ? null : number.copy();
         dst.title = title == null ? null : title.copy();
-        return dst;
       }
 
       @Override
@@ -1798,21 +1738,11 @@ public class ImagingStudy extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The subject, typically a patient, of the imaging study.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Encounter with which this imaging study is associated", formalDefinition="The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Date and time the study started.
@@ -1827,11 +1757,6 @@ public class ImagingStudy extends DomainResource {
     @Child(name = "basedOn", type = {CarePlan.class, ServiceRequest.class, Appointment.class, AppointmentResponse.class, Task.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Request fulfilled", formalDefinition="A list of the diagnostic requests that resulted in this imaging study being performed." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A list of the diagnostic requests that resulted in this imaging study being performed.)
-     */
-    protected List<Resource> basedOnTarget;
-
 
     /**
      * The requesting/referring physician.
@@ -1841,21 +1766,11 @@ public class ImagingStudy extends DomainResource {
     protected Reference referrer;
 
     /**
-     * The actual object that is the target of the reference (The requesting/referring physician.)
-     */
-    protected Resource referrerTarget;
-
-    /**
      * Who read the study and interpreted the images or other content.
      */
     @Child(name = "interpreter", type = {Practitioner.class, PractitionerRole.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who interpreted images", formalDefinition="Who read the study and interpreted the images or other content." )
     protected List<Reference> interpreter;
-    /**
-     * The actual objects that are the target of the reference (Who read the study and interpreted the images or other content.)
-     */
-    protected List<Resource> interpreterTarget;
-
 
     /**
      * The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.connectionType.
@@ -1863,11 +1778,6 @@ public class ImagingStudy extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Study access endpoint", formalDefinition="The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.connectionType." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.connectionType.)
-     */
-    protected List<Endpoint> endpointTarget;
-
 
     /**
      * Number of Series in the Study. This value given may be larger than the number of series elements this Resource contains due to resource availability, security, or other factors. This element should be present if any series elements are present.
@@ -1891,11 +1801,6 @@ public class ImagingStudy extends DomainResource {
     protected Reference procedureReference;
 
     /**
-     * The actual object that is the target of the reference (The procedure which this ImagingStudy was part of.)
-     */
-    protected Procedure procedureReferenceTarget;
-
-    /**
      * The code for the performed procedure type.
      */
     @Child(name = "procedureCode", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
@@ -1910,11 +1815,6 @@ public class ImagingStudy extends DomainResource {
     protected Reference location;
 
     /**
-     * The actual object that is the target of the reference (The principal physical location where the ImagingStudy was performed.)
-     */
-    protected Location locationTarget;
-
-    /**
      * Description of clinical condition indicating why the ImagingStudy was requested.
      */
     @Child(name = "reasonCode", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
@@ -1925,14 +1825,9 @@ public class ImagingStudy extends DomainResource {
     /**
      * Indicates another resource whose existence justifies this Study.
      */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, Media.class, DiagnosticReport.class, DocumentReference.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why was study performed", formalDefinition="Indicates another resource whose existence justifies this Study." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates another resource whose existence justifies this Study.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.
@@ -1955,7 +1850,7 @@ public class ImagingStudy extends DomainResource {
     @Description(shortDefinition="Each study has one or more series of instances", formalDefinition="Each study has one or more series of images or other content." )
     protected List<ImagingStudySeriesComponent> series;
 
-    private static final long serialVersionUID = -647973361L;
+    private static final long serialVersionUID = -431531621L;
 
   /**
    * Constructor
@@ -2149,21 +2044,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The subject, typically a patient, of the imaging study.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The subject, typically a patient, of the imaging study.)
-     */
-    public ImagingStudy setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.)
      */
     public Reference getEncounter() { 
@@ -2184,26 +2064,6 @@ public class ImagingStudy extends DomainResource {
      */
     public ImagingStudy setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ImagingStudy.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.)
-     */
-    public ImagingStudy setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -2310,16 +2170,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #referrer} (The requesting/referring physician.)
      */
     public Reference getReferrer() { 
@@ -2340,21 +2190,6 @@ public class ImagingStudy extends DomainResource {
      */
     public ImagingStudy setReferrer(Reference value) { 
       this.referrer = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #referrer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The requesting/referring physician.)
-     */
-    public Resource getReferrerTarget() { 
-      return this.referrerTarget;
-    }
-
-    /**
-     * @param value {@link #referrer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The requesting/referring physician.)
-     */
-    public ImagingStudy setReferrerTarget(Resource value) { 
-      this.referrerTarget = value;
       return this;
     }
 
@@ -2412,16 +2247,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getInterpreterTarget() { 
-      if (this.interpreterTarget == null)
-        this.interpreterTarget = new ArrayList<Resource>();
-      return this.interpreterTarget;
-    }
-
-    /**
      * @return {@link #endpoint} (The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.connectionType.)
      */
     public List<Reference> getEndpoint() { 
@@ -2472,28 +2297,6 @@ public class ImagingStudy extends DomainResource {
         addEndpoint();
       }
       return getEndpoint().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
     }
 
     /**
@@ -2611,26 +2414,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #procedureReference} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The procedure which this ImagingStudy was part of.)
-     */
-    public Procedure getProcedureReferenceTarget() { 
-      if (this.procedureReferenceTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ImagingStudy.procedureReference");
-        else if (Configuration.doAutoCreate())
-          this.procedureReferenceTarget = new Procedure(); // aa
-      return this.procedureReferenceTarget;
-    }
-
-    /**
-     * @param value {@link #procedureReference} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The procedure which this ImagingStudy was part of.)
-     */
-    public ImagingStudy setProcedureReferenceTarget(Procedure value) { 
-      this.procedureReferenceTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #procedureCode} (The code for the performed procedure type.)
      */
     public List<CodeableConcept> getProcedureCode() { 
@@ -2704,26 +2487,6 @@ public class ImagingStudy extends DomainResource {
      */
     public ImagingStudy setLocation(Reference value) { 
       this.location = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The principal physical location where the ImagingStudy was performed.)
-     */
-    public Location getLocationTarget() { 
-      if (this.locationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ImagingStudy.location");
-        else if (Configuration.doAutoCreate())
-          this.locationTarget = new Location(); // aa
-      return this.locationTarget;
-    }
-
-    /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The principal physical location where the ImagingStudy was performed.)
-     */
-    public ImagingStudy setLocationTarget(Location value) { 
-      this.locationTarget = value;
       return this;
     }
 
@@ -2831,16 +2594,6 @@ public class ImagingStudy extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**
@@ -3016,7 +2769,7 @@ public class ImagingStudy extends DomainResource {
         children.add(new Property("procedureCode", "CodeableConcept", "The code for the performed procedure type.", 0, java.lang.Integer.MAX_VALUE, procedureCode));
         children.add(new Property("location", "Reference(Location)", "The principal physical location where the ImagingStudy was performed.", 0, 1, location));
         children.add(new Property("reasonCode", "CodeableConcept", "Description of clinical condition indicating why the ImagingStudy was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|Media|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
         children.add(new Property("note", "Annotation", "Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("description", "string", "The Imaging Manager description of the study. Institution-generated description or classification of the Study (component) performed.", 0, 1, description));
         children.add(new Property("series", "", "Each study has one or more series of images or other content.", 0, java.lang.Integer.MAX_VALUE, series));
@@ -3041,7 +2794,7 @@ public class ImagingStudy extends DomainResource {
         case -698023072: /*procedureCode*/  return new Property("procedureCode", "CodeableConcept", "The code for the performed procedure type.", 0, java.lang.Integer.MAX_VALUE, procedureCode);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The principal physical location where the ImagingStudy was performed.", 0, 1, location);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Description of clinical condition indicating why the ImagingStudy was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|Media|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1724546052: /*description*/  return new Property("description", "string", "The Imaging Manager description of the study. Institution-generated description or classification of the Study (component) performed.", 0, 1, description);
         case -905838985: /*series*/  return new Property("series", "", "Each study has one or more series of images or other content.", 0, java.lang.Integer.MAX_VALUE, series);
@@ -3201,18 +2954,18 @@ public class ImagingStudy extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case -622722335:  return addModality(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
         case -1897185151:  return getStartedElement();
         case -332612366:  return addBasedOn(); 
-        case -722568161:  return getReferrer(); 
+        case -722568161:  return getReferrer();
         case -2008009094:  return addInterpreter(); 
         case 1741102485:  return addEndpoint(); 
         case 1920000407:  return getNumberOfSeriesElement();
         case -1043544226:  return getNumberOfInstancesElement();
-        case 881809848:  return getProcedureReference(); 
+        case 881809848:  return getProcedureReference();
         case -698023072:  return addProcedureCode(); 
-        case 1901043637:  return getLocation(); 
+        case 1901043637:  return getLocation();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 3387378:  return addNote(); 
@@ -3330,6 +3083,11 @@ public class ImagingStudy extends DomainResource {
       public ImagingStudy copy() {
         ImagingStudy dst = new ImagingStudy();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ImagingStudy dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3390,7 +3148,6 @@ public class ImagingStudy extends DomainResource {
           for (ImagingStudySeriesComponent i : series)
             dst.series.add(i.copy());
         };
-        return dst;
       }
 
       protected ImagingStudy typedCopy() {

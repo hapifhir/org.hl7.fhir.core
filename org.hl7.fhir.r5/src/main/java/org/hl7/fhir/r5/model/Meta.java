@@ -53,14 +53,17 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+
 import org.hl7.fhir.instance.model.api.IBaseMetaType;
 import org.hl7.fhir.utilities.Utilities;
-
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The metadata about a resource. This is content in the resource that is maintained by the infrastructure. Changes to the content might not always be associated with version changes to the resource.
  */
@@ -626,6 +629,11 @@ public class Meta extends Type implements IBaseMetaType {
       public Meta copy() {
         Meta dst = new Meta();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Meta dst) {
+        super.copyValues(dst);
         dst.versionId = versionId == null ? null : versionId.copy();
         dst.lastUpdated = lastUpdated == null ? null : lastUpdated.copy();
         dst.source = source == null ? null : source.copy();
@@ -644,7 +652,6 @@ public class Meta extends Type implements IBaseMetaType {
           for (Coding i : tag)
             dst.tag.add(i.copy());
         };
-        return dst;
       }
 
       protected Meta typedCopy() {

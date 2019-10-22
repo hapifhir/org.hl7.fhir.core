@@ -53,17 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A person who is directly or indirectly involved in the provisioning of healthcare.
  */
@@ -101,12 +103,7 @@ public class Practitioner extends DomainResource {
         @Description(shortDefinition="Organization that regulates and issues the qualification", formalDefinition="Organization that regulates and issues the qualification." )
         protected Reference issuer;
 
-        /**
-         * The actual object that is the target of the reference (Organization that regulates and issues the qualification.)
-         */
-        protected Organization issuerTarget;
-
-        private static final long serialVersionUID = 1095219071L;
+        private static final long serialVersionUID = 1561812204L;
 
     /**
      * Constructor
@@ -248,26 +245,6 @@ public class Practitioner extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #issuer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Organization that regulates and issues the qualification.)
-         */
-        public Organization getIssuerTarget() { 
-          if (this.issuerTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create PractitionerQualificationComponent.issuer");
-            else if (Configuration.doAutoCreate())
-              this.issuerTarget = new Organization(); // aa
-          return this.issuerTarget;
-        }
-
-        /**
-         * @param value {@link #issuer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Organization that regulates and issues the qualification.)
-         */
-        public PractitionerQualificationComponent setIssuerTarget(Organization value) { 
-          this.issuerTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("identifier", "Identifier", "An identifier that applies to this person's qualification in this role.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -339,9 +316,9 @@ public class Practitioner extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case 3059181:  return getCode(); 
-        case -991726143:  return getPeriod(); 
-        case -1179159879:  return getIssuer(); 
+        case 3059181:  return getCode();
+        case -991726143:  return getPeriod();
+        case -1179159879:  return getIssuer();
         default: return super.makeProperty(hash, name);
         }
 
@@ -383,6 +360,11 @@ public class Practitioner extends DomainResource {
       public PractitionerQualificationComponent copy() {
         PractitionerQualificationComponent dst = new PractitionerQualificationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PractitionerQualificationComponent dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -391,7 +373,6 @@ public class Practitioner extends DomainResource {
         dst.code = code == null ? null : code.copy();
         dst.period = period == null ? null : period.copy();
         dst.issuer = issuer == null ? null : issuer.copy();
-        return dst;
       }
 
       @Override
@@ -456,8 +437,7 @@ public class Practitioner extends DomainResource {
     protected List<ContactPoint> telecom;
 
     /**
-     * Address(es) of the practitioner that are not role specific (typically home address). 
-Work addresses are not typically entered in this property as they are usually role dependent.
+     * Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.
      */
     @Child(name = "address", type = {Address.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Address(es) of the practitioner that are not role specific (typically home address)", formalDefinition="Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent." )
@@ -714,8 +694,7 @@ Work addresses are not typically entered in this property as they are usually ro
     }
 
     /**
-     * @return {@link #address} (Address(es) of the practitioner that are not role specific (typically home address). 
-Work addresses are not typically entered in this property as they are usually role dependent.)
+     * @return {@link #address} (Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.)
      */
     public List<Address> getAddress() { 
       if (this.address == null)
@@ -1221,6 +1200,11 @@ Work addresses are not typically entered in this property as they are usually ro
       public Practitioner copy() {
         Practitioner dst = new Practitioner();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Practitioner dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1259,7 +1243,6 @@ Work addresses are not typically entered in this property as they are usually ro
           for (CodeableConcept i : communication)
             dst.communication.add(i.copy());
         };
-        return dst;
       }
 
       protected Practitioner typedCopy() {

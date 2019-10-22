@@ -173,11 +173,11 @@ public class Encounter extends VersionConvertor_40_50 {
       return null;
     switch (src) {
     case PLANNED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.PLANNED;
-    case ARRIVED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.ARRIVED;
-    case TRIAGED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.TRIAGED;
+    case ARRIVED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
+    case TRIAGED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
     case INPROGRESS: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
-    case ONLEAVE: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.ONLEAVE;
-    case FINISHED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.FINISHED;
+    case ONLEAVE: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
+    case FINISHED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.COMPLETED;
     case CANCELLED: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.CANCELLED;
     case ENTEREDINERROR: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.ENTEREDINERROR;
     case UNKNOWN: return org.hl7.fhir.r5.model.Encounter.EncounterStatus.UNKNOWN;
@@ -190,12 +190,9 @@ public class Encounter extends VersionConvertor_40_50 {
       return null;
     switch (src) {
     case PLANNED: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.PLANNED;
-    case ARRIVED: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.ARRIVED;
-    case TRIAGED: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.TRIAGED;
     case INPROGRESS: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.INPROGRESS;
-    case ONLEAVE: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.ONLEAVE;
-    case FINISHED: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.FINISHED;
     case CANCELLED: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.CANCELLED;
+    case COMPLETED: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.FINISHED;
     case ENTEREDINERROR: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.ENTEREDINERROR;
     case UNKNOWN: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.UNKNOWN;
     default: return org.hl7.fhir.r4.model.Encounter.EncounterStatus.NULL;

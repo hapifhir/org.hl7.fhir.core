@@ -148,6 +148,12 @@
 					"/List/text/div (line 7, col4) Error parsing XHTML: Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection) "
 				]
 			},
+			"observation-with-trailing-dot.json": {
+				"errorCount": 1,
+				"errors": [
+					"ERROR: Observation.referenceRange[0].high.value: The value '925.' is not a valid decimal"
+				]
+			},
 			"synthea.json": {
 			  "version": "4.0",
 				"errorCount": 2,
@@ -912,7 +918,8 @@
 				}
       },
 	  "q-bp.xml": {
-		"errorCount": 0
+		"errorCount": 17,
+    "errors" : "all related to extensions"
 	  },
       "valueset-slicing-meds-bad.xml" : {
         "version" : "3.0",

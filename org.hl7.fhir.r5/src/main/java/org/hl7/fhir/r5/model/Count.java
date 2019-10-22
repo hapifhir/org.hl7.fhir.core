@@ -50,12 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.
  */
@@ -134,6 +140,10 @@ public class Count extends Quantity implements ICompositeType {
         Count dst = new Count();
         copyValues(dst);
         return dst;
+      }
+
+      public void copyValues(Count dst) {
+        super.copyValues(dst);
       }
 
       protected Count typedCopy() {

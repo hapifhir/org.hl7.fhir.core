@@ -53,14 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A slot of time on a schedule that may be available for booking appointments.
  */
@@ -254,11 +258,6 @@ public class Slot extends DomainResource {
     protected Reference schedule;
 
     /**
-     * The actual object that is the target of the reference (The schedule resource that this slot defines an interval of status information.)
-     */
-    protected Schedule scheduleTarget;
-
-    /**
      * busy | free | busy-unavailable | busy-tentative | entered-in-error.
      */
     @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=false, summary=true)
@@ -294,7 +293,7 @@ public class Slot extends DomainResource {
     @Description(shortDefinition="Comments on the slot to describe any extended information. Such as custom constraints on the slot", formalDefinition="Comments on the slot to describe any extended information. Such as custom constraints on the slot." )
     protected StringType comment;
 
-    private static final long serialVersionUID = 683481856L;
+    private static final long serialVersionUID = -426965191L;
 
   /**
    * Constructor
@@ -571,26 +570,6 @@ public class Slot extends DomainResource {
      */
     public Slot setSchedule(Reference value) { 
       this.schedule = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #schedule} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The schedule resource that this slot defines an interval of status information.)
-     */
-    public Schedule getScheduleTarget() { 
-      if (this.scheduleTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Slot.schedule");
-        else if (Configuration.doAutoCreate())
-          this.scheduleTarget = new Schedule(); // aa
-      return this.scheduleTarget;
-    }
-
-    /**
-     * @param value {@link #schedule} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The schedule resource that this slot defines an interval of status information.)
-     */
-    public Slot setScheduleTarget(Schedule value) { 
-      this.scheduleTarget = value;
       return this;
     }
 
@@ -955,8 +934,8 @@ public class Slot extends DomainResource {
         case 1281188563:  return addServiceCategory(); 
         case -1928370289:  return addServiceType(); 
         case -1694759682:  return addSpecialty(); 
-        case -1596426375:  return getAppointmentType(); 
-        case -697920873:  return getSchedule(); 
+        case -1596426375:  return getAppointmentType();
+        case -697920873:  return getSchedule();
         case -892481550:  return getStatusElement();
         case 109757538:  return getStartElement();
         case 100571:  return getEndElement();
@@ -1035,6 +1014,11 @@ public class Slot extends DomainResource {
       public Slot copy() {
         Slot dst = new Slot();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Slot dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1062,7 +1046,6 @@ public class Slot extends DomainResource {
         dst.end = end == null ? null : end.copy();
         dst.overbooked = overbooked == null ? null : overbooked.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       protected Slot typedCopy() {

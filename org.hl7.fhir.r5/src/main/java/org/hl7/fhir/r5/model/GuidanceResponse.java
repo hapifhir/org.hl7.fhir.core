@@ -53,13 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A guidance response is the formal response to a guidance request, including any output parameters returned by the evaluation, as well as the description of any proposed actions to be taken.
  */
@@ -259,21 +264,11 @@ public class GuidanceResponse extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The patient for which the request was processed.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The encounter during which this response was created or to which the creation of this record is tightly associated.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Encounter during which the response was returned", formalDefinition="The encounter during which this response was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The encounter during which this response was created or to which the creation of this record is tightly associated.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * Indicates when the guidance response was processed.
@@ -290,11 +285,6 @@ public class GuidanceResponse extends DomainResource {
     protected Reference performer;
 
     /**
-     * The actual object that is the target of the reference (Provides a reference to the device that performed the guidance.)
-     */
-    protected Device performerTarget;
-
-    /**
      * Describes the reason for the guidance response in coded or textual form.
      */
     @Child(name = "reasonCode", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -307,11 +297,6 @@ public class GuidanceResponse extends DomainResource {
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why guidance is needed", formalDefinition="Indicates the reason the request was initiated. This is typically provided as a parameter to the evaluation and echoed by the service, although for some use cases, such as subscription- or event-based scenarios, it may provide an indication of the cause for the response." )
     protected List<Reference> reasonReference;
-    /**
-     * The actual objects that are the target of the reference (Indicates the reason the request was initiated. This is typically provided as a parameter to the evaluation and echoed by the service, although for some use cases, such as subscription- or event-based scenarios, it may provide an indication of the cause for the response.)
-     */
-    protected List<Resource> reasonReferenceTarget;
-
 
     /**
      * Provides a mechanism to communicate additional information about the response.
@@ -326,11 +311,6 @@ public class GuidanceResponse extends DomainResource {
     @Child(name = "evaluationMessage", type = {OperationOutcome.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Messages resulting from the evaluation of the artifact or artifacts", formalDefinition="Messages resulting from the evaluation of the artifact or artifacts. As part of evaluating the request, the engine may produce informational or warning messages. These messages will be provided by this element." )
     protected List<Reference> evaluationMessage;
-    /**
-     * The actual objects that are the target of the reference (Messages resulting from the evaluation of the artifact or artifacts. As part of evaluating the request, the engine may produce informational or warning messages. These messages will be provided by this element.)
-     */
-    protected List<OperationOutcome> evaluationMessageTarget;
-
 
     /**
      * The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.
@@ -340,21 +320,11 @@ public class GuidanceResponse extends DomainResource {
     protected Reference outputParameters;
 
     /**
-     * The actual object that is the target of the reference (The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.)
-     */
-    protected Parameters outputParametersTarget;
-
-    /**
      * The actions, if any, produced by the evaluation of the artifact.
      */
     @Child(name = "result", type = {CarePlan.class, RequestGroup.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Proposed actions, if any", formalDefinition="The actions, if any, produced by the evaluation of the artifact." )
     protected Reference result;
-
-    /**
-     * The actual object that is the target of the reference (The actions, if any, produced by the evaluation of the artifact.)
-     */
-    protected Resource resultTarget;
 
     /**
      * If the evaluation could not be completed due to lack of information, or additional information would potentially result in a more accurate response, this element will a description of the data required in order to proceed with the evaluation. A subsequent request to the service should include this data.
@@ -363,7 +333,7 @@ public class GuidanceResponse extends DomainResource {
     @Description(shortDefinition="Additional required data", formalDefinition="If the evaluation could not be completed due to lack of information, or additional information would potentially result in a more accurate response, this element will a description of the data required in order to proceed with the evaluation. A subsequent request to the service should include this data." )
     protected List<DataRequirement> dataRequirement;
 
-    private static final long serialVersionUID = -760182193L;
+    private static final long serialVersionUID = -159555787L;
 
   /**
    * Constructor
@@ -594,21 +564,6 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient for which the request was processed.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient for which the request was processed.)
-     */
-    public GuidanceResponse setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The encounter during which this response was created or to which the creation of this record is tightly associated.)
      */
     public Reference getEncounter() { 
@@ -629,26 +584,6 @@ public class GuidanceResponse extends DomainResource {
      */
     public GuidanceResponse setEncounter(Reference value) { 
       this.encounter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The encounter during which this response was created or to which the creation of this record is tightly associated.)
-     */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create GuidanceResponse.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
-    }
-
-    /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The encounter during which this response was created or to which the creation of this record is tightly associated.)
-     */
-    public GuidanceResponse setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
       return this;
     }
 
@@ -722,26 +657,6 @@ public class GuidanceResponse extends DomainResource {
      */
     public GuidanceResponse setPerformer(Reference value) { 
       this.performer = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #performer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Provides a reference to the device that performed the guidance.)
-     */
-    public Device getPerformerTarget() { 
-      if (this.performerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create GuidanceResponse.performer");
-        else if (Configuration.doAutoCreate())
-          this.performerTarget = new Device(); // aa
-      return this.performerTarget;
-    }
-
-    /**
-     * @param value {@link #performer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Provides a reference to the device that performed the guidance.)
-     */
-    public GuidanceResponse setPerformerTarget(Device value) { 
-      this.performerTarget = value;
       return this;
     }
 
@@ -852,16 +767,6 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #note} (Provides a mechanism to communicate additional information about the response.)
      */
     public List<Annotation> getNote() { 
@@ -968,28 +873,6 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<OperationOutcome> getEvaluationMessageTarget() { 
-      if (this.evaluationMessageTarget == null)
-        this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-      return this.evaluationMessageTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public OperationOutcome addEvaluationMessageTarget() { 
-      OperationOutcome r = new OperationOutcome();
-      if (this.evaluationMessageTarget == null)
-        this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-      this.evaluationMessageTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #outputParameters} (The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.)
      */
     public Reference getOutputParameters() { 
@@ -1014,26 +897,6 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #outputParameters} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.)
-     */
-    public Parameters getOutputParametersTarget() { 
-      if (this.outputParametersTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create GuidanceResponse.outputParameters");
-        else if (Configuration.doAutoCreate())
-          this.outputParametersTarget = new Parameters(); // aa
-      return this.outputParametersTarget;
-    }
-
-    /**
-     * @param value {@link #outputParameters} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.)
-     */
-    public GuidanceResponse setOutputParametersTarget(Parameters value) { 
-      this.outputParametersTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #result} (The actions, if any, produced by the evaluation of the artifact.)
      */
     public Reference getResult() { 
@@ -1054,21 +917,6 @@ public class GuidanceResponse extends DomainResource {
      */
     public GuidanceResponse setResult(Reference value) { 
       this.result = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #result} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The actions, if any, produced by the evaluation of the artifact.)
-     */
-    public Resource getResultTarget() { 
-      return this.resultTarget;
-    }
-
-    /**
-     * @param value {@link #result} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The actions, if any, produced by the evaluation of the artifact.)
-     */
-    public GuidanceResponse setResultTarget(Resource value) { 
-      this.resultTarget = value;
       return this;
     }
 
@@ -1289,21 +1137,21 @@ public class GuidanceResponse extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -354233192:  return getRequestIdentifier(); 
+        case -354233192:  return getRequestIdentifier();
         case -1618432855:  return addIdentifier(); 
-        case -1552083308:  return getModule(); 
-        case -1068784020:  return getModule(); 
+        case -1552083308:  return getModule();
+        case -1068784020:  return getModule();
         case -892481550:  return getStatusElement();
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
         case -298443636:  return getOccurrenceDateTimeElement();
-        case 481140686:  return getPerformer(); 
+        case 481140686:  return getPerformer();
         case 722137681:  return addReasonCode(); 
         case -1146218137:  return addReasonReference(); 
         case 3387378:  return addNote(); 
         case 1081619755:  return addEvaluationMessage(); 
-        case 525609419:  return getOutputParameters(); 
-        case -934426595:  return getResult(); 
+        case 525609419:  return getOutputParameters();
+        case -934426595:  return getResult();
         case 629147193:  return addDataRequirement(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1407,6 +1255,11 @@ public class GuidanceResponse extends DomainResource {
       public GuidanceResponse copy() {
         GuidanceResponse dst = new GuidanceResponse();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GuidanceResponse dst) {
+        super.copyValues(dst);
         dst.requestIdentifier = requestIdentifier == null ? null : requestIdentifier.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -1446,7 +1299,6 @@ public class GuidanceResponse extends DomainResource {
           for (DataRequirement i : dataRequirement)
             dst.dataRequirement.add(i.copy());
         };
-        return dst;
       }
 
       protected GuidanceResponse typedCopy() {

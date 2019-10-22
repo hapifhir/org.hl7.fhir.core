@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types.
  */
@@ -653,7 +653,7 @@ public class NamingSystem extends MetadataResource {
         case 111972721:  return getValueElement();
         case -1294005119:  return getPreferredElement();
         case 950398559:  return getCommentElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -697,12 +697,16 @@ public class NamingSystem extends MetadataResource {
       public NamingSystemUniqueIdComponent copy() {
         NamingSystemUniqueIdComponent dst = new NamingSystemUniqueIdComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NamingSystemUniqueIdComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
         dst.preferred = preferred == null ? null : preferred.copy();
         dst.comment = comment == null ? null : comment.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -1561,7 +1565,7 @@ public class NamingSystem extends MetadataResource {
         case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
         case 1847674614:  return getResponsibleElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1724546052:  return getDescriptionElement();
         case -669707736:  return addUseContext(); 
         case -507075711:  return addJurisdiction(); 
@@ -1647,6 +1651,11 @@ public class NamingSystem extends MetadataResource {
       public NamingSystem copy() {
         NamingSystem dst = new NamingSystem();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NamingSystem dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.status = status == null ? null : status.copy();
         dst.kind = kind == null ? null : kind.copy();
@@ -1676,7 +1685,6 @@ public class NamingSystem extends MetadataResource {
           for (NamingSystemUniqueIdComponent i : uniqueId)
             dst.uniqueId.add(i.copy());
         };
-        return dst;
       }
 
       protected NamingSystem typedCopy() {

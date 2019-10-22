@@ -50,16 +50,22 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatype;
-import org.hl7.fhir.instance.model.api.IBaseExtension;
-import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.instance.model.api.IBaseExtension;
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Optional Extension Element - found in all resources.
  */
@@ -80,7 +86,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
     @Description(shortDefinition="Value of extension", formalDefinition="Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list)." )
     protected org.hl7.fhir.r5.model.Type value;
 
-    private static final long serialVersionUID = 194602931L;
+    private static final long serialVersionUID = 405953844L;
 
   /**
    * Constructor
@@ -268,8 +274,8 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -486,6 +492,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
@@ -498,9 +508,13 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       public Extension copy() {
         Extension dst = new Extension();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Extension dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       protected Extension typedCopy() {

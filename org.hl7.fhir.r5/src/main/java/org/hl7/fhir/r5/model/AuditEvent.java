@@ -53,18 +53,21 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
- * A record of an event made for purposes of maintaining a security log. Typical uses include detection of intrusion attempts and monitoring for inappropriate usage.
+ * A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.
  */
 @ResourceDef(name="AuditEvent", profile="http://hl7.org/fhir/StructureDefinition/AuditEvent")
 public class AuditEvent extends DomainResource {
@@ -499,11 +502,6 @@ public class AuditEvent extends DomainResource {
         protected Reference who;
 
         /**
-         * The actual object that is the target of the reference (Reference to who this agent is that was involved in the event.)
-         */
-        protected Resource whoTarget;
-
-        /**
          * Alternative agent Identifier. For a human, this should be a user identifier text string from authentication system. This identifier would be one known to a common authentication system (e.g. single sign-on), if available.
          */
         @Child(name = "altId", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
@@ -530,11 +528,6 @@ public class AuditEvent extends DomainResource {
         @Child(name = "location", type = {Location.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Where", formalDefinition="Where the event occurred." )
         protected Reference location;
-
-        /**
-         * The actual object that is the target of the reference (Where the event occurred.)
-         */
-        protected Location locationTarget;
 
         /**
          * The policy or plan that authorized the activity being recorded. Typically, a single activity may have multiple applicable policies, such as patient consent, guarantor funding, etc. The policy would also indicate the security token used.
@@ -566,7 +559,7 @@ public class AuditEvent extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-PurposeOfUse")
         protected List<CodeableConcept> purposeOfUse;
 
-        private static final long serialVersionUID = -957410638L;
+        private static final long serialVersionUID = 254367542L;
 
     /**
      * Constructor
@@ -681,21 +674,6 @@ public class AuditEvent extends DomainResource {
          */
         public AuditEventAgentComponent setWho(Reference value) { 
           this.who = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #who} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to who this agent is that was involved in the event.)
-         */
-        public Resource getWhoTarget() { 
-          return this.whoTarget;
-        }
-
-        /**
-         * @param value {@link #who} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to who this agent is that was involved in the event.)
-         */
-        public AuditEventAgentComponent setWhoTarget(Resource value) { 
-          this.whoTarget = value;
           return this;
         }
 
@@ -863,26 +841,6 @@ public class AuditEvent extends DomainResource {
          */
         public AuditEventAgentComponent setLocation(Reference value) { 
           this.location = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Where the event occurred.)
-         */
-        public Location getLocationTarget() { 
-          if (this.locationTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AuditEventAgentComponent.location");
-            else if (Configuration.doAutoCreate())
-              this.locationTarget = new Location(); // aa
-          return this.locationTarget;
-        }
-
-        /**
-         * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Where the event occurred.)
-         */
-        public AuditEventAgentComponent setLocationTarget(Location value) { 
-          this.locationTarget = value;
           return this;
         }
 
@@ -1174,16 +1132,16 @@ public class AuditEvent extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 3506294:  return addRole(); 
-        case 117694:  return getWho(); 
+        case 117694:  return getWho();
         case 92912804:  return getAltIdElement();
         case 3373707:  return getNameElement();
         case 693934258:  return getRequestorElement();
-        case 1901043637:  return getLocation(); 
+        case 1901043637:  return getLocation();
         case -982670030:  return addPolicyElement();
-        case 103772132:  return getMedia(); 
-        case 1843485230:  return getNetwork(); 
+        case 103772132:  return getMedia();
+        case 1843485230:  return getNetwork();
         case -1881902670:  return addPurposeOfUse(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1256,6 +1214,11 @@ public class AuditEvent extends DomainResource {
       public AuditEventAgentComponent copy() {
         AuditEventAgentComponent dst = new AuditEventAgentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventAgentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (role != null) {
           dst.role = new ArrayList<CodeableConcept>();
@@ -1279,7 +1242,6 @@ public class AuditEvent extends DomainResource {
           for (CodeableConcept i : purposeOfUse)
             dst.purposeOfUse.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1530,9 +1492,13 @@ public class AuditEvent extends DomainResource {
       public AuditEventAgentNetworkComponent copy() {
         AuditEventAgentNetworkComponent dst = new AuditEventAgentNetworkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventAgentNetworkComponent dst) {
+        super.copyValues(dst);
         dst.address = address == null ? null : address.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -1583,11 +1549,6 @@ public class AuditEvent extends DomainResource {
         protected Reference observer;
 
         /**
-         * The actual object that is the target of the reference (Identifier of the source where the event was detected.)
-         */
-        protected Resource observerTarget;
-
-        /**
          * Code specifying the type of source where event originated.
          */
         @Child(name = "type", type = {Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
@@ -1595,7 +1556,7 @@ public class AuditEvent extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/audit-source-type")
         protected List<Coding> type;
 
-        private static final long serialVersionUID = 2133038564L;
+        private static final long serialVersionUID = 31014963L;
 
     /**
      * Constructor
@@ -1682,21 +1643,6 @@ public class AuditEvent extends DomainResource {
          */
         public AuditEventSourceComponent setObserver(Reference value) { 
           this.observer = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #observer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifier of the source where the event was detected.)
-         */
-        public Resource getObserverTarget() { 
-          return this.observerTarget;
-        }
-
-        /**
-         * @param value {@link #observer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifier of the source where the event was detected.)
-         */
-        public AuditEventSourceComponent setObserverTarget(Resource value) { 
-          this.observerTarget = value;
           return this;
         }
 
@@ -1816,7 +1762,7 @@ public class AuditEvent extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3530567:  return getSiteElement();
-        case 348607190:  return getObserver(); 
+        case 348607190:  return getObserver();
         case 3575610:  return addType(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1853,6 +1799,11 @@ public class AuditEvent extends DomainResource {
       public AuditEventSourceComponent copy() {
         AuditEventSourceComponent dst = new AuditEventSourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventSourceComponent dst) {
+        super.copyValues(dst);
         dst.site = site == null ? null : site.copy();
         dst.observer = observer == null ? null : observer.copy();
         if (type != null) {
@@ -1860,7 +1811,6 @@ public class AuditEvent extends DomainResource {
           for (Coding i : type)
             dst.type.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1903,11 +1853,6 @@ public class AuditEvent extends DomainResource {
         @Child(name = "what", type = {Reference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Specific instance of resource", formalDefinition="Identifies a specific instance of the entity. The reference should be version specific." )
         protected Reference what;
-
-        /**
-         * The actual object that is the target of the reference (Identifies a specific instance of the entity. The reference should be version specific.)
-         */
-        protected Resource whatTarget;
 
         /**
          * The type of the object that was involved in this audit event.
@@ -1969,7 +1914,7 @@ public class AuditEvent extends DomainResource {
         @Description(shortDefinition="Additional Information about the entity", formalDefinition="Tagged value pairs for conveying additional information about the entity." )
         protected List<AuditEventEntityDetailComponent> detail;
 
-        private static final long serialVersionUID = 334545686L;
+        private static final long serialVersionUID = 706747961L;
 
     /**
      * Constructor
@@ -1999,21 +1944,6 @@ public class AuditEvent extends DomainResource {
          */
         public AuditEventEntityComponent setWhat(Reference value) { 
           this.what = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #what} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies a specific instance of the entity. The reference should be version specific.)
-         */
-        public Resource getWhatTarget() { 
-          return this.whatTarget;
-        }
-
-        /**
-         * @param value {@link #what} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies a specific instance of the entity. The reference should be version specific.)
-         */
-        public AuditEventEntityComponent setWhatTarget(Resource value) { 
-          this.whatTarget = value;
           return this;
         }
 
@@ -2452,10 +2382,10 @@ public class AuditEvent extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3648196:  return getWhat(); 
-        case 3575610:  return getType(); 
-        case 3506294:  return getRole(); 
-        case -302323862:  return getLifecycle(); 
+        case 3648196:  return getWhat();
+        case 3575610:  return getType();
+        case 3506294:  return getRole();
+        case -302323862:  return getLifecycle();
         case -722296940:  return addSecurityLabel(); 
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
@@ -2523,6 +2453,11 @@ public class AuditEvent extends DomainResource {
       public AuditEventEntityComponent copy() {
         AuditEventEntityComponent dst = new AuditEventEntityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventEntityComponent dst) {
+        super.copyValues(dst);
         dst.what = what == null ? null : what.copy();
         dst.type = type == null ? null : type.copy();
         dst.role = role == null ? null : role.copy();
@@ -2540,7 +2475,6 @@ public class AuditEvent extends DomainResource {
           for (AuditEventEntityDetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2767,8 +2701,8 @@ public class AuditEvent extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2804,9 +2738,13 @@ public class AuditEvent extends DomainResource {
       public AuditEventEntityDetailComponent copy() {
         AuditEventEntityDetailComponent dst = new AuditEventEntityDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventEntityDetailComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3547,16 +3485,16 @@ public class AuditEvent extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -1867567750:  return addSubtype(); 
         case -1422950858:  return getActionElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         case -799233872:  return getRecordedElement();
         case -1106507950:  return getOutcomeElement();
         case 1062502659:  return getOutcomeDescElement();
         case -341917691:  return addPurposeOfEvent(); 
         case 92750597:  return addAgent(); 
-        case -896505829:  return getSource(); 
+        case -896505829:  return getSource();
         case -1298275357:  return addEntity(); 
         default: return super.makeProperty(hash, name);
         }
@@ -3632,6 +3570,11 @@ public class AuditEvent extends DomainResource {
       public AuditEvent copy() {
         AuditEvent dst = new AuditEvent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEvent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (subtype != null) {
           dst.subtype = new ArrayList<Coding>();
@@ -3659,7 +3602,6 @@ public class AuditEvent extends DomainResource {
           for (AuditEventEntityComponent i : entity)
             dst.entity.add(i.copy());
         };
-        return dst;
       }
 
       protected AuditEvent typedCopy() {
@@ -3806,6 +3748,26 @@ public class AuditEvent extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ENTITY_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ENTITY_ROLE);
+
+ /**
+   * Search parameter: <b>purpose</b>
+   * <p>
+   * Description: <b>The purposeOfUse of the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.purposeOfEvent, AuditEvent.agent.purposeOfUse</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="purpose", path="AuditEvent.purposeOfEvent | AuditEvent.agent.purposeOfUse", description="The purposeOfUse of the event", type="token" )
+  public static final String SP_PURPOSE = "purpose";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>purpose</b>
+   * <p>
+   * Description: <b>The purposeOfUse of the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.purposeOfEvent, AuditEvent.agent.purposeOfUse</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PURPOSE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PURPOSE);
 
  /**
    * Search parameter: <b>source</b>

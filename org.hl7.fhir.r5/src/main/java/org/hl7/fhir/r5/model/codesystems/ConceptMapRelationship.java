@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -62,19 +61,19 @@ public enum ConceptMapRelationship {
          */
         RELATEDTO, 
         /**
-         * The definitions of the concepts mean the same thing (including when structural implications of meaning are considered) (i.e. extensionally identical).
+         * The definitions of the concepts mean the same thing.
          */
         EQUIVALENT, 
         /**
-         * The target mapping is broader in meaning than the source concept.
+         * The target concept is broader in meaning than the source concept.
          */
         BROADER, 
         /**
-         * The target mapping is narrower in meaning than the source concept. The sense in which the mapping is narrower SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.
+         * The target concept is narrower in meaning than the source concept.
          */
         NARROWER, 
         /**
-         * This is an explicit assertion that there is no relationship between the source and target concept.
+         * This is an explicit assertion that the target concept is not related to the source concept.
          */
         NOTRELATEDTO, 
         /**
@@ -111,11 +110,11 @@ public enum ConceptMapRelationship {
         }
         public String getDefinition() {
           switch (this) {
-            case RELATEDTO: return "The concepts are related to each other, and have at least some overlap in meaning, but the exact relationship is not known.";
-            case EQUIVALENT: return "The definitions of the concepts mean the same thing (including when structural implications of meaning are considered) (i.e. extensionally identical).";
-            case BROADER: return "The target mapping is broader in meaning than the source concept.";
-            case NARROWER: return "The target mapping is narrower in meaning than the source concept. The sense in which the mapping is narrower SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.";
-            case NOTRELATEDTO: return "This is an explicit assertion that there is no relationship between the source and target concept.";
+            case RELATEDTO: return "The concepts are related to each other, but the exact relationship is not known.";
+            case EQUIVALENT: return "The definitions of the concepts mean the same thing.";
+            case BROADER: return "The target concept is broader in meaning than the source concept.";
+            case NARROWER: return "The target concept is narrower in meaning than the source concept.";
+            case NOTRELATEDTO: return "This is an explicit assertion that the target concept is not related to the source concept.";
             default: return "?";
           }
         }

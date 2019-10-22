@@ -50,16 +50,22 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * For referring to data content defined in other formats.
  */
@@ -124,7 +130,42 @@ public class Attachment extends Type implements ICompositeType {
     @Description(shortDefinition="Date attachment was first created", formalDefinition="The date that the attachment was first created." )
     protected DateTimeType creation;
 
-    private static final long serialVersionUID = -564352571L;
+    /**
+     * Height of the image in pixels (photo/video).
+     */
+    @Child(name = "height", type = {PositiveIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Height of the image in pixels (photo/video)", formalDefinition="Height of the image in pixels (photo/video)." )
+    protected PositiveIntType height;
+
+    /**
+     * Width of the image in pixels (photo/video).
+     */
+    @Child(name = "width", type = {PositiveIntType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Width of the image in pixels (photo/video)", formalDefinition="Width of the image in pixels (photo/video)." )
+    protected PositiveIntType width;
+
+    /**
+     * The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.
+     */
+    @Child(name = "frames", type = {PositiveIntType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Number of frames if > 1 (photo)", formalDefinition="The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required." )
+    protected PositiveIntType frames;
+
+    /**
+     * The duration of the recording in seconds - for audio and video.
+     */
+    @Child(name = "duration", type = {DecimalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Length in seconds (audio / video)", formalDefinition="The duration of the recording in seconds - for audio and video." )
+    protected DecimalType duration;
+
+    /**
+     * The number of pages when printed.
+     */
+    @Child(name = "pages", type = {PositiveIntType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Number of printed pages", formalDefinition="The number of pages when printed." )
+    protected PositiveIntType pages;
+
+    private static final long serialVersionUID = -738137631L;
 
   /**
    * Constructor
@@ -521,6 +562,253 @@ public class Attachment extends Type implements ICompositeType {
       return this;
     }
 
+    /**
+     * @return {@link #height} (Height of the image in pixels (photo/video).). This is the underlying object with id, value and extensions. The accessor "getHeight" gives direct access to the value
+     */
+    public PositiveIntType getHeightElement() { 
+      if (this.height == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Attachment.height");
+        else if (Configuration.doAutoCreate())
+          this.height = new PositiveIntType(); // bb
+      return this.height;
+    }
+
+    public boolean hasHeightElement() { 
+      return this.height != null && !this.height.isEmpty();
+    }
+
+    public boolean hasHeight() { 
+      return this.height != null && !this.height.isEmpty();
+    }
+
+    /**
+     * @param value {@link #height} (Height of the image in pixels (photo/video).). This is the underlying object with id, value and extensions. The accessor "getHeight" gives direct access to the value
+     */
+    public Attachment setHeightElement(PositiveIntType value) { 
+      this.height = value;
+      return this;
+    }
+
+    /**
+     * @return Height of the image in pixels (photo/video).
+     */
+    public int getHeight() { 
+      return this.height == null || this.height.isEmpty() ? 0 : this.height.getValue();
+    }
+
+    /**
+     * @param value Height of the image in pixels (photo/video).
+     */
+    public Attachment setHeight(int value) { 
+        if (this.height == null)
+          this.height = new PositiveIntType();
+        this.height.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #width} (Width of the image in pixels (photo/video).). This is the underlying object with id, value and extensions. The accessor "getWidth" gives direct access to the value
+     */
+    public PositiveIntType getWidthElement() { 
+      if (this.width == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Attachment.width");
+        else if (Configuration.doAutoCreate())
+          this.width = new PositiveIntType(); // bb
+      return this.width;
+    }
+
+    public boolean hasWidthElement() { 
+      return this.width != null && !this.width.isEmpty();
+    }
+
+    public boolean hasWidth() { 
+      return this.width != null && !this.width.isEmpty();
+    }
+
+    /**
+     * @param value {@link #width} (Width of the image in pixels (photo/video).). This is the underlying object with id, value and extensions. The accessor "getWidth" gives direct access to the value
+     */
+    public Attachment setWidthElement(PositiveIntType value) { 
+      this.width = value;
+      return this;
+    }
+
+    /**
+     * @return Width of the image in pixels (photo/video).
+     */
+    public int getWidth() { 
+      return this.width == null || this.width.isEmpty() ? 0 : this.width.getValue();
+    }
+
+    /**
+     * @param value Width of the image in pixels (photo/video).
+     */
+    public Attachment setWidth(int value) { 
+        if (this.width == null)
+          this.width = new PositiveIntType();
+        this.width.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #frames} (The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.). This is the underlying object with id, value and extensions. The accessor "getFrames" gives direct access to the value
+     */
+    public PositiveIntType getFramesElement() { 
+      if (this.frames == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Attachment.frames");
+        else if (Configuration.doAutoCreate())
+          this.frames = new PositiveIntType(); // bb
+      return this.frames;
+    }
+
+    public boolean hasFramesElement() { 
+      return this.frames != null && !this.frames.isEmpty();
+    }
+
+    public boolean hasFrames() { 
+      return this.frames != null && !this.frames.isEmpty();
+    }
+
+    /**
+     * @param value {@link #frames} (The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.). This is the underlying object with id, value and extensions. The accessor "getFrames" gives direct access to the value
+     */
+    public Attachment setFramesElement(PositiveIntType value) { 
+      this.frames = value;
+      return this;
+    }
+
+    /**
+     * @return The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.
+     */
+    public int getFrames() { 
+      return this.frames == null || this.frames.isEmpty() ? 0 : this.frames.getValue();
+    }
+
+    /**
+     * @param value The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.
+     */
+    public Attachment setFrames(int value) { 
+        if (this.frames == null)
+          this.frames = new PositiveIntType();
+        this.frames.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #duration} (The duration of the recording in seconds - for audio and video.). This is the underlying object with id, value and extensions. The accessor "getDuration" gives direct access to the value
+     */
+    public DecimalType getDurationElement() { 
+      if (this.duration == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Attachment.duration");
+        else if (Configuration.doAutoCreate())
+          this.duration = new DecimalType(); // bb
+      return this.duration;
+    }
+
+    public boolean hasDurationElement() { 
+      return this.duration != null && !this.duration.isEmpty();
+    }
+
+    public boolean hasDuration() { 
+      return this.duration != null && !this.duration.isEmpty();
+    }
+
+    /**
+     * @param value {@link #duration} (The duration of the recording in seconds - for audio and video.). This is the underlying object with id, value and extensions. The accessor "getDuration" gives direct access to the value
+     */
+    public Attachment setDurationElement(DecimalType value) { 
+      this.duration = value;
+      return this;
+    }
+
+    /**
+     * @return The duration of the recording in seconds - for audio and video.
+     */
+    public BigDecimal getDuration() { 
+      return this.duration == null ? null : this.duration.getValue();
+    }
+
+    /**
+     * @param value The duration of the recording in seconds - for audio and video.
+     */
+    public Attachment setDuration(BigDecimal value) { 
+      if (value == null)
+        this.duration = null;
+      else {
+        if (this.duration == null)
+          this.duration = new DecimalType();
+        this.duration.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @param value The duration of the recording in seconds - for audio and video.
+     */
+    public Attachment setDuration(long value) { 
+          this.duration = new DecimalType();
+        this.duration.setValue(value);
+      return this;
+    }
+
+    /**
+     * @param value The duration of the recording in seconds - for audio and video.
+     */
+    public Attachment setDuration(double value) { 
+          this.duration = new DecimalType();
+        this.duration.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #pages} (The number of pages when printed.). This is the underlying object with id, value and extensions. The accessor "getPages" gives direct access to the value
+     */
+    public PositiveIntType getPagesElement() { 
+      if (this.pages == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Attachment.pages");
+        else if (Configuration.doAutoCreate())
+          this.pages = new PositiveIntType(); // bb
+      return this.pages;
+    }
+
+    public boolean hasPagesElement() { 
+      return this.pages != null && !this.pages.isEmpty();
+    }
+
+    public boolean hasPages() { 
+      return this.pages != null && !this.pages.isEmpty();
+    }
+
+    /**
+     * @param value {@link #pages} (The number of pages when printed.). This is the underlying object with id, value and extensions. The accessor "getPages" gives direct access to the value
+     */
+    public Attachment setPagesElement(PositiveIntType value) { 
+      this.pages = value;
+      return this;
+    }
+
+    /**
+     * @return The number of pages when printed.
+     */
+    public int getPages() { 
+      return this.pages == null || this.pages.isEmpty() ? 0 : this.pages.getValue();
+    }
+
+    /**
+     * @param value The number of pages when printed.
+     */
+    public Attachment setPages(int value) { 
+        if (this.pages == null)
+          this.pages = new PositiveIntType();
+        this.pages.setValue(value);
+      return this;
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("contentType", "code", "Identifies the type of the data in the attachment and allows a method to be chosen to interpret or render the data. Includes mime type parameters such as charset where appropriate.", 0, 1, contentType));
@@ -531,6 +819,11 @@ public class Attachment extends Type implements ICompositeType {
         children.add(new Property("hash", "base64Binary", "The calculated hash of the data using SHA-1. Represented using base64.", 0, 1, hash));
         children.add(new Property("title", "string", "A label or set of text to display in place of the data.", 0, 1, title));
         children.add(new Property("creation", "dateTime", "The date that the attachment was first created.", 0, 1, creation));
+        children.add(new Property("height", "positiveInt", "Height of the image in pixels (photo/video).", 0, 1, height));
+        children.add(new Property("width", "positiveInt", "Width of the image in pixels (photo/video).", 0, 1, width));
+        children.add(new Property("frames", "positiveInt", "The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.", 0, 1, frames));
+        children.add(new Property("duration", "decimal", "The duration of the recording in seconds - for audio and video.", 0, 1, duration));
+        children.add(new Property("pages", "positiveInt", "The number of pages when printed.", 0, 1, pages));
       }
 
       @Override
@@ -544,6 +837,11 @@ public class Attachment extends Type implements ICompositeType {
         case 3195150: /*hash*/  return new Property("hash", "base64Binary", "The calculated hash of the data using SHA-1. Represented using base64.", 0, 1, hash);
         case 110371416: /*title*/  return new Property("title", "string", "A label or set of text to display in place of the data.", 0, 1, title);
         case 1820421855: /*creation*/  return new Property("creation", "dateTime", "The date that the attachment was first created.", 0, 1, creation);
+        case -1221029593: /*height*/  return new Property("height", "positiveInt", "Height of the image in pixels (photo/video).", 0, 1, height);
+        case 113126854: /*width*/  return new Property("width", "positiveInt", "Width of the image in pixels (photo/video).", 0, 1, width);
+        case -1266514778: /*frames*/  return new Property("frames", "positiveInt", "The number of frames in a photo. This is used with a multi-page fax, or an imaging acquisition context that takes multiple slices in a single image, or an animated gif. If there is more than one frame, this SHALL have a value in order to alert interface software that a multi-frame capable rendering widget is required.", 0, 1, frames);
+        case -1992012396: /*duration*/  return new Property("duration", "decimal", "The duration of the recording in seconds - for audio and video.", 0, 1, duration);
+        case 106426308: /*pages*/  return new Property("pages", "positiveInt", "The number of pages when printed.", 0, 1, pages);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -560,6 +858,11 @@ public class Attachment extends Type implements ICompositeType {
         case 3195150: /*hash*/ return this.hash == null ? new Base[0] : new Base[] {this.hash}; // Base64BinaryType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case 1820421855: /*creation*/ return this.creation == null ? new Base[0] : new Base[] {this.creation}; // DateTimeType
+        case -1221029593: /*height*/ return this.height == null ? new Base[0] : new Base[] {this.height}; // PositiveIntType
+        case 113126854: /*width*/ return this.width == null ? new Base[0] : new Base[] {this.width}; // PositiveIntType
+        case -1266514778: /*frames*/ return this.frames == null ? new Base[0] : new Base[] {this.frames}; // PositiveIntType
+        case -1992012396: /*duration*/ return this.duration == null ? new Base[0] : new Base[] {this.duration}; // DecimalType
+        case 106426308: /*pages*/ return this.pages == null ? new Base[0] : new Base[] {this.pages}; // PositiveIntType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -592,6 +895,21 @@ public class Attachment extends Type implements ICompositeType {
         case 1820421855: // creation
           this.creation = castToDateTime(value); // DateTimeType
           return value;
+        case -1221029593: // height
+          this.height = castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 113126854: // width
+          this.width = castToPositiveInt(value); // PositiveIntType
+          return value;
+        case -1266514778: // frames
+          this.frames = castToPositiveInt(value); // PositiveIntType
+          return value;
+        case -1992012396: // duration
+          this.duration = castToDecimal(value); // DecimalType
+          return value;
+        case 106426308: // pages
+          this.pages = castToPositiveInt(value); // PositiveIntType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -615,6 +933,16 @@ public class Attachment extends Type implements ICompositeType {
           this.title = castToString(value); // StringType
         } else if (name.equals("creation")) {
           this.creation = castToDateTime(value); // DateTimeType
+        } else if (name.equals("height")) {
+          this.height = castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("width")) {
+          this.width = castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("frames")) {
+          this.frames = castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("duration")) {
+          this.duration = castToDecimal(value); // DecimalType
+        } else if (name.equals("pages")) {
+          this.pages = castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -631,6 +959,11 @@ public class Attachment extends Type implements ICompositeType {
         case 3195150:  return getHashElement();
         case 110371416:  return getTitleElement();
         case 1820421855:  return getCreationElement();
+        case -1221029593:  return getHeightElement();
+        case 113126854:  return getWidthElement();
+        case -1266514778:  return getFramesElement();
+        case -1992012396:  return getDurationElement();
+        case 106426308:  return getPagesElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -647,6 +980,11 @@ public class Attachment extends Type implements ICompositeType {
         case 3195150: /*hash*/ return new String[] {"base64Binary"};
         case 110371416: /*title*/ return new String[] {"string"};
         case 1820421855: /*creation*/ return new String[] {"dateTime"};
+        case -1221029593: /*height*/ return new String[] {"positiveInt"};
+        case 113126854: /*width*/ return new String[] {"positiveInt"};
+        case -1266514778: /*frames*/ return new String[] {"positiveInt"};
+        case -1992012396: /*duration*/ return new String[] {"decimal"};
+        case 106426308: /*pages*/ return new String[] {"positiveInt"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -678,6 +1016,21 @@ public class Attachment extends Type implements ICompositeType {
         else if (name.equals("creation")) {
           throw new FHIRException("Cannot call addChild on a primitive type Attachment.creation");
         }
+        else if (name.equals("height")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.height");
+        }
+        else if (name.equals("width")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.width");
+        }
+        else if (name.equals("frames")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.frames");
+        }
+        else if (name.equals("duration")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.duration");
+        }
+        else if (name.equals("pages")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.pages");
+        }
         else
           return super.addChild(name);
       }
@@ -690,6 +1043,11 @@ public class Attachment extends Type implements ICompositeType {
       public Attachment copy() {
         Attachment dst = new Attachment();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Attachment dst) {
+        super.copyValues(dst);
         dst.contentType = contentType == null ? null : contentType.copy();
         dst.language = language == null ? null : language.copy();
         dst.data = data == null ? null : data.copy();
@@ -698,7 +1056,11 @@ public class Attachment extends Type implements ICompositeType {
         dst.hash = hash == null ? null : hash.copy();
         dst.title = title == null ? null : title.copy();
         dst.creation = creation == null ? null : creation.copy();
-        return dst;
+        dst.height = height == null ? null : height.copy();
+        dst.width = width == null ? null : width.copy();
+        dst.frames = frames == null ? null : frames.copy();
+        dst.duration = duration == null ? null : duration.copy();
+        dst.pages = pages == null ? null : pages.copy();
       }
 
       protected Attachment typedCopy() {
@@ -715,7 +1077,8 @@ public class Attachment extends Type implements ICompositeType {
         return compareDeep(contentType, o.contentType, true) && compareDeep(language, o.language, true)
            && compareDeep(data, o.data, true) && compareDeep(url, o.url, true) && compareDeep(size, o.size, true)
            && compareDeep(hash, o.hash, true) && compareDeep(title, o.title, true) && compareDeep(creation, o.creation, true)
-          ;
+           && compareDeep(height, o.height, true) && compareDeep(width, o.width, true) && compareDeep(frames, o.frames, true)
+           && compareDeep(duration, o.duration, true) && compareDeep(pages, o.pages, true);
       }
 
       @Override
@@ -728,12 +1091,14 @@ public class Attachment extends Type implements ICompositeType {
         return compareValues(contentType, o.contentType, true) && compareValues(language, o.language, true)
            && compareValues(data, o.data, true) && compareValues(url, o.url, true) && compareValues(size, o.size, true)
            && compareValues(hash, o.hash, true) && compareValues(title, o.title, true) && compareValues(creation, o.creation, true)
-          ;
+           && compareValues(height, o.height, true) && compareValues(width, o.width, true) && compareValues(frames, o.frames, true)
+           && compareValues(duration, o.duration, true) && compareValues(pages, o.pages, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(contentType, language, data
-          , url, size, hash, title, creation);
+          , url, size, hash, title, creation, height, width, frames, duration, pages
+          );
       }
 
 

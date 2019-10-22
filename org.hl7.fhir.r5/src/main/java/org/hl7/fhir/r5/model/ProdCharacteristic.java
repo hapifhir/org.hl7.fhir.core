@@ -51,15 +51,18 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.
  */
@@ -670,17 +673,17 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1221029593:  return getHeight(); 
-        case 113126854:  return getWidth(); 
-        case 95472323:  return getDepth(); 
-        case -791592328:  return getWeight(); 
-        case 1706919702:  return getNominalVolume(); 
-        case 161374584:  return getExternalDiameter(); 
+        case -1221029593:  return getHeight();
+        case 113126854:  return getWidth();
+        case 95472323:  return getDepth();
+        case -791592328:  return getWeight();
+        case 1706919702:  return getNominalVolume();
+        case 161374584:  return getExternalDiameter();
         case 109399969:  return getShapeElement();
         case 94842723:  return addColorElement();
         case 1926118409:  return addImprintElement();
         case 100313435:  return addImage(); 
-        case 1924005583:  return getScoring(); 
+        case 1924005583:  return getScoring();
         default: return super.makeProperty(hash, name);
         }
 
@@ -759,6 +762,11 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
       public ProdCharacteristic copy() {
         ProdCharacteristic dst = new ProdCharacteristic();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProdCharacteristic dst) {
+        super.copyValues(dst);
         dst.height = height == null ? null : height.copy();
         dst.width = width == null ? null : width.copy();
         dst.depth = depth == null ? null : depth.copy();
@@ -782,7 +790,6 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
             dst.image.add(i.copy());
         };
         dst.scoring = scoring == null ? null : scoring.copy();
-        return dst;
       }
 
       protected ProdCharacteristic typedCopy() {

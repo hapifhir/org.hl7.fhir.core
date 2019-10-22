@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -2588,22 +2587,20 @@ public enum V3ActCode {
          */
         UDE, 
         /**
-         * Description:Types of policies that further specify the ActClassPolicy value set.
+         * A mandate, regulation, obligation, principle, requirement, rule, or expectation of how an entity is to conduct itself or execute an activity, which may be dictated and enforced by an authority of competent jurisdiction.
          */
         _ACTPOLICYTYPE, 
         /**
-         * A policy deeming certain information to be private to an individual or organization.
+         * Specifies the type or actual definition of a contractually binding agreement or a non-binding representation of that agreement between a grantor and a grantee as to the exchange of the granteeâ€™s considerations in return for the grantorâ€™s control of certain assets.  The type of assets exchanged include rights, license, terms of service, valued items, information and real property assets and control over such assets such as physical and locatable property; intellectual property; biospecimen; genomic and genetic information related to an individual including that disclosed by genetically related individuals with or without the individualâ€™s consent; personal identifiable, pseudonymized, anonymized, de-identified per some rubric, and relinkable variants.
 
                         
-                           Definition: A mandate, obligation, requirement, rule, or expectation relating to privacy.
+                           Usage Note: Types or actual definitions of a contractually binding agreement or a non-binding representation of that agreement include: 
 
                         
-                           Discussion: ActPrivacyPolicyType codes support the designation of the 1..* policies that are applicable to an Act such as a Consent Directive, a Role such as a VIP Patient, or an Entity such as a patient who is a minor.  1..* ActPrivacyPolicyType values may be associated with an Act or Role to indicate the policies that govern the assignment of an Act or Role confidentialityCode.  Use of multiple ActPrivacyPolicyType values enables fine grain specification of applicable policies, but must be carefully assigned to ensure cogency and avoid creation of conflicting policy mandates.
-
-                        
-                           Usage Note: Statutory title may be named in the ActClassPolicy Act Act.title to specify which privacy policy is being referenced.
+                           _ActDecision (formally ActConsentDirective), which specifies the type of decision made by the grantor.  The decision types are mapped to ISO/TS 17975 Health informatics â€” Principles and data requirements for consent in the Collection, Use or Disclosure of personal health information;
+                           _ActPrivacyConsentDirective, which is the parent of types of registry participation consent directives, and of realm specific privacy consent directive policies such as _USPrivacyConsentDirective and _GDPRPrivacyConsentDirective.
          */
-        _ACTPRIVACYPOLICY, 
+        _ACTCONSENT, 
         /**
          * Specifies the type of agreement between one or more grantor and grantee in which rights and obligations related to one or more shared items of interest are allocated.
 
@@ -2623,14 +2620,7 @@ public enum V3ActCode {
                            A mobile device or App privacy policy and terms of service to which a user must agree in whole or in part in order to utilize the service.
                            Agreements between a client and an authorization server or between an authorization server and a resource operator and/or resource owner permitting or restricting e.g., collection, access, use, and disclosure of information, and any associated handling caveats.
          */
-        _ACTCONSENTDIRECTIVE, 
-        /**
-         * This general consent directive specifically limits disclosure of health information for purpose of emergency treatment. Additional parameters may further limit the disclosure to specific users, roles, duration, types of information, and impose uses obligations.
-
-                        
-                           Definition: Opt-in to disclosure of health information for emergency only consent directive.
-         */
-        EMRGONLY, 
+        _ACTDECISION, 
         /**
          * A grantor's terms of agreement to which a grantee may assent or dissent, and which may include an opportunity for a grantee to request restrictions or extensions.
 
@@ -2709,13 +2699,6 @@ public enum V3ActCode {
          */
         NOCONSENT, 
         /**
-         * Acknowledgement of custodian notice of privacy practices.
-
-                        
-                           Usage Notes: This type of consent directive acknowledges a custodian's notice of privacy practices including its permitted collection, access, use and disclosure of health information to users and for purposes of use specified.
-         */
-        NOPP, 
-        /**
          * A grantor's assent to the terms of an agreement offered by a grantee without an opportunity for to dissent to any terms.
 
                         
@@ -2789,6 +2772,427 @@ public enum V3ActCode {
          */
         OPTOUTE, 
         /**
+         * Specifies types of consent directives governing the collection, access, use, or disclosure of personal information, including de-identified information, and  personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual.
+         */
+        _ACTPRIVACYCONSENTDIRECTIVE, 
+        /**
+         * European Union General Data Protection Regulation (GDPR) consent directives.
+         */
+        _ACTGDPRCONSENTDIRECTIVE, 
+        /**
+         * A consent directive compliant with the European Union General Data Protection Regulation (GDPR) definition: Consent of the data 
+subject means any freely given, specific, informed and unambiguous indication of the data subject's wishes by which he or she, by a 
+statement or by a clear affirmative action, signifies agreement to the processing of personal data relating to him or her.
+
+                        Where processing is based on consent, the controller shall be able to demonstrate that the data subject has consented to 
+processing of his or her personal data.
+If the data subject's consent is given in the context of a written declaration which also concerns other matters, the request for 
+consent shall be presented in a manner which is clearly distinguishable from the other matters, in an intelligible and easily 
+accessible form, using clear and plain language.  Any part of such a declaration which constitutes an infringement of this 
+Regulation shall not be binding.
+The data subject shall have the right to withdraw his or her consent at any time. The withdrawal of consent shall not affect the 
+lawfulness of processing based on consent before its withdrawal.  Prior to giving consent, the data subject shall be informed thereof. 
+It shall be as easy to withdraw as to give consent.
+When assessing whether consent is freely given, utmost account shall be taken of whether, inter alia, the performance of a contract, 
+including the provision of a service, is conditional on consent to the processing of personal data that is not necessary for the 
+performance of that contract.
+Consent should be given by a clear affirmative act establishing a freely given, specific, informed and unambiguous indication of the 
+data subject's agreement to the processing of personal data relating to him or her, such as by a written statement, including by 
+electronic means, or an oral statement. 
+This could include ticking a box when visiting an internet website, choosing technical settings for information society services or 
+another statement or conduct which clearly indicates in this context the data subject's acceptance of the proposed processing of 
+his or her personal data. 
+Silence, pre-ticked boxes or inactivity should not therefore constitute consent. 
+Consent should cover all processing activities carried out for the same purpose or purposes. 
+When the processing has multiple purposes, consent should be given for all of them. 
+If the data subject's consent is to be given following a request by electronic means, the request must be clear, concise and not 
+unnecessarily disruptive to the use of the service for which it is provided.
+
+                        
+                           Usage Note: Article 4.11 GDPR 
+Definitions https://gdpr-info.eu/art-4-gdpr/
+ 11) 'Consent' of the data subject means any freely given, specific, informed and unambiguous indication of the data 
+ subject's wishes by which he or she, by a statement or by a clear affirmative action, signifies agreement to the processing of 
+ personal data relating to him or her.
+Article 7 GDPR Conditions for consent https://gdpr-info.eu/art-7-gdpr
+Recital 32 Conditions for consent* https://gdpr-info.eu/recitals/no-32
+Recital 42 Burden of proof and requirements for consent* https://gdpr-info.eu/recitals/no-42/> 
+Recital 43 Freely given consent* https://gdpr-info.eu/recitals/no-43
+GDPR Consent Brief https://gdpr-info.eu/issues/consent/ 
+Art. 4 GDPR Definitions Art. 6 GDPR Lawfulness of processing Art. 7 GDPR Conditions for consent Art. 8 GDPR Conditions applicable to 
+child's consent in relation to information society services Art. 9 GDPR Processing of special categories of personal data Art. 22 
+GDPR Automated individual decision-making, including profiling Art. 49 GDPR Derogations for specific situations 
+
+                        Relevant GDPR 
+Recitals:
+(32) Conditions for consent (33) Consent to certain areas of scientific research (38) Special protection of children's personal data 
+(40) Lawfulness of data processing (42) Burden of proof and requirements for consent (43) Freely given consent (50) Further 
+processing of personal data (51) Protecting sensitive personal data (54) Processing of sensitive data in public health sector (71) 
+Profiling (111) Exceptions for certain cases of international transfers (155) Processing in the employment context (161) Consenting 
+to the participation in clinical trials (171) Repeal of Directive 95/46/EC and transitional provisions
+         */
+        GDPRCD, 
+        /**
+         * A consent directive that complies with regulatory requirements for a consent directive compliant with the European Union General Data Protection Regulation (GDPR) definition: Consent of the data subject means any freely given, specific, informed and unambiguous indication of the data subjectâ€™s wishes by which he or she, by a statement or by a clear affirmative action, signifies agreement to the processing of personal data relating to him or her.
+
+                        GDPR research consent directive has the additional caveat that it is often not possible to fully identify the purpose of personal data processing for scientific research purposes at the time of data collection. Therefore, data subjects should be allowed to give their consent to certain areas of scientific research when in keeping with recognized ethical standards for scientific research. Data subjects should have the opportunity to give their consent only to certain areas of research or parts of research projects to the extent allowed by the intended purpose.
+
+                        
+                           Usage Note: HL7 Purpose of Use codes include specialize research purposes of use, which could be used to convey a data subjectâ€™s purpose of use restrictions related to areas of research or parts of research projects.
+See citations for GDPRResearchCD and below:
+Recital 33 Consent to certain areas of scientific research https://gdpr-info.eu/recitals/no-33/>
+Recital 157 Information from registries and scientific research https://gdpr-info.eu/recitals/no-157
+Recital 159 Processing for scientific research purposes* https://gdpr-info.eu/recitals/no-159/
+         */
+        GDPRRESEARCHCD, 
+        /**
+         * Specifies types of consent directives authorizing a registry or repository to collect and, under certain terms, manage the access, use, and disclosure of personal information, including de-identified information, and  personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual.
+
+                        Registries governed by registry consent directives are data management systems, which use metadata to support the collection, access, use, and disclosure of personal information or effects as well as observational or analytic information generated about personal information or effects stored in federated repositories. Such registries are used for a variety of purposes by federated health information exchanges, health information systems, personal record systems, and research organizations to locate and retrieve personal information or effects as well as observational or analytic information generated about personal information stored externally to their systems.
+
+                        Repositories governed by registry consent directives are data stores used to collect, access, use, and disclose personal information or effects as well as observational or analytic information generated about personal information or effects and metadata used to manage the repository contents. Such repositories are used for a variety of purposes by centralized health information exchanges, health information systems used by providers and payers, personal record systems, and research organizations. A repository typically includes a  registry component that provides the data store  with content management capabilities for internal purposes. A repository may also interface with one or more external registries, which provide federated content management.
+         */
+        _ACTGENERICCONSENTDIRECTIVE, 
+        /**
+         * An expressed privacy consent directive permitting the collection of a some or all personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. 
+
+                        
+                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-in to collection of some or all of the individualâ€™s information by multiple registries and repositories.
+
+                        Map: An â€œexpressedâ€? consent directive maps to ISO/TS 17975:2015(E) definitions for â€œExpress or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of careâ€? and â€œOpt-inâ€?.
+         */
+        OIC, 
+        /**
+         * An expressed privacy consent directive permitting access, use, or disclosure of a some or all personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. 
+
+                        
+                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-in to access, use, or disclosure of some or all of the individualâ€™s information by multiple registries and repositories.
+
+                        Map: An â€œexpressedâ€? consent directive maps to ISO/TS 17975:2015(E) Express or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of care and â€œOpt-inâ€?.
+         */
+        OIS, 
+        /**
+         * An expressed privacy consent directive restricting or prohibiting collection of personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. 
+
+                        
+                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-out of access, use, or disclosure of some or all of the individualâ€™s information by multiple registries and repositories.
+
+                        Map: An â€œexpressedâ€? opt-out to collection consent directive maps to ISO/TS 17975:2015(E) definitions for  â€œExpress or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of careâ€? and â€œExpress or Expressed (and Informed) Denialâ€?.
+         */
+        OOC, 
+        /**
+         * An expressed privacy consent directive restricting or prohibiting access, use, or disclosure of personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. 
+
+                        
+                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-out of access, use, or disclosure of some or all of the individualâ€™s information by multiple registries and repositories.
+
+                        Map: An â€œexpressedâ€? opt-out to sharing consent directive maps to ISO/TS 17975:2015(E) definitions for  â€œExpress or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of careâ€? and â€œExpress or Expressed (and Informed) Denialâ€?.
+         */
+        OOS, 
+        /**
+         * Specific US privacy consent directives in accordance with US federal, state, regional, organizational, or personal privacy policies.
+         */
+        _ACTUSPRIVACYCONSENTDIRECTIVE, 
+        /**
+         * A code representing an individualâ€™s privacy consent directive that complies with 42 CFR Part 2.31 Consent requirements https://www.gpo.gov/fdsys/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-31.pdf, which is a US Federal law stipulating the policy elements of a written consent to a disclosure under the regulations in Part 2.
+
+                        (1) The name of the patient. 
+(2) The specific name(s) or general designation(s) of the part 2 program(s), entity(ies), or individual(s) permitted to make the disclosure. 
+(3) How much and what kind of information is to be disclosed, including an explicit description of the substance use disorder information that may be disclosed. 
+(4) (i) The name(s) of the individual(s) to whom a disclosure is to be made; or 
+(ii)Entities with a treating provider relationship with the patient. If the recipient entity has a treating provider relationship with the patient whose information is being disclosed, such as a hospital, a health care clinic, or a private practice, the name of that entity; or 
+(iii)Entities without a treating provider relationship with the patient. 
+(A) If the recipient entity does not have a treating provider relationship with the patient whose information is being disclosed and is a third-party payer, the name of the entity; or 
+(B) If the recipient entity does not have a treating provider relationship with the patient whose information is being disclosed and is not covered by paragraph (a)(4)(iii)(A) of this section, such as an entity that facilitates the exchange of health information or a research institution, the name(s) of the entity(-ies); and 
+(1) The name(s) of an individual participant(s); or 
+(2) The name(s) of an entity participant(s) that has a treating provider relationship with the patient whose information is being disclosed; or 
+(3) A general designation of an individual or entity participant(s) or class of participants that must be limited to a participant(s) who has a treating provider relationship with the patient whose information is being disclosed. 
+(i) When using a general designation, a statement must be included on the consent form that the patient (or other individual authorized to sign in lieu of the patient), confirms their understanding that, upon their request and consistent with this part, they must be provided a list of entities to which their information has been disclosed pursuant to the general designation (see Section 2.13(d)). 
+(ii) [Reserved] 
+(5) The purpose of the disclosure. In accordance with Section 2.13(a), the disclosure must be limited to that information which is necessary to carry out the stated purpose. 
+(6) A statement that the consent is subject to revocation at any time except to the extent that the part 2 program or other lawful holder of patient identifying information that is permitted to make the disclosure has already acted in reliance on it. Acting in reliance includes the provision of treatment services in reliance on a valid consent to disclose information to a third-party payer 
+(7) The date, event, or condition upon which the consent will expire if not revoked before. This date, event, or condition must ensure that the consent will last no longer than reasonably necessary to serve the purpose for which it is provided. 
+(8) The signature of the patient and, when required for a patient who is a minor, the signature of an individual authorized to give consent under Section 2.14; or, when required for a patient who is incompetent or deceased, the signature of an individual authorized to sign under Section 2.15. Electronic signatures are permitted to the extent that they are not prohibited by any applicable law. 
+(9) The date on which the consent is signed. 
+
+                        
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where  collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s 42 CFR Part 2.31 consent directive, â€œ42CFRPart2CDâ€? as the security label policy code.
+
+                        Since information governed by an individualâ€™s 42 CFR Part 2.31 consent directive has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Â§ 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).
+         */
+        _42CFRPART2CD, 
+        /**
+         * A code representing an individualâ€™s consent directive that complies with HIPAA Privacy rule 45 CFR Section 164.508 Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is a US Federal law stipulating the policy elements of a valid authorization under this Section specific to disclosures for purposes of research when combined with a Common Rule or Federal Drug Administration consent to participate in research also known as a compound authorization.
+
+                        
+                           Usage Note: The Agency for Healthcare Research and Quality (AHRQ) has developed the Informed Consent and Authorization Toolkit for Minimal Risk Research to facilitate the process of obtaining informed consent and Health Insurance Portability and Accountability Act (HIPAA) authorization from potential research subjects. This toolkit contains information for people responsible for ensuring that potential research subjects are informed in a manner that is consistent with medical ethics and regulatory guidelines. From https://www.ahrq.gov/sites/default/files/publications/files/ictoolkit.pdf. 
+
+                        Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s right of access directive under 45 CFR Section 164.508 use â€œCompoundResearchCDâ€? as the security label policy code.
+
+                        Information or biospecimen disclosed under the Common Rule are not protected by the HIPAA Privacy Rule. If protected under other laws such as confidentiality provisions under the Common Rule, assign the HL7 Confidentiality code â€œMâ€? (moderate). 
+
+                        See ActCode._ActPolicyType._ActPrivacyPolicy._ActPrivacyLaw._ActUSPrivacyLaw.HIPAAAuth (HIPAA Authorization for Disclosure). See:  HIPAAAuth and NIH Sample Authorization Language for Research Uses and Disclosures of Individually Identifiable Health Information by a Covered Health Care Provider https://privacyruleandresearch.nih.gov/authorization.asp
+         */
+        COMPOUNDRESEARCHCD, 
+        /**
+         * A code representing an individualâ€™s consent directive that complies with HIPAA Privacy rule 45 CFR Section 164.508 Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is a US Federal law stipulating the policy elements of a valid authorization under this Section.
+
+                        An â€œauthorizationâ€? is required by the Privacy Rule for uses and disclosures of protected health information not otherwise allowed by the Rule. Where the Privacy Rule requires patient authorization, voluntary consent is not sufficient to permit a use or disclosure of protected health information unless it also satisfies the requirements of a valid authorization. An authorization is a detailed document that gives covered entities permission to use protected health information for specified purposes, which are generally other than treatment, payment, or health care operations, or to disclose protected health information to a third party specified by the individual.
+
+                        An authorization must specify a number of elements, including a description of the protected health information to be used and disclosed, the person authorized to make the use or disclosure, the person to whom the covered entity may make the disclosure, an expiration date, and, in some cases, the purpose for which the information may be used or disclosed. With limited exceptions, covered entities may not condition treatment or coverage on the individual providing an authorization. https://www.hhs.gov/hipaa/for-professionals/faq/264/what-is-the-difference-between-consent-and-authorization/index.html 
+
+                        A HIPAA Authorization must comply with 45 CFR Section164.508(c) Implementation specifications: Core elements and requirements â€“ 
+(1) Core elements. A valid authorization under this Section must contain at least the following elements: (i) A description of the information to be used or disclosed that identifies the information in a specific and meaningful fashion. 
+(ii) The name or other specific identification of the person(s), or class of persons, authorized to make the requested use or disclosure. 
+(iii) The name or other specific identification of the person(s), or class of persons, to whom the covered entity may make the requested use or disclosure. 
+(iv) A description of each purpose of the requested use or disclosure. The statement â€œat the request of the individualâ€? is a sufficient description of the purpose when an individual initiates the authorization and does not, or elects not to, provide a statement of the purpose. 
+(v) An expiration date or an expiration event that relates to the individual or the purpose of the use or disclosure. The statement â€œend of the research study,â€? â€œnone,â€? or similar language is sufficient if the authorization is for a use or disclosure of protected health information for research, including for the creation and maintenance of a research database or research repository. 
+(vi) Signature of the individual and date. If the authorization is signed by a personal representative of the individual, a description of such representative's authority to act for the individual must also be provided. 
+(2)Required statements. In addition to the core elements, the authorization must contain statements adequate to place the individual on notice of all of the following: 
+(i) The individual's right to revoke the authorization in writing, and either: 
+(A) The exceptions to the right to revoke and a description of how the individual may revoke the authorization; or (B) To the extent that the information in paragraph (c)(2)(i)(A) of this section is included in the notice required by Section 164.520, a reference to the covered entity's notice.
+https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf  
+
+                        
+                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by a an individualâ€™s HIPAA Authorization for Disclosure, use â€œHIPAAAuthCDâ€? as the security label policy code.
+
+                        Information governed under a HIPAA Authorization for Disclosure has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œNâ€? (normal).
+         */
+        HIPAAAUTHCD, 
+        /**
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule 45 CFR Section 164.522 Rights to request privacy protection for protected health information https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf, which stipulates the process by which a covered entity seeks agreement from an individual regarding how it will use and disclose the individual's protected health information for treatment, payment, and health care operations is termed a "consent."  
+
+                        
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by  an individualâ€™s consent directive under 45 CFR Section 164.522 use â€œHIPAAConsentCDâ€? as the security label policy code.
+
+                        Since information governed by a 45 CFR Section 164.522 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).
+         */
+        HIPAACONSENTCD, 
+        /**
+         * A code representing an individualâ€™s consent directive that complies with HIPAA Privacy rule 45 CFR Section 164.508 Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is a US Federal law stipulating the policy elements of a valid authorization under this Section specific to disclosures for purposes of research.
+
+                        
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s HIPAA Authorization for Disclosure for Research under 45 CFR Section 164.508 use â€œHIPAAResearchAuthCDâ€? as the security label policy code.
+
+                        Information disclosed under an individualâ€™s HIPAA Authorization for Disclosure for Research are not protected by the HIPAA Privacy Rule. If protected under other laws such as confidentiality provisions under the Common Rule, assign the HL7 Confidentiality code â€œMâ€? (moderate). 
+
+                        See ActCode._ActPolicyType._ActPrivacyPolicy._ActPrivacyLaw._ActUSPrivacyLaw.HIPAAAuth (HIPAA Authorization for Disclosure). See:  HIPAAAuth and NIH Sample Authorization Language for Research Uses and Disclosures of Individually Identifiable Health Information by a Covered Health Care Provider https://privacyruleandresearch.nih.gov/authorization.asp
+         */
+        HIPAARESEARCHAUTHCD, 
+        /**
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule 45 CFR Section 164.524 Access of individuals to protected health information https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-524.pdf, stipulating the policy elements of an individualâ€™s written and signed right of access directive requesting that a covered entity send the individualâ€™s protected health information (PHI) to a third party. 
+
+                        See 45 CFR 164.524(c)(3)(ii) If an individual's request for access directs the covered entity to transmit the copy of protected health information directly to another person designated by the individual, the covered entity must provide the copy to the person designated by the individual. The individual's request must be in writing, signed by the individual, and clearly identify the designated person and where to send the copy of protected health information.  https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-524.pdf 
+
+                        This right applies to PHI in a designated record set, which is defined as â€œDesignated record set means: 
+(1) A group of records maintained by or for a covered entity that is: 
+(i) The medical records and billing records about individuals maintained by or for a covered health care provider; 
+(ii) The enrollment, payment, claims adjudication, and case or medical management record systems maintained by or for a health plan; or 
+(iii) Used, in whole or in part, by or for the covered entity to make decisions about individuals. [https://www.law.cornell.edu/cfr/text/45/164.501].
+Also see HHS Individualsâ€™ Right under HIPAA to Access their Health Information 45 CFR Section 164.524 [https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/access/index.html#maximumflatfee].
+
+                        
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s right of access directive under 45 CFR Section 164.524 use â€œHIPAAROADâ€? as the security label policy code.
+
+                        Information disclosed under a HIPAA 42 CFR Section 164.524 no longer has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œMâ€? (moderate), which may be protected under other laws such as the Federal Trade Commission privacy and security regulations.
+         */
+        HIPAAROAD, 
+        /**
+         * Michiganâ€™s standard consent form for the sharing of health information specific to behavioral health and substance use treatment in accordance with Public Act 129 of 2014. In Michigan, while providers are not required to use this new standard form (MDHHS-5515), they are required to accept it.
+
+                        
+                           Usage Note: For legislative background, current MDHHS-5515 consent directive form, and provider and patient FAQs see http://www.michigan.gov/mdhhs/0,5885,7-339-71550_2941_58005-343686--,00.html
+         */
+        MDHHS5515, 
+        /**
+         * The type of action permitted on information by jurisdictional, organizational, or personal policy.
+         */
+        _ACTINFORMATIONACTIONPOLICY, 
+        /**
+         * Authorization to obtain information with no further permission to collect and store it.
+         */
+        INFOACCESS, 
+        /**
+         * Authorization to gather and store information.
+         */
+        INFOCOLLECT, 
+        /**
+         * Authorization to alter or remove identifying characteristics of an entity or individual that is a subject of the information.
+         */
+        INFODEIDENTIFIY, 
+        /**
+         * Authorization to make information known to another party.
+         */
+        INFODISCLOSE, 
+        /**
+         * Authorization to alter information in order to conceal it from unauthorized recipients.
+         */
+        INFOMASK, 
+        /**
+         * Authorization to access information within a specific context for communication purposes only.  Storing, manipulating, and further disclosure are prohibited and may be technically disabled.
+         */
+        INFOREADONLY, 
+        /**
+         * Authorization to remove information that a recipient is not authorized to access.
+         */
+        INFOREDACT, 
+        /**
+         * Authorization to make disclosed information known to another party.
+         */
+        INFOREDISCLOSE, 
+        /**
+         * Authorization to alter or relink deidentified information so that an entity or individual that is the subject of that information identifiable.
+         */
+        INFOREIDENTIFY, 
+        /**
+         * Authorization to employ or alter information.
+         */
+        INFOUSE, 
+        /**
+         * Information management directives related to privacy, security, integrity, and control concerns, which may be governed by specific laws; based on private sector self-governance; adopted "best practices" recognized by a community of interest; or terms of license, participation, or service as implemented in jurisdictional, organizational, or personal policies.
+         */
+        _ACTINFORMATIONPOLICY, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of information as defined by applicable jurisdictional law.
+         */
+        JURISIP, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of controlled unclassified information as defined by applicable jurisdictional law.
+         */
+        JURISCUI, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of de-identified information as defined by applicable jurisdictional law.
+         */
+        JURISDEID, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of information in a limited data set as defined by applicable jurisdictional law.
+         */
+        JURISLDS, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of information deemed non-sensitive by applicable jurisdiction law.
+         */
+        JURISNSI, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of information deemed public by applicable jurisdiction law.
+         */
+        JURISPI, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of specified controlled unclassified information as defined by applicable jurisdictional policy.
+         */
+        JURISSPCUI, 
+        /**
+         * Jurisdictional policy on collection, access, use, or disclosure of uncontrolled unclassified information as defined by applicable jurisdictional policy.
+         */
+        JURISUUI, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of information, which does not conflict with jurisdictional law.
+         */
+        ORGIP, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of basic controlled unclassified information as defined by the organization or by applicable jurisdictional law.
+         */
+        ORGCUI, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of de-identified information as defined by the organization or by applicable jurisdictional law.
+         */
+        ORGDEID, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of information in a limited data set as defined by the organization or by applicable jurisdictional law.
+         */
+        ORGLDS, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of information deemed non-sensitive by the organization or by applicable jurisdictional law.
+         */
+        ORGNSI, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of public information as defined by the organization or by applicable jurisdictional law.
+         */
+        ORGPI, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of specified controlled unclassified information as defined by the organization or by applicable jurisdictional law.
+         */
+        ORGSPCUI, 
+        /**
+         * Organizational policy on collection, access, use, or disclosure of uncontrolled unclassified information as defined by the organization or governing jurisdiction.
+         */
+        ORGUUI, 
+        /**
+         * Personal policy on collection, access, use, or disclosure of information.
+         */
+        PERSIP, 
+        /**
+         * Personal policy on collection, access, use, or disclosure of de-identified information as defined by the information subject or by applicable jurisdictional law.
+         */
+        PERSDEID, 
+        /**
+         * Personal policy personal policy on collection, access, use, or disclosure of information in a limited data set by the information subject.
+         */
+        PERSLDS, 
+        /**
+         * Personal policy on collection, access, use, or disclosure of information deemed non-sensitive by the information subject.
+         */
+        PERSNSI, 
+        /**
+         * Personal policy on collection, access, use, or disclosure of information deemed public by the information subject.
+         */
+        PERSPI, 
+        /**
+         * A policy deeming certain information to be private to an individual or organization.
+
+                        
+                           Definition: A mandate, obligation, requirement, rule, or expectation relating to privacy.
+
+                        
+                           Discussion: ActPrivacyPolicyType codes support the designation of the 1..* policies that are applicable to an Act such as a Consent Directive, a Role such as a VIP Patient, or an Entity such as a patient who is a minor.  1..* ActPrivacyPolicyType values may be associated with an Act or Role to indicate the policies that govern the assignment of an Act or Role confidentialityCode.  Use of multiple ActPrivacyPolicyType values enables fine grain specification of applicable policies, but must be carefully assigned to ensure cogency and avoid creation of conflicting policy mandates.
+
+                        
+                           Usage Note: Statutory title may be named in the ActClassPolicy Act Act.title to specify which privacy policy is being referenced.
+         */
+        _ACTPRIVACYPOLICY, 
+        /**
+         * Specifies the type of agreement between one or more grantor and grantee in which rights and obligations related to one or more shared items of interest are allocated.
+
+                        
+                           Usage Note: Such agreements may be considered "consent directives" or "contracts" depending on the context, and are considered closely related or synonymous from a legal perspective.
+
+                        
+                           Examples: 
+                        
+
+                        
+                           Healthcare Privacy Consent Directive permitting or restricting in whole or part the collection, access, use, and disclosure of health information, and any associated handling caveats.
+                           Healthcare Medical Consent Directive to receive medical procedures after being informed of risks and benefits, thereby reducing the grantee's liability.
+                           Research Informed Consent for participation in clinical trials and disclosure of health information after being informed of risks and benefits, thereby reducing the grantee's liability.
+                           Substitute decision maker delegation in which the grantee assumes responsibility to act on behalf of the grantor.
+                           Contracts in which the agreement requires assent/dissent by the grantor of terms offered by a grantee, a consumer opts out of an "award" system for use of a retailer's marketing or credit card vendor's point collection cards in exchange for allowing purchase tracking and profiling.
+                           A mobile device or App privacy policy and terms of service to which a user must agree in whole or in part in order to utilize the service.
+                           Agreements between a client and an authorization server or between an authorization server and a resource operator and/or resource owner permitting or restricting e.g., collection, access, use, and disclosure of information, and any associated handling caveats.
+         */
+        _ACTCONSENTDIRECTIVE, 
+        /**
+         * Privacy consent directive restricting or prohibiting access, use, or disclosure of personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for all purposes except for emergency treatment generally, which may include treatment during a disaster, a threat, in an emergency department and for break the glass purposes of use as specified by applicable domain policy.
+
+                        
+                           Usage Note: To specify the scope of an â€œEMRGONLYâ€? consent directive within a policy domain, use one or more of the following Purpose of Use codes in the ActReason code system OID: 2.16.840.1.113883.5.8.
+
+                        
+                           ETREAT (Emergency Treatment): To perform one or more operations on information for provision of immediately needed health care for an emergent condition.
+                           BTG (break the glass): To perform policy override operations on information for provision of immediately needed health care for an emergent condition affecting potential harm, death or patient safety by end users who are not provisioned for this purpose of use. Includes override of organizational provisioning policies and may include override of subject of care consent directive restricting access.
+                           ERTREAT (emergency room treatment): To perform one or more operations on information for provision of immediately needed health care for an emergent condition in an emergency room or similar emergent care context by end users provisioned for this purpose, which does not constitute as policy override such as in a "Break the Glass" purpose of use.
+                           THREAT (threat): To perform one or more operations on information used to prevent injury or disease to living subjects who may be the target of violence.
+                           DISASTER (disaster): To perform one or more operations on information used for provision of immediately needed health care to a population of living subjects located in a disaster zone.
+                        
+                        Map: An â€œemergency onlyâ€? consent directive maps to ISO/TS 17975:2015(E) 5.13 Exceptional access
+         */
+        EMRGONLY, 
+        /**
+         * An implied privacy consent directive or notification, which the data subject may or may not acknowledge.  The notification specifies permitted actions, which may include access, use, or disclosure of any and all personal information.   The notification specifies the scope of personal information, which may include de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, that may be used to identify an individual in a registry or repository. The notification specifies the purposes for which personal information may be used such as treatment, payment, operations, research, information exchange, public health, disaster, quality and safety reporting; as required by law including court order, law enforcement, national security, military authorities; and for data  analytics, marketing, and profiling.
+
+                        
+                           Usage Notes: Map: An "implied" consent directive maps to ISO/TS 17975:2015(E) definition forImplied: Consent to Collect, Use and Disclose personal health information is implied by the actions or inactions of the individual and the circumstances under which it was implied".
+         */
+        NOPP, 
+        /**
          * A jurisdictional mandate, regulation, obligation, requirement, rule, or expectation deeming certain information to be private to an individual or organization, which is imposed on:
 
                         
@@ -2798,6 +3202,72 @@ public enum V3ActCode {
          */
         _ACTPRIVACYLAW, 
         /**
+         * GDPR is a regulation on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (Data Protection Directive). Promulgated by the European Parliament and Council of the European Union. Regulation available at L119, 4 May 2016, p. 1â€“88.
+
+                        GDPR privacy policies specifying types of lawful personal data processing based on a controller meeting one or more processing condition such as specified by law, compliance with data controller legal obligations, protection of data subjectâ€™s vital interests, perform tasks in the public interest, related to legal claims, research and statistics, management of health or social care systems, legitimate interests of controller or third party.  Processing sensitive personal data, including genetic, biometric and health data, as well as personal data from which racial and ethnic origin, political opinions, religious or ideological convictions or membership in a union can be attributed to a person, requires meeting at least one sensitive personal processing condition. 
+
+                        GDPR â€˜processingâ€™ means any operation or set of operations which is performed on personal data or on sets of personal data, whether or not by automated means, such as collection, recording, organisation, structuring, storage, adaptation or alteration, retrieval, consultation, use, disclosure by transmission, dissemination or otherwise making available, alignment or combination, restriction, erasure or destruction. Article 4 https://gdpr-info.eu/art-4-gdpr/ 
+
+                        
+                           Usage Note: 
+                        
+
+                        
+                           Confidentiality:  e.g., U (unrestricted) for anonymized personal information;  L (low) for pseudonymized U (unrestricted) for anonymized personal information; M (moderate) for indirectly identifiable information such as test scores and work times; N (normal) for personal information; and R (restricted) for sensitive personal information
+                           DPR sensitivity [personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, or trade union membership, and the processing of genetic data, biometric data for the purpose of uniquely identifying a natural person, data concerning health or data concerning a natural personâ€™s sex life or sexual orientation, some of which are defined at Article 4 https://gdpr-info.eu/art-4-gdpr/ 
+                           GDPR processing policies and GDPR ConsentDirectiveTypes, such as data subject consent and research consent.
+                           Other security category codes, such as compartment codes for legitimate relationship,
+                           Handling instructions including 
+                           Purpose of use stipulated in a GDPR consent or contract restricting processing or related to the scope of the processing policy such as public health, research, and legal obligations
+                           Obligation policies such as GDPR Information Obligations https://gdpr-info.eu/issues/information-obligations,  data minimization and deleting when processing is complete
+                           Refrain policies such as no relinking
+                        
+                        See Intersoft GDPR at https://gdpr-info.eu/issues/personal-data/
+
+Art. 4 GDPR Definitions https://gdpr-info.eu/art-4-gdpr/ 
+Art. 9 GDPR Processing of special categories of personal data https://gdpr-info.eu/art-9-gdpr/ 
+
+Relevant Recitals
+(26) Not applicable to anonymous data (30) Online identifiers for profiling and identification (34) Genetic data (35) Health data (51) Protecting sensitive personal data at Intersoft GDPR briefing papers and navigating tool https://gdpr-info.eu/
+
+                        Authorities
+
+                        
+                           European Data Protection Supervisor - Security Measures for Personal Data Processing (Link)
+                           Data Protection Authority Isle of Man - Know your data â€“ Mapping the 5 Wâ€™s (Link)
+                           Data Protection Authority UK - Key definitions (Link)
+                           European Commission - What is personal data? (Link)
+                           European Commission - What personal data is considered sensitive? (Link)
+                           EU publications - Handbook on European data protection law â€“ Personal data, page 83 (Link)
+                        
+                        Expert contribution
+A&L Goodbody - The GDPR: A Guide for Businesses â€“ Definition of Personal & Sensitive Data, Page 8 (Link)
+Bird & Bird - Sensitive data and lawful processing (Link)
+
+https://ec.europa.eu/commission/priorities/justice-and-fundamental-rights/data-protection/2018-reform-eu-data-protection-rules_en
+
+General Data Protection Regulation 
+https://eur-lex.europa.eu/legal-content/EN/TXT/?qid=1528874672298&uri=CELEX%3A32016R0679
+
+Communication on data protection â€“ guidance on direct application of the GDPR
+ http://eur-lex.europa.eu/legal-content/EN/TXT/?qid=1517578296944&uri=CELEX%3A52018DC0043
+
+Intersoft GDPR briefing papers and navigating tool https://gdpr-info.eu/
+         */
+        _ACTGDPRPRIVACYLAW, 
+        /**
+         * Processing of personal data, inclusive of the special categories of data, is lawful only if the data subject has given explicit consent to the processing of his or her personal data, inclusive of the special categories of data, for one or more specific purposes, except where Union or Member State law provide that the prohibition to use the data may not be lifted by the data subject; and for personal data which are manifestly made public by the data subject.
+
+                        
+                           Usage Note: The description is based on the following GDPR provisions:
+Article 6.1.a https://gdpr-info.eu/art-6-gdpr/ 
+1Processing shall be lawful only if and to the extent that at least one of the following applies: (a) the data subject has given consent to the processing of his or her personal data for one or more specific purposes.
+Article 9.1, 9.2a., 9.2.e https://gdpr-info.eu/art-9-gdpr/ 
+1. Processing of personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, or trade union membership, and the processing of genetic data, biometric data for the purpose of uniquely identifying a natural person, data concerning health or data concerning a natural personâ€™s sex life or sexual orientation shall be prohibited.
+2. Paragraph 1 shall not apply if one of the following applies: (a) the data subject has given explicit consent to the processing of those personal data for one or more specified purposes, except where Union or Member State law provide that the prohibition referred to in paragraph 1 may not be lifted by the data subject; and (e) processing relates to personal data which are manifestly made public by the data subject.
+         */
+        GDPRCONSENT, 
+        /**
          * Definition: A jurisdictional mandate in the U.S. relating to privacy.
 
                         
@@ -2805,65 +3275,125 @@ public enum V3ActCode {
          */
         _ACTUSPRIVACYLAW, 
         /**
-         * 42 CFR Part 2 stipulates the right of an individual who has applied for or been given diagnosis or treatment for alcohol or drug abuse at a federally assisted program.
+         * A code representing 42 CFR Part 2 Confidentiality of Substance Use Disorder Patient Records. 42 CFR Part 2 stipulates the privacy rights of an individual who has applied for or been given diagnosis or treatment for alcohol or drug abuse at a federally assisted program, which includes non-disclosure of health information relating to health care paid for by a federally assisted substance use disorder program without patient consent.  https://www.gpo.gov/fdsys/pkg/CFR-2010-title42-vol1/pdf/CFR-2010-title42-vol1-part2.pdf 
 
                         
-                           Definition: Non-disclosure of health information relating to health care paid for by a federally assisted substance abuse program without patient consent.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, the collection, access, use, and disclosure of healthcare information is governed by 42 CFR Part 2 Confidentiality of Substance Use Disorder Patient Records
+https://www.gpo.gov/fdsys/pkg/CFR-2010-title42-vol1/pdf/CFR-2010-title42-vol1-part2.pdf use â€œ42CFRPart2â€? as the security label policy code. 
 
-                        
-                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.
+                        Since information governed by a 42 CFR Part 2 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf assign the HL7 Confidentiality code â€œRâ€? (restricted).
          */
         _42CFRPART2, 
         /**
-         * U.S. Federal regulations governing the protection of human subjects in research (codified at Subpart A of 45 CFR part 46) that has been adopted by 15 U.S. Federal departments and agencies in an effort to promote uniformity, understanding, and compliance with human subject protections. Existing regulations governing the protection of human subjects in Food and Drug Administration (FDA)-regulated research (21 CFR parts 50, 56, 312, and 812) are separate from the Common Rule but include similar requirements.
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.522), which stipulates the process by which a covered entity seeks agreement from an individual regarding how it will use and disclose the individual's protected health information for treatment, payment, and health care operations is termed a "consent."  The Privacy Rule permits, but does not require, a covered entity to voluntarily obtain patient consent for uses and disclosures of protected health information for treatment, payment, and health care operations. Covered entities that do so have complete discretion to design a process that best suits their needs. From https://www.hhs.gov/hipaa/for-professionals/faq/264/what-is-the-difference-between-consent-and-authorization/index.html. The provisions relating to consent are largely contained in  Section 164.522 Rights to request privacy protection for protected health information https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf. 
+
 
                         
-                           Definition: U.S. federal laws governing research-related privacy policies.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where  collection, access, use, or disclosure of healthcare information is governed by 45 CFR Section 164.522 use â€œHIPAAConsentâ€? as the security label policy code.
+
+                        Since information governed by a 45 CFR Section 164.522 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).
+         */
+        A_HIPAACONSENT, 
+        /**
+         * A code representing U.S. Federal laws governing research-related privacy policies known as the â€œCommon Ruleâ€?. The Common Rule is the U.S. Federal regulations governing the protection of human subjects in research (codified at Subpart A of 45 CFR part 46), which has been adopted by 15 U.S. Federal departments and agencies in an effort to promote uniformity, understanding, and compliance with human subject protections. Existing regulations governing the protection of human subjects in Food and Drug Administration (FDA)-regulated research (21 CFR parts 50, 56, 312, and 812) are separate from the Common Rule but include similar requirements.
 
                         
-                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialtyCode complies.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information or biospecimen is governed by the Common Rule use â€œCOMMONRULEâ€? as the security label policy code.  Information or biospecimen disclosed under the Common Rule are not protected by the HIPAA Privacy Rule. If protected under other laws such as confidentiality provisions under the Common Rule, assign the HL7 Confidentiality code â€œMâ€? (moderate).
          */
         COMMONRULE, 
         /**
-         * The U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Part 164 Subpart E) permits access, use and disclosure of certain personal health information (PHI as defined under the law) for purposes of Treatment, Payment, and Operations, and requires that the provider ask that patients acknowledge the Provider's Notice of Privacy Practices as permitted conduct under the law.
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.508) Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which stipulates the process by which a covered entity seeks agreement from an individual to use or disclose protected health information for other purposes, or to authorize another covered entity to disclose protected health information to the requesting covered entity, are termed "authorizations".
+
+                        An â€œauthorizationâ€? is required by the Privacy Rule for uses and disclosures of protected health information not otherwise allowed by the Rule. Where the Privacy Rule requires patient authorization, voluntary consent is not sufficient to permit a use or disclosure of protected health information unless it also satisfies the requirements of a valid authorization. An authorization is a detailed document that gives covered entities permission to use protected health information for specified purposes, which are generally other than treatment, payment, or health care operations, or to disclose protected health information to a third party specified by the individual.
+
+                        An authorization must specify a number of elements, including a description of the protected health information to be used and disclosed, the person authorized to make the use or disclosure, the person to whom the covered entity may make the disclosure, an expiration date, and, in some cases, the purpose for which the information may be used or disclosed. With limited exceptions, covered entities may not condition treatment or coverage on the individual providing an authorization. https://www.hhs.gov/hipaa/for-professionals/faq/264/what-is-the-difference-between-consent-and-authorization/index.html 
 
                         
-                           Definition: Notification of HIPAA Privacy Practices.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, where use or disclosure of healthcare information is governed by a covered entityâ€™s HIPAA Authorization for Disclosure, use â€œHIPAAAuthâ€? as the security label policy code.
+
+                        Information disclosed under a HIPAA Authorization for Disclosure no longer has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œMâ€? (moderate), which may be protected under other laws such as the Federal Trade Commission privacy and security regulations.
+         */
+        HIPAAAUTH, 
+        /**
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.520), which stipulates an individualâ€™s right to adequate notice of the uses and disclosures of protected health information that may be made by the covered entity, and of the individual's rights and the covered entity's legal duties with respect to protected health information. Relevant HIPAA Privacy  Rule provisions are at  Section 164.520 (a) Standard: Notice of privacy practices. https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-520.pdf 
 
                         
-                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialtyCode complies.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, if collection, access, use, or disclosure of healthcare information is governed by a covered entityâ€™s HIPAA Notice of Privacy Practices, use â€œHIPAANOPPâ€? as the security label policy code.
+
+                        Information governed under a HIPAA Notice of Privacy Practices has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf , which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œNâ€? (normal).
          */
         HIPAANOPP, 
         /**
-         * The U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Part 164 Section 164.508) requires authorization for certain uses and disclosure of psychotherapy notes.
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.508), which stipulates the privacy rights of an individual who is the subject of psychotherapy notes, and requires authorization for certain uses and disclosure of that information.
+
+                        Definition of Psychotherapy notes 45 CFR  Section 164.501 https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-501.pdf: Psychotherapy notes means notes recorded (in any medium) by a health care provider who is a mental health professional documenting or analyzing the contents of conversation during a private counseling session or a group, joint, or family counseling session and that are separated from the rest of the individual's medical record. Psychotherapy notes excludes medication prescription and monitoring, counseling session start and stop times, the modalities and frequencies of treatment furnished, results of clinical tests, and any summary of the following items: Diagnosis, functional status, the treatment plan, symptoms, prognosis, and progress to date. 
+
+                        See  Section 164.508 Uses and disclosures for which an authorization is required. (2)Authorization required: Psychotherapy notes https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf: Notwithstanding any provision of this subpart, other than the transition provisions in  Section 164.532, a covered entity must obtain an authorization for any use or disclosure of psychotherapy notes, except: 
+(i) To carry out the following treatment, payment, or health care operations: 
+(A) Use by the originator of the psychotherapy notes for treatment; 
+(B) Use or disclosure by the covered entity for its own training programs in which students, trainees, or practitioners in mental health learn under supervision to practice or improve their skills in group, joint, family, or individual counseling; or 
+(C) Use or disclosure by the covered entity to defend itself in a legal action or other proceeding brought by the individual; and 
+(ii) A use or disclosure that is required by Section 164.502(a)(2)(ii) or permitted by Section 164.512(a); Section 164.512(d) with respect to the oversight of the originator of the psychotherapy notes;  Section 164.512(g)(1);  Section 164.512(j)(1)(i). 
 
                         
-                           Definition: Authorization that must be obtained for disclosure of psychotherapy notes.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, the collection, access, use, or disclosure of healthcare information is governed by HIPAA 45 CFR 164.508 (2) Authorization required: Psychotherapy notes https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf , use â€œHIPAAPsyNotesâ€? as the security label policy code.
 
-                        
-                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.
+                        Since information governed by a HIPAA 45 CFR 164.508 (2) has a level of confidentiality protection that is more stringent than the normal level of protection under 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).
          */
         HIPAAPSYNOTES, 
         /**
-         * Section 13405(a) of the Health Information Technology for Economic and Clinical Health Act (HITECH) stipulates the right of an individual to have disclosures regarding certain health care items or services for which the individual pays out of pocket in full restricted from a health plan.
+         * A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule 45 CFR Section 164.524 Access of individuals to protected health information https://www.govinfo.gov/app/details/CFR-2017-title45-vol1/CFR-2017-title45-vol1-sec164-524, which stipulates that an individual has a right of access to inspect and obtain a copy of protected health information about the individual in a designated record set, for as long as the protected health information is maintained in the designated record set with exceptions stipulated in HIPAA Privacy Rule Section 164.524. Exceptions include psychotherapy notes and information compiled in reasonable anticipation of, or for use in, a civil, criminal, or administrative action or proceeding.
+
+                        If an individual's request for access directs the covered entity to transmit the copy of protected health information directly to another person designated by the individual, the covered entity must provide the copy to the person designated by the individual. The individual's request must be in writing, signed by the individual, and clearly identify the designated person and where to send the copy of protected health information.
+
+                        For discussion on extent of right, grounds for denial, and documentation requirements see: HHS Individualsâ€™ Right under HIPAA to Access their Health Information 45 CFR Section 164.524 https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/access/index.html  and HHS FAQ on Right of Access vs. HIPAA Authorization https://www.hhs.gov/hipaa/for-professionals/faq/2041/why-depend-on-the-individuals-right/index.html 
 
                         
-                           Definition: Non-disclosure of health information to a health plan relating to health care items or services for which an individual pays out of pocket in full.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed under 45 CFR Section 164.5224 use â€œHIPAAROAâ€? as the security label policy code.
+
+                        Information disclosed under a HIPAA 42 CFR Section 164.524 no longer has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œMâ€? (moderate), which may be protected under other laws such as the Federal Trade Commission privacy and security regulations.
+         */
+        HIPAAROA, 
+        /**
+         * A code representing 45 CFR 164.522 Rights to request privacy protection for protected health information, which is a US Federal law stipulating the privacy rights of an individual to restrict disclosure of information related to health care items or services for which the individual pays out of pocket in full to a health plan or payer.
+
+                        See 45 CFR 164.522 https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf. (vi) A covered entity must agree to the request of an individual to restrict disclosure of protected health information about the individual to a health plan if: 
+(A) The disclosure is for the purpose of carrying out payment or health care operations and is not otherwise required by law; and 
+(B) The protected health information pertains solely to a health care item or service for which the individual, or person other than the health plan on behalf of the individual, has paid the covered entity in full. 
 
                         
-                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, the collection, access, use, or disclosure of healthcare information is governed by HIPAA 45 CFR 164.522 https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf use â€œHIPAASelfPayâ€? as the security label policy code. 
+
+                        Since information governed by a HIPAA 45 CFR 164.522 has a level of confidentiality protection that is more stringent than the normal level of protection under 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).
          */
         HIPAASELFPAY, 
         /**
-         * Title 38 Part 1-protected information may only be disclosed to a third party with the special written consent of the patient except where expressly authorized by 38 USC 7332. VA may disclose this information for specific purposes to: VA employees on a need to know basis - more restrictive than Privacy Act need to know; contractors who need the information in order to perform or fulfil the duties of the contract; and researchers who provide assurances that the information will not be identified in any report. This information may also be disclosed without consent where patient lacks decision-making capacity; in a medical emergency for the purpose of treating a condition which poses an immediate threat to the health of any individual and which requires immediate medical intervention; for eye, tissue, or organ donation purposes; and disclosure of HIV information for public health purposes.
+         * A code representing Title 38 Section 7332, which is a US Federal law stipulating the privacy rights of veterans diagnosed and treated for substance use disorders, infection with the human immunodeficiency virus, or sickle cell anemia.
+
+                        https://www.gpo.gov/fdsys/granule/USCODE-2011-title38/USCODE-2011-title38-partV-chap73-subchapIII-sec7332/content-detail.html .  
+(1) Records of the identity, diagnosis, prognosis, or treatment of any patient or subject which are maintained in connection with the performance of any program or activity (including education, training, treatment, rehabilitation, or research) relating to drug abuse, alcoholism or alcohol abuse, infection with the human immunodeficiency virus, or sickle cell anemia which is carried out by or for the Department under this title shall, except as provided in subsections (e) and (f), be confidential, and (section 5701 of this title to the contrary notwithstanding) such records may be disclosed only for the purposes and under the circumstances expressly authorized under subsection (b).
+(2) Paragraph (1) prohibits the disclosure to any person or entity other than the patient or subject concerned of the fact that a special written consent is required in order for such records to be disclosed.
+(b) (1) The content of any record referred to in subsection (a) may be disclosed by the Secretary in accordance with the prior written consent of the patient or subject with respect to whom such record is maintained, but only to such extent, under such circumstances, and for such purposes as may be allowed in regulations prescribed by the Secretary.
+(2) Whether or not any patient or subject, with respect to whom any given record referred to in subsection (a) is maintained, gives written consent, the content of such record may be disclosed by the Secretary as follows: 
+(A) To medical personnel to the extent necessary to meet a bona fide medical emergency.
+(B) To qualified personnel for the purpose of conducting scientific research, management audits, financial audits, or program evaluation, but such personnel may not identify, directly or indirectly, any individual patient or subject in any report of such research, audit, or evaluation, or otherwise disclose patient or subject identities in any manner.
+(C) (i) In the case of any record which is maintained in connection with the performance of any program or activity relating to infection with the human immunodeficiency virus, to a Federal, State, or local public-health authority charged under Federal or State law with the protection of the public health, and to which Federal or State law requires disclosure of such record, if a qualified representative of such authority has made a written request that such record be provided as required pursuant to such law for a purpose authorized by such law.
+(ii) A person to whom a record is disclosed under this paragraph may not redisclose or use such record for a purpose other than that for which the disclosure was made.
+(D) If authorized by an appropriate order of a court of competent jurisdiction granted after application showing good cause therefor. In assessing good cause the court shall weigh the public interest and the need for disclosure against the injury to the patient or subject, to the physician-patient relationship, and to the treatment services. Upon the granting of such order, the court, in determining the extent to which any disclosure of all or any part of any record is necessary, shall impose appropriate safeguards against unauthorized disclosure.
+(E) To an entity described in paragraph (1)(B) of section 5701(k) of this title, but only to the extent authorized by such section.
+(F) (i) To a representative of a patient who lacks decision-making capacity, when a practitioner deems the content of the given record necessary for that representative to make an informed decision regarding the patient's treatment.
+(ii) In this subparagraph, the term Ã¢â‚¬Å“representativeÃ¢â‚¬? means an individual, organization, or other body authorized under section 7331 of this title and its implementing regulations to give informed consent on behalf of a patient who lacks decision-making capacity.
+(G) To a State controlled substance monitoring program, including a program approved by the Secretary of Health and Human Services under section 399O of the Public Health Service Act (42 U.S.C. 280g-3), to the extent necessary to prevent misuse and diversion of prescription medicines.
+(H) (i) To a non-Department entity (including private entities and other Federal agencies) for purposes of providing health care, including hospital care, medical services, and extended care services, to Veterans or performing other health care-related activities or functions. 
+(ii) An entity to which a record is disclosed under this subparagraph may not disclose or use such record for a purpose other than that for which the disclosure was made or as permitted by law.
+(I) To a third party in order to recover or collect reasonable charges for care furnished to, or paid on behalf of, a Veteran in connection with a non-service connected disability as permitted by section 1729 of this title or for a condition for which recovery is authorized or with respect to which the United States is deemed to be a third party beneficiary under the Act entitled 'An Act to provide for the recovery from tortiously liable third persons of the cost of hospital and medical care and treatment furnished by the United States' (Public Law 87-693; 42 U.S.C. 2651 et seq.; commonly known as the 'Federal Medical Care Recovery Act').
 
                         
-                           Definition: Title 38 Part 1 - Section 1.462 Confidentiality restrictions.
+                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by 38 U.S. Code Section 7332 - Confidentiality of certain medical records
+https://www.gpo.gov/fdsys/granule/USCODE-2011-title38/USCODE-2011-title38-partV-chap73-subchapIII-sec7332/content-detail.html  use "Title38Section7332" as the security label policy code. 
 
-                        (a) General. The patient records to which Sections 1.460 through 1.499 of this part apply may be disclosed or used only as permitted by these regulations and may not otherwise be disclosed or used in any civil, criminal, administrative, or legislative proceedings conducted by any Federal, State, or local authority. Any disclosure made under these regulations must be limited to that information which is necessary to carry out the purpose of the disclosure. SUBCHAPTER III--PROTECTION OF PATIENT RIGHTS Sec. 7332. Confidentiality of certain medical records (a)(1) Records of the identity, diagnosis, prognosis, or treatment of any patient or subject which are maintained in connection with the performance of any program or activity (including education, training, treatment, rehabilitation, or research) relating to drug abuse, alcoholism or alcohol abuse, infection with the human immunodeficiency virus, or sickle cell anemia which is carried out by or for the Department under this title shall, except as provided in subsections (e) and (f), be confidential, and (section 5701 of this title to the contrary notwithstanding) such records may be disclosed only for the purposes and under the circumstances expressly authorized under subsection (b).
 
-                        
-                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.
+                        Since information governed by a Title 38 Section 7332 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code "R" (restricted).
          */
         TITLE38SECTION7332, 
         /**
@@ -2910,6 +3440,15 @@ public enum V3ActCode {
                            Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law in addition to this more generic code.
          */
         MST, 
+        /**
+         * Policy for handling information about an individual's current or past pregnancy status, deemed sensitive by the individual or by policy, which may be afforded heightened confidentiality.
+
+                        
+                           Usage Note: 
+                        
+Information about a patient's current or past pregnancy status may be considered sensitive in circumstances in which that status could result in discrimination or stigmatization.
+         */
+        PREGNANT, 
         /**
          * Policy for handling sickle cell disease information, which is afforded heightened confidentiality.  Information handling protocols are based on organizational policies related to sickle cell disease information, which is deemed sensitive.
 
@@ -3094,6 +3633,13 @@ public enum V3ActCode {
                            Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.
          */
         MARST, 
+        /**
+         * Policy for handling information related to an individual's location, which is deemed sensitive when the disclosure could impact the privacy, well-being, or safety of that subject, and requires additional protection.
+
+                        
+                           Usage Note: If there is a jurisdictional, organizational, or individual mandate, then use the applicable ActPrivacyLaw or ActConsentDirective code from the ActCode system to and specify the law in addition to this more generic code.
+         */
+        PATLOC, 
         /**
          * Policy for handling information related to an information subject's race, which will be afforded heightened confidentiality.  Policies may govern sensitivity of information related to an information subject's race, the disclosure of which could impact the privacy, well-being, or safety of that subject.
 
@@ -3491,6 +4037,186 @@ public enum V3ActCode {
          * Custodian security system must declassify information assigned security labels by instantiating a new version of the classified information so as to break the binding of the classifying security label when assigning a new security label that marks the information as classified at a more protected level  in accordance with applicable jurisdictional privacy policies associated with the target information. The system must retain an immutable record of the previous assignment and binding.
          */
         UPGRDLABEL, 
+        /**
+         * An abstract code for human readable marks indicating, e.g., the level of confidentiality protection, an authorized compartment, the integrity, or the handling instruction required by applicable policy.  Such markings must be displayed as directed by applicable policy on electronically rendered information content and any electronic transmittal envelope or container; or on hardcopy information and any physical transmittal envelope or container.
+
+                        Examples of protocols for marking displays on electronic or hardcopy rendered content:  Across the top or "banner" of each page ; as a watermark placed diagonally cross each page; at the bottom or "footer" of each page; and may be displayed at the beginning of any portion within the content that required markings different than other portions of the content.  The banner or top of page marking typically acts as a "high watermark" by including all of the markings made on any marked portions within the entirety of the information content.
+
+                        
+                           Usage Note: A "Privacy Mark" is a Security Control Observation (SECCONOBS) named tag set as specified by the HL7 Privacy and Security Classification System (HCS).
+A Privacy Mark Named Tag Set is valued with a Privacy Mark leaf code "tag", which is a member of the Security Control Observation Value (_SecurityObservationValue) tag set. Related Security Control Observation named tag sets are Purpose of Use, Obligation Policy, and Refrain Policy, each with their own Security Control Observation Value tag sets.
+
+                        Foundational standard definitions: ISO 22600-3 Section A.3.4.3 - If present, the privacy-mark is not used for access control. The content of the privacy-mark may be defined by the security policy in force (identified by the security-policy-identifier) which may define a list of values to be used. Alternately, the value may be determined by the originator of the security-label.   IEEE Security Glossary Compendium 93- CESG Memorandum No.1 Issue 1.2 Oct 1992 - Human readable word  or phrase acting as an indicator of all or part of the security constraints that apply to a  document so marked. NOTE: A machine readable representation of a marking.
+
+                        
+                           Comment: While policies requiring creators, processors, custodians, senders or recipients apply, enforce, and persist applicable Privacy Marks may be dictated by a jurisdiction, organization or personal privacy, security, or integrity policy, those required to comply may be governed under different policies, so compliance may need to be enforced through trust contracts.  For example, information content marked with GDPR related policies may require adherence by processors or recipients outside of the European Union.  For this reason, this code system is likely to evolve with the inclusion of multiple policy domains needing to communicate encoded policies in a standard, interoperable manner.
+         */
+        PRIVACYMARK, 
+        /**
+         * Information the US Government creates or possesses, or that an entity creates or possesses for or on behalf of the Government, that a law, regulation, or Government-wide policy requires or permits an agency to handle using safeguarding or dissemination controls. However, CUI does not include classified information (see definition above) or information a non-executive branch entity possesses and maintains in its own systems that did not come from, or was not created or possessed by or for, an executive branch agency or an entity acting for an agency. Law, regulation, or Government-wide policy may require or permit safeguarding or dissemination controls in three ways: Requiring or permitting agencies to control or protect the information but providing no specific controls, which makes the information CUI Basic; requiring or permitting agencies to control or protect the information and providing specific controls for doing so, which makes the information CUI Specified; or requiring or permitting agencies to control the information and specifying only some of those controls, which makes the information CUI Specified, but with CUI Basic controls where the authority does not specify. Based on CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html . 
+
+                        
+                           Usage Note: Mandatory control marking, which must be displayed on the top portion of each rendered or printed page containing controlled information.  Should be displayed at the bottom of each rendered or printed page containing controlled information. Must be displayed on each portion of controlled information at the portion level if portions are uncontrolled unclassified information. Based on CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf. For definitions of key terms see CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+         */
+        CONTROLLEDUNCLASSIFIEDINFORMATION, 
+        /**
+         * A displayed mark, required to be rendered as "CONTROLLED", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html. 
+
+                        
+                           Usage Note: Mandatory control marking, which must be displayed on the top portion of each rendered or printed page containing controlled information.  Should be displayed at the bottom of each rendered or printed page containing controlled information. Must be displayed on each portion of controlled information at the portion level if portions are uncontrolled unclassified information. Based on CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf.
+         */
+        CONTROLLED, 
+        /**
+         * A displayed mark, required to be rendered as "CUI", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Mandatory control marking, which must be displayed on the top portion of each rendered or printed page containing controlled information.  Should be displayed at the bottom of each rendered or printed page containing controlled information. Must be displayed on each portion of controlled information at the portion level if portions are uncontrolled unclassified information. Based on CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf.
+         */
+        CUI, 
+        /**
+         * A displayed mark, required to be rendered as "CUI//HLTH", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of healthcare regulation governing CUI Basic marking include HIPAA Unique Identifier provisions 42 USC 1320d-2 note(b) https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf; Title 38 Section 7332 https://www.govinfo.gov/content/pkg/USCODE-2016-title38/pdf/USCODE-2016-title38-partV-chap73-subchapIII-sec7332.pdf; and several sections of 42 CFR Part 2.related to consent and confidentiality, e.g., https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-12.pdf
+         */
+        CUIHLTH, 
+        /**
+         * A displayed mark, required to be rendered as "(CUI//HLTH)", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of healthcare regulation governing CUI Basic marking include HIPAA Unique Identifier provisions 42 USC 1320d-2 note(b) https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf; Title 38 Section 7332 https://www.govinfo.gov/content/pkg/USCODE-2016-title38/pdf/USCODE-2016-title38-partV-chap73-subchapIII-sec7332.pdf; and several sections of 42 CFR Part 2.related to consent and confidentiality, e.g., https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-12.pdf
+         */
+        CUIHLTHP, 
+        /**
+         * A displayed mark, required to be rendered as "(CUI)", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of healthcare regulation governing CUI Basic marking include HIPAA Unique Identifier provisions 42 USC 1320d-2 note(b) https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf; Title 38 Section 7332 https://www.govinfo.gov/content/pkg/USCODE-2016-title38/pdf/USCODE-2016-title38-partV-chap73-subchapIII-sec7332.pdf; and several sections of 42 CFR Part 2.related to consent and confidentiality, e.g., https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-12.pdf
+         */
+        CUIP, 
+        /**
+         * A displayed mark, required to be rendered as "CUI//PRVCY",  indicating that the electronic or hardcopy controlled unclassified basic privacy information is private and must be protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of privacy regulation governing CUI Basic marking include 20 CFR 401.100 related to SSA disclosure of personal, program, and non-program information. https://www.govinfo.gov/content/pkg/CFR-2017-title20-vol2/pdf/CFR-2017-title20-vol2-sec401-100.pdf.
+         */
+        CUIPRVCY, 
+        /**
+         * A displayed mark, required to be rendered as "(CUI//PRVCY)", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of privacy regulation governing CUI Basic marking include 20 CFR 401.100 related to SSA disclosure of personal, program, and non-program information. https://www.govinfo.gov/content/pkg/CFR-2017-title20-vol2/pdf/CFR-2017-title20-vol2-sec401-100.pdf.
+         */
+        CUIPRVCYP, 
+        /**
+         * A displayed mark, required to be rendered as "CUI//SP-HLTH", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI in which the authorizing law, regulation, or Government-wide policy contains specific handling controls that it requires or permits agencies to use that differ from those for CUI Basic. The CUI Registry indicates which laws, regulations, and Government-wide policies include such specific requirements. CUI Specified controls may be more stringent than, or may simply differ from, those required by CUI Basic; the distinction is that the underlying authority spells out the controls for CUI Specified information and does not for CUI Basic information. CUI Basic controls apply to those aspects of CUI Specified where the authorizing laws, regulations, and Government-wide policies do not provide specific guidance. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of healthcare regulation governing CUI Specified marking include HIPAA Transaction and Code Sets and references the Congressional requirement that HHS promulgate Privacy, and Security rules  https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf.
+         */
+        CUISPHLTH, 
+        /**
+         * A displayed mark, required to be rendered as "(CUI//SP-HLTH)", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of healthcare regulation governing CUI Specified marking include HIPAA Transaction and Code Sets and references the Congressional requirement that HHS promulgate Privacy, and Security rules  https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf
+         */
+        CUISPHLTHP, 
+        /**
+         * A displayed mark, required to be rendered as "CUI//SP-PRVCY", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of privacy regulation governing CUI Specified marking is OMB M-17-12ï‡? This Memorandum sets forth the policy for Federal agencies to prepare for and respond to a breach of personally identifiable information (PII). It includes a framework for assessing and mitigating the risk of harm to individuals potentially affected by a breach, as well as guidance on whether and how to provide notification and services to those individuals. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2017/m-17-12_0.pdf.
+         */
+        CUISPPRVCY, 
+        /**
+         * A displayed mark, required to be rendered as "(CUI//SP-PRVCY)", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.
+
+                        
+                           Usage Note: Examples of privacy regulation governing CUI Specified marking is OMB M-17-12ï‡? This Memorandum sets forth the policy for Federal agencies to prepare for and respond to a breach of personally identifiable information (PII). It includes a framework for assessing and mitigating the risk of harm to individuals potentially affected by a breach, as well as guidance on whether and how to provide notification and services to those individuals. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2017/m-17-12_0.pdf.
+         */
+        CUISPPRVCYP, 
+        /**
+         * A displayed mark, required to be rendered as "(U)", indicating that a portion of an electronic or hardcopy information is neither Executive Order 13556 nor classified information authorities cover as protected. Although this information is not controlled or classified, agencies must still handle it in accordance with Federal Information Security Modernization Act (FISMA) requirements. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html
+
+                        
+                           Usage Note: Regulatory Source: 32 CFR Â§â€‰2002.20  Marking. Federal Register Page 63344 
+63344 (ii) Authorized holders permitted to designate CUI must portion mark both CUI and uncontrolled unclassified portions.
+
+                        CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf 
+
+                        CUI Portion Marking: Portion marking of CUI is optional in a fully unclassified document, but is permitted and encouraged to facilitate information sharing and proper handling of the information. Agency heads may approve the required use of CUI Portion marking on all CUI generated within their agency. As such, users should consult their agency CUI policy when creating CUI documents. When CUI Portion Markings are used and a portion does not contain CUI a â€œUâ€? is placed in parentheses to indicate that the portion contains Uncontrolled Unclassified Information. (Page 14)
+
+                        CUI Portion Markings are placed at the beginning of the portion to which they apply and must be used throughout the entire document. They are presented in all capital letters and separated as indicated in this handbook and the CUI Registry.  The presence of EVEN ONE item of CUI in a document requires CUI marking of that document. Because of this, CUI Portion Markings can be of great assistance in determining if a document contains CUI and therefore must be marked as such. Remember: When portion markings are used and any portion does not contain CUI, a â€œ(U)â€? is placed in front of that portion to indicate that it contains Uncontrolled - or non-CUI - Unclassified Information. (Page 15)
+         */
+        UUI, 
+        /**
+         * An abstract code for displayed Security Label tags.
+
+                        
+                           Usage Note: These marks may be based on any of the HL7 Security Labeling related codes from various code systems and values sets, which are organized according to the HL7 Privacy and Security Classification System into HL7 Security Observation Type Named Tag Sets and valued with codes associated with the HL7 Security Observation Value Tag Set Names.
+         */
+        SECURITYLABELMARK, 
+        /**
+         * A displayed mark rendered as "Confidential", which indicates to end users that the electronic or hardcopy information they are viewing must be protected at a level of protection as dictated by applicable policy.
+
+                        May be used to indicate proprietary or classified information that is, for example, business, intelligence, or project related, e.g., secret ingredients in a therapeutic substance; location of disaster health facilities and providers, or the name of a manufacturer or project contractor. Example use cases include a display to alert authorized business system users that they are viewing additionally protected proprietary and business confidential information deemed proprietary under an applicable jurisdictional or organizational policy.
+
+                        
+                           Usage Note: 
+                        
+The ConfidentialMark (confidential mark) description is based on the HL7 Confidentiality Concept Domain: 
+Types of privacy metadata classifying an IT resource (data, information object, service, or system capability) according to its level of sensitivity, which is based on an analysis of applicable privacy policies and the risk of financial, reputational, or other harm to an individual or entity that could result if made available or disclosed to unauthorized individuals, entities, or processes.
+                           Usage Note: Confidentiality codes may be used in security labels and privacy markings to classify IT resources based on sensitivity to indicate the obligation of a custodian or receiver to ensure that the protected resource is not made available or disclosed to individuals, entities, or processes (security principals) unless authorized per applicable policies. Confidentiality codes may also be used in the clearances of initiators requesting access to protected resources.
+
+                        Map: Definition aligns with ISO 7498-2:1989 - Confidentiality is the property that information is not made available or disclosed to unauthorized individuals, entities, or processes.
+         */
+        CONFIDENTIALMARK, 
+        /**
+         * A displayed mark indicating that the electronic or hardcopy information is a copy of an authoritative source for the information.  The copy is not considered authoritative but is a duplicate of the authoritative content.
+
+                        
+                           Usage Note: Applicable policy will dictate how the COPY mark will be displayed.  Typical renderings include the marking appearing at the top or "banner" of electronic or hardcopy pages, or as watermarks set diagonally across each page.
+         */
+        COPYMARK, 
+        /**
+         * A displayed mark on an electronic transmission or physical container such as an electronic transmittal wrapper, batch file, message header, or a physical envelop or package indicating that the contents, whether electronic or hardcopy information, must only be delivered to the authorized recipient(s) named in the address.
+
+                        
+                           Usage Note: Required by US 32 CRF Part 2002 for container storing or transmitting CUI.
+         */
+        DELIVERTOADDRESSEEONLYMARK, 
+        /**
+         * A displayed mark rendered to end users as a prescribed text warning that the electronic or hardcopy information shall not be further disclosed without consent of the subject of the information.  For example, in order to warn a recipient of 42 CFR Part 2 information of the redisclosure restrictions, the rule mandates that end users receive a written prohibition against redisclosure unless authorized by patient consent or otherwise permitted by Part 2.  See 42 CFR Â§ 2.32 Prohibition on re-disclosure.
+(a)Notice to accompany disclosure. Each disclosure made with the patient's written consent must be accompanied by one of the following written statements: 
+(1) This information has been disclosed to you from records protected by federal confidentiality rules ( 42 CFR part 2). The federal rules prohibit you from making any further disclosure of information in this record that identifies a patient as having or having had a substance use disorder either directly, by reference to publicly available information, or through verification of such identification by another person unless further disclosure is expressly permitted by the written consent of the individual whose information is being disclosed or as otherwise permitted by 42 CFR part 2. A general authorization for the release of medical or other information is NOT sufficient for this purpose (see Â§ 2.31). The federal rules restrict any use of the information to investigate or prosecute with regard to a crime any patient with a substance use disorder, except as provided at Â§Â§ 2.12(c)(5) and 2.65; or (2) 42 CFR part 2 prohibits unauthorized disclosure of these records. https://www.law.cornell.edu/cfr/text/42/2.32 
+
+                        
+                           Usage Note: Example of marking requirement from SAMHSA FAQ Response to question 13:
+
+                        Would a logon or splash page notification on an HIOâ€™s portal that contains the Part 2 notice prohibiting redisclosure be sufficient to meet Part 2â€™s requirement that disclosures made with patient consent be accompanied by such a statement?
+
+                        No. Part 2 requires each disclosure made with written patient consent to be accompanied by a written statement that the information disclosed is protected by federal law and that the recipient cannot make any further disclosure of it unless permitted by the regulations (42 CFR Â§ 2.32). A logon page is the page where a user logs onto a computer system; a splash page is an introductory page to a web site. A logon or splash page notification on a HIO's portal including the statement as required by Â§ 2.32 would not be sufficient notification regarding prohibitions on redisclosure since it would not accompany a specific disclosure. The notification must be tied to the Part 2 information being disclosed in order to ensure that the recipient of that information knows that specific information is protected by Part 2 and cannot be redisclosed except as authorized by the express written consent of the person to whom it pertains or as otherwise permitted by Part 2.  https://www.samhsa.gov/about-us/who-we-are/laws-regulations/confidentiality-regulations-faqs
+         */
+        REDISCLOSUREPROHIBITIONMARK, 
+        /**
+         * A displayed mark rendered to end users as "Restricted Confidentiality", which indicates that the electronic or hardcopy information they are viewing, must be protected at a restricted level of confidentiality protection as defined by HL7 Confidentiality code "R" (restricted).  
+Examples: Includes information that is additionally protected such as sensitive conditions mental health, HIV, substance abuse, domestic violence, child abuse, genetic disease, and reproductive health; or sensitive demographic information such as a patient's standing as an employee or a celebrity. 
+Use cases include a display to alert authorized EHR users that they are viewing additionally protected health information deemed sensitive by an applicable jurisdictional, organizational, or personal privacy policy.
+
+                        
+                           Usage Note: The definition is based on  HL7 Confidentiality code "R" (restricted), which is described as: 
+
+                        Privacy metadata indicating highly sensitive, potentially stigmatizing information, which presents a high risk to the information subject if disclosed without authorization. May be pre-empted by jurisdictional law, e.g., for public health reporting or emergency treatment.
+Foundational definitions of Confidentiality:  From HL7 Confidentiality Concept Domain: Types of privacy metadata classifying an IT resource (data, information object, service, or system capability) according to its level of sensitivity, which is based on an analysis of applicable privacy policies and the risk of financial, reputational, or other harm to an individual or entity that could result if made available or disclosed to unauthorized individuals, entities, or processes.
+
+                        Usage Note from HL7 Confidentiality code "R": Confidentiality codes may be used in security labels and privacy markings to classify IT resources based on sensitivity to indicate the obligation of a custodian or receiver to ensure that the protected resource is not made available or disclosed to individuals, entities, or processes (security principals) unless authorized per applicable policies. Confidentiality codes may also be used in the clearances of initiators requesting access to protected resources.
+
+                        This metadata indicates that the receiver may be obligated to comply with applicable, prevailing (default) jurisdictional privacy law or disclosure authorization.
+
+                        Map: Definition aligns with ISO 7498-2:1989 - Confidentiality is the property that information is not made available or disclosed to unauthorized individuals, entities, or processes.  Map: Partial Map to ISO 13606-4 Sensitivity Level (3) Clinical Care: Default for normal clinical care access (i.e. most clinical staff directly caring for the patient should be able to access nearly all of the EHR). Maps to normal confidentiality for treatment information but not to ancillary care, payment and operations.
+         */
+        RESTRICTEDCONFIDENTIALITYMARK, 
         /**
          * Conveys prohibited actions which an information custodian, receiver, or user is not permitted to perform unless otherwise authorized or permitted under specified circumstances.
 
@@ -6556,12 +7282,10 @@ the measure population as a narrative description (e.g., all patients seen in th
           return UDE;
         if ("_ActPolicyType".equals(codeString))
           return _ACTPOLICYTYPE;
-        if ("_ActPrivacyPolicy".equals(codeString))
-          return _ACTPRIVACYPOLICY;
-        if ("_ActConsentDirective".equals(codeString))
-          return _ACTCONSENTDIRECTIVE;
-        if ("EMRGONLY".equals(codeString))
-          return EMRGONLY;
+        if ("_ActConsent".equals(codeString))
+          return _ACTCONSENT;
+        if ("_ActDecision".equals(codeString))
+          return _ACTDECISION;
         if ("GRANTORCHOICE".equals(codeString))
           return GRANTORCHOICE;
         if ("IMPLIED".equals(codeString))
@@ -6570,8 +7294,6 @@ the measure population as a narrative description (e.g., all patients seen in th
           return IMPLIEDD;
         if ("NOCONSENT".equals(codeString))
           return NOCONSENT;
-        if ("NOPP".equals(codeString))
-          return NOPP;
         if ("OPTIN".equals(codeString))
           return OPTIN;
         if ("OPTINR".equals(codeString))
@@ -6580,18 +7302,136 @@ the measure population as a narrative description (e.g., all patients seen in th
           return OPTOUT;
         if ("OPTOUTE".equals(codeString))
           return OPTOUTE;
+        if ("_ActPrivacyConsentDirective".equals(codeString))
+          return _ACTPRIVACYCONSENTDIRECTIVE;
+        if ("_ActGDPRConsentDirective".equals(codeString))
+          return _ACTGDPRCONSENTDIRECTIVE;
+        if ("GDPRCD".equals(codeString))
+          return GDPRCD;
+        if ("GDPRResearchCD".equals(codeString))
+          return GDPRRESEARCHCD;
+        if ("_ActGenericConsentDirective".equals(codeString))
+          return _ACTGENERICCONSENTDIRECTIVE;
+        if ("OIC".equals(codeString))
+          return OIC;
+        if ("OIS".equals(codeString))
+          return OIS;
+        if ("OOC".equals(codeString))
+          return OOC;
+        if ("OOS".equals(codeString))
+          return OOS;
+        if ("_ActUSPrivacyConsentDirective".equals(codeString))
+          return _ACTUSPRIVACYCONSENTDIRECTIVE;
+        if ("42CFRPart2CD".equals(codeString))
+          return _42CFRPART2CD;
+        if ("CompoundResearchCD".equals(codeString))
+          return COMPOUNDRESEARCHCD;
+        if ("HIPAAAuthCD".equals(codeString))
+          return HIPAAAUTHCD;
+        if ("HIPAAConsentCD".equals(codeString))
+          return HIPAACONSENTCD;
+        if ("HIPAAResearchAuthCD".equals(codeString))
+          return HIPAARESEARCHAUTHCD;
+        if ("HIPAAROAD".equals(codeString))
+          return HIPAAROAD;
+        if ("MDHHS-5515".equals(codeString))
+          return MDHHS5515;
+        if ("_ActInformationActionPolicy".equals(codeString))
+          return _ACTINFORMATIONACTIONPOLICY;
+        if ("INFOACCESS".equals(codeString))
+          return INFOACCESS;
+        if ("INFOCOLLECT".equals(codeString))
+          return INFOCOLLECT;
+        if ("INFODEIDENTIFIY".equals(codeString))
+          return INFODEIDENTIFIY;
+        if ("INFODISCLOSE".equals(codeString))
+          return INFODISCLOSE;
+        if ("INFOMASK".equals(codeString))
+          return INFOMASK;
+        if ("INFOREADONLY".equals(codeString))
+          return INFOREADONLY;
+        if ("INFOREDACT".equals(codeString))
+          return INFOREDACT;
+        if ("INFOREDISCLOSE".equals(codeString))
+          return INFOREDISCLOSE;
+        if ("INFOREIDENTIFY".equals(codeString))
+          return INFOREIDENTIFY;
+        if ("INFOUSE".equals(codeString))
+          return INFOUSE;
+        if ("_ActInformationPolicy".equals(codeString))
+          return _ACTINFORMATIONPOLICY;
+        if ("JurisIP".equals(codeString))
+          return JURISIP;
+        if ("JurisCUI".equals(codeString))
+          return JURISCUI;
+        if ("JurisDEID".equals(codeString))
+          return JURISDEID;
+        if ("JurisLDS".equals(codeString))
+          return JURISLDS;
+        if ("JurisNSI".equals(codeString))
+          return JURISNSI;
+        if ("JurisPI".equals(codeString))
+          return JURISPI;
+        if ("JurisSP-CUI".equals(codeString))
+          return JURISSPCUI;
+        if ("JurisUUI".equals(codeString))
+          return JURISUUI;
+        if ("OrgIP".equals(codeString))
+          return ORGIP;
+        if ("OrgCUI".equals(codeString))
+          return ORGCUI;
+        if ("OrgDEID".equals(codeString))
+          return ORGDEID;
+        if ("OrgLDS".equals(codeString))
+          return ORGLDS;
+        if ("OrgNSI".equals(codeString))
+          return ORGNSI;
+        if ("OrgPI".equals(codeString))
+          return ORGPI;
+        if ("OrgSP-CUI".equals(codeString))
+          return ORGSPCUI;
+        if ("OrgUUI".equals(codeString))
+          return ORGUUI;
+        if ("PersIP".equals(codeString))
+          return PERSIP;
+        if ("PersDEID".equals(codeString))
+          return PERSDEID;
+        if ("PersLDS".equals(codeString))
+          return PERSLDS;
+        if ("PersNSI".equals(codeString))
+          return PERSNSI;
+        if ("PersPI".equals(codeString))
+          return PERSPI;
+        if ("_ActPrivacyPolicy".equals(codeString))
+          return _ACTPRIVACYPOLICY;
+        if ("_ActConsentDirective".equals(codeString))
+          return _ACTCONSENTDIRECTIVE;
+        if ("EMRGONLY".equals(codeString))
+          return EMRGONLY;
+        if ("NOPP".equals(codeString))
+          return NOPP;
         if ("_ActPrivacyLaw".equals(codeString))
           return _ACTPRIVACYLAW;
+        if ("_ActGDPRPrivacyLaw".equals(codeString))
+          return _ACTGDPRPRIVACYLAW;
+        if ("GDPRCONSENT".equals(codeString))
+          return GDPRCONSENT;
         if ("_ActUSPrivacyLaw".equals(codeString))
           return _ACTUSPRIVACYLAW;
         if ("42CFRPart2".equals(codeString))
           return _42CFRPART2;
+        if ("a) HIPAAConsent".equals(codeString))
+          return A_HIPAACONSENT;
         if ("CommonRule".equals(codeString))
           return COMMONRULE;
+        if ("HIPAAAuth".equals(codeString))
+          return HIPAAAUTH;
         if ("HIPAANOPP".equals(codeString))
           return HIPAANOPP;
         if ("HIPAAPsyNotes".equals(codeString))
           return HIPAAPSYNOTES;
+        if ("HIPAAROA".equals(codeString))
+          return HIPAAROA;
         if ("HIPAASelfPay".equals(codeString))
           return HIPAASELFPAY;
         if ("Title38Section7332".equals(codeString))
@@ -6608,6 +7448,8 @@ the measure population as a narrative description (e.g., all patients seen in th
           return HIV;
         if ("MST".equals(codeString))
           return MST;
+        if ("PREGNANT".equals(codeString))
+          return PREGNANT;
         if ("SCA".equals(codeString))
           return SCA;
         if ("SDV".equals(codeString))
@@ -6656,6 +7498,8 @@ the measure population as a narrative description (e.g., all patients seen in th
           return LIVARG;
         if ("MARST".equals(codeString))
           return MARST;
+        if ("PATLOC".equals(codeString))
+          return PATLOC;
         if ("RACE".equals(codeString))
           return RACE;
         if ("REL".equals(codeString))
@@ -6786,6 +7630,46 @@ the measure population as a narrative description (e.g., all patients seen in th
           return REDACT;
         if ("UPGRDLABEL".equals(codeString))
           return UPGRDLABEL;
+        if ("PrivacyMark".equals(codeString))
+          return PRIVACYMARK;
+        if ("ControlledUnclassifiedInformation".equals(codeString))
+          return CONTROLLEDUNCLASSIFIEDINFORMATION;
+        if ("CONTROLLED".equals(codeString))
+          return CONTROLLED;
+        if ("CUI".equals(codeString))
+          return CUI;
+        if ("CUIHLTH".equals(codeString))
+          return CUIHLTH;
+        if ("CUIHLTHP".equals(codeString))
+          return CUIHLTHP;
+        if ("CUIP".equals(codeString))
+          return CUIP;
+        if ("CUIPRVCY".equals(codeString))
+          return CUIPRVCY;
+        if ("CUIPRVCYP".equals(codeString))
+          return CUIPRVCYP;
+        if ("CUISP-HLTH".equals(codeString))
+          return CUISPHLTH;
+        if ("CUISP-HLTHP".equals(codeString))
+          return CUISPHLTHP;
+        if ("CUISP-PRVCY".equals(codeString))
+          return CUISPPRVCY;
+        if ("CUISP-PRVCYP".equals(codeString))
+          return CUISPPRVCYP;
+        if ("UUI".equals(codeString))
+          return UUI;
+        if ("SecurityLabelMark".equals(codeString))
+          return SECURITYLABELMARK;
+        if ("ConfidentialMark".equals(codeString))
+          return CONFIDENTIALMARK;
+        if ("COPYMark".equals(codeString))
+          return COPYMARK;
+        if ("DeliverToAddresseeOnlyMark".equals(codeString))
+          return DELIVERTOADDRESSEEONLYMARK;
+        if ("RedisclosureProhibitionMark".equals(codeString))
+          return REDISCLOSUREPROHIBITIONMARK;
+        if ("RestrictedConfidentialityMark".equals(codeString))
+          return RESTRICTEDCONFIDENTIALITYMARK;
         if ("RefrainPolicy".equals(codeString))
           return REFRAINPOLICY;
         if ("NOAUTH".equals(codeString))
@@ -8212,24 +9096,81 @@ the measure population as a narrative description (e.g., all patients seen in th
             case TBS: return "TBS";
             case UDE: return "UDE";
             case _ACTPOLICYTYPE: return "_ActPolicyType";
-            case _ACTPRIVACYPOLICY: return "_ActPrivacyPolicy";
-            case _ACTCONSENTDIRECTIVE: return "_ActConsentDirective";
-            case EMRGONLY: return "EMRGONLY";
+            case _ACTCONSENT: return "_ActConsent";
+            case _ACTDECISION: return "_ActDecision";
             case GRANTORCHOICE: return "GRANTORCHOICE";
             case IMPLIED: return "IMPLIED";
             case IMPLIEDD: return "IMPLIEDD";
             case NOCONSENT: return "NOCONSENT";
-            case NOPP: return "NOPP";
             case OPTIN: return "OPTIN";
             case OPTINR: return "OPTINR";
             case OPTOUT: return "OPTOUT";
             case OPTOUTE: return "OPTOUTE";
+            case _ACTPRIVACYCONSENTDIRECTIVE: return "_ActPrivacyConsentDirective";
+            case _ACTGDPRCONSENTDIRECTIVE: return "_ActGDPRConsentDirective";
+            case GDPRCD: return "GDPRCD";
+            case GDPRRESEARCHCD: return "GDPRResearchCD";
+            case _ACTGENERICCONSENTDIRECTIVE: return "_ActGenericConsentDirective";
+            case OIC: return "OIC";
+            case OIS: return "OIS";
+            case OOC: return "OOC";
+            case OOS: return "OOS";
+            case _ACTUSPRIVACYCONSENTDIRECTIVE: return "_ActUSPrivacyConsentDirective";
+            case _42CFRPART2CD: return "42CFRPart2CD";
+            case COMPOUNDRESEARCHCD: return "CompoundResearchCD";
+            case HIPAAAUTHCD: return "HIPAAAuthCD";
+            case HIPAACONSENTCD: return "HIPAAConsentCD";
+            case HIPAARESEARCHAUTHCD: return "HIPAAResearchAuthCD";
+            case HIPAAROAD: return "HIPAAROAD";
+            case MDHHS5515: return "MDHHS-5515";
+            case _ACTINFORMATIONACTIONPOLICY: return "_ActInformationActionPolicy";
+            case INFOACCESS: return "INFOACCESS";
+            case INFOCOLLECT: return "INFOCOLLECT";
+            case INFODEIDENTIFIY: return "INFODEIDENTIFIY";
+            case INFODISCLOSE: return "INFODISCLOSE";
+            case INFOMASK: return "INFOMASK";
+            case INFOREADONLY: return "INFOREADONLY";
+            case INFOREDACT: return "INFOREDACT";
+            case INFOREDISCLOSE: return "INFOREDISCLOSE";
+            case INFOREIDENTIFY: return "INFOREIDENTIFY";
+            case INFOUSE: return "INFOUSE";
+            case _ACTINFORMATIONPOLICY: return "_ActInformationPolicy";
+            case JURISIP: return "JurisIP";
+            case JURISCUI: return "JurisCUI";
+            case JURISDEID: return "JurisDEID";
+            case JURISLDS: return "JurisLDS";
+            case JURISNSI: return "JurisNSI";
+            case JURISPI: return "JurisPI";
+            case JURISSPCUI: return "JurisSP-CUI";
+            case JURISUUI: return "JurisUUI";
+            case ORGIP: return "OrgIP";
+            case ORGCUI: return "OrgCUI";
+            case ORGDEID: return "OrgDEID";
+            case ORGLDS: return "OrgLDS";
+            case ORGNSI: return "OrgNSI";
+            case ORGPI: return "OrgPI";
+            case ORGSPCUI: return "OrgSP-CUI";
+            case ORGUUI: return "OrgUUI";
+            case PERSIP: return "PersIP";
+            case PERSDEID: return "PersDEID";
+            case PERSLDS: return "PersLDS";
+            case PERSNSI: return "PersNSI";
+            case PERSPI: return "PersPI";
+            case _ACTPRIVACYPOLICY: return "_ActPrivacyPolicy";
+            case _ACTCONSENTDIRECTIVE: return "_ActConsentDirective";
+            case EMRGONLY: return "EMRGONLY";
+            case NOPP: return "NOPP";
             case _ACTPRIVACYLAW: return "_ActPrivacyLaw";
+            case _ACTGDPRPRIVACYLAW: return "_ActGDPRPrivacyLaw";
+            case GDPRCONSENT: return "GDPRCONSENT";
             case _ACTUSPRIVACYLAW: return "_ActUSPrivacyLaw";
             case _42CFRPART2: return "42CFRPart2";
+            case A_HIPAACONSENT: return "a) HIPAAConsent";
             case COMMONRULE: return "CommonRule";
+            case HIPAAAUTH: return "HIPAAAuth";
             case HIPAANOPP: return "HIPAANOPP";
             case HIPAAPSYNOTES: return "HIPAAPsyNotes";
+            case HIPAAROA: return "HIPAAROA";
             case HIPAASELFPAY: return "HIPAASelfPay";
             case TITLE38SECTION7332: return "Title38Section7332";
             case _INFORMATIONSENSITIVITYPOLICY: return "_InformationSensitivityPolicy";
@@ -8238,6 +9179,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case GDIS: return "GDIS";
             case HIV: return "HIV";
             case MST: return "MST";
+            case PREGNANT: return "PREGNANT";
             case SCA: return "SCA";
             case SDV: return "SDV";
             case SEX: return "SEX";
@@ -8262,6 +9204,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case GENDER: return "GENDER";
             case LIVARG: return "LIVARG";
             case MARST: return "MARST";
+            case PATLOC: return "PATLOC";
             case RACE: return "RACE";
             case REL: return "REL";
             case _ROLEINFORMATIONSENSITIVITYPOLICY: return "_RoleInformationSensitivityPolicy";
@@ -8327,6 +9270,26 @@ the measure population as a narrative description (e.g., all patients seen in th
             case PSEUD: return "PSEUD";
             case REDACT: return "REDACT";
             case UPGRDLABEL: return "UPGRDLABEL";
+            case PRIVACYMARK: return "PrivacyMark";
+            case CONTROLLEDUNCLASSIFIEDINFORMATION: return "ControlledUnclassifiedInformation";
+            case CONTROLLED: return "CONTROLLED";
+            case CUI: return "CUI";
+            case CUIHLTH: return "CUIHLTH";
+            case CUIHLTHP: return "CUIHLTHP";
+            case CUIP: return "CUIP";
+            case CUIPRVCY: return "CUIPRVCY";
+            case CUIPRVCYP: return "CUIPRVCYP";
+            case CUISPHLTH: return "CUISP-HLTH";
+            case CUISPHLTHP: return "CUISP-HLTHP";
+            case CUISPPRVCY: return "CUISP-PRVCY";
+            case CUISPPRVCYP: return "CUISP-PRVCYP";
+            case UUI: return "UUI";
+            case SECURITYLABELMARK: return "SecurityLabelMark";
+            case CONFIDENTIALMARK: return "ConfidentialMark";
+            case COPYMARK: return "COPYMark";
+            case DELIVERTOADDRESSEEONLYMARK: return "DeliverToAddresseeOnlyMark";
+            case REDISCLOSUREPROHIBITIONMARK: return "RedisclosureProhibitionMark";
+            case RESTRICTEDCONFIDENTIALITYMARK: return "RestrictedConfidentialityMark";
             case REFRAINPOLICY: return "RefrainPolicy";
             case NOAUTH: return "NOAUTH";
             case NOCOLLECT: return "NOCOLLECT";
@@ -9335,33 +10298,91 @@ the measure population as a narrative description (e.g., all patients seen in th
             case TB: return "A fill where the remainder of a 'complete' fill is provided after a trial fill has been provided.";
             case TBS: return "A fill where the remainder of a 'complete' fill is provided after a trial fill has been provided and where the strength supplied is less than the ordered strength (e.g. 10mg for an order of 50mg where a subsequent fill will dispense 40mg tablets).";
             case UDE: return "A supply action that provides sufficient material for a single dose via multiple products.  E.g. 2 50mg tablets for a 100mg unit dose.";
-            case _ACTPOLICYTYPE: return "Description:Types of policies that further specify the ActClassPolicy value set.";
-            case _ACTPRIVACYPOLICY: return "A policy deeming certain information to be private to an individual or organization.\r\n\n                        \n                           Definition: A mandate, obligation, requirement, rule, or expectation relating to privacy.\r\n\n                        \n                           Discussion: ActPrivacyPolicyType codes support the designation of the 1..* policies that are applicable to an Act such as a Consent Directive, a Role such as a VIP Patient, or an Entity such as a patient who is a minor.  1..* ActPrivacyPolicyType values may be associated with an Act or Role to indicate the policies that govern the assignment of an Act or Role confidentialityCode.  Use of multiple ActPrivacyPolicyType values enables fine grain specification of applicable policies, but must be carefully assigned to ensure cogency and avoid creation of conflicting policy mandates.\r\n\n                        \n                           Usage Note: Statutory title may be named in the ActClassPolicy Act Act.title to specify which privacy policy is being referenced.";
-            case _ACTCONSENTDIRECTIVE: return "Specifies the type of agreement between one or more grantor and grantee in which rights and obligations related to one or more shared items of interest are allocated.\r\n\n                        \n                           Usage Note: Such agreements may be considered \"consent directives\" or \"contracts\" depending on the context, and are considered closely related or synonymous from a legal perspective.\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare Privacy Consent Directive permitting or restricting in whole or part the collection, access, use, and disclosure of health information, and any associated handling caveats.\n                           Healthcare Medical Consent Directive to receive medical procedures after being informed of risks and benefits, thereby reducing the grantee's liability.\n                           Research Informed Consent for participation in clinical trials and disclosure of health information after being informed of risks and benefits, thereby reducing the grantee's liability.\n                           Substitute decision maker delegation in which the grantee assumes responsibility to act on behalf of the grantor.\n                           Contracts in which the agreement requires assent/dissent by the grantor of terms offered by a grantee, a consumer opts out of an \"award\" system for use of a retailer's marketing or credit card vendor's point collection cards in exchange for allowing purchase tracking and profiling.\n                           A mobile device or App privacy policy and terms of service to which a user must agree in whole or in part in order to utilize the service.\n                           Agreements between a client and an authorization server or between an authorization server and a resource operator and/or resource owner permitting or restricting e.g., collection, access, use, and disclosure of information, and any associated handling caveats.";
-            case EMRGONLY: return "This general consent directive specifically limits disclosure of health information for purpose of emergency treatment. Additional parameters may further limit the disclosure to specific users, roles, duration, types of information, and impose uses obligations.\r\n\n                        \n                           Definition: Opt-in to disclosure of health information for emergency only consent directive.";
+            case _ACTPOLICYTYPE: return "A mandate, regulation, obligation, principle, requirement, rule, or expectation of how an entity is to conduct itself or execute an activity, which may be dictated and enforced by an authority of competent jurisdiction.";
+            case _ACTCONSENT: return "Specifies the type or actual definition of a contractually binding agreement or a non-binding representation of that agreement between a grantor and a grantee as to the exchange of the granteeâ€™s considerations in return for the grantorâ€™s control of certain assets.  The type of assets exchanged include rights, license, terms of service, valued items, information and real property assets and control over such assets such as physical and locatable property; intellectual property; biospecimen; genomic and genetic information related to an individual including that disclosed by genetically related individuals with or without the individualâ€™s consent; personal identifiable, pseudonymized, anonymized, de-identified per some rubric, and relinkable variants.\r\n\n                        \n                           Usage Note: Types or actual definitions of a contractually binding agreement or a non-binding representation of that agreement include: \r\n\n                        \n                           _ActDecision (formally ActConsentDirective), which specifies the type of decision made by the grantor.  The decision types are mapped to ISO/TS 17975 Health informatics â€” Principles and data requirements for consent in the Collection, Use or Disclosure of personal health information;\n                           _ActPrivacyConsentDirective, which is the parent of types of registry participation consent directives, and of realm specific privacy consent directive policies such as _USPrivacyConsentDirective and _GDPRPrivacyConsentDirective.";
+            case _ACTDECISION: return "Specifies the type of agreement between one or more grantor and grantee in which rights and obligations related to one or more shared items of interest are allocated.\r\n\n                        \n                           Usage Note: Such agreements may be considered \"consent directives\" or \"contracts\" depending on the context, and are considered closely related or synonymous from a legal perspective.\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare Privacy Consent Directive permitting or restricting in whole or part the collection, access, use, and disclosure of health information, and any associated handling caveats.\n                           Healthcare Medical Consent Directive to receive medical procedures after being informed of risks and benefits, thereby reducing the grantee's liability.\n                           Research Informed Consent for participation in clinical trials and disclosure of health information after being informed of risks and benefits, thereby reducing the grantee's liability.\n                           Substitute decision maker delegation in which the grantee assumes responsibility to act on behalf of the grantor.\n                           Contracts in which the agreement requires assent/dissent by the grantor of terms offered by a grantee, a consumer opts out of an \"award\" system for use of a retailer's marketing or credit card vendor's point collection cards in exchange for allowing purchase tracking and profiling.\n                           A mobile device or App privacy policy and terms of service to which a user must agree in whole or in part in order to utilize the service.\n                           Agreements between a client and an authorization server or between an authorization server and a resource operator and/or resource owner permitting or restricting e.g., collection, access, use, and disclosure of information, and any associated handling caveats.";
             case GRANTORCHOICE: return "A grantor's terms of agreement to which a grantee may assent or dissent, and which may include an opportunity for a grantee to request restrictions or extensions.\r\n\n                        \n                           Comment: A grantor typically is able to stipulate preferred terms of agreement when the grantor has control over the topic of the agreement, which a grantee must accept in full or may be offered an opportunity to extend or restrict certain terms.\r\n\n                        \n                           Usage Note: If the grantor's term of agreement must be accepted in full, then this is considered \"basic consent\".  If a grantee is offered an opportunity to extend or restrict certain terms, then the agreement is considered \"granular consent\".\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare: A PHR account holder [grantor] may require any PHR user [grantee]  to accept the terms of agreement in full, or may permit a PHR user to extend or restrict terms selected by the account holder or requested by the PHR user.\n                           Non-healthcare: The owner of a resource server [grantor] may require any authorization server [grantee] to meet authorization requirements stipulated in the grantor's terms of agreement.";
             case IMPLIED: return "A grantor's presumed assent to the grantee's terms of agreement is based on the grantor's behavior, which may result from not expressly assenting to the consent directive offered, or from having no right to assent or dissent offered by the grantee.\r\n\n                        \n                           Comment: Implied or \"implicit\" consent occurs when the behavior of the grantor is understood by a reasonable person to signal agreement to the grantee's terms.\r\n\n                        \n                           Usage Note: Implied consent with no opportunity to assent or dissent to certain terms is considered \"basic consent\".\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare: A patient schedules an appointment with a provider, and either does not take the opportunity to expressly assent or dissent to the provider's consent directive, does not have an opportunity to do so, as in the case where emergency care is required, or simply behaves as though the patient [grantor] agrees to the rights granted to the provider [grantee] in an implicit consent directive.\n                           An injured and unconscious patient is deemed to have assented to emergency treatment by those permitted to do so under jurisdictional laws, e.g., Good Samaritan laws.\n                           Non-healthcare: Upon receiving a driver's license, the driver is deemed to have assented without explicitly consenting to undergoing field sobriety tests.\n                           A corporation that does business in a foreign nation is deemed to have deemed to have assented without explicitly consenting to abide by that nation's laws.";
             case IMPLIEDD: return "A grantor's presumed assent to the grantee's terms of agreement, which is based on the grantor's behavior, and includes a right to dissent to certain terms. \r\n\n                        \n                           Comment: A grantor assenting to the grantee's terms of agreement may or may not exercise a right to dissent to grantor selected terms or to grantee's selected terms to which a grantor may dissent.\r\n\n                        \n                           Usage Note: Implied or \"implicit\" consent with an \"opportunity to dissent\" occurs when the grantor's behavior is understood by a reasonable person to signal assent to the grantee's terms of agreement whether the grantor requests or the grantee approves further restrictions, is considered \"granular consent\".\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare Examples: A healthcare provider deems a patient's assent to disclosure of health information to family members and friends, but offers an opportunity or permits the patient to dissent to such disclosures.\n                           A health information exchanges deems a patient to have assented to disclosure of health information for treatment purposes, but offers the patient an opportunity to dissents to disclosure to particular provider organizations.\n                           Non-healthcare Examples: A bank deems a banking customer's assent to specified collection, access, use, or disclosure of financial information as a requirement of holding a bank account, but provides the user an opportunity to limit third-party collection, access, use or disclosure of that information for marketing purposes.";
             case NOCONSENT: return "No notification or opportunity is provided for a grantor to assent or dissent to a grantee's terms of agreement.\r\n\n                        \n                           Comment: A \"No Consent\" policy scheme provides no opportunity for accommodation of an individual's preferences, and may not comply with Fair Information Practice Principles [FIPP] by enabling the data subject to object, access collected information, correct errors, or have accounting of disclosures.\r\n\n                        \n                           Usage Note: The grantee's terms of agreement, may be available to the grantor by reviewing the grantee's privacy policies, but there is no notice by which a grantor is apprised of the policy directly or able to acknowledge.\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare: Without notification or an opportunity to assent or dissent, a patient's health information is automatically included in and available (often according to certain rules) through a health information exchange.  Note that this differs from implied consent, where the patient is assumed to have consented.\n                           Without notification or an opportunity to assent or dissent, a patient's health information is collected, accessed, used, or disclosed for research, public health, security, fraud prevention, court order, or law enforcement.\n                           Non-healthcare: Without notification or an opportunity to assent or dissent, a consumer's healthcare or non-healthcare internet searches are aggregated for secondary uses such as behavioral tracking and profiling.\n                           Without notification or an opportunity to assent or dissent, a consumer's location and activities in a shopping mall are tracked by RFID tags on purchased items.";
-            case NOPP: return "Acknowledgement of custodian notice of privacy practices.\r\n\n                        \n                           Usage Notes: This type of consent directive acknowledges a custodian's notice of privacy practices including its permitted collection, access, use and disclosure of health information to users and for purposes of use specified.";
             case OPTIN: return "A grantor's assent to the terms of an agreement offered by a grantee without an opportunity for to dissent to any terms.\r\n\n                        \n                           Comment: Acceptance of a grantee's terms pertaining, for example, to permissible activities, purposes of use, handling caveats, expiry date, and revocation policies.\r\n\n                        \n                           Usage Note: Opt-in with no opportunity for a grantor to restrict certain permissions sought by the grantee is considered \"basic consent\".\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare: A patient [grantor] signs a provider's [grantee's] consent directive form, which lists permissible collection, access, use, or disclosure activities, purposes of use, handling caveats, and revocation policies.\n                           Non-healthcare: An employee [grantor] signs an employer's [grantee's] non-disclosure and non-compete agreement.";
             case OPTINR: return "A grantor's assent to the grantee's terms of an agreement with an opportunity for to dissent to certain grantor or grantee selected terms.\r\n\n                        \n                           Comment: A grantor dissenting to the grantee's terms of agreement may or may not exercise a right to assent to grantor's pre-approved restrictions or to grantee's selected terms to which a grantor may dissent.\r\n\n                        \n                           Usage Note: Opt-in with restrictions is considered \"granular consent\" because the grantor has an opportunity to narrow the permissions sought by the grantee.\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare:  A patient assent to grantee's consent directive terms for collection, access, use, or disclosure of health information, and dissents to disclosure to certain recipients as allowed by the provider's pre-approved restriction list.\n                           Non-Healthcare: A cell phone user assents to the cell phone's privacy practices and terms of use, but dissents from location tracking by turning off the cell phone's tracking capability.";
             case OPTOUT: return "A grantor's dissent to the terms of agreement offered by a grantee without an opportunity for to assent to any terms.\r\n\n                        \n                           Comment: Rejection of a grantee's terms of agreement pertaining, for example, to permissible activities, purposes of use, handling caveats, expiry date, and revocation policies.\r\n\n                        \n                           Usage Note: Opt-out with no opportunity for a grantor to permit certain permissions sought by the grantee is considered \"basic consent\".\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare: A patient [grantor] declines to sign a provider's [grantee's] consent directive form, which lists permissible collection, access, use, or disclosure activities, purposes of use, handling caveats, revocation policies, and consequences of not assenting.\n                           Non-healthcare: An employee [grantor] refuses to sign an employer's [grantee's] agreement not to join unions or participate in a strike where state law protects employee's collective bargaining rights.\n                           A citizen [grantor] refuses to enroll in mandatory government [grantee] health insurance based on religious beliefs, which is an exemption.";
             case OPTOUTE: return "A grantor's dissent to the grantee's terms of agreement except for certain grantor or grantee selected terms.\r\n\n                        \n                           Comment: A rejection of a grantee's terms of agreement while assenting to certain permissions sought by the grantee or requesting approval of additional grantor terms.\r\n\n                        \n                           Usage Note: Opt-out with exceptions is considered a \"granular consent\" because the grantor has an opportunity to accept certain permissions sought by the grantee or request additional grantor terms, while rejecting other grantee terms.\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare: A patient [grantor] dissents to a health information exchange consent directive with the exception of disclosure based on a limited \"time to live\" shared secret [e.g., a token or password], which the patient can give to a provider when seeking care.\n                           Non-healthcare: A social media user [grantor] dissents from public access to their account, but assents to access to a circle of friends.";
+            case _ACTPRIVACYCONSENTDIRECTIVE: return "Specifies types of consent directives governing the collection, access, use, or disclosure of personal information, including de-identified information, and  personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual.";
+            case _ACTGDPRCONSENTDIRECTIVE: return "European Union General Data Protection Regulation (GDPR) consent directives.";
+            case GDPRCD: return "A consent directive compliant with the European Union General Data Protection Regulation (GDPR) definition: Consent of the data \nsubject means any freely given, specific, informed and unambiguous indication of the data subject's wishes by which he or she, by a \nstatement or by a clear affirmative action, signifies agreement to the processing of personal data relating to him or her.\r\n\n                        Where processing is based on consent, the controller shall be able to demonstrate that the data subject has consented to \nprocessing of his or her personal data.\nIf the data subject's consent is given in the context of a written declaration which also concerns other matters, the request for \nconsent shall be presented in a manner which is clearly distinguishable from the other matters, in an intelligible and easily \naccessible form, using clear and plain language.  Any part of such a declaration which constitutes an infringement of this \nRegulation shall not be binding.\nThe data subject shall have the right to withdraw his or her consent at any time. The withdrawal of consent shall not affect the \nlawfulness of processing based on consent before its withdrawal.  Prior to giving consent, the data subject shall be informed thereof. \nIt shall be as easy to withdraw as to give consent.\nWhen assessing whether consent is freely given, utmost account shall be taken of whether, inter alia, the performance of a contract, \nincluding the provision of a service, is conditional on consent to the processing of personal data that is not necessary for the \nperformance of that contract.\nConsent should be given by a clear affirmative act establishing a freely given, specific, informed and unambiguous indication of the \ndata subject's agreement to the processing of personal data relating to him or her, such as by a written statement, including by \nelectronic means, or an oral statement. \nThis could include ticking a box when visiting an internet website, choosing technical settings for information society services or \nanother statement or conduct which clearly indicates in this context the data subject's acceptance of the proposed processing of \nhis or her personal data. \nSilence, pre-ticked boxes or inactivity should not therefore constitute consent. \nConsent should cover all processing activities carried out for the same purpose or purposes. \nWhen the processing has multiple purposes, consent should be given for all of them. \nIf the data subject's consent is to be given following a request by electronic means, the request must be clear, concise and not \nunnecessarily disruptive to the use of the service for which it is provided.\r\n\n                        \n                           Usage Note: Article 4.11 GDPR \nDefinitions https://gdpr-info.eu/art-4-gdpr/\n 11) 'Consent' of the data subject means any freely given, specific, informed and unambiguous indication of the data \n subject's wishes by which he or she, by a statement or by a clear affirmative action, signifies agreement to the processing of \n personal data relating to him or her.\nArticle 7 GDPR Conditions for consent https://gdpr-info.eu/art-7-gdpr\nRecital 32 Conditions for consent* https://gdpr-info.eu/recitals/no-32\nRecital 42 Burden of proof and requirements for consent* https://gdpr-info.eu/recitals/no-42/> \nRecital 43 Freely given consent* https://gdpr-info.eu/recitals/no-43\nGDPR Consent Brief https://gdpr-info.eu/issues/consent/ \nArt. 4 GDPR Definitions Art. 6 GDPR Lawfulness of processing Art. 7 GDPR Conditions for consent Art. 8 GDPR Conditions applicable to \nchild's consent in relation to information society services Art. 9 GDPR Processing of special categories of personal data Art. 22 \nGDPR Automated individual decision-making, including profiling Art. 49 GDPR Derogations for specific situations \r\n\n                        Relevant GDPR \nRecitals:\n(32) Conditions for consent (33) Consent to certain areas of scientific research (38) Special protection of children's personal data \n(40) Lawfulness of data processing (42) Burden of proof and requirements for consent (43) Freely given consent (50) Further \nprocessing of personal data (51) Protecting sensitive personal data (54) Processing of sensitive data in public health sector (71) \nProfiling (111) Exceptions for certain cases of international transfers (155) Processing in the employment context (161) Consenting \nto the participation in clinical trials (171) Repeal of Directive 95/46/EC and transitional provisions";
+            case GDPRRESEARCHCD: return "A consent directive that complies with regulatory requirements for a consent directive compliant with the European Union General Data Protection Regulation (GDPR) definition: Consent of the data subject means any freely given, specific, informed and unambiguous indication of the data subjectâ€™s wishes by which he or she, by a statement or by a clear affirmative action, signifies agreement to the processing of personal data relating to him or her.\r\n\n                        GDPR research consent directive has the additional caveat that it is often not possible to fully identify the purpose of personal data processing for scientific research purposes at the time of data collection. Therefore, data subjects should be allowed to give their consent to certain areas of scientific research when in keeping with recognized ethical standards for scientific research. Data subjects should have the opportunity to give their consent only to certain areas of research or parts of research projects to the extent allowed by the intended purpose.\r\n\n                        \n                           Usage Note: HL7 Purpose of Use codes include specialize research purposes of use, which could be used to convey a data subjectâ€™s purpose of use restrictions related to areas of research or parts of research projects.\nSee citations for GDPRResearchCD and below:\nRecital 33 Consent to certain areas of scientific research https://gdpr-info.eu/recitals/no-33/>\nRecital 157 Information from registries and scientific research https://gdpr-info.eu/recitals/no-157\nRecital 159 Processing for scientific research purposes* https://gdpr-info.eu/recitals/no-159/";
+            case _ACTGENERICCONSENTDIRECTIVE: return "Specifies types of consent directives authorizing a registry or repository to collect and, under certain terms, manage the access, use, and disclosure of personal information, including de-identified information, and  personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual.\r\n\n                        Registries governed by registry consent directives are data management systems, which use metadata to support the collection, access, use, and disclosure of personal information or effects as well as observational or analytic information generated about personal information or effects stored in federated repositories. Such registries are used for a variety of purposes by federated health information exchanges, health information systems, personal record systems, and research organizations to locate and retrieve personal information or effects as well as observational or analytic information generated about personal information stored externally to their systems.\r\n\n                        Repositories governed by registry consent directives are data stores used to collect, access, use, and disclose personal information or effects as well as observational or analytic information generated about personal information or effects and metadata used to manage the repository contents. Such repositories are used for a variety of purposes by centralized health information exchanges, health information systems used by providers and payers, personal record systems, and research organizations. A repository typically includes a  registry component that provides the data store  with content management capabilities for internal purposes. A repository may also interface with one or more external registries, which provide federated content management.";
+            case OIC: return "An expressed privacy consent directive permitting the collection of a some or all personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. \r\n\n                        \n                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-in to collection of some or all of the individualâ€™s information by multiple registries and repositories.\r\n\n                        Map: An â€œexpressedâ€? consent directive maps to ISO/TS 17975:2015(E) definitions for â€œExpress or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of careâ€? and â€œOpt-inâ€?.";
+            case OIS: return "An expressed privacy consent directive permitting access, use, or disclosure of a some or all personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. \r\n\n                        \n                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-in to access, use, or disclosure of some or all of the individualâ€™s information by multiple registries and repositories.\r\n\n                        Map: An â€œexpressedâ€? consent directive maps to ISO/TS 17975:2015(E) Express or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of care and â€œOpt-inâ€?.";
+            case OOC: return "An expressed privacy consent directive restricting or prohibiting collection of personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. \r\n\n                        \n                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-out of access, use, or disclosure of some or all of the individualâ€™s information by multiple registries and repositories.\r\n\n                        Map: An â€œexpressedâ€? opt-out to collection consent directive maps to ISO/TS 17975:2015(E) definitions for  â€œExpress or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of careâ€? and â€œExpress or Expressed (and Informed) Denialâ€?.";
+            case OOS: return "An expressed privacy consent directive restricting or prohibiting access, use, or disclosure of personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for purposes such as treatment, payment, operations, research, information exchange, public health, data analytics, marketing, and profiling. \r\n\n                        \n                           Usage Note: Useful when a more specific jurisdictional or organizational consent directive policy or form is not specified, available, or known, for example, where an individual wishes to opt-out of access, use, or disclosure of some or all of the individualâ€™s information by multiple registries and repositories.\r\n\n                        Map: An â€œexpressedâ€? opt-out to sharing consent directive maps to ISO/TS 17975:2015(E) definitions for  â€œExpress or Expressed: Consent to Collect, Use and Disclose personal health information is expressly given by the subject of careâ€? and â€œExpress or Expressed (and Informed) Denialâ€?.";
+            case _ACTUSPRIVACYCONSENTDIRECTIVE: return "Specific US privacy consent directives in accordance with US federal, state, regional, organizational, or personal privacy policies.";
+            case _42CFRPART2CD: return "A code representing an individualâ€™s privacy consent directive that complies with 42 CFR Part 2.31 Consent requirements https://www.gpo.gov/fdsys/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-31.pdf, which is a US Federal law stipulating the policy elements of a written consent to a disclosure under the regulations in Part 2.\r\n\n                        (1) The name of the patient. \n(2) The specific name(s) or general designation(s) of the part 2 program(s), entity(ies), or individual(s) permitted to make the disclosure. \n(3) How much and what kind of information is to be disclosed, including an explicit description of the substance use disorder information that may be disclosed. \n(4) (i) The name(s) of the individual(s) to whom a disclosure is to be made; or \n(ii)Entities with a treating provider relationship with the patient. If the recipient entity has a treating provider relationship with the patient whose information is being disclosed, such as a hospital, a health care clinic, or a private practice, the name of that entity; or \n(iii)Entities without a treating provider relationship with the patient. \n(A) If the recipient entity does not have a treating provider relationship with the patient whose information is being disclosed and is a third-party payer, the name of the entity; or \n(B) If the recipient entity does not have a treating provider relationship with the patient whose information is being disclosed and is not covered by paragraph (a)(4)(iii)(A) of this section, such as an entity that facilitates the exchange of health information or a research institution, the name(s) of the entity(-ies); and \n(1) The name(s) of an individual participant(s); or \n(2) The name(s) of an entity participant(s) that has a treating provider relationship with the patient whose information is being disclosed; or \n(3) A general designation of an individual or entity participant(s) or class of participants that must be limited to a participant(s) who has a treating provider relationship with the patient whose information is being disclosed. \n(i) When using a general designation, a statement must be included on the consent form that the patient (or other individual authorized to sign in lieu of the patient), confirms their understanding that, upon their request and consistent with this part, they must be provided a list of entities to which their information has been disclosed pursuant to the general designation (see Section 2.13(d)). \n(ii) [Reserved] \n(5) The purpose of the disclosure. In accordance with Section 2.13(a), the disclosure must be limited to that information which is necessary to carry out the stated purpose. \n(6) A statement that the consent is subject to revocation at any time except to the extent that the part 2 program or other lawful holder of patient identifying information that is permitted to make the disclosure has already acted in reliance on it. Acting in reliance includes the provision of treatment services in reliance on a valid consent to disclose information to a third-party payer \n(7) The date, event, or condition upon which the consent will expire if not revoked before. This date, event, or condition must ensure that the consent will last no longer than reasonably necessary to serve the purpose for which it is provided. \n(8) The signature of the patient and, when required for a patient who is a minor, the signature of an individual authorized to give consent under Section 2.14; or, when required for a patient who is incompetent or deceased, the signature of an individual authorized to sign under Section 2.15. Electronic signatures are permitted to the extent that they are not prohibited by any applicable law. \n(9) The date on which the consent is signed. \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where  collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s 42 CFR Part 2.31 consent directive, â€œ42CFRPart2CDâ€? as the security label policy code.\r\n\n                        Since information governed by an individualâ€™s 42 CFR Part 2.31 consent directive has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Â§ 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).";
+            case COMPOUNDRESEARCHCD: return "A code representing an individualâ€™s consent directive that complies with HIPAA Privacy rule 45 CFR Section 164.508 Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is a US Federal law stipulating the policy elements of a valid authorization under this Section specific to disclosures for purposes of research when combined with a Common Rule or Federal Drug Administration consent to participate in research also known as a compound authorization.\r\n\n                        \n                           Usage Note: The Agency for Healthcare Research and Quality (AHRQ) has developed the Informed Consent and Authorization Toolkit for Minimal Risk Research to facilitate the process of obtaining informed consent and Health Insurance Portability and Accountability Act (HIPAA) authorization from potential research subjects. This toolkit contains information for people responsible for ensuring that potential research subjects are informed in a manner that is consistent with medical ethics and regulatory guidelines. From https://www.ahrq.gov/sites/default/files/publications/files/ictoolkit.pdf. \r\n\n                        Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s right of access directive under 45 CFR Section 164.508 use â€œCompoundResearchCDâ€? as the security label policy code.\r\n\n                        Information or biospecimen disclosed under the Common Rule are not protected by the HIPAA Privacy Rule. If protected under other laws such as confidentiality provisions under the Common Rule, assign the HL7 Confidentiality code â€œMâ€? (moderate). \r\n\n                        See ActCode._ActPolicyType._ActPrivacyPolicy._ActPrivacyLaw._ActUSPrivacyLaw.HIPAAAuth (HIPAA Authorization for Disclosure). See:  HIPAAAuth and NIH Sample Authorization Language for Research Uses and Disclosures of Individually Identifiable Health Information by a Covered Health Care Provider https://privacyruleandresearch.nih.gov/authorization.asp";
+            case HIPAAAUTHCD: return "A code representing an individualâ€™s consent directive that complies with HIPAA Privacy rule 45 CFR Section 164.508 Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is a US Federal law stipulating the policy elements of a valid authorization under this Section.\r\n\n                        An â€œauthorizationâ€? is required by the Privacy Rule for uses and disclosures of protected health information not otherwise allowed by the Rule. Where the Privacy Rule requires patient authorization, voluntary consent is not sufficient to permit a use or disclosure of protected health information unless it also satisfies the requirements of a valid authorization. An authorization is a detailed document that gives covered entities permission to use protected health information for specified purposes, which are generally other than treatment, payment, or health care operations, or to disclose protected health information to a third party specified by the individual.\r\n\n                        An authorization must specify a number of elements, including a description of the protected health information to be used and disclosed, the person authorized to make the use or disclosure, the person to whom the covered entity may make the disclosure, an expiration date, and, in some cases, the purpose for which the information may be used or disclosed. With limited exceptions, covered entities may not condition treatment or coverage on the individual providing an authorization. https://www.hhs.gov/hipaa/for-professionals/faq/264/what-is-the-difference-between-consent-and-authorization/index.html \r\n\n                        A HIPAA Authorization must comply with 45 CFR Section164.508(c) Implementation specifications: Core elements and requirements â€“ \n(1) Core elements. A valid authorization under this Section must contain at least the following elements: (i) A description of the information to be used or disclosed that identifies the information in a specific and meaningful fashion. \n(ii) The name or other specific identification of the person(s), or class of persons, authorized to make the requested use or disclosure. \n(iii) The name or other specific identification of the person(s), or class of persons, to whom the covered entity may make the requested use or disclosure. \n(iv) A description of each purpose of the requested use or disclosure. The statement â€œat the request of the individualâ€? is a sufficient description of the purpose when an individual initiates the authorization and does not, or elects not to, provide a statement of the purpose. \n(v) An expiration date or an expiration event that relates to the individual or the purpose of the use or disclosure. The statement â€œend of the research study,â€? â€œnone,â€? or similar language is sufficient if the authorization is for a use or disclosure of protected health information for research, including for the creation and maintenance of a research database or research repository. \n(vi) Signature of the individual and date. If the authorization is signed by a personal representative of the individual, a description of such representative's authority to act for the individual must also be provided. \n(2)Required statements. In addition to the core elements, the authorization must contain statements adequate to place the individual on notice of all of the following: \n(i) The individual's right to revoke the authorization in writing, and either: \n(A) The exceptions to the right to revoke and a description of how the individual may revoke the authorization; or (B) To the extent that the information in paragraph (c)(2)(i)(A) of this section is included in the notice required by Section 164.520, a reference to the covered entity's notice.\nhttps://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf  \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by a an individualâ€™s HIPAA Authorization for Disclosure, use â€œHIPAAAuthCDâ€? as the security label policy code.\r\n\n                        Information governed under a HIPAA Authorization for Disclosure has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œNâ€? (normal).";
+            case HIPAACONSENTCD: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule 45 CFR Section 164.522 Rights to request privacy protection for protected health information https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf, which stipulates the process by which a covered entity seeks agreement from an individual regarding how it will use and disclose the individual's protected health information for treatment, payment, and health care operations is termed a \"consent.\"  \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by  an individualâ€™s consent directive under 45 CFR Section 164.522 use â€œHIPAAConsentCDâ€? as the security label policy code.\r\n\n                        Since information governed by a 45 CFR Section 164.522 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).";
+            case HIPAARESEARCHAUTHCD: return "A code representing an individualâ€™s consent directive that complies with HIPAA Privacy rule 45 CFR Section 164.508 Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is a US Federal law stipulating the policy elements of a valid authorization under this Section specific to disclosures for purposes of research.\r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s HIPAA Authorization for Disclosure for Research under 45 CFR Section 164.508 use â€œHIPAAResearchAuthCDâ€? as the security label policy code.\r\n\n                        Information disclosed under an individualâ€™s HIPAA Authorization for Disclosure for Research are not protected by the HIPAA Privacy Rule. If protected under other laws such as confidentiality provisions under the Common Rule, assign the HL7 Confidentiality code â€œMâ€? (moderate). \r\n\n                        See ActCode._ActPolicyType._ActPrivacyPolicy._ActPrivacyLaw._ActUSPrivacyLaw.HIPAAAuth (HIPAA Authorization for Disclosure). See:  HIPAAAuth and NIH Sample Authorization Language for Research Uses and Disclosures of Individually Identifiable Health Information by a Covered Health Care Provider https://privacyruleandresearch.nih.gov/authorization.asp";
+            case HIPAAROAD: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule 45 CFR Section 164.524 Access of individuals to protected health information https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-524.pdf, stipulating the policy elements of an individualâ€™s written and signed right of access directive requesting that a covered entity send the individualâ€™s protected health information (PHI) to a third party. \r\n\n                        See 45 CFR 164.524(c)(3)(ii) If an individual's request for access directs the covered entity to transmit the copy of protected health information directly to another person designated by the individual, the covered entity must provide the copy to the person designated by the individual. The individual's request must be in writing, signed by the individual, and clearly identify the designated person and where to send the copy of protected health information.  https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-524.pdf \r\n\n                        This right applies to PHI in a designated record set, which is defined as â€œDesignated record set means: \n(1) A group of records maintained by or for a covered entity that is: \n(i) The medical records and billing records about individuals maintained by or for a covered health care provider; \n(ii) The enrollment, payment, claims adjudication, and case or medical management record systems maintained by or for a health plan; or \n(iii) Used, in whole or in part, by or for the covered entity to make decisions about individuals. [https://www.law.cornell.edu/cfr/text/45/164.501].\nAlso see HHS Individualsâ€™ Right under HIPAA to Access their Health Information 45 CFR Section 164.524 [https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/access/index.html#maximumflatfee].\r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by an individualâ€™s right of access directive under 45 CFR Section 164.524 use â€œHIPAAROADâ€? as the security label policy code.\r\n\n                        Information disclosed under a HIPAA 42 CFR Section 164.524 no longer has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œMâ€? (moderate), which may be protected under other laws such as the Federal Trade Commission privacy and security regulations.";
+            case MDHHS5515: return "Michiganâ€™s standard consent form for the sharing of health information specific to behavioral health and substance use treatment in accordance with Public Act 129 of 2014. In Michigan, while providers are not required to use this new standard form (MDHHS-5515), they are required to accept it.\r\n\n                        \n                           Usage Note: For legislative background, current MDHHS-5515 consent directive form, and provider and patient FAQs see http://www.michigan.gov/mdhhs/0,5885,7-339-71550_2941_58005-343686--,00.html";
+            case _ACTINFORMATIONACTIONPOLICY: return "The type of action permitted on information by jurisdictional, organizational, or personal policy.";
+            case INFOACCESS: return "Authorization to obtain information with no further permission to collect and store it.";
+            case INFOCOLLECT: return "Authorization to gather and store information.";
+            case INFODEIDENTIFIY: return "Authorization to alter or remove identifying characteristics of an entity or individual that is a subject of the information.";
+            case INFODISCLOSE: return "Authorization to make information known to another party.";
+            case INFOMASK: return "Authorization to alter information in order to conceal it from unauthorized recipients.";
+            case INFOREADONLY: return "Authorization to access information within a specific context for communication purposes only.  Storing, manipulating, and further disclosure are prohibited and may be technically disabled.";
+            case INFOREDACT: return "Authorization to remove information that a recipient is not authorized to access.";
+            case INFOREDISCLOSE: return "Authorization to make disclosed information known to another party.";
+            case INFOREIDENTIFY: return "Authorization to alter or relink deidentified information so that an entity or individual that is the subject of that information identifiable.";
+            case INFOUSE: return "Authorization to employ or alter information.";
+            case _ACTINFORMATIONPOLICY: return "Information management directives related to privacy, security, integrity, and control concerns, which may be governed by specific laws; based on private sector self-governance; adopted \"best practices\" recognized by a community of interest; or terms of license, participation, or service as implemented in jurisdictional, organizational, or personal policies.";
+            case JURISIP: return "Jurisdictional policy on collection, access, use, or disclosure of information as defined by applicable jurisdictional law.";
+            case JURISCUI: return "Jurisdictional policy on collection, access, use, or disclosure of controlled unclassified information as defined by applicable jurisdictional law.";
+            case JURISDEID: return "Jurisdictional policy on collection, access, use, or disclosure of de-identified information as defined by applicable jurisdictional law.";
+            case JURISLDS: return "Jurisdictional policy on collection, access, use, or disclosure of information in a limited data set as defined by applicable jurisdictional law.";
+            case JURISNSI: return "Jurisdictional policy on collection, access, use, or disclosure of information deemed non-sensitive by applicable jurisdiction law.";
+            case JURISPI: return "Jurisdictional policy on collection, access, use, or disclosure of information deemed public by applicable jurisdiction law.";
+            case JURISSPCUI: return "Jurisdictional policy on collection, access, use, or disclosure of specified controlled unclassified information as defined by applicable jurisdictional policy.";
+            case JURISUUI: return "Jurisdictional policy on collection, access, use, or disclosure of uncontrolled unclassified information as defined by applicable jurisdictional policy.";
+            case ORGIP: return "Organizational policy on collection, access, use, or disclosure of information, which does not conflict with jurisdictional law.";
+            case ORGCUI: return "Organizational policy on collection, access, use, or disclosure of basic controlled unclassified information as defined by the organization or by applicable jurisdictional law.";
+            case ORGDEID: return "Organizational policy on collection, access, use, or disclosure of de-identified information as defined by the organization or by applicable jurisdictional law.";
+            case ORGLDS: return "Organizational policy on collection, access, use, or disclosure of information in a limited data set as defined by the organization or by applicable jurisdictional law.";
+            case ORGNSI: return "Organizational policy on collection, access, use, or disclosure of information deemed non-sensitive by the organization or by applicable jurisdictional law.";
+            case ORGPI: return "Organizational policy on collection, access, use, or disclosure of public information as defined by the organization or by applicable jurisdictional law.";
+            case ORGSPCUI: return "Organizational policy on collection, access, use, or disclosure of specified controlled unclassified information as defined by the organization or by applicable jurisdictional law.";
+            case ORGUUI: return "Organizational policy on collection, access, use, or disclosure of uncontrolled unclassified information as defined by the organization or governing jurisdiction.";
+            case PERSIP: return "Personal policy on collection, access, use, or disclosure of information.";
+            case PERSDEID: return "Personal policy on collection, access, use, or disclosure of de-identified information as defined by the information subject or by applicable jurisdictional law.";
+            case PERSLDS: return "Personal policy personal policy on collection, access, use, or disclosure of information in a limited data set by the information subject.";
+            case PERSNSI: return "Personal policy on collection, access, use, or disclosure of information deemed non-sensitive by the information subject.";
+            case PERSPI: return "Personal policy on collection, access, use, or disclosure of information deemed public by the information subject.";
+            case _ACTPRIVACYPOLICY: return "A policy deeming certain information to be private to an individual or organization.\r\n\n                        \n                           Definition: A mandate, obligation, requirement, rule, or expectation relating to privacy.\r\n\n                        \n                           Discussion: ActPrivacyPolicyType codes support the designation of the 1..* policies that are applicable to an Act such as a Consent Directive, a Role such as a VIP Patient, or an Entity such as a patient who is a minor.  1..* ActPrivacyPolicyType values may be associated with an Act or Role to indicate the policies that govern the assignment of an Act or Role confidentialityCode.  Use of multiple ActPrivacyPolicyType values enables fine grain specification of applicable policies, but must be carefully assigned to ensure cogency and avoid creation of conflicting policy mandates.\r\n\n                        \n                           Usage Note: Statutory title may be named in the ActClassPolicy Act Act.title to specify which privacy policy is being referenced.";
+            case _ACTCONSENTDIRECTIVE: return "Specifies the type of agreement between one or more grantor and grantee in which rights and obligations related to one or more shared items of interest are allocated.\r\n\n                        \n                           Usage Note: Such agreements may be considered \"consent directives\" or \"contracts\" depending on the context, and are considered closely related or synonymous from a legal perspective.\r\n\n                        \n                           Examples: \n                        \r\n\n                        \n                           Healthcare Privacy Consent Directive permitting or restricting in whole or part the collection, access, use, and disclosure of health information, and any associated handling caveats.\n                           Healthcare Medical Consent Directive to receive medical procedures after being informed of risks and benefits, thereby reducing the grantee's liability.\n                           Research Informed Consent for participation in clinical trials and disclosure of health information after being informed of risks and benefits, thereby reducing the grantee's liability.\n                           Substitute decision maker delegation in which the grantee assumes responsibility to act on behalf of the grantor.\n                           Contracts in which the agreement requires assent/dissent by the grantor of terms offered by a grantee, a consumer opts out of an \"award\" system for use of a retailer's marketing or credit card vendor's point collection cards in exchange for allowing purchase tracking and profiling.\n                           A mobile device or App privacy policy and terms of service to which a user must agree in whole or in part in order to utilize the service.\n                           Agreements between a client and an authorization server or between an authorization server and a resource operator and/or resource owner permitting or restricting e.g., collection, access, use, and disclosure of information, and any associated handling caveats.";
+            case EMRGONLY: return "Privacy consent directive restricting or prohibiting access, use, or disclosure of personal information, including de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, which may be used to identify an individual in a registry or repository for all purposes except for emergency treatment generally, which may include treatment during a disaster, a threat, in an emergency department and for break the glass purposes of use as specified by applicable domain policy.\r\n\n                        \n                           Usage Note: To specify the scope of an â€œEMRGONLYâ€? consent directive within a policy domain, use one or more of the following Purpose of Use codes in the ActReason code system OID: 2.16.840.1.113883.5.8.\r\n\n                        \n                           ETREAT (Emergency Treatment): To perform one or more operations on information for provision of immediately needed health care for an emergent condition.\n                           BTG (break the glass): To perform policy override operations on information for provision of immediately needed health care for an emergent condition affecting potential harm, death or patient safety by end users who are not provisioned for this purpose of use. Includes override of organizational provisioning policies and may include override of subject of care consent directive restricting access.\n                           ERTREAT (emergency room treatment): To perform one or more operations on information for provision of immediately needed health care for an emergent condition in an emergency room or similar emergent care context by end users provisioned for this purpose, which does not constitute as policy override such as in a \"Break the Glass\" purpose of use.\n                           THREAT (threat): To perform one or more operations on information used to prevent injury or disease to living subjects who may be the target of violence.\n                           DISASTER (disaster): To perform one or more operations on information used for provision of immediately needed health care to a population of living subjects located in a disaster zone.\n                        \n                        Map: An â€œemergency onlyâ€? consent directive maps to ISO/TS 17975:2015(E) 5.13 Exceptional access";
+            case NOPP: return "An implied privacy consent directive or notification, which the data subject may or may not acknowledge.  The notification specifies permitted actions, which may include access, use, or disclosure of any and all personal information.   The notification specifies the scope of personal information, which may include de-identified information, and personal effects, such as biometrics, biospecimen or genetic material, that may be used to identify an individual in a registry or repository. The notification specifies the purposes for which personal information may be used such as treatment, payment, operations, research, information exchange, public health, disaster, quality and safety reporting; as required by law including court order, law enforcement, national security, military authorities; and for data  analytics, marketing, and profiling.\r\n\n                        \n                           Usage Notes: Map: An \"implied\" consent directive maps to ISO/TS 17975:2015(E) definition forImplied: Consent to Collect, Use and Disclose personal health information is implied by the actions or inactions of the individual and the circumstances under which it was implied\".";
             case _ACTPRIVACYLAW: return "A jurisdictional mandate, regulation, obligation, requirement, rule, or expectation deeming certain information to be private to an individual or organization, which is imposed on:\r\n\n                        \n                           The activity of a governed party\n                           The behavior of a governed party\n                           The manner in which an act is executed by a governed party";
+            case _ACTGDPRPRIVACYLAW: return "GDPR is a regulation on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (Data Protection Directive). Promulgated by the European Parliament and Council of the European Union. Regulation available at L119, 4 May 2016, p. 1â€“88.\r\n\n                        GDPR privacy policies specifying types of lawful personal data processing based on a controller meeting one or more processing condition such as specified by law, compliance with data controller legal obligations, protection of data subjectâ€™s vital interests, perform tasks in the public interest, related to legal claims, research and statistics, management of health or social care systems, legitimate interests of controller or third party.  Processing sensitive personal data, including genetic, biometric and health data, as well as personal data from which racial and ethnic origin, political opinions, religious or ideological convictions or membership in a union can be attributed to a person, requires meeting at least one sensitive personal processing condition. \r\n\n                        GDPR â€˜processingâ€™ means any operation or set of operations which is performed on personal data or on sets of personal data, whether or not by automated means, such as collection, recording, organisation, structuring, storage, adaptation or alteration, retrieval, consultation, use, disclosure by transmission, dissemination or otherwise making available, alignment or combination, restriction, erasure or destruction. Article 4 https://gdpr-info.eu/art-4-gdpr/ \r\n\n                        \n                           Usage Note: \n                        \r\n\n                        \n                           Confidentiality:  e.g., U (unrestricted) for anonymized personal information;  L (low) for pseudonymized U (unrestricted) for anonymized personal information; M (moderate) for indirectly identifiable information such as test scores and work times; N (normal) for personal information; and R (restricted) for sensitive personal information\n                           DPR sensitivity [personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, or trade union membership, and the processing of genetic data, biometric data for the purpose of uniquely identifying a natural person, data concerning health or data concerning a natural personâ€™s sex life or sexual orientation, some of which are defined at Article 4 https://gdpr-info.eu/art-4-gdpr/ \n                           GDPR processing policies and GDPR ConsentDirectiveTypes, such as data subject consent and research consent.\n                           Other security category codes, such as compartment codes for legitimate relationship,\n                           Handling instructions including \n                           Purpose of use stipulated in a GDPR consent or contract restricting processing or related to the scope of the processing policy such as public health, research, and legal obligations\n                           Obligation policies such as GDPR Information Obligations https://gdpr-info.eu/issues/information-obligations,  data minimization and deleting when processing is complete\n                           Refrain policies such as no relinking\n                        \n                        See Intersoft GDPR at https://gdpr-info.eu/issues/personal-data/\n\nArt. 4 GDPR Definitions https://gdpr-info.eu/art-4-gdpr/ \nArt. 9 GDPR Processing of special categories of personal data https://gdpr-info.eu/art-9-gdpr/ \n\nRelevant Recitals\n(26) Not applicable to anonymous data (30) Online identifiers for profiling and identification (34) Genetic data (35) Health data (51) Protecting sensitive personal data at Intersoft GDPR briefing papers and navigating tool https://gdpr-info.eu/\r\n\n                        Authorities\r\n\n                        \n                           European Data Protection Supervisor - Security Measures for Personal Data Processing (Link)\n                           Data Protection Authority Isle of Man - Know your data â€“ Mapping the 5 Wâ€™s (Link)\n                           Data Protection Authority UK - Key definitions (Link)\n                           European Commission - What is personal data? (Link)\n                           European Commission - What personal data is considered sensitive? (Link)\n                           EU publications - Handbook on European data protection law â€“ Personal data, page 83 (Link)\n                        \n                        Expert contribution\nA&L Goodbody - The GDPR: A Guide for Businesses â€“ Definition of Personal & Sensitive Data, Page 8 (Link)\nBird & Bird - Sensitive data and lawful processing (Link)\n\nhttps://ec.europa.eu/commission/priorities/justice-and-fundamental-rights/data-protection/2018-reform-eu-data-protection-rules_en\n\nGeneral Data Protection Regulation \nhttps://eur-lex.europa.eu/legal-content/EN/TXT/?qid=1528874672298&uri=CELEX%3A32016R0679\n\nCommunication on data protection â€“ guidance on direct application of the GDPR\n http://eur-lex.europa.eu/legal-content/EN/TXT/?qid=1517578296944&uri=CELEX%3A52018DC0043\n\nIntersoft GDPR briefing papers and navigating tool https://gdpr-info.eu/";
+            case GDPRCONSENT: return "Processing of personal data, inclusive of the special categories of data, is lawful only if the data subject has given explicit consent to the processing of his or her personal data, inclusive of the special categories of data, for one or more specific purposes, except where Union or Member State law provide that the prohibition to use the data may not be lifted by the data subject; and for personal data which are manifestly made public by the data subject.\r\n\n                        \n                           Usage Note: The description is based on the following GDPR provisions:\nArticle 6.1.a https://gdpr-info.eu/art-6-gdpr/ \n1Processing shall be lawful only if and to the extent that at least one of the following applies: (a) the data subject has given consent to the processing of his or her personal data for one or more specific purposes.\nArticle 9.1, 9.2a., 9.2.e https://gdpr-info.eu/art-9-gdpr/ \n1. Processing of personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, or trade union membership, and the processing of genetic data, biometric data for the purpose of uniquely identifying a natural person, data concerning health or data concerning a natural personâ€™s sex life or sexual orientation shall be prohibited.\n2. Paragraph 1 shall not apply if one of the following applies: (a) the data subject has given explicit consent to the processing of those personal data for one or more specified purposes, except where Union or Member State law provide that the prohibition referred to in paragraph 1 may not be lifted by the data subject; and (e) processing relates to personal data which are manifestly made public by the data subject.";
             case _ACTUSPRIVACYLAW: return "Definition: A jurisdictional mandate in the U.S. relating to privacy.\r\n\n                        \n                           Usage Note: ActPrivacyLaw codes may be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialtyCode complies.  May be used to further specify rationale for assignment of other ActPrivacyPolicy codes in the US realm, e.g., ETH and 42CFRPart2 can be differentiated from ETH and Title38Part1.";
-            case _42CFRPART2: return "42 CFR Part 2 stipulates the right of an individual who has applied for or been given diagnosis or treatment for alcohol or drug abuse at a federally assisted program.\r\n\n                        \n                           Definition: Non-disclosure of health information relating to health care paid for by a federally assisted substance abuse program without patient consent.\r\n\n                        \n                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.";
-            case COMMONRULE: return "U.S. Federal regulations governing the protection of human subjects in research (codified at Subpart A of 45 CFR part 46) that has been adopted by 15 U.S. Federal departments and agencies in an effort to promote uniformity, understanding, and compliance with human subject protections. Existing regulations governing the protection of human subjects in Food and Drug Administration (FDA)-regulated research (21 CFR parts 50, 56, 312, and 812) are separate from the Common Rule but include similar requirements.\r\n\n                        \n                           Definition: U.S. federal laws governing research-related privacy policies.\r\n\n                        \n                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialtyCode complies.";
-            case HIPAANOPP: return "The U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Part 164 Subpart E) permits access, use and disclosure of certain personal health information (PHI as defined under the law) for purposes of Treatment, Payment, and Operations, and requires that the provider ask that patients acknowledge the Provider's Notice of Privacy Practices as permitted conduct under the law.\r\n\n                        \n                           Definition: Notification of HIPAA Privacy Practices.\r\n\n                        \n                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialtyCode complies.";
-            case HIPAAPSYNOTES: return "The U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Part 164 Section 164.508) requires authorization for certain uses and disclosure of psychotherapy notes.\r\n\n                        \n                           Definition: Authorization that must be obtained for disclosure of psychotherapy notes.\r\n\n                        \n                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.";
-            case HIPAASELFPAY: return "Section 13405(a) of the Health Information Technology for Economic and Clinical Health Act (HITECH) stipulates the right of an individual to have disclosures regarding certain health care items or services for which the individual pays out of pocket in full restricted from a health plan.\r\n\n                        \n                           Definition: Non-disclosure of health information to a health plan relating to health care items or services for which an individual pays out of pocket in full.\r\n\n                        \n                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.";
-            case TITLE38SECTION7332: return "Title 38 Part 1-protected information may only be disclosed to a third party with the special written consent of the patient except where expressly authorized by 38 USC 7332. VA may disclose this information for specific purposes to: VA employees on a need to know basis - more restrictive than Privacy Act need to know; contractors who need the information in order to perform or fulfil the duties of the contract; and researchers who provide assurances that the information will not be identified in any report. This information may also be disclosed without consent where patient lacks decision-making capacity; in a medical emergency for the purpose of treating a condition which poses an immediate threat to the health of any individual and which requires immediate medical intervention; for eye, tissue, or organ donation purposes; and disclosure of HIV information for public health purposes.\r\n\n                        \n                           Definition: Title 38 Part 1 - Section 1.462 Confidentiality restrictions.\r\n\n                        (a) General. The patient records to which Sections 1.460 through 1.499 of this part apply may be disclosed or used only as permitted by these regulations and may not otherwise be disclosed or used in any civil, criminal, administrative, or legislative proceedings conducted by any Federal, State, or local authority. Any disclosure made under these regulations must be limited to that information which is necessary to carry out the purpose of the disclosure. SUBCHAPTER III--PROTECTION OF PATIENT RIGHTS Sec. 7332. Confidentiality of certain medical records (a)(1) Records of the identity, diagnosis, prognosis, or treatment of any patient or subject which are maintained in connection with the performance of any program or activity (including education, training, treatment, rehabilitation, or research) relating to drug abuse, alcoholism or alcohol abuse, infection with the human immunodeficiency virus, or sickle cell anemia which is carried out by or for the Department under this title shall, except as provided in subsections (e) and (f), be confidential, and (section 5701 of this title to the contrary notwithstanding) such records may be disclosed only for the purposes and under the circumstances expressly authorized under subsection (b).\r\n\n                        \n                           Usage Note: May be associated with an Act or a Role to indicate the legal provision to which the assignment of an Act.confidentialityCode or Role.confidentialityCode complies.";
+            case _42CFRPART2: return "A code representing 42 CFR Part 2 Confidentiality of Substance Use Disorder Patient Records. 42 CFR Part 2 stipulates the privacy rights of an individual who has applied for or been given diagnosis or treatment for alcohol or drug abuse at a federally assisted program, which includes non-disclosure of health information relating to health care paid for by a federally assisted substance use disorder program without patient consent.  https://www.gpo.gov/fdsys/pkg/CFR-2010-title42-vol1/pdf/CFR-2010-title42-vol1-part2.pdf \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, the collection, access, use, and disclosure of healthcare information is governed by 42 CFR Part 2 Confidentiality of Substance Use Disorder Patient Records\nhttps://www.gpo.gov/fdsys/pkg/CFR-2010-title42-vol1/pdf/CFR-2010-title42-vol1-part2.pdf use â€œ42CFRPart2â€? as the security label policy code. \r\n\n                        Since information governed by a 42 CFR Part 2 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf assign the HL7 Confidentiality code â€œRâ€? (restricted).";
+            case A_HIPAACONSENT: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.522), which stipulates the process by which a covered entity seeks agreement from an individual regarding how it will use and disclose the individual's protected health information for treatment, payment, and health care operations is termed a \"consent.\"  The Privacy Rule permits, but does not require, a covered entity to voluntarily obtain patient consent for uses and disclosures of protected health information for treatment, payment, and health care operations. Covered entities that do so have complete discretion to design a process that best suits their needs. From https://www.hhs.gov/hipaa/for-professionals/faq/264/what-is-the-difference-between-consent-and-authorization/index.html. The provisions relating to consent are largely contained in  Section 164.522 Rights to request privacy protection for protected health information https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf. \n\r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where  collection, access, use, or disclosure of healthcare information is governed by 45 CFR Section 164.522 use â€œHIPAAConsentâ€? as the security label policy code.\r\n\n                        Since information governed by a 45 CFR Section 164.522 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).";
+            case COMMONRULE: return "A code representing U.S. Federal laws governing research-related privacy policies known as the â€œCommon Ruleâ€?. The Common Rule is the U.S. Federal regulations governing the protection of human subjects in research (codified at Subpart A of 45 CFR part 46), which has been adopted by 15 U.S. Federal departments and agencies in an effort to promote uniformity, understanding, and compliance with human subject protections. Existing regulations governing the protection of human subjects in Food and Drug Administration (FDA)-regulated research (21 CFR parts 50, 56, 312, and 812) are separate from the Common Rule but include similar requirements.\r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information or biospecimen is governed by the Common Rule use â€œCOMMONRULEâ€? as the security label policy code.  Information or biospecimen disclosed under the Common Rule are not protected by the HIPAA Privacy Rule. If protected under other laws such as confidentiality provisions under the Common Rule, assign the HL7 Confidentiality code â€œMâ€? (moderate).";
+            case HIPAAAUTH: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.508) Uses and disclosures for which an authorization is required https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which stipulates the process by which a covered entity seeks agreement from an individual to use or disclose protected health information for other purposes, or to authorize another covered entity to disclose protected health information to the requesting covered entity, are termed \"authorizations\".\r\n\n                        An â€œauthorizationâ€? is required by the Privacy Rule for uses and disclosures of protected health information not otherwise allowed by the Rule. Where the Privacy Rule requires patient authorization, voluntary consent is not sufficient to permit a use or disclosure of protected health information unless it also satisfies the requirements of a valid authorization. An authorization is a detailed document that gives covered entities permission to use protected health information for specified purposes, which are generally other than treatment, payment, or health care operations, or to disclose protected health information to a third party specified by the individual.\r\n\n                        An authorization must specify a number of elements, including a description of the protected health information to be used and disclosed, the person authorized to make the use or disclosure, the person to whom the covered entity may make the disclosure, an expiration date, and, in some cases, the purpose for which the information may be used or disclosed. With limited exceptions, covered entities may not condition treatment or coverage on the individual providing an authorization. https://www.hhs.gov/hipaa/for-professionals/faq/264/what-is-the-difference-between-consent-and-authorization/index.html \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, where use or disclosure of healthcare information is governed by a covered entityâ€™s HIPAA Authorization for Disclosure, use â€œHIPAAAuthâ€? as the security label policy code.\r\n\n                        Information disclosed under a HIPAA Authorization for Disclosure no longer has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œMâ€? (moderate), which may be protected under other laws such as the Federal Trade Commission privacy and security regulations.";
+            case HIPAANOPP: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.520), which stipulates an individualâ€™s right to adequate notice of the uses and disclosures of protected health information that may be made by the covered entity, and of the individual's rights and the covered entity's legal duties with respect to protected health information. Relevant HIPAA Privacy  Rule provisions are at  Section 164.520 (a) Standard: Notice of privacy practices. https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-520.pdf \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, if collection, access, use, or disclosure of healthcare information is governed by a covered entityâ€™s HIPAA Notice of Privacy Practices, use â€œHIPAANOPPâ€? as the security label policy code.\r\n\n                        Information governed under a HIPAA Notice of Privacy Practices has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf , which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œNâ€? (normal).";
+            case HIPAAPSYNOTES: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule (45 CFR Section 164.508), which stipulates the privacy rights of an individual who is the subject of psychotherapy notes, and requires authorization for certain uses and disclosure of that information.\r\n\n                        Definition of Psychotherapy notes 45 CFR  Section 164.501 https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-501.pdf: Psychotherapy notes means notes recorded (in any medium) by a health care provider who is a mental health professional documenting or analyzing the contents of conversation during a private counseling session or a group, joint, or family counseling session and that are separated from the rest of the individual's medical record. Psychotherapy notes excludes medication prescription and monitoring, counseling session start and stop times, the modalities and frequencies of treatment furnished, results of clinical tests, and any summary of the following items: Diagnosis, functional status, the treatment plan, symptoms, prognosis, and progress to date. \r\n\n                        See  Section 164.508 Uses and disclosures for which an authorization is required. (2)Authorization required: Psychotherapy notes https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf: Notwithstanding any provision of this subpart, other than the transition provisions in  Section 164.532, a covered entity must obtain an authorization for any use or disclosure of psychotherapy notes, except: \n(i) To carry out the following treatment, payment, or health care operations: \n(A) Use by the originator of the psychotherapy notes for treatment; \n(B) Use or disclosure by the covered entity for its own training programs in which students, trainees, or practitioners in mental health learn under supervision to practice or improve their skills in group, joint, family, or individual counseling; or \n(C) Use or disclosure by the covered entity to defend itself in a legal action or other proceeding brought by the individual; and \n(ii) A use or disclosure that is required by Section 164.502(a)(2)(ii) or permitted by Section 164.512(a); Section 164.512(d) with respect to the oversight of the originator of the psychotherapy notes;  Section 164.512(g)(1);  Section 164.512(j)(1)(i). \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, the collection, access, use, or disclosure of healthcare information is governed by HIPAA 45 CFR 164.508 (2) Authorization required: Psychotherapy notes https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf , use â€œHIPAAPsyNotesâ€? as the security label policy code.\r\n\n                        Since information governed by a HIPAA 45 CFR 164.508 (2) has a level of confidentiality protection that is more stringent than the normal level of protection under 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).";
+            case HIPAAROA: return "A code representing U.S. Public Law 104-191 Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule 45 CFR Section 164.524 Access of individuals to protected health information https://www.govinfo.gov/app/details/CFR-2017-title45-vol1/CFR-2017-title45-vol1-sec164-524, which stipulates that an individual has a right of access to inspect and obtain a copy of protected health information about the individual in a designated record set, for as long as the protected health information is maintained in the designated record set with exceptions stipulated in HIPAA Privacy Rule Section 164.524. Exceptions include psychotherapy notes and information compiled in reasonable anticipation of, or for use in, a civil, criminal, or administrative action or proceeding.\r\n\n                        If an individual's request for access directs the covered entity to transmit the copy of protected health information directly to another person designated by the individual, the covered entity must provide the copy to the person designated by the individual. The individual's request must be in writing, signed by the individual, and clearly identify the designated person and where to send the copy of protected health information.\r\n\n                        For discussion on extent of right, grounds for denial, and documentation requirements see: HHS Individualsâ€™ Right under HIPAA to Access their Health Information 45 CFR Section 164.524 https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/access/index.html  and HHS FAQ on Right of Access vs. HIPAA Authorization https://www.hhs.gov/hipaa/for-professionals/faq/2041/why-depend-on-the-individuals-right/index.html \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed under 45 CFR Section 164.5224 use â€œHIPAAROAâ€? as the security label policy code.\r\n\n                        Information disclosed under a HIPAA 42 CFR Section 164.524 no longer has the level of confidentiality protection afforded under the 45 CFR Section 164.506 - Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-508.pdf, which is considered the â€œnormâ€?, assign the HL7 Confidentiality code â€œMâ€? (moderate), which may be protected under other laws such as the Federal Trade Commission privacy and security regulations.";
+            case HIPAASELFPAY: return "A code representing 45 CFR 164.522 Rights to request privacy protection for protected health information, which is a US Federal law stipulating the privacy rights of an individual to restrict disclosure of information related to health care items or services for which the individual pays out of pocket in full to a health plan or payer.\r\n\n                        See 45 CFR 164.522 https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf. (vi) A covered entity must agree to the request of an individual to restrict disclosure of protected health information about the individual to a health plan if: \n(A) The disclosure is for the purpose of carrying out payment or health care operations and is not otherwise required by law; and \n(B) The protected health information pertains solely to a health care item or service for which the individual, or person other than the health plan on behalf of the individual, has paid the covered entity in full. \r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to HIPAA governed information. In this case, the collection, access, use, or disclosure of healthcare information is governed by HIPAA 45 CFR 164.522 https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-522.pdf use â€œHIPAASelfPayâ€? as the security label policy code. \r\n\n                        Since information governed by a HIPAA 45 CFR 164.522 has a level of confidentiality protection that is more stringent than the normal level of protection under 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code â€œRâ€? (restricted).";
+            case TITLE38SECTION7332: return "A code representing Title 38 Section 7332, which is a US Federal law stipulating the privacy rights of veterans diagnosed and treated for substance use disorders, infection with the human immunodeficiency virus, or sickle cell anemia.\r\n\n                        https://www.gpo.gov/fdsys/granule/USCODE-2011-title38/USCODE-2011-title38-partV-chap73-subchapIII-sec7332/content-detail.html .  \n(1) Records of the identity, diagnosis, prognosis, or treatment of any patient or subject which are maintained in connection with the performance of any program or activity (including education, training, treatment, rehabilitation, or research) relating to drug abuse, alcoholism or alcohol abuse, infection with the human immunodeficiency virus, or sickle cell anemia which is carried out by or for the Department under this title shall, except as provided in subsections (e) and (f), be confidential, and (section 5701 of this title to the contrary notwithstanding) such records may be disclosed only for the purposes and under the circumstances expressly authorized under subsection (b).\n(2) Paragraph (1) prohibits the disclosure to any person or entity other than the patient or subject concerned of the fact that a special written consent is required in order for such records to be disclosed.\n(b) (1) The content of any record referred to in subsection (a) may be disclosed by the Secretary in accordance with the prior written consent of the patient or subject with respect to whom such record is maintained, but only to such extent, under such circumstances, and for such purposes as may be allowed in regulations prescribed by the Secretary.\n(2) Whether or not any patient or subject, with respect to whom any given record referred to in subsection (a) is maintained, gives written consent, the content of such record may be disclosed by the Secretary as follows: \n(A) To medical personnel to the extent necessary to meet a bona fide medical emergency.\n(B) To qualified personnel for the purpose of conducting scientific research, management audits, financial audits, or program evaluation, but such personnel may not identify, directly or indirectly, any individual patient or subject in any report of such research, audit, or evaluation, or otherwise disclose patient or subject identities in any manner.\n(C) (i) In the case of any record which is maintained in connection with the performance of any program or activity relating to infection with the human immunodeficiency virus, to a Federal, State, or local public-health authority charged under Federal or State law with the protection of the public health, and to which Federal or State law requires disclosure of such record, if a qualified representative of such authority has made a written request that such record be provided as required pursuant to such law for a purpose authorized by such law.\n(ii) A person to whom a record is disclosed under this paragraph may not redisclose or use such record for a purpose other than that for which the disclosure was made.\n(D) If authorized by an appropriate order of a court of competent jurisdiction granted after application showing good cause therefor. In assessing good cause the court shall weigh the public interest and the need for disclosure against the injury to the patient or subject, to the physician-patient relationship, and to the treatment services. Upon the granting of such order, the court, in determining the extent to which any disclosure of all or any part of any record is necessary, shall impose appropriate safeguards against unauthorized disclosure.\n(E) To an entity described in paragraph (1)(B) of section 5701(k) of this title, but only to the extent authorized by such section.\n(F) (i) To a representative of a patient who lacks decision-making capacity, when a practitioner deems the content of the given record necessary for that representative to make an informed decision regarding the patient's treatment.\n(ii) In this subparagraph, the term Ã¢â‚¬Å“representativeÃ¢â‚¬? means an individual, organization, or other body authorized under section 7331 of this title and its implementing regulations to give informed consent on behalf of a patient who lacks decision-making capacity.\n(G) To a State controlled substance monitoring program, including a program approved by the Secretary of Health and Human Services under section 399O of the Public Health Service Act (42 U.S.C. 280g-3), to the extent necessary to prevent misuse and diversion of prescription medicines.\n(H) (i) To a non-Department entity (including private entities and other Federal agencies) for purposes of providing health care, including hospital care, medical services, and extended care services, to Veterans or performing other health care-related activities or functions. \n(ii) An entity to which a record is disclosed under this subparagraph may not disclose or use such record for a purpose other than that for which the disclosure was made or as permitted by law.\n(I) To a third party in order to recover or collect reasonable charges for care furnished to, or paid on behalf of, a Veteran in connection with a non-service connected disability as permitted by section 1729 of this title or for a condition for which recovery is authorized or with respect to which the United States is deemed to be a third party beneficiary under the Act entitled 'An Act to provide for the recovery from tortiously liable third persons of the cost of hospital and medical care and treatment furnished by the United States' (Public Law 87-693; 42 U.S.C. 2651 et seq.; commonly known as the 'Federal Medical Care Recovery Act').\r\n\n                        \n                           Usage Note: Used to indicate the legal authority for assigning security labels to governed information. In this case, where collection, access, use, or disclosure of healthcare information is governed by 38 U.S. Code Section 7332 - Confidentiality of certain medical records\nhttps://www.gpo.gov/fdsys/granule/USCODE-2011-title38/USCODE-2011-title38-partV-chap73-subchapIII-sec7332/content-detail.html  use \"Title38Section7332\" as the security label policy code. \n\r\n\n                        Since information governed by a Title 38 Section 7332 has a level of confidentiality protection that is more stringent than the normal level of protection under HIPAA 45 CFR Section 164.506 Uses and disclosures to carry out treatment, payment, or health care operations https://www.gpo.gov/fdsys/pkg/CFR-2017-title45-vol1/pdf/CFR-2017-title45-vol1-sec164-506.pdf, assign the HL7 Confidentiality code \"R\" (restricted).";
             case _INFORMATIONSENSITIVITYPOLICY: return "A mandate, obligation, requirement, rule, or expectation characterizing the value or importance of a resource and may include its vulnerability. (Based on ISO7498-2:1989. Note: The vulnerability of personally identifiable sensitive information may be based on concerns that the unauthorized disclosure may result in social stigmatization or discrimination.) Description:  Types of Sensitivity policy that apply to Acts or Roles.  A sensitivity policy is adopted by an enterprise or group of enterprises (a 'policy domain') through a formal data use agreement that stipulates the value, importance, and vulnerability of information. A sensitivity code representing a sensitivity policy may be associated with criteria such as categories of information or sets of information identifiers (e.g., a value set of clinical codes or branch in a code system hierarchy).   These criteria may in turn be used for the Policy Decision Point in a Security Engine.  A sensitivity code may be used to set the confidentiality code used on information about Acts and Roles to trigger the security mechanisms required to control how security principals (i.e., a person, a machine, a software application) may act on the information (e.g., collection, access, use, or disclosure). Sensitivity codes are never assigned to the transport or business envelope containing patient specific information being exchanged outside of a policy domain as this would disclose the information intended to be protected by the policy.  When sensitive information is exchanged with others outside of a policy domain, the confidentiality code on the transport or business envelope conveys the receiver's responsibilities and indicates the how the information is to be safeguarded without unauthorized disclosure of the sensitive information.  This ensures that sensitive information is treated by receivers as the sender intends, accomplishing interoperability without point to point negotiations.\r\n\n                        \n                           Usage Note: Sensitivity codes are not useful for interoperability outside of a policy domain because sensitivity policies are typically localized and vary drastically across policy domains even for the same information category because of differing organizational business rules, security policies, and jurisdictional requirements.  For example, an employee's sensitivity code would make little sense for use outside of a policy domain.   'Taboo' would rarely be useful outside of a policy domain unless there are jurisdictional requirements requiring that a provider disclose sensitive information to a patient directly.  Sensitivity codes may be more appropriate in a legacy system's Master Files in order to notify those who access a patient's orders and observations about the sensitivity policies that apply.  Newer systems may have a security engine that uses a sensitivity policy's criteria directly.  The specializable InformationSensitivityPolicy Act.code may be useful in some scenarios if used in combination with a sensitivity identifier and/or Act.title.";
             case _ACTINFORMATIONSENSITIVITYPOLICY: return "Types of sensitivity policies that apply to Acts.  Act.confidentialityCode is defined in the RIM as \"constraints around appropriate disclosure of information about this Act, regardless of mood.\"\r\n\n                        \n                           Usage Note: ActSensitivity codes are used to bind information to an Act.confidentialityCode according to local sensitivity policy so that those confidentiality codes can then govern its handling across enterprises.  Internally to a policy domain, however, local policies guide the access control system on how end users in that policy domain are  able to use information tagged with these sensitivity values.";
             case ETH: return "Policy for handling alcohol or drug-abuse information, which will be afforded heightened confidentiality.  Information handling protocols based on organizational policies related to alcohol or drug-abuse information that is deemed sensitive.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case GDIS: return "Policy for handling genetic disease information, which will be afforded heightened confidentiality. Information handling protocols based on organizational policies related to genetic disease information that is deemed sensitive.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case HIV: return "Policy for handling HIV or AIDS information, which will be afforded heightened confidentiality. Information handling protocols based on organizational policies related to HIV or AIDS information that is deemed sensitive.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case MST: return "Policy for handling information related to sexual assault or repeated, threatening sexual harassment that occurred while the patient was in the military, which is afforded heightened confidentiality. \r\n\n                        Access control concerns for military sexual trauma is based on the patient being subject to control by a higher ranking military perpetrator and/or censure by others within the military unit.  Due to the relatively unfettered access to healthcare information by higher ranking military personnel and those who have command over the patient, there is a need to sequester this information outside of the typical controls on access to military health records.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law in addition to this more generic code.";
+            case PREGNANT: return "Policy for handling information about an individual's current or past pregnancy status, deemed sensitive by the individual or by policy, which may be afforded heightened confidentiality.\r\n\n                        \n                           Usage Note: \n                        \r\nInformation about a patient's current or past pregnancy status may be considered sensitive in circumstances in which that status could result in discrimination or stigmatization.";
             case SCA: return "Policy for handling sickle cell disease information, which is afforded heightened confidentiality.  Information handling protocols are based on organizational policies related to sickle cell disease information, which is deemed sensitive.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then the Act valued with this ActCode should be associated with an Act valued with any applicable laws from the ActPrivacyLaw code system.";
             case SDV: return "Policy for handling sexual assault, abuse, or domestic violence information, which will be afforded heightened confidentiality. Information handling protocols based on organizational policies related to sexual assault, abuse, or domestic violence information that is deemed sensitive.\r\n\n                        SDV code covers violence perpetrated by related and non-related persons. This code should be specific to physical and mental trauma caused by a related person only.  The access control concerns are keeping the patient safe from the perpetrator who may have an abusive psychological control over the patient, may be stalking the patient, or may try to manipulate care givers into allowing the perpetrator to make contact with the patient.  The definition needs to be clarified.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case SEX: return "Policy for handling sexuality and reproductive health information, which will be afforded heightened confidentiality.  Information handling protocols based on organizational policies related to sexuality and reproductive health information that is deemed sensitive.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
@@ -9386,6 +10407,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case GENDER: return "Policy for handling information related to an information subject's gender and sexual orientation, which will be afforded heightened confidentiality.  Policies may govern sensitivity of information related to an information subject's gender and sexual orientation, the disclosure of which could impact the privacy, well-being, or safety of that subject.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case LIVARG: return "Policy for handling information related to an information subject's living arrangement, which will be afforded heightened confidentiality.  Policies may govern sensitivity of information related to an information subject's living arrangement, the disclosure of which could impact the privacy, well-being, or safety of that subject.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case MARST: return "Policy for handling information related to an information subject's marital status, which will be afforded heightened confidentiality. Policies may govern sensitivity of information related to an information subject's marital status, the disclosure of which could impact the privacy, well-being, or safety of that subject.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
+            case PATLOC: return "Policy for handling information related to an individual's location, which is deemed sensitive when the disclosure could impact the privacy, well-being, or safety of that subject, and requires additional protection.\r\n\n                        \n                           Usage Note: If there is a jurisdictional, organizational, or individual mandate, then use the applicable ActPrivacyLaw or ActConsentDirective code from the ActCode system to and specify the law in addition to this more generic code.";
             case RACE: return "Policy for handling information related to an information subject's race, which will be afforded heightened confidentiality.  Policies may govern sensitivity of information related to an information subject's race, the disclosure of which could impact the privacy, well-being, or safety of that subject.\r\n\n                        \n                           Usage Note: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case REL: return "Policy for handling information related to an information subject's religious affiliation, which will be afforded heightened confidentiality.  Policies may govern sensitivity of information related to an information subject's religion, the disclosure of which could impact the privacy, well-being, or safety of that subject.\r\n\n                        \n                           Usage Notes: If there is a jurisdictional mandate, then use the applicable ActPrivacyLaw code system, and specify the law rather than or in addition to this more generic code.";
             case _ROLEINFORMATIONSENSITIVITYPOLICY: return "Types of sensitivity policies that apply to Roles.\r\n\n                        \n                           Usage Notes: RoleSensitivity codes are used to bind information to a Role.confidentialityCode per organizational policy.  Role.confidentialityCode is defined in the RIM as \"an indication of the appropriate disclosure of information about this Role with respect to the playing Entity.\"";
@@ -9451,6 +10473,26 @@ the measure population as a narrative description (e.g., all patients seen in th
             case PSEUD: return "Custodian system must strip information of data that would allow the identification of the source of the information or the information subject.  Custodian may retain a key to relink data necessary to reidentify the information subject.";
             case REDACT: return "Custodian system must remove information, which is not authorized to be access, used, or disclosed from records made available to otherwise authorized users.";
             case UPGRDLABEL: return "Custodian security system must declassify information assigned security labels by instantiating a new version of the classified information so as to break the binding of the classifying security label when assigning a new security label that marks the information as classified at a more protected level  in accordance with applicable jurisdictional privacy policies associated with the target information. The system must retain an immutable record of the previous assignment and binding.";
+            case PRIVACYMARK: return "An abstract code for human readable marks indicating, e.g., the level of confidentiality protection, an authorized compartment, the integrity, or the handling instruction required by applicable policy.  Such markings must be displayed as directed by applicable policy on electronically rendered information content and any electronic transmittal envelope or container; or on hardcopy information and any physical transmittal envelope or container.\r\n\n                        Examples of protocols for marking displays on electronic or hardcopy rendered content:  Across the top or \"banner\" of each page ; as a watermark placed diagonally cross each page; at the bottom or \"footer\" of each page; and may be displayed at the beginning of any portion within the content that required markings different than other portions of the content.  The banner or top of page marking typically acts as a \"high watermark\" by including all of the markings made on any marked portions within the entirety of the information content.\r\n\n                        \n                           Usage Note: A \"Privacy Mark\" is a Security Control Observation (SECCONOBS) named tag set as specified by the HL7 Privacy and Security Classification System (HCS).\nA Privacy Mark Named Tag Set is valued with a Privacy Mark leaf code \"tag\", which is a member of the Security Control Observation Value (_SecurityObservationValue) tag set. Related Security Control Observation named tag sets are Purpose of Use, Obligation Policy, and Refrain Policy, each with their own Security Control Observation Value tag sets.\r\n\n                        Foundational standard definitions: ISO 22600-3 Section A.3.4.3 - If present, the privacy-mark is not used for access control. The content of the privacy-mark may be defined by the security policy in force (identified by the security-policy-identifier) which may define a list of values to be used. Alternately, the value may be determined by the originator of the security-label.   IEEE Security Glossary Compendium 93- CESG Memorandum No.1 Issue 1.2 Oct 1992 - Human readable word  or phrase acting as an indicator of all or part of the security constraints that apply to a  document so marked. NOTE: A machine readable representation of a marking.\r\n\n                        \n                           Comment: While policies requiring creators, processors, custodians, senders or recipients apply, enforce, and persist applicable Privacy Marks may be dictated by a jurisdiction, organization or personal privacy, security, or integrity policy, those required to comply may be governed under different policies, so compliance may need to be enforced through trust contracts.  For example, information content marked with GDPR related policies may require adherence by processors or recipients outside of the European Union.  For this reason, this code system is likely to evolve with the inclusion of multiple policy domains needing to communicate encoded policies in a standard, interoperable manner.";
+            case CONTROLLEDUNCLASSIFIEDINFORMATION: return "Information the US Government creates or possesses, or that an entity creates or possesses for or on behalf of the Government, that a law, regulation, or Government-wide policy requires or permits an agency to handle using safeguarding or dissemination controls. However, CUI does not include classified information (see definition above) or information a non-executive branch entity possesses and maintains in its own systems that did not come from, or was not created or possessed by or for, an executive branch agency or an entity acting for an agency. Law, regulation, or Government-wide policy may require or permit safeguarding or dissemination controls in three ways: Requiring or permitting agencies to control or protect the information but providing no specific controls, which makes the information CUI Basic; requiring or permitting agencies to control or protect the information and providing specific controls for doing so, which makes the information CUI Specified; or requiring or permitting agencies to control the information and specifying only some of those controls, which makes the information CUI Specified, but with CUI Basic controls where the authority does not specify. Based on CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html . \r\n\n                        \n                           Usage Note: Mandatory control marking, which must be displayed on the top portion of each rendered or printed page containing controlled information.  Should be displayed at the bottom of each rendered or printed page containing controlled information. Must be displayed on each portion of controlled information at the portion level if portions are uncontrolled unclassified information. Based on CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf. For definitions of key terms see CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.";
+            case CONTROLLED: return "A displayed mark, required to be rendered as \"CONTROLLED\", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html. \r\n\n                        \n                           Usage Note: Mandatory control marking, which must be displayed on the top portion of each rendered or printed page containing controlled information.  Should be displayed at the bottom of each rendered or printed page containing controlled information. Must be displayed on each portion of controlled information at the portion level if portions are uncontrolled unclassified information. Based on CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf.";
+            case CUI: return "A displayed mark, required to be rendered as \"CUI\", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Mandatory control marking, which must be displayed on the top portion of each rendered or printed page containing controlled information.  Should be displayed at the bottom of each rendered or printed page containing controlled information. Must be displayed on each portion of controlled information at the portion level if portions are uncontrolled unclassified information. Based on CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf.";
+            case CUIHLTH: return "A displayed mark, required to be rendered as \"CUI//HLTH\", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of healthcare regulation governing CUI Basic marking include HIPAA Unique Identifier provisions 42 USC 1320d-2 note(b) https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf; Title 38 Section 7332 https://www.govinfo.gov/content/pkg/USCODE-2016-title38/pdf/USCODE-2016-title38-partV-chap73-subchapIII-sec7332.pdf; and several sections of 42 CFR Part 2.related to consent and confidentiality, e.g., https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-12.pdf";
+            case CUIHLTHP: return "A displayed mark, required to be rendered as \"(CUI//HLTH)\", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of healthcare regulation governing CUI Basic marking include HIPAA Unique Identifier provisions 42 USC 1320d-2 note(b) https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf; Title 38 Section 7332 https://www.govinfo.gov/content/pkg/USCODE-2016-title38/pdf/USCODE-2016-title38-partV-chap73-subchapIII-sec7332.pdf; and several sections of 42 CFR Part 2.related to consent and confidentiality, e.g., https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-12.pdf";
+            case CUIP: return "A displayed mark, required to be rendered as \"(CUI)\", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of healthcare regulation governing CUI Basic marking include HIPAA Unique Identifier provisions 42 USC 1320d-2 note(b) https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf; Title 38 Section 7332 https://www.govinfo.gov/content/pkg/USCODE-2016-title38/pdf/USCODE-2016-title38-partV-chap73-subchapIII-sec7332.pdf; and several sections of 42 CFR Part 2.related to consent and confidentiality, e.g., https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol1/pdf/CFR-2017-title42-vol1-sec2-12.pdf";
+            case CUIPRVCY: return "A displayed mark, required to be rendered as \"CUI//PRVCY\",  indicating that the electronic or hardcopy controlled unclassified basic privacy information is private and must be protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of privacy regulation governing CUI Basic marking include 20 CFR 401.100 related to SSA disclosure of personal, program, and non-program information. https://www.govinfo.gov/content/pkg/CFR-2017-title20-vol2/pdf/CFR-2017-title20-vol2-sec401-100.pdf.";
+            case CUIPRVCYP: return "A displayed mark, required to be rendered as \"(CUI//PRVCY)\", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of privacy regulation governing CUI Basic marking include 20 CFR 401.100 related to SSA disclosure of personal, program, and non-program information. https://www.govinfo.gov/content/pkg/CFR-2017-title20-vol2/pdf/CFR-2017-title20-vol2-sec401-100.pdf.";
+            case CUISPHLTH: return "A displayed mark, required to be rendered as \"CUI//SP-HLTH\", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI in which the authorizing law, regulation, or Government-wide policy contains specific handling controls that it requires or permits agencies to use that differ from those for CUI Basic. The CUI Registry indicates which laws, regulations, and Government-wide policies include such specific requirements. CUI Specified controls may be more stringent than, or may simply differ from, those required by CUI Basic; the distinction is that the underlying authority spells out the controls for CUI Specified information and does not for CUI Basic information. CUI Basic controls apply to those aspects of CUI Specified where the authorizing laws, regulations, and Government-wide policies do not provide specific guidance. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of healthcare regulation governing CUI Specified marking include HIPAA Transaction and Code Sets and references the Congressional requirement that HHS promulgate Privacy, and Security rules  https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf.";
+            case CUISPHLTHP: return "A displayed mark, required to be rendered as \"(CUI//SP-HLTH)\", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of healthcare regulation governing CUI Specified marking include HIPAA Transaction and Code Sets and references the Congressional requirement that HHS promulgate Privacy, and Security rules  https://www.govinfo.gov/content/pkg/USCODE-2016-title42/pdf/USCODE-2016-title42-chap7-subchapXI-partC-sec1320d-2.pdf";
+            case CUISPPRVCY: return "A displayed mark, required to be rendered as \"CUI//SP-PRVCY\", indicating that the electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of privacy regulation governing CUI Specified marking is OMB M-17-12ï‡? This Memorandum sets forth the policy for Federal agencies to prepare for and respond to a breach of personally identifiable information (PII). It includes a framework for assessing and mitigating the risk of harm to individuals potentially affected by a breach, as well as guidance on whether and how to provide notification and services to those individuals. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2017/m-17-12_0.pdf.";
+            case CUISPPRVCYP: return "A displayed mark, required to be rendered as \"(CUI//SP-PRVCY)\", indicating that a portion of an electronic or hardcopy information is protected at the level of the subset of CUI for which the authorizing law, regulation, or Government-wide policy does not set out specific handling or dissemination controls. Agencies handle CUI Basic according to the uniform set of controls set forth in this part and the CUI Registry. CUI Basic differs from CUI Specified (see definition for CUI Specified), and CUI Basic controls apply whenever CUI Specified ones do not cover the involved CUI. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html.\r\n\n                        \n                           Usage Note: Examples of privacy regulation governing CUI Specified marking is OMB M-17-12ï‡? This Memorandum sets forth the policy for Federal agencies to prepare for and respond to a breach of personally identifiable information (PII). It includes a framework for assessing and mitigating the risk of harm to individuals potentially affected by a breach, as well as guidance on whether and how to provide notification and services to those individuals. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2017/m-17-12_0.pdf.";
+            case UUI: return "A displayed mark, required to be rendered as \"(U)\", indicating that a portion of an electronic or hardcopy information is neither Executive Order 13556 nor classified information authorities cover as protected. Although this information is not controlled or classified, agencies must still handle it in accordance with Federal Information Security Modernization Act (FISMA) requirements. From CUI Glossary https://www.archives.gov/cui/registry/cui-glossary.html\r\n\n                        \n                           Usage Note: Regulatory Source: 32 CFR Â§â€‰2002.20  Marking. Federal Register Page 63344 \n63344 (ii) Authorized holders permitted to designate CUI must portion mark both CUI and uncontrolled unclassified portions.\r\n\n                        CUI Marking Handbook https://www.archives.gov/files/cui/20161206-cui-marking-handbook-v1-1.pdf \r\n\n                        CUI Portion Marking: Portion marking of CUI is optional in a fully unclassified document, but is permitted and encouraged to facilitate information sharing and proper handling of the information. Agency heads may approve the required use of CUI Portion marking on all CUI generated within their agency. As such, users should consult their agency CUI policy when creating CUI documents. When CUI Portion Markings are used and a portion does not contain CUI a â€œUâ€? is placed in parentheses to indicate that the portion contains Uncontrolled Unclassified Information. (Page 14)\r\n\n                        CUI Portion Markings are placed at the beginning of the portion to which they apply and must be used throughout the entire document. They are presented in all capital letters and separated as indicated in this handbook and the CUI Registry.  The presence of EVEN ONE item of CUI in a document requires CUI marking of that document. Because of this, CUI Portion Markings can be of great assistance in determining if a document contains CUI and therefore must be marked as such. Remember: When portion markings are used and any portion does not contain CUI, a â€œ(U)â€? is placed in front of that portion to indicate that it contains Uncontrolled - or non-CUI - Unclassified Information. (Page 15)";
+            case SECURITYLABELMARK: return "An abstract code for displayed Security Label tags.\r\n\n                        \n                           Usage Note: These marks may be based on any of the HL7 Security Labeling related codes from various code systems and values sets, which are organized according to the HL7 Privacy and Security Classification System into HL7 Security Observation Type Named Tag Sets and valued with codes associated with the HL7 Security Observation Value Tag Set Names.";
+            case CONFIDENTIALMARK: return "A displayed mark rendered as \"Confidential\", which indicates to end users that the electronic or hardcopy information they are viewing must be protected at a level of protection as dictated by applicable policy.\r\n\n                        May be used to indicate proprietary or classified information that is, for example, business, intelligence, or project related, e.g., secret ingredients in a therapeutic substance; location of disaster health facilities and providers, or the name of a manufacturer or project contractor. Example use cases include a display to alert authorized business system users that they are viewing additionally protected proprietary and business confidential information deemed proprietary under an applicable jurisdictional or organizational policy.\r\n\n                        \n                           Usage Note: \n                        \r\nThe ConfidentialMark (confidential mark) description is based on the HL7 Confidentiality Concept Domain: \nTypes of privacy metadata classifying an IT resource (data, information object, service, or system capability) according to its level of sensitivity, which is based on an analysis of applicable privacy policies and the risk of financial, reputational, or other harm to an individual or entity that could result if made available or disclosed to unauthorized individuals, entities, or processes.\n                           Usage Note: Confidentiality codes may be used in security labels and privacy markings to classify IT resources based on sensitivity to indicate the obligation of a custodian or receiver to ensure that the protected resource is not made available or disclosed to individuals, entities, or processes (security principals) unless authorized per applicable policies. Confidentiality codes may also be used in the clearances of initiators requesting access to protected resources.\r\n\n                        Map: Definition aligns with ISO 7498-2:1989 - Confidentiality is the property that information is not made available or disclosed to unauthorized individuals, entities, or processes.";
+            case COPYMARK: return "A displayed mark indicating that the electronic or hardcopy information is a copy of an authoritative source for the information.  The copy is not considered authoritative but is a duplicate of the authoritative content.\r\n\n                        \n                           Usage Note: Applicable policy will dictate how the COPY mark will be displayed.  Typical renderings include the marking appearing at the top or \"banner\" of electronic or hardcopy pages, or as watermarks set diagonally across each page.";
+            case DELIVERTOADDRESSEEONLYMARK: return "A displayed mark on an electronic transmission or physical container such as an electronic transmittal wrapper, batch file, message header, or a physical envelop or package indicating that the contents, whether electronic or hardcopy information, must only be delivered to the authorized recipient(s) named in the address.\r\n\n                        \n                           Usage Note: Required by US 32 CRF Part 2002 for container storing or transmitting CUI.";
+            case REDISCLOSUREPROHIBITIONMARK: return "A displayed mark rendered to end users as a prescribed text warning that the electronic or hardcopy information shall not be further disclosed without consent of the subject of the information.  For example, in order to warn a recipient of 42 CFR Part 2 information of the redisclosure restrictions, the rule mandates that end users receive a written prohibition against redisclosure unless authorized by patient consent or otherwise permitted by Part 2.  See 42 CFR Â§ 2.32 Prohibition on re-disclosure.\n(a)Notice to accompany disclosure. Each disclosure made with the patient's written consent must be accompanied by one of the following written statements: \n(1) This information has been disclosed to you from records protected by federal confidentiality rules ( 42 CFR part 2). The federal rules prohibit you from making any further disclosure of information in this record that identifies a patient as having or having had a substance use disorder either directly, by reference to publicly available information, or through verification of such identification by another person unless further disclosure is expressly permitted by the written consent of the individual whose information is being disclosed or as otherwise permitted by 42 CFR part 2. A general authorization for the release of medical or other information is NOT sufficient for this purpose (see Â§ 2.31). The federal rules restrict any use of the information to investigate or prosecute with regard to a crime any patient with a substance use disorder, except as provided at Â§Â§ 2.12(c)(5) and 2.65; or (2) 42 CFR part 2 prohibits unauthorized disclosure of these records. https://www.law.cornell.edu/cfr/text/42/2.32 \r\n\n                        \n                           Usage Note: Example of marking requirement from SAMHSA FAQ Response to question 13:\r\n\n                        Would a logon or splash page notification on an HIOâ€™s portal that contains the Part 2 notice prohibiting redisclosure be sufficient to meet Part 2â€™s requirement that disclosures made with patient consent be accompanied by such a statement?\r\n\n                        No. Part 2 requires each disclosure made with written patient consent to be accompanied by a written statement that the information disclosed is protected by federal law and that the recipient cannot make any further disclosure of it unless permitted by the regulations (42 CFR Â§ 2.32). A logon page is the page where a user logs onto a computer system; a splash page is an introductory page to a web site. A logon or splash page notification on a HIO's portal including the statement as required by Â§ 2.32 would not be sufficient notification regarding prohibitions on redisclosure since it would not accompany a specific disclosure. The notification must be tied to the Part 2 information being disclosed in order to ensure that the recipient of that information knows that specific information is protected by Part 2 and cannot be redisclosed except as authorized by the express written consent of the person to whom it pertains or as otherwise permitted by Part 2.  https://www.samhsa.gov/about-us/who-we-are/laws-regulations/confidentiality-regulations-faqs";
+            case RESTRICTEDCONFIDENTIALITYMARK: return "A displayed mark rendered to end users as \"Restricted Confidentiality\", which indicates that the electronic or hardcopy information they are viewing, must be protected at a restricted level of confidentiality protection as defined by HL7 Confidentiality code \"R\" (restricted).  \nExamples: Includes information that is additionally protected such as sensitive conditions mental health, HIV, substance abuse, domestic violence, child abuse, genetic disease, and reproductive health; or sensitive demographic information such as a patient's standing as an employee or a celebrity. \nUse cases include a display to alert authorized EHR users that they are viewing additionally protected health information deemed sensitive by an applicable jurisdictional, organizational, or personal privacy policy.\r\n\n                        \n                           Usage Note: The definition is based on  HL7 Confidentiality code \"R\" (restricted), which is described as: \r\n\n                        Privacy metadata indicating highly sensitive, potentially stigmatizing information, which presents a high risk to the information subject if disclosed without authorization. May be pre-empted by jurisdictional law, e.g., for public health reporting or emergency treatment.\nFoundational definitions of Confidentiality:  From HL7 Confidentiality Concept Domain: Types of privacy metadata classifying an IT resource (data, information object, service, or system capability) according to its level of sensitivity, which is based on an analysis of applicable privacy policies and the risk of financial, reputational, or other harm to an individual or entity that could result if made available or disclosed to unauthorized individuals, entities, or processes.\r\n\n                        Usage Note from HL7 Confidentiality code \"R\": Confidentiality codes may be used in security labels and privacy markings to classify IT resources based on sensitivity to indicate the obligation of a custodian or receiver to ensure that the protected resource is not made available or disclosed to individuals, entities, or processes (security principals) unless authorized per applicable policies. Confidentiality codes may also be used in the clearances of initiators requesting access to protected resources.\r\n\n                        This metadata indicates that the receiver may be obligated to comply with applicable, prevailing (default) jurisdictional privacy law or disclosure authorization.\r\n\n                        Map: Definition aligns with ISO 7498-2:1989 - Confidentiality is the property that information is not made available or disclosed to unauthorized individuals, entities, or processes.  Map: Partial Map to ISO 13606-4 Sensitivity Level (3) Clinical Care: Default for normal clinical care access (i.e. most clinical staff directly caring for the patient should be able to access nearly all of the EHR). Maps to normal confidentiality for treatment information but not to ancillary care, payment and operations.";
             case REFRAINPOLICY: return "Conveys prohibited actions which an information custodian, receiver, or user is not permitted to perform unless otherwise authorized or permitted under specified circumstances.\r\n\n                        \r\n\n                        \n                           Usage Notes: ISO 22600-2 species that a Refrain Policy \"defines actions the subjects must refrain from performing\".  Per HL7 Composite Security and Privacy Domain Analysis Model:  May be used to indicate that a specific action is prohibited based on specific access control attributes e.g., purpose of use, information type, user role, etc.";
             case NOAUTH: return "Prohibition on disclosure without information subject's authorization.";
             case NOCOLLECT: return "Prohibition on collection or storage of the information.";
@@ -10457,24 +11499,81 @@ the measure population as a narrative description (e.g., all patients seen in th
             case TBS: return "trial balance partial strength";
             case UDE: return "unit dose equivalent";
             case _ACTPOLICYTYPE: return "ActPolicyType";
-            case _ACTPRIVACYPOLICY: return "ActPrivacyPolicy";
-            case _ACTCONSENTDIRECTIVE: return "ActConsentDirective";
-            case EMRGONLY: return "emergency only";
+            case _ACTCONSENT: return "_ActConsent";
+            case _ACTDECISION: return "_ActDecision";
             case GRANTORCHOICE: return "grantor choice";
             case IMPLIED: return "implied consent";
             case IMPLIEDD: return "implied consent with opportunity to dissent";
             case NOCONSENT: return "no consent";
-            case NOPP: return "notice of privacy practices";
             case OPTIN: return "opt-in";
             case OPTINR: return "opt-in with restrictions";
             case OPTOUT: return "op-out";
             case OPTOUTE: return "opt-out with exceptions";
+            case _ACTPRIVACYCONSENTDIRECTIVE: return "_ActPrivacyConsentDirective";
+            case _ACTGDPRCONSENTDIRECTIVE: return "_ActGDPRConsentDirective";
+            case GDPRCD: return "GDPR Consent Directive";
+            case GDPRRESEARCHCD: return "GDPR Research Consent Directive";
+            case _ACTGENERICCONSENTDIRECTIVE: return "_ActGenericConsentDirective";
+            case OIC: return "opt-in to personal information or effect collection in a registry or repository";
+            case OIS: return "opt-in to personal information or effect sharing via a registry or repository";
+            case OOC: return "opt-out of personal information or effect collection in a registry or repository";
+            case OOS: return "opt-out of personal information or effect sharing via a registry or repository";
+            case _ACTUSPRIVACYCONSENTDIRECTIVE: return "_ActUSPrivacyConsentDirective";
+            case _42CFRPART2CD: return "42 CFR Part 2 consent directive";
+            case COMPOUNDRESEARCHCD: return "Compound HIPAA Research Authorization and Informed Consent for Research";
+            case HIPAAAUTHCD: return "HIPAA Authorization Consent Directive";
+            case HIPAACONSENTCD: return "HIPAA Consent Directive";
+            case HIPAARESEARCHAUTHCD: return "HIPAA Authorization for Disclosure for Research Consent Directive";
+            case HIPAAROAD: return "HIPAA Right of Access Directive";
+            case MDHHS5515: return "Michigan Consent to Share Behavioral Health Information for Care Coordination Purposes";
+            case _ACTINFORMATIONACTIONPOLICY: return "_ActInformationActionPolicy";
+            case INFOACCESS: return "access information";
+            case INFOCOLLECT: return "collect information";
+            case INFODEIDENTIFIY: return "deidentify information";
+            case INFODISCLOSE: return "disclose information";
+            case INFOMASK: return "mask information";
+            case INFOREADONLY: return "read only information";
+            case INFOREDACT: return "redact information";
+            case INFOREDISCLOSE: return "redisclose information";
+            case INFOREIDENTIFY: return "reidentify information";
+            case INFOUSE: return "use information";
+            case _ACTINFORMATIONPOLICY: return "_ActInformationPolicy";
+            case JURISIP: return "jurisdictional information policy";
+            case JURISCUI: return "jurisdictional controlled unclassified information policy";
+            case JURISDEID: return "jurisdictional de-identified information policy";
+            case JURISLDS: return "jurisdictional limited data set";
+            case JURISNSI: return "jurisdictional non-sensitive information policy";
+            case JURISPI: return "jurisdictional public information policy";
+            case JURISSPCUI: return "jurisdictional specified controlled unclassified information policy";
+            case JURISUUI: return "jurisdictional uncontrolled unclassified information policy";
+            case ORGIP: return "organizational information policy";
+            case ORGCUI: return "organizational basic controlled unclassified information policy";
+            case ORGDEID: return "organizational de-identified informati)on policy";
+            case ORGLDS: return "organizational limited data set information policy";
+            case ORGNSI: return "organizational non-sensitive information policy";
+            case ORGPI: return "organizational public information policy";
+            case ORGSPCUI: return "organizational specified controlled unclassified information policy";
+            case ORGUUI: return "organizational uncontrolled unclassified information policy";
+            case PERSIP: return "personal information policy";
+            case PERSDEID: return "personal de-identified information policy";
+            case PERSLDS: return "personal limited data set information policy";
+            case PERSNSI: return "personal non-sensitive information policy";
+            case PERSPI: return "personal public information policy";
+            case _ACTPRIVACYPOLICY: return "ActPrivacyPolicy";
+            case _ACTCONSENTDIRECTIVE: return "ActConsentDirective";
+            case EMRGONLY: return "emergency only";
+            case NOPP: return "notice of privacy practices";
             case _ACTPRIVACYLAW: return "ActPrivacyLaw";
+            case _ACTGDPRPRIVACYLAW: return "General Data Protection Regulation";
+            case GDPRCONSENT: return "GDPR Consent";
             case _ACTUSPRIVACYLAW: return "_ActUSPrivacyLaw";
             case _42CFRPART2: return "42 CFR Part2";
+            case A_HIPAACONSENT: return "HIPAA Consent";
             case COMMONRULE: return "Common Rule";
+            case HIPAAAUTH: return "HIPAA Authorization for Disclosure";
             case HIPAANOPP: return "HIPAA notice of privacy practices";
             case HIPAAPSYNOTES: return "HIPAA psychotherapy notes";
+            case HIPAAROA: return "HIPAA Right of Access";
             case HIPAASELFPAY: return "HIPAA self-pay";
             case TITLE38SECTION7332: return "Title 38 Section 7332";
             case _INFORMATIONSENSITIVITYPOLICY: return "InformationSensitivityPolicy";
@@ -10483,6 +11582,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case GDIS: return "genetic disease information sensitivity";
             case HIV: return "HIV/AIDS information sensitivity";
             case MST: return "military sexual trauma information sensitivity";
+            case PREGNANT: return "pregnancy information sensitivity";
             case SCA: return "sickle cell anemia information sensitivity";
             case SDV: return "sexual assault, abuse, or domestic violence information sensitivity";
             case SEX: return "sexuality and reproductive health information sensitivity";
@@ -10507,6 +11607,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case GENDER: return "gender and sexual orientation information sensitivity";
             case LIVARG: return "living arrangement information sensitivity";
             case MARST: return "marital status information sensitivity";
+            case PATLOC: return "patient location";
             case RACE: return "race information sensitivity";
             case REL: return "religion information sensitivity";
             case _ROLEINFORMATIONSENSITIVITYPOLICY: return "RoleInformationSensitivityPolicy";
@@ -10572,6 +11673,26 @@ the measure population as a narrative description (e.g., all patients seen in th
             case PSEUD: return "pseudonymize";
             case REDACT: return "redact";
             case UPGRDLABEL: return "upgrade security label";
+            case PRIVACYMARK: return "privacy mark";
+            case CONTROLLEDUNCLASSIFIEDINFORMATION: return "ControlledUnclassifiedInformation";
+            case CONTROLLED: return "CONTROLLED";
+            case CUI: return "CUI";
+            case CUIHLTH: return "CUI//HLTH";
+            case CUIHLTHP: return "(CUI//HLTH)";
+            case CUIP: return "(CUI)";
+            case CUIPRVCY: return "CUI//PRVCY";
+            case CUIPRVCYP: return "(CUI//PRVCY)";
+            case CUISPHLTH: return "CUI//SP-HLTH";
+            case CUISPHLTHP: return "(CUI//SP-HLTH)";
+            case CUISPPRVCY: return "CUI//SP-PRVCY";
+            case CUISPPRVCYP: return "(CUI//SP-PRVCY)";
+            case UUI: return "(U)";
+            case SECURITYLABELMARK: return "Security Label Mark";
+            case CONFIDENTIALMARK: return "confidential mark";
+            case COPYMARK: return "copy of original mark";
+            case DELIVERTOADDRESSEEONLYMARK: return "deliver only to addressee mark";
+            case REDISCLOSUREPROHIBITIONMARK: return "prohibition against redisclosure mark";
+            case RESTRICTEDCONFIDENTIALITYMARK: return "restricted confidentiality mark";
             case REFRAINPOLICY: return "refrain policy";
             case NOAUTH: return "no disclosure without subject authorization";
             case NOCOLLECT: return "no collection";
