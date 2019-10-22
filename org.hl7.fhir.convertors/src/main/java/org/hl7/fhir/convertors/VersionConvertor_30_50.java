@@ -24,7 +24,6 @@ package org.hl7.fhir.convertors;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.uhn.fhir.context.FhirContext;
 import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
