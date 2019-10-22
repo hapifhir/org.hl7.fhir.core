@@ -79,8 +79,10 @@ public class MedicationRequest extends VersionConvertor_40_50 {
       tgt.setPriority(convertMedicationRequestPriority(src.getPriority()));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
-    if (src.hasReported())
-      tgt.setReported(convertType(src.getReported()));
+    if (src.hasReportedBooleanType())
+      tgt.setReportedElement(convertBoolean(src.getReportedBooleanType()));
+    if (src.hasReportedReference())
+      tgt.setInformationSource(convertReference(src.getReportedReference()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())
@@ -152,7 +154,9 @@ public class MedicationRequest extends VersionConvertor_40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
     if (src.hasReported())
-      tgt.setReported(convertType(src.getReported()));
+      tgt.setReported(convertBoolean(src.getReportedElement()));
+    if (src.hasInformationSource())
+      tgt.setReported(convertReference(src.getInformationSource()));
     if (src.hasMedication())
       tgt.setMedication(convertType(src.getMedication()));
     if (src.hasSubject())

@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,16 +53,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The resource ChargeItem describes the provision of healthcare provider products for a certain patient, therefore referring not only to the product, but containing in addition details of the provision, like date, time, amounts and participating organizations and persons. Main Usage of the ChargeItem is to enable the billing process and internal cost allocation.
  */
@@ -260,12 +261,7 @@ public class ChargeItem extends DomainResource {
         @Description(shortDefinition="Individual who was performing", formalDefinition="The device, practitioner, etc. who performed or participated in the service." )
         protected Reference actor;
 
-        /**
-         * The actual object that is the target of the reference (The device, practitioner, etc. who performed or participated in the service.)
-         */
-        protected Resource actorTarget;
-
-        private static final long serialVersionUID = 1424001049L;
+        private static final long serialVersionUID = -576943815L;
 
     /**
      * Constructor
@@ -330,21 +326,6 @@ public class ChargeItem extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #actor} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who performed or participated in the service.)
-         */
-        public Resource getActorTarget() { 
-          return this.actorTarget;
-        }
-
-        /**
-         * @param value {@link #actor} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who performed or participated in the service.)
-         */
-        public ChargeItemPerformerComponent setActorTarget(Resource value) { 
-          this.actorTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "Describes the type of performance or participation(e.g. primary surgeon, anesthesiologiest, etc.).", 0, 1, function));
@@ -399,8 +380,8 @@ public class ChargeItem extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1380938712:  return getFunction(); 
-        case 92645877:  return getActor(); 
+        case 1380938712:  return getFunction();
+        case 92645877:  return getActor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -433,9 +414,13 @@ public class ChargeItem extends DomainResource {
       public ChargeItemPerformerComponent copy() {
         ChargeItemPerformerComponent dst = new ChargeItemPerformerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ChargeItemPerformerComponent dst) {
+        super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
         dst.actor = actor == null ? null : actor.copy();
-        return dst;
       }
 
       @Override
@@ -504,11 +489,6 @@ public class ChargeItem extends DomainResource {
     @Child(name = "partOf", type = {ChargeItem.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Part of referenced ChargeItem", formalDefinition="ChargeItems can be grouped to larger ChargeItems covering the whole set." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (ChargeItems can be grouped to larger ChargeItems covering the whole set.)
-     */
-    protected List<ChargeItem> partOfTarget;
-
 
     /**
      * A code that identifies the charge, like a billing code.
@@ -526,21 +506,11 @@ public class ChargeItem extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (The individual or set of individuals the action is being or was performed on.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The encounter or episode of care that establishes the context for this event.
      */
     @Child(name = "context", type = {Encounter.class, EpisodeOfCare.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Encounter / Episode associated with event", formalDefinition="The encounter or episode of care that establishes the context for this event." )
     protected Reference context;
-
-    /**
-     * The actual object that is the target of the reference (The encounter or episode of care that establishes the context for this event.)
-     */
-    protected Resource contextTarget;
 
     /**
      * Date/time(s) or duration when the charged service was applied.
@@ -564,11 +534,6 @@ public class ChargeItem extends DomainResource {
     protected Reference performingOrganization;
 
     /**
-     * The actual object that is the target of the reference (The organization requesting the service.)
-     */
-    protected Organization performingOrganizationTarget;
-
-    /**
      * The organization performing the service.
      */
     @Child(name = "requestingOrganization", type = {Organization.class}, order=11, min=0, max=1, modifier=false, summary=false)
@@ -576,21 +541,11 @@ public class ChargeItem extends DomainResource {
     protected Reference requestingOrganization;
 
     /**
-     * The actual object that is the target of the reference (The organization performing the service.)
-     */
-    protected Organization requestingOrganizationTarget;
-
-    /**
      * The financial cost center permits the tracking of charge attribution.
      */
     @Child(name = "costCenter", type = {Organization.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Organization that has ownership of the (potential, future) revenue", formalDefinition="The financial cost center permits the tracking of charge attribution." )
     protected Reference costCenter;
-
-    /**
-     * The actual object that is the target of the reference (The financial cost center permits the tracking of charge attribution.)
-     */
-    protected Organization costCenterTarget;
 
     /**
      * Quantity of which the charge item has been serviced.
@@ -636,11 +591,6 @@ public class ChargeItem extends DomainResource {
     protected Reference enterer;
 
     /**
-     * The actual object that is the target of the reference (The device, practitioner, etc. who entered the charge item.)
-     */
-    protected Resource entererTarget;
-
-    /**
      * Date the charge item was entered.
      */
     @Child(name = "enteredDate", type = {DateTimeType.class}, order=19, min=0, max=1, modifier=false, summary=true)
@@ -661,11 +611,6 @@ public class ChargeItem extends DomainResource {
     @Child(name = "service", type = {DiagnosticReport.class, ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, Observation.class, Procedure.class, SupplyDelivery.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Which rendered service is being charged?", formalDefinition="Indicated the rendered service that caused this charge." )
     protected List<Reference> service;
-    /**
-     * The actual objects that are the target of the reference (Indicated the rendered service that caused this charge.)
-     */
-    protected List<Resource> serviceTarget;
-
 
     /**
      * Identifies the device, food, drug or other product being charged either by type code or reference to an instance.
@@ -681,11 +626,6 @@ public class ChargeItem extends DomainResource {
     @Child(name = "account", type = {Account.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Account to place this charge", formalDefinition="Account into which this ChargeItems belongs." )
     protected List<Reference> account;
-    /**
-     * The actual objects that are the target of the reference (Account into which this ChargeItems belongs.)
-     */
-    protected List<Account> accountTarget;
-
 
     /**
      * Comments made about the event by the performer, subject or other participants.
@@ -700,13 +640,8 @@ public class ChargeItem extends DomainResource {
     @Child(name = "supportingInformation", type = {Reference.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Further information supporting this charge", formalDefinition="Further information supporting this charge." )
     protected List<Reference> supportingInformation;
-    /**
-     * The actual objects that are the target of the reference (Further information supporting this charge.)
-     */
-    protected List<Resource> supportingInformationTarget;
 
-
-    private static final long serialVersionUID = 1748644267L;
+    private static final long serialVersionUID = 1429988341L;
 
   /**
    * Constructor
@@ -999,28 +934,6 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ChargeItem> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<ChargeItem>();
-      return this.partOfTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ChargeItem addPartOfTarget() { 
-      ChargeItem r = new ChargeItem();
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<ChargeItem>();
-      this.partOfTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #code} (A code that identifies the charge, like a billing code.)
      */
     public CodeableConcept getCode() { 
@@ -1069,21 +982,6 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual or set of individuals the action is being or was performed on.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual or set of individuals the action is being or was performed on.)
-     */
-    public ChargeItem setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #context} (The encounter or episode of care that establishes the context for this event.)
      */
     public Reference getContext() { 
@@ -1104,21 +1002,6 @@ public class ChargeItem extends DomainResource {
      */
     public ChargeItem setContext(Reference value) { 
       this.context = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #context} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The encounter or episode of care that establishes the context for this event.)
-     */
-    public Resource getContextTarget() { 
-      return this.contextTarget;
-    }
-
-    /**
-     * @param value {@link #context} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The encounter or episode of care that establishes the context for this event.)
-     */
-    public ChargeItem setContextTarget(Resource value) { 
-      this.contextTarget = value;
       return this;
     }
 
@@ -1266,26 +1149,6 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #performingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization requesting the service.)
-     */
-    public Organization getPerformingOrganizationTarget() { 
-      if (this.performingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItem.performingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.performingOrganizationTarget = new Organization(); // aa
-      return this.performingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #performingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization requesting the service.)
-     */
-    public ChargeItem setPerformingOrganizationTarget(Organization value) { 
-      this.performingOrganizationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #requestingOrganization} (The organization performing the service.)
      */
     public Reference getRequestingOrganization() { 
@@ -1310,26 +1173,6 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #requestingOrganization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization performing the service.)
-     */
-    public Organization getRequestingOrganizationTarget() { 
-      if (this.requestingOrganizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItem.requestingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.requestingOrganizationTarget = new Organization(); // aa
-      return this.requestingOrganizationTarget;
-    }
-
-    /**
-     * @param value {@link #requestingOrganization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization performing the service.)
-     */
-    public ChargeItem setRequestingOrganizationTarget(Organization value) { 
-      this.requestingOrganizationTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #costCenter} (The financial cost center permits the tracking of charge attribution.)
      */
     public Reference getCostCenter() { 
@@ -1350,26 +1193,6 @@ public class ChargeItem extends DomainResource {
      */
     public ChargeItem setCostCenter(Reference value) { 
       this.costCenter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #costCenter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The financial cost center permits the tracking of charge attribution.)
-     */
-    public Organization getCostCenterTarget() { 
-      if (this.costCenterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItem.costCenter");
-        else if (Configuration.doAutoCreate())
-          this.costCenterTarget = new Organization(); // aa
-      return this.costCenterTarget;
-    }
-
-    /**
-     * @param value {@link #costCenter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The financial cost center permits the tracking of charge attribution.)
-     */
-    public ChargeItem setCostCenterTarget(Organization value) { 
-      this.costCenterTarget = value;
       return this;
     }
 
@@ -1615,21 +1438,6 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #enterer} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who entered the charge item.)
-     */
-    public Resource getEntererTarget() { 
-      return this.entererTarget;
-    }
-
-    /**
-     * @param value {@link #enterer} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The device, practitioner, etc. who entered the charge item.)
-     */
-    public ChargeItem setEntererTarget(Resource value) { 
-      this.entererTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #enteredDate} (Date the charge item was entered.). This is the underlying object with id, value and extensions. The accessor "getEnteredDate" gives direct access to the value
      */
     public DateTimeType getEnteredDateElement() { 
@@ -1785,16 +1593,6 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getServiceTarget() { 
-      if (this.serviceTarget == null)
-        this.serviceTarget = new ArrayList<Resource>();
-      return this.serviceTarget;
-    }
-
-    /**
      * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
      */
     public Type getProduct() { 
@@ -1896,28 +1694,6 @@ public class ChargeItem extends DomainResource {
         addAccount();
       }
       return getAccount().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Account> getAccountTarget() { 
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      return this.accountTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Account addAccountTarget() { 
-      Account r = new Account();
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      this.accountTarget.add(r);
-      return r;
     }
 
     /**
@@ -2024,16 +1800,6 @@ public class ChargeItem extends DomainResource {
         addSupportingInformation();
       }
       return getSupportingInformation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
     }
 
       protected void listChildren(List<Property> children) {
@@ -2296,26 +2062,26 @@ public class ChargeItem extends DomainResource {
         case 933485793:  return addDefinitionCanonicalElement();
         case -892481550:  return getStatusElement();
         case -995410646:  return addPartOf(); 
-        case 3059181:  return getCode(); 
-        case -1867885268:  return getSubject(); 
-        case 951530927:  return getContext(); 
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 951530927:  return getContext();
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
         case 481140686:  return addPerformer(); 
-        case 1273192628:  return getPerformingOrganization(); 
-        case 1279054790:  return getRequestingOrganization(); 
-        case -593192318:  return getCostCenter(); 
-        case -1285004149:  return getQuantity(); 
+        case 1273192628:  return getPerformingOrganization();
+        case 1279054790:  return getRequestingOrganization();
+        case -593192318:  return getCostCenter();
+        case -1285004149:  return getQuantity();
         case 1703573481:  return addBodysite(); 
         case -451233221:  return getFactorOverrideElement();
-        case -216803275:  return getPriceOverride(); 
+        case -216803275:  return getPriceOverride();
         case -742878928:  return getOverrideReasonElement();
-        case -1591951995:  return getEnterer(); 
+        case -1591951995:  return getEnterer();
         case 555978181:  return getEnteredDateElement();
         case -934964668:  return addReason(); 
         case 1984153269:  return addService(); 
-        case 1753005361:  return getProduct(); 
-        case -309474065:  return getProduct(); 
+        case 1753005361:  return getProduct();
+        case -309474065:  return getProduct();
         case -1177318867:  return addAccount(); 
         case 3387378:  return addNote(); 
         case -1248768647:  return addSupportingInformation(); 
@@ -2473,6 +2239,11 @@ public class ChargeItem extends DomainResource {
       public ChargeItem copy() {
         ChargeItem dst = new ChargeItem();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ChargeItem dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2543,7 +2314,6 @@ public class ChargeItem extends DomainResource {
           for (Reference i : supportingInformation)
             dst.supportingInformation.add(i.copy());
         };
-        return dst;
       }
 
       protected ChargeItem typedCopy() {

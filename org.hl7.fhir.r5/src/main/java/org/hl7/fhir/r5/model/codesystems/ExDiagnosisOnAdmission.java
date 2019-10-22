@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -60,19 +59,15 @@ public enum ExDiagnosisOnAdmission {
         /**
          * Diagnosis was present at time of inpatient admission.
          */
-        Y, 
+        YES, 
         /**
          * Diagnosis was not present at time of inpatient admission.
          */
-        N, 
+        NO, 
         /**
-         * Documentation insufficient to determine if condition was present at the time of inpatient admission.
+         * Not known if condition was present at the time of inpatient admission.
          */
-        U, 
-        /**
-         * Clinically undetermined. Provider unable to clinically determine whether the condition was present at the time of inpatient admission.
-         */
-        W, 
+        UNKNOWN, 
         /**
          * added to help the parsers
          */
@@ -80,22 +75,19 @@ public enum ExDiagnosisOnAdmission {
         public static ExDiagnosisOnAdmission fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("y".equals(codeString))
-          return Y;
-        if ("n".equals(codeString))
-          return N;
-        if ("u".equals(codeString))
-          return U;
-        if ("w".equals(codeString))
-          return W;
+        if ("yes".equals(codeString))
+          return YES;
+        if ("no".equals(codeString))
+          return NO;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
         throw new FHIRException("Unknown ExDiagnosisOnAdmission code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case Y: return "y";
-            case N: return "n";
-            case U: return "u";
-            case W: return "w";
+            case YES: return "yes";
+            case NO: return "no";
+            case UNKNOWN: return "unknown";
             default: return "?";
           }
         }
@@ -104,19 +96,17 @@ public enum ExDiagnosisOnAdmission {
         }
         public String getDefinition() {
           switch (this) {
-            case Y: return "Diagnosis was present at time of inpatient admission.";
-            case N: return "Diagnosis was not present at time of inpatient admission.";
-            case U: return "Documentation insufficient to determine if condition was present at the time of inpatient admission.";
-            case W: return "Clinically undetermined. Provider unable to clinically determine whether the condition was present at the time of inpatient admission.";
+            case YES: return "Diagnosis was present at time of inpatient admission.";
+            case NO: return "Diagnosis was not present at time of inpatient admission.";
+            case UNKNOWN: return "Not known if condition was present at the time of inpatient admission.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case Y: return "Yes";
-            case N: return "No";
-            case U: return "Unknown";
-            case W: return "Undetermined";
+            case YES: return "Yes";
+            case NO: return "No";
+            case UNKNOWN: return "Unknown";
             default: return "?";
           }
     }

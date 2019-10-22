@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -70,7 +69,7 @@ public enum CertaintySubcomponentType {
          */
         INDIRECTNESS, 
         /**
-         * High quality evidence.
+         * fuzzy or wide variability.
          */
         IMPRECISION, 
         /**
@@ -135,7 +134,7 @@ public enum CertaintySubcomponentType {
             case RISKOFBIAS: return "methodologic concerns reducing internal validity.";
             case INCONSISTENCY: return "concerns that findings are not similar enough to support certainty.";
             case INDIRECTNESS: return "concerns reducing external validity.";
-            case IMPRECISION: return "High quality evidence.";
+            case IMPRECISION: return "fuzzy or wide variability.";
             case PUBLICATIONBIAS: return "likelihood that what is published misrepresents what is available to publish.";
             case DOSERESPONSEGRADIENT: return "higher certainty due to dose response relationship.";
             case PLAUSIBLECONFOUNDING: return "higher certainty due to risk of bias in opposite direction.";

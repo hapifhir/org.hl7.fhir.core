@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -65,6 +64,10 @@ public enum ResourceTypes {
          * This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.
          */
         ACTIVITYDEFINITION, 
+        /**
+         * A pharmaceutical product described in terms of its composition and dose form.
+         */
+        ADMINISTRABLEPRODUCTDEFINITION, 
         /**
          * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject.  The unintended effects may require additional monitoring, treatment or hospitalization or may result in death.  The AdverseEvent resource also extends to potential or avoided events that could have had such effects.
          */
@@ -183,7 +186,7 @@ into another (possibly the same) biological entity.
          */
         CONDITIONDEFINITION, 
         /**
-         * A record of a healthcare consumer’s  choices, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time.
+         * A record of a healthcare consumer’s  choices  or choices made on their behalf by a third party, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time.
          */
         CONSENT, 
         /**
@@ -235,17 +238,13 @@ into another (possibly the same) biological entity.
          */
         DOCUMENTMANIFEST, 
         /**
-         * A reference to a document of any kind for any purpose. Provides metadata about the document so that the document can be discovered and managed. The scope of a document is any seralized object with a mime-type, so includes formal patient centric documents (CDA), cliical notes, scanned paper, and non-patient specific documents like policy text.
+         * A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this "document" encompasses *any* seralized object with a mime-type, so includes formal patient centric documents (CDA), clniical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.
          */
         DOCUMENTREFERENCE, 
         /**
          * A resource that includes narrative, extensions, and contained resources.
          */
         DOMAINRESOURCE, 
-        /**
-         * The EffectEvidenceSynthesis resource describes the difference in an outcome between exposures states in a population where the effect estimate is derived from a combination of research studies.
-         */
-        EFFECTEVIDENCESYNTHESIS, 
         /**
          * An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.
          */
@@ -271,7 +270,7 @@ into another (possibly the same) biological entity.
          */
         EVENTDEFINITION, 
         /**
-         * The Evidence resource describes the conditional state (population and any exposures being compared within the population) and outcome (if specified) that the knowledge (evidence, assertion, recommendation) is about.
+         * This represents statistics, certainty, both the intended and actual population, and evidence variables.
          */
         EVIDENCE, 
         /**
@@ -363,6 +362,10 @@ into another (possibly the same) biological entity.
          */
         LOCATION, 
         /**
+         * The manufactured item as contained in the packaged medicinal product.
+         */
+        MANUFACTUREDITEMDEFINITION, 
+        /**
          * The Measure resource provides the definition of a quality measure.
          */
         MEASURE, 
@@ -370,10 +373,6 @@ into another (possibly the same) biological entity.
          * The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.
          */
         MEASUREREPORT, 
-        /**
-         * A photo, video, or audio recording acquired or used in healthcare. The actual content may be inline or provided by direct reference.
-         */
-        MEDIA, 
         /**
          * This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
          */
@@ -401,6 +400,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         MEDICATIONUSAGE, 
         /**
+         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use).
+         */
+        MEDICINALPRODUCTDEFINITION, 
+        /**
          * Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.
          */
         MESSAGEDEFINITION, 
@@ -416,6 +419,10 @@ The primary difference between a medicationusage and a medicationadministration 
          * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types.
          */
         NAMINGSYSTEM, 
+        /**
+         * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
+         */
+        NUTRITIONINTAKE, 
         /**
          * A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.
          */
@@ -444,6 +451,10 @@ The primary difference between a medicationusage and a medicationadministration 
          * Defines an affiliation/assotiation/relationship between 2 distinct oganizations, that is not a part-of relationship/sub-division relationship.
          */
         ORGANIZATIONAFFILIATION, 
+        /**
+         * A medicinal product in a container or package.
+         */
+        PACKAGEDPRODUCTDEFINITION, 
         /**
          * This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.
          */
@@ -493,25 +504,9 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         QUESTIONNAIRERESPONSE, 
         /**
-         * A pharmaceutical product described in terms of its composition and dose form.
-         */
-        REGULATEDADMINISTRABLEPRODUCT, 
-        /**
          * The regulatory authorization of a medicinal product.
          */
         REGULATEDAUTHORIZATION, 
-        /**
-         * The manufactured item as contained in the packaged medicinal product.
-         */
-        REGULATEDMANUFACTUREDITEM, 
-        /**
-         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use).
-         */
-        REGULATEDMEDICINALPRODUCT, 
-        /**
-         * A medicinal product in a container or package.
-         */
-        REGULATEDPACKAGEDPRODUCT, 
         /**
          * Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
          */
@@ -520,14 +515,6 @@ The primary difference between a medicationusage and a medicationadministration 
          * A group of related requests that can be used to capture intended activities that have inter-dependencies such as "give this medication after that one".
          */
         REQUESTGROUP, 
-        /**
-         * The ResearchDefinition resource describes the conditional state (population and any exposures being compared within the population) and outcome (if specified) that the knowledge (evidence, assertion, recommendation) is about.
-         */
-        RESEARCHDEFINITION, 
-        /**
-         * The ResearchElementDefinition resource describes a "PICO" element that knowledge (evidence, assertion, recommendation) is about.
-         */
-        RESEARCHELEMENTDEFINITION, 
         /**
          * A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.
          */
@@ -544,10 +531,6 @@ The primary difference between a medicationusage and a medicationadministration 
          * An assessment of the likely outcome(s) for a patient or other subject as well as the likelihood of each outcome.
          */
         RISKASSESSMENT, 
-        /**
-         * The RiskEvidenceSynthesis resource describes the likelihood of an outcome in a population plus exposure state where the risk estimate is derived from a combination of research studies.
-         */
-        RISKEVIDENCESYNTHESIS, 
         /**
          * A container for slots of time that may be available for booking appointments.
          */
@@ -573,10 +556,6 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         SPECIMENDEFINITION, 
         /**
-         * The Statistic resource codifies a statistical measure and corresponding certainty.
-         */
-        STATISTIC, 
-        /**
          * A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types.
          */
         STRUCTUREDEFINITION, 
@@ -585,7 +564,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         STRUCTUREMAP, 
         /**
-         * The subscription resource is used to define a push-based subscription from a server to another system. Once a subscription is registered with the server, the server checks every resource that is created or updated, and if the resource matches the given criteria, it sends a message on the defined "channel" so that another system can take an appropriate action.
+         * The subscription resource describes a particular client's request to be notified about a Topic.
          */
         SUBSCRIPTION, 
         /**
@@ -641,6 +620,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         TESTSCRIPT, 
         /**
+         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
+         */
+        TOPIC, 
+        /**
          * A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).
          */
         VALUESET, 
@@ -663,6 +646,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ACCOUNT;
         if ("ActivityDefinition".equals(codeString))
           return ACTIVITYDEFINITION;
+        if ("AdministrableProductDefinition".equals(codeString))
+          return ADMINISTRABLEPRODUCTDEFINITION;
         if ("AdverseEvent".equals(codeString))
           return ADVERSEEVENT;
         if ("AllergyIntolerance".equals(codeString))
@@ -751,8 +736,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return DOCUMENTREFERENCE;
         if ("DomainResource".equals(codeString))
           return DOMAINRESOURCE;
-        if ("EffectEvidenceSynthesis".equals(codeString))
-          return EFFECTEVIDENCESYNTHESIS;
         if ("Encounter".equals(codeString))
           return ENCOUNTER;
         if ("Endpoint".equals(codeString))
@@ -811,12 +794,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return LIST;
         if ("Location".equals(codeString))
           return LOCATION;
+        if ("ManufacturedItemDefinition".equals(codeString))
+          return MANUFACTUREDITEMDEFINITION;
         if ("Measure".equals(codeString))
           return MEASURE;
         if ("MeasureReport".equals(codeString))
           return MEASUREREPORT;
-        if ("Media".equals(codeString))
-          return MEDIA;
         if ("Medication".equals(codeString))
           return MEDICATION;
         if ("MedicationAdministration".equals(codeString))
@@ -829,6 +812,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return MEDICATIONUSAGE;
+        if ("MedicinalProductDefinition".equals(codeString))
+          return MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
           return MESSAGEDEFINITION;
         if ("MessageHeader".equals(codeString))
@@ -837,6 +822,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return MOLECULARSEQUENCE;
         if ("NamingSystem".equals(codeString))
           return NAMINGSYSTEM;
+        if ("NutritionIntake".equals(codeString))
+          return NUTRITIONINTAKE;
         if ("NutritionOrder".equals(codeString))
           return NUTRITIONORDER;
         if ("Observation".equals(codeString))
@@ -851,6 +838,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ORGANIZATION;
         if ("OrganizationAffiliation".equals(codeString))
           return ORGANIZATIONAFFILIATION;
+        if ("PackagedProductDefinition".equals(codeString))
+          return PACKAGEDPRODUCTDEFINITION;
         if ("Parameters".equals(codeString))
           return PARAMETERS;
         if ("Patient".equals(codeString))
@@ -875,24 +864,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return QUESTIONNAIRE;
         if ("QuestionnaireResponse".equals(codeString))
           return QUESTIONNAIRERESPONSE;
-        if ("RegulatedAdministrableProduct".equals(codeString))
-          return REGULATEDADMINISTRABLEPRODUCT;
         if ("RegulatedAuthorization".equals(codeString))
           return REGULATEDAUTHORIZATION;
-        if ("RegulatedManufacturedItem".equals(codeString))
-          return REGULATEDMANUFACTUREDITEM;
-        if ("RegulatedMedicinalProduct".equals(codeString))
-          return REGULATEDMEDICINALPRODUCT;
-        if ("RegulatedPackagedProduct".equals(codeString))
-          return REGULATEDPACKAGEDPRODUCT;
         if ("RelatedPerson".equals(codeString))
           return RELATEDPERSON;
         if ("RequestGroup".equals(codeString))
           return REQUESTGROUP;
-        if ("ResearchDefinition".equals(codeString))
-          return RESEARCHDEFINITION;
-        if ("ResearchElementDefinition".equals(codeString))
-          return RESEARCHELEMENTDEFINITION;
         if ("ResearchStudy".equals(codeString))
           return RESEARCHSTUDY;
         if ("ResearchSubject".equals(codeString))
@@ -901,8 +878,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return RESOURCE;
         if ("RiskAssessment".equals(codeString))
           return RISKASSESSMENT;
-        if ("RiskEvidenceSynthesis".equals(codeString))
-          return RISKEVIDENCESYNTHESIS;
         if ("Schedule".equals(codeString))
           return SCHEDULE;
         if ("SearchParameter".equals(codeString))
@@ -915,8 +890,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return SPECIMEN;
         if ("SpecimenDefinition".equals(codeString))
           return SPECIMENDEFINITION;
-        if ("Statistic".equals(codeString))
-          return STATISTIC;
         if ("StructureDefinition".equals(codeString))
           return STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
@@ -949,6 +922,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return TESTREPORT;
         if ("TestScript".equals(codeString))
           return TESTSCRIPT;
+        if ("Topic".equals(codeString))
+          return TOPIC;
         if ("ValueSet".equals(codeString))
           return VALUESET;
         if ("VerificationResult".equals(codeString))
@@ -961,6 +936,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case ACCOUNT: return "Account";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
+            case ADMINISTRABLEPRODUCTDEFINITION: return "AdministrableProductDefinition";
             case ADVERSEEVENT: return "AdverseEvent";
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
@@ -1005,7 +981,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case DOCUMENTMANIFEST: return "DocumentManifest";
             case DOCUMENTREFERENCE: return "DocumentReference";
             case DOMAINRESOURCE: return "DomainResource";
-            case EFFECTEVIDENCESYNTHESIS: return "EffectEvidenceSynthesis";
             case ENCOUNTER: return "Encounter";
             case ENDPOINT: return "Endpoint";
             case ENROLLMENTREQUEST: return "EnrollmentRequest";
@@ -1035,19 +1010,21 @@ The primary difference between a medicationusage and a medicationadministration 
             case LINKAGE: return "Linkage";
             case LIST: return "List";
             case LOCATION: return "Location";
+            case MANUFACTUREDITEMDEFINITION: return "ManufacturedItemDefinition";
             case MEASURE: return "Measure";
             case MEASUREREPORT: return "MeasureReport";
-            case MEDIA: return "Media";
             case MEDICATION: return "Medication";
             case MEDICATIONADMINISTRATION: return "MedicationAdministration";
             case MEDICATIONDISPENSE: return "MedicationDispense";
             case MEDICATIONKNOWLEDGE: return "MedicationKnowledge";
             case MEDICATIONREQUEST: return "MedicationRequest";
             case MEDICATIONUSAGE: return "MedicationUsage";
+            case MEDICINALPRODUCTDEFINITION: return "MedicinalProductDefinition";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case MESSAGEHEADER: return "MessageHeader";
             case MOLECULARSEQUENCE: return "MolecularSequence";
             case NAMINGSYSTEM: return "NamingSystem";
+            case NUTRITIONINTAKE: return "NutritionIntake";
             case NUTRITIONORDER: return "NutritionOrder";
             case OBSERVATION: return "Observation";
             case OBSERVATIONDEFINITION: return "ObservationDefinition";
@@ -1055,6 +1032,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case OPERATIONOUTCOME: return "OperationOutcome";
             case ORGANIZATION: return "Organization";
             case ORGANIZATIONAFFILIATION: return "OrganizationAffiliation";
+            case PACKAGEDPRODUCTDEFINITION: return "PackagedProductDefinition";
             case PARAMETERS: return "Parameters";
             case PATIENT: return "Patient";
             case PAYMENTNOTICE: return "PaymentNotice";
@@ -1067,27 +1045,19 @@ The primary difference between a medicationusage and a medicationadministration 
             case PROVENANCE: return "Provenance";
             case QUESTIONNAIRE: return "Questionnaire";
             case QUESTIONNAIRERESPONSE: return "QuestionnaireResponse";
-            case REGULATEDADMINISTRABLEPRODUCT: return "RegulatedAdministrableProduct";
             case REGULATEDAUTHORIZATION: return "RegulatedAuthorization";
-            case REGULATEDMANUFACTUREDITEM: return "RegulatedManufacturedItem";
-            case REGULATEDMEDICINALPRODUCT: return "RegulatedMedicinalProduct";
-            case REGULATEDPACKAGEDPRODUCT: return "RegulatedPackagedProduct";
             case RELATEDPERSON: return "RelatedPerson";
             case REQUESTGROUP: return "RequestGroup";
-            case RESEARCHDEFINITION: return "ResearchDefinition";
-            case RESEARCHELEMENTDEFINITION: return "ResearchElementDefinition";
             case RESEARCHSTUDY: return "ResearchStudy";
             case RESEARCHSUBJECT: return "ResearchSubject";
             case RESOURCE: return "Resource";
             case RISKASSESSMENT: return "RiskAssessment";
-            case RISKEVIDENCESYNTHESIS: return "RiskEvidenceSynthesis";
             case SCHEDULE: return "Schedule";
             case SEARCHPARAMETER: return "SearchParameter";
             case SERVICEREQUEST: return "ServiceRequest";
             case SLOT: return "Slot";
             case SPECIMEN: return "Specimen";
             case SPECIMENDEFINITION: return "SpecimenDefinition";
-            case STATISTIC: return "Statistic";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case SUBSCRIPTION: return "Subscription";
@@ -1104,6 +1074,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTREPORT: return "TestReport";
             case TESTSCRIPT: return "TestScript";
+            case TOPIC: return "Topic";
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
@@ -1117,6 +1088,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case ACCOUNT: return "A financial tool for tracking value accrued for a particular purpose.  In the healthcare field, used to track charges for a patient, cost centers, etc.";
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
+            case ADMINISTRABLEPRODUCTDEFINITION: return "A pharmaceutical product described in terms of its composition and dose form.";
             case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject.  The unintended effects may require additional monitoring, treatment or hospitalization or may result in death.  The AdverseEvent resource also extends to potential or avoided events that could have had such effects.";
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
@@ -1146,7 +1118,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case CONDITION: return "A clinical condition, problem, diagnosis, or other event, situation, issue, or clinical concept that has risen to a level of concern.";
             case CONDITIONDEFINITION: return "A definition of a condition and information relevant to managing it.";
-            case CONSENT: return "A record of a healthcare consumer’s  choices, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time.";
+            case CONSENT: return "A record of a healthcare consumer’s  choices  or choices made on their behalf by a third party, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time.";
             case CONTRACT: return "Legally enforceable, formally recorded unilateral or bilateral directive i.e., a policy or agreement.";
             case COVERAGE: return "Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment.";
             case COVERAGEELIGIBILITYREQUEST: return "The CoverageEligibilityRequest provides patient and insurance coverage information to an insurer for them to respond, in the form of an CoverageEligibilityResponse, with information regarding whether the stated coverage is valid and in-force and optionally to provide the insurance details of the policy.";
@@ -1159,16 +1131,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case DEVICEUSESTATEMENT: return "A record of a device being used by a patient where the record is the result of a report from the patient or another clinician.";
             case DIAGNOSTICREPORT: return "The findings and interpretation of diagnostic  tests performed on patients, groups of patients, devices, and locations, and/or specimens derived from these. The report includes clinical context such as requesting and provider information, and some mix of atomic results, images, textual and coded interpretations, and formatted representation of diagnostic reports.";
             case DOCUMENTMANIFEST: return "A collection of documents compiled for a purpose together with metadata that applies to the collection.";
-            case DOCUMENTREFERENCE: return "A reference to a document of any kind for any purpose. Provides metadata about the document so that the document can be discovered and managed. The scope of a document is any seralized object with a mime-type, so includes formal patient centric documents (CDA), cliical notes, scanned paper, and non-patient specific documents like policy text.";
+            case DOCUMENTREFERENCE: return "A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this \"document\" encompasses *any* seralized object with a mime-type, so includes formal patient centric documents (CDA), clniical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.";
             case DOMAINRESOURCE: return "A resource that includes narrative, extensions, and contained resources.";
-            case EFFECTEVIDENCESYNTHESIS: return "The EffectEvidenceSynthesis resource describes the difference in an outcome between exposures states in a population where the effect estimate is derived from a combination of research studies.";
             case ENCOUNTER: return "An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.";
             case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.";
             case ENROLLMENTREQUEST: return "This resource provides the insurance enrollment details to the insurer regarding a specified coverage.";
             case ENROLLMENTRESPONSE: return "This resource provides enrollment and plan details from the processing of an EnrollmentRequest resource.";
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
-            case EVIDENCE: return "The Evidence resource describes the conditional state (population and any exposures being compared within the population) and outcome (if specified) that the knowledge (evidence, assertion, recommendation) is about.";
+            case EVIDENCE: return "This represents statistics, certainty, both the intended and actual population, and evidence variables.";
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes a \"PICO\" element that knowledge (evidence, assertion, recommendation) is about.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
@@ -1191,19 +1162,21 @@ The primary difference between a medicationusage and a medicationadministration 
             case LINKAGE: return "Identifies two or more records (resource instances) that refer to the same real-world \"occurrence\".";
             case LIST: return "A list is a curated collection of resources.";
             case LOCATION: return "Details and position information for a physical place where services are provided and resources and participants may be stored, found, contained, or accommodated.";
+            case MANUFACTUREDITEMDEFINITION: return "The manufactured item as contained in the packaged medicinal product.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
             case MEASUREREPORT: return "The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.";
-            case MEDIA: return "A photo, video, or audio recording acquired or used in healthcare. The actual content may be inline or provided by direct reference.";
             case MEDICATION: return "This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
             case MEDICATIONADMINISTRATION: return "Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.";
             case MEDICATIONDISPENSE: return "Indicates that a medication product is to be or has been dispensed for a named person/patient.  This includes a description of the medication product (supply) provided and the instructions for administering the medication.  The medication dispense is the result of a pharmacy system responding to a medication order.";
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
             case MEDICATIONREQUEST: return "An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns.";
             case MEDICATIONUSAGE: return "A record of a medication that is being consumed by a patient.   A MedicationUsage may indicate that the patient may be taking the medication now or has taken the medication in the past or will be taking the medication in the future.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay.   The medication information may come from sources such as the patient's memory, from a prescription bottle,  or from a list of medications the patient, clinician or other party maintains. \n\nThe primary difference between a medicationusage and a medicationadministration is that the medication administration has complete administration information and is based on actual administration information from the person who administered the medication.  A medicationusage is often, if not always, less specific.  There is no required date/time when the medication was administered, in fact we only know that a source has reported the patient is taking this medication, where details such as time, quantity, or rate or even medication product may be incomplete or missing or less precise.  As stated earlier, the Medication Usage information may come from the patient's memory, from a prescription bottle or from a list of medications the patient, clinician or other party maintains.  Medication administration is more formal and is not missing detailed information.";
+            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use).";
             case MESSAGEDEFINITION: return "Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.";
             case MESSAGEHEADER: return "The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle.";
             case MOLECULARSEQUENCE: return "Raw data describing a biological sequence.";
             case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
+            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
             case NUTRITIONORDER: return "A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.";
             case OBSERVATION: return "Measurements and simple assertions made about a patient, device or other subject.";
             case OBSERVATIONDEFINITION: return "Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.";
@@ -1211,6 +1184,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
             case ORGANIZATION: return "A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, payer/insurer, etc.";
             case ORGANIZATIONAFFILIATION: return "Defines an affiliation/assotiation/relationship between 2 distinct oganizations, that is not a part-of relationship/sub-division relationship.";
+            case PACKAGEDPRODUCTDEFINITION: return "A medicinal product in a container or package.";
             case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
             case PATIENT: return "Demographics and other administrative information about an individual or animal receiving care or other health-related services.";
             case PAYMENTNOTICE: return "This resource provides the status of the payment for goods and services rendered, and the request and response resource references.";
@@ -1223,30 +1197,22 @@ The primary difference between a medicationusage and a medicationadministration 
             case PROVENANCE: return "Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
             case QUESTIONNAIRERESPONSE: return "A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to.";
-            case REGULATEDADMINISTRABLEPRODUCT: return "A pharmaceutical product described in terms of its composition and dose form.";
             case REGULATEDAUTHORIZATION: return "The regulatory authorization of a medicinal product.";
-            case REGULATEDMANUFACTUREDITEM: return "The manufactured item as contained in the packaged medicinal product.";
-            case REGULATEDMEDICINALPRODUCT: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use).";
-            case REGULATEDPACKAGEDPRODUCT: return "A medicinal product in a container or package.";
             case RELATEDPERSON: return "Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
             case REQUESTGROUP: return "A group of related requests that can be used to capture intended activities that have inter-dependencies such as \"give this medication after that one\".";
-            case RESEARCHDEFINITION: return "The ResearchDefinition resource describes the conditional state (population and any exposures being compared within the population) and outcome (if specified) that the knowledge (evidence, assertion, recommendation) is about.";
-            case RESEARCHELEMENTDEFINITION: return "The ResearchElementDefinition resource describes a \"PICO\" element that knowledge (evidence, assertion, recommendation) is about.";
             case RESEARCHSTUDY: return "A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.";
             case RESEARCHSUBJECT: return "A physical entity which is the primary unit of operational and/or administrative interest in a study.";
             case RESOURCE: return "This is the base resource type for everything.";
             case RISKASSESSMENT: return "An assessment of the likely outcome(s) for a patient or other subject as well as the likelihood of each outcome.";
-            case RISKEVIDENCESYNTHESIS: return "The RiskEvidenceSynthesis resource describes the likelihood of an outcome in a population plus exposure state where the risk estimate is derived from a combination of research studies.";
             case SCHEDULE: return "A container for slots of time that may be available for booking appointments.";
             case SEARCHPARAMETER: return "A search parameter that defines a named search item that can be used to search/filter on a resource.";
             case SERVICEREQUEST: return "A record of a request for service such as diagnostic investigations, treatments, or operations to be performed.";
             case SLOT: return "A slot of time on a schedule that may be available for booking appointments.";
             case SPECIMEN: return "A sample to be used for analysis.";
             case SPECIMENDEFINITION: return "A kind of specimen with associated set of requirements.";
-            case STATISTIC: return "The Statistic resource codifies a statistical measure and corresponding certainty.";
             case STRUCTUREDEFINITION: return "A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
-            case SUBSCRIPTION: return "The subscription resource is used to define a push-based subscription from a server to another system. Once a subscription is registered with the server, the server checks every resource that is created or updated, and if the resource matches the given criteria, it sends a message on the defined \"channel\" so that another system can take an appropriate action.";
+            case SUBSCRIPTION: return "The subscription resource describes a particular client's request to be notified about a Topic.";
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
@@ -1260,6 +1226,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
+            case TOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
@@ -1270,6 +1237,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case ACCOUNT: return "Account";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
+            case ADMINISTRABLEPRODUCTDEFINITION: return "AdministrableProductDefinition";
             case ADVERSEEVENT: return "AdverseEvent";
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
@@ -1314,7 +1282,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case DOCUMENTMANIFEST: return "DocumentManifest";
             case DOCUMENTREFERENCE: return "DocumentReference";
             case DOMAINRESOURCE: return "DomainResource";
-            case EFFECTEVIDENCESYNTHESIS: return "EffectEvidenceSynthesis";
             case ENCOUNTER: return "Encounter";
             case ENDPOINT: return "Endpoint";
             case ENROLLMENTREQUEST: return "EnrollmentRequest";
@@ -1344,19 +1311,21 @@ The primary difference between a medicationusage and a medicationadministration 
             case LINKAGE: return "Linkage";
             case LIST: return "List";
             case LOCATION: return "Location";
+            case MANUFACTUREDITEMDEFINITION: return "ManufacturedItemDefinition";
             case MEASURE: return "Measure";
             case MEASUREREPORT: return "MeasureReport";
-            case MEDIA: return "Media";
             case MEDICATION: return "Medication";
             case MEDICATIONADMINISTRATION: return "MedicationAdministration";
             case MEDICATIONDISPENSE: return "MedicationDispense";
             case MEDICATIONKNOWLEDGE: return "MedicationKnowledge";
             case MEDICATIONREQUEST: return "MedicationRequest";
             case MEDICATIONUSAGE: return "MedicationUsage";
+            case MEDICINALPRODUCTDEFINITION: return "MedicinalProductDefinition";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case MESSAGEHEADER: return "MessageHeader";
             case MOLECULARSEQUENCE: return "MolecularSequence";
             case NAMINGSYSTEM: return "NamingSystem";
+            case NUTRITIONINTAKE: return "NutritionIntake";
             case NUTRITIONORDER: return "NutritionOrder";
             case OBSERVATION: return "Observation";
             case OBSERVATIONDEFINITION: return "ObservationDefinition";
@@ -1364,6 +1333,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case OPERATIONOUTCOME: return "OperationOutcome";
             case ORGANIZATION: return "Organization";
             case ORGANIZATIONAFFILIATION: return "OrganizationAffiliation";
+            case PACKAGEDPRODUCTDEFINITION: return "PackagedProductDefinition";
             case PARAMETERS: return "Parameters";
             case PATIENT: return "Patient";
             case PAYMENTNOTICE: return "PaymentNotice";
@@ -1376,27 +1346,19 @@ The primary difference between a medicationusage and a medicationadministration 
             case PROVENANCE: return "Provenance";
             case QUESTIONNAIRE: return "Questionnaire";
             case QUESTIONNAIRERESPONSE: return "QuestionnaireResponse";
-            case REGULATEDADMINISTRABLEPRODUCT: return "RegulatedAdministrableProduct";
             case REGULATEDAUTHORIZATION: return "RegulatedAuthorization";
-            case REGULATEDMANUFACTUREDITEM: return "RegulatedManufacturedItem";
-            case REGULATEDMEDICINALPRODUCT: return "RegulatedMedicinalProduct";
-            case REGULATEDPACKAGEDPRODUCT: return "RegulatedPackagedProduct";
             case RELATEDPERSON: return "RelatedPerson";
             case REQUESTGROUP: return "RequestGroup";
-            case RESEARCHDEFINITION: return "ResearchDefinition";
-            case RESEARCHELEMENTDEFINITION: return "ResearchElementDefinition";
             case RESEARCHSTUDY: return "ResearchStudy";
             case RESEARCHSUBJECT: return "ResearchSubject";
             case RESOURCE: return "Resource";
             case RISKASSESSMENT: return "RiskAssessment";
-            case RISKEVIDENCESYNTHESIS: return "RiskEvidenceSynthesis";
             case SCHEDULE: return "Schedule";
             case SEARCHPARAMETER: return "SearchParameter";
             case SERVICEREQUEST: return "ServiceRequest";
             case SLOT: return "Slot";
             case SPECIMEN: return "Specimen";
             case SPECIMENDEFINITION: return "SpecimenDefinition";
-            case STATISTIC: return "Statistic";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case SUBSCRIPTION: return "Subscription";
@@ -1413,6 +1375,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTREPORT: return "TestReport";
             case TESTSCRIPT: return "TestScript";
+            case TOPIC: return "Topic";
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";

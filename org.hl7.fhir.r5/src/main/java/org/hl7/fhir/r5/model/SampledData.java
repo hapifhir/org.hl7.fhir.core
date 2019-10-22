@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -52,15 +50,20 @@ import java.math.BigDecimal;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.utilities.Utilities;
 
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A series of measurements taken by a device, with upper and lower limits. There may be more than one dimension in the data.
  */
@@ -611,7 +614,7 @@ public class SampledData extends Type implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1008619738:  return getOrigin(); 
+        case -1008619738:  return getOrigin();
         case -991726143:  return getPeriodElement();
         case -1282148017:  return getFactorElement();
         case 1209133370:  return getLowerLimitElement();
@@ -674,6 +677,11 @@ public class SampledData extends Type implements ICompositeType {
       public SampledData copy() {
         SampledData dst = new SampledData();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SampledData dst) {
+        super.copyValues(dst);
         dst.origin = origin == null ? null : origin.copy();
         dst.period = period == null ? null : period.copy();
         dst.factor = factor == null ? null : factor.copy();
@@ -681,7 +689,6 @@ public class SampledData extends Type implements ICompositeType {
         dst.upperLimit = upperLimit == null ? null : upperLimit.copy();
         dst.dimensions = dimensions == null ? null : dimensions.copy();
         dst.data = data == null ? null : data.copy();
-        return dst;
       }
 
       protected SampledData typedCopy() {

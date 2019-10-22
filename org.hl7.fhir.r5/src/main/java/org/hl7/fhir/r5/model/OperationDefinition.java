@@ -53,23 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
-import org.hl7.fhir.r5.model.Enumerations.SearchParamTypeEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).
  */
@@ -1019,7 +1015,7 @@ public class OperationDefinition extends MetadataResource {
         case 3575610:  return getTypeElement();
         case 1994521304:  return addTargetProfileElement();
         case -710454014:  return getSearchTypeElement();
-        case -108220795:  return getBinding(); 
+        case -108220795:  return getBinding();
         case -1896721981:  return addReferencedFrom(); 
         case 3433459:  return addPart(); 
         default: return super.makeProperty(hash, name);
@@ -1089,6 +1085,11 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionParameterComponent copy() {
         OperationDefinitionParameterComponent dst = new OperationDefinitionParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionParameterComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.use = use == null ? null : use.copy();
         dst.min = min == null ? null : min.copy();
@@ -1112,7 +1113,6 @@ public class OperationDefinition extends MetadataResource {
           for (OperationDefinitionParameterComponent i : part)
             dst.part.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1366,9 +1366,13 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionParameterBindingComponent copy() {
         OperationDefinitionParameterBindingComponent dst = new OperationDefinitionParameterBindingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionParameterBindingComponent dst) {
+        super.copyValues(dst);
         dst.strength = strength == null ? null : strength.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
-        return dst;
       }
 
       @Override
@@ -1615,9 +1619,13 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionParameterReferencedFromComponent copy() {
         OperationDefinitionParameterReferencedFromComponent dst = new OperationDefinitionParameterReferencedFromComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionParameterReferencedFromComponent dst) {
+        super.copyValues(dst);
         dst.source = source == null ? null : source.copy();
         dst.sourceId = sourceId == null ? null : sourceId.copy();
-        return dst;
       }
 
       @Override
@@ -1872,13 +1880,17 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionOverloadComponent copy() {
         OperationDefinitionOverloadComponent dst = new OperationDefinitionOverloadComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionOverloadComponent dst) {
+        super.copyValues(dst);
         if (parameterName != null) {
           dst.parameterName = new ArrayList<StringType>();
           for (StringType i : parameterName)
             dst.parameterName.add(i.copy());
         };
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       @Override
@@ -3714,6 +3726,11 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinition copy() {
         OperationDefinition dst = new OperationDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -3764,7 +3781,6 @@ public class OperationDefinition extends MetadataResource {
           for (OperationDefinitionOverloadComponent i : overload)
             dst.overload.add(i.copy());
         };
-        return dst;
       }
 
       protected OperationDefinition typedCopy() {

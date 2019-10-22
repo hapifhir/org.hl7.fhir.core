@@ -81,8 +81,10 @@ public class Consent extends VersionConvertor_40_50 {
       tgt.addPerformer(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOrganization())
       tgt.addOrganization(convertReference(t));
-    if (src.hasSource())
-      tgt.setSource(convertType(src.getSource()));
+    if (src.hasSourceAttachment())
+      tgt.addSourceAttachment(convertAttachment(src.getSourceAttachment()));
+    if (src.hasSourceReference())
+      tgt.addSourceReference(convertReference(src.getSourceReference()));
     for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy())
       tgt.addPolicy(convertConsentPolicyComponent(t));
     if (src.hasPolicyRule())
@@ -115,8 +117,10 @@ public class Consent extends VersionConvertor_40_50 {
       tgt.addPerformer(convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getOrganization())
       tgt.addOrganization(convertReference(t));
-    if (src.hasSource())
-      tgt.setSource(convertType(src.getSource()));
+    if (src.hasSourceAttachment())
+      tgt.setSource(convertType(src.getSourceAttachmentFirstRep()));
+    if (src.hasSourceReference())
+      tgt.setSource(convertType(src.getSourceReferenceFirstRep()));
     for (org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent t : src.getPolicy())
       tgt.addPolicy(convertConsentPolicyComponent(t));
     if (src.hasPolicyRule())

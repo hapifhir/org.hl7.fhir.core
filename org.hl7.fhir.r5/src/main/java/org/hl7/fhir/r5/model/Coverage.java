@@ -51,17 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment.
  */
@@ -414,7 +417,7 @@ public class Coverage extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 111972721:  return getValueElement();
         case 3373707:  return getNameElement();
         default: return super.makeProperty(hash, name);
@@ -452,10 +455,14 @@ public class Coverage extends DomainResource {
       public ClassComponent copy() {
         ClassComponent dst = new ClassComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClassComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
         dst.name = name == null ? null : name.copy();
-        return dst;
       }
 
       @Override
@@ -724,9 +731,9 @@ public class Coverage extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case 3575610:  return getType();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         case 1481625679:  return addException(); 
         default: return super.makeProperty(hash, name);
         }
@@ -768,6 +775,11 @@ public class Coverage extends DomainResource {
       public CostToBeneficiaryComponent copy() {
         CostToBeneficiaryComponent dst = new CostToBeneficiaryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CostToBeneficiaryComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
         if (exception != null) {
@@ -775,7 +787,6 @@ public class Coverage extends DomainResource {
           for (ExemptionComponent i : exception)
             dst.exception.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -946,8 +957,8 @@ public class Coverage extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
-        case -991726143:  return getPeriod(); 
+        case 3575610:  return getType();
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -980,9 +991,13 @@ public class Coverage extends DomainResource {
       public ExemptionComponent copy() {
         ExemptionComponent dst = new ExemptionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExemptionComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -1047,11 +1062,6 @@ public class Coverage extends DomainResource {
     protected Reference policyHolder;
 
     /**
-     * The actual object that is the target of the reference (The party who 'owns' the insurance policy.)
-     */
-    protected Resource policyHolderTarget;
-
-    /**
      * The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.
      */
     @Child(name = "subscriber", type = {Patient.class, RelatedPerson.class}, order=4, min=0, max=1, modifier=false, summary=true)
@@ -1059,16 +1069,11 @@ public class Coverage extends DomainResource {
     protected Reference subscriber;
 
     /**
-     * The actual object that is the target of the reference (The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.)
-     */
-    protected Resource subscriberTarget;
-
-    /**
      * The insurer assigned ID for the Subscriber.
      */
-    @Child(name = "subscriberId", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subscriberId", type = {Identifier.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="ID assigned to the subscriber", formalDefinition="The insurer assigned ID for the Subscriber." )
-    protected StringType subscriberId;
+    protected Identifier subscriberId;
 
     /**
      * The party who benefits from the insurance coverage; the patient when products and/or services are provided.
@@ -1078,15 +1083,10 @@ public class Coverage extends DomainResource {
     protected Reference beneficiary;
 
     /**
-     * The actual object that is the target of the reference (The party who benefits from the insurance coverage; the patient when products and/or services are provided.)
-     */
-    protected Patient beneficiaryTarget;
-
-    /**
-     * A unique identifier for a dependent under the coverage.
+     * A designator for a dependent under the coverage.
      */
     @Child(name = "dependent", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Dependent number", formalDefinition="A unique identifier for a dependent under the coverage." )
+    @Description(shortDefinition="Dependent number", formalDefinition="A designator for a dependent under the coverage." )
     protected StringType dependent;
 
     /**
@@ -1110,11 +1110,6 @@ public class Coverage extends DomainResource {
     @Child(name = "payor", type = {Organization.class, Patient.class, RelatedPerson.class}, order=10, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Issuer of the policy", formalDefinition="The program or plan underwriter or payor including both insurance and non-insurance agreements, such as patient-pay agreements." )
     protected List<Reference> payor;
-    /**
-     * The actual objects that are the target of the reference (The program or plan underwriter or payor including both insurance and non-insurance agreements, such as patient-pay agreements.)
-     */
-    protected List<Resource> payorTarget;
-
 
     /**
      * A suite of underwriter specific classifiers.
@@ -1157,13 +1152,8 @@ public class Coverage extends DomainResource {
     @Child(name = "contract", type = {Contract.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Contract details", formalDefinition="The policy(s) which constitute this insurance coverage." )
     protected List<Reference> contract;
-    /**
-     * The actual objects that are the target of the reference (The policy(s) which constitute this insurance coverage.)
-     */
-    protected List<Contract> contractTarget;
 
-
-    private static final long serialVersionUID = 212315315L;
+    private static final long serialVersionUID = -97007467L;
 
   /**
    * Constructor
@@ -1328,21 +1318,6 @@ public class Coverage extends DomainResource {
     }
 
     /**
-     * @return {@link #policyHolder} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who 'owns' the insurance policy.)
-     */
-    public Resource getPolicyHolderTarget() { 
-      return this.policyHolderTarget;
-    }
-
-    /**
-     * @param value {@link #policyHolder} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who 'owns' the insurance policy.)
-     */
-    public Coverage setPolicyHolderTarget(Resource value) { 
-      this.policyHolderTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #subscriber} (The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.)
      */
     public Reference getSubscriber() { 
@@ -1367,34 +1342,15 @@ public class Coverage extends DomainResource {
     }
 
     /**
-     * @return {@link #subscriber} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.)
+     * @return {@link #subscriberId} (The insurer assigned ID for the Subscriber.)
      */
-    public Resource getSubscriberTarget() { 
-      return this.subscriberTarget;
-    }
-
-    /**
-     * @param value {@link #subscriber} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.)
-     */
-    public Coverage setSubscriberTarget(Resource value) { 
-      this.subscriberTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #subscriberId} (The insurer assigned ID for the Subscriber.). This is the underlying object with id, value and extensions. The accessor "getSubscriberId" gives direct access to the value
-     */
-    public StringType getSubscriberIdElement() { 
+    public Identifier getSubscriberId() { 
       if (this.subscriberId == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Coverage.subscriberId");
         else if (Configuration.doAutoCreate())
-          this.subscriberId = new StringType(); // bb
+          this.subscriberId = new Identifier(); // cc
       return this.subscriberId;
-    }
-
-    public boolean hasSubscriberIdElement() { 
-      return this.subscriberId != null && !this.subscriberId.isEmpty();
     }
 
     public boolean hasSubscriberId() { 
@@ -1402,31 +1358,10 @@ public class Coverage extends DomainResource {
     }
 
     /**
-     * @param value {@link #subscriberId} (The insurer assigned ID for the Subscriber.). This is the underlying object with id, value and extensions. The accessor "getSubscriberId" gives direct access to the value
+     * @param value {@link #subscriberId} (The insurer assigned ID for the Subscriber.)
      */
-    public Coverage setSubscriberIdElement(StringType value) { 
+    public Coverage setSubscriberId(Identifier value) { 
       this.subscriberId = value;
-      return this;
-    }
-
-    /**
-     * @return The insurer assigned ID for the Subscriber.
-     */
-    public String getSubscriberId() { 
-      return this.subscriberId == null ? null : this.subscriberId.getValue();
-    }
-
-    /**
-     * @param value The insurer assigned ID for the Subscriber.
-     */
-    public Coverage setSubscriberId(String value) { 
-      if (Utilities.noString(value))
-        this.subscriberId = null;
-      else {
-        if (this.subscriberId == null)
-          this.subscriberId = new StringType();
-        this.subscriberId.setValue(value);
-      }
       return this;
     }
 
@@ -1455,27 +1390,7 @@ public class Coverage extends DomainResource {
     }
 
     /**
-     * @return {@link #beneficiary} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party who benefits from the insurance coverage; the patient when products and/or services are provided.)
-     */
-    public Patient getBeneficiaryTarget() { 
-      if (this.beneficiaryTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Coverage.beneficiary");
-        else if (Configuration.doAutoCreate())
-          this.beneficiaryTarget = new Patient(); // aa
-      return this.beneficiaryTarget;
-    }
-
-    /**
-     * @param value {@link #beneficiary} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party who benefits from the insurance coverage; the patient when products and/or services are provided.)
-     */
-    public Coverage setBeneficiaryTarget(Patient value) { 
-      this.beneficiaryTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #dependent} (A unique identifier for a dependent under the coverage.). This is the underlying object with id, value and extensions. The accessor "getDependent" gives direct access to the value
+     * @return {@link #dependent} (A designator for a dependent under the coverage.). This is the underlying object with id, value and extensions. The accessor "getDependent" gives direct access to the value
      */
     public StringType getDependentElement() { 
       if (this.dependent == null)
@@ -1495,7 +1410,7 @@ public class Coverage extends DomainResource {
     }
 
     /**
-     * @param value {@link #dependent} (A unique identifier for a dependent under the coverage.). This is the underlying object with id, value and extensions. The accessor "getDependent" gives direct access to the value
+     * @param value {@link #dependent} (A designator for a dependent under the coverage.). This is the underlying object with id, value and extensions. The accessor "getDependent" gives direct access to the value
      */
     public Coverage setDependentElement(StringType value) { 
       this.dependent = value;
@@ -1503,14 +1418,14 @@ public class Coverage extends DomainResource {
     }
 
     /**
-     * @return A unique identifier for a dependent under the coverage.
+     * @return A designator for a dependent under the coverage.
      */
     public String getDependent() { 
       return this.dependent == null ? null : this.dependent.getValue();
     }
 
     /**
-     * @param value A unique identifier for a dependent under the coverage.
+     * @param value A designator for a dependent under the coverage.
      */
     public Coverage setDependent(String value) { 
       if (Utilities.noString(value))
@@ -1622,16 +1537,6 @@ public class Coverage extends DomainResource {
         addPayor();
       }
       return getPayor().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPayorTarget() { 
-      if (this.payorTarget == null)
-        this.payorTarget = new ArrayList<Resource>();
-      return this.payorTarget;
     }
 
     /**
@@ -1932,28 +1837,6 @@ public class Coverage extends DomainResource {
       return getContract().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Contract> getContractTarget() { 
-      if (this.contractTarget == null)
-        this.contractTarget = new ArrayList<Contract>();
-      return this.contractTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Contract addContractTarget() { 
-      Contract r = new Contract();
-      if (this.contractTarget == null)
-        this.contractTarget = new ArrayList<Contract>();
-      this.contractTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A unique identifier assigned to this coverage.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -1961,9 +1844,9 @@ public class Coverage extends DomainResource {
         children.add(new Property("type", "CodeableConcept", "The type of coverage: social program, medical plan, accident coverage (workers compensation, auto), group health or payment by an individual or organization.", 0, 1, type));
         children.add(new Property("policyHolder", "Reference(Patient|RelatedPerson|Organization)", "The party who 'owns' the insurance policy.", 0, 1, policyHolder));
         children.add(new Property("subscriber", "Reference(Patient|RelatedPerson)", "The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.", 0, 1, subscriber));
-        children.add(new Property("subscriberId", "string", "The insurer assigned ID for the Subscriber.", 0, 1, subscriberId));
+        children.add(new Property("subscriberId", "Identifier", "The insurer assigned ID for the Subscriber.", 0, 1, subscriberId));
         children.add(new Property("beneficiary", "Reference(Patient)", "The party who benefits from the insurance coverage; the patient when products and/or services are provided.", 0, 1, beneficiary));
-        children.add(new Property("dependent", "string", "A unique identifier for a dependent under the coverage.", 0, 1, dependent));
+        children.add(new Property("dependent", "string", "A designator for a dependent under the coverage.", 0, 1, dependent));
         children.add(new Property("relationship", "CodeableConcept", "The relationship of beneficiary (patient) to the subscriber.", 0, 1, relationship));
         children.add(new Property("period", "Period", "Time period during which the coverage is in force. A missing start date indicates the start date isn't known, a missing end date means the coverage is continuing to be in force.", 0, 1, period));
         children.add(new Property("payor", "Reference(Organization|Patient|RelatedPerson)", "The program or plan underwriter or payor including both insurance and non-insurance agreements, such as patient-pay agreements.", 0, java.lang.Integer.MAX_VALUE, payor));
@@ -1983,9 +1866,9 @@ public class Coverage extends DomainResource {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of coverage: social program, medical plan, accident coverage (workers compensation, auto), group health or payment by an individual or organization.", 0, 1, type);
         case 2046898558: /*policyHolder*/  return new Property("policyHolder", "Reference(Patient|RelatedPerson|Organization)", "The party who 'owns' the insurance policy.", 0, 1, policyHolder);
         case -1219769240: /*subscriber*/  return new Property("subscriber", "Reference(Patient|RelatedPerson)", "The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due.", 0, 1, subscriber);
-        case 327834531: /*subscriberId*/  return new Property("subscriberId", "string", "The insurer assigned ID for the Subscriber.", 0, 1, subscriberId);
+        case 327834531: /*subscriberId*/  return new Property("subscriberId", "Identifier", "The insurer assigned ID for the Subscriber.", 0, 1, subscriberId);
         case -565102875: /*beneficiary*/  return new Property("beneficiary", "Reference(Patient)", "The party who benefits from the insurance coverage; the patient when products and/or services are provided.", 0, 1, beneficiary);
-        case -1109226753: /*dependent*/  return new Property("dependent", "string", "A unique identifier for a dependent under the coverage.", 0, 1, dependent);
+        case -1109226753: /*dependent*/  return new Property("dependent", "string", "A designator for a dependent under the coverage.", 0, 1, dependent);
         case -261851592: /*relationship*/  return new Property("relationship", "CodeableConcept", "The relationship of beneficiary (patient) to the subscriber.", 0, 1, relationship);
         case -991726143: /*period*/  return new Property("period", "Period", "Time period during which the coverage is in force. A missing start date indicates the start date isn't known, a missing end date means the coverage is continuing to be in force.", 0, 1, period);
         case 106443915: /*payor*/  return new Property("payor", "Reference(Organization|Patient|RelatedPerson)", "The program or plan underwriter or payor including both insurance and non-insurance agreements, such as patient-pay agreements.", 0, java.lang.Integer.MAX_VALUE, payor);
@@ -2008,7 +1891,7 @@ public class Coverage extends DomainResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 2046898558: /*policyHolder*/ return this.policyHolder == null ? new Base[0] : new Base[] {this.policyHolder}; // Reference
         case -1219769240: /*subscriber*/ return this.subscriber == null ? new Base[0] : new Base[] {this.subscriber}; // Reference
-        case 327834531: /*subscriberId*/ return this.subscriberId == null ? new Base[0] : new Base[] {this.subscriberId}; // StringType
+        case 327834531: /*subscriberId*/ return this.subscriberId == null ? new Base[0] : new Base[] {this.subscriberId}; // Identifier
         case -565102875: /*beneficiary*/ return this.beneficiary == null ? new Base[0] : new Base[] {this.beneficiary}; // Reference
         case -1109226753: /*dependent*/ return this.dependent == null ? new Base[0] : new Base[] {this.dependent}; // StringType
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // CodeableConcept
@@ -2045,7 +1928,7 @@ public class Coverage extends DomainResource {
           this.subscriber = castToReference(value); // Reference
           return value;
         case 327834531: // subscriberId
-          this.subscriberId = castToString(value); // StringType
+          this.subscriberId = castToIdentifier(value); // Identifier
           return value;
         case -565102875: // beneficiary
           this.beneficiary = castToReference(value); // Reference
@@ -2099,7 +1982,7 @@ public class Coverage extends DomainResource {
         } else if (name.equals("subscriber")) {
           this.subscriber = castToReference(value); // Reference
         } else if (name.equals("subscriberId")) {
-          this.subscriberId = castToString(value); // StringType
+          this.subscriberId = castToIdentifier(value); // Identifier
         } else if (name.equals("beneficiary")) {
           this.beneficiary = castToReference(value); // Reference
         } else if (name.equals("dependent")) {
@@ -2132,14 +2015,14 @@ public class Coverage extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
-        case 2046898558:  return getPolicyHolder(); 
-        case -1219769240:  return getSubscriber(); 
-        case 327834531:  return getSubscriberIdElement();
-        case -565102875:  return getBeneficiary(); 
+        case 3575610:  return getType();
+        case 2046898558:  return getPolicyHolder();
+        case -1219769240:  return getSubscriber();
+        case 327834531:  return getSubscriberId();
+        case -565102875:  return getBeneficiary();
         case -1109226753:  return getDependentElement();
-        case -261851592:  return getRelationship(); 
-        case -991726143:  return getPeriod(); 
+        case -261851592:  return getRelationship();
+        case -991726143:  return getPeriod();
         case 106443915:  return addPayor(); 
         case 94742904:  return addClass_(); 
         case 106006350:  return getOrderElement();
@@ -2160,7 +2043,7 @@ public class Coverage extends DomainResource {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 2046898558: /*policyHolder*/ return new String[] {"Reference"};
         case -1219769240: /*subscriber*/ return new String[] {"Reference"};
-        case 327834531: /*subscriberId*/ return new String[] {"string"};
+        case 327834531: /*subscriberId*/ return new String[] {"Identifier"};
         case -565102875: /*beneficiary*/ return new String[] {"Reference"};
         case -1109226753: /*dependent*/ return new String[] {"string"};
         case -261851592: /*relationship*/ return new String[] {"CodeableConcept"};
@@ -2198,7 +2081,8 @@ public class Coverage extends DomainResource {
           return this.subscriber;
         }
         else if (name.equals("subscriberId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subscriberId");
+          this.subscriberId = new Identifier();
+          return this.subscriberId;
         }
         else if (name.equals("beneficiary")) {
           this.beneficiary = new Reference();
@@ -2248,6 +2132,11 @@ public class Coverage extends DomainResource {
       public Coverage copy() {
         Coverage dst = new Coverage();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Coverage dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2285,7 +2174,6 @@ public class Coverage extends DomainResource {
           for (Reference i : contract)
             dst.contract.add(i.copy());
         };
-        return dst;
       }
 
       protected Coverage typedCopy() {
@@ -2315,9 +2203,8 @@ public class Coverage extends DomainResource {
         if (!(other_ instanceof Coverage))
           return false;
         Coverage o = (Coverage) other_;
-        return compareValues(status, o.status, true) && compareValues(subscriberId, o.subscriberId, true) && compareValues(dependent, o.dependent, true)
-           && compareValues(order, o.order, true) && compareValues(network, o.network, true) && compareValues(subrogation, o.subrogation, true)
-          ;
+        return compareValues(status, o.status, true) && compareValues(dependent, o.dependent, true) && compareValues(order, o.order, true)
+           && compareValues(network, o.network, true) && compareValues(subrogation, o.subrogation, true);
       }
 
       public boolean isEmpty() {

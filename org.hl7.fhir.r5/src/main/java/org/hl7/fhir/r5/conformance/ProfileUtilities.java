@@ -429,7 +429,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw new DefinitionException("Base profile "+base.getUrl()+" has no type");
     if (!derived.hasType())
       throw new DefinitionException("Derived profile "+derived.getUrl()+" has no type");
-    if (!base.getType().equals(derived.getType()))
+    if (!base.getType().equals(derived.getType()) && derived.getDerivation().equals(TypeDerivationRule.CONSTRAINT))
       throw new DefinitionException("Base & Derived profiles have different types ("+base.getUrl()+" = "+base.getType()+" vs "+derived.getUrl()+" = "+derived.getType()+")");
       
     if (snapshotStack.contains(derived.getUrl()))
@@ -461,9 +461,22 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
       StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-
-      processPaths("", derived.getSnapshot(), base.getSnapshot(), diff, baseCursor, diffCursor, base.getSnapshot().getElement().size()-1, 
+      StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
+      if (derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
+        baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derived.getType());
+      }
+      processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, new ArrayList<ElementRedirection>(), base);
+      if (derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
+        for (ElementDefinition e : diff.getElement()) {
+          if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
+            ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
+            e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
+            derived.getSnapshot().addElement(outcome);
+          }
+        }
+      }
+      
       if (!derived.getSnapshot().getElementFirstRep().getType().isEmpty())
         throw new Error("type on first snapshot element for "+derived.getSnapshot().getElementFirstRep().getPath()+" in "+derived.getUrl()+" from "+base.getUrl());
       updateMaps(base, derived);
@@ -519,6 +532,16 @@ public class ProfileUtilities extends TranslatingUtilities {
     return diff;
   }
 
+  private StructureDefinitionSnapshotComponent cloneSnapshot(StructureDefinitionSnapshotComponent source, String baseType, String derivedType) {
+  	StructureDefinitionSnapshotComponent diff = new StructureDefinitionSnapshotComponent();
+    for (ElementDefinition sed : source.getElement()) {
+      ElementDefinition ted = sed.copy();
+      ted.setId(ted.getId().replaceFirst(baseType,derivedType));
+      ted.setPath(ted.getPath().replaceFirst(baseType,derivedType));
+      diff.getElement().add(ted);
+    }
+    return diff;
+  }
 
   private String constraintSummary(ElementDefinition ed) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();

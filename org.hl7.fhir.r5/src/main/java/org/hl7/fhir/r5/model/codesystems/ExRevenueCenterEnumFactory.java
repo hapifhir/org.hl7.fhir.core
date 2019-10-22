@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -60,46 +59,22 @@ public class ExRevenueCenterEnumFactory implements EnumFactory<ExRevenueCenter> 
   public ExRevenueCenter fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
-    if ("0370".equals(codeString))
-      return ExRevenueCenter._0370;
-    if ("0420".equals(codeString))
-      return ExRevenueCenter._0420;
-    if ("0421".equals(codeString))
-      return ExRevenueCenter._0421;
-    if ("0440".equals(codeString))
-      return ExRevenueCenter._0440;
-    if ("0441".equals(codeString))
-      return ExRevenueCenter._0441;
-    if ("0450".equals(codeString))
-      return ExRevenueCenter._0450;
-    if ("0451".equals(codeString))
-      return ExRevenueCenter._0451;
-    if ("0452".equals(codeString))
-      return ExRevenueCenter._0452;
     if ("0010".equals(codeString))
       return ExRevenueCenter._0010;
+    if ("0011".equals(codeString))
+      return ExRevenueCenter._0011;
+    if ("1001".equals(codeString))
+      return ExRevenueCenter._1001;
     throw new IllegalArgumentException("Unknown ExRevenueCenter code '"+codeString+"'");
   }
 
   public String toCode(ExRevenueCenter code) {
-    if (code == ExRevenueCenter._0370)
-      return "0370";
-    if (code == ExRevenueCenter._0420)
-      return "0420";
-    if (code == ExRevenueCenter._0421)
-      return "0421";
-    if (code == ExRevenueCenter._0440)
-      return "0440";
-    if (code == ExRevenueCenter._0441)
-      return "0441";
-    if (code == ExRevenueCenter._0450)
-      return "0450";
-    if (code == ExRevenueCenter._0451)
-      return "0451";
-    if (code == ExRevenueCenter._0452)
-      return "0452";
     if (code == ExRevenueCenter._0010)
       return "0010";
+    if (code == ExRevenueCenter._0011)
+      return "0011";
+    if (code == ExRevenueCenter._1001)
+      return "1001";
     return "?";
   }
 

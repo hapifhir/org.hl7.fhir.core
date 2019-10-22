@@ -75,8 +75,6 @@ public class CareTeam extends VersionConvertor_40_50 {
       tgt.setNameElement(convertString(src.getNameElement()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
     if (src.hasPeriod())
       tgt.setPeriod(convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
@@ -109,8 +107,6 @@ public class CareTeam extends VersionConvertor_40_50 {
       tgt.setNameElement(convertString(src.getNameElement()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
     if (src.hasPeriod())
       tgt.setPeriod(convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
@@ -160,13 +156,13 @@ public class CareTeam extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole())
-      tgt.addRole(convertCodeableConcept(t));
+      tgt.setRole(convertCodeableConcept(t));
     if (src.hasMember())
       tgt.setMember(convertReference(src.getMember()));
     if (src.hasOnBehalfOf())
       tgt.setOnBehalfOf(convertReference(src.getOnBehalfOf()));
     if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
+      tgt.setCoverage(convertPeriod(src.getPeriod()));
     return tgt;
   }
 
@@ -175,14 +171,14 @@ public class CareTeam extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent();
     copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRole())
-      tgt.addRole(convertCodeableConcept(t));
+    if (src.hasRole())
+      tgt.addRole(convertCodeableConcept(src.getRole()));
     if (src.hasMember())
       tgt.setMember(convertReference(src.getMember()));
     if (src.hasOnBehalfOf())
       tgt.setOnBehalfOf(convertReference(src.getOnBehalfOf()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
+    if (src.hasCoveragePeriod())
+      tgt.setPeriod(convertPeriod(src.getCoveragePeriod()));
     return tgt;
   }
 

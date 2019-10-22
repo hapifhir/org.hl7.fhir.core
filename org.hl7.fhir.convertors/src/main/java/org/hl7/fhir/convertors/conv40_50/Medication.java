@@ -74,7 +74,7 @@ public class Medication extends VersionConvertor_40_50 {
     if (src.hasManufacturer())
       tgt.setManufacturer(convertReference(src.getManufacturer()));
     if (src.hasForm())
-      tgt.setForm(convertCodeableConcept(src.getForm()));
+      tgt.setDoseForm(convertCodeableConcept(src.getForm()));
     if (src.hasAmount())
       tgt.setAmount(convertRatio(src.getAmount()));
     for (org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent t : src.getIngredient())
@@ -97,8 +97,8 @@ public class Medication extends VersionConvertor_40_50 {
       tgt.setStatus(convertMedicationStatus(src.getStatus()));
     if (src.hasManufacturer())
       tgt.setManufacturer(convertReference(src.getManufacturer()));
-    if (src.hasForm())
-      tgt.setForm(convertCodeableConcept(src.getForm()));
+    if (src.hasDoseForm())
+      tgt.setForm(convertCodeableConcept(src.getDoseForm()));
     if (src.hasAmount())
       tgt.setAmount(convertRatio(src.getAmount()));
     for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient())
@@ -153,8 +153,8 @@ public class Medication extends VersionConvertor_40_50 {
       tgt.setItem(convertType(src.getItem()));
     if (src.hasIsActive())
       tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
-    if (src.hasStrength())
-      tgt.setStrength(convertRatio(src.getStrength()));
+    if (src.hasStrengthRatio())
+      tgt.setStrength(convertRatio(src.getStrengthRatio()));
     return tgt;
   }
 

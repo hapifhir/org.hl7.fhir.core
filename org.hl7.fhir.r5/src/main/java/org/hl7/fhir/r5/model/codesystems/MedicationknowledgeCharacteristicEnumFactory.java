@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.model.codesystems;
 
-/*-
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
@@ -19,7 +19,6 @@ package org.hl7.fhir.r5.model.codesystems;
  * limitations under the License.
  * #L%
  */
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -50,7 +49,7 @@ package org.hl7.fhir.r5.model.codesystems;
   
 */
 
-// Generated on Sun, Jun 30, 2019 16:52-0400 for FHIR v4.1.0
+// Generated on Thu, Oct 17, 2019 09:42+1100 for FHIR v4.1.0
 
 
 import org.hl7.fhir.r5.model.EnumFactory;
@@ -74,6 +73,8 @@ public class MedicationknowledgeCharacteristicEnumFactory implements EnumFactory
       return MedicationknowledgeCharacteristic.SCORING;
     if ("logo".equals(codeString))
       return MedicationknowledgeCharacteristic.LOGO;
+    if ("image".equals(codeString))
+      return MedicationknowledgeCharacteristic.IMAGE;
     throw new IllegalArgumentException("Unknown MedicationknowledgeCharacteristic code '"+codeString+"'");
   }
 
@@ -92,6 +93,8 @@ public class MedicationknowledgeCharacteristicEnumFactory implements EnumFactory
       return "scoring";
     if (code == MedicationknowledgeCharacteristic.LOGO)
       return "logo";
+    if (code == MedicationknowledgeCharacteristic.IMAGE)
+      return "image";
     return "?";
   }
 

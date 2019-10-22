@@ -50,14 +50,18 @@ package org.hl7.fhir.r5.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Specifies clinical/business/etc. metadata that can be used to retrieve, index and/or categorize an artifact. This metadata can either be specific to the applicable population (e.g., age category, DRG) or the specific context of care (e.g., venue, care setting, provider of care).
  */
@@ -262,9 +266,9 @@ public class UsageContext extends Type implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case 3059181:  return getCode();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -314,9 +318,13 @@ public class UsageContext extends Type implements ICompositeType {
       public UsageContext copy() {
         UsageContext dst = new UsageContext();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(UsageContext dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       protected UsageContext typedCopy() {

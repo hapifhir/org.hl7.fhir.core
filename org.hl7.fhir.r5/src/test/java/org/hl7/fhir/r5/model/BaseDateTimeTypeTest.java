@@ -78,6 +78,21 @@ public class BaseDateTimeTypeTest {
         assertFalse(compareDateTimes("2016-12-02T13:00:00Z", "2016-12-02T10:00:00")); // no timezone, might be the same time
     }
 
+    @Test
+    public void testToHumanDisplayForDateOnlyPrecisions() {
+      assertEquals("2019-01-02", new DateTimeType("2019-01-02").toHumanDisplay());
+      assertEquals("2019-01", new DateTimeType("2019-01").toHumanDisplay());
+      assertEquals("2019", new DateTimeType("2019").toHumanDisplay());
+    }
+
+  @Test
+  public void testToHumanDisplayLocalTimezoneForDateOnlyPrecisions() {
+    assertEquals("2019-01-02", new DateTimeType("2019-01-02").toHumanDisplayLocalTimezone());
+    assertEquals("2019-01", new DateTimeType("2019-01").toHumanDisplayLocalTimezone());
+    assertEquals("2019", new DateTimeType("2019").toHumanDisplayLocalTimezone());
+  }
+
+
     private Boolean compareDateTimes(String theLeft, String theRight) {
       System.out.println("Compare "+theLeft+" to "+theRight);
       DateTimeType leftDt = new DateTimeType(theLeft);

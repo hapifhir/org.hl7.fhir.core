@@ -53,21 +53,147 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
- * Actual or  potential/avoided event causing unintended physical injury resulting from or contributed to by medical care, a research study or other healthcare setting factors that requires additional monitoring, treatment, or hospitalization, or that results in death.
+ * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject.  The unintended effects may require additional monitoring, treatment or hospitalization or may result in death.  The AdverseEvent resource also extends to potential or avoided events that could have had such effects.
  */
 @ResourceDef(name="AdverseEvent", profile="http://hl7.org/fhir/StructureDefinition/AdverseEvent")
 public class AdverseEvent extends DomainResource {
+
+    public enum AdverseEventStatus {
+        /**
+         * null
+         */
+        INPROGRESS, 
+        /**
+         * null
+         */
+        COMPLETED, 
+        /**
+         * null
+         */
+        ENTEREDINERROR, 
+        /**
+         * null
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static AdverseEventStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown AdverseEventStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case UNKNOWN: return "unknown";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case INPROGRESS: return "http://hl7.org/fhir/event-status";
+            case COMPLETED: return "http://hl7.org/fhir/event-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/event-status";
+            case UNKNOWN: return "http://hl7.org/fhir/event-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "";
+            case COMPLETED: return "";
+            case ENTEREDINERROR: return "";
+            case UNKNOWN: return "";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case UNKNOWN: return "unknown";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class AdverseEventStatusEnumFactory implements EnumFactory<AdverseEventStatus> {
+    public AdverseEventStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return AdverseEventStatus.INPROGRESS;
+        if ("completed".equals(codeString))
+          return AdverseEventStatus.COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return AdverseEventStatus.ENTEREDINERROR;
+        if ("unknown".equals(codeString))
+          return AdverseEventStatus.UNKNOWN;
+        throw new IllegalArgumentException("Unknown AdverseEventStatus code '"+codeString+"'");
+        }
+        public Enumeration<AdverseEventStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<AdverseEventStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("in-progress".equals(codeString))
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.INPROGRESS);
+        if ("completed".equals(codeString))
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.COMPLETED);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.ENTEREDINERROR);
+        if ("unknown".equals(codeString))
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.UNKNOWN);
+        throw new FHIRException("Unknown AdverseEventStatus code '"+codeString+"'");
+        }
+    public String toCode(AdverseEventStatus code) {
+      if (code == AdverseEventStatus.INPROGRESS)
+        return "in-progress";
+      if (code == AdverseEventStatus.COMPLETED)
+        return "completed";
+      if (code == AdverseEventStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == AdverseEventStatus.UNKNOWN)
+        return "unknown";
+      return "?";
+      }
+    public String toSystem(AdverseEventStatus code) {
+      return code.getSystem();
+      }
+    }
 
     public enum AdverseEventActuality {
         /**
@@ -162,27 +288,232 @@ public class AdverseEvent extends DomainResource {
     }
 
     @Block()
+    public static class AdverseEventParticipantComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant.
+         */
+        @Child(name = "function", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Type of involvement", formalDefinition="Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-participant-function")
+        protected CodeableConcept function;
+
+        /**
+         * Indicates who or what participated in the event.
+         */
+        @Child(name = "actor", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, Patient.class, Device.class, RelatedPerson.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Who was involved in the adverse event or the potential adverse event", formalDefinition="Indicates who or what participated in the event." )
+        protected Reference actor;
+
+        private static final long serialVersionUID = -576943815L;
+
+    /**
+     * Constructor
+     */
+      public AdverseEventParticipantComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AdverseEventParticipantComponent(Reference actor) {
+        super();
+        this.actor = actor;
+      }
+
+        /**
+         * @return {@link #function} (Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant.)
+         */
+        public CodeableConcept getFunction() { 
+          if (this.function == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdverseEventParticipantComponent.function");
+            else if (Configuration.doAutoCreate())
+              this.function = new CodeableConcept(); // cc
+          return this.function;
+        }
+
+        public boolean hasFunction() { 
+          return this.function != null && !this.function.isEmpty();
+        }
+
+        /**
+         * @param value {@link #function} (Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant.)
+         */
+        public AdverseEventParticipantComponent setFunction(CodeableConcept value) { 
+          this.function = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #actor} (Indicates who or what participated in the event.)
+         */
+        public Reference getActor() { 
+          if (this.actor == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdverseEventParticipantComponent.actor");
+            else if (Configuration.doAutoCreate())
+              this.actor = new Reference(); // cc
+          return this.actor;
+        }
+
+        public boolean hasActor() { 
+          return this.actor != null && !this.actor.isEmpty();
+        }
+
+        /**
+         * @param value {@link #actor} (Indicates who or what participated in the event.)
+         */
+        public AdverseEventParticipantComponent setActor(Reference value) { 
+          this.actor = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant.", 0, 1, function));
+          children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "Indicates who or what participated in the event.", 0, 1, actor));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant.", 0, 1, function);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "Indicates who or what participated in the event.", 0, 1, actor);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 1380938712: /*function*/ return this.function == null ? new Base[0] : new Base[] {this.function}; // CodeableConcept
+        case 92645877: /*actor*/ return this.actor == null ? new Base[0] : new Base[] {this.actor}; // Reference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 1380938712: // function
+          this.function = castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 92645877: // actor
+          this.actor = castToReference(value); // Reference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("actor")) {
+          this.actor = castToReference(value); // Reference
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1380938712:  return getFunction();
+        case 92645877:  return getActor();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
+        case 92645877: /*actor*/ return new String[] {"Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = new CodeableConcept();
+          return this.function;
+        }
+        else if (name.equals("actor")) {
+          this.actor = new Reference();
+          return this.actor;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AdverseEventParticipantComponent copy() {
+        AdverseEventParticipantComponent dst = new AdverseEventParticipantComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdverseEventParticipantComponent dst) {
+        super.copyValues(dst);
+        dst.function = function == null ? null : function.copy();
+        dst.actor = actor == null ? null : actor.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AdverseEventParticipantComponent))
+          return false;
+        AdverseEventParticipantComponent o = (AdverseEventParticipantComponent) other_;
+        return compareDeep(function, o.function, true) && compareDeep(actor, o.actor, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AdverseEventParticipantComponent))
+          return false;
+        AdverseEventParticipantComponent o = (AdverseEventParticipantComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(function, actor);
+      }
+
+  public String fhirType() {
+    return "AdverseEvent.participant";
+
+  }
+
+  }
+
+    @Block()
     public static class AdverseEventSuspectEntityComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.
          */
-        @Child(name = "instance", type = {Immunization.class, Procedure.class, Substance.class, Medication.class, MedicationAdministration.class, MedicationStatement.class, Device.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "instance", type = {CodeableConcept.class, Immunization.class, Procedure.class, Substance.class, Medication.class, MedicationAdministration.class, MedicationUsage.class, Device.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Refers to the specific entity that caused the adverse event", formalDefinition="Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device." )
-        protected Reference instance;
-
-        /**
-         * The actual object that is the target of the reference (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
-         */
-        protected Resource instanceTarget;
+        protected Type instance;
 
         /**
          * Information on the possible cause of the event.
          */
-        @Child(name = "causality", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "causality", type = {}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Information on the possible cause of the event", formalDefinition="Information on the possible cause of the event." )
-        protected List<AdverseEventSuspectEntityCausalityComponent> causality;
+        protected AdverseEventSuspectEntityCausalityComponent causality;
 
-        private static final long serialVersionUID = 1245759325L;
+        private static final long serialVersionUID = -1692034806L;
 
     /**
      * Constructor
@@ -194,7 +525,7 @@ public class AdverseEvent extends DomainResource {
     /**
      * Constructor
      */
-      public AdverseEventSuspectEntityComponent(Reference instance) {
+      public AdverseEventSuspectEntityComponent(Type instance) {
         super();
         this.instance = instance;
       }
@@ -202,13 +533,38 @@ public class AdverseEvent extends DomainResource {
         /**
          * @return {@link #instance} (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
          */
-        public Reference getInstance() { 
-          if (this.instance == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AdverseEventSuspectEntityComponent.instance");
-            else if (Configuration.doAutoCreate())
-              this.instance = new Reference(); // cc
+        public Type getInstance() { 
           return this.instance;
+        }
+
+        /**
+         * @return {@link #instance} (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
+         */
+        public CodeableConcept getInstanceCodeableConcept() throws FHIRException { 
+          if (this.instance == null)
+            this.instance = new CodeableConcept();
+          if (!(this.instance instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.instance.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.instance;
+        }
+
+        public boolean hasInstanceCodeableConcept() { 
+          return this != null && this.instance instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #instance} (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
+         */
+        public Reference getInstanceReference() throws FHIRException { 
+          if (this.instance == null)
+            this.instance = new Reference();
+          if (!(this.instance instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.instance.getClass().getName()+" was encountered");
+          return (Reference) this.instance;
+        }
+
+        public boolean hasInstanceReference() { 
+          return this != null && this.instance instanceof Reference;
         }
 
         public boolean hasInstance() { 
@@ -218,90 +574,51 @@ public class AdverseEvent extends DomainResource {
         /**
          * @param value {@link #instance} (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
          */
-        public AdverseEventSuspectEntityComponent setInstance(Reference value) { 
+        public AdverseEventSuspectEntityComponent setInstance(Type value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
+            throw new Error("Not the right type for AdverseEvent.suspectEntity.instance[x]: "+value.fhirType());
           this.instance = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #instance} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
-         */
-        public Resource getInstanceTarget() { 
-          return this.instanceTarget;
-        }
-
-        /**
-         * @param value {@link #instance} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
-         */
-        public AdverseEventSuspectEntityComponent setInstanceTarget(Resource value) { 
-          this.instanceTarget = value;
           return this;
         }
 
         /**
          * @return {@link #causality} (Information on the possible cause of the event.)
          */
-        public List<AdverseEventSuspectEntityCausalityComponent> getCausality() { 
+        public AdverseEventSuspectEntityCausalityComponent getCausality() { 
           if (this.causality == null)
-            this.causality = new ArrayList<AdverseEventSuspectEntityCausalityComponent>();
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdverseEventSuspectEntityComponent.causality");
+            else if (Configuration.doAutoCreate())
+              this.causality = new AdverseEventSuspectEntityCausalityComponent(); // cc
           return this.causality;
         }
 
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public AdverseEventSuspectEntityComponent setCausality(List<AdverseEventSuspectEntityCausalityComponent> theCausality) { 
-          this.causality = theCausality;
-          return this;
-        }
-
         public boolean hasCausality() { 
-          if (this.causality == null)
-            return false;
-          for (AdverseEventSuspectEntityCausalityComponent item : this.causality)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public AdverseEventSuspectEntityCausalityComponent addCausality() { //3
-          AdverseEventSuspectEntityCausalityComponent t = new AdverseEventSuspectEntityCausalityComponent();
-          if (this.causality == null)
-            this.causality = new ArrayList<AdverseEventSuspectEntityCausalityComponent>();
-          this.causality.add(t);
-          return t;
-        }
-
-        public AdverseEventSuspectEntityComponent addCausality(AdverseEventSuspectEntityCausalityComponent t) { //3
-          if (t == null)
-            return this;
-          if (this.causality == null)
-            this.causality = new ArrayList<AdverseEventSuspectEntityCausalityComponent>();
-          this.causality.add(t);
-          return this;
+          return this.causality != null && !this.causality.isEmpty();
         }
 
         /**
-         * @return The first repetition of repeating field {@link #causality}, creating it if it does not already exist
+         * @param value {@link #causality} (Information on the possible cause of the event.)
          */
-        public AdverseEventSuspectEntityCausalityComponent getCausalityFirstRep() { 
-          if (getCausality().isEmpty()) {
-            addCausality();
-          }
-          return getCausality().get(0);
+        public AdverseEventSuspectEntityComponent setCausality(AdverseEventSuspectEntityCausalityComponent value) { 
+          this.causality = value;
+          return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("instance", "Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationStatement|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance));
-          children.add(new Property("causality", "", "Information on the possible cause of the event.", 0, java.lang.Integer.MAX_VALUE, causality));
+          children.add(new Property("instance[x]", "CodeableConcept|Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationUsage|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance));
+          children.add(new Property("causality", "", "Information on the possible cause of the event.", 0, 1, causality));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 555127957: /*instance*/  return new Property("instance", "Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationStatement|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance);
-          case -1446450521: /*causality*/  return new Property("causality", "", "Information on the possible cause of the event.", 0, java.lang.Integer.MAX_VALUE, causality);
+          case -2101998645: /*instance[x]*/  return new Property("instance[x]", "CodeableConcept|Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationUsage|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance);
+          case 555127957: /*instance*/  return new Property("instance[x]", "CodeableConcept|Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationUsage|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance);
+          case 697546316: /*instanceCodeableConcept*/  return new Property("instance[x]", "CodeableConcept|Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationUsage|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance);
+          case -1675877834: /*instanceReference*/  return new Property("instance[x]", "CodeableConcept|Reference(Immunization|Procedure|Substance|Medication|MedicationAdministration|MedicationUsage|Device)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance);
+          case -1446450521: /*causality*/  return new Property("causality", "", "Information on the possible cause of the event.", 0, 1, causality);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -310,8 +627,8 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 555127957: /*instance*/ return this.instance == null ? new Base[0] : new Base[] {this.instance}; // Reference
-        case -1446450521: /*causality*/ return this.causality == null ? new Base[0] : this.causality.toArray(new Base[this.causality.size()]); // AdverseEventSuspectEntityCausalityComponent
+        case 555127957: /*instance*/ return this.instance == null ? new Base[0] : new Base[] {this.instance}; // Type
+        case -1446450521: /*causality*/ return this.causality == null ? new Base[0] : new Base[] {this.causality}; // AdverseEventSuspectEntityCausalityComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -321,10 +638,10 @@ public class AdverseEvent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 555127957: // instance
-          this.instance = castToReference(value); // Reference
+          this.instance = castToType(value); // Type
           return value;
         case -1446450521: // causality
-          this.getCausality().add((AdverseEventSuspectEntityCausalityComponent) value); // AdverseEventSuspectEntityCausalityComponent
+          this.causality = (AdverseEventSuspectEntityCausalityComponent) value; // AdverseEventSuspectEntityCausalityComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -333,10 +650,10 @@ public class AdverseEvent extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("instance")) {
-          this.instance = castToReference(value); // Reference
+        if (name.equals("instance[x]")) {
+          this.instance = castToType(value); // Type
         } else if (name.equals("causality")) {
-          this.getCausality().add((AdverseEventSuspectEntityCausalityComponent) value);
+          this.causality = (AdverseEventSuspectEntityCausalityComponent) value; // AdverseEventSuspectEntityCausalityComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -345,8 +662,9 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 555127957:  return getInstance(); 
-        case -1446450521:  return addCausality(); 
+        case -2101998645:  return getInstance();
+        case 555127957:  return getInstance();
+        case -1446450521:  return getCausality();
         default: return super.makeProperty(hash, name);
         }
 
@@ -355,7 +673,7 @@ public class AdverseEvent extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 555127957: /*instance*/ return new String[] {"Reference"};
+        case 555127957: /*instance*/ return new String[] {"CodeableConcept", "Reference"};
         case -1446450521: /*causality*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -364,12 +682,17 @@ public class AdverseEvent extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("instance")) {
+        if (name.equals("instanceCodeableConcept")) {
+          this.instance = new CodeableConcept();
+          return this.instance;
+        }
+        else if (name.equals("instanceReference")) {
           this.instance = new Reference();
           return this.instance;
         }
         else if (name.equals("causality")) {
-          return addCausality();
+          this.causality = new AdverseEventSuspectEntityCausalityComponent();
+          return this.causality;
         }
         else
           return super.addChild(name);
@@ -378,13 +701,13 @@ public class AdverseEvent extends DomainResource {
       public AdverseEventSuspectEntityComponent copy() {
         AdverseEventSuspectEntityComponent dst = new AdverseEventSuspectEntityComponent();
         copyValues(dst);
-        dst.instance = instance == null ? null : instance.copy();
-        if (causality != null) {
-          dst.causality = new ArrayList<AdverseEventSuspectEntityCausalityComponent>();
-          for (AdverseEventSuspectEntityCausalityComponent i : causality)
-            dst.causality.add(i.copy());
-        };
         return dst;
+      }
+
+      public void copyValues(AdverseEventSuspectEntityComponent dst) {
+        super.copyValues(dst);
+        dst.instance = instance == null ? null : instance.copy();
+        dst.causality = causality == null ? null : causality.copy();
       }
 
       @Override
@@ -421,41 +744,29 @@ public class AdverseEvent extends DomainResource {
     @Block()
     public static class AdverseEventSuspectEntityCausalityComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Assessment of if the entity caused the event.
+         * The method of evaluating the relatedness of the suspected entity to the event.
          */
-        @Child(name = "assessment", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Assessment of if the entity caused the event", formalDefinition="Assessment of if the entity caused the event." )
+        @Child(name = "assessmentMethod", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Method of evaluating the relatedness of the suspected entity to the event", formalDefinition="The method of evaluating the relatedness of the suspected entity to the event." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-causality-method")
+        protected CodeableConcept assessmentMethod;
+
+        /**
+         * The result of the assessment regarding the relatedness of the suspected entity to the event.
+         */
+        @Child(name = "entityRelatedness", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Result of the assessment regarding the relatedness of the suspected entity to the event", formalDefinition="The result of the assessment regarding the relatedness of the suspected entity to the event." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-causality-assess")
-        protected CodeableConcept assessment;
+        protected CodeableConcept entityRelatedness;
 
         /**
-         * AdverseEvent.suspectEntity.causalityProductRelatedness.
+         * The author of the information on the possible cause of the event.
          */
-        @Child(name = "productRelatedness", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="AdverseEvent.suspectEntity.causalityProductRelatedness", formalDefinition="AdverseEvent.suspectEntity.causalityProductRelatedness." )
-        protected StringType productRelatedness;
-
-        /**
-         * AdverseEvent.suspectEntity.causalityAuthor.
-         */
-        @Child(name = "author", type = {Practitioner.class, PractitionerRole.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="AdverseEvent.suspectEntity.causalityAuthor", formalDefinition="AdverseEvent.suspectEntity.causalityAuthor." )
+        @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Author of the information on the possible cause of the event", formalDefinition="The author of the information on the possible cause of the event." )
         protected Reference author;
 
-        /**
-         * The actual object that is the target of the reference (AdverseEvent.suspectEntity.causalityAuthor.)
-         */
-        protected Resource authorTarget;
-
-        /**
-         * ProbabilityScale | Bayesian | Checklist.
-         */
-        @Child(name = "method", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="ProbabilityScale | Bayesian | Checklist", formalDefinition="ProbabilityScale | Bayesian | Checklist." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-causality-method")
-        protected CodeableConcept method;
-
-        private static final long serialVersionUID = -1847234837L;
+        private static final long serialVersionUID = 486112728L;
 
     /**
      * Constructor
@@ -465,80 +776,55 @@ public class AdverseEvent extends DomainResource {
       }
 
         /**
-         * @return {@link #assessment} (Assessment of if the entity caused the event.)
+         * @return {@link #assessmentMethod} (The method of evaluating the relatedness of the suspected entity to the event.)
          */
-        public CodeableConcept getAssessment() { 
-          if (this.assessment == null)
+        public CodeableConcept getAssessmentMethod() { 
+          if (this.assessmentMethod == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AdverseEventSuspectEntityCausalityComponent.assessment");
+              throw new Error("Attempt to auto-create AdverseEventSuspectEntityCausalityComponent.assessmentMethod");
             else if (Configuration.doAutoCreate())
-              this.assessment = new CodeableConcept(); // cc
-          return this.assessment;
+              this.assessmentMethod = new CodeableConcept(); // cc
+          return this.assessmentMethod;
         }
 
-        public boolean hasAssessment() { 
-          return this.assessment != null && !this.assessment.isEmpty();
+        public boolean hasAssessmentMethod() { 
+          return this.assessmentMethod != null && !this.assessmentMethod.isEmpty();
         }
 
         /**
-         * @param value {@link #assessment} (Assessment of if the entity caused the event.)
+         * @param value {@link #assessmentMethod} (The method of evaluating the relatedness of the suspected entity to the event.)
          */
-        public AdverseEventSuspectEntityCausalityComponent setAssessment(CodeableConcept value) { 
-          this.assessment = value;
+        public AdverseEventSuspectEntityCausalityComponent setAssessmentMethod(CodeableConcept value) { 
+          this.assessmentMethod = value;
           return this;
         }
 
         /**
-         * @return {@link #productRelatedness} (AdverseEvent.suspectEntity.causalityProductRelatedness.). This is the underlying object with id, value and extensions. The accessor "getProductRelatedness" gives direct access to the value
+         * @return {@link #entityRelatedness} (The result of the assessment regarding the relatedness of the suspected entity to the event.)
          */
-        public StringType getProductRelatednessElement() { 
-          if (this.productRelatedness == null)
+        public CodeableConcept getEntityRelatedness() { 
+          if (this.entityRelatedness == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AdverseEventSuspectEntityCausalityComponent.productRelatedness");
+              throw new Error("Attempt to auto-create AdverseEventSuspectEntityCausalityComponent.entityRelatedness");
             else if (Configuration.doAutoCreate())
-              this.productRelatedness = new StringType(); // bb
-          return this.productRelatedness;
+              this.entityRelatedness = new CodeableConcept(); // cc
+          return this.entityRelatedness;
         }
 
-        public boolean hasProductRelatednessElement() { 
-          return this.productRelatedness != null && !this.productRelatedness.isEmpty();
-        }
-
-        public boolean hasProductRelatedness() { 
-          return this.productRelatedness != null && !this.productRelatedness.isEmpty();
+        public boolean hasEntityRelatedness() { 
+          return this.entityRelatedness != null && !this.entityRelatedness.isEmpty();
         }
 
         /**
-         * @param value {@link #productRelatedness} (AdverseEvent.suspectEntity.causalityProductRelatedness.). This is the underlying object with id, value and extensions. The accessor "getProductRelatedness" gives direct access to the value
+         * @param value {@link #entityRelatedness} (The result of the assessment regarding the relatedness of the suspected entity to the event.)
          */
-        public AdverseEventSuspectEntityCausalityComponent setProductRelatednessElement(StringType value) { 
-          this.productRelatedness = value;
+        public AdverseEventSuspectEntityCausalityComponent setEntityRelatedness(CodeableConcept value) { 
+          this.entityRelatedness = value;
           return this;
         }
 
         /**
-         * @return AdverseEvent.suspectEntity.causalityProductRelatedness.
-         */
-        public String getProductRelatedness() { 
-          return this.productRelatedness == null ? null : this.productRelatedness.getValue();
-        }
-
-        /**
-         * @param value AdverseEvent.suspectEntity.causalityProductRelatedness.
-         */
-        public AdverseEventSuspectEntityCausalityComponent setProductRelatedness(String value) { 
-          if (Utilities.noString(value))
-            this.productRelatedness = null;
-          else {
-            if (this.productRelatedness == null)
-              this.productRelatedness = new StringType();
-            this.productRelatedness.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #author} (AdverseEvent.suspectEntity.causalityAuthor.)
+         * @return {@link #author} (The author of the information on the possible cause of the event.)
          */
         public Reference getAuthor() { 
           if (this.author == null)
@@ -554,67 +840,26 @@ public class AdverseEvent extends DomainResource {
         }
 
         /**
-         * @param value {@link #author} (AdverseEvent.suspectEntity.causalityAuthor.)
+         * @param value {@link #author} (The author of the information on the possible cause of the event.)
          */
         public AdverseEventSuspectEntityCausalityComponent setAuthor(Reference value) { 
           this.author = value;
           return this;
         }
 
-        /**
-         * @return {@link #author} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (AdverseEvent.suspectEntity.causalityAuthor.)
-         */
-        public Resource getAuthorTarget() { 
-          return this.authorTarget;
-        }
-
-        /**
-         * @param value {@link #author} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (AdverseEvent.suspectEntity.causalityAuthor.)
-         */
-        public AdverseEventSuspectEntityCausalityComponent setAuthorTarget(Resource value) { 
-          this.authorTarget = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #method} (ProbabilityScale | Bayesian | Checklist.)
-         */
-        public CodeableConcept getMethod() { 
-          if (this.method == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AdverseEventSuspectEntityCausalityComponent.method");
-            else if (Configuration.doAutoCreate())
-              this.method = new CodeableConcept(); // cc
-          return this.method;
-        }
-
-        public boolean hasMethod() { 
-          return this.method != null && !this.method.isEmpty();
-        }
-
-        /**
-         * @param value {@link #method} (ProbabilityScale | Bayesian | Checklist.)
-         */
-        public AdverseEventSuspectEntityCausalityComponent setMethod(CodeableConcept value) { 
-          this.method = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("assessment", "CodeableConcept", "Assessment of if the entity caused the event.", 0, 1, assessment));
-          children.add(new Property("productRelatedness", "string", "AdverseEvent.suspectEntity.causalityProductRelatedness.", 0, 1, productRelatedness));
-          children.add(new Property("author", "Reference(Practitioner|PractitionerRole)", "AdverseEvent.suspectEntity.causalityAuthor.", 0, 1, author));
-          children.add(new Property("method", "CodeableConcept", "ProbabilityScale | Bayesian | Checklist.", 0, 1, method));
+          children.add(new Property("assessmentMethod", "CodeableConcept", "The method of evaluating the relatedness of the suspected entity to the event.", 0, 1, assessmentMethod));
+          children.add(new Property("entityRelatedness", "CodeableConcept", "The result of the assessment regarding the relatedness of the suspected entity to the event.", 0, 1, entityRelatedness));
+          children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "The author of the information on the possible cause of the event.", 0, 1, author));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 2119382722: /*assessment*/  return new Property("assessment", "CodeableConcept", "Assessment of if the entity caused the event.", 0, 1, assessment);
-          case 1824577683: /*productRelatedness*/  return new Property("productRelatedness", "string", "AdverseEvent.suspectEntity.causalityProductRelatedness.", 0, 1, productRelatedness);
-          case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole)", "AdverseEvent.suspectEntity.causalityAuthor.", 0, 1, author);
-          case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "ProbabilityScale | Bayesian | Checklist.", 0, 1, method);
+          case 1681283651: /*assessmentMethod*/  return new Property("assessmentMethod", "CodeableConcept", "The method of evaluating the relatedness of the suspected entity to the event.", 0, 1, assessmentMethod);
+          case 2000199967: /*entityRelatedness*/  return new Property("entityRelatedness", "CodeableConcept", "The result of the assessment regarding the relatedness of the suspected entity to the event.", 0, 1, entityRelatedness);
+          case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "The author of the information on the possible cause of the event.", 0, 1, author);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -623,10 +868,9 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 2119382722: /*assessment*/ return this.assessment == null ? new Base[0] : new Base[] {this.assessment}; // CodeableConcept
-        case 1824577683: /*productRelatedness*/ return this.productRelatedness == null ? new Base[0] : new Base[] {this.productRelatedness}; // StringType
+        case 1681283651: /*assessmentMethod*/ return this.assessmentMethod == null ? new Base[0] : new Base[] {this.assessmentMethod}; // CodeableConcept
+        case 2000199967: /*entityRelatedness*/ return this.entityRelatedness == null ? new Base[0] : new Base[] {this.entityRelatedness}; // CodeableConcept
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
-        case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -635,17 +879,14 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 2119382722: // assessment
-          this.assessment = castToCodeableConcept(value); // CodeableConcept
+        case 1681283651: // assessmentMethod
+          this.assessmentMethod = castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1824577683: // productRelatedness
-          this.productRelatedness = castToString(value); // StringType
+        case 2000199967: // entityRelatedness
+          this.entityRelatedness = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1406328437: // author
           this.author = castToReference(value); // Reference
-          return value;
-        case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -654,14 +895,12 @@ public class AdverseEvent extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("assessment")) {
-          this.assessment = castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("productRelatedness")) {
-          this.productRelatedness = castToString(value); // StringType
+        if (name.equals("assessmentMethod")) {
+          this.assessmentMethod = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("entityRelatedness")) {
+          this.entityRelatedness = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("author")) {
           this.author = castToReference(value); // Reference
-        } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -670,10 +909,9 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 2119382722:  return getAssessment(); 
-        case 1824577683:  return getProductRelatednessElement();
-        case -1406328437:  return getAuthor(); 
-        case -1077554975:  return getMethod(); 
+        case 1681283651:  return getAssessmentMethod();
+        case 2000199967:  return getEntityRelatedness();
+        case -1406328437:  return getAuthor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -682,10 +920,9 @@ public class AdverseEvent extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 2119382722: /*assessment*/ return new String[] {"CodeableConcept"};
-        case 1824577683: /*productRelatedness*/ return new String[] {"string"};
+        case 1681283651: /*assessmentMethod*/ return new String[] {"CodeableConcept"};
+        case 2000199967: /*entityRelatedness*/ return new String[] {"CodeableConcept"};
         case -1406328437: /*author*/ return new String[] {"Reference"};
-        case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -693,20 +930,17 @@ public class AdverseEvent extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("assessment")) {
-          this.assessment = new CodeableConcept();
-          return this.assessment;
+        if (name.equals("assessmentMethod")) {
+          this.assessmentMethod = new CodeableConcept();
+          return this.assessmentMethod;
         }
-        else if (name.equals("productRelatedness")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.productRelatedness");
+        else if (name.equals("entityRelatedness")) {
+          this.entityRelatedness = new CodeableConcept();
+          return this.entityRelatedness;
         }
         else if (name.equals("author")) {
           this.author = new Reference();
           return this.author;
-        }
-        else if (name.equals("method")) {
-          this.method = new CodeableConcept();
-          return this.method;
         }
         else
           return super.addChild(name);
@@ -715,11 +949,14 @@ public class AdverseEvent extends DomainResource {
       public AdverseEventSuspectEntityCausalityComponent copy() {
         AdverseEventSuspectEntityCausalityComponent dst = new AdverseEventSuspectEntityCausalityComponent();
         copyValues(dst);
-        dst.assessment = assessment == null ? null : assessment.copy();
-        dst.productRelatedness = productRelatedness == null ? null : productRelatedness.copy();
-        dst.author = author == null ? null : author.copy();
-        dst.method = method == null ? null : method.copy();
         return dst;
+      }
+
+      public void copyValues(AdverseEventSuspectEntityCausalityComponent dst) {
+        super.copyValues(dst);
+        dst.assessmentMethod = assessmentMethod == null ? null : assessmentMethod.copy();
+        dst.entityRelatedness = entityRelatedness == null ? null : entityRelatedness.copy();
+        dst.author = author == null ? null : author.copy();
       }
 
       @Override
@@ -729,8 +966,8 @@ public class AdverseEvent extends DomainResource {
         if (!(other_ instanceof AdverseEventSuspectEntityCausalityComponent))
           return false;
         AdverseEventSuspectEntityCausalityComponent o = (AdverseEventSuspectEntityCausalityComponent) other_;
-        return compareDeep(assessment, o.assessment, true) && compareDeep(productRelatedness, o.productRelatedness, true)
-           && compareDeep(author, o.author, true) && compareDeep(method, o.method, true);
+        return compareDeep(assessmentMethod, o.assessmentMethod, true) && compareDeep(entityRelatedness, o.entityRelatedness, true)
+           && compareDeep(author, o.author, true);
       }
 
       @Override
@@ -740,12 +977,12 @@ public class AdverseEvent extends DomainResource {
         if (!(other_ instanceof AdverseEventSuspectEntityCausalityComponent))
           return false;
         AdverseEventSuspectEntityCausalityComponent o = (AdverseEventSuspectEntityCausalityComponent) other_;
-        return compareValues(productRelatedness, o.productRelatedness, true);
+        return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(assessment, productRelatedness
-          , author, method);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(assessmentMethod, entityRelatedness
+          , author);
       }
 
   public String fhirType() {
@@ -755,17 +992,258 @@ public class AdverseEvent extends DomainResource {
 
   }
 
+    @Block()
+    public static class AdverseEventSupportingInfoComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Relevant past history for the subject.  In a clinical care context, an example being a patient had an adverse event following a penciliin administration and the patient had a previously documented penicillin allergy.  In a clinical trials context, an example is a bunion or rash that was present prior to the study.
+Additionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history.  For example, a clinical note, staff list, or material safety data sheet (MSDS).
+         */
+        @Child(name = "item", type = {Condition.class, Observation.class, AllergyIntolerance.class, FamilyMemberHistory.class, Immunization.class, Procedure.class, DocumentReference.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Subject medical history or document relevant to this adverse event", formalDefinition="Relevant past history for the subject.  In a clinical care context, an example being a patient had an adverse event following a penciliin administration and the patient had a previously documented penicillin allergy.  In a clinical trials context, an example is a bunion or rash that was present prior to the study.\nAdditionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history.  For example, a clinical note, staff list, or material safety data sheet (MSDS)." )
+        protected Reference item;
+
+        /**
+         * If true, the item has been assessed to be a contributing factor of the adverse event.
+         */
+        @Child(name = "contributingFactor", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="If true, the item has been assessed to be a contributing factor of the adverse event", formalDefinition="If true, the item has been assessed to be a contributing factor of the adverse event." )
+        protected BooleanType contributingFactor;
+
+        private static final long serialVersionUID = 686642289L;
+
+    /**
+     * Constructor
+     */
+      public AdverseEventSupportingInfoComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AdverseEventSupportingInfoComponent(Reference item) {
+        super();
+        this.item = item;
+      }
+
+        /**
+         * @return {@link #item} (Relevant past history for the subject.  In a clinical care context, an example being a patient had an adverse event following a penciliin administration and the patient had a previously documented penicillin allergy.  In a clinical trials context, an example is a bunion or rash that was present prior to the study.
+Additionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history.  For example, a clinical note, staff list, or material safety data sheet (MSDS).)
+         */
+        public Reference getItem() { 
+          if (this.item == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdverseEventSupportingInfoComponent.item");
+            else if (Configuration.doAutoCreate())
+              this.item = new Reference(); // cc
+          return this.item;
+        }
+
+        public boolean hasItem() { 
+          return this.item != null && !this.item.isEmpty();
+        }
+
+        /**
+         * @param value {@link #item} (Relevant past history for the subject.  In a clinical care context, an example being a patient had an adverse event following a penciliin administration and the patient had a previously documented penicillin allergy.  In a clinical trials context, an example is a bunion or rash that was present prior to the study.
+Additionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history.  For example, a clinical note, staff list, or material safety data sheet (MSDS).)
+         */
+        public AdverseEventSupportingInfoComponent setItem(Reference value) { 
+          this.item = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #contributingFactor} (If true, the item has been assessed to be a contributing factor of the adverse event.). This is the underlying object with id, value and extensions. The accessor "getContributingFactor" gives direct access to the value
+         */
+        public BooleanType getContributingFactorElement() { 
+          if (this.contributingFactor == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdverseEventSupportingInfoComponent.contributingFactor");
+            else if (Configuration.doAutoCreate())
+              this.contributingFactor = new BooleanType(); // bb
+          return this.contributingFactor;
+        }
+
+        public boolean hasContributingFactorElement() { 
+          return this.contributingFactor != null && !this.contributingFactor.isEmpty();
+        }
+
+        public boolean hasContributingFactor() { 
+          return this.contributingFactor != null && !this.contributingFactor.isEmpty();
+        }
+
+        /**
+         * @param value {@link #contributingFactor} (If true, the item has been assessed to be a contributing factor of the adverse event.). This is the underlying object with id, value and extensions. The accessor "getContributingFactor" gives direct access to the value
+         */
+        public AdverseEventSupportingInfoComponent setContributingFactorElement(BooleanType value) { 
+          this.contributingFactor = value;
+          return this;
+        }
+
+        /**
+         * @return If true, the item has been assessed to be a contributing factor of the adverse event.
+         */
+        public boolean getContributingFactor() { 
+          return this.contributingFactor == null || this.contributingFactor.isEmpty() ? false : this.contributingFactor.getValue();
+        }
+
+        /**
+         * @param value If true, the item has been assessed to be a contributing factor of the adverse event.
+         */
+        public AdverseEventSupportingInfoComponent setContributingFactor(boolean value) { 
+            if (this.contributingFactor == null)
+              this.contributingFactor = new BooleanType();
+            this.contributingFactor.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("item", "Reference(Condition|Observation|AllergyIntolerance|FamilyMemberHistory|Immunization|Procedure|DocumentReference)", "Relevant past history for the subject.  In a clinical care context, an example being a patient had an adverse event following a penciliin administration and the patient had a previously documented penicillin allergy.  In a clinical trials context, an example is a bunion or rash that was present prior to the study.\nAdditionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history.  For example, a clinical note, staff list, or material safety data sheet (MSDS).", 0, 1, item));
+          children.add(new Property("contributingFactor", "boolean", "If true, the item has been assessed to be a contributing factor of the adverse event.", 0, 1, contributingFactor));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3242771: /*item*/  return new Property("item", "Reference(Condition|Observation|AllergyIntolerance|FamilyMemberHistory|Immunization|Procedure|DocumentReference)", "Relevant past history for the subject.  In a clinical care context, an example being a patient had an adverse event following a penciliin administration and the patient had a previously documented penicillin allergy.  In a clinical trials context, an example is a bunion or rash that was present prior to the study.\nAdditionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history.  For example, a clinical note, staff list, or material safety data sheet (MSDS).", 0, 1, item);
+          case -219647527: /*contributingFactor*/  return new Property("contributingFactor", "boolean", "If true, the item has been assessed to be a contributing factor of the adverse event.", 0, 1, contributingFactor);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // Reference
+        case -219647527: /*contributingFactor*/ return this.contributingFactor == null ? new Base[0] : new Base[] {this.contributingFactor}; // BooleanType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3242771: // item
+          this.item = castToReference(value); // Reference
+          return value;
+        case -219647527: // contributingFactor
+          this.contributingFactor = castToBoolean(value); // BooleanType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = castToReference(value); // Reference
+        } else if (name.equals("contributingFactor")) {
+          this.contributingFactor = castToBoolean(value); // BooleanType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3242771:  return getItem();
+        case -219647527:  return getContributingFactorElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3242771: /*item*/ return new String[] {"Reference"};
+        case -219647527: /*contributingFactor*/ return new String[] {"boolean"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = new Reference();
+          return this.item;
+        }
+        else if (name.equals("contributingFactor")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.contributingFactor");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AdverseEventSupportingInfoComponent copy() {
+        AdverseEventSupportingInfoComponent dst = new AdverseEventSupportingInfoComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdverseEventSupportingInfoComponent dst) {
+        super.copyValues(dst);
+        dst.item = item == null ? null : item.copy();
+        dst.contributingFactor = contributingFactor == null ? null : contributingFactor.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AdverseEventSupportingInfoComponent))
+          return false;
+        AdverseEventSupportingInfoComponent o = (AdverseEventSupportingInfoComponent) other_;
+        return compareDeep(item, o.item, true) && compareDeep(contributingFactor, o.contributingFactor, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AdverseEventSupportingInfoComponent))
+          return false;
+        AdverseEventSupportingInfoComponent o = (AdverseEventSupportingInfoComponent) other_;
+        return compareValues(contributingFactor, o.contributingFactor, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(item, contributingFactor);
+      }
+
+  public String fhirType() {
+    return "AdverseEvent.supportingInfo";
+
+  }
+
+  }
+
     /**
      * Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Business identifier for the event", formalDefinition="Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server." )
-    protected Identifier identifier;
+    protected List<Identifier> identifier;
+
+    /**
+     * The current state of the data entry of the adverse event or potential adverse event.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="in-progress | completed | entered-in-error | unknown", formalDefinition="The current state of the data entry of the adverse event or potential adverse event." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-status")
+    protected Enumeration<AdverseEventStatus> status;
 
     /**
      * Whether the event actually happened, or just had the potential to. Note that this is independent of whether anyone was affected or harmed or how severely.
      */
-    @Child(name = "actuality", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "actuality", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="actual | potential", formalDefinition="Whether the event actually happened, or just had the potential to. Note that this is independent of whether anyone was affected or harmed or how severely." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-actuality")
     protected Enumeration<AdverseEventActuality> actuality;
@@ -773,109 +1251,81 @@ public class AdverseEvent extends DomainResource {
     /**
      * The overall type of event, intended for search and filtering purposes.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="product-problem | product-quality | product-use-error | wrong-dose | incorrect-prescribing-information | wrong-technique | wrong-route-of-administration | wrong-rate | wrong-duration | wrong-time | expired-drug | medical-device-use-error | problem-different-manufacturer | unsafe-physical-environment", formalDefinition="The overall type of event, intended for search and filtering purposes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-category")
     protected List<CodeableConcept> category;
 
     /**
-     * This element defines the specific type of event that occurred or that was prevented from occurring.
+     * Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.
      */
-    @Child(name = "event", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Type of the event itself in relation to the subject", formalDefinition="This element defines the specific type of event that occurred or that was prevented from occurring." )
+    @Child(name = "code", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Event or incident that occurred or was averted", formalDefinition="Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-type")
-    protected CodeableConcept event;
+    protected CodeableConcept code;
 
     /**
      * This subject or group impacted by the event.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class, Practitioner.class, RelatedPerson.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Group.class, Practitioner.class, RelatedPerson.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Subject impacted by event", formalDefinition="This subject or group impacted by the event." )
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (This subject or group impacted by the event.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated." )
+    @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The Encounter during which this AdverseEvent was created", formalDefinition="The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
-
-    /**
-     * The actual object that is the target of the reference (The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.)
-     */
-    protected Encounter encounterTarget;
 
     /**
      * The date (and perhaps time) when the adverse event occurred.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the event occurred", formalDefinition="The date (and perhaps time) when the adverse event occurred." )
-    protected DateTimeType date;
+    protected Type occurrence;
 
     /**
      * Estimated or actual date the AdverseEvent began, in the opinion of the reporter.
      */
-    @Child(name = "detected", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "detected", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the event was detected", formalDefinition="Estimated or actual date the AdverseEvent began, in the opinion of the reporter." )
     protected DateTimeType detected;
 
     /**
      * The date on which the existence of the AdverseEvent was first recorded.
      */
-    @Child(name = "recordedDate", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "recordedDate", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the event was recorded", formalDefinition="The date on which the existence of the AdverseEvent was first recorded." )
     protected DateTimeType recordedDate;
 
     /**
      * Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).
      */
-    @Child(name = "resultingCondition", type = {Condition.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "resultingCondition", type = {Condition.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Effect on the subject due to this event", formalDefinition="Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical)." )
     protected List<Reference> resultingCondition;
-    /**
-     * The actual objects that are the target of the reference (Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).)
-     */
-    protected List<Condition> resultingConditionTarget;
-
 
     /**
      * The information about where the adverse event occurred.
      */
-    @Child(name = "location", type = {Location.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "location", type = {Location.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Location where adverse event occurred", formalDefinition="The information about where the adverse event occurred." )
     protected Reference location;
 
     /**
-     * The actual object that is the target of the reference (The information about where the adverse event occurred.)
+     * Assessment whether this event, or averted event, was of clinical importance.
      */
-    protected Location locationTarget;
-
-    /**
-     * Assessment whether this event was of real importance.
-     */
-    @Child(name = "seriousness", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Seriousness of the event", formalDefinition="Assessment whether this event was of real importance." )
+    @Child(name = "seriousness", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Seriousness or gravity of the event", formalDefinition="Assessment whether this event, or averted event, was of clinical importance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-seriousness")
     protected CodeableConcept seriousness;
 
     /**
-     * Describes the severity of the adverse event, in relation to the subject. Contrast to AdverseEvent.seriousness - a severe rash might not be serious, but a mild heart problem is.
-     */
-    @Child(name = "severity", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="mild | moderate | severe", formalDefinition="Describes the severity of the adverse event, in relation to the subject. Contrast to AdverseEvent.seriousness - a severe rash might not be serious, but a mild heart problem is." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-severity")
-    protected CodeableConcept severity;
-
-    /**
-     * Describes the type of outcome from the adverse event.
+     * Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.
      */
     @Child(name = "outcome", type = {CodeableConcept.class}, order=13, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="resolved | recovering | ongoing | resolvedWithSequelae | fatal | unknown", formalDefinition="Describes the type of outcome from the adverse event." )
+    @Description(shortDefinition="Type of outcome from the adverse event", formalDefinition="Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-outcome")
     protected CodeableConcept outcome;
 
@@ -887,21 +1337,11 @@ public class AdverseEvent extends DomainResource {
     protected Reference recorder;
 
     /**
-     * The actual object that is the target of the reference (Information on who recorded the adverse event.  May be the patient or a practitioner.)
+     * Indicates who or what participated in the adverse event and how they were involved.
      */
-    protected Resource recorderTarget;
-
-    /**
-     * Parties that may or should contribute or have contributed information to the adverse event, which can consist of one or more activities.  Such information includes information leading to the decision to perform the activity and how to perform the activity (e.g. consultant), information that the activity itself seeks to reveal (e.g. informant of clinical history), or information about what activity was performed (e.g. informant witness).
-     */
-    @Child(name = "contributor", type = {Practitioner.class, PractitionerRole.class, Device.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Who  was involved in the adverse event or the potential adverse event", formalDefinition="Parties that may or should contribute or have contributed information to the adverse event, which can consist of one or more activities.  Such information includes information leading to the decision to perform the activity and how to perform the activity (e.g. consultant), information that the activity itself seeks to reveal (e.g. informant of clinical history), or information about what activity was performed (e.g. informant witness)." )
-    protected List<Reference> contributor;
-    /**
-     * The actual objects that are the target of the reference (Parties that may or should contribute or have contributed information to the adverse event, which can consist of one or more activities.  Such information includes information leading to the decision to perform the activity and how to perform the activity (e.g. consultant), information that the activity itself seeks to reveal (e.g. informant of clinical history), or information about what activity was performed (e.g. informant witness).)
-     */
-    protected List<Resource> contributorTarget;
-
+    @Child(name = "participant", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Who was involved in the adverse event or the potential adverse event and what they did", formalDefinition="Indicates who or what participated in the adverse event and how they were involved." )
+    protected List<AdverseEventParticipantComponent> participant;
 
     /**
      * Describes the entity that is suspected to have caused the adverse event.
@@ -911,42 +1351,20 @@ public class AdverseEvent extends DomainResource {
     protected List<AdverseEventSuspectEntityComponent> suspectEntity;
 
     /**
-     * AdverseEvent.subjectMedicalHistory.
+     * Supporting information relevant to the event.
      */
-    @Child(name = "subjectMedicalHistory", type = {Condition.class, Observation.class, AllergyIntolerance.class, FamilyMemberHistory.class, Immunization.class, Procedure.class, Media.class, DocumentReference.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="AdverseEvent.subjectMedicalHistory", formalDefinition="AdverseEvent.subjectMedicalHistory." )
-    protected List<Reference> subjectMedicalHistory;
-    /**
-     * The actual objects that are the target of the reference (AdverseEvent.subjectMedicalHistory.)
-     */
-    protected List<Resource> subjectMedicalHistoryTarget;
-
+    @Child(name = "supportingInfo", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Supporting information relevant to the event", formalDefinition="Supporting information relevant to the event." )
+    protected List<AdverseEventSupportingInfoComponent> supportingInfo;
 
     /**
-     * AdverseEvent.referenceDocument.
+     * The research study that the subject is enrolled in.
      */
-    @Child(name = "referenceDocument", type = {DocumentReference.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="AdverseEvent.referenceDocument", formalDefinition="AdverseEvent.referenceDocument." )
-    protected List<Reference> referenceDocument;
-    /**
-     * The actual objects that are the target of the reference (AdverseEvent.referenceDocument.)
-     */
-    protected List<DocumentReference> referenceDocumentTarget;
-
-
-    /**
-     * AdverseEvent.study.
-     */
-    @Child(name = "study", type = {ResearchStudy.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="AdverseEvent.study", formalDefinition="AdverseEvent.study." )
+    @Child(name = "study", type = {ResearchStudy.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Research study that the subject is enrolled in", formalDefinition="The research study that the subject is enrolled in." )
     protected List<Reference> study;
-    /**
-     * The actual objects that are the target of the reference (AdverseEvent.study.)
-     */
-    protected List<ResearchStudy> studyTarget;
 
-
-    private static final long serialVersionUID = -2055195281L;
+    private static final long serialVersionUID = -1729938081L;
 
   /**
    * Constructor
@@ -958,8 +1376,9 @@ public class AdverseEvent extends DomainResource {
   /**
    * Constructor
    */
-    public AdverseEvent(Enumeration<AdverseEventActuality> actuality, Reference subject) {
+    public AdverseEvent(Enumeration<AdverseEventStatus> status, Enumeration<AdverseEventActuality> actuality, Reference subject) {
       super();
+      this.status = status;
       this.actuality = actuality;
       this.subject = subject;
     }
@@ -967,24 +1386,98 @@ public class AdverseEvent extends DomainResource {
     /**
      * @return {@link #identifier} (Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.)
      */
-    public Identifier getIdentifier() { 
+    public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
+        this.identifier = new ArrayList<Identifier>();
       return this.identifier;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public AdverseEvent setIdentifier(List<Identifier> theIdentifier) { 
+      this.identifier = theIdentifier;
+      return this;
+    }
+
     public boolean hasIdentifier() { 
-      return this.identifier != null && !this.identifier.isEmpty();
+      if (this.identifier == null)
+        return false;
+      for (Identifier item : this.identifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return t;
+    }
+
+    public AdverseEvent addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #identifier} (Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.)
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
      */
-    public AdverseEvent setIdentifier(Identifier value) { 
-      this.identifier = value;
+    public Identifier getIdentifierFirstRep() { 
+      if (getIdentifier().isEmpty()) {
+        addIdentifier();
+      }
+      return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #status} (The current state of the data entry of the adverse event or potential adverse event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Enumeration<AdverseEventStatus> getStatusElement() { 
+      if (this.status == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AdverseEvent.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<AdverseEventStatus>(new AdverseEventStatusEnumFactory()); // bb
+      return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    public boolean hasStatus() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    /**
+     * @param value {@link #status} (The current state of the data entry of the adverse event or potential adverse event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public AdverseEvent setStatusElement(Enumeration<AdverseEventStatus> value) { 
+      this.status = value;
+      return this;
+    }
+
+    /**
+     * @return The current state of the data entry of the adverse event or potential adverse event.
+     */
+    public AdverseEventStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value The current state of the data entry of the adverse event or potential adverse event.
+     */
+    public AdverseEvent setStatus(AdverseEventStatus value) { 
+        if (this.status == null)
+          this.status = new Enumeration<AdverseEventStatus>(new AdverseEventStatusEnumFactory());
+        this.status.setValue(value);
       return this;
     }
 
@@ -1087,26 +1580,26 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #event} (This element defines the specific type of event that occurred or that was prevented from occurring.)
+     * @return {@link #code} (Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.)
      */
-    public CodeableConcept getEvent() { 
-      if (this.event == null)
+    public CodeableConcept getCode() { 
+      if (this.code == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.event");
+          throw new Error("Attempt to auto-create AdverseEvent.code");
         else if (Configuration.doAutoCreate())
-          this.event = new CodeableConcept(); // cc
-      return this.event;
+          this.code = new CodeableConcept(); // cc
+      return this.code;
     }
 
-    public boolean hasEvent() { 
-      return this.event != null && !this.event.isEmpty();
+    public boolean hasCode() { 
+      return this.code != null && !this.code.isEmpty();
     }
 
     /**
-     * @param value {@link #event} (This element defines the specific type of event that occurred or that was prevented from occurring.)
+     * @param value {@link #code} (Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.)
      */
-    public AdverseEvent setEvent(CodeableConcept value) { 
-      this.event = value;
+    public AdverseEvent setCode(CodeableConcept value) { 
+      this.code = value;
       return this;
     }
 
@@ -1135,21 +1628,6 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (This subject or group impacted by the event.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (This subject or group impacted by the event.)
-     */
-    public AdverseEvent setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #encounter} (The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.)
      */
     public Reference getEncounter() { 
@@ -1174,71 +1652,68 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #encounter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.)
+     * @return {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public Encounter getEncounterTarget() { 
-      if (this.encounterTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.encounter");
-        else if (Configuration.doAutoCreate())
-          this.encounterTarget = new Encounter(); // aa
-      return this.encounterTarget;
+    public Type getOccurrence() { 
+      return this.occurrence;
     }
 
     /**
-     * @param value {@link #encounter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.)
+     * @return {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public AdverseEvent setEncounterTarget(Encounter value) { 
-      this.encounterTarget = value;
-      return this;
+    public DateTimeType getOccurrenceDateTimeType() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new DateTimeType();
+      if (!(this.occurrence instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (DateTimeType) this.occurrence;
+    }
+
+    public boolean hasOccurrenceDateTimeType() { 
+      return this != null && this.occurrence instanceof DateTimeType;
     }
 
     /**
-     * @return {@link #date} (The date (and perhaps time) when the adverse event occurred.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public DateTimeType getDateElement() { 
-      if (this.date == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.date");
-        else if (Configuration.doAutoCreate())
-          this.date = new DateTimeType(); // bb
-      return this.date;
+    public Period getOccurrencePeriod() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Period();
+      if (!(this.occurrence instanceof Period))
+        throw new FHIRException("Type mismatch: the type Period was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (Period) this.occurrence;
     }
 
-    public boolean hasDateElement() { 
-      return this.date != null && !this.date.isEmpty();
-    }
-
-    public boolean hasDate() { 
-      return this.date != null && !this.date.isEmpty();
+    public boolean hasOccurrencePeriod() { 
+      return this != null && this.occurrence instanceof Period;
     }
 
     /**
-     * @param value {@link #date} (The date (and perhaps time) when the adverse event occurred.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public AdverseEvent setDateElement(DateTimeType value) { 
-      this.date = value;
-      return this;
+    public Timing getOccurrenceTiming() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Timing();
+      if (!(this.occurrence instanceof Timing))
+        throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.occurrence.getClass().getName()+" was encountered");
+      return (Timing) this.occurrence;
+    }
+
+    public boolean hasOccurrenceTiming() { 
+      return this != null && this.occurrence instanceof Timing;
+    }
+
+    public boolean hasOccurrence() { 
+      return this.occurrence != null && !this.occurrence.isEmpty();
     }
 
     /**
-     * @return The date (and perhaps time) when the adverse event occurred.
+     * @param value {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public Date getDate() { 
-      return this.date == null ? null : this.date.getValue();
-    }
-
-    /**
-     * @param value The date (and perhaps time) when the adverse event occurred.
-     */
-    public AdverseEvent setDate(Date value) { 
-      if (value == null)
-        this.date = null;
-      else {
-        if (this.date == null)
-          this.date = new DateTimeType();
-        this.date.setValue(value);
-      }
+    public AdverseEvent setOccurrence(Type value) { 
+      if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
+        throw new Error("Not the right type for AdverseEvent.occurrence[x]: "+value.fhirType());
+      this.occurrence = value;
       return this;
     }
 
@@ -1394,28 +1869,6 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Condition> getResultingConditionTarget() { 
-      if (this.resultingConditionTarget == null)
-        this.resultingConditionTarget = new ArrayList<Condition>();
-      return this.resultingConditionTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Condition addResultingConditionTarget() { 
-      Condition r = new Condition();
-      if (this.resultingConditionTarget == null)
-        this.resultingConditionTarget = new ArrayList<Condition>();
-      this.resultingConditionTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #location} (The information about where the adverse event occurred.)
      */
     public Reference getLocation() { 
@@ -1440,27 +1893,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The information about where the adverse event occurred.)
-     */
-    public Location getLocationTarget() { 
-      if (this.locationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.location");
-        else if (Configuration.doAutoCreate())
-          this.locationTarget = new Location(); // aa
-      return this.locationTarget;
-    }
-
-    /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The information about where the adverse event occurred.)
-     */
-    public AdverseEvent setLocationTarget(Location value) { 
-      this.locationTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #seriousness} (Assessment whether this event was of real importance.)
+     * @return {@link #seriousness} (Assessment whether this event, or averted event, was of clinical importance.)
      */
     public CodeableConcept getSeriousness() { 
       if (this.seriousness == null)
@@ -1476,7 +1909,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @param value {@link #seriousness} (Assessment whether this event was of real importance.)
+     * @param value {@link #seriousness} (Assessment whether this event, or averted event, was of clinical importance.)
      */
     public AdverseEvent setSeriousness(CodeableConcept value) { 
       this.seriousness = value;
@@ -1484,31 +1917,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #severity} (Describes the severity of the adverse event, in relation to the subject. Contrast to AdverseEvent.seriousness - a severe rash might not be serious, but a mild heart problem is.)
-     */
-    public CodeableConcept getSeverity() { 
-      if (this.severity == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.severity");
-        else if (Configuration.doAutoCreate())
-          this.severity = new CodeableConcept(); // cc
-      return this.severity;
-    }
-
-    public boolean hasSeverity() { 
-      return this.severity != null && !this.severity.isEmpty();
-    }
-
-    /**
-     * @param value {@link #severity} (Describes the severity of the adverse event, in relation to the subject. Contrast to AdverseEvent.seriousness - a severe rash might not be serious, but a mild heart problem is.)
-     */
-    public AdverseEvent setSeverity(CodeableConcept value) { 
-      this.severity = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #outcome} (Describes the type of outcome from the adverse event.)
+     * @return {@link #outcome} (Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.)
      */
     public CodeableConcept getOutcome() { 
       if (this.outcome == null)
@@ -1524,7 +1933,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @param value {@link #outcome} (Describes the type of outcome from the adverse event.)
+     * @param value {@link #outcome} (Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.)
      */
     public AdverseEvent setOutcome(CodeableConcept value) { 
       this.outcome = value;
@@ -1556,81 +1965,56 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #recorder} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Information on who recorded the adverse event.  May be the patient or a practitioner.)
+     * @return {@link #participant} (Indicates who or what participated in the adverse event and how they were involved.)
      */
-    public Resource getRecorderTarget() { 
-      return this.recorderTarget;
-    }
-
-    /**
-     * @param value {@link #recorder} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Information on who recorded the adverse event.  May be the patient or a practitioner.)
-     */
-    public AdverseEvent setRecorderTarget(Resource value) { 
-      this.recorderTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #contributor} (Parties that may or should contribute or have contributed information to the adverse event, which can consist of one or more activities.  Such information includes information leading to the decision to perform the activity and how to perform the activity (e.g. consultant), information that the activity itself seeks to reveal (e.g. informant of clinical history), or information about what activity was performed (e.g. informant witness).)
-     */
-    public List<Reference> getContributor() { 
-      if (this.contributor == null)
-        this.contributor = new ArrayList<Reference>();
-      return this.contributor;
+    public List<AdverseEventParticipantComponent> getParticipant() { 
+      if (this.participant == null)
+        this.participant = new ArrayList<AdverseEventParticipantComponent>();
+      return this.participant;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public AdverseEvent setContributor(List<Reference> theContributor) { 
-      this.contributor = theContributor;
+    public AdverseEvent setParticipant(List<AdverseEventParticipantComponent> theParticipant) { 
+      this.participant = theParticipant;
       return this;
     }
 
-    public boolean hasContributor() { 
-      if (this.contributor == null)
+    public boolean hasParticipant() { 
+      if (this.participant == null)
         return false;
-      for (Reference item : this.contributor)
+      for (AdverseEventParticipantComponent item : this.participant)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addContributor() { //3
-      Reference t = new Reference();
-      if (this.contributor == null)
-        this.contributor = new ArrayList<Reference>();
-      this.contributor.add(t);
+    public AdverseEventParticipantComponent addParticipant() { //3
+      AdverseEventParticipantComponent t = new AdverseEventParticipantComponent();
+      if (this.participant == null)
+        this.participant = new ArrayList<AdverseEventParticipantComponent>();
+      this.participant.add(t);
       return t;
     }
 
-    public AdverseEvent addContributor(Reference t) { //3
+    public AdverseEvent addParticipant(AdverseEventParticipantComponent t) { //3
       if (t == null)
         return this;
-      if (this.contributor == null)
-        this.contributor = new ArrayList<Reference>();
-      this.contributor.add(t);
+      if (this.participant == null)
+        this.participant = new ArrayList<AdverseEventParticipantComponent>();
+      this.participant.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contributor}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
      */
-    public Reference getContributorFirstRep() { 
-      if (getContributor().isEmpty()) {
-        addContributor();
+    public AdverseEventParticipantComponent getParticipantFirstRep() { 
+      if (getParticipant().isEmpty()) {
+        addParticipant();
       }
-      return getContributor().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getContributorTarget() { 
-      if (this.contributorTarget == null)
-        this.contributorTarget = new ArrayList<Resource>();
-      return this.contributorTarget;
+      return getParticipant().get(0);
     }
 
     /**
@@ -1687,145 +2071,60 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #subjectMedicalHistory} (AdverseEvent.subjectMedicalHistory.)
+     * @return {@link #supportingInfo} (Supporting information relevant to the event.)
      */
-    public List<Reference> getSubjectMedicalHistory() { 
-      if (this.subjectMedicalHistory == null)
-        this.subjectMedicalHistory = new ArrayList<Reference>();
-      return this.subjectMedicalHistory;
+    public List<AdverseEventSupportingInfoComponent> getSupportingInfo() { 
+      if (this.supportingInfo == null)
+        this.supportingInfo = new ArrayList<AdverseEventSupportingInfoComponent>();
+      return this.supportingInfo;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public AdverseEvent setSubjectMedicalHistory(List<Reference> theSubjectMedicalHistory) { 
-      this.subjectMedicalHistory = theSubjectMedicalHistory;
+    public AdverseEvent setSupportingInfo(List<AdverseEventSupportingInfoComponent> theSupportingInfo) { 
+      this.supportingInfo = theSupportingInfo;
       return this;
     }
 
-    public boolean hasSubjectMedicalHistory() { 
-      if (this.subjectMedicalHistory == null)
+    public boolean hasSupportingInfo() { 
+      if (this.supportingInfo == null)
         return false;
-      for (Reference item : this.subjectMedicalHistory)
+      for (AdverseEventSupportingInfoComponent item : this.supportingInfo)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addSubjectMedicalHistory() { //3
-      Reference t = new Reference();
-      if (this.subjectMedicalHistory == null)
-        this.subjectMedicalHistory = new ArrayList<Reference>();
-      this.subjectMedicalHistory.add(t);
+    public AdverseEventSupportingInfoComponent addSupportingInfo() { //3
+      AdverseEventSupportingInfoComponent t = new AdverseEventSupportingInfoComponent();
+      if (this.supportingInfo == null)
+        this.supportingInfo = new ArrayList<AdverseEventSupportingInfoComponent>();
+      this.supportingInfo.add(t);
       return t;
     }
 
-    public AdverseEvent addSubjectMedicalHistory(Reference t) { //3
+    public AdverseEvent addSupportingInfo(AdverseEventSupportingInfoComponent t) { //3
       if (t == null)
         return this;
-      if (this.subjectMedicalHistory == null)
-        this.subjectMedicalHistory = new ArrayList<Reference>();
-      this.subjectMedicalHistory.add(t);
+      if (this.supportingInfo == null)
+        this.supportingInfo = new ArrayList<AdverseEventSupportingInfoComponent>();
+      this.supportingInfo.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subjectMedicalHistory}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist
      */
-    public Reference getSubjectMedicalHistoryFirstRep() { 
-      if (getSubjectMedicalHistory().isEmpty()) {
-        addSubjectMedicalHistory();
+    public AdverseEventSupportingInfoComponent getSupportingInfoFirstRep() { 
+      if (getSupportingInfo().isEmpty()) {
+        addSupportingInfo();
       }
-      return getSubjectMedicalHistory().get(0);
+      return getSupportingInfo().get(0);
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSubjectMedicalHistoryTarget() { 
-      if (this.subjectMedicalHistoryTarget == null)
-        this.subjectMedicalHistoryTarget = new ArrayList<Resource>();
-      return this.subjectMedicalHistoryTarget;
-    }
-
-    /**
-     * @return {@link #referenceDocument} (AdverseEvent.referenceDocument.)
-     */
-    public List<Reference> getReferenceDocument() { 
-      if (this.referenceDocument == null)
-        this.referenceDocument = new ArrayList<Reference>();
-      return this.referenceDocument;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public AdverseEvent setReferenceDocument(List<Reference> theReferenceDocument) { 
-      this.referenceDocument = theReferenceDocument;
-      return this;
-    }
-
-    public boolean hasReferenceDocument() { 
-      if (this.referenceDocument == null)
-        return false;
-      for (Reference item : this.referenceDocument)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReferenceDocument() { //3
-      Reference t = new Reference();
-      if (this.referenceDocument == null)
-        this.referenceDocument = new ArrayList<Reference>();
-      this.referenceDocument.add(t);
-      return t;
-    }
-
-    public AdverseEvent addReferenceDocument(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.referenceDocument == null)
-        this.referenceDocument = new ArrayList<Reference>();
-      this.referenceDocument.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #referenceDocument}, creating it if it does not already exist
-     */
-    public Reference getReferenceDocumentFirstRep() { 
-      if (getReferenceDocument().isEmpty()) {
-        addReferenceDocument();
-      }
-      return getReferenceDocument().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DocumentReference> getReferenceDocumentTarget() { 
-      if (this.referenceDocumentTarget == null)
-        this.referenceDocumentTarget = new ArrayList<DocumentReference>();
-      return this.referenceDocumentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DocumentReference addReferenceDocumentTarget() { 
-      DocumentReference r = new DocumentReference();
-      if (this.referenceDocumentTarget == null)
-        this.referenceDocumentTarget = new ArrayList<DocumentReference>();
-      this.referenceDocumentTarget.add(r);
-      return r;
-    }
-
-    /**
-     * @return {@link #study} (AdverseEvent.study.)
+     * @return {@link #study} (The research study that the subject is enrolled in.)
      */
     public List<Reference> getStudy() { 
       if (this.study == null)
@@ -1877,75 +2176,55 @@ public class AdverseEvent extends DomainResource {
       return getStudy().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ResearchStudy> getStudyTarget() { 
-      if (this.studyTarget == null)
-        this.studyTarget = new ArrayList<ResearchStudy>();
-      return this.studyTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ResearchStudy addStudyTarget() { 
-      ResearchStudy r = new ResearchStudy();
-      if (this.studyTarget == null)
-        this.studyTarget = new ArrayList<ResearchStudy>();
-      this.studyTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, 1, identifier));
+        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("status", "code", "The current state of the data entry of the adverse event or potential adverse event.", 0, 1, status));
         children.add(new Property("actuality", "code", "Whether the event actually happened, or just had the potential to. Note that this is independent of whether anyone was affected or harmed or how severely.", 0, 1, actuality));
         children.add(new Property("category", "CodeableConcept", "The overall type of event, intended for search and filtering purposes.", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("event", "CodeableConcept", "This element defines the specific type of event that occurred or that was prevented from occurring.", 0, 1, event));
+        children.add(new Property("code", "CodeableConcept", "Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.", 0, 1, code));
         children.add(new Property("subject", "Reference(Patient|Group|Practitioner|RelatedPerson)", "This subject or group impacted by the event.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
-        children.add(new Property("date", "dateTime", "The date (and perhaps time) when the adverse event occurred.", 0, 1, date));
+        children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence));
         children.add(new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected));
         children.add(new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate));
         children.add(new Property("resultingCondition", "Reference(Condition)", "Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).", 0, java.lang.Integer.MAX_VALUE, resultingCondition));
         children.add(new Property("location", "Reference(Location)", "The information about where the adverse event occurred.", 0, 1, location));
-        children.add(new Property("seriousness", "CodeableConcept", "Assessment whether this event was of real importance.", 0, 1, seriousness));
-        children.add(new Property("severity", "CodeableConcept", "Describes the severity of the adverse event, in relation to the subject. Contrast to AdverseEvent.seriousness - a severe rash might not be serious, but a mild heart problem is.", 0, 1, severity));
-        children.add(new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event.", 0, 1, outcome));
+        children.add(new Property("seriousness", "CodeableConcept", "Assessment whether this event, or averted event, was of clinical importance.", 0, 1, seriousness));
+        children.add(new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, 1, outcome));
         children.add(new Property("recorder", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Information on who recorded the adverse event.  May be the patient or a practitioner.", 0, 1, recorder));
-        children.add(new Property("contributor", "Reference(Practitioner|PractitionerRole|Device)", "Parties that may or should contribute or have contributed information to the adverse event, which can consist of one or more activities.  Such information includes information leading to the decision to perform the activity and how to perform the activity (e.g. consultant), information that the activity itself seeks to reveal (e.g. informant of clinical history), or information about what activity was performed (e.g. informant witness).", 0, java.lang.Integer.MAX_VALUE, contributor));
+        children.add(new Property("participant", "", "Indicates who or what participated in the adverse event and how they were involved.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("suspectEntity", "", "Describes the entity that is suspected to have caused the adverse event.", 0, java.lang.Integer.MAX_VALUE, suspectEntity));
-        children.add(new Property("subjectMedicalHistory", "Reference(Condition|Observation|AllergyIntolerance|FamilyMemberHistory|Immunization|Procedure|Media|DocumentReference)", "AdverseEvent.subjectMedicalHistory.", 0, java.lang.Integer.MAX_VALUE, subjectMedicalHistory));
-        children.add(new Property("referenceDocument", "Reference(DocumentReference)", "AdverseEvent.referenceDocument.", 0, java.lang.Integer.MAX_VALUE, referenceDocument));
-        children.add(new Property("study", "Reference(ResearchStudy)", "AdverseEvent.study.", 0, java.lang.Integer.MAX_VALUE, study));
+        children.add(new Property("supportingInfo", "", "Supporting information relevant to the event.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
+        children.add(new Property("study", "Reference(ResearchStudy)", "The research study that the subject is enrolled in.", 0, java.lang.Integer.MAX_VALUE, study));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, 1, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -892481550: /*status*/  return new Property("status", "code", "The current state of the data entry of the adverse event or potential adverse event.", 0, 1, status);
         case 528866400: /*actuality*/  return new Property("actuality", "code", "Whether the event actually happened, or just had the potential to. Note that this is independent of whether anyone was affected or harmed or how severely.", 0, 1, actuality);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "The overall type of event, intended for search and filtering purposes.", 0, java.lang.Integer.MAX_VALUE, category);
-        case 96891546: /*event*/  return new Property("event", "CodeableConcept", "This element defines the specific type of event that occurred or that was prevented from occurring.", 0, 1, event);
+        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.", 0, 1, code);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Practitioner|RelatedPerson)", "This subject or group impacted by the event.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
-        case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and perhaps time) when the adverse event occurred.", 0, 1, date);
+        case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
+        case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
+        case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
+        case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
+        case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
         case 1048254082: /*detected*/  return new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected);
         case -1952893826: /*recordedDate*/  return new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate);
         case -830261258: /*resultingCondition*/  return new Property("resultingCondition", "Reference(Condition)", "Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).", 0, java.lang.Integer.MAX_VALUE, resultingCondition);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The information about where the adverse event occurred.", 0, 1, location);
-        case -1551003909: /*seriousness*/  return new Property("seriousness", "CodeableConcept", "Assessment whether this event was of real importance.", 0, 1, seriousness);
-        case 1478300413: /*severity*/  return new Property("severity", "CodeableConcept", "Describes the severity of the adverse event, in relation to the subject. Contrast to AdverseEvent.seriousness - a severe rash might not be serious, but a mild heart problem is.", 0, 1, severity);
-        case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event.", 0, 1, outcome);
+        case -1551003909: /*seriousness*/  return new Property("seriousness", "CodeableConcept", "Assessment whether this event, or averted event, was of clinical importance.", 0, 1, seriousness);
+        case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, 1, outcome);
         case -799233858: /*recorder*/  return new Property("recorder", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Information on who recorded the adverse event.  May be the patient or a practitioner.", 0, 1, recorder);
-        case -1895276325: /*contributor*/  return new Property("contributor", "Reference(Practitioner|PractitionerRole|Device)", "Parties that may or should contribute or have contributed information to the adverse event, which can consist of one or more activities.  Such information includes information leading to the decision to perform the activity and how to perform the activity (e.g. consultant), information that the activity itself seeks to reveal (e.g. informant of clinical history), or information about what activity was performed (e.g. informant witness).", 0, java.lang.Integer.MAX_VALUE, contributor);
+        case 767422259: /*participant*/  return new Property("participant", "", "Indicates who or what participated in the adverse event and how they were involved.", 0, java.lang.Integer.MAX_VALUE, participant);
         case -1957422662: /*suspectEntity*/  return new Property("suspectEntity", "", "Describes the entity that is suspected to have caused the adverse event.", 0, java.lang.Integer.MAX_VALUE, suspectEntity);
-        case -1685245681: /*subjectMedicalHistory*/  return new Property("subjectMedicalHistory", "Reference(Condition|Observation|AllergyIntolerance|FamilyMemberHistory|Immunization|Procedure|Media|DocumentReference)", "AdverseEvent.subjectMedicalHistory.", 0, java.lang.Integer.MAX_VALUE, subjectMedicalHistory);
-        case 1013971334: /*referenceDocument*/  return new Property("referenceDocument", "Reference(DocumentReference)", "AdverseEvent.referenceDocument.", 0, java.lang.Integer.MAX_VALUE, referenceDocument);
-        case 109776329: /*study*/  return new Property("study", "Reference(ResearchStudy)", "AdverseEvent.study.", 0, java.lang.Integer.MAX_VALUE, study);
+        case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "", "Supporting information relevant to the event.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
+        case 109776329: /*study*/  return new Property("study", "Reference(ResearchStudy)", "The research study that the subject is enrolled in.", 0, java.lang.Integer.MAX_VALUE, study);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1954,25 +2233,24 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<AdverseEventStatus>
         case 528866400: /*actuality*/ return this.actuality == null ? new Base[0] : new Base[] {this.actuality}; // Enumeration<AdverseEventActuality>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
-        case 96891546: /*event*/ return this.event == null ? new Base[0] : new Base[] {this.event}; // CodeableConcept
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
+        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // Type
         case 1048254082: /*detected*/ return this.detected == null ? new Base[0] : new Base[] {this.detected}; // DateTimeType
         case -1952893826: /*recordedDate*/ return this.recordedDate == null ? new Base[0] : new Base[] {this.recordedDate}; // DateTimeType
         case -830261258: /*resultingCondition*/ return this.resultingCondition == null ? new Base[0] : this.resultingCondition.toArray(new Base[this.resultingCondition.size()]); // Reference
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case -1551003909: /*seriousness*/ return this.seriousness == null ? new Base[0] : new Base[] {this.seriousness}; // CodeableConcept
-        case 1478300413: /*severity*/ return this.severity == null ? new Base[0] : new Base[] {this.severity}; // CodeableConcept
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
         case -799233858: /*recorder*/ return this.recorder == null ? new Base[0] : new Base[] {this.recorder}; // Reference
-        case -1895276325: /*contributor*/ return this.contributor == null ? new Base[0] : this.contributor.toArray(new Base[this.contributor.size()]); // Reference
+        case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // AdverseEventParticipantComponent
         case -1957422662: /*suspectEntity*/ return this.suspectEntity == null ? new Base[0] : this.suspectEntity.toArray(new Base[this.suspectEntity.size()]); // AdverseEventSuspectEntityComponent
-        case -1685245681: /*subjectMedicalHistory*/ return this.subjectMedicalHistory == null ? new Base[0] : this.subjectMedicalHistory.toArray(new Base[this.subjectMedicalHistory.size()]); // Reference
-        case 1013971334: /*referenceDocument*/ return this.referenceDocument == null ? new Base[0] : this.referenceDocument.toArray(new Base[this.referenceDocument.size()]); // Reference
+        case 1922406657: /*supportingInfo*/ return this.supportingInfo == null ? new Base[0] : this.supportingInfo.toArray(new Base[this.supportingInfo.size()]); // AdverseEventSupportingInfoComponent
         case 109776329: /*study*/ return this.study == null ? new Base[0] : this.study.toArray(new Base[this.study.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1983,7 +2261,11 @@ public class AdverseEvent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          return value;
+        case -892481550: // status
+          value = new AdverseEventStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<AdverseEventStatus>
           return value;
         case 528866400: // actuality
           value = new AdverseEventActualityEnumFactory().fromType(castToCode(value));
@@ -1992,8 +2274,8 @@ public class AdverseEvent extends DomainResource {
         case 50511102: // category
           this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case 96891546: // event
-          this.event = castToCodeableConcept(value); // CodeableConcept
+        case 3059181: // code
+          this.code = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
           this.subject = castToReference(value); // Reference
@@ -2001,8 +2283,8 @@ public class AdverseEvent extends DomainResource {
         case 1524132147: // encounter
           this.encounter = castToReference(value); // Reference
           return value;
-        case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+        case 1687874001: // occurrence
+          this.occurrence = castToType(value); // Type
           return value;
         case 1048254082: // detected
           this.detected = castToDateTime(value); // DateTimeType
@@ -2019,26 +2301,20 @@ public class AdverseEvent extends DomainResource {
         case -1551003909: // seriousness
           this.seriousness = castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1478300413: // severity
-          this.severity = castToCodeableConcept(value); // CodeableConcept
-          return value;
         case -1106507950: // outcome
           this.outcome = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -799233858: // recorder
           this.recorder = castToReference(value); // Reference
           return value;
-        case -1895276325: // contributor
-          this.getContributor().add(castToReference(value)); // Reference
+        case 767422259: // participant
+          this.getParticipant().add((AdverseEventParticipantComponent) value); // AdverseEventParticipantComponent
           return value;
         case -1957422662: // suspectEntity
           this.getSuspectEntity().add((AdverseEventSuspectEntityComponent) value); // AdverseEventSuspectEntityComponent
           return value;
-        case -1685245681: // subjectMedicalHistory
-          this.getSubjectMedicalHistory().add(castToReference(value)); // Reference
-          return value;
-        case 1013971334: // referenceDocument
-          this.getReferenceDocument().add(castToReference(value)); // Reference
+        case 1922406657: // supportingInfo
+          this.getSupportingInfo().add((AdverseEventSupportingInfoComponent) value); // AdverseEventSupportingInfoComponent
           return value;
         case 109776329: // study
           this.getStudy().add(castToReference(value)); // Reference
@@ -2051,20 +2327,23 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.getIdentifier().add(castToIdentifier(value));
+        } else if (name.equals("status")) {
+          value = new AdverseEventStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<AdverseEventStatus>
         } else if (name.equals("actuality")) {
           value = new AdverseEventActualityEnumFactory().fromType(castToCode(value));
           this.actuality = (Enumeration) value; // Enumeration<AdverseEventActuality>
         } else if (name.equals("category")) {
           this.getCategory().add(castToCodeableConcept(value));
-        } else if (name.equals("event")) {
-          this.event = castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("code")) {
+          this.code = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
           this.subject = castToReference(value); // Reference
         } else if (name.equals("encounter")) {
           this.encounter = castToReference(value); // Reference
-        } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = castToType(value); // Type
         } else if (name.equals("detected")) {
           this.detected = castToDateTime(value); // DateTimeType
         } else if (name.equals("recordedDate")) {
@@ -2075,20 +2354,16 @@ public class AdverseEvent extends DomainResource {
           this.location = castToReference(value); // Reference
         } else if (name.equals("seriousness")) {
           this.seriousness = castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("severity")) {
-          this.severity = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("outcome")) {
           this.outcome = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("recorder")) {
           this.recorder = castToReference(value); // Reference
-        } else if (name.equals("contributor")) {
-          this.getContributor().add(castToReference(value));
+        } else if (name.equals("participant")) {
+          this.getParticipant().add((AdverseEventParticipantComponent) value);
         } else if (name.equals("suspectEntity")) {
           this.getSuspectEntity().add((AdverseEventSuspectEntityComponent) value);
-        } else if (name.equals("subjectMedicalHistory")) {
-          this.getSubjectMedicalHistory().add(castToReference(value));
-        } else if (name.equals("referenceDocument")) {
-          this.getReferenceDocument().add(castToReference(value));
+        } else if (name.equals("supportingInfo")) {
+          this.getSupportingInfo().add((AdverseEventSupportingInfoComponent) value);
         } else if (name.equals("study")) {
           this.getStudy().add(castToReference(value));
         } else
@@ -2099,25 +2374,25 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return addIdentifier(); 
+        case -892481550:  return getStatusElement();
         case 528866400:  return getActualityElement();
         case 50511102:  return addCategory(); 
-        case 96891546:  return getEvent(); 
-        case -1867885268:  return getSubject(); 
-        case 1524132147:  return getEncounter(); 
-        case 3076014:  return getDateElement();
+        case 3059181:  return getCode();
+        case -1867885268:  return getSubject();
+        case 1524132147:  return getEncounter();
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
         case 1048254082:  return getDetectedElement();
         case -1952893826:  return getRecordedDateElement();
         case -830261258:  return addResultingCondition(); 
-        case 1901043637:  return getLocation(); 
-        case -1551003909:  return getSeriousness(); 
-        case 1478300413:  return getSeverity(); 
-        case -1106507950:  return getOutcome(); 
-        case -799233858:  return getRecorder(); 
-        case -1895276325:  return addContributor(); 
+        case 1901043637:  return getLocation();
+        case -1551003909:  return getSeriousness();
+        case -1106507950:  return getOutcome();
+        case -799233858:  return getRecorder();
+        case 767422259:  return addParticipant(); 
         case -1957422662:  return addSuspectEntity(); 
-        case -1685245681:  return addSubjectMedicalHistory(); 
-        case 1013971334:  return addReferenceDocument(); 
+        case 1922406657:  return addSupportingInfo(); 
         case 109776329:  return addStudy(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2128,24 +2403,23 @@ public class AdverseEvent extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case -892481550: /*status*/ return new String[] {"code"};
         case 528866400: /*actuality*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
-        case 96891546: /*event*/ return new String[] {"CodeableConcept"};
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
-        case 3076014: /*date*/ return new String[] {"dateTime"};
+        case 1687874001: /*occurrence*/ return new String[] {"dateTime", "Period", "Timing"};
         case 1048254082: /*detected*/ return new String[] {"dateTime"};
         case -1952893826: /*recordedDate*/ return new String[] {"dateTime"};
         case -830261258: /*resultingCondition*/ return new String[] {"Reference"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case -1551003909: /*seriousness*/ return new String[] {"CodeableConcept"};
-        case 1478300413: /*severity*/ return new String[] {"CodeableConcept"};
         case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
         case -799233858: /*recorder*/ return new String[] {"Reference"};
-        case -1895276325: /*contributor*/ return new String[] {"Reference"};
+        case 767422259: /*participant*/ return new String[] {};
         case -1957422662: /*suspectEntity*/ return new String[] {};
-        case -1685245681: /*subjectMedicalHistory*/ return new String[] {"Reference"};
-        case 1013971334: /*referenceDocument*/ return new String[] {"Reference"};
+        case 1922406657: /*supportingInfo*/ return new String[] {};
         case 109776329: /*study*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2155,8 +2429,10 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+          return addIdentifier();
+        }
+        else if (name.equals("status")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.status");
         }
         else if (name.equals("actuality")) {
           throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.actuality");
@@ -2164,9 +2440,9 @@ public class AdverseEvent extends DomainResource {
         else if (name.equals("category")) {
           return addCategory();
         }
-        else if (name.equals("event")) {
-          this.event = new CodeableConcept();
-          return this.event;
+        else if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -2176,8 +2452,17 @@ public class AdverseEvent extends DomainResource {
           this.encounter = new Reference();
           return this.encounter;
         }
-        else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.date");
+        else if (name.equals("occurrenceDateTime")) {
+          this.occurrence = new DateTimeType();
+          return this.occurrence;
+        }
+        else if (name.equals("occurrencePeriod")) {
+          this.occurrence = new Period();
+          return this.occurrence;
+        }
+        else if (name.equals("occurrenceTiming")) {
+          this.occurrence = new Timing();
+          return this.occurrence;
         }
         else if (name.equals("detected")) {
           throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.detected");
@@ -2196,10 +2481,6 @@ public class AdverseEvent extends DomainResource {
           this.seriousness = new CodeableConcept();
           return this.seriousness;
         }
-        else if (name.equals("severity")) {
-          this.severity = new CodeableConcept();
-          return this.severity;
-        }
         else if (name.equals("outcome")) {
           this.outcome = new CodeableConcept();
           return this.outcome;
@@ -2208,17 +2489,14 @@ public class AdverseEvent extends DomainResource {
           this.recorder = new Reference();
           return this.recorder;
         }
-        else if (name.equals("contributor")) {
-          return addContributor();
+        else if (name.equals("participant")) {
+          return addParticipant();
         }
         else if (name.equals("suspectEntity")) {
           return addSuspectEntity();
         }
-        else if (name.equals("subjectMedicalHistory")) {
-          return addSubjectMedicalHistory();
-        }
-        else if (name.equals("referenceDocument")) {
-          return addReferenceDocument();
+        else if (name.equals("supportingInfo")) {
+          return addSupportingInfo();
         }
         else if (name.equals("study")) {
           return addStudy();
@@ -2235,17 +2513,27 @@ public class AdverseEvent extends DomainResource {
       public AdverseEvent copy() {
         AdverseEvent dst = new AdverseEvent();
         copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
+        return dst;
+      }
+
+      public void copyValues(AdverseEvent dst) {
+        super.copyValues(dst);
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
+        dst.status = status == null ? null : status.copy();
         dst.actuality = actuality == null ? null : actuality.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : category)
             dst.category.add(i.copy());
         };
-        dst.event = event == null ? null : event.copy();
+        dst.code = code == null ? null : code.copy();
         dst.subject = subject == null ? null : subject.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
-        dst.date = date == null ? null : date.copy();
+        dst.occurrence = occurrence == null ? null : occurrence.copy();
         dst.detected = detected == null ? null : detected.copy();
         dst.recordedDate = recordedDate == null ? null : recordedDate.copy();
         if (resultingCondition != null) {
@@ -2255,35 +2543,28 @@ public class AdverseEvent extends DomainResource {
         };
         dst.location = location == null ? null : location.copy();
         dst.seriousness = seriousness == null ? null : seriousness.copy();
-        dst.severity = severity == null ? null : severity.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
         dst.recorder = recorder == null ? null : recorder.copy();
-        if (contributor != null) {
-          dst.contributor = new ArrayList<Reference>();
-          for (Reference i : contributor)
-            dst.contributor.add(i.copy());
+        if (participant != null) {
+          dst.participant = new ArrayList<AdverseEventParticipantComponent>();
+          for (AdverseEventParticipantComponent i : participant)
+            dst.participant.add(i.copy());
         };
         if (suspectEntity != null) {
           dst.suspectEntity = new ArrayList<AdverseEventSuspectEntityComponent>();
           for (AdverseEventSuspectEntityComponent i : suspectEntity)
             dst.suspectEntity.add(i.copy());
         };
-        if (subjectMedicalHistory != null) {
-          dst.subjectMedicalHistory = new ArrayList<Reference>();
-          for (Reference i : subjectMedicalHistory)
-            dst.subjectMedicalHistory.add(i.copy());
-        };
-        if (referenceDocument != null) {
-          dst.referenceDocument = new ArrayList<Reference>();
-          for (Reference i : referenceDocument)
-            dst.referenceDocument.add(i.copy());
+        if (supportingInfo != null) {
+          dst.supportingInfo = new ArrayList<AdverseEventSupportingInfoComponent>();
+          for (AdverseEventSupportingInfoComponent i : supportingInfo)
+            dst.supportingInfo.add(i.copy());
         };
         if (study != null) {
           dst.study = new ArrayList<Reference>();
           for (Reference i : study)
             dst.study.add(i.copy());
         };
-        return dst;
       }
 
       protected AdverseEvent typedCopy() {
@@ -2297,15 +2578,13 @@ public class AdverseEvent extends DomainResource {
         if (!(other_ instanceof AdverseEvent))
           return false;
         AdverseEvent o = (AdverseEvent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(actuality, o.actuality, true)
-           && compareDeep(category, o.category, true) && compareDeep(event, o.event, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(encounter, o.encounter, true) && compareDeep(date, o.date, true) && compareDeep(detected, o.detected, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(actuality, o.actuality, true)
+           && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(encounter, o.encounter, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(detected, o.detected, true)
            && compareDeep(recordedDate, o.recordedDate, true) && compareDeep(resultingCondition, o.resultingCondition, true)
-           && compareDeep(location, o.location, true) && compareDeep(seriousness, o.seriousness, true) && compareDeep(severity, o.severity, true)
-           && compareDeep(outcome, o.outcome, true) && compareDeep(recorder, o.recorder, true) && compareDeep(contributor, o.contributor, true)
-           && compareDeep(suspectEntity, o.suspectEntity, true) && compareDeep(subjectMedicalHistory, o.subjectMedicalHistory, true)
-           && compareDeep(referenceDocument, o.referenceDocument, true) && compareDeep(study, o.study, true)
-          ;
+           && compareDeep(location, o.location, true) && compareDeep(seriousness, o.seriousness, true) && compareDeep(outcome, o.outcome, true)
+           && compareDeep(recorder, o.recorder, true) && compareDeep(participant, o.participant, true) && compareDeep(suspectEntity, o.suspectEntity, true)
+           && compareDeep(supportingInfo, o.supportingInfo, true) && compareDeep(study, o.study, true);
       }
 
       @Override
@@ -2315,15 +2594,15 @@ public class AdverseEvent extends DomainResource {
         if (!(other_ instanceof AdverseEvent))
           return false;
         AdverseEvent o = (AdverseEvent) other_;
-        return compareValues(actuality, o.actuality, true) && compareValues(date, o.date, true) && compareValues(detected, o.detected, true)
+        return compareValues(status, o.status, true) && compareValues(actuality, o.actuality, true) && compareValues(detected, o.detected, true)
            && compareValues(recordedDate, o.recordedDate, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, actuality, category
-          , event, subject, encounter, date, detected, recordedDate, resultingCondition
-          , location, seriousness, severity, outcome, recorder, contributor, suspectEntity
-          , subjectMedicalHistory, referenceDocument, study);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, actuality
+          , category, code, subject, encounter, occurrence, detected, recordedDate, resultingCondition
+          , location, seriousness, outcome, recorder, participant, suspectEntity, supportingInfo
+          , study);
       }
 
   @Override
@@ -2336,40 +2615,40 @@ public class AdverseEvent extends DomainResource {
    * <p>
    * Description: <b>When the event occurred</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AdverseEvent.date</b><br>
+   * Path: <b>AdverseEvent.occurrence[x]</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AdverseEvent.date", description="When the event occurred", type="date" )
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence", description="When the event occurred", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
    * Description: <b>When the event occurred</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AdverseEvent.date</b><br>
+   * Path: <b>AdverseEvent.occurrence[x]</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
-   * Search parameter: <b>severity</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>mild | moderate | severe</b><br>
+   * Description: <b>Business identifier for the event</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AdverseEvent.severity</b><br>
+   * Path: <b>AdverseEvent.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="severity", path="AdverseEvent.severity", description="mild | moderate | severe", type="token" )
-  public static final String SP_SEVERITY = "severity";
+  @SearchParamDefinition(name="identifier", path="AdverseEvent.identifier", description="Business identifier for the event", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>severity</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>mild | moderate | severe</b><br>
+   * Description: <b>Business identifier for the event</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AdverseEvent.severity</b><br>
+   * Path: <b>AdverseEvent.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SEVERITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SEVERITY);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>recorder</b>
@@ -2400,17 +2679,17 @@ public class AdverseEvent extends DomainResource {
  /**
    * Search parameter: <b>study</b>
    * <p>
-   * Description: <b>AdverseEvent.study</b><br>
+   * Description: <b>Research study that the subject is enrolled in</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdverseEvent.study</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="study", path="AdverseEvent.study", description="AdverseEvent.study", type="reference", target={ResearchStudy.class } )
+  @SearchParamDefinition(name="study", path="AdverseEvent.study", description="Research study that the subject is enrolled in", type="reference", target={ResearchStudy.class } )
   public static final String SP_STUDY = "study";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>study</b>
    * <p>
-   * Description: <b>AdverseEvent.study</b><br>
+   * Description: <b>Research study that the subject is enrolled in</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdverseEvent.study</b><br>
    * </p>
@@ -2422,6 +2701,26 @@ public class AdverseEvent extends DomainResource {
    * the path value of "<b>AdverseEvent:study</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_STUDY = new ca.uhn.fhir.model.api.Include("AdverseEvent:study").toLocked();
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Event or incident that occurred or was averted</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdverseEvent.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="AdverseEvent.code", description="Event or incident that occurred or was averted", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Event or incident that occurred or was averted</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdverseEvent.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
    * Search parameter: <b>actuality</b>
@@ -2442,26 +2741,6 @@ public class AdverseEvent extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTUALITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTUALITY);
-
- /**
-   * Search parameter: <b>seriousness</b>
-   * <p>
-   * Description: <b>Seriousness of the event</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdverseEvent.seriousness</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="seriousness", path="AdverseEvent.seriousness", description="Seriousness of the event", type="token" )
-  public static final String SP_SERIOUSNESS = "seriousness";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>seriousness</b>
-   * <p>
-   * Description: <b>Seriousness of the event</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdverseEvent.seriousness</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERIOUSNESS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERIOUSNESS);
 
  /**
    * Search parameter: <b>subject</b>
@@ -2520,17 +2799,17 @@ public class AdverseEvent extends DomainResource {
    * <p>
    * Description: <b>Refers to the specific entity that caused the adverse event</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AdverseEvent.suspectEntity.instance</b><br>
+   * Path: <b>AdverseEvent.suspectEntity.instanceReference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="substance", path="AdverseEvent.suspectEntity.instance", description="Refers to the specific entity that caused the adverse event", type="reference", target={Device.class, Immunization.class, Medication.class, MedicationAdministration.class, MedicationStatement.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="substance", path="(AdverseEvent.suspectEntity.instance as Reference)", description="Refers to the specific entity that caused the adverse event", type="reference", target={Device.class, Immunization.class, Medication.class, MedicationAdministration.class, MedicationUsage.class, Procedure.class, Substance.class } )
   public static final String SP_SUBSTANCE = "substance";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>substance</b>
    * <p>
    * Description: <b>Refers to the specific entity that caused the adverse event</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AdverseEvent.suspectEntity.instance</b><br>
+   * Path: <b>AdverseEvent.suspectEntity.instanceReference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBSTANCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBSTANCE);
@@ -2540,6 +2819,52 @@ public class AdverseEvent extends DomainResource {
    * the path value of "<b>AdverseEvent:substance</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBSTANCE = new ca.uhn.fhir.model.api.Include("AdverseEvent:substance").toLocked();
+
+ /**
+   * Search parameter: <b>seriousness</b>
+   * <p>
+   * Description: <b>Seriousness or gravity of the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdverseEvent.seriousness</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="seriousness", path="AdverseEvent.seriousness", description="Seriousness or gravity of the event", type="token" )
+  public static final String SP_SERIOUSNESS = "seriousness";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>seriousness</b>
+   * <p>
+   * Description: <b>Seriousness or gravity of the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdverseEvent.seriousness</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERIOUSNESS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERIOUSNESS);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Subject impacted by event</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdverseEvent.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AdverseEvent.subject", description="Subject impacted by event", type="reference", target={Group.class, Patient.class, Practitioner.class, RelatedPerson.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Subject impacted by event</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdverseEvent.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdverseEvent:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("AdverseEvent:patient").toLocked();
 
  /**
    * Search parameter: <b>location</b>
@@ -2588,24 +2913,24 @@ public class AdverseEvent extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
 
  /**
-   * Search parameter: <b>event</b>
+   * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>Type of the event itself in relation to the subject</b><br>
+   * Description: <b>in-progress | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AdverseEvent.event</b><br>
+   * Path: <b>AdverseEvent.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="event", path="AdverseEvent.event", description="Type of the event itself in relation to the subject", type="token" )
-  public static final String SP_EVENT = "event";
+  @SearchParamDefinition(name="status", path="AdverseEvent.status", description="in-progress | completed | entered-in-error | unknown", type="token" )
+  public static final String SP_STATUS = "status";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>event</b>
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>Type of the event itself in relation to the subject</b><br>
+   * Description: <b>in-progress | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AdverseEvent.event</b><br>
+   * Path: <b>AdverseEvent.status</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVENT);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

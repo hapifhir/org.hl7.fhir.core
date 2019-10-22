@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import java.math.BigDecimal;
-
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -55,15 +53,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import java.math.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
  */
@@ -2020,8 +2020,8 @@ public class Timing extends BackboneType implements ICompositeType {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1149635157:  return getBounds(); 
-        case -1383205195:  return getBounds(); 
+        case -1149635157:  return getBounds();
+        case -1383205195:  return getBounds();
         case 94851343:  return getCountElement();
         case -372044331:  return getCountMaxElement();
         case -1992012396:  return getDurationElement();
@@ -2127,6 +2127,11 @@ public class Timing extends BackboneType implements ICompositeType {
       public TimingRepeatComponent copy() {
         TimingRepeatComponent dst = new TimingRepeatComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TimingRepeatComponent dst) {
+        super.copyValues(dst);
         dst.bounds = bounds == null ? null : bounds.copy();
         dst.count = count == null ? null : count.copy();
         dst.countMax = countMax == null ? null : countMax.copy();
@@ -2154,7 +2159,6 @@ public class Timing extends BackboneType implements ICompositeType {
             dst.when.add(i.copy());
         };
         dst.offset = offset == null ? null : offset.copy();
-        return dst;
       }
 
       @Override
@@ -2403,8 +2407,8 @@ public class Timing extends BackboneType implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 96891546:  return addEventElement();
-        case -934531685:  return getRepeat(); 
-        case 3059181:  return getCode(); 
+        case -934531685:  return getRepeat();
+        case 3059181:  return getCode();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2446,6 +2450,11 @@ public class Timing extends BackboneType implements ICompositeType {
       public Timing copy() {
         Timing dst = new Timing();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Timing dst) {
+        super.copyValues(dst);
         if (event != null) {
           dst.event = new ArrayList<DateTimeType>();
           for (DateTimeType i : event)
@@ -2453,7 +2462,6 @@ public class Timing extends BackboneType implements ICompositeType {
         };
         dst.repeat = repeat == null ? null : repeat.copy();
         dst.code = code == null ? null : code.copy();
-        return dst;
       }
 
       protected Timing typedCopy() {

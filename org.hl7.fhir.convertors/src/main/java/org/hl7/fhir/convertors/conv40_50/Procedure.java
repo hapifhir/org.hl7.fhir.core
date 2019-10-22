@@ -80,7 +80,7 @@ public class Procedure extends VersionConvertor_40_50 {
     if (src.hasStatusReason())
       tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.addCategory(convertCodeableConcept(src.getCategory()));
     if (src.hasCode())
       tgt.setCode(convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
@@ -88,11 +88,11 @@ public class Procedure extends VersionConvertor_40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
     if (src.hasPerformed())
-      tgt.setPerformed(convertType(src.getPerformed()));
+      tgt.setOccurrence(convertType(src.getPerformed()));
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
     if (src.hasAsserter())
-      tgt.setAsserter(convertReference(src.getAsserter()));
+      tgt.setReported(convertReference(src.getAsserter()));
     for (org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasLocation())
@@ -144,19 +144,19 @@ public class Procedure extends VersionConvertor_40_50 {
     if (src.hasStatusReason())
       tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
     if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategory()));
+      tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.hasCode())
       tgt.setCode(convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
       tgt.setSubject(convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasPerformed())
-      tgt.setPerformed(convertType(src.getPerformed()));
+    if (src.hasOccurrence())
+      tgt.setPerformed(convertType(src.getOccurrence()));
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
-    if (src.hasAsserter())
-      tgt.setAsserter(convertReference(src.getAsserter()));
+    if (src.hasReportedReference())
+      tgt.setAsserter(convertReference(src.getReportedReference()));
     for (org.hl7.fhir.r5.model.Procedure.ProcedurePerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasLocation())

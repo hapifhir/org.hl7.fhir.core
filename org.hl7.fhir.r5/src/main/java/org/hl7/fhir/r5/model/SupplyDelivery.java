@@ -51,16 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Record of delivery of what is supplied.
  */
@@ -349,9 +353,9 @@ public class SupplyDelivery extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1285004149:  return getQuantity(); 
-        case 2116201613:  return getItem(); 
-        case 3242771:  return getItem(); 
+        case -1285004149:  return getQuantity();
+        case 2116201613:  return getItem();
+        case 3242771:  return getItem();
         default: return super.makeProperty(hash, name);
         }
 
@@ -388,9 +392,13 @@ public class SupplyDelivery extends DomainResource {
       public SupplyDeliverySuppliedItemComponent copy() {
         SupplyDeliverySuppliedItemComponent dst = new SupplyDeliverySuppliedItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupplyDeliverySuppliedItemComponent dst) {
+        super.copyValues(dst);
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.item = item == null ? null : item.copy();
-        return dst;
       }
 
       @Override
@@ -437,11 +445,6 @@ public class SupplyDelivery extends DomainResource {
     @Child(name = "basedOn", type = {SupplyRequest.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Fulfills plan, proposal or order", formalDefinition="A plan, proposal or order that is fulfilled in whole or in part by this event." )
     protected List<Reference> basedOn;
-    /**
-     * The actual objects that are the target of the reference (A plan, proposal or order that is fulfilled in whole or in part by this event.)
-     */
-    protected List<SupplyRequest> basedOnTarget;
-
 
     /**
      * A larger event of which this particular event is a component or step.
@@ -449,11 +452,6 @@ public class SupplyDelivery extends DomainResource {
     @Child(name = "partOf", type = {SupplyDelivery.class, Contract.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of referenced event", formalDefinition="A larger event of which this particular event is a component or step." )
     protected List<Reference> partOf;
-    /**
-     * The actual objects that are the target of the reference (A larger event of which this particular event is a component or step.)
-     */
-    protected List<Resource> partOfTarget;
-
 
     /**
      * A code specifying the state of the dispense event.
@@ -469,11 +467,6 @@ public class SupplyDelivery extends DomainResource {
     @Child(name = "patient", type = {Patient.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Patient for whom the item is supplied", formalDefinition="A link to a resource representing the person whom the delivered item is for." )
     protected Reference patient;
-
-    /**
-     * The actual object that is the target of the reference (A link to a resource representing the person whom the delivered item is for.)
-     */
-    protected Patient patientTarget;
 
     /**
      * Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
@@ -505,11 +498,6 @@ public class SupplyDelivery extends DomainResource {
     protected Reference supplier;
 
     /**
-     * The actual object that is the target of the reference (The individual responsible for dispensing the medication, supplier or device.)
-     */
-    protected Resource supplierTarget;
-
-    /**
      * Identification of the facility/location where the Supply was shipped to, as part of the dispense event.
      */
     @Child(name = "destination", type = {Location.class}, order=9, min=0, max=1, modifier=false, summary=false)
@@ -517,23 +505,13 @@ public class SupplyDelivery extends DomainResource {
     protected Reference destination;
 
     /**
-     * The actual object that is the target of the reference (Identification of the facility/location where the Supply was shipped to, as part of the dispense event.)
-     */
-    protected Location destinationTarget;
-
-    /**
      * Identifies the person who picked up the Supply.
      */
     @Child(name = "receiver", type = {Practitioner.class, PractitionerRole.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who collected the Supply", formalDefinition="Identifies the person who picked up the Supply." )
     protected List<Reference> receiver;
-    /**
-     * The actual objects that are the target of the reference (Identifies the person who picked up the Supply.)
-     */
-    protected List<Resource> receiverTarget;
 
-
-    private static final long serialVersionUID = -750389806L;
+    private static final long serialVersionUID = 1414013066L;
 
   /**
    * Constructor
@@ -649,28 +627,6 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<SupplyRequest> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<SupplyRequest>();
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public SupplyRequest addBasedOnTarget() { 
-      SupplyRequest r = new SupplyRequest();
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<SupplyRequest>();
-      this.basedOnTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular event is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -721,16 +677,6 @@ public class SupplyDelivery extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -803,26 +749,6 @@ public class SupplyDelivery extends DomainResource {
      */
     public SupplyDelivery setPatient(Reference value) { 
       this.patient = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #patient} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A link to a resource representing the person whom the delivered item is for.)
-     */
-    public Patient getPatientTarget() { 
-      if (this.patientTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SupplyDelivery.patient");
-        else if (Configuration.doAutoCreate())
-          this.patientTarget = new Patient(); // aa
-      return this.patientTarget;
-    }
-
-    /**
-     * @param value {@link #patient} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A link to a resource representing the person whom the delivered item is for.)
-     */
-    public SupplyDelivery setPatientTarget(Patient value) { 
-      this.patientTarget = value;
       return this;
     }
 
@@ -965,21 +891,6 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @return {@link #supplier} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual responsible for dispensing the medication, supplier or device.)
-     */
-    public Resource getSupplierTarget() { 
-      return this.supplierTarget;
-    }
-
-    /**
-     * @param value {@link #supplier} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual responsible for dispensing the medication, supplier or device.)
-     */
-    public SupplyDelivery setSupplierTarget(Resource value) { 
-      this.supplierTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #destination} (Identification of the facility/location where the Supply was shipped to, as part of the dispense event.)
      */
     public Reference getDestination() { 
@@ -1000,26 +911,6 @@ public class SupplyDelivery extends DomainResource {
      */
     public SupplyDelivery setDestination(Reference value) { 
       this.destination = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #destination} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identification of the facility/location where the Supply was shipped to, as part of the dispense event.)
-     */
-    public Location getDestinationTarget() { 
-      if (this.destinationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SupplyDelivery.destination");
-        else if (Configuration.doAutoCreate())
-          this.destinationTarget = new Location(); // aa
-      return this.destinationTarget;
-    }
-
-    /**
-     * @param value {@link #destination} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identification of the facility/location where the Supply was shipped to, as part of the dispense event.)
-     */
-    public SupplyDelivery setDestinationTarget(Location value) { 
-      this.destinationTarget = value;
       return this;
     }
 
@@ -1074,16 +965,6 @@ public class SupplyDelivery extends DomainResource {
         addReceiver();
       }
       return getReceiver().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReceiverTarget() { 
-      if (this.receiverTarget == null)
-        this.receiverTarget = new ArrayList<Resource>();
-      return this.receiverTarget;
     }
 
       protected void listChildren(List<Property> children) {
@@ -1222,13 +1103,13 @@ public class SupplyDelivery extends DomainResource {
         case -332612366:  return addBasedOn(); 
         case -995410646:  return addPartOf(); 
         case -892481550:  return getStatusElement();
-        case -791418107:  return getPatient(); 
-        case 3575610:  return getType(); 
-        case 1993333233:  return getSuppliedItem(); 
-        case -2022646513:  return getOccurrence(); 
-        case 1687874001:  return getOccurrence(); 
-        case -1663305268:  return getSupplier(); 
-        case -1429847026:  return getDestination(); 
+        case -791418107:  return getPatient();
+        case 3575610:  return getType();
+        case 1993333233:  return getSuppliedItem();
+        case -2022646513:  return getOccurrence();
+        case 1687874001:  return getOccurrence();
+        case -1663305268:  return getSupplier();
+        case -1429847026:  return getDestination();
         case -808719889:  return addReceiver(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1315,6 +1196,11 @@ public class SupplyDelivery extends DomainResource {
       public SupplyDelivery copy() {
         SupplyDelivery dst = new SupplyDelivery();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupplyDelivery dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1342,7 +1228,6 @@ public class SupplyDelivery extends DomainResource {
           for (Reference i : receiver)
             dst.receiver.add(i.copy());
         };
-        return dst;
       }
 
       protected SupplyDelivery typedCopy() {

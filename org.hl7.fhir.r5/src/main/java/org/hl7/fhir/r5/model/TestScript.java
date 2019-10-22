@@ -53,19 +53,19 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.
  */
@@ -984,7 +984,7 @@ public class TestScript extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 100346066:  return getIndexElement();
-        case -309425751:  return getProfile(); 
+        case -309425751:  return getProfile();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1016,9 +1016,13 @@ public class TestScript extends MetadataResource {
       public TestScriptOriginComponent copy() {
         TestScriptOriginComponent dst = new TestScriptOriginComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptOriginComponent dst) {
+        super.copyValues(dst);
         dst.index = index == null ? null : index.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -1211,7 +1215,7 @@ public class TestScript extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 100346066:  return getIndexElement();
-        case -309425751:  return getProfile(); 
+        case -309425751:  return getProfile();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1243,9 +1247,13 @@ public class TestScript extends MetadataResource {
       public TestScriptDestinationComponent copy() {
         TestScriptDestinationComponent dst = new TestScriptDestinationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptDestinationComponent dst) {
+        super.copyValues(dst);
         dst.index = index == null ? null : index.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -1496,6 +1504,11 @@ public class TestScript extends MetadataResource {
       public TestScriptMetadataComponent copy() {
         TestScriptMetadataComponent dst = new TestScriptMetadataComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptMetadataComponent dst) {
+        super.copyValues(dst);
         if (link != null) {
           dst.link = new ArrayList<TestScriptMetadataLinkComponent>();
           for (TestScriptMetadataLinkComponent i : link)
@@ -1506,7 +1519,6 @@ public class TestScript extends MetadataResource {
           for (TestScriptMetadataCapabilityComponent i : capability)
             dst.capability.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1753,9 +1765,13 @@ public class TestScript extends MetadataResource {
       public TestScriptMetadataLinkComponent copy() {
         TestScriptMetadataLinkComponent dst = new TestScriptMetadataLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptMetadataLinkComponent dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -2361,6 +2377,11 @@ public class TestScript extends MetadataResource {
       public TestScriptMetadataCapabilityComponent copy() {
         TestScriptMetadataCapabilityComponent dst = new TestScriptMetadataCapabilityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptMetadataCapabilityComponent dst) {
+        super.copyValues(dst);
         dst.required = required == null ? null : required.copy();
         dst.validated = validated == null ? null : validated.copy();
         dst.description = description == null ? null : description.copy();
@@ -2376,7 +2397,6 @@ public class TestScript extends MetadataResource {
             dst.link.add(i.copy());
         };
         dst.capabilities = capabilities == null ? null : capabilities.copy();
-        return dst;
       }
 
       @Override
@@ -2438,12 +2458,7 @@ public class TestScript extends MetadataResource {
         @Description(shortDefinition="Reference of the resource", formalDefinition="Reference to the resource (containing the contents of the resource needed for operations)." )
         protected Reference resource;
 
-        /**
-         * The actual object that is the target of the reference (Reference to the resource (containing the contents of the resource needed for operations).)
-         */
-        protected Resource resourceTarget;
-
-        private static final long serialVersionUID = 1110683307L;
+        private static final long serialVersionUID = 672117234L;
 
     /**
      * Constructor
@@ -2575,21 +2590,6 @@ public class TestScript extends MetadataResource {
           return this;
         }
 
-        /**
-         * @return {@link #resource} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the resource (containing the contents of the resource needed for operations).)
-         */
-        public Resource getResourceTarget() { 
-          return this.resourceTarget;
-        }
-
-        /**
-         * @param value {@link #resource} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the resource (containing the contents of the resource needed for operations).)
-         */
-        public TestScriptFixtureComponent setResourceTarget(Resource value) { 
-          this.resourceTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("autocreate", "boolean", "Whether or not to implicitly create the fixture during setup. If true, the fixture is automatically created on each server being tested during setup, therefore no create operation is required for this fixture in the TestScript.setup section.", 0, 1, autocreate));
@@ -2654,7 +2654,7 @@ public class TestScript extends MetadataResource {
         switch (hash) {
         case 73154411:  return getAutocreateElement();
         case 89990170:  return getAutodeleteElement();
-        case -341064690:  return getResource(); 
+        case -341064690:  return getResource();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2690,10 +2690,14 @@ public class TestScript extends MetadataResource {
       public TestScriptFixtureComponent copy() {
         TestScriptFixtureComponent dst = new TestScriptFixtureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptFixtureComponent dst) {
+        super.copyValues(dst);
         dst.autocreate = autocreate == null ? null : autocreate.copy();
         dst.autodelete = autodelete == null ? null : autodelete.copy();
         dst.resource = resource == null ? null : resource.copy();
-        return dst;
       }
 
       @Override
@@ -3357,6 +3361,11 @@ public class TestScript extends MetadataResource {
       public TestScriptVariableComponent copy() {
         TestScriptVariableComponent dst = new TestScriptVariableComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptVariableComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.defaultValue = defaultValue == null ? null : defaultValue.copy();
         dst.description = description == null ? null : description.copy();
@@ -3365,7 +3374,6 @@ public class TestScript extends MetadataResource {
         dst.hint = hint == null ? null : hint.copy();
         dst.path = path == null ? null : path.copy();
         dst.sourceId = sourceId == null ? null : sourceId.copy();
-        return dst;
       }
 
       @Override
@@ -3550,12 +3558,16 @@ public class TestScript extends MetadataResource {
       public TestScriptSetupComponent copy() {
         TestScriptSetupComponent dst = new TestScriptSetupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptSetupComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<SetupActionComponent>();
           for (SetupActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3716,8 +3728,8 @@ public class TestScript extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1662702951:  return getOperation(); 
-        case -1408208058:  return getAssert(); 
+        case 1662702951:  return getOperation();
+        case -1408208058:  return getAssert();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3750,9 +3762,13 @@ public class TestScript extends MetadataResource {
       public SetupActionComponent copy() {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -4905,7 +4921,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case -341064690:  return getResourceElement();
         case 102727412:  return getLabelElement();
         case -1724546052:  return getDescriptionElement();
@@ -5013,6 +5029,11 @@ public class TestScript extends MetadataResource {
       public SetupActionOperationComponent copy() {
         SetupActionOperationComponent dst = new SetupActionOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionOperationComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.resource = resource == null ? null : resource.copy();
         dst.label = label == null ? null : label.copy();
@@ -5034,7 +5055,6 @@ public class TestScript extends MetadataResource {
         dst.sourceId = sourceId == null ? null : sourceId.copy();
         dst.targetId = targetId == null ? null : targetId.copy();
         dst.url = url == null ? null : url.copy();
-        return dst;
       }
 
       @Override
@@ -5291,9 +5311,13 @@ public class TestScript extends MetadataResource {
       public SetupActionOperationRequestHeaderComponent copy() {
         SetupActionOperationRequestHeaderComponent dst = new SetupActionOperationRequestHeaderComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionOperationRequestHeaderComponent dst) {
+        super.copyValues(dst);
         dst.field = field == null ? null : field.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -6930,6 +6954,11 @@ public class TestScript extends MetadataResource {
       public SetupActionAssertComponent copy() {
         SetupActionAssertComponent dst = new SetupActionAssertComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionAssertComponent dst) {
+        super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
         dst.description = description == null ? null : description.copy();
         dst.direction = direction == null ? null : direction.copy();
@@ -6952,7 +6981,6 @@ public class TestScript extends MetadataResource {
         dst.validateProfileId = validateProfileId == null ? null : validateProfileId.copy();
         dst.value = value == null ? null : value.copy();
         dst.warningOnly = warningOnly == null ? null : warningOnly.copy();
-        return dst;
       }
 
       @Override
@@ -7288,6 +7316,11 @@ public class TestScript extends MetadataResource {
       public TestScriptTestComponent copy() {
         TestScriptTestComponent dst = new TestScriptTestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptTestComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
         if (action != null) {
@@ -7295,7 +7328,6 @@ public class TestScript extends MetadataResource {
           for (TestActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7458,8 +7490,8 @@ public class TestScript extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1662702951:  return getOperation(); 
-        case -1408208058:  return getAssert(); 
+        case 1662702951:  return getOperation();
+        case -1408208058:  return getAssert();
         default: return super.makeProperty(hash, name);
         }
 
@@ -7492,9 +7524,13 @@ public class TestScript extends MetadataResource {
       public TestActionComponent copy() {
         TestActionComponent dst = new TestActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -7672,12 +7708,16 @@ public class TestScript extends MetadataResource {
       public TestScriptTeardownComponent copy() {
         TestScriptTeardownComponent dst = new TestScriptTeardownComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptTeardownComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<TeardownActionComponent>();
           for (TeardownActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7807,7 +7847,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1662702951:  return getOperation(); 
+        case 1662702951:  return getOperation();
         default: return super.makeProperty(hash, name);
         }
 
@@ -7835,8 +7875,12 @@ public class TestScript extends MetadataResource {
       public TeardownActionComponent copy() {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
-        dst.operation = operation == null ? null : operation.copy();
         return dst;
+      }
+
+      public void copyValues(TeardownActionComponent dst) {
+        super.copyValues(dst);
+        dst.operation = operation == null ? null : operation.copy();
       }
 
       @Override
@@ -7925,11 +7969,6 @@ public class TestScript extends MetadataResource {
     @Child(name = "profile", type = {Reference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Reference of the validation profile", formalDefinition="Reference to the profile to be used for validation." )
     protected List<Reference> profile;
-    /**
-     * The actual objects that are the target of the reference (Reference to the profile to be used for validation.)
-     */
-    protected List<Resource> profileTarget;
-
 
     /**
      * Variable is set based either on element value in response body or on header field value in the response headers.
@@ -7959,7 +7998,7 @@ public class TestScript extends MetadataResource {
     @Description(shortDefinition="A series of required clean up steps", formalDefinition="A series of operations required to clean up after all the tests are executed (successfully or otherwise)." )
     protected TestScriptTeardownComponent teardown;
 
-    private static final long serialVersionUID = -1433230137L;
+    private static final long serialVersionUID = -19449153L;
 
   /**
    * Constructor
@@ -8921,16 +8960,6 @@ public class TestScript extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getProfileTarget() { 
-      if (this.profileTarget == null)
-        this.profileTarget = new ArrayList<Resource>();
-      return this.profileTarget;
-    }
-
-    /**
      * @return {@link #variable} (Variable is set based either on element value in response body or on header field value in the response headers.)
      */
     public List<TestScriptVariableComponent> getVariable() { 
@@ -9317,7 +9346,7 @@ public class TestScript extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return getIdentifier();
         case 351608024:  return getVersionElement();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
@@ -9333,13 +9362,13 @@ public class TestScript extends MetadataResource {
         case 1522889671:  return getCopyrightElement();
         case -1008619738:  return addOrigin(); 
         case -1429847026:  return addDestination(); 
-        case -450004177:  return getMetadata(); 
+        case -450004177:  return getMetadata();
         case -843449847:  return addFixture(); 
         case -309425751:  return addProfile(); 
         case -1249586564:  return addVariable(); 
-        case 109329021:  return getSetup(); 
+        case 109329021:  return getSetup();
         case 3556498:  return addTest(); 
-        case -1663474172:  return getTeardown(); 
+        case -1663474172:  return getTeardown();
         default: return super.makeProperty(hash, name);
         }
 
@@ -9467,6 +9496,11 @@ public class TestScript extends MetadataResource {
       public TestScript copy() {
         TestScript dst = new TestScript();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScript dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.version = version == null ? null : version.copy();
@@ -9527,7 +9561,6 @@ public class TestScript extends MetadataResource {
             dst.test.add(i.copy());
         };
         dst.teardown = teardown == null ? null : teardown.copy();
-        return dst;
       }
 
       protected TestScript typedCopy() {

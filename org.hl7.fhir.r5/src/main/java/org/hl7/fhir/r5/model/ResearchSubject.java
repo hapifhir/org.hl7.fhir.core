@@ -51,15 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A physical entity which is the primary unit of operational and/or administrative interest in a study.
  */
@@ -366,21 +371,11 @@ responding, withdrawal, non-compliance and/or adverse event.
     protected Reference study;
 
     /**
-     * The actual object that is the target of the reference (Reference to the study the subject is participating in.)
-     */
-    protected ResearchStudy studyTarget;
-
-    /**
      * The record of the person or animal who is involved in the study.
      */
     @Child(name = "individual", type = {Patient.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who is part of study", formalDefinition="The record of the person or animal who is involved in the study." )
     protected Reference individual;
-
-    /**
-     * The actual object that is the target of the reference (The record of the person or animal who is involved in the study.)
-     */
-    protected Patient individualTarget;
 
     /**
      * The name of the arm in the study the subject is expected to follow as part of this study.
@@ -403,12 +398,7 @@ responding, withdrawal, non-compliance and/or adverse event.
     @Description(shortDefinition="Agreement to participate in study", formalDefinition="A record of the patient's informed agreement to participate in the study." )
     protected Reference consent;
 
-    /**
-     * The actual object that is the target of the reference (A record of the patient's informed agreement to participate in the study.)
-     */
-    protected Consent consentTarget;
-
-    private static final long serialVersionUID = -884133739L;
+    private static final long serialVersionUID = 2129823357L;
 
   /**
    * Constructor
@@ -574,26 +564,6 @@ responding, withdrawal, non-compliance and/or adverse event.
     }
 
     /**
-     * @return {@link #study} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Reference to the study the subject is participating in.)
-     */
-    public ResearchStudy getStudyTarget() { 
-      if (this.studyTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ResearchSubject.study");
-        else if (Configuration.doAutoCreate())
-          this.studyTarget = new ResearchStudy(); // aa
-      return this.studyTarget;
-    }
-
-    /**
-     * @param value {@link #study} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Reference to the study the subject is participating in.)
-     */
-    public ResearchSubject setStudyTarget(ResearchStudy value) { 
-      this.studyTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #individual} (The record of the person or animal who is involved in the study.)
      */
     public Reference getIndividual() { 
@@ -614,26 +584,6 @@ responding, withdrawal, non-compliance and/or adverse event.
      */
     public ResearchSubject setIndividual(Reference value) { 
       this.individual = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #individual} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The record of the person or animal who is involved in the study.)
-     */
-    public Patient getIndividualTarget() { 
-      if (this.individualTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ResearchSubject.individual");
-        else if (Configuration.doAutoCreate())
-          this.individualTarget = new Patient(); // aa
-      return this.individualTarget;
-    }
-
-    /**
-     * @param value {@link #individual} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The record of the person or animal who is involved in the study.)
-     */
-    public ResearchSubject setIndividualTarget(Patient value) { 
-      this.individualTarget = value;
       return this;
     }
 
@@ -759,26 +709,6 @@ responding, withdrawal, non-compliance and/or adverse event.
       return this;
     }
 
-    /**
-     * @return {@link #consent} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (A record of the patient's informed agreement to participate in the study.)
-     */
-    public Consent getConsentTarget() { 
-      if (this.consentTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ResearchSubject.consent");
-        else if (Configuration.doAutoCreate())
-          this.consentTarget = new Consent(); // aa
-      return this.consentTarget;
-    }
-
-    /**
-     * @param value {@link #consent} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (A record of the patient's informed agreement to participate in the study.)
-     */
-    public ResearchSubject setConsentTarget(Consent value) { 
-      this.consentTarget = value;
-      return this;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers assigned to this research subject for a study.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -885,12 +815,12 @@ responding, withdrawal, non-compliance and/or adverse event.
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case -991726143:  return getPeriod(); 
-        case 109776329:  return getStudy(); 
-        case -46292327:  return getIndividual(); 
+        case -991726143:  return getPeriod();
+        case 109776329:  return getStudy();
+        case -46292327:  return getIndividual();
         case 1741912494:  return getAssignedArmElement();
         case 528827886:  return getActualArmElement();
-        case 951500826:  return getConsent(); 
+        case 951500826:  return getConsent();
         default: return super.makeProperty(hash, name);
         }
 
@@ -954,6 +884,11 @@ responding, withdrawal, non-compliance and/or adverse event.
       public ResearchSubject copy() {
         ResearchSubject dst = new ResearchSubject();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchSubject dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -966,7 +901,6 @@ responding, withdrawal, non-compliance and/or adverse event.
         dst.assignedArm = assignedArm == null ? null : assignedArm.copy();
         dst.actualArm = actualArm == null ? null : actualArm.copy();
         dst.consent = consent == null ? null : consent.copy();
-        return dst;
       }
 
       protected ResearchSubject typedCopy() {

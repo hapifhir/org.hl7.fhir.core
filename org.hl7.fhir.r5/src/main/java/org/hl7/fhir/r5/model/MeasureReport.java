@@ -53,15 +53,18 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.
  */
@@ -563,9 +566,9 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -2023558323:  return addPopulation(); 
-        case -386313260:  return getMeasureScore(); 
+        case -386313260:  return getMeasureScore();
         case 90983669:  return addStratifier(); 
         default: return super.makeProperty(hash, name);
         }
@@ -607,6 +610,11 @@ public class MeasureReport extends DomainResource {
       public MeasureReportGroupComponent copy() {
         MeasureReportGroupComponent dst = new MeasureReportGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReportGroupComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (population != null) {
           dst.population = new ArrayList<MeasureReportGroupPopulationComponent>();
@@ -619,7 +627,6 @@ public class MeasureReport extends DomainResource {
           for (MeasureReportGroupStratifierComponent i : stratifier)
             dst.stratifier.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -679,12 +686,7 @@ public class MeasureReport extends DomainResource {
         @Description(shortDefinition="For subject-list reports, the subject results in this population", formalDefinition="This element refers to a List of subject level MeasureReport resources, one for each subject in this population." )
         protected Reference subjectResults;
 
-        /**
-         * The actual object that is the target of the reference (This element refers to a List of subject level MeasureReport resources, one for each subject in this population.)
-         */
-        protected ListResource subjectResultsTarget;
-
-        private static final long serialVersionUID = 210461445L;
+        private static final long serialVersionUID = 1086153898L;
 
     /**
      * Constructor
@@ -786,26 +788,6 @@ public class MeasureReport extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #subjectResults} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (This element refers to a List of subject level MeasureReport resources, one for each subject in this population.)
-         */
-        public ListResource getSubjectResultsTarget() { 
-          if (this.subjectResultsTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MeasureReportGroupPopulationComponent.subjectResults");
-            else if (Configuration.doAutoCreate())
-              this.subjectResultsTarget = new ListResource(); // aa
-          return this.subjectResultsTarget;
-        }
-
-        /**
-         * @param value {@link #subjectResults} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (This element refers to a List of subject level MeasureReport resources, one for each subject in this population.)
-         */
-        public MeasureReportGroupPopulationComponent setSubjectResultsTarget(ListResource value) { 
-          this.subjectResultsTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "The type of the population.", 0, 1, code));
@@ -868,9 +850,9 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 94851343:  return getCountElement();
-        case 2136184106:  return getSubjectResults(); 
+        case 2136184106:  return getSubjectResults();
         default: return super.makeProperty(hash, name);
         }
 
@@ -907,10 +889,14 @@ public class MeasureReport extends DomainResource {
       public MeasureReportGroupPopulationComponent copy() {
         MeasureReportGroupPopulationComponent dst = new MeasureReportGroupPopulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReportGroupPopulationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.count = count == null ? null : count.copy();
         dst.subjectResults = subjectResults == null ? null : subjectResults.copy();
-        return dst;
       }
 
       @Override
@@ -1163,6 +1149,11 @@ public class MeasureReport extends DomainResource {
       public MeasureReportGroupStratifierComponent copy() {
         MeasureReportGroupStratifierComponent dst = new MeasureReportGroupStratifierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReportGroupStratifierComponent dst) {
+        super.copyValues(dst);
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : code)
@@ -1173,7 +1164,6 @@ public class MeasureReport extends DomainResource {
           for (StratifierGroupComponent i : stratum)
             dst.stratum.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1470,10 +1460,10 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 111972721:  return getValue(); 
+        case 111972721:  return getValue();
         case -1399907075:  return addComponent(); 
         case -2023558323:  return addPopulation(); 
-        case -386313260:  return getMeasureScore(); 
+        case -386313260:  return getMeasureScore();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1514,6 +1504,11 @@ public class MeasureReport extends DomainResource {
       public StratifierGroupComponent copy() {
         StratifierGroupComponent dst = new StratifierGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StratifierGroupComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         if (component != null) {
           dst.component = new ArrayList<StratifierGroupComponentComponent>();
@@ -1526,7 +1521,6 @@ public class MeasureReport extends DomainResource {
             dst.population.add(i.copy());
         };
         dst.measureScore = measureScore == null ? null : measureScore.copy();
-        return dst;
       }
 
       @Override
@@ -1698,8 +1692,8 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
-        case 111972721:  return getValue(); 
+        case 3059181:  return getCode();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1732,9 +1726,13 @@ public class MeasureReport extends DomainResource {
       public StratifierGroupComponentComponent copy() {
         StratifierGroupComponentComponent dst = new StratifierGroupComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StratifierGroupComponentComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1792,12 +1790,7 @@ public class MeasureReport extends DomainResource {
         @Description(shortDefinition="For subject-list reports, the subject results in this population", formalDefinition="This element refers to a List of subject level MeasureReport resources, one for each subject in this population in this stratum." )
         protected Reference subjectResults;
 
-        /**
-         * The actual object that is the target of the reference (This element refers to a List of subject level MeasureReport resources, one for each subject in this population in this stratum.)
-         */
-        protected ListResource subjectResultsTarget;
-
-        private static final long serialVersionUID = 210461445L;
+        private static final long serialVersionUID = 1086153898L;
 
     /**
      * Constructor
@@ -1899,26 +1892,6 @@ public class MeasureReport extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #subjectResults} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (This element refers to a List of subject level MeasureReport resources, one for each subject in this population in this stratum.)
-         */
-        public ListResource getSubjectResultsTarget() { 
-          if (this.subjectResultsTarget == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StratifierGroupPopulationComponent.subjectResults");
-            else if (Configuration.doAutoCreate())
-              this.subjectResultsTarget = new ListResource(); // aa
-          return this.subjectResultsTarget;
-        }
-
-        /**
-         * @param value {@link #subjectResults} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (This element refers to a List of subject level MeasureReport resources, one for each subject in this population in this stratum.)
-         */
-        public StratifierGroupPopulationComponent setSubjectResultsTarget(ListResource value) { 
-          this.subjectResultsTarget = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "The type of the population.", 0, 1, code));
@@ -1981,9 +1954,9 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case 94851343:  return getCountElement();
-        case 2136184106:  return getSubjectResults(); 
+        case 2136184106:  return getSubjectResults();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2020,10 +1993,14 @@ public class MeasureReport extends DomainResource {
       public StratifierGroupPopulationComponent copy() {
         StratifierGroupPopulationComponent dst = new StratifierGroupPopulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StratifierGroupPopulationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.count = count == null ? null : count.copy();
         dst.subjectResults = subjectResults == null ? null : subjectResults.copy();
-        return dst;
       }
 
       @Override
@@ -2097,11 +2074,6 @@ public class MeasureReport extends DomainResource {
     protected Reference subject;
 
     /**
-     * The actual object that is the target of the reference (Optional subject identifying the individual or individuals the report is for.)
-     */
-    protected Resource subjectTarget;
-
-    /**
      * The date this measure report was generated.
      */
     @Child(name = "date", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
@@ -2114,11 +2086,6 @@ public class MeasureReport extends DomainResource {
     @Child(name = "reporter", type = {Practitioner.class, PractitionerRole.class, Location.class, Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who is reporting the data", formalDefinition="The individual, location, or organization that is reporting the data." )
     protected Reference reporter;
-
-    /**
-     * The actual object that is the target of the reference (The individual, location, or organization that is reporting the data.)
-     */
-    protected Resource reporterTarget;
 
     /**
      * The reporting period for which the report was calculated.
@@ -2148,13 +2115,8 @@ public class MeasureReport extends DomainResource {
     @Child(name = "evaluatedResource", type = {Reference.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What data was used to calculate the measure score", formalDefinition="A reference to a Bundle containing the Resources that were used in the calculation of this measure." )
     protected List<Reference> evaluatedResource;
-    /**
-     * The actual objects that are the target of the reference (A reference to a Bundle containing the Resources that were used in the calculation of this measure.)
-     */
-    protected List<Resource> evaluatedResourceTarget;
 
-
-    private static final long serialVersionUID = 355307999L;
+    private static final long serialVersionUID = 1801518514L;
 
   /**
    * Constructor
@@ -2387,21 +2349,6 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Optional subject identifying the individual or individuals the report is for.)
-     */
-    public Resource getSubjectTarget() { 
-      return this.subjectTarget;
-    }
-
-    /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Optional subject identifying the individual or individuals the report is for.)
-     */
-    public MeasureReport setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #date} (The date this measure report was generated.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public DateTimeType getDateElement() { 
@@ -2471,21 +2418,6 @@ public class MeasureReport extends DomainResource {
      */
     public MeasureReport setReporter(Reference value) { 
       this.reporter = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #reporter} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The individual, location, or organization that is reporting the data.)
-     */
-    public Resource getReporterTarget() { 
-      return this.reporterTarget;
-    }
-
-    /**
-     * @param value {@link #reporter} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The individual, location, or organization that is reporting the data.)
-     */
-    public MeasureReport setReporterTarget(Resource value) { 
-      this.reporterTarget = value;
       return this;
     }
 
@@ -2643,16 +2575,6 @@ public class MeasureReport extends DomainResource {
       return getEvaluatedResource().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getEvaluatedResourceTarget() { 
-      if (this.evaluatedResourceTarget == null)
-        this.evaluatedResourceTarget = new ArrayList<Resource>();
-      return this.evaluatedResourceTarget;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this MeasureReport when it is represented in other formats or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -2787,11 +2709,11 @@ public class MeasureReport extends DomainResource {
         case -892481550:  return getStatusElement();
         case 3575610:  return getTypeElement();
         case 938321246:  return getMeasureElement();
-        case -1867885268:  return getSubject(); 
+        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
-        case -427039519:  return getReporter(); 
-        case -991726143:  return getPeriod(); 
-        case -2085456136:  return getImprovementNotation(); 
+        case -427039519:  return getReporter();
+        case -991726143:  return getPeriod();
+        case -2085456136:  return getImprovementNotation();
         case 98629247:  return addGroup(); 
         case -1056771047:  return addEvaluatedResource(); 
         default: return super.makeProperty(hash, name);
@@ -2869,6 +2791,11 @@ public class MeasureReport extends DomainResource {
       public MeasureReport copy() {
         MeasureReport dst = new MeasureReport();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReport dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2892,7 +2819,6 @@ public class MeasureReport extends DomainResource {
           for (Reference i : evaluatedResource)
             dst.evaluatedResource.add(i.copy());
         };
-        return dst;
       }
 
       protected MeasureReport typedCopy() {

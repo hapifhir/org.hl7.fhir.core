@@ -51,17 +51,20 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * A specific set of Roles/Locations/specialties/services that a practitioner may perform at an organization for a period of time.
  */
@@ -598,6 +601,11 @@ public class PractitionerRole extends DomainResource {
       public PractitionerRoleAvailableTimeComponent copy() {
         PractitionerRoleAvailableTimeComponent dst = new PractitionerRoleAvailableTimeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PractitionerRoleAvailableTimeComponent dst) {
+        super.copyValues(dst);
         if (daysOfWeek != null) {
           dst.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
           for (Enumeration<DaysOfWeek> i : daysOfWeek)
@@ -606,7 +614,6 @@ public class PractitionerRole extends DomainResource {
         dst.allDay = allDay == null ? null : allDay.copy();
         dst.availableStartTime = availableStartTime == null ? null : availableStartTime.copy();
         dst.availableEndTime = availableEndTime == null ? null : availableEndTime.copy();
-        return dst;
       }
 
       @Override
@@ -800,7 +807,7 @@ public class PractitionerRole extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
-        case -1320499647:  return getDuring(); 
+        case -1320499647:  return getDuring();
         default: return super.makeProperty(hash, name);
         }
 
@@ -832,9 +839,13 @@ public class PractitionerRole extends DomainResource {
       public PractitionerRoleNotAvailableComponent copy() {
         PractitionerRoleNotAvailableComponent dst = new PractitionerRoleNotAvailableComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PractitionerRoleNotAvailableComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.during = during == null ? null : during.copy();
-        return dst;
       }
 
       @Override
@@ -897,21 +908,11 @@ public class PractitionerRole extends DomainResource {
     protected Reference practitioner;
 
     /**
-     * The actual object that is the target of the reference (Practitioner that is able to provide the defined services for the organization.)
-     */
-    protected Practitioner practitionerTarget;
-
-    /**
      * The organization where the Practitioner performs the roles associated.
      */
     @Child(name = "organization", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Organization where the roles are available", formalDefinition="The organization where the Practitioner performs the roles associated." )
     protected Reference organization;
-
-    /**
-     * The actual object that is the target of the reference (The organization where the Practitioner performs the roles associated.)
-     */
-    protected Organization organizationTarget;
 
     /**
      * Roles which this practitioner is authorized to perform for the organization.
@@ -935,11 +936,6 @@ public class PractitionerRole extends DomainResource {
     @Child(name = "location", type = {Location.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The location(s) at which this practitioner provides care", formalDefinition="The location(s) at which this practitioner provides care." )
     protected List<Reference> location;
-    /**
-     * The actual objects that are the target of the reference (The location(s) at which this practitioner provides care.)
-     */
-    protected List<Location> locationTarget;
-
 
     /**
      * The list of healthcare services that this worker provides for this role's Organization/Location(s).
@@ -947,11 +943,6 @@ public class PractitionerRole extends DomainResource {
     @Child(name = "healthcareService", type = {HealthcareService.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)", formalDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)." )
     protected List<Reference> healthcareService;
-    /**
-     * The actual objects that are the target of the reference (The list of healthcare services that this worker provides for this role's Organization/Location(s).)
-     */
-    protected List<HealthcareService> healthcareServiceTarget;
-
 
     /**
      * Contact details that are specific to the role/location/service.
@@ -987,13 +978,8 @@ public class PractitionerRole extends DomainResource {
     @Child(name = "endpoint", type = {Endpoint.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to services operated for the practitioner with this role", formalDefinition="Technical endpoints providing access to services operated for the practitioner with this role." )
     protected List<Reference> endpoint;
-    /**
-     * The actual objects that are the target of the reference (Technical endpoints providing access to services operated for the practitioner with this role.)
-     */
-    protected List<Endpoint> endpointTarget;
 
-
-    private static final long serialVersionUID = 423338051L;
+    private static final long serialVersionUID = 293775464L;
 
   /**
    * Constructor
@@ -1149,26 +1135,6 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return {@link #practitioner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Practitioner that is able to provide the defined services for the organization.)
-     */
-    public Practitioner getPractitionerTarget() { 
-      if (this.practitionerTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PractitionerRole.practitioner");
-        else if (Configuration.doAutoCreate())
-          this.practitionerTarget = new Practitioner(); // aa
-      return this.practitionerTarget;
-    }
-
-    /**
-     * @param value {@link #practitioner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Practitioner that is able to provide the defined services for the organization.)
-     */
-    public PractitionerRole setPractitionerTarget(Practitioner value) { 
-      this.practitionerTarget = value;
-      return this;
-    }
-
-    /**
      * @return {@link #organization} (The organization where the Practitioner performs the roles associated.)
      */
     public Reference getOrganization() { 
@@ -1189,26 +1155,6 @@ public class PractitionerRole extends DomainResource {
      */
     public PractitionerRole setOrganization(Reference value) { 
       this.organization = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #organization} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The organization where the Practitioner performs the roles associated.)
-     */
-    public Organization getOrganizationTarget() { 
-      if (this.organizationTarget == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PractitionerRole.organization");
-        else if (Configuration.doAutoCreate())
-          this.organizationTarget = new Organization(); // aa
-      return this.organizationTarget;
-    }
-
-    /**
-     * @param value {@link #organization} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The organization where the Practitioner performs the roles associated.)
-     */
-    public PractitionerRole setOrganizationTarget(Organization value) { 
-      this.organizationTarget = value;
       return this;
     }
 
@@ -1372,28 +1318,6 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getLocationTarget() { 
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      return this.locationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addLocationTarget() { 
-      Location r = new Location();
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      this.locationTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #healthcareService} (The list of healthcare services that this worker provides for this role's Organization/Location(s).)
      */
     public List<Reference> getHealthcareService() { 
@@ -1444,28 +1368,6 @@ public class PractitionerRole extends DomainResource {
         addHealthcareService();
       }
       return getHealthcareService().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<HealthcareService> getHealthcareServiceTarget() { 
-      if (this.healthcareServiceTarget == null)
-        this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-      return this.healthcareServiceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public HealthcareService addHealthcareServiceTarget() { 
-      HealthcareService r = new HealthcareService();
-      if (this.healthcareServiceTarget == null)
-        this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-      this.healthcareServiceTarget.add(r);
-      return r;
     }
 
     /**
@@ -1729,28 +1631,6 @@ public class PractitionerRole extends DomainResource {
       return getEndpoint().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business Identifiers that are specific to a role/location.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -1903,9 +1783,9 @@ public class PractitionerRole extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -1422950650:  return getActiveElement();
-        case -991726143:  return getPeriod(); 
-        case 574573338:  return getPractitioner(); 
-        case 1178922291:  return getOrganization(); 
+        case -991726143:  return getPeriod();
+        case 574573338:  return getPractitioner();
+        case 1178922291:  return getOrganization();
         case 3059181:  return addCode(); 
         case -1694759682:  return addSpecialty(); 
         case 1901043637:  return addLocation(); 
@@ -2001,6 +1881,11 @@ public class PractitionerRole extends DomainResource {
       public PractitionerRole copy() {
         PractitionerRole dst = new PractitionerRole();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PractitionerRole dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2051,7 +1936,6 @@ public class PractitionerRole extends DomainResource {
           for (Reference i : endpoint)
             dst.endpoint.add(i.copy());
         };
-        return dst;
       }
 
       protected PractitionerRole typedCopy() {
