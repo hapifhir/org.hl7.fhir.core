@@ -34,6 +34,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.hl7.fhir.utilities.DateTimeUtil;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
@@ -771,51 +772,29 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		return retVal;
 	}
 
-	/**
-	 * Returns a human readable version of this date/time using the system local format.
-	 * <p>
-	 * <b>Note on time zones:</b> This method renders the value using the time zone that is contained within the value.
-	 * For example, if this date object contains the value "2012-01-05T12:00:00-08:00",
-	 * the human display will be rendered as "12:00:00" even if the application is being executed on a system in a
-	 * different time zone. If this behaviour is not what you want, use
-	 * {@link #toHumanDisplayLocalTimezone()} instead.
-	 * </p>
-	 */
-	public String toHumanDisplay() {
-		TimeZone tz = getTimeZone();
-		Calendar value = tz != null ? Calendar.getInstance(tz) : Calendar.getInstance();
-		value.setTime(getValue());
+  /**
+   * Returns a human readable version of this date/time using the system local format.
+   * <p>
+   * <b>Note on time zones:</b> This method renders the value using the time zone that is contained within the value.
+   * For example, if this date object contains the value "2012-01-05T12:00:00-08:00",
+   * the human display will be rendered as "12:00:00" even if the application is being executed on a system in a
+   * different time zone. If this behaviour is not what you want, use
+   * {@link #toHumanDisplayLocalTimezone()} instead.
+   * </p>
+   */
+  public String toHumanDisplay() {
+    return DateTimeUtil.toHumanDisplay(getTimeZone(), getPrecision(), getValue(), getValueAsString());
+  }
 
-		switch (getPrecision()) {
-		case YEAR:
-		case MONTH:
-		case DAY:
-			return ourHumanDateFormat.format(value);
-		case MILLI:
-		case SECOND:
-		default:
-			return ourHumanDateTimeFormat.format(value);
-		}
-	}
-
-	/**
-	 * Returns a human readable version of this date/time using the system local format, converted to the local timezone
-	 * if neccesary.
-	 *
-	 * @see #toHumanDisplay() for a method which does not convert the time to the local timezone before rendering it.
-	 */
-	public String toHumanDisplayLocalTimezone() {
-		switch (getPrecision()) {
-		case YEAR:
-		case MONTH:
-		case DAY:
-			return ourHumanDateFormat.format(getValue());
-		case MILLI:
-		case SECOND:
-		default:
-			return ourHumanDateTimeFormat.format(getValue());
-		}
-	}
+  /**
+   * Returns a human readable version of this date/time using the system local format, converted to the local timezone
+   * if neccesary.
+   *
+   * @see #toHumanDisplay() for a method which does not convert the time to the local timezone before rendering it.
+   */
+  public String toHumanDisplayLocalTimezone() {
+    return DateTimeUtil.toHumanDisplayLocalTimezone(getPrecision(), getValue(), getValueAsString());
+  }
 
 	private void validateBeforeOrAfter(DateTimeType theDateTimeType) {
 		if (getValue() == null) {

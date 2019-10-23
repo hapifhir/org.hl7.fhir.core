@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.hl7.fhir.utilities.DateTimeUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -781,20 +782,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 * </p>
 	 */
 	public String toHumanDisplay() {
-		TimeZone tz = getTimeZone();
-		Calendar value = tz != null ? Calendar.getInstance(tz) : Calendar.getInstance();
-		value.setTime(getValue());
-
-		switch (getPrecision()) {
-		case YEAR:
-		case MONTH:
-		case DAY:
-			return ourHumanDateFormat.format(value);
-		case MILLI:
-		case SECOND:
-		default:
-			return ourHumanDateTimeFormat.format(value);
-		}
+	  return DateTimeUtil.toHumanDisplay(getTimeZone(), getPrecision(), getValue(), getValueAsString());
 	}
 
 	/**
@@ -804,16 +792,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 * @see #toHumanDisplay() for a method which does not convert the time to the local timezone before rendering it.
 	 */
 	public String toHumanDisplayLocalTimezone() {
-		switch (getPrecision()) {
-		case YEAR:
-		case MONTH:
-		case DAY:
-			return ourHumanDateFormat.format(getValue());
-		case MILLI:
-		case SECOND:
-		default:
-			return ourHumanDateTimeFormat.format(getValue());
-		}
+	  return DateTimeUtil.toHumanDisplayLocalTimezone(getPrecision(), getValue(), getValueAsString());
 	}
 
 	private void validateBeforeOrAfter(DateTimeType theDateTimeType) {
