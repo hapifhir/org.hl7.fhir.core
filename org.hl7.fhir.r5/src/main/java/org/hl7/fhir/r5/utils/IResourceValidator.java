@@ -48,7 +48,7 @@ public interface IResourceValidator {
     IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
     
     public boolean checkExists() {
-      return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID;
+      return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID || this == CHECK_TYPE_IF_EXISTS;
     }
     
     public boolean checkType() {
