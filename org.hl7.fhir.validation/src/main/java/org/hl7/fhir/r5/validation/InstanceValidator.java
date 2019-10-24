@@ -1909,7 +1909,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           we = fetcher.fetch(hostContext.appContext, ref);
         }
       }
-      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, we != null, "Unable to resolve resource '"+ref+"'");
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS, "Unable to resolve resource '"+ref+"'");
     }
 
     String ft;
