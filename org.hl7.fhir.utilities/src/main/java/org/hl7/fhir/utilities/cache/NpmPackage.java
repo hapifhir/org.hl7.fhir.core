@@ -43,6 +43,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -50,6 +51,7 @@ import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -293,8 +295,15 @@ import com.google.gson.JsonObject;
     public String fhirVersion() {
       if ("hl7.fhir.core".equals(npm.get("name").getAsString()))
         return npm.get("version").getAsString();
-      else
-        return npm.getAsJsonObject("dependencies").get("hl7.fhir.core").getAsString();
+      else {        
+        JsonObject dep = npm.getAsJsonObject("dependencies");
+        if (dep == null)
+          throw new FHIRException("no dependencies found in the Package definition");
+        JsonElement core = dep.get("hl7.fhir.core");
+        if (core == null)
+          throw new FHIRException("no dependency on hl7.fhir.core found in the Package definition");
+        return core.getAsString();
+      }
     }
 
     public String description() {
