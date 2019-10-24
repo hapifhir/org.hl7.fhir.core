@@ -152,8 +152,14 @@ public class CSVReader extends InputStreamReader {
 		while (inQuote || (peek() != '\r' && peek() != '\n')) {
 			char c = peek();
 			next();
-			if (c == '"') 
-				inQuote = !inQuote;
+			if (c == '"') {
+				if (ready() && peek() == '"') {
+	        b.append(c);
+          next();
+				} else {
+			    inQuote = !inQuote;
+				}
+			}
 			else if (!inQuote && c == ',') {
 				res.add(b.toString().trim());
 				b = new StringBuilder();
