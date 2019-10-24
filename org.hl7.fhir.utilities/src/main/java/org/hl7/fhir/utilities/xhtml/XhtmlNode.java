@@ -88,8 +88,8 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
   public static final String NBSP = Character.toString((char)0xa0);
-  private static final String DECL_XMLNS = " xmlns=\"http://www.w3.org/1999/xhtml\"";
-
+  public static final String XMLNS = "http://www.w3.org/1999/xhtml";
+  private static final String DECL_XMLNS = " xmlns=\""+XMLNS+"\"";
 
   private Location location;
   private NodeType nodeType;
