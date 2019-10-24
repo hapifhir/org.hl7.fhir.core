@@ -43,6 +43,7 @@ public class CDANarrativeFormat {
    */
   public XhtmlNode convert(Element ed) throws FHIRException {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+    div.setAttribute("xmlns", XhtmlNode.XMLNS);
     processAttributes(ed, div, "ID", "language", "styleCode");
     processChildren(ed, div);
     return div;
