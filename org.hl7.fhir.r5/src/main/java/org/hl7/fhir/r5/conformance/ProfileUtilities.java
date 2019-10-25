@@ -2063,7 +2063,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       for (ElementDefinitionConstraintComponent s : base.getConstraint()) { 
         s.setUserData(IS_DERIVED, true);
         if (!s.hasSource())
-          s.setSource(base.getId());
+          s.setSource(srcSD.getUrl());
       }
       if (derived.hasConstraint()) {
         for (ElementDefinitionConstraintComponent s : derived.getConstraint()) {
@@ -2707,7 +2707,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (element != null && element.getIsSummary())
         checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
       if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty()))
-        gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants"), "I", null, null, null, false);
+        gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
 
       ExtensionContext extDefn = null;
       if (ext) {
@@ -2823,6 +2823,18 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     return slicingRow;
   }
+
+  private String listConstraintsAndConditions(ElementDefinition element) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ElementDefinitionConstraintComponent con : element.getConstraint()) {
+      b.append(con.getKey());
+    }
+    for (IdType id : element.getCondition()) {
+      b.append(id.asStringValue());
+    }
+    return b.toString();
+  }
+
 
   private void makeChoiceRows(List<Row> subRows, ElementDefinition element, HierarchicalTableGenerator gen, String corePath, String profileBaseFileName) {
     // create a child for each choice
