@@ -131,6 +131,9 @@ public class EnableWhenEvaluator {
    * @return
    */
   public boolean isQuestionEnabled(QuestionnaireItemComponent qitem, QStack qstack) {
+    if (hasExpressionExtension(qitem)) {
+      throw new Error("Not Done Yet");
+    }
     if (!qitem.hasEnableWhen()) {
       return true;
     }
@@ -139,6 +142,12 @@ public class EnableWhenEvaluator {
         .map(enableCondition -> evaluateCondition(enableCondition, qitem, qstack))
         .collect(Collectors.toList());
     return checkConditionResults(evaluationResults, qitem);
+  }
+
+
+  private boolean hasExpressionExtension(QuestionnaireItemComponent qitem) {
+    return qitem.hasExtension("http://phr.kanta.fi/StructureDefinition/fiphr-ext-questionnaire-enablewhen") || // finnish extension 
+        qitem.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression"); // sdc extension
   }
 
 

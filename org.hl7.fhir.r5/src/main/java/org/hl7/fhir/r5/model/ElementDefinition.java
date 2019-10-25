@@ -2306,6 +2306,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return "integer";
       if ("xsd:decimal OR xsd:double".equals(s))
         return "decimal";
+      if ("xsd:decimal".equals(s))
+        return "decimal";
       if ("xsd:base64Binary".equals(s))
         return "base64Binary";
       if ("xsd:positiveInteger".equals(s))

@@ -91,7 +91,7 @@ public abstract class ParserBase {
 	
 	protected StructureDefinition getDefinition(int line, int col, String ns, String name) throws FHIRFormatError {
     if (ns == null) {
-      logError(line, col, name, IssueType.STRUCTURE, "This cannot be parsed as a FHIR object (no namespace)", IssueSeverity.FATAL);
+      logError(line, col, name, IssueType.STRUCTURE, "This '"+name+"' cannot be parsed as a FHIR object (no namespace)", IssueSeverity.FATAL);
       return null;
     }
     if (name == null) {

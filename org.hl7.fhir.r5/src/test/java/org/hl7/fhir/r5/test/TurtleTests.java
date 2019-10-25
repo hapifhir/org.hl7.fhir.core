@@ -1001,7 +1001,7 @@ public class TurtleTests {
   }
   @Test
   public void test_turtle_syntax_bad_number_dot_in_anon() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-number-dot-in-anon.ttl"), true);
+    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-number-dot-in-anon.ttl"), false);
   }
   @Test
   public void test_turtle_syntax_bad_pname_01() throws Exception {

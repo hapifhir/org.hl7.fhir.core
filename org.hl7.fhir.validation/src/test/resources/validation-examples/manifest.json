@@ -201,6 +201,11 @@
 			"fhirpath-null.json": {
 				"errorCount": 1
       },
+			"Bundle.document.json": {
+        "version" : "3.0",
+				"errorCount": 68,
+        "errors-for-debugging" : ["68 errors to do with things not found in the bundle"],
+      },
 			"qr-ex.json": {
 				"questionnaire": "q-ex.json",
         "version" : "3.0",
@@ -652,6 +657,18 @@
 			"questionnaireResponse-enableWhen-test.xml": {
 				"questionnaire": "questionnaire-enableWhen-test.xml",
 				"errorCount": 0
+			},
+			"questionnaireResponse-enableWhen-test-fail.xml": {
+				"questionnaire": "questionnaire-enableWhen-test.xml",
+				"errorCount": 1
+			},
+			"questionnaireResponse-enableWhenEx-test.xml": {
+				"questionnaire": "questionnaire-enableWhenEx-test.xml",
+				"errorCount": 0
+			},
+			"questionnaireResponse-enableWhenEx-test-fail.xml": {
+				"questionnaire": "questionnaire-enableWhenEx-test.xml",
+				"errorCount": 1
 			},
 			"questionnaireResponse-enableWhen-test-nested.xml": {
 				"questionnaire": "questionnaire-enableWhen-test-nested.xml",
