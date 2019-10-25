@@ -109,8 +109,6 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    // FIXME
-    //String path = TestUtilities.resourceNameToFile("validation-examples", name.substring(name.indexOf(".")+1));
     String testCaseContent = loadFileFromClasspath(name.substring(name.indexOf(".")+1));
 
     InstanceValidator val = ve.getValidator();
