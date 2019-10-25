@@ -163,7 +163,7 @@ import ca.uhn.fhir.util.ObjectUtil;
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
-  private class ValidatorHostContext {
+  public class ValidatorHostContext {
     private Object appContext;
     private Element container; // bundle, or parameters
     private Element resource;
@@ -172,6 +172,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public ValidatorHostContext(Object appContext) {
       this.appContext = appContext;
     }
+    
     public ValidatorHostContext(Object appContext, Element element) {
       this.appContext = appContext;
       this.resource = element;
@@ -2971,7 +2972,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (element.getType().equals("Questionnaire"))
         validateQuestionannaire(errors, element, stack);
       else if (element.getType().equals("QuestionnaireResponse"))
-        validateQuestionannaireResponse(errors, element, stack);
+        validateQuestionannaireResponse(hostContext, errors, element, stack);
       else if (element.getType().equals("CodeSystem"))
         validateCodeSystem(errors, element, stack);
       validateResourceRules(errors, element, stack);
@@ -3125,7 +3126,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } // todo... try getting the value set the other way...
   }
 
-  private void validateQuestionannaireResponse(List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException, IOException {
+  private void validateQuestionannaireResponse(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException, IOException {
     Element q = element.getNamedChild("questionnaire");
     String questionnaire = null;
     if (q != null) {
@@ -3147,7 +3148,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       sdTime = sdTime + (System.nanoTime() - t);
       if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire \""+questionnaire+"\" could not be resolved, so no validation can be performed against the base questionnaire")) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
-        validateQuestionannaireResponseItems(qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
+        validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
       }
     }
   }
@@ -3201,7 +3202,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private void validateQuestionnaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     String text = element.getNamedChildValue("text");
     rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), "If text exists, it must match the questionnaire definition for linkId "+qItem.getLinkId());
 
@@ -3209,7 +3210,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     element.getNamedChildren("answer", answers);
     if (inProgress)
       warning(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), "No response answer found for required item "+qItem.getLinkId());
-    else if (myEnableWhenEvaluator.isQuestionEnabled(qItem, qstack)) {
+    else if (myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe)) {
        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), "No response answer found for required item "+qItem.getLinkId());
     } else if (!answers.isEmpty()) { // items without answers should be allowed, but not items with answers to questions that are disabled
       // it appears that this is always a duplicate error - it will always already have beeb reported, so no need to report it again?
@@ -3293,7 +3294,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             break;
         }
       }
-      validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
+      validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
     }
     if (qItem.getType() == null) {
       fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, "Definition for item "+qItem.getLinkId() + " does not contain a type");
@@ -3302,7 +3303,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       element.getNamedChildren("item", items);
       rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), "Items not of type DISPLAY should not have items - linkId {0}", qItem.getLinkId());
     } else {
-      validateQuestionannaireResponseItems(qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack);
+      validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack);
     }
   }
 
@@ -3310,13 +3311,13 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 	return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
 }
 
-  private void validateQuestionnaireResponseItem(Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     if (elements.size() > 1)
       rule(errors, IssueType.INVALID, elements.get(1).line(), elements.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), "Only one response item with this linkId allowed - " + qItem.getLinkId());
     int i = 0;
     for (Element element : elements) {
       NodeStack ns = stack.push(element, i, null, null);
-      validateQuestionnaireResponseItem(qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
+      validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
       i++;
     }
   }
@@ -3329,7 +3330,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     return -1;
   }
   
-  private void validateQuestionannaireResponseItems(Questionnaire qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionannaireResponseItems(ValidatorHostContext hostContext, Questionnaire qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     List<Element> items = new ArrayList<Element>();
     element.getNamedChildren("item", items);
     // now, sort into stacks
@@ -3344,7 +3345,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (qItem != null) {
             rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem));
             NodeStack ns = stack.push(item, -1, null, null);
-            validateQuestionnaireResponseItem(qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
+            validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           }
           else
             rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId \""+linkId+"\" not found in questionnaire");
@@ -3367,12 +3368,12 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // ok, now we have a list of known items, grouped by linkId. We've made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<Element> mapItem = map.get(qItem.getLinkId());
-      validateQuestionnaireResponseItem(qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
+      validateQuestionnaireResponseItem(hostContext, qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
     }
   }
 
-  public void validateQuestionnaireResponseItem(Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
-    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(qItem, qstack);
+  public void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
+    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe);
     if (mapItem != null){
       if (!enabled) {
         int i = 0;
@@ -3384,7 +3385,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       }
 
       // Recursively validate child items
-      validateQuestionnaireResponseItem(qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot, qstack);
+      validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot, qstack);
 
     } else {
 
