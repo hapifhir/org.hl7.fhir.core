@@ -19,7 +19,7 @@
   </item>
   <item>
     <extension url="http://phr.kanta.fi/StructureDefinition/fiphr-ext-questionnaire-enablewhen">
-      <valueString value="QuestionnaireResponse.descendants().select(item).where(linkId='condition').answer.value.ofType('boolean')" />
+      <valueString value="QuestionnaireResponse.descendants().where(linkId='condition').answer.value.ofType(boolean)" />
     </extension>
     <linkId value="enable-when" />
     <text value="enable when condition true" />

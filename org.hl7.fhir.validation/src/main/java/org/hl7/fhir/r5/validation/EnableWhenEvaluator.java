@@ -21,12 +21,15 @@ package org.hl7.fhir.r5.validation;
  */
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Questionnaire.*;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.validation.InstanceValidator.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 
@@ -130,13 +133,17 @@ public class EnableWhenEvaluator {
    * @param qstack
    * @return
    */
-  public boolean isQuestionEnabled(QuestionnaireItemComponent qitem, QStack qstack) {
+  public boolean isQuestionEnabled(ValidatorHostContext hostContext, QuestionnaireItemComponent qitem, QStack qstack, FHIRPathEngine engine) {
     if (hasExpressionExtension(qitem)) {
-      throw new Error("Not Done Yet");
+      String expr = getExpression(qitem);
+      ExpressionNode node = engine.parse(expr);
+      return engine.evaluateToBoolean(hostContext, qstack.a, qstack.a, qstack.a, node);
     }
+    
     if (!qitem.hasEnableWhen()) {
       return true;
     }
+    
     List<EnableWhenResult> evaluationResults = qitem.getEnableWhen()
         .stream()
         .map(enableCondition -> evaluateCondition(enableCondition, qitem, qstack))
@@ -148,6 +155,20 @@ public class EnableWhenEvaluator {
   private boolean hasExpressionExtension(QuestionnaireItemComponent qitem) {
     return qitem.hasExtension("http://phr.kanta.fi/StructureDefinition/fiphr-ext-questionnaire-enablewhen") || // finnish extension 
         qitem.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression"); // sdc extension
+  }
+
+  private String getExpression(QuestionnaireItemComponent qitem) {
+    if (qitem.hasExtension("http://phr.kanta.fi/StructureDefinition/fiphr-ext-questionnaire-enablewhen"))
+      return qitem.getExtensionString("http://phr.kanta.fi/StructureDefinition/fiphr-ext-questionnaire-enablewhen");
+    if (qitem.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression")) {
+      Expression expr = (Expression) qitem.getExtensionByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression").getValue();
+      if ("text/fhirpath".equals(expr.getLanguage())) {
+        return expr.getExpression();
+      } else {
+        throw new FHIRException("Unsupported language '"+expr.getLanguage()+"' for enableWhen extension http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression");
+      }
+    }
+    throw new Error("How did you get here?");
   }
 
 

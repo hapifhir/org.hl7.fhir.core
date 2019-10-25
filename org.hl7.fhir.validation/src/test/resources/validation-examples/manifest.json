@@ -204,7 +204,7 @@
 			"Bundle.document.json": {
         "version" : "3.0",
 				"errorCount": 68,
-        "errors-for-debugging" : ["68 errors to do with things not found in the bundle"],
+        "errors-for-debugging" : ["68 errors to do with things not found in the bundle"]
       },
 			"qr-ex.json": {
 				"questionnaire": "q-ex.json",
@@ -637,7 +637,7 @@
 				}
 			},
 			"message-infinite-loop.xml": {
-				"errorCount": 34
+				"errorCount": 39
 			},
 			"slice-profile-and-local-patient.xml": {
 				"errorCount": 0,
