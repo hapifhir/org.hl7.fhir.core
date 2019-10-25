@@ -3905,7 +3905,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
     if (ref != null && !Utilities.noString(reference)) {
       Element target = resolveInBundle(entries, reference, fullUrl, type, id);
-      rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null, "Unable to resolve the target of the reference in the bundle (" + name + ")");
+      rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null, "Can't find '"+reference+"' in the bundle (" + name + ")");
     }
   }
 
@@ -3925,13 +3925,47 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // first entry must be a composition
     if (rule(errors, IssueType.INVALID, composition.line(), composition.col(), stack.getLiteralPath(), composition.getType().equals("Composition"),
         "The first entry in a document must be a composition")) {
-      // the composition subject and section references must resolve in the bundle
-      Element elem = composition.getNamedChild("subject");
-      if (rule(errors, IssueType.INVALID, composition.line(), composition.col(), stack.getLiteralPath(), elem != null, "A document composition must have a subject"))
-        validateBundleReference(errors, entries, elem, "Composition Subject", stack.push(elem, -1, null, null), fullUrl, "Composition", id);
+      
+      // the composition subject etc references must resolve in the bundle
+      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, false, "subject", "Composition");
+      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, true, "author", "Composition");
+      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, false, "encounter", "Composition");
+      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, false, "custodian", "Composition");
+      validateDocumentSubReference(errors, entries, composition, stack, fullUrl, id, "Composition", "attester", false, "party");
+      validateDocumentSubReference(errors, entries, composition, stack, fullUrl, id, "Composition", "event", true, "detail");
+      
       validateSections(errors, entries, composition, stack, fullUrl, id);
     }
   }
+
+  public void validateDocumentSubReference(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, String title, String parent, boolean repeats, String propName) {
+    List<Element> list = new ArrayList<>();
+    composition.getNamedChildren(parent, list);
+    int i = 1;
+    for (Element elem : list) {
+      validateDocumentReference(errors, entries, elem, stack.push(elem, i, null, null), fullUrl, id, repeats, propName, title+"."+parent);
+      i++;
+    }    
+  }
+
+  public void validateDocumentReference(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, boolean repeats, String propName, String title) {
+    if (repeats) {
+      List<Element> list = new ArrayList<>();
+      composition.getNamedChildren(propName, list);
+      int i = 1;
+      for (Element elem : list) {
+        validateBundleReference(errors, entries, elem, title+"."+propName, stack.push(elem, i, null, null), fullUrl, "Composition", id);
+        i++;
+      }
+      
+    } else {
+      Element elem = composition.getNamedChild(propName);
+      if (elem != null) {
+        validateBundleReference(errors, entries, elem, title+"."+propName, stack.push(elem, -1, null, null), fullUrl, "Composition", id);
+      }
+    }
+  }
+  
   // rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), "Bundle", !"urn:guid:".equals(base), "The base 'urn:guid:' is not valid (use urn:uuid:)");
   // rule(errors, IssueType.INVALID, entry.line(), entry.col(), localStack.getLiteralPath(), !"urn:guid:".equals(ebase), "The base 'urn:guid:' is not valid");
   // rule(errors, IssueType.INVALID, entry.line(), entry.col(), localStack.getLiteralPath(), !Utilities.noString(base) || !Utilities.noString(ebase), "entry
@@ -4590,11 +4624,23 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   private void validateSections(List<ValidationMessage> errors, List<Element> entries, Element focus, NodeStack stack, String fullUrl, String id) {
     List<Element> sections = new ArrayList<Element>();
-    focus.getNamedChildren("entry", sections);
-    int i = 0;
+    focus.getNamedChildren("section", sections);
+    int i = 1;
     for (Element section : sections) {
-      NodeStack localStack = stack.push(section, 1, null, null);
-      validateBundleReference(errors, entries, section.getNamedChild("content"), "Section Content", localStack, fullUrl, "Composition", id);
+      NodeStack localStack = stack.push(section, i, null, null);
+
+      // technically R4+, but there won't be matches from before that 
+      validateDocumentReference(errors, entries, section, stack, fullUrl, id, false, "author", "Section");
+      validateDocumentReference(errors, entries, section, stack, fullUrl, id, false, "focus", "Section");
+      
+      List<Element> sectionEntries = new ArrayList<Element>();
+      section.getNamedChildren("entry", sectionEntries);
+      int j = 1;
+      for (Element sectionEntry : sectionEntries) {
+        NodeStack localStack2 = localStack.push(sectionEntry, j, null, null);
+        validateBundleReference(errors, entries, sectionEntry, "Section Entry", localStack2, fullUrl, "Composition", id);
+        j++;
+      }
       validateSections(errors, entries, section, localStack, fullUrl, id);
       i++;
     }
