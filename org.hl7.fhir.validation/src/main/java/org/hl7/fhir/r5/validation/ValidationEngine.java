@@ -1268,7 +1268,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
     Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
-  
+
+  public String evaluateFhirPath(String source, String expression) throws Exception {
+    Content cnt = loadContent(source, "validate");
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    return fpe.evaluateToString(e, expression);
+  }
+
   public StructureDefinition snapshot(String source, String version) throws Exception {
     Content cnt = loadContent(source, "validate");
     Resource res = loadResourceByVersion(version, cnt.focus, Utilities.getFileNameForName(source));
