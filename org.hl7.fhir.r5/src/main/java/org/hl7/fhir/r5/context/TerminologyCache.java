@@ -414,7 +414,7 @@ public class TerminologyCache {
       for (ConceptSetFilterComponent f : cc.getFilter()) {
         if (!Utilities.noString(s))
           s = s + " & ";
-        s = s + f.getProperty()+" "+f.getOp().toCode()+" "+f.getValue();
+        s = s + f.getProperty()+" "+(f.hasOp() ? f.getOp().toCode() : "?")+" "+f.getValue();
       }
       return "from "+system+" where "+s+vsd;
     }
