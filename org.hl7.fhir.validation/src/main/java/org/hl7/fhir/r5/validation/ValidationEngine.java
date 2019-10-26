@@ -1263,6 +1263,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return (DomainResource) res;
   }
   
+  public void convert(String source, String output) throws Exception {
+    Content cnt = loadContent(source, "validate");
+    Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
+  }
+  
   public StructureDefinition snapshot(String source, String version) throws Exception {
     Content cnt = loadContent(source, "validate");
     Resource res = loadResourceByVersion(version, cnt.focus, Utilities.getFileNameForName(source));
