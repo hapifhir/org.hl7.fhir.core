@@ -456,6 +456,20 @@ public class XhtmlNode implements IBaseXhtml {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * NOT SUPPORTED - Throws {@link UnsupportedOperationException}
+   */
+  public Object getUserData(String theName) {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * NOT SUPPORTED - Throws {@link UnsupportedOperationException}
+   */
+  public void setUserData(String theName, Object theValue) {
+    throw new UnsupportedOperationException();
+  }
+
 
   public Location getLocation() {
     return location;
