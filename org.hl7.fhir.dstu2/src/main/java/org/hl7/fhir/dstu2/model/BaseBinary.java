@@ -39,6 +39,6 @@ public abstract class BaseBinary extends Resource implements IBaseBinary {
 		return this;
 	}
 	
-	abstract Base64BinaryType getContentElement();
+	public abstract Base64BinaryType getContentElement();
 	
 }
