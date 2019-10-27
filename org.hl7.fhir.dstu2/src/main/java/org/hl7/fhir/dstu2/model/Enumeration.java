@@ -22,6 +22,7 @@ package org.hl7.fhir.dstu2.model;
 
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.hl7.fhir.instance.model.api.IBaseEnumFactory;
 import org.hl7.fhir.instance.model.api.IBaseEnumeration;
 
 /*
@@ -114,4 +115,9 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 	public String fhirType() {
 		return "code";		
 	}
+
+  @Override
+  public IBaseEnumFactory<T> getEnumFactory() {
+    return myEnumFactory;
+  }
 }
