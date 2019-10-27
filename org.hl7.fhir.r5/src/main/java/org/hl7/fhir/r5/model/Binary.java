@@ -392,7 +392,7 @@ public class Binary extends BaseBinary implements IBaseBinary {
   }
 
   @Override
-  Base64BinaryType getContentElement() {
+  public Base64BinaryType getContentElement() {
     return getDataElement();
   }
 
