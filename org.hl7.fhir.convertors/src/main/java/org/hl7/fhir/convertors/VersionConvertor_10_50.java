@@ -10300,7 +10300,7 @@ public class VersionConvertor_10_50 {
     tgt.setFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
     for (org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionMappingComponent t : src.getMapping())
       tgt.addMapping(convertStructureDefinitionMappingComponent(t));
-    tgt.setKind(convertStructureDefinitionKind(src.getKind(), tgt.getId()));
+    tgt.setKind(convertStructureDefinitionKind(src.getKind(), tgt.getIdElement().getIdPart()));
     tgt.setAbstract(src.getAbstract());
     for (org.hl7.fhir.dstu2.model.StringType t : src.getContext()) {
       org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent ec = tgt.addContext();
@@ -10325,7 +10325,7 @@ public class VersionConvertor_10_50 {
       tgt.getDifferential().getElementFirstRep().getType().clear();
     
     
-    if (tgt.getKind() == StructureDefinitionKind.PRIMITIVETYPE && !tgt.getType().equals(tgt.getId())) {
+    if (tgt.getKind() == StructureDefinitionKind.PRIMITIVETYPE && !tgt.getType().equals(tgt.getIdElement().getIdPart())) {
       tgt.setDerivation(TypeDerivationRule.SPECIALIZATION);
       tgt.setBaseDefinition("http://hl7.org/fhir/StructureDefinition/"+tgt.getType());
 //      for (ElementDefinition ed : tgt.getSnapshot().getElement()) {
@@ -10334,7 +10334,7 @@ public class VersionConvertor_10_50 {
 //      for (ElementDefinition ed : tgt.getDifferential().getElement()) {
 //        ed.setPath(ed.getPath().replace(tgt.getType()+".", tgt.getId()+"."));
 //      }
-      tgt.setType(tgt.getId());
+      tgt.setType(tgt.getIdElement().getIdPart());
     }
     if (tgt.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
       for (ElementDefinition ed : tgt.getSnapshot().getElement()) {
