@@ -116,7 +116,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     this.folder = folder;
     if (!new File(Utilities.path(folder, "conparison-zip-marker.bin")).exists()) {
       String f = Utilities.path(folder, "comparison.zip");
-      download("https://www.fhir.org/archive/comparison.zip", f);
+      download("http://www.fhir.org/archive/comparison.zip", f);
       unzip(f, folder);
     }
   }

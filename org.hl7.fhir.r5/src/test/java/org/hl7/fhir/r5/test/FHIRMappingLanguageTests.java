@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 	@Parameters(name = "{index}: {0}")
 	public static Iterable<Object[]> data()
 			throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-		Document tests = XMLUtil.parseFileToDom(TestingUtilities.resourceNameToFile("fml", "manifest.xml"));
+		Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fml", "manifest.xml"));
 		Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
 		List<Object[]> objects = new ArrayList<Object[]>();
 		while (test != null && test.getNodeName().equals("test")) {
@@ -90,10 +91,10 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 	@Test
 	public void test() throws Exception {
 
-		String fileSource = TestingUtilities.resourceNameToFile("fml", source);
-		String fileMap = TestingUtilities.resourceNameToFile("fml", map);
-		String fileOutput = TestingUtilities.resourceNameToFile("fml", output);
-		String fileOutputRes = TestingUtilities.resourceNameToFile("fml", output)+".out";
+		InputStream fileSource = TestingUtilities.loadTestResourceStream("r5", "fml", source);
+		InputStream fileMap = TestingUtilities.loadTestResourceStream("r5", "fml", map);
+		String fileOutput = TestingUtilities.tempFile("fml", output);
+		String fileOutputRes = TestingUtilities.tempFile("fml", output)+".out";
 
 		outputs.clear();
 
@@ -103,8 +104,8 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 		try {
 			StructureMapUtilities scu = new StructureMapUtilities(context, this);
 			org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context,
-					new ByteArrayInputStream(TextFile.fileToBytes(fileSource)), FhirFormat.JSON);
-			StructureMap structureMap = scu.parse(TextFile.fileToString(fileMap), name);
+					new ByteArrayInputStream(TextFile.streamToBytes(fileSource)), FhirFormat.JSON);
+			StructureMap structureMap = scu.parse(TextFile.streamToString(fileMap), name);
 			String typeName = scu.getTargetType(structureMap).getType();
 			resource = ResourceFactory.createResource(typeName);
 			scu.transform(null, src, structureMap, resource);

@@ -24,7 +24,7 @@ public class GraphQLParserTests {
 
   @Parameters(name = "{index}: {0}")
   public static Iterable<Object[]> data() throws FileNotFoundException, IOException  {
-    String src = TextFile.fileToString(TestingUtilities.resourceNameToFile("graphql", "parser-tests.gql"));
+    String src = TestingUtilities.loadTestResource("r5", "graphql", "parser-tests.gql");
     String[] tests = src.split("###");
     int i = 0;
     for (String s : tests) 

@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.KeyGenerator;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.validation.ValidationEngine;
@@ -30,7 +31,7 @@ public class ProfileComparisonTests {
 
     String left = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
     String right = "http://hl7.org.au/fhir/StructureDefinition/au-patient";
-    String dest = TestUtilities.resourceNameToFile("comparison", "output");
+    String dest = TestingUtilities.tempFolder("comparison-output");
 
     // ok now set up the comparison
     StructureDefinition sdL = ve.getContext().fetchResource(StructureDefinition.class, left);

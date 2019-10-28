@@ -33,6 +33,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -44,11 +45,13 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.google.common.base.Charsets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -67,7 +70,7 @@ public class TestingUtilities {
 	    try {
 	      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
 	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
-	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
+	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	    } catch (Exception e) {
 	      throw new Error(e);
@@ -439,14 +442,83 @@ public class TestingUtilities {
     return null;
   }
 
+  public static boolean findTestResource(String... paths) throws IOException { 
+    System.out.println(System.getProperty("user.dir"));
+    if (new File("../../fhir-test-cases").exists()) {
+      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      return new File(n).exists();
+    } else {
+      String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
+      try {
+        InputStream inputStream = TestingUtilities.class.getResourceAsStream(classpath);
+        return inputStream != null;
+      } catch (Throwable t) {
+        return false;
+      }
+    }
+  }
+  
+  public static String loadTestResource(String... paths) throws IOException {
+    System.out.println(System.getProperty("user.dir"));
+    if (new File("../../fhir-test-cases").exists()) {
+      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      // ok, we'll resolve this locally
+      return TextFile.fileToString(new File(n));
+    } else {
+      // resolve from the package 
+      String contents;
+      String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
+      try (InputStream inputStream = TestingUtilities.class.getResourceAsStream(classpath)) {
+        if (inputStream == null) {
+          throw new IOException("Can't find file on classpath: " + classpath);
+        }
+        contents = IOUtils.toString(inputStream, Charsets.UTF_8);
+      }
+      return contents;
+    }
+  }
 
-  public static String resourceNameToFile(String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
+  public static InputStream loadTestResourceStream(String... paths) throws IOException {
+    System.out.println(System.getProperty("user.dir"));
+    if (new File("../../fhir-test-cases").exists()) {
+      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      return new FileInputStream(n);
+    } else {
+      String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
+      return TestingUtilities.class.getResourceAsStream(classpath);
+    }
+  }
+
+  public static byte[] loadTestResourceBytes(String... paths) throws IOException {
+    System.out.println(System.getProperty("user.dir"));
+    if (new File("../../fhir-test-cases").exists()) {
+      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      return TextFile.fileToBytes(n);
+    } else {
+      String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
+      return TextFile.streamToBytes(TestingUtilities.class.getResourceAsStream(classpath));
+    }
   }
 
 
-  public static String resourceNameToFile(String subFolder, String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
+  public static String tempFile(String folder, String name) throws IOException {
+    String tmp = tempFolder(folder);
+    return Utilities.path(tmp, name);
   }
-
+  
+  public static String tempFolder(String name) throws IOException {
+    if (new File("C:\\temp").exists()) {
+      String path = Utilities.path("C:\\temp", name);
+      Utilities.createDirectory(path);
+      return path;
+    } else if (new File("/tmp").exists()) {
+      String path = Utilities.path("/tmp", name);
+      Utilities.createDirectory(path);
+      return path;
+    } else {
+      String path = Utilities.path(System.getProperty("java.io.tmpdir"), name);
+      Utilities.createDirectory(path);
+      return path;
+    }
+  }
 }

@@ -102,7 +102,7 @@ public class FHIRPathTests {
 
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    Document dom = XMLUtil.parseFileToDom(TestingUtilities.resourceNameToFile("fhirpath", "tests-fhir-r4.xml"));
+    Document dom = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fhirpath", "tests-fhir-r4.xml"));
 
     List<Element> list = new ArrayList<Element>();
     List<Element> groups = new ArrayList<Element>();
@@ -167,7 +167,7 @@ public class FHIRPathTests {
       else {
         res = resources.get(input);
         if (res == null) {
-          res = new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile(input)));
+          res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
           resources.put(input, res);
         }
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);

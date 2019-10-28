@@ -44,7 +44,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
   
   @Parameters(name = "{index}: file{0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(TestingUtilities.resourceNameToFile("liquid", "liquid-tests.json")));
+    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(TestingUtilities.loadTestResource("r5", "liquid", "liquid-tests.json"));
     JsonArray tests = testdoc.getAsJsonArray("tests");
     List<Object[]> objects = new ArrayList<Object[]>(tests.size());
     for (JsonElement n : tests) {
@@ -76,8 +76,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
   private Resource loadResource() throws IOException, FHIRFormatError {
     String name = test.get("focus").getAsString();
     if (!resources.containsKey(name)) {
-      String fn = TestingUtilities.resourceNameToFile((name.replace("/", "-")+".xml").toLowerCase());
-      resources.put(name, new XmlParser().parse(new FileInputStream(fn)));
+      resources.put(name, new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", (name.replace("/", "-")+".xml").toLowerCase())));
     }
     return resources.get(test.get("focus").getAsString());
   }

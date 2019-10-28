@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -33,9 +34,10 @@ public class ResourceRoundTripTests {
 
   @Test
   public void test() throws FileNotFoundException, IOException, FHIRException, EOperationOutcome, UcumException {
-    Resource res = new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("unicode.xml")));
+    Resource res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
     new NarrativeGenerator("", "", TestingUtilities.context()).generate((DomainResource) res, null);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml")), res);
+    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
   }
 
 

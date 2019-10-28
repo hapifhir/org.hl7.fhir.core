@@ -914,6 +914,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return res;
   }
 
+  // testing entry point
+  public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws Exception {
+    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+    InstanceValidator validator = getValidator();
+    validator.validate(null, messages, stream, format, new ValidationProfileSet(profiles, true));
+    return messagesToOutcome(messages);
+  }
+    
   public OperationOutcome validate(String source, List<String> profiles) throws Exception {
     List<String> l = new ArrayList<String>();
     l.add(source);
