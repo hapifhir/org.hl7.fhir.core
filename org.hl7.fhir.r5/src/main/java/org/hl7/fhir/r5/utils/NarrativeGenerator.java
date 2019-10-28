@@ -1805,6 +1805,30 @@ public class NarrativeGenerator implements INarrativeGenerator {
     x.addText(s.toString());
   }
 
+  public String describeCoding(List<Coding> list, boolean showCodeDetails) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (Coding c : list) {
+      b.append(describeCoding(c, showCodeDetails));
+    }
+    return b.toString();
+  }
+  
+  public String describeCoding(Coding c, boolean showCodeDetails) {
+    String s = "";
+    if (c.hasDisplayElement())
+      s = c.getDisplay();
+    if (Utilities.noString(s))
+      s = lookupCode(c.getSystem(), c.getCode());
+
+    if (Utilities.noString(s))
+      s = c.getCode();
+
+    if (showCodeDetails) {
+      return s+" (Details: "+describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getCode())+"', stated as '"+c.getDisplay()+"')";
+    } else
+      return "<span title=\"{"+c.getSystem()+" "+c.getCode()+"}\">"+Utilities.escapeXml(s)+"</span>";
+  }
+
   private void renderCoding(Coding c, XhtmlNode x, boolean showCodeDetails) {
     String s = "";
     if (c.hasDisplayElement())
