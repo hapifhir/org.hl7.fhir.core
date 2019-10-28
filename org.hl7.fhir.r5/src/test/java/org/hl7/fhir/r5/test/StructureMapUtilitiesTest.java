@@ -40,8 +40,8 @@ public class StructureMapUtilitiesTest implements ITransformerServices{
       throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
 
     StructureMapUtilities scu = new StructureMapUtilities(context, this);
-    String fileMap = TestingUtilities.resourceNameToFile("fml", "ActivityDefinition.map");
-    StructureMap structureMap = scu.parse(TextFile.fileToString(fileMap), "ActivityDefinition3To4");
+    String fileMap = TestingUtilities.loadTestResource("r5", "fml", "ActivityDefinition.map");
+    StructureMap structureMap = scu.parse(fileMap, "ActivityDefinition3To4");
     
     // StructureMap/ActivityDefinition3to4: StructureMap.group[3].rule[2].name error id value '"expression"' is not valid
     assertEquals("expression",structureMap.getGroup().get(2).getRule().get(1).getName());

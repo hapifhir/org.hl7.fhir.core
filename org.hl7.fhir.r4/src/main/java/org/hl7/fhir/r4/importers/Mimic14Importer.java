@@ -260,6 +260,16 @@ public class Mimic14Importer {
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), bnd);    
   }
   
+  /**
+   * loinc COE 600-7  DATE TIME + CODE FOR OBSERVED - UPCODE TO snomed?
+   * 
+   * Sensitivity = observation panel code of 
+   *   code = 
+   * @param src
+   * @param dest
+   * @throws FileNotFoundException
+   * @throws IOException
+   */
   private void processMicroEvents(String src, String dest) throws FileNotFoundException, IOException {
     System.out.print("Processing Micro Events... ");
     CSVReader csv = new CSVReader(new FileInputStream(src));

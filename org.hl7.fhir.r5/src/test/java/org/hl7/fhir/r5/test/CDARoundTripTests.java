@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -42,11 +43,11 @@ public class CDARoundTripTests {
   public void testCDA() throws FHIRFormatError, DefinitionException, FileNotFoundException, IOException, FHIRException {
     try {
 
-      String fileSource = TestingUtilities.resourceNameToFile("cda", "cda-original.xml");
-      String roundTrip = TestingUtilities.resourceNameToFile("cda", "cda-roundtrip.xml");
-      String jsonRoundTrip = TestingUtilities.resourceNameToFile("cda", "cda-roundtrip.json");
+      InputStream fileSource = TestingUtilities.loadTestResourceStream("cda", "cda-original.xml");
+      String roundTrip = TestingUtilities.tempFile("cda", "cda-roundtrip.xml");
+      String jsonRoundTrip = TestingUtilities.tempFile("cda", "cda-roundtrip.json");
 
-      Element e = Manager.parse(context, new FileInputStream(fileSource), FhirFormat.XML);
+      Element e = Manager.parse(context, fileSource, FhirFormat.XML);
 
       Manager.compose(context, e, new FileOutputStream(roundTrip), FhirFormat.XML, OutputStyle.PRETTY, null);
       Manager.compose(context, e, new FileOutputStream(jsonRoundTrip), FhirFormat.JSON, OutputStyle.PRETTY, null);

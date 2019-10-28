@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -35,14 +36,14 @@ public class NarrativeGeneratorTests {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
-		process(TestingUtilities.resourceNameToFile("questionnaireresponse-example-f201-lifelines.xml"));
+		process(TestingUtilities.loadTestResourceStream("r5", "questionnaireresponse-example-f201-lifelines.xml"));
 	}
 
-	private void process(String path) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
+	private void process(InputStream stream) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
 	  XmlParser p = new XmlParser();
-	  DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
+	  DomainResource r = (DomainResource) p.parse(stream);
 	  gen.generate(r, null);
-	  FileOutputStream s = new FileOutputStream(TestingUtilities.resourceNameToFile("gen", "gen.xml"));
+	  FileOutputStream s = new FileOutputStream(TestingUtilities.tempFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
 	  

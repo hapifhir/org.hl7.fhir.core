@@ -2595,20 +2595,72 @@ public class ProfileUtilities extends TranslatingUtilities {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
     TableModel model = gen.initNormalTable(corePath, false, true);
-    List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();
+    List<ElementDefinition> list = new ArrayList<>();
+    if (diff)
+      list.addAll(profile.getDifferential().getElement());
+    else
+      list.addAll(profile.getSnapshot().getElement());
     List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
     profiles.add(profile);
     if (list.isEmpty()) {
       ElementDefinition root = new ElementDefinition().setPath(profile.getType());
       root.setId(profile.getType());
       list.add(root);
+    } else {
+      if (list.get(0).getPath().contains(".")) {
+        ElementDefinition root = new ElementDefinition().setPath(profile.getType());
+        root.setId(profile.getType());
+        list.add(0, root);
+      }
     }
+    if (diff)
+      insertMissingSparseElements(list);
     genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null);
     try {
       return gen.generate(model, imagePath, 0, outputTracker);
   	} catch (org.hl7.fhir.exceptions.FHIRException e) {
   		throw new FHIRException("Error generating table for profile " + profile.getUrl() + ": " + e.getMessage(), e);
   	}
+  }
+
+
+  private void insertMissingSparseElements(List<ElementDefinition> list) {
+    int i = 1;
+    while (i < list.size()) {
+      String[] pathCurrent = list.get(i).getPath().split("\\.");
+      String[] pathLast = list.get(i-1).getPath().split("\\.");
+      int firstDiff = 0; // the first entry must be a match 
+      while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) {
+        firstDiff++;
+      }
+      if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) {
+        // now work backwards down to lastMatch inserting missing path nodes
+        for (int index = pathCurrent.length-2; index >= firstDiff; index--) {
+          ElementDefinition root = new ElementDefinition().setPath(makePath(pathCurrent, index));
+          root.setId(root.getPath());
+          list.add(i, root);
+        }
+      } 
+      i++;
+    }
+  }
+
+  private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) {
+    return pathCurrent.length == pathLast.length && firstDiff == pathCurrent.length-1;
+  }
+
+
+  private boolean isChild(String[] pathCurrent, String[] pathLast, int firstDiff) {
+    return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length;
+  }
+
+
+  private String makePath(String[] pathCurrent, int index) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
+    for (int i = 0; i <= index; i++) {
+      b.append(pathCurrent[i]);
+    }
+    return b.toString();
   }
 
 

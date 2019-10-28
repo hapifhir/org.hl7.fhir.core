@@ -26,14 +26,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -52,7 +55,9 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.cache.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,7 +68,7 @@ public class NPMPackageGenerator {
 
   public enum Category {
     RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL;
-    
+
     private String getDirectory() {
       switch (this) {
       case RESOURCE: return "/package/";
@@ -88,7 +93,9 @@ public class NPMPackageGenerator {
   private GzipCompressorOutputStream gzipOutputStream;
   private JsonObject packageJ;
   private JsonObject packageManifest;
-  
+  private NpmPackageIndexBuilder indexer;
+
+
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
@@ -98,7 +105,7 @@ public class NPMPackageGenerator {
       fhirVersion.add(v.asStringValue());
     buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
   }
-  
+
   public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date) throws FHIRException, IOException {
     JsonObject p = master.packageJ.deepCopy();
     p.remove("name");
@@ -110,14 +117,14 @@ public class NPMPackageGenerator {
 
     return new NPMPackageGenerator(destFile, p, date);
   }
-  
+
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
     buildPackageJson(canonical, kind, url, date, ig, fhirVersion);
   }
-  
+
   public NPMPackageGenerator(String destFile, JsonObject npm, Date date) throws FHIRException, IOException {
     super();
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
@@ -135,13 +142,12 @@ public class NPMPackageGenerator {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
     }
-    
   }
- 
+
   private void buildPackageJson(String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
-    
+
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (!ig.hasPackageId())
       b.append("packageId");
@@ -218,7 +224,7 @@ public class NPMPackageGenerator {
     packageManifest.addProperty("fhirVersion", fhirVersion.toString());
     packageManifest.addProperty("date", dt);
     packageManifest.addProperty("name", ig.getPackageId());
-    
+
   }
 
 
@@ -256,6 +262,8 @@ public class NPMPackageGenerator {
     bufferedOutputStream = new BufferedOutputStream(OutputStream);
     gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
     tar = new TarArchiveOutputStream(gzipOutputStream);
+    indexer = new NpmPackageIndexBuilder();
+    indexer.start();
   }
 
 
@@ -270,10 +278,14 @@ public class NPMPackageGenerator {
       tar.putArchiveEntry(entry);
       tar.write(content);
       tar.closeArchiveEntry();
+      if(cat == Category.RESOURCE) {
+        indexer.seeFile(name, content);
+      }
     }
   }
-  
+
   public void finish() throws IOException {
+    buildIndexJson();
     tar.finish();
     tar.close();
     gzipOutputStream.close();
@@ -284,6 +296,11 @@ public class NPMPackageGenerator {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(packageManifest);
     TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"), false);
+  }
+
+  private void buildIndexJson() throws IOException {
+    byte[] content = indexer.build().getBytes(Charset.forName("UTF-8"));
+    addFile(Category.RESOURCE, ".index.json", content); 
   }
 
   public String filename() {
@@ -316,6 +333,6 @@ public class NPMPackageGenerator {
       }
     }
   }
-  
-  
+
+
 }

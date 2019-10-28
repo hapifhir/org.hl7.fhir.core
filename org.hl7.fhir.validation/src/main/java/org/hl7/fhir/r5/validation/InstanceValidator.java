@@ -4502,15 +4502,15 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
           ToolingExtensions.readBooleanExtension(inv, "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice")) {
           if (bpWarnings == BestPracticeWarningLevel.Hint) 
-            hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
+            hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey()+": "+inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Warning) 
-            warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
+            warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey()+": "+inv.getHuman()+msg+" ["+n.toString()+"]");
           else if (bpWarnings == BestPracticeWarningLevel.Error) 
-            rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman()+msg+" ["+n.toString()+"]");
+            rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey()+": "+inv.getHuman()+msg+" ["+n.toString()+"]");
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey()+": "+inv.getHuman() + msg + " [" + n.toString() + "]");
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getHuman() + msg + " [" + n.toString() + "]");
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey()+": "+inv.getHuman() + msg + " [" + n.toString() + "]");
       }
     }
   }

@@ -345,6 +345,11 @@ import com.google.gson.JsonObject;
         return npm.get("canonical").getAsString();
     }
 
+    public boolean hasFile(String folder, String name) throws IOException {
+      String file = folder+"/"+name;
+      return content.containsKey(file);
+    }
+    
     public InputStream loadResource(String type, String id) throws IOException {
       String file = type+"-"+id+".json";
       if (content.containsKey("package/"+file))
