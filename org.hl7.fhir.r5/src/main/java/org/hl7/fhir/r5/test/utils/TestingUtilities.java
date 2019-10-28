@@ -443,7 +443,6 @@ public class TestingUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException { 
-    System.out.println(System.getProperty("user.dir"));
     if (new File("../../fhir-test-cases").exists()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return new File(n).exists();
@@ -459,7 +458,6 @@ public class TestingUtilities {
   }
   
   public static String loadTestResource(String... paths) throws IOException {
-    System.out.println(System.getProperty("user.dir"));
     if (new File("../../fhir-test-cases").exists()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       // ok, we'll resolve this locally
@@ -479,7 +477,6 @@ public class TestingUtilities {
   }
 
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    System.out.println(System.getProperty("user.dir"));
     if (new File("../../fhir-test-cases").exists()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return new FileInputStream(n);
@@ -490,7 +487,6 @@ public class TestingUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    System.out.println(System.getProperty("user.dir"));
     if (new File("../../fhir-test-cases").exists()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return TextFile.fileToBytes(n);
