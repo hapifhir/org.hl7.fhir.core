@@ -142,6 +142,7 @@ public class R3TEchnicalCorrectionProcessor {
         } else {
           dst = new FileOutputStream(Utilities.path(examplesPath, n));
           new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(dst, r);
+          examplesCount++;
           if (isCoreResource(r.fhirType())) {
             coreCount++;
             DomainResource dr = (DomainResource) r;
