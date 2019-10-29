@@ -291,6 +291,7 @@ public class Mimic14Importer {
       Item ab = items.get(csv.cell("ab_itemid"));
 
       Observation obs;
+      boolean isCulture = true;
       if (cache.containsKey(cacheId)) {
         obs = cache.get(cacheId);
       } else {
@@ -302,8 +303,37 @@ public class Mimic14Importer {
         obs.addCategory().setText("microbiology");
         bnd.addEntry().setResource(obs);
  
+        
         // todo: these are all cultures, but the codes state mainly what the culture is on
-        obs.getCode().setText(csv.cell("spec_itemid"));
+        obs.getCode().setText(csv.cell("spec_type_desc"));
+        if ("70012".equals(csv.cell("spec_itemid"))) {
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("600-7").setDisplay("Bacteria identified in Blood by Culture");
+        } else if ("70079".equals(csv.cell("spec_itemid"))) {
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("630-4").setDisplay("Bacteria identified in Urine by Culture");
+        } else if ("70064".equals(csv.cell("spec_itemid"))) {
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("625-4").setDisplay("Bacteria identified in Stool by Culture");
+        } else if ("70053".equals(csv.cell("spec_itemid"))) {
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("619-7").setDisplay("Bacteria identified in Peritoneal fluid by Culture");
+//        } else if ("70013".equals(csv.cell("spec_itemid"))) {
+//          obs.getCode().addCoding().setSystem("http://loinc.org").setCode().setDisplay();
+        } else if ("70023".equals(csv.cell("spec_itemid"))) {
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("19128-8").setDisplay("Bacteria identified in Catheter tip by Culture");
+        } else if ("70046".equals(csv.cell("spec_itemid"))) { 
+          isCulture = false;
+          obs.getCode().setText("HIV-1 Viral Load/Ultrasensitive");
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("20447-9").setDisplay("HIV 1 RNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection");
+        } else if ("70051".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6463-4").setDisplay("Bacteria identified in Unspecified specimen by Culture");
+        } else if ("70062".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6460-0").setDisplay("Bacteria identified in Sputum by Culture");
+        } else if ("70067".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6462-6").setDisplay("Bacteria identified in Wound by Culture");
+        } else if ("70070".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6462-6").setDisplay("Bacteria identified in Wound by Culture");
+        } else if ("70091".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("13317-3").setDisplay("Methicillin resistant Staphylococcus aureus [Presence] in Unspecified specimen by Organism specific culture");
+        } else
+          throw new Error("Not coded yet: "+csv.cell("spec_itemid"));
         obs.getCode().addCoding().setSystem("http://mimic.physionet.org/fhir/TestType").setCode(csv.cell("spec_itemid"));
       }
 
@@ -324,9 +354,59 @@ public class Mimic14Importer {
       } else {
         obs.setValue(new CodeableConcept(new Coding().setSystem("http://mimic.physionet.org/fhir/Organism").setCode(csv.cell("org_itemid"))).setText(csv.cell("org_name")));
       }
-      if (ab != null) {
+      // todo: make this members not components
+      if (isCulture && ab != null) {
         ObservationComponentComponent oc = obs.addComponent();
-        oc.setCode(new CodeableConcept(new Coding().setSystem("http://mimic.physionet.org/fhir/Antibiotic").setCode(csv.cell("ab_itemid"))).setText(csv.cell("ab_name")));
+        if ("90015".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("19000-9").setDisplay("Vancomycin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90012".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18928-2").setDisplay("Gentamicin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90025".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("20629-2").setDisplay("levoFLOXacin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90016".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18961-3").setDisplay("Oxacillin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90011".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18993-6").setDisplay("Tetracycline [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90006".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18919-1").setDisplay("Erythromycin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90002".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18964-7").setDisplay("Penicillin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90004".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18864-9").setDisplay("Ampicillin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90005".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18878-9").setDisplay("ceFAZolin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90007".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18908-4").setDisplay("Clindamycin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90008".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18997-7").setDisplay("Trimethoprim [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90010".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18955-5").setDisplay("Nitrofurantoin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90020".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18932-4").setDisplay("Imipenem [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90021".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18969-6").setDisplay("Piperacillin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90013".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18996-9").setDisplay("Tobramycin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90017".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18893-8").setDisplay("cefTAZidime [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90018".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18895-3").setDisplay("cefTRIAXone [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90019".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18906-8").setDisplay("Ciprofloxacin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90022".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18865-6").setDisplay("Ampicillin+Sulbactam [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90023".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("51724-3").setDisplay("Cefuroxime [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90026".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18969-6").setDisplay("Piperacillin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90028".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18879-7").setDisplay("Cefepime [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90029".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18943-1").setDisplay("Meropenem [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90031".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("29258-1").setDisplay("Linezolid [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else
+          throw new Error("Not coded yet: "+csv.cell("ab_itemid"));
         if (csv.has("dilution_text")) {
           oc.setValue(parseQuantity(csv.cell("dilution_text")));
         }

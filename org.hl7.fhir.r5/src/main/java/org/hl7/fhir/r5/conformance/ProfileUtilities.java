@@ -2914,6 +2914,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt.getValue());
           first = false;
         }
+        if (first)
+          c.getPieces().add(gen.new Piece(null, "Any", null));
+          
         if (ADD_REFERENCE_TO_TABLE) 
           c.getPieces().add(gen.new Piece(null, ")", null));
         
@@ -2938,6 +2941,21 @@ public class ProfileUtilities extends TranslatingUtilities {
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
           choicerow.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
           choicerow.getCells().add(gen.new Cell(null, pkp.getLinkFor(corePath, t), t, null, null));
+        }
+        if (tr.hasProfile()) {
+          Cell typeCell = choicerow.getCells().get(3);
+          typeCell.addPiece(gen.new Piece(null, "(", null));
+          boolean first = true;
+          for (CanonicalType pt : tr.getProfile()) {
+            if (first) first = false; else typeCell.addPiece(gen.new Piece(null, " | ", null));
+            StructureDefinition psd = context.fetchResource(StructureDefinition.class, pt.getValue());
+            if (psd == null)
+              typeCell.addPiece(gen.new Piece(null, "??", null));
+            else
+              typeCell.addPiece(gen.new Piece(psd.getUserString("path"), psd.getName(), psd.present()));
+            
+          }
+          typeCell.addPiece(gen.new Piece(null, ")", null));
         }
       }    
       choicerow.getCells().add(gen.new Cell());

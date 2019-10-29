@@ -2288,11 +2288,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       return null;
     if (getCodeElement().hasExtension(ToolingExtensions.EXT_XML_TYPE)) {
       String s = getCodeElement().getExtensionString(ToolingExtensions.EXT_XML_TYPE);
-      if ("xsd:gYear OR xsd:gYearMonth OR xsd:date OR xsd:dateTime".equals(s))
+      if ("xsd:gYear OR xsd:gYearMonth OR xsd:date OR xsd:dateTime".equalsIgnoreCase(s))
         return "dateTime";
-      if ("xsd:gYear OR xsd:gYearMonth OR xsd:date".equals(s))
+      if ("xsd:gYear OR xsd:gYearMonth OR xsd:date".equalsIgnoreCase(s))
         return "date";
-      if ("xsd:dateTime".equals(s))
+      if ("xsd:dateTime".equalsIgnoreCase(s))
         return "instant";
       if ("xsd:token".equals(s))
         return "code";
@@ -2306,15 +2306,15 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return "integer";
       if ("xsd:decimal OR xsd:double".equals(s))
         return "decimal";
-      if ("xsd:decimal".equals(s))
+      if ("xsd:decimal".equalsIgnoreCase(s))
         return "decimal";
-      if ("xsd:base64Binary".equals(s))
+      if ("xsd:base64Binary".equalsIgnoreCase(s))
         return "base64Binary";
-      if ("xsd:positiveInteger".equals(s))
+      if ("xsd:positiveInteger".equalsIgnoreCase(s))
         return "positiveInt";
-      if ("xsd:nonNegativeInteger".equals(s))
+      if ("xsd:nonNegativeInteger".equalsIgnoreCase(s))
         return "unsignedInt";
-      if ("xsd:anyURI".equals(s))
+      if ("xsd:anyURI".equalsIgnoreCase(s))
         return "uri";
       
       throw new Error("Unknown xml type '"+s+"'");
