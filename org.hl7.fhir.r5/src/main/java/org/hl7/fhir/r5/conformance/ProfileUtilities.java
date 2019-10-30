@@ -512,7 +512,20 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
             ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
             e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
-            derived.getSnapshot().addElement(outcome);
+            if (isXmlAttr(outcome) && derived.getSnapshot().getElement().size()>1) {
+              List<ElementDefinition> eds = derived.getSnapshot().getElement();
+              int indexattr = 1;
+              while (indexattr<eds.size() && isXmlAttr(eds.get(indexattr))) {
+                ++indexattr;
+              }
+              if (indexattr<eds.size()) {
+                eds.add(indexattr, outcome);
+              } else {
+                derived.getSnapshot().addElement(outcome);
+              }
+            } else {
+              derived.getSnapshot().addElement(outcome);
+            }
           }
         }
       }
@@ -579,6 +592,16 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.setSnapshot(null);
       throw e;
     }
+  }
+  
+  private boolean isXmlAttr(ElementDefinition e) {
+    if (e.getRepresentation()!=null)
+      for (Enumeration<PropertyRepresentation> r : e.getRepresentation()) {
+        if (r.getValue() == PropertyRepresentation.XMLATTR) {
+          return true;
+        }
+      }
+    return false;
   }
 
   private StructureDefinitionDifferentialComponent cloneDiff(StructureDefinitionDifferentialComponent source) {
