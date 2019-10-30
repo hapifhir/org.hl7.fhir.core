@@ -3989,7 +3989,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     if (childDefinitions.isEmpty()) {
       if (actualType == null)
         return; // there'll be an error elsewhere in this case, and we're going to stop.
-      StructureDefinition dt = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + actualType);
+      StructureDefinition dt = null;
+      if (isAbsolute(actualType)) 
+        dt = this.context.fetchResource(StructureDefinition.class, actualType);
+      else
+        dt = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + actualType);
       if (dt == null)
         throw new DefinitionException("Unable to resolve actual type " + actualType);
 
