@@ -10088,6 +10088,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _3_0_1, 
         /**
+         * FHIR Release 3 (STU) with 2 technical errata.
+         */
+        _3_0_2, 
+        /**
          * R4 Ballot #1.
          */
         _3_3_0, 
@@ -10099,6 +10103,10 @@ The primary difference between a medicationusage and a medicationadministration 
          * FHIR Release 4 (Normative + STU).
          */
         _4_0_0, 
+        /**
+         * FHIR Release 4 (Normative + STU) + 1 technical correction
+         */
+        _4_0_1, 
         /**
          * Current build after R4.
          */
@@ -10146,12 +10154,16 @@ The primary difference between a medicationusage and a medicationadministration 
           return _3_0_0;
         if ("3.0.1".equals(codeString))
           return _3_0_1;
+        if ("3.0.2".equals(codeString))
+          return _3_0_2;
         if ("3.3.0".equals(codeString))
           return _3_3_0;
         if ("3.5.0".equals(codeString))
           return _3_5_0;
         if ("4.0.0".equals(codeString))
           return _4_0_0;
+        if ("4.0.1".equals(codeString))
+          return _4_0_1;
         if ("4.1.0".equals(codeString))
           return _4_1_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
@@ -10176,9 +10188,11 @@ The primary difference between a medicationusage and a medicationadministration 
             case _1_8_0: return "1.8.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
+            case _3_0_2: return "3.0.2";
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
+            case _4_0_1: return "4.0.1";
             case _4_1_0: return "4.1.0";
             default: return "?";
           }
@@ -10203,9 +10217,11 @@ The primary difference between a medicationusage and a medicationadministration 
             case _1_8_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_1: return "http://hl7.org/fhir/FHIR-version";
+            case _3_0_2: return "http://hl7.org/fhir/FHIR-version";
             case _3_3_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_5_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
             default: return "?";
           }
@@ -10230,9 +10246,11 @@ The primary difference between a medicationusage and a medicationadministration 
             case _1_8_0: return "FHIR STU3 Candidate + Connectathon 14 (San Antonio).";
             case _3_0_0: return "FHIR Release 3 (STU).";
             case _3_0_1: return "FHIR Release 3 (STU) with 1 technical errata.";
+            case _3_0_2: return "FHIR Release 3 (STU) with 2 technical errata.";
             case _3_3_0: return "R4 Ballot #1.";
             case _3_5_0: return "R4 Ballot #2.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
+            case _4_0_1: return "FHIR Release 4 (Normative + STU) + ! Technical Correction";
             case _4_1_0: return "Current build after R4.";
             default: return "?";
           }
@@ -10257,9 +10275,11 @@ The primary difference between a medicationusage and a medicationadministration 
             case _1_8_0: return "1.8.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
+            case _3_0_2: return "3.0.2";
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
+            case _4_0_1: return "4.0.1";
             case _4_1_0: return "4.1.0";
             default: return "?";
           }
@@ -10372,12 +10392,16 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._3_0_0;
         if ("3.0.1".equals(codeString))
           return FHIRVersion._3_0_1;
+        if ("3.0.2".equals(codeString))
+          return FHIRVersion._3_0_2;
         if ("3.3.0".equals(codeString))
           return FHIRVersion._3_3_0;
         if ("3.5.0".equals(codeString))
           return FHIRVersion._3_5_0;
         if ("4.0.0".equals(codeString))
           return FHIRVersion._4_0_0;
+        if ("4.0.1".equals(codeString))
+          return FHIRVersion._4_0_1;
         if ("4.1.0".equals(codeString))
           return FHIRVersion._4_1_0;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
@@ -10426,12 +10450,16 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
         if ("3.0.1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
+        if ("3.0.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
         if ("3.3.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
         if ("3.5.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
         if ("4.0.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
+        if ("4.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
         if ("4.1.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
@@ -10473,12 +10501,16 @@ The primary difference between a medicationusage and a medicationadministration 
         return "3.0.0";
       if (code == FHIRVersion._3_0_1)
         return "3.0.1";
+      if (code == FHIRVersion._3_0_2)
+        return "3.0.2";
       if (code == FHIRVersion._3_3_0)
         return "3.3.0";
       if (code == FHIRVersion._3_5_0)
         return "3.5.0";
       if (code == FHIRVersion._4_0_0)
         return "4.0.0";
+      if (code == FHIRVersion._4_0_1)
+        return "4.0.1";
       if (code == FHIRVersion._4_1_0)
         return "4.1.0";
       return "?";
