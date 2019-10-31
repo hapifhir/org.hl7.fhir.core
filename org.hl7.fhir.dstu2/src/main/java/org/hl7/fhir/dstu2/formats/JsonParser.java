@@ -11100,6 +11100,9 @@ public class JsonParser extends JsonParserBase {
 
   @Override
   protected Resource parseResource(JsonObject json) throws IOException, FHIRFormatError {
+    if (!json.has("resourceType")) {
+      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    }
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t))
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
