@@ -393,10 +393,8 @@ public class ExtensionDefinitionGenerator {
     else if (sourceVersion == FHIRVersion._1_0_2)
       context = SimpleWorkerContext.fromPackage(npm, new R2ToR4Loader());
     pu = new ProfileUtilities(context,  null,  null);
-    for (String fn : npm.list("package")) {
-      if (fn.endsWith(".json") && fn.startsWith("StructureDefinition-")) {
-        list.add((StructureDefinition) loadResource(npm.load("package", fn), sourceVersion));
-      }
+    for (String fn : npm.listResources("StructureDefinition")) {
+      list.add((StructureDefinition) loadResource(npm.load("package", fn), sourceVersion));
     }
     for (StructureDefinition sd : list)
       if (sd.getName().equals("Extension")) {

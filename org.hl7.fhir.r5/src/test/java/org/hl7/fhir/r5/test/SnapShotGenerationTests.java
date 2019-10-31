@@ -484,7 +484,10 @@ public class SnapShotGenerationTests {
       new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
     test.output = output;
     TestingUtilities.context().cacheResource(output);
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId()+"-expected.xml")));
+    File dst = new File(TestingUtilities.tempFile("snapshot", test.getId()+"-expected.xml"));
+    if (dst.exists())
+      dst.delete();
+    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(dst));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId()+"-actual.xml")), output);
     StructureDefinition t1 = test.expected.copy();
     t1.setText(null);

@@ -505,14 +505,13 @@ public class ValidationEngine {
   }
 
   private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FileNotFoundException, IOException {
-    return loadPackage(pcm.extractLocally(stream, name));
+    return loadPackage(NpmPackage.fromPackage(stream));
   }
 
   public Map<String, byte[]> loadPackage(NpmPackage pi) throws IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
-    for (String s : pi.list("package")) {
-      if (s.startsWith("CodeSystem-") || s.startsWith("ConceptMap-") || s.startsWith("ImplementationGuide-") || s.startsWith("StructureMap-") || s.startsWith("ValueSet-") || s.startsWith("StructureDefinition-"))
-        res.put(s, TextFile.streamToBytes(pi.load("package", s)));
+    for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "StructureMap", "ValueSet", "StructureDefinition")) {
+      res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }
     String ini = "[FHIR]\r\nversion="+pi.fhirVersion()+"\r\n";
     res.put("version.info", ini.getBytes());

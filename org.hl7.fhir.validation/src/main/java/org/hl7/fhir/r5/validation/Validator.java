@@ -372,12 +372,26 @@ public class Validator {
             definitions = args[++i];
         else if (args[i].equals("-version"))  {
           sv = args[++i];
-          if ("1.0".equals(sv)) sv = "1.0.2";
-          if ("1.4".equals(sv)) sv = "1.4.0";
-          if ("3.0".equals(sv)) sv = "3.0.1";
-          if ("4.0".equals(sv)) sv = "4.0.0";
-          if (sv.startsWith(Constants.VERSION)) sv = Constants.VERSION;
-          definitions = "hl7.fhir.core#"+sv;
+          if (sv.startsWith("1.0")) {
+            sv = "1.0.2";
+            definitions = "hl7.fhir.r2.core#"+sv;
+          }
+          if (sv.startsWith("1.4")) {
+            sv = "1.4.0";
+            definitions = "hl7.fhir.r2b.core#"+sv;
+          }
+          if (sv.startsWith("3.0")) {
+            sv = "3.0.2";
+            definitions = "hl7.fhir.r3.core#"+sv;
+          }
+          if (sv.startsWith("4.0")) {
+            sv = "4.0.1";
+            definitions = "hl7.fhir.r4.core#"+sv;
+          }
+          if (sv.startsWith(Constants.VERSION)) {
+            sv = Constants.VERSION;
+            definitions = "hl7.fhir.r5.core#"+sv;
+          }
         } else if (args[i].equals("-output"))
           if (i+1 == args.length)
             throw new Error("Specified -output without indicating output file");

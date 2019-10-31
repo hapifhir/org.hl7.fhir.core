@@ -71,6 +71,8 @@ import com.google.gson.JsonObject;
     private Map<String, byte[]> content = new HashMap<String, byte[]>();
     private JsonObject npm;
     private IniFile cache;
+    private Map<String, List<String>> types = new HashMap<>();
+    private Map<String, String> urls = new HashMap<>();
 
     public NpmPackage(JsonObject npm, Map<String, byte[]> content, List<String> folders) {
       this.path = null;
@@ -88,10 +90,30 @@ import com.google.gson.JsonObject;
           }
         }
         npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
+        File ji = new File(Utilities.path(path, "package", ".index.json"));
+        if (ji.exists()) {
+          readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(ji)));
+        }
         cache = new IniFile(Utilities.path(path, "cache.ini"));        
       }
     }
     
+    private void readIndexFile(JsonObject index) throws IOException {
+      for (JsonElement e : index.getAsJsonArray("files")) {
+        JsonObject file = (JsonObject) e;
+        String type = file.get("resourceType").getAsString();
+        String name = file.get("filename").getAsString();
+        String url = file.has("url") ? file.get("url").getAsString() : null;
+        String version = file.has("version") ? file.get("version").getAsString() : null;
+        if (!types.containsKey(type))
+          types.put(type, new ArrayList<>());
+        types.get(type).add(name);
+        if (version != null)
+          url = url + "|" + version;
+        urls.put(url, name);
+      }
+    }
+
     private List<String> sorted(String[] keys) {
       List<String> names = new ArrayList<String>();
       for (String s : keys)
@@ -101,7 +123,12 @@ import com.google.gson.JsonObject;
     }
 
     private static final int BUFFER_SIZE = 1024;
+    
     public static NpmPackage fromPackage(InputStream tgz) throws IOException {
+      return fromPackage(tgz, false);
+    }
+    
+    public static NpmPackage fromPackage(InputStream tgz, boolean progress) throws IOException {
       NpmPackage res = new NpmPackage(null);
       GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
       try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
@@ -126,6 +153,16 @@ import com.google.gson.JsonObject;
             fos.close();
             res.content.put(entry.getName(), fos.toByteArray());
           }
+          i++;
+          if (progress && i % 50 == 0) {
+            c++;
+            System.out.print(".");
+            if (c == 120) {
+              System.out.println("");
+              System.out.print("  ");
+              c = 2;
+            }
+          }    
         }
       }
       res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
@@ -159,6 +196,8 @@ import com.google.gson.JsonObject;
       }
       zip.close();         
       res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/package.json")));
+      if (res.content.containsKey("package/.index.json"))
+        res.readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/.index.json"))));
       return res;
     }
    
@@ -187,12 +226,19 @@ import com.google.gson.JsonObject;
     }
 
     public List<String> listResources(String... types) throws IOException {
-      List<String> files = list("package");
       List<String> res = new ArrayList<String>();
-      for (String s : files) {
-        String[] n = s.split("\\-");
-        if (Utilities.existsInList(n[0], types))
-          res.add(s);
+      if (this.types.size() > 0) {
+        for (String s : types) {
+          if (this.types.containsKey(s))
+            res.addAll(this.types.get(s));
+        }
+      } else {
+        List<String> files = list("package");
+        for (String s : files) {
+          String[] n = s.split("\\-");
+          if (Utilities.existsInList(n[0], types))
+            res.add(s);
+        }
       }
       return res;
     }
@@ -295,18 +341,25 @@ import com.google.gson.JsonObject;
     public String fhirVersion() {
       if ("hl7.fhir.core".equals(npm.get("name").getAsString()))
         return npm.get("version").getAsString();
+      else if (npm.get("name").getAsString().startsWith("hl7.fhir.r2.") || npm.get("name").getAsString().startsWith("hl7.fhir.r2b.") || npm.get("name").getAsString().startsWith("hl7.fhir.r3.") || npm.get("name").getAsString().startsWith("hl7.fhir.r4."))
+        return npm.get("version").getAsString();
       else {        
         JsonObject dep = npm.getAsJsonObject("dependencies");
         if (dep == null)
           throw new FHIRException("no dependencies found in the Package definition");
-        JsonElement core = dep.get("hl7.fhir.core");
-        if (core == null)
-          throw new FHIRException("no dependency on hl7.fhir.core found in the Package definition");
-        return core.getAsString();
+        for (Entry<String, JsonElement> e : dep.entrySet()) {
+          if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+            return e.getValue().getAsString();
+          if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
+            return e.getValue().getAsString();
+        }
+        if (npm.has("fhirVersions"))
+          return npm.getAsJsonArray("fhirVersions").get(0).getAsString();
+        throw new FHIRException("no core dependency or FHIR Version found in the Package definition");
       }
     }
 
-    public String description() {
+    public String summary() {
       if (path != null)
         return path;
       else
@@ -319,6 +372,10 @@ import com.google.gson.JsonObject;
 
     public String type() {
       return npm.get("type").getAsString();
+    }
+
+    public String description() {
+      return npm.has("description") ? npm.get("description").getAsString() : null;
     }
 
     public String getPath() {
