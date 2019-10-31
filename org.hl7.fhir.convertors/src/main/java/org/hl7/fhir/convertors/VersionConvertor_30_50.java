@@ -24,14 +24,11 @@ package org.hl7.fhir.convertors;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.dstu3.model.ContactDetail;
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.DesignationIncludeDesignationComponent;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.SystemVersionProcessingMode;
-import org.hl7.fhir.dstu3.model.MarkdownType;
-import org.hl7.fhir.dstu3.model.Measure;
-import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
@@ -40,7 +37,6 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Expression.ExpressionLanguage;
 import org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceEligibilityComponent;
 import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatus;
 import org.hl7.fhir.r5.model.Identifier;
@@ -22253,17 +22249,25 @@ public class VersionConvertor_30_50 {
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
     for (org.hl7.fhir.dstu3.model.Contributor t : src.getContributor()) {
       if (t.getType() == ContributorType.AUTHOR)
-        for (ContactDetail c : t.getContact())
-          tgt.addAuthor(convertContactDetail(c));
+        if (t.hasContact())
+          for (ContactDetail c : t.getContact())
+            tgt.addAuthor(convertContactDetail(c));
+        else tgt.addAuthor(new org.hl7.fhir.r5.model.ContactDetail().setName(t.getName()));
       if (t.getType() == ContributorType.EDITOR)
-        for (ContactDetail c : t.getContact())
-          tgt.addEditor(convertContactDetail(c));
+        if (t.hasContact())
+          for (ContactDetail c : t.getContact())
+            tgt.addEditor(convertContactDetail(c).setName(t.hasName() ? t.getName() : null));
+        else tgt.addAuthor(new org.hl7.fhir.r5.model.ContactDetail().setName(t.getName()));
       if (t.getType() == ContributorType.REVIEWER)
-        for (ContactDetail c : t.getContact())
-          tgt.addReviewer(convertContactDetail(c));
+        if (t.hasContact())
+          for (ContactDetail c : t.getContact())
+            tgt.addReviewer(convertContactDetail(c).setName(t.hasName() ? t.getName() : null));
+        else tgt.addAuthor(new org.hl7.fhir.r5.model.ContactDetail().setName(t.getName()));
       if (t.getType() == ContributorType.ENDORSER)
-        for (ContactDetail c : t.getContact())
-          tgt.addEndorser(convertContactDetail(c));
+        if (t.hasContact())
+          for (ContactDetail c : t.getContact())
+            tgt.addEndorser(convertContactDetail(c).setName(t.hasName() ? t.getName() : null));
+        else tgt.addAuthor(new org.hl7.fhir.r5.model.ContactDetail().setName(t.getName()));
     }
     // NEW
     for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact())
@@ -22276,8 +22280,6 @@ public class VersionConvertor_30_50 {
       tgt.setScoring(convertCodeableConcept(src.getScoring()));
     if (src.hasCompositeScoring())
       tgt.setCompositeScoring(convertCodeableConcept(src.getCompositeScoring()));
-    for (org.hl7.fhir.dstu3.model.CodeableConcept c : src.getType())
-      tgt.addType(convertCodeableConcept(c));
     if (src.hasRiskAdjustment())
       tgt.setRiskAdjustment(src.getRiskAdjustment());
     if (src.hasRateAggregation())
@@ -22394,6 +22396,70 @@ public class VersionConvertor_30_50 {
       tgt.setLastReviewDate(src.getLastReviewDate());
     if (src.hasEffectivePeriod())
       tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+    if (src.hasAuthor())
+      for (org.hl7.fhir.r5.model.ContactDetail c : src.getAuthor()) {
+        ContactDetail cd = convertContactDetail(c);
+        Contributor con = new Contributor().setType(ContributorType.AUTHOR);
+        if (cd.hasName())
+          con.setName(cd.getName());
+        tgt.addContributor(con);
+      }
+    if (src.hasEditor())
+      for (org.hl7.fhir.r5.model.ContactDetail c : src.getAuthor()) {
+        ContactDetail cd = convertContactDetail(c);
+        Contributor con = new Contributor().setType(ContributorType.EDITOR);
+        if (cd.hasName())
+          con.setName(cd.getName());
+        tgt.addContributor(con);
+      }
+    if (src.hasReviewer())
+      for (org.hl7.fhir.r5.model.ContactDetail c : src.getAuthor()) {
+        ContactDetail cd = convertContactDetail(c);
+        Contributor con = new Contributor().setType(ContributorType.REVIEWER);
+        if (cd.hasName())
+          con.setName(cd.getName());
+        tgt.addContributor(con);
+      }
+    if (src.hasEndorser())
+      for (org.hl7.fhir.r5.model.ContactDetail c : src.getAuthor()) {
+        ContactDetail cd = convertContactDetail(c);
+        Contributor con = new Contributor().setType(ContributorType.ENDORSER);
+        if (cd.hasName())
+          con.setName(cd.getName());
+        tgt.addContributor(con);
+      }
+    // NEW
+    for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact())
+      tgt.addRelatedArtifact(convertRelatedArtifact(t));
+    for (org.hl7.fhir.r5.model.CanonicalType r : src.getLibrary())
+      tgt.addLibrary(convertCanonicalToReference(r));
+    if (src.hasDisclaimer())
+      tgt.setDisclaimer(src.getDisclaimer());
+    if (src.hasScoring())
+      tgt.setScoring(convertCodeableConcept(src.getScoring()));
+    if (src.hasCompositeScoring())
+      tgt.setCompositeScoring(convertCodeableConcept(src.getCompositeScoring()));
+    if (src.hasRiskAdjustment())
+      tgt.setRiskAdjustment(src.getRiskAdjustment());
+    if (src.hasRateAggregation())
+      tgt.setRateAggregation(src.getRateAggregation());
+    if (src.hasRationale())
+      tgt.setRationale(src.getRationale());
+    if  (src.hasClinicalRecommendationStatement())
+      tgt.setClinicalRecommendationStatement(src.getClinicalRecommendationStatement());
+    if (src.hasImprovementNotation())
+      for (org.hl7.fhir.r5.model.Coding cc : src.getImprovementNotation().getCoding()) {
+        if (cc.hasCode() && cc.getCode().equals("increase"))
+          tgt.setImprovementNotation(cc.getCode());
+        else if (cc.hasCode() && cc.getCode().equals("decrease"))
+          tgt.setImprovementNotation(cc.getCode());
+      }
+    for (org.hl7.fhir.r5.model.MarkdownType m : src.getDefinition())
+      tgt.addDefinition(m.getValue());
+    if (src.hasGuidance())
+      tgt.setGuidance(src.getGuidance());
+    for (org.hl7.fhir.r5.model.Measure.MeasureGroupComponent g : src.getGroup())
+      tgt.addGroup(convertMeasureGroup(g));
     return tgt;
   }
 
