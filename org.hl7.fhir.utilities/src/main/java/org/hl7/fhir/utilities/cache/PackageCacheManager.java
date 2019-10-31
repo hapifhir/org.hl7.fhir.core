@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -106,7 +107,7 @@ public class PackageCacheManager {
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
 
   private static final int BUFFER_SIZE = 1024;
-  private static final String CACHE_VERSION = "2"; // second version - see wiki page
+  private static final String CACHE_VERSION = "3"; // second version - see wiki page
   private static final int ANALYSIS_VERSION = 2;
 
   private String cacheFolder;
@@ -129,19 +130,172 @@ public class PackageCacheManager {
       TextFile.stringToFile("[cache]\r\nversion="+CACHE_VERSION+"\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);  
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
     boolean save = false;
-    String v = ini.getStringProperty("cache", "version");
-    if ("1".equals(v)) {
-      convertPackageCacheFrom1To2();
-      ini.setStringProperty("cache", "version", "2", null);
-      v = ini.getStringProperty("cache", "version");
-      save = true;
-    }
+    String v = ini.getStringProperty("cache", "version");    
     if (!CACHE_VERSION.equals(v)) {
       clearCache();
       ini.setStringProperty("cache", "version", CACHE_VERSION, null);
       save = true;
     }
+    save = initUrlMaps(ini, save);
+    if (save) {
+      if (!CACHE_VERSION.equals(ini.getStringProperty("cache", "version"))) {
+        throw new Error("what?");
+      }
+      ini.save();
+    }
+  }
+
+  public static String userDir() throws IOException {
+    return Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+  }
+
+  // ========================= Utilities ============================================================================
+  
+  private List<String> sorted(String[] keys) {
+    List<String> names = new ArrayList<String>();
+    for (String s : keys)
+      names.add(s);
+    Collections.sort(names);
+    return names;
+  }
+
+  private NpmPackage loadPackageInfo(String path) throws IOException {
+    NpmPackage pi = new NpmPackage(path);
+    return pi;
+  }
+
+  public String getFolder() {
+    return cacheFolder;
+  }
+
+  private void analysePackage(String dir) throws IOException {
+    NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+    indexer.start();
+    int i = 0;
+    int c = 0;
+    File[] packages = new File(Utilities.path(dir, "package")).listFiles();
+    for (File f : packages) {
+      indexer.seeFile(f.getName(), TextFile.fileToBytes(f));
+      i++;
+      if (progress && i % 50 == 0) {
+        c++;
+        System.out.print(".");
+        if (c == 120) {
+          System.out.println("");
+          System.out.print("  ");
+          c = 2;
+        }
+      }    
+    }
+    TextFile.stringToFile(indexer.build(), Utilities.path(dir, "package", ".index.json"));
+  }
+
+
+
+  private NpmPackage checkCurrency(String id, NpmPackage p) {
+    // special case: current versions roll over, and we have to check their currency
+    try {
+      String url = ciList.get(id);
+      JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
+      String currDate = json.get("date").getAsString();
+      String packDate = p.date();
+      if (!currDate.equals(packDate))
+        return null; // nup, we need a new copy 
+      return p;
+    } catch (Exception e) {
+      return p;
+    }
+  }
+  
+  private JsonObject fetchJson(String source) throws IOException {
+    URL url = new URL(source);
+    URLConnection c = url.openConnection();
+    return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
+  }
+  
+  private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
+    try {
+      URL url = new URL(source);
+      URLConnection c = url.openConnection();
+      return c.getInputStream();
+    } catch (Exception e) {
+      if (optional)
+        return null;
+      else
+        throw new FHIRException(e.getMessage(), e);
+    }
+  }
+
+  // ========================= Full Cache Management ============================================================================
+
+  private void clearCache() throws IOException {
+    for (File f : new File(cacheFolder).listFiles()) {
+      if (f.isDirectory())
+        FileUtils.deleteDirectory(f);
+      else if (!f.getName().equals("packages.ini"))
+        FileUtils.forceDelete(f);
+    }    
+    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+    ini.removeSection("packages");
+    ini.save();
+  }
+
+//  private void checkDeleteVersion(String id, String ver, int minVer) {
+//    if (hasPackage(id, ver)) {
+//      boolean del = true;
+//      NpmPackage pck;
+//      try {
+//        pck = loadPackageFromCacheOnly(id, ver);
+//        if (pck.getNpm().has("tools-version")) {
+//          del = pck.getNpm().get("tools-version").getAsInt() < minVer;
+//        }
+//      } catch (Exception e) {
+//      }
+//      if (del)
+//        try {
+//          removePackage(id, ver);
+//        } catch (IOException e) {
+//        }
+//    }
+//  }
+  
+//private void convertPackageCacheFrom1To2() throws IOException {
+//for (File f : new File(cacheFolder).listFiles()) {
+//  if (f.isDirectory() && f.getName().contains("-")) {
+//    String s = f.getName();
+//    int i = s.lastIndexOf("-");
+//    s = s.substring(0, i)+"#"+s.substring(i+1);
+//    File nf = new File(Utilities.path(cacheFolder, s));
+//    if (!f.renameTo(nf))
+//      throw new IOException("Unable to rename "+f.getAbsolutePath()+" to "+nf.getAbsolutePath());
+//  }
+//}
+//}
+  
+  // ========================= URL maps (while waiting for package registry) ============================================================================
+  
+  public boolean initUrlMaps(IniFile ini, boolean save) {
     save = checkIniHasMapping("hl7.fhir.core", "http://hl7.org/fhir", ini) || save;
+    
+    save = checkIniHasMapping("hl7.fhir.r2.core", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.core.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2.examples", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.examples.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2.elements", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.elements.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2.expansions", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.expansions.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2b.core", "http://hl7.org/fhir/2016May/hl7.fhir.r2b.core.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2b.examples", "http://hl7.org/fhir/2016May/hl7.fhir.r2b.examples.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2b.elements", "http://hl7.org/fhir/2016May/hl7.fhir.r2b.elements.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r2b.expansions", "http://hl7.org/fhir/2016May/hl7.fhir.r2b.expansions.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r3.core", "http://hl7.org/fhir/STU3/hl7.fhir.r3.core.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r3.examples", "http://hl7.org/fhir/STU3/hl7.fhir.r3.examples.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r3.elements", "http://hl7.org/fhir/STU3/hl7.fhir.r3.elements.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r3.expansions", "http://hl7.org/fhir/STU3/hl7.fhir.r3.expansions.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r4.core", "http://hl7.org/fhir/R4/hl7.fhir.r4.core.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r4.examples", "http://hl7.org/fhir/R4/hl7.fhir.r4.examples.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r4.elements", "http://hl7.org/fhir/R4/hl7.fhir.r4.elements.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r4.expansions", "http://hl7.org/fhir/R4/hl7.fhir.r4.expansions.tgz", ini) || save;
+
+    save = checkIniHasMapping("hl7.fhir.r5.core", "http://build.fhir.org/package.tgz", ini) || save;
+
     save = checkIniHasMapping("fhir.argonaut.ehr", "http://fhir.org/guides/argonaut", ini) || save;
     save = checkIniHasMapping("fhir.argonaut.pd", "http://fhir.org/guides/argonaut-pd", ini) || save;
     save = checkIniHasMapping("fhir.argonaut.scheduling", "http://fhir.org/guides/argonaut-scheduling", ini) || save;
@@ -172,59 +326,8 @@ public class PackageCacheManager {
     save = checkIniHasMapping("hl7.fhir.uv.vhdir", "http://hl7.org/fhir/ig/vhdir", ini) || save;
     save = checkIniHasMapping("hl7.fhir.vn.base", "http://hl7.org/fhir/ig/vietnam", ini) || save;
     save = checkIniHasMapping("hl7.fhir.vocabpoc", "http://hl7.org/fhir/ig/vocab-poc", ini) || save;
-    if (save) {
-      if (!CACHE_VERSION.equals(ini.getStringProperty("cache", "version"))) {
-        throw new Error("what?");
-      }
-      ini.save();
-    }
-    checkDeleteVersion("hl7.fhir.core", "1.0.2", 2);
-    checkDeleteVersion("hl7.fhir.core", "1.4.0", 2);
-    checkDeleteVersion("hl7.fhir.core", "current", toolsVersion);
-    checkDeleteVersion("hl7.fhir.core", "4.0.0", toolsVersion);
+    return save;
   }
-  
-
-  private void checkDeleteVersion(String id, String ver, int minVer) {
-    if (hasPackage(id, ver)) {
-      boolean del = true;
-      NpmPackage pck;
-      try {
-        pck = loadPackageFromCacheOnly(id, ver);
-        if (pck.getNpm().has("tools-version")) {
-          del = pck.getNpm().get("tools-version").getAsInt() < minVer;
-        }
-      } catch (Exception e) {
-      }
-      if (del)
-        try {
-          removePackage(id, ver);
-        } catch (IOException e) {
-        }
-    }
-  }
-
-
-  public void removePackage(String id, String ver) throws IOException  {
-    String f = Utilities.path(cacheFolder, id+"#"+ver);
-    Utilities.clearDirectory(f);    
-    new File(f).delete();
-  }
-
-
-  private void convertPackageCacheFrom1To2() throws IOException {
-    for (File f : new File(cacheFolder).listFiles()) {
-      if (f.isDirectory() && f.getName().contains("-")) {
-        String s = f.getName();
-        int i = s.lastIndexOf("-");
-        s = s.substring(0, i)+"#"+s.substring(i+1);
-        File nf = new File(Utilities.path(cacheFolder, s));
-        if (!f.renameTo(nf))
-          throw new IOException("Unable to rename "+f.getAbsolutePath()+" to "+nf.getAbsolutePath());
-      }
-    }
-  }
-
 
   private boolean checkIniHasMapping(String pid, String curl, IniFile ini) {
     if (curl.equals(ini.getStringProperty("urls", pid)))
@@ -232,17 +335,6 @@ public class PackageCacheManager {
     ini.setStringProperty("urls", pid, curl, null);
     return true;
   }
-
-
-  private void clearCache() throws IOException {
-    for (File f : new File(cacheFolder).listFiles()) {
-      if (f.isDirectory())
-        FileUtils.deleteDirectory(f);
-      else if (!f.getName().equals("packages.ini"))
-        FileUtils.forceDelete(f);
-    }    
-  }
-
 
   public void recordMap(String url, String id) throws IOException {
     if (url == null)
@@ -280,12 +372,89 @@ public class PackageCacheManager {
     return null;
   }
   
-  private List<String> sorted(String[] keys) {
-    List<String> names = new ArrayList<String>();
-    for (String s : keys)
-      names.add(s);
-    Collections.sort(names);
-    return names;
+  public JsonArray loadFromBuildServer() throws IOException {
+    buildLoaded = true; // whether it succeeds or not
+    URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("GET");
+    InputStream json = connection.getInputStream();
+    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
+  
+    for (JsonElement n : buildInfo) {
+      JsonObject o = (JsonObject) n;
+      if (o.has("url") && o.has("package-id") && o.get("package-id").getAsString().contains(".")) {
+        String u = o.get("url").getAsString();
+        if (u.contains("/ImplementationGuide/"))
+          u = u.substring(0, u.indexOf("/ImplementationGuide/"));
+        recordMap(u, o.get("package-id").getAsString());
+        ciList.put(o.get("package-id").getAsString(), "https://build.fhir.org/ig/"+o.get("repo").getAsString());
+      }
+    }
+    return buildInfo;
+  }
+
+  public boolean isBuildLoaded() {
+    return buildLoaded;
+  }
+
+
+  public String buildPath(String url) {
+    for (JsonElement e : buildInfo) {
+      JsonObject j = (JsonObject) e;
+      if (j.has("url") && (url.equals(j.get("url").getAsString()) || j.get("url").getAsString().startsWith(url+"/ImplementationGuide"))) {
+        return "https://build.fhir.org/ig/"+j.get("repo").getAsString();
+      }
+    }
+    return null;
+  }
+ 
+  public boolean checkBuildLoaded() throws IOException {
+    if (isBuildLoaded())
+      return true;
+    loadFromBuildServer();
+    return false;
+  }
+  
+  public Map<String, String> getCiList() {
+    return ciList;
+  }
+
+  public List<String> getUrls() throws IOException {
+    if (allUrls == null)
+    {
+      IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+      allUrls = new ArrayList<>();
+      for (String s : ini.getPropertyNames("urls"))
+        allUrls.add(ini.getStringProperty("urls", s));
+      try {
+        URL url = new URL("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        InputStream json = connection.getInputStream();
+        JsonObject packages = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
+        JsonArray guides = packages.getAsJsonArray("guides");
+        for (JsonElement g : guides) {
+          JsonObject gi = (JsonObject) g;
+          if (gi.has("canonical"))
+            if (!allUrls.contains(gi.get("canonical").getAsString()))
+              allUrls.add(gi.get("canonical").getAsString());
+        }
+      } catch (Exception e) {
+        System.out.println("Listing known Implementation Guides failed: "+e.getMessage());
+      }
+    }
+    return allUrls;    
+  }
+
+  // ========================= Package API ============================================================================
+
+  public void removePackage(String id, String ver) throws IOException  {
+    String f = Utilities.path(cacheFolder, id+"#"+ver);
+    Utilities.clearDirectory(f);    
+    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+    ini.removeProperty("packages", id+"#"+ver);
+    ini.save();
+    new File(f).delete();
   }
 
   /**
@@ -295,7 +464,6 @@ public class PackageCacheManager {
    * @throws IOException
    */
   public NpmPackage loadPackageFromCacheOnly(String id) throws IOException {
-    String match = null;
     List<String> l = sorted(new File(cacheFolder).list());
     for (int i = l.size()-1; i >= 0; i--) {
       String f = l.get(i);
@@ -321,7 +489,6 @@ public class PackageCacheManager {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
         return p;
     }
-    String match = null;
     for (String f : sorted(new File(cacheFolder).list())) {
       if (f.equals(id+"#"+version)) {
         return loadPackageInfo(Utilities.path(cacheFolder, f)); 
@@ -332,130 +499,49 @@ public class PackageCacheManager {
     else
       return null;
   }
-  
-  private NpmPackage loadPackageInfo(String path) throws IOException {
-    NpmPackage pi = new NpmPackage(path);
-    return pi;
-  }
 
+  /**
+   * Add an already fetched package to the cache
+   */
   public NpmPackage addPackageToCache(String id, String version, InputStream tgz) throws IOException {
     if (progress ) {
       System.out.println("Installing "+id+"#"+(version == null ? "?" : version)+" to the package cache");
       System.out.print("  Fetching:");
     }
-    List<PackageEntry> files = new ArrayList<PackageEntry>();
     
-    long size = unPackage(tgz, files);  
-
-    byte[] npmb = null;
-    for (PackageEntry e : files) {
-      if (e.name.equals("package/package.json"))
-        npmb = e.bytes;
-    }
-    if (npmb == null)
-      throw new IOException("Unable to find package/package.json in the package file");
+    NpmPackage npm = NpmPackage.fromPackage(tgz, true);
     
     if (progress )
       System.out.print("|");
-    JsonObject npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.bytesToString(npmb));
-    if (npm.get("name") == null || id == null || !id.equals(npm.get("name").getAsString()))
-      // work around for stupid core-r4 problem
-      if (!npm.get("name").getAsString().startsWith(id))
-        throw new IOException("Attempt to import a mis-identified package. Expected "+id+", got "+npm.get("name").getAsString());
+    if (npm.name() == null || id == null || !id.equals(npm.name())) {
+      if (!id.equals("hl7.fhir.r5.core")) {// temporary work around
+        throw new IOException("Attempt to import a mis-identified package. Expected "+id+", got "+npm.name());
+      }
+    }
     if (version == null)
-      version = npm.get("version").getAsString();
+      version = npm.version();
     
     String packRoot = Utilities.path(cacheFolder, id+"#"+version);
     Utilities.createDirectory(packRoot);
     Utilities.clearDirectory(packRoot);
       
-    for (PackageEntry e : files) {
-      if (e.bytes == null) {
-        File f = new File(Utilities.path(packRoot, e.name));
-        if (!f.mkdir()) 
-          throw new IOException("Unable to create directory '%s', during extraction of archive contents: "+ f.getAbsolutePath());
-      } else {
-        String fn = Utilities.path(packRoot, e.name);
-        String dir = Utilities.getDirectoryForFile(fn);
-        if (!(new File(dir).exists()))
-          Utilities.createDirectory(dir);
-        TextFile.bytesToFile(e.bytes, fn);
-      }
-    }
-    if (progress) {
-      System.out.println("");
-      System.out.print("  Analysing");
-    }      
-    
-    Map<String, String> profiles = new HashMap<String, String>(); 
-    Map<String, String> canonicals = new HashMap<String, String>(); 
-    if ("hl7.fhir.core".equals(npm.get("name").getAsString()))
-      analysePackage(packRoot, npm.get("version").getAsString(), profiles, canonicals);
-    else if (npm.has("dependencies")) // templates do not
-      analysePackage(packRoot, npm.getAsJsonObject("dependencies").get("hl7.fhir.core").getAsString(), profiles, canonicals);
-    IniFile ini = new IniFile(Utilities.path(packRoot, "cache.ini"));
-    ini.setTimeStampFormat("dd/MM/yyyy h:mm:ss a");
-    ini.setLongProperty("Package", "size", size, null);
-    ini.setTimestampProperty("Package", "install", Timestamp.from(Instant.now()), null);
-    for (String p : profiles.keySet()) 
-      ini.setStringProperty("Profiles", p, profiles.get(p), null);
-    for (String p : canonicals.keySet()) 
-      ini.setStringProperty("Canonicals", p, canonicals.get(p), null);
-    ini.setIntegerProperty("Packages", "analysis", ANALYSIS_VERSION, null);
-    ini.save();
-    if (progress )
-      System.out.println(" done.");
-    return loadPackageInfo(packRoot);
-  }
-
-
-  public long unPackage(InputStream tgz, List<PackageEntry> files) throws IOException {
-    long size = 0;
-    GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-
-      int i = 0;
-      int c = 12;
-      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-        i++;
-        if (progress && i % 20 == 0) {
-          c++;
-          System.out.print(".");
-          if (c == 120) {
-            System.out.println("");
-            System.out.print("  ");
-            c = 2;
-          }
-        }
-        if (entry.isDirectory()) {
-          files.add(new PackageEntry(entry.getName()));
-        } else {
-          int count;
-          byte data[] = new byte[BUFFER_SIZE];
-          
-          ByteArrayOutputStream fos = new ByteArrayOutputStream();
-          try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dest.write(data, 0, count);
-            }
-          }
-          fos.close();
-          files.add(new PackageEntry(entry.getName(), fos.toByteArray()));
-          size = size + fos.size();
-        }
-      }
-    }
-    return size;
-  }
-
-  private void analysePackage(String dir, String v, Map<String, String> profiles, Map<String, String> canonicals) throws IOException {
     int i = 0;
-    int c = 11;
-    File[] packages = new File(Utilities.path(dir, "package")).listFiles();
-    for (File f : packages) {
+    int c = 0;
+    for (Entry<String, byte[]> e : npm.getContent().entrySet()) {
+//      if (e.getValue() == null) {
+//        thorw 
+//        File f = new File(Utilities.path(packRoot, e.name));
+//        if (!f.mkdir()) 
+//          throw new IOException("Unable to create directory '%s', during extraction of archive contents: "+ f.getAbsolutePath());
+//      } else {
+      String fn = Utilities.path(packRoot, e.getKey());
+      String dir = Utilities.getDirectoryForFile(fn);
+      if (!(new File(dir).exists()))
+        Utilities.createDirectory(dir);
+      TextFile.bytesToFile(e.getValue(), fn);
+//    }
       i++;
-      if (progress && i % 20 == 0) {
+      if (progress && i % 50 == 0) {
         c++;
         System.out.print(".");
         if (c == 120) {
@@ -464,117 +550,26 @@ public class PackageCacheManager {
           c = 2;
         }
       }    
-      if (!f.getName().startsWith("Bundle-")) {
-        try {
-          JsonObject j = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f));
-          if (!Utilities.noString(j.get("url").getAsString()) && !Utilities.noString(j.get("resourceType").getAsString())) 
-            canonicals.put(j.get("url").getAsString(), f.getName());
-          if ("StructureDefinition".equals(j.get("resourceType").getAsString()) && "resource".equals(j.get("kind").getAsString())) {
-            String bd = null;
-            if ("1.0.2".equals(v)) 
-              bd = j.get("constrainedType").getAsString();
-            else
-              bd = j.get("type").getAsString();
-            if (Utilities.noString(bd))
-              bd = j.get("name").getAsString();
-            if (!"Extension".equals(bd))
-              profiles.put(j.get("url").getAsString(), bd);
-          }
-        } catch (Exception e) {
-          // nothing
-        }
-      }
     }
-  }
-
-  public NpmPackage extractLocally(String filename) throws IOException {
-    return extractLocally(new FileInputStream(filename), filename);
-  }
-
-  public NpmPackage extractLocally(InputStream tgz, String name) throws IOException {
-    if (progress ) {
-      System.out.println("Loading "+name+" to the package cache");
-      System.out.print("  Fetching:");
-    }
-    List<PackageEntry> files = new ArrayList<PackageEntry>();
+    if (progress) {
+      System.out.println("");
+      System.out.print("  Analysing");
+    }      
     
-    unPackage(tgz, files);
+    analysePackage(packRoot); // do this whether there's an index.json or not.
     
-    byte[] npmb = null;
-    for (PackageEntry e : files) {
-      if (e.name.equals("package/package.json"))
-        npmb = e.bytes;
-    }
-    if (npmb == null)
-      throw new IOException("Unable to find package/package.json in the package file");
-    
-    JsonObject npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.bytesToString(npmb));
+    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+    ini.setTimeStampFormat("yyyyMMddhhmmss");
+    ini.setTimestampProperty("packages", id+"#"+version, Timestamp.from(Instant.now()), null);
+    ini.save();
+    if (progress)
+      System.out.println(" done.");
 
-    Map<String, byte[]> content = new HashMap<String, byte[]>();
-    List<String> folders = new ArrayList<String>();
-    
-    for (PackageEntry e : files) {
-      if (e.bytes == null) {
-        folders.add(e.name);
-      } else {
-        content.put(e.name, e.bytes);
-      }
-    }
-    System.out.println(" done.");
-    NpmPackage p = new NpmPackage(npm, content, folders);
-    recordMap(p.canonical(), p.name());
-    return p;
+    //todo: load dependencies
+    NpmPackage pck = loadPackageInfo(packRoot);
+    return pck;
   }
 
-  public String getFolder() {
-    return cacheFolder;
-  }
-
-
-  public JsonArray loadFromBuildServer() throws IOException {
-    buildLoaded = true; // whether it succeeds or not
-    URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setRequestMethod("GET");
-    InputStream json = connection.getInputStream();
-    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
-  
-    for (JsonElement n : buildInfo) {
-      JsonObject o = (JsonObject) n;
-      if (o.has("url") && o.has("package-id") && o.get("package-id").getAsString().contains(".")) {
-        String u = o.get("url").getAsString();
-        if (u.contains("/ImplementationGuide/"))
-          u = u.substring(0, u.indexOf("/ImplementationGuide/"));
-        recordMap(u, o.get("package-id").getAsString());
-        ciList.put(o.get("package-id").getAsString(), "https://build.fhir.org/ig/"+o.get("repo").getAsString());
-      }
-    }
-    return buildInfo;
-  }
-
-
-  public boolean isBuildLoaded() {
-    return buildLoaded;
-  }
-
-
-  public String buildPath(String url) {
-    for (JsonElement e : buildInfo) {
-      JsonObject j = (JsonObject) e;
-      if (j.has("url") && (url.equals(j.get("url").getAsString()) || j.get("url").getAsString().startsWith(url+"/ImplementationGuide"))) {
-        return "https://build.fhir.org/ig/"+j.get("repo").getAsString();
-      }
-    }
-    return null;
-  }
- 
-  public boolean checkBuildLoaded() throws IOException {
-    if (isBuildLoaded())
-      return true;
-    loadFromBuildServer();
-    return false;
-  }
-  
   public NpmPackage loadPackage(String id) throws FHIRException, IOException {
     throw new Error("Not done yet");
   }
@@ -600,6 +595,12 @@ public class PackageCacheManager {
     String url = getPackageUrl(id);
     if (url == null)
       throw new FHIRException("Unable to resolve the package '"+id+"'");
+    if (url.contains(".tgz")) {
+      InputStream stream = fetchFromUrlSpecific(url, true);
+      if (stream != null)
+        return addPackageToCache(id, v, stream);
+      throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);      
+    }
     if (v == null) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(url, "package.tgz"), true);
       if (stream == null && isBuildLoaded()) { 
@@ -642,62 +643,21 @@ public class PackageCacheManager {
   }
 
 
-  private NpmPackage checkCurrency(String id, NpmPackage p) {
-    // special case: current versions roll over, and we have to check their currency
-    try {
-      String url = ciList.get(id);
-      JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
-      String currDate = json.get("date").getAsString();
-      String packDate = p.date();
-      if (!currDate.equals(packDate))
-        return null; // nup, we need a new copy 
-      return p;
-    } catch (Exception e) {
-      return p;
-    }
-  }
+//  public void loadFromFolder(String packagesFolder) throws IOException {
+//    for (File f : new File(packagesFolder).listFiles()) {
+//      if (f.getName().endsWith(".tgz")) {
+//        temporaryPackages.add(extractLocally(new FileInputStream(f), f.getName()));
+//      }
+//    }
+//  }
+//
 
-
-//  !!!
-//  if (packageId != null) {
-//    return loadPackage();      
-//  } else 
-//    return loadPackage(pcm.extractLocally(stream));
-
-
-  private JsonObject fetchJson(String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
-  }
-  
-  private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
-    try {
-      URL url = new URL(source);
-      URLConnection c = url.openConnection();
-      return c.getInputStream();
-    } catch (Exception e) {
-      if (optional)
-        return null;
-      else
-        throw new FHIRException(e.getMessage(), e);
-    }
-  }
-
-
-  public void loadFromFolder(String packagesFolder) throws IOException {
-    for (File f : new File(packagesFolder).listFiles()) {
-      if (f.getName().endsWith(".tgz")) {
-        temporaryPackages.add(extractLocally(new FileInputStream(f), f.getName()));
-      }
-    }
-  }
-
-  public Map<String, String> getCiList() {
-    return ciList;
-  }
-
-
+  /**
+   * turn true if a package exists
+   * @param id
+   * @param version
+   * @return
+   */
   public boolean hasPackage(String id, String version) {
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
@@ -715,33 +675,13 @@ public class PackageCacheManager {
   }
 
 
-  public List<String> getUrls() throws IOException {
-    if (allUrls == null)
-    {
-      IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-      allUrls = new ArrayList<>();
-      for (String s : ini.getPropertyNames("urls"))
-        allUrls.add(ini.getStringProperty("urls", s));
-      try {
-        URL url = new URL("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        InputStream json = connection.getInputStream();
-        JsonObject packages = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
-        JsonArray guides = packages.getAsJsonArray("guides");
-        for (JsonElement g : guides) {
-          JsonObject gi = (JsonObject) g;
-          if (gi.has("canonical"))
-            if (!allUrls.contains(gi.get("canonical").getAsString()))
-              allUrls.add(gi.get("canonical").getAsString());
-        }
-      } catch (Exception e) {
-        System.out.println("Listing known Implementation Guides failed: "+e.getMessage());
-      }
-    }
-    return allUrls;    
-  }
-
+  /**
+   * List which versions of a package are available
+   * 
+   * @param url
+   * @return
+   * @throws IOException
+   */
 
   public VersionHistory listVersions(String url) throws IOException {
     if (historyCache.containsKey(url))
@@ -767,18 +707,13 @@ public class PackageCacheManager {
   }
 
 
+  /**
+   * Clear the cache
+   * 
+   * @throws IOException
+   */
   public void clear() throws IOException {
-    for (File f : new File(cacheFolder).listFiles()) {
-      if (f.isDirectory()) {
-        Utilities.clearDirectory(f.getAbsolutePath());
-        f.delete();
-      }
-    }
-  }
-
-
-  public static String userDir() throws IOException {
-    return Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+    clearCache();
   }
 
 }

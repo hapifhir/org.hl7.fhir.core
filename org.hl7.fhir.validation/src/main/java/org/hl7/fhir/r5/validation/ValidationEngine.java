@@ -415,13 +415,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private IContextResourceLoader loaderForVersion() {
     if (Utilities.noString(version))
       return null;
-    if (version.equals("1.0.2"))
+    if (version.startsWith("1.0"))
       return new R2ToR5Loader();
-    if (version.equals("1.4.0"))
+    if (version.startsWith("1.4"))
       return new R2016MayToR5Loader(); // special case
-    if (version.equals("3.0.1"))
+    if (version.startsWith("3.0"))
       return new R3ToR5Loader();    
-    if (version.equals("4.0.0"))
+    if (version.startsWith("4.0"))
       return new R4ToR5Loader();    
     return null;
   }
@@ -613,14 +613,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FileNotFoundException, IOException {
-    return loadPackage(pcm.extractLocally(stream, name));
+    return loadPackage(NpmPackage.fromPackage(stream));
   }
 
   public Map<String, byte[]> loadPackage(NpmPackage pi) throws IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
-    for (String s : pi.list("package")) {
-      if (s.startsWith("CodeSystem-") || s.startsWith("ConceptMap-") || s.startsWith("ImplementationGuide-") || s.startsWith("CapabilityStatement-") || s.startsWith("StructureMap-") || s.startsWith("ValueSet-") || s.startsWith("StructureDefinition-"))
-        res.put(s, TextFile.streamToBytes(pi.load("package", s)));
+    for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
+       res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }
     String ini = "[FHIR]\r\nversion="+pi.fhirVersion()+"\r\n";
     res.put("version.info", ini.getBytes());
@@ -787,7 +786,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
           System.out.print("* load file: "+fn);
         Resource r = null;
         try { 
-          if (version.equals("3.0.1") || version.equals("3.0.0")) {
+          if (version.startsWith("3.0")) {
             org.hl7.fhir.dstu3.model.Resource res;
             if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
               res = new org.hl7.fhir.dstu3.formats.XmlParser().parse(new ByteArrayInputStream(t.getValue()));
@@ -798,7 +797,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
             else
               throw new Exception("Unsupported format for "+fn);
             r = VersionConvertor_30_50.convertResource(res, false);
-          } else if (version.equals("4.0.0")) {
+          } else if (version.startsWith("4.0")) {
             org.hl7.fhir.r4.model.Resource res;
             if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
               res = new org.hl7.fhir.r4.formats.XmlParser().parse(new ByteArrayInputStream(t.getValue()));
@@ -809,7 +808,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
             else
               throw new Exception("Unsupported format for "+fn);
             r = VersionConvertor_40_50.convertResource(res);
-          } else if (version.equals("1.4.0")) {
+          } else if (version.startsWith("1.4")) {
             org.hl7.fhir.dstu2016may.model.Resource res;
             if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
               res = new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(new ByteArrayInputStream(t.getValue()));
@@ -818,7 +817,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
             else
               throw new Exception("Unsupported format for "+fn);
             r = VersionConvertor_14_50.convertResource(res);
-          } else if (version.equals("1.0.2")) {
+          } else if (version.startsWith("1.0")) {
             org.hl7.fhir.dstu2.model.Resource res;
             if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
               res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(t.getValue()));

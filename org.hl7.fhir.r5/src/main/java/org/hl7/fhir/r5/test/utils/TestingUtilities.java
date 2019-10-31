@@ -69,7 +69,7 @@ public class TestingUtilities {
 	    PackageCacheManager pcm;
 	    try {
 	      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
+	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	    } catch (Exception e) {

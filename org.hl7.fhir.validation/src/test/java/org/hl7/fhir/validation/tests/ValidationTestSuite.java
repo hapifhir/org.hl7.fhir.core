@@ -93,14 +93,14 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       v = content.get("version").getAsString();
       
     if (ve == null || !v.equals(veVersion)) {
-      if (v.equals("5.0"))
-        ve = new ValidationEngine("hl7.fhir.core#current", DEF_TX, null, FhirPublication.R5, true);
-      else if (v.equals("3.0"))
-        ve = new ValidationEngine("hl7.fhir.core#3.0.1", DEF_TX, null, FhirPublication.STU3, true);
-      else if (v.equals("4.0"))
-        ve = new ValidationEngine("hl7.fhir.core#4.0.0", DEF_TX, null, FhirPublication.R4, true);
-      else if (v.equals("1.0"))
-        ve = new ValidationEngine("hl7.fhir.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, true);
+      if (v.startsWith("5.0"))
+        ve = new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, null, FhirPublication.R5, true);
+      else if (v.startsWith("3.0"))
+        ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, true);
+      else if (v.startsWith("4.0"))
+        ve = new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, true);
+      else if (v.startsWith("1.0"))
+        ve = new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, true);
       else
         throw new Exception("unknown version "+v);
       TestingUtilities.fcontext = ve.getContext();

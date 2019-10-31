@@ -63,6 +63,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class NPMPackageGenerator {
 
@@ -177,11 +178,21 @@ public class NPMPackageGenerator {
       npm.addProperty("title", ig.getTitle());
     if (ig.hasDescription())
       npm.addProperty("description", ig.getDescription()+ " (built "+dtHuman+timezone()+")");
+    JsonArray vl = new JsonArray();
+    
+    npm.add("fhirVersions", vl);
+    for (String v : fhirVersion) { 
+      vl.add(new JsonPrimitive(v));
+    }
+    
     if (kind != PackageType.CORE) {
       JsonObject dep = new JsonObject();
       npm.add("dependencies", dep);
-      for (String v : fhirVersion) { // TODO: fix for multiple versions
-        dep.addProperty("hl7.fhir.core", v);
+      for (String v : fhirVersion) { 
+        String vp = packageForVersion(v);
+        if (vp != null ) {
+          dep.addProperty(vp, v);
+        }
       }
       for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
         dep.addProperty(d.getPackageId(), d.getVersion());
@@ -227,6 +238,20 @@ public class NPMPackageGenerator {
 
   }
 
+
+  private String packageForVersion(String v) {
+    if (v == null)
+      return null;
+    if (v.startsWith("1.0"))
+      return "hl7.fhir.r2.core";
+    if (v.startsWith("1.4"))
+      return "hl7.fhir.r2b.core";
+    if (v.startsWith("3.0"))
+      return "hl7.fhir.r3.core";
+    if (v.startsWith("4.0"))
+      return "hl7.fhir.r4.core";
+    return null;
+  }
 
   private String timezone() {
     TimeZone tz = TimeZone.getDefault();  
