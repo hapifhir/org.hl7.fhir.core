@@ -9949,6 +9949,10 @@ The primary difference between a medication statement and a medication administr
          */
         _3_0_1, 
         /**
+         * FHIR Release 3 (STU) with 2 technical errata.
+         */
+        _3_0_2, 
+        /**
          * R4 Ballot #1.
          */
         _3_3_0, 
@@ -10004,6 +10008,8 @@ The primary difference between a medication statement and a medication administr
           return _3_0_0;
         if ("3.0.1".equals(codeString))
           return _3_0_1;
+        if ("3.0.2".equals(codeString))
+          return _3_0_2;
         if ("3.3.0".equals(codeString))
           return _3_3_0;
         if ("3.5.0".equals(codeString))
@@ -10038,6 +10044,7 @@ The primary difference between a medication statement and a medication administr
             case _1_8_0: return "1.8.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
+            case _3_0_2: return "3.0.2";
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
@@ -10065,6 +10072,7 @@ The primary difference between a medication statement and a medication administr
             case _1_8_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_1: return "http://hl7.org/fhir/FHIR-version";
+            case _3_0_2: return "http://hl7.org/fhir/FHIR-version";
             case _3_3_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_5_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
@@ -10092,6 +10100,7 @@ The primary difference between a medication statement and a medication administr
             case _1_8_0: return "FHIR STU3 Candidate + Connectathon 14 (San Antonio).";
             case _3_0_0: return "FHIR Release 3 (STU).";
             case _3_0_1: return "FHIR Release 3 (STU) with 1 technical errata.";
+            case _3_0_2: return "FHIR Release 3 (STU) with 2 technical errata.";
             case _3_3_0: return "R4 Ballot #1.";
             case _3_5_0: return "R4 Ballot #2.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
@@ -10119,6 +10128,7 @@ The primary difference between a medication statement and a medication administr
             case _1_8_0: return "1.8.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
+            case _3_0_2: return "3.0.2";
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
@@ -10175,6 +10185,8 @@ The primary difference between a medication statement and a medication administr
           return FHIRVersion._3_0_0;
         if ("3.0.1".equals(codeString))
           return FHIRVersion._3_0_1;
+        if ("3.0.2".equals(codeString))
+          return FHIRVersion._3_0_2;
         if ("3.3.0".equals(codeString))
           return FHIRVersion._3_3_0;
         if ("3.5.0".equals(codeString))
@@ -10229,6 +10241,8 @@ The primary difference between a medication statement and a medication administr
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
         if ("3.0.1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
+        if ("3.0.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
         if ("3.3.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
         if ("3.5.0".equals(codeString))
@@ -10276,6 +10290,8 @@ The primary difference between a medication statement and a medication administr
         return "3.0.0";
       if (code == FHIRVersion._3_0_1)
         return "3.0.1";
+      if (code == FHIRVersion._3_0_2)
+        return "3.0.2";
       if (code == FHIRVersion._3_3_0)
         return "3.3.0";
       if (code == FHIRVersion._3_5_0)

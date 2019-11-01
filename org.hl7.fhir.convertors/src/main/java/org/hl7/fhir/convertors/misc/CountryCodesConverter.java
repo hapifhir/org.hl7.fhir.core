@@ -119,10 +119,11 @@ public class CountryCodesConverter {
     }
     cs1.setCount(cs1.getConcept().size());
     cs2.setCount(cs2.getConcept().size());
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "4.0.0", "package", "CodeSstem-iso3166.json")), cs1);
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "3.0.1", "package", "CodeSstem-iso3166.json")), cs1); // format hasn't changed
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "4.0.0", "package", "CodeSstem-iso3166-2.json")), cs2);
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "3.0.1", "package", "CodeSstem-iso3166-2.json")), cs2); // format hasn't changed
+    throw new Error("Needs revisiting");
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "4.0.1", "package", "CodeSstem-iso3166.json")), cs1);
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "3.0.2", "package", "CodeSstem-iso3166.json")), cs1); // format hasn't changed
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "4.0.1", "package", "CodeSstem-iso3166-2.json")), cs2);
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "3.0.2", "package", "CodeSstem-iso3166-2.json")), cs2); // format hasn't changed
   }
 
   public void setMetadata(Document src, CodeSystem cs, String id, String url, String partName, String partTitle) {

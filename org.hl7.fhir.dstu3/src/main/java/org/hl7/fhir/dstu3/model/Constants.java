@@ -50,12 +50,12 @@ package org.hl7.fhir.dstu3.model;
   
 */
 
-// Generated on Fri, Mar 16, 2018 15:21+1100 for FHIR v3.0.1
+// Generated on Fri, Mar 16, 2018 15:21+1100 for FHIR v3.0.x
 
 
 public class Constants {
 
-  public final static String VERSION = "3.0.1";
+  public final static String VERSION = "3.0.2";
   public final static String REVISION = "12956";
   public final static String DATE = "Fri Mar 16 15:21:19 AEDT 2018";
 }

@@ -163,7 +163,7 @@ import org.xml.sax.SAXException;
  * This is just a wrapper around the InstanceValidator class for convenient use 
  * 
  * The following resource formats are supported: XML, JSON, Turtle
- * The following versions are supported: 1.0.1, 1.4.0, 3.0.1, 4.0.0, and current
+ * The following versions are supported: 1.0.2, 1.4.0, 3.0.2, 4.0.1, and current
  * 
  * Note: the validation engine is intended to be threadsafe
  * To Use:

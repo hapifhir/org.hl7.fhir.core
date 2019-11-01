@@ -22,6 +22,7 @@ package org.hl7.fhir.r5.model;
 
 
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
  * This enumreation is special, and hand crafted. It only supports a subset of the actual published FHIR versions, those that are still supported.
@@ -38,28 +39,20 @@ public enum FhirPublication {
   R5;
 
   public static FhirPublication fromCode(String v) {
-    if ("1.0.2".equals(v))
+    if (VersionUtilities.isR2Ver(v))
       return FhirPublication.DSTU2;
-    if ("1.0".equals(v))
-      return FhirPublication.DSTU2;
-    if ("1.4.0".equals(v))
+    if (VersionUtilities.isR2BVer(v))
       return FhirPublication.DSTU2016May;
-    if ("1.4".equals(v))
-      return FhirPublication.DSTU2016May;
-    if ("3.0.1".equals(v))
+    if (VersionUtilities.isR3Ver(v))
       return FhirPublication.STU3;
-    if ("3.0".equals(v))
-      return FhirPublication.STU3;
-    if ("3.5.0".equals(v))
+    if (VersionUtilities.isR4Ver(v))
       return FhirPublication.R4;
-    if ("4.0.0".equals(v))
+    if (VersionUtilities.isR5Ver(v))
+      return FhirPublication.R5; 
+    if ("3.5.0".equals(v))
       return FhirPublication.R4;
     if ("3.5".equals(v))
       return FhirPublication.R4;
-    if ("4.0".equals(v))
-      return FhirPublication.R4;
-    if ("4.1.0".equals(v))
-      return FhirPublication.R5; // hack workaround build problem
     return null;
   }
 
