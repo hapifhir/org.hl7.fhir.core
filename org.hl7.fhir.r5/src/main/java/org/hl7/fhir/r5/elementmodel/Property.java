@@ -209,6 +209,21 @@ public class Property {
     return result;
   }
   
+  private boolean isElementWithOnlyChildXmlAttributes(final ElementDefinition ed, final List<ElementDefinition> children) {
+    boolean result = false;
+    if (children.size()>0) {
+      result = true;
+      for (final ElementDefinition ele : children) {
+        if (!ele.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+          result = false;
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+  
 	public boolean IsLogicalAndHasPrimitiveValue(String name) {
 //		if (canBePrimitive!= null)
 //			return canBePrimitive;
@@ -250,7 +265,7 @@ public class Property {
     StructureDefinition sd = structure;
     List<ElementDefinition> children = ProfileUtilities.getChildMap(sd, ed);
     String url = null;
-    if (children.isEmpty() || isElementWithOnlyExtension(ed, children)) {
+    if (children.isEmpty() || isElementWithOnlyExtension(ed, children) || isElementWithOnlyChildXmlAttributes(ed, children)) {
       // ok, find the right definitions
       String t = null;
       if (ed.getType().size() == 1)

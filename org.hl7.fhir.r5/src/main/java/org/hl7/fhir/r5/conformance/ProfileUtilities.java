@@ -508,11 +508,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        boolean firstSpecializedAttributes = true;
         for (ElementDefinition e : diff.getElement()) {
           if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
             ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
             e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
-            if (isXmlAttr(outcome) && derived.getSnapshot().getElement().size()>1) {
+            if (isXmlAttr(outcome) && derived.getSnapshot().getElement().size()>1 && firstSpecializedAttributes) {
               List<ElementDefinition> eds = derived.getSnapshot().getElement();
               int indexattr = 1;
               while (indexattr<eds.size() && isXmlAttr(eds.get(indexattr))) {
@@ -524,6 +525,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 derived.getSnapshot().addElement(outcome);
               }
             } else {
+              firstSpecializedAttributes = false;
               derived.getSnapshot().addElement(outcome);
             }
           }
