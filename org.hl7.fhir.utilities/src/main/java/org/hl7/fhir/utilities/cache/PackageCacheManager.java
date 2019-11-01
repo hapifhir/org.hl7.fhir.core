@@ -511,6 +511,8 @@ public class PackageCacheManager {
     
     NpmPackage npm = NpmPackage.fromPackage(tgz, true);
     
+    recordMap(npm.canonical(), npm.name());
+    
     if (progress )
       System.out.print("|");
     if (npm.name() == null || id == null || !id.equals(npm.name())) {
@@ -715,5 +717,12 @@ public class PackageCacheManager {
   public void clear() throws IOException {
     clearCache();
   }
-
+    
+  public void loadFromFolder(String packagesFolder) throws IOException {
+    for (File f : new File(packagesFolder).listFiles()) {
+      if (f.getName().endsWith(".tgz")) {
+        temporaryPackages.add(NpmPackage.fromPackage(new FileInputStream(f)));
+      }
+    }
+  }
 }

@@ -130,9 +130,11 @@ public class Enumerations extends VersionConvertor_40_50 {
     case _1_8_0: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_8_0;
     case _3_0_0: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_0;
     case _3_0_1: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_1;
+    case _3_0_2: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_2;
     case _3_3_0: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_3_0;
     case _3_5_0: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_5_0;
     case _4_0_0: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_0;
+    case _4_0_1: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_1;
     default: return org.hl7.fhir.r5.model.Enumerations.FHIRVersion.NULL;
   }
 }
@@ -159,9 +161,11 @@ public class Enumerations extends VersionConvertor_40_50 {
     case _1_8_0: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_8_0;
     case _3_0_0: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_0;
     case _3_0_1: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_1;
+    case _3_0_2: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_2;
     case _3_3_0: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_3_0;
     case _3_5_0: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_5_0;
     case _4_0_0: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_0;
+    case _4_0_1: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_1;
     default: return org.hl7.fhir.r4.model.Enumerations.FHIRVersion.NULL;
   }
 }

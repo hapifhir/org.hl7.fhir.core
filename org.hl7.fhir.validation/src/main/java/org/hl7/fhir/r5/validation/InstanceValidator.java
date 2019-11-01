@@ -134,6 +134,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -3756,7 +3757,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   private static final String EXECUTION_ID = "validator.execution.id";
 
   private String uriRegexForVersion() {
-    if ("3.0.1".equals(context.getVersion()))
+    if (VersionUtilities.isR3Ver(context.getVersion()))
       return URI_REGEX3;
     else
       return Constants.URI_REGEX;

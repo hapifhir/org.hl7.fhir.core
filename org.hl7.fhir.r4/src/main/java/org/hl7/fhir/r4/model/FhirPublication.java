@@ -22,6 +22,8 @@ package org.hl7.fhir.r4.model;
 
 
 import org.hl7.fhir.r4.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r4.test.utils.ToolsHelper;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
  * This enumreation is special, and hand crafted. It only supports a subset of the actual published FHIR versions, those that are still supported.
@@ -37,7 +39,7 @@ public enum FhirPublication {
   R4;
 
   public static FhirPublication fromCode(String v) {
-    if ("1.0.2".equals(v))
+    if (VersionUtilities.isR4Ver(v))
       return FhirPublication.DSTU2;
     if ("1.0".equals(v))
       return FhirPublication.DSTU2;
@@ -45,6 +47,8 @@ public enum FhirPublication {
       return FhirPublication.DSTU2016May;
     if ("1.4".equals(v))
       return FhirPublication.DSTU2016May;
+    if ("3.0.1".equals(v))
+      return FhirPublication.STU3;
     if ("3.0.1".equals(v))
       return FhirPublication.STU3;
     if ("3.0".equals(v))

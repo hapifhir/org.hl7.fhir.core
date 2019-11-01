@@ -51,7 +51,7 @@ import java.io.IOException;
   
 */
 
-// Generated on Mon, Apr 17, 2017 08:38+1000 for FHIR v3.0.1
+// Generated on Mon, Apr 17, 2017 08:38+1000 for FHIR v3.0.x
 import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;

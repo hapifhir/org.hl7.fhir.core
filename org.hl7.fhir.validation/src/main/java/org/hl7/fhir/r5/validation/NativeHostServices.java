@@ -29,6 +29,7 @@ import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
@@ -60,6 +61,7 @@ import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.IResourceValidator.IdStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -343,14 +345,14 @@ public class NativeHostServices {
    */
   public byte[] convertResource(byte[] r, String fmt, String version) throws FHIRException, IOException  {
     try {
-      if ("3.0".equals(version) || "3.0.1".equals(version) || "r3".equals(version)) {
+      if (VersionUtilities.isR3Ver(version)) {
         org.hl7.fhir.dstu3.formats.ParserBase p3 = org.hl7.fhir.dstu3.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu3.model.Resource res3 = p3.parse(r);
         Resource res4 = VersionConvertor_30_50.convertResource(res3, false);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
-      } else if ("1.0".equals(version) || "1.0.2".equals(version) || "r2".equals(version)) {
+      } else if (VersionUtilities.isR2Ver(version)) {
         org.hl7.fhir.dstu2.formats.ParserBase p2 = org.hl7.fhir.dstu2.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu2.model.Resource res2 = p2.parse(r);
         VersionConvertor_10_50 conv = new VersionConvertor_10_50(conv_10_50_advisor );
@@ -358,10 +360,17 @@ public class NativeHostServices {
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
-      } else if ("1.4".equals(version) || "1.4.0".equals(version)) {
+      } else if (VersionUtilities.isR2BVer(version)) {
         org.hl7.fhir.dstu2016may.formats.ParserBase p2 = org.hl7.fhir.dstu2016may.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu2016may.model.Resource res2 = p2.parse(r);
         Resource res4 = VersionConvertor_14_50.convertResource(res2);
+        org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
+        convertCount++;
+        return p4.composeBytes(res4);
+      } else if (VersionUtilities.isR4Ver(version)) {
+        org.hl7.fhir.r4.formats.ParserBase p2 = org.hl7.fhir.r4.formats.FormatUtilities.makeParser(fmt);
+        org.hl7.fhir.r4.model.Resource res2 = p2.parse(r);
+        Resource res4 = VersionConvertor_40_50.convertResource(res2);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);

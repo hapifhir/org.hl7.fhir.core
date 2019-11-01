@@ -92,6 +92,7 @@ import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -175,8 +176,8 @@ public class Validator {
       System.out.println("    Patterns are limited to a directory followed by a filename with an embedded");
       System.out.println("    asterisk.  E.g. foo*-examples.xml or someresource.*, etc.");
       System.out.println("-version [ver]: The FHIR version to use. This can only appear once. ");
-      System.out.println("    valid values 1.0 | 1.4 | 3.0 | "+Constants.VERSION.substring(0, 3)+" or 1.0.2 | 1.4.0 | 3.0.1 | "+Constants.VERSION);
-      System.out.println("    Default value is  "+Constants.VERSION.substring(0, 3));
+      System.out.println("    valid values 1.0 | 1.4 | 3.0 | "+VersionUtilities.CURRENT_VERSION+" or 1.0.2 | 1.4.0 | 3.0.2 | 4.0.1 | "+VersionUtilities.CURRENT_FULL_VERSION);
+      System.out.println("    Default value is  "+VersionUtilities.CURRENT_VERSION);
       System.out.println("-ig [package|file|folder|url]: an IG or profile definition to load. Can be ");
       System.out.println("     the URL of an implementation guide or a package ([id]-[ver]) for");
       System.out.println("     a built implementation guide or a local folder that contains a");

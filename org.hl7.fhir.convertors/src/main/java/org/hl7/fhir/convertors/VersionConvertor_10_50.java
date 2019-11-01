@@ -7271,7 +7271,9 @@ public class VersionConvertor_10_50 {
       else
         tgt.addUseContext(convertCodeableConceptToUsageContext(t));
     tgt.setCopyright(src.getCopyright());
-    tgt.addFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
+    if (src.hasFhirVersion()) {
+      tgt.addFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
+    }
     for (org.hl7.fhir.dstu2.model.ImplementationGuide.ImplementationGuideDependencyComponent t : src.getDependency())
       tgt.addDependsOn(convertImplementationGuideDependencyComponent(t));
     for (org.hl7.fhir.dstu2.model.ImplementationGuide.ImplementationGuidePackageComponent t : src.getPackage())
