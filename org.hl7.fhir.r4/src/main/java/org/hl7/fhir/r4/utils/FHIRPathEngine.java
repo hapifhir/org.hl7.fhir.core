@@ -248,11 +248,13 @@ public class FHIRPathEngine {
   public FHIRPathEngine(IWorkerContext worker) {
     super();
     this.worker = worker;
-    for (StructureDefinition sd : worker.allStructures()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL)
-        allTypes.put(sd.getName(), sd);
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
-        primitiveTypes.add(sd.getName());
+    if (this.worker!=null) {
+      for (StructureDefinition sd : worker.allStructures()) {
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL)
+          allTypes.put(sd.getName(), sd);
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+          primitiveTypes.add(sd.getName());
+        }
       }
     }
   }

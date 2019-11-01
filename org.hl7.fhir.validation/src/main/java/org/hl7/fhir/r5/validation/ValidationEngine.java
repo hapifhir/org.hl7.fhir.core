@@ -293,7 +293,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
 
   }
-	
+  
   private SimpleWorkerContext context;
 //  private FHIRPathEngine fpe;
   private Map<String, byte[]> binaries = new HashMap<String, byte[]>();
@@ -753,7 +753,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return FhirFormat.TEXT;
 
     return checkIsResource(TextFile.fileToBytes(path), path);
-	}
+  }
 
   public void connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
     context.setTlogging(false);
@@ -769,7 +769,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
           throw e;
       }
     }
-	}
+  }
 
   public void loadProfile(String src) throws Exception {
     if (context.hasResource(StructureDefinition.class, src))
@@ -808,10 +808,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
           }
         }
       }
-		}
+    }
     if (canonical != null)
       grabNatives(source, canonical);
-	}
+  }
 
   public Resource loadFileWithErrorChecking(String version, Entry<String, byte[]> t, String fn) {
     if (debug)
@@ -907,10 +907,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       if (e.getKey().endsWith(".zip"))
         binaries.put(prefix+"#"+e.getKey(), e.getValue());
     }
-	}
+  }
 
   public void setQuestionnaires(List<String> questionnaires) {
-	}
+  }
 
   public void setNative(boolean doNative) {
     this.doNative = doNative;
@@ -1147,12 +1147,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   
   private void validateSHEX(String location, List<ValidationMessage> messages) {
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "SHEX Validation is not done yet", IssueSeverity.INFORMATION));
-	}
+  }
 
   private void validateXmlSchema(String location, List<ValidationMessage> messages) throws FileNotFoundException, IOException, SAXException {
     XmlValidator xml = new XmlValidator(messages, loadSchemas(), loadTransforms());
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "XML Schema Validation is not done yet", IssueSeverity.INFORMATION));
-	}
+  }
 
   private Map<String, byte[]> loadSchemas() throws IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
@@ -1176,7 +1176,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   private void validateJsonSchema(String location, List<ValidationMessage> messages) {
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "JSON Schema Validation is not done yet", IssueSeverity.INFORMATION));   
-	}
+  }
 
   private List<ValidationMessage> filterMessages(List<ValidationMessage> messages) {
     List<ValidationMessage> filteredValidation = new ArrayList<ValidationMessage>();
@@ -1208,7 +1208,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
     new NarrativeGenerator("", "", context).generate(null, op);
     return op;
-	}
+  }
   
   public static String issueSummary (OperationOutcomeIssueComponent issue) {
     String source = ToolingExtensions.readStringExtension(issue, ToolingExtensions.EXT_ISSUE_SOURCE);
