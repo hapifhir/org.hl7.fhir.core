@@ -91,4 +91,8 @@ public class VersionUtilities {
     return ver != null && ver.startsWith("1.0");
   }
 
+  public static boolean versionsCompatible(String v1, String v2) {
+    return v1.substring(0, 3).equals(v2.substring(0, 3));
+  }
+
 }
