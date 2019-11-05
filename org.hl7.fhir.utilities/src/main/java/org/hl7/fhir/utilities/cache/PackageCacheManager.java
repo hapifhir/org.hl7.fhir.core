@@ -529,19 +529,14 @@ public class PackageCacheManager {
       
     int i = 0;
     int c = 0;
+    int size = 0;
     for (Entry<String, byte[]> e : npm.getContent().entrySet()) {
-//      if (e.getValue() == null) {
-//        thorw 
-//        File f = new File(Utilities.path(packRoot, e.name));
-//        if (!f.mkdir()) 
-//          throw new IOException("Unable to create directory '%s', during extraction of archive contents: "+ f.getAbsolutePath());
-//      } else {
       String fn = Utilities.path(packRoot, e.getKey());
       String dir = Utilities.getDirectoryForFile(fn);
       if (!(new File(dir).exists()))
         Utilities.createDirectory(dir);
       TextFile.bytesToFile(e.getValue(), fn);
-//    }
+      size = size + e.getValue().length;
       i++;
       if (progress && i % 50 == 0) {
         c++;
@@ -563,6 +558,7 @@ public class PackageCacheManager {
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
     ini.setTimeStampFormat("yyyyMMddhhmmss");
     ini.setTimestampProperty("packages", id+"#"+version, Timestamp.from(Instant.now()), null);
+    ini.setIntegerProperty("package-sizes", id+"#"+version, size, null);
     ini.save();
     if (progress)
       System.out.println(" done.");

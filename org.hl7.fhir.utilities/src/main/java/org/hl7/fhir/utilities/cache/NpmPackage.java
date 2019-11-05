@@ -29,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +42,9 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -51,6 +55,8 @@ import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -463,4 +469,57 @@ import com.google.gson.JsonObject;
         FileUtils.copyDirectory(new File(path), new File(dir));      
     }
 
+    public void save(OutputStream stream) throws IOException {
+      TarArchiveOutputStream tar;
+      ByteArrayOutputStream OutputStream;
+      BufferedOutputStream bufferedOutputStream;
+      GzipCompressorOutputStream gzipOutputStream;
+
+      OutputStream = new ByteArrayOutputStream();
+      bufferedOutputStream = new BufferedOutputStream(OutputStream);
+      gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
+      tar = new TarArchiveOutputStream(gzipOutputStream);
+
+      NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+      indexer.start();
+
+      for (String s : content.keySet()) {
+        byte[] b = content.get(s);
+        if (s.startsWith("package/")) { 
+          indexer.seeFile(tail(s), b);
+        }
+        if (!s.endsWith(".index.json") && !s.equals("package/package.json")) {
+          TarArchiveEntry entry = new TarArchiveEntry(s);
+          entry.setSize(b.length);
+          tar.putArchiveEntry(entry);
+          tar.write(b);
+          tar.closeArchiveEntry();
+        }
+      }
+      byte[] cnt = new GsonBuilder().setPrettyPrinting().create().toJson(npm).getBytes(Charset.forName("UTF-8"));
+      TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
+      entry.setSize(cnt.length);
+      tar.putArchiveEntry(entry);
+      tar.write(cnt);
+      tar.closeArchiveEntry();
+      
+      cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      entry = new TarArchiveEntry("package/.index.json");
+      entry.setSize(cnt.length);
+      tar.putArchiveEntry(entry);
+      tar.write(cnt);
+      tar.closeArchiveEntry();
+
+      tar.finish();
+      tar.close();
+      gzipOutputStream.close();
+      bufferedOutputStream.close();
+      OutputStream.close();
+      byte[] b = OutputStream.toByteArray();
+      stream.write(b);
+    }
+
+    private String tail(String s) {
+      return s.substring(s.lastIndexOf("/")+1);
+    }
   }
