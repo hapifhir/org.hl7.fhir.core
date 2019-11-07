@@ -455,8 +455,9 @@ public class TestingUtilities {
     }
   }
 
+  // TODO: JA need to figure out how to detect that we're running in maven
   private static boolean isTryToLoadFromFileSystem() {
-    return false;
+    return true;
   }
 
   public static String loadTestResource(String... paths) throws IOException {
