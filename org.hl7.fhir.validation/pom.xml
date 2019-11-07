@@ -118,12 +118,6 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-            <skip>false</skip>
-            </configuration>
-            </plugin>
         </plugins>
     </build>
 

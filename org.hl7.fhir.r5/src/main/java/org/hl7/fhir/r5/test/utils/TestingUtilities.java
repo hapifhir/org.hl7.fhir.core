@@ -35,8 +35,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
-import org.fhir.ucum.UcumException;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
@@ -443,7 +441,7 @@ public class TestingUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException { 
-    if (new File("../../fhir-test-cases").exists()) {
+    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return new File(n).exists();
     } else {
@@ -456,9 +454,13 @@ public class TestingUtilities {
       }
     }
   }
-  
+
+  private static boolean isTryToLoadFromFileSystem() {
+    return false;
+  }
+
   public static String loadTestResource(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists()) {
+    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       // ok, we'll resolve this locally
       return TextFile.fileToString(new File(n));
