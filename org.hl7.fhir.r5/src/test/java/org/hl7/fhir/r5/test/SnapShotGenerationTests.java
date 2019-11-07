@@ -43,6 +43,7 @@ import org.hl7.fhir.r5.model.TestScript.TestActionComponent;
 import org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent;
 import org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent;
 import org.hl7.fhir.r5.test.SnapShotGenerationTests.TestFetchMode;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.CodingUtilities;
