@@ -1,8 +1,8 @@
-package org.hl7.fhir.r4.importers;
+package org.hl7.fhir.dstu3.importers;
 
 /*-
  * #%L
- * org.hl7.fhir.r4.importers
+ * org.hl7.fhir.dstu3.importers
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
@@ -45,35 +45,39 @@ import org.fhir.ucum.UcumEssenceService;
 import org.fhir.ucum.UcumException;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Bundle.BundleType;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.DocumentReference;
-import org.hl7.fhir.r4.model.Encounter;
-import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus;
-import org.hl7.fhir.r4.model.InstantType;
-import org.hl7.fhir.r4.model.MedicationRequest;
-import org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
-import org.hl7.fhir.r4.model.Observation.ObservationStatus;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Practitioner;
-import org.hl7.fhir.r4.model.PractitionerRole;
-import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Procedure.ProcedureStatus;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Quantity.QuantityComparator;
-import org.hl7.fhir.r4.model.Range;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
+import org.hl7.fhir.dstu3.formats.JsonParser;
+import org.hl7.fhir.dstu3.model.BaseDateTimeType;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Bundle.BundleType;
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Coding;
+import org.hl7.fhir.dstu3.model.Condition;
+import org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus;
+import org.hl7.fhir.dstu3.model.DateTimeType;
+import org.hl7.fhir.dstu3.model.DateType;
+import org.hl7.fhir.dstu3.model.DocumentReference;
+import org.hl7.fhir.dstu3.model.Encounter;
+import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
+import org.hl7.fhir.dstu3.model.Enumerations.DocumentReferenceStatus;
+import org.hl7.fhir.dstu3.model.InstantType;
+import org.hl7.fhir.dstu3.model.MedicationRequest;
+import org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestStatus;
+import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent;
+import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
+import org.hl7.fhir.dstu3.model.Patient;
+import org.hl7.fhir.dstu3.model.Period;
+import org.hl7.fhir.dstu3.model.Practitioner;
+import org.hl7.fhir.dstu3.model.PractitionerRole;
+import org.hl7.fhir.dstu3.model.Procedure;
+import org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus;
+import org.hl7.fhir.dstu3.model.Quantity;
+import org.hl7.fhir.dstu3.model.SimpleQuantity;
+import org.hl7.fhir.dstu3.model.Quantity.QuantityComparator;
+import org.hl7.fhir.dstu3.model.Range;
+import org.hl7.fhir.dstu3.model.Reference;
+import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -208,7 +212,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("care-givers");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     while (csv.line()) {
       PractitionerRole pr = new PractitionerRole();
       t++;
@@ -228,7 +231,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("lab-observations");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -244,7 +246,7 @@ public class Mimic14Importer {
         obs.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        obs.setEncounter(new Reference("Encounter/"+enc.getId()));
+        obs.setContext(new Reference("Encounter/"+enc.getId()));
       }
       obs.setEffective(readDateTime(csv.cell("charttime")));
       if (item != null) {
@@ -267,7 +269,7 @@ public class Mimic14Importer {
         obs.setValue(new CodeableConcept().setText(csv.cell("value")));
       }
       if (csv.has("flag"))
-        obs.addInterpretation().setText(csv.cell("flag"));
+        obs.getInterpretation().setText(csv.cell("flag"));
 
       bnd.addEntry().setResource(obs);
     }
@@ -292,7 +294,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("lab-observations");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     Map<String, Observation> cache = new HashMap<>();
     
@@ -422,7 +423,7 @@ public class Mimic14Importer {
         obs.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        obs.setEncounter(new Reference("Encounter/"+enc.getId()));
+        obs.setContext(new Reference("Encounter/"+enc.getId()));
       }
       
       if (csv.has("charttime")) {
@@ -500,7 +501,7 @@ public class Mimic14Importer {
           oc.setValue(parseQuantity(csv.cell("dilution_text")));
         }
         if (csv.has("interpretation")) {
-          oc.addInterpretation().addCoding().setSystem("http://mimic.physionet.org/fhir/Interpretation").setCode(csv.cell("interpretation"));
+          oc.getInterpretation().addCoding().setSystem("http://mimic.physionet.org/fhir/Interpretation").setCode(csv.cell("interpretation"));
         }
       }
     }
@@ -515,7 +516,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("notes");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     Map<String, Observation> cache = new HashMap<>();
     
@@ -531,7 +531,7 @@ public class Mimic14Importer {
         dr.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        dr.getContext().addEncounter(new Reference("Encounter/"+enc.getId()));
+        dr.getContext().setEncounter(new Reference("Encounter/"+enc.getId()));
       }
       if ("1".equals(csv.cell("iserror"))) {
         dr.setStatus(DocumentReferenceStatus.ENTEREDINERROR);        
@@ -545,19 +545,19 @@ public class Mimic14Importer {
       String desc = csv.cell("description");
       if ("Discharge summary".equals(cat) && "Report".equals(desc)) {
         dr.getType().addCoding().setSystem("http://loinc.org").setCode("18842-5").setDisplay("Discharge summary");
-        dr.addCategory().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
+        dr.getClass_().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
       } else if ("Echo".equals(cat) && "Report".equals(desc)) {
         dr.getType().addCoding().setSystem("http://loinc.org").setCode("59282-4").setDisplay("Stress cardiac echo study report US");
-        dr.addCategory().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
+        dr.getClass_().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
       } else if ("Radiology".equals(cat) && "CHEST (PORTABLE AP)".equals(desc)) {
         dr.getType().addCoding().setSystem("http://loinc.org").setCode("59282-4").setDisplay("Chest X-ray AP portable single view");
-        dr.addCategory().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
+        dr.getClass_().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
       } else if ("Nursing/other".equals(cat) && "Report".equals(desc)) {
         dr.getType().addCoding().setSystem("http://loinc.org").setCode("34119-8").setDisplay("Nursing facility Initial assessment note");
-        dr.addCategory().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
+        dr.getClass_().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
       } else if ("Physician".equals(cat) && "Physician Surgical Admission Note".equals(desc)) {
         dr.getType().addCoding().setSystem("http://loinc.org").setCode("36589-0").setDisplay("Surgery Admission evaluation note");
-        dr.addCategory().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
+        dr.getClass_().addCoding().setSystem("http://fhir.org/guides/argonaut/clinicalnotes/CodeSystem/documentreference-category").setCode("other");
       } else {
         throw new FHIRException("Unhandled Note type '"+cat+"'/'"+desc+"'");
       }
@@ -576,7 +576,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("diagnoses");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -587,12 +586,12 @@ public class Mimic14Importer {
       Encounter enc = encounters.get(csv.cell("hadm_id"));
 
       cnd.setId(csv.cell("row_id"));
-      cnd.setVerificationStatus(new CodeableConcept(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/condition-ver-status").setCode("confirmed")));
+      cnd.setVerificationStatus(ConditionVerificationStatus.CONFIRMED);
       if (pat != null) {
         cnd.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        cnd.setEncounter(new Reference("Encounter/"+enc.getId()));
+        cnd.setContext(new Reference("Encounter/"+enc.getId()));
         enc.addDiagnosis().setCondition(new Reference("Condition/"+cnd.getId())).setRank(Integer.parseInt(csv.cell("seq_num")));
       }
       cnd.setCode(new CodeableConcept(new Coding().setCode(csv.cell("icd9_code")).setSystem("http://hl7.org/fhir/sid/icd-9-cm")));
@@ -610,7 +609,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("procedures");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -627,7 +625,7 @@ public class Mimic14Importer {
         prc.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        prc.setEncounter(new Reference("Encounter/"+enc.getId()));
+        prc.setContext(new Reference("Encounter/"+enc.getId()));
         enc.addDiagnosis().setCondition(new Reference("Procedure/"+prc.getId())).setRank(Integer.parseInt(csv.cell("seq_num")));
       }
       prc.setCode(new CodeableConcept(new Coding().setCode(csv.cell("icd9_code")).setSystem("http://hl7.org/fhir/sid/icd-9-cm")));
@@ -645,7 +643,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("prescriptions");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -661,11 +658,11 @@ public class Mimic14Importer {
         med.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        med.setEncounter(new Reference("Encounter/"+enc.getId()));
+        med.setContext(new Reference("Encounter/"+enc.getId()));
       }
       med.getDispenseRequest().getValidityPeriod().setStartElement(readDateTime(csv.cell("startdate")));
       med.getDispenseRequest().getValidityPeriod().setEndElement(readDateTime(csv.cell("enddate")));
-      med.addCategory().addCoding().setSystem("http://mimic.physionet.org/fhir/categories").setCode(csv.cell("drug_type"));
+      med.getCategory().addCoding().setSystem("http://mimic.physionet.org/fhir/categories").setCode(csv.cell("drug_type"));
       CodeableConcept cc = new CodeableConcept();
       cc.setText(csv.cell("drug"));
       if (csv.has("formulary_drug_cd")) {
@@ -682,7 +679,7 @@ public class Mimic14Importer {
       //PROD_STRENGTH, DOSE_VAL_RX, DOSE_UNIT_RX - ignore as denomormalizations
       if (csv.has("dose_val_rx")) {
         try {
-          med.getDosageInstructionFirstRep().getDoseAndRateFirstRep().setDose(parseQuantityRange(csv.cell("dose_val_rx"), csv.cell("dose_unit_rx")));
+          med.getDosageInstructionFirstRep().setDose(parseQuantityRange(csv.cell("dose_val_rx"), csv.cell("dose_unit_rx")));
         } catch (Exception e) {
           med.getDosageInstructionFirstRep().setText(csv.cell("dose_val_rx"));
         }
@@ -704,7 +701,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("procedure-events");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -721,8 +717,9 @@ public class Mimic14Importer {
         prc.setSubject(new Reference("Patient/"+pat.getId()));
       }
       if (enc != null) {
-        prc.setEncounter(new Reference("Encounter/"+enc.getId()));
+        prc.setContext(new Reference("Encounter/"+enc.getId()));
       }
+      prc.setPerformed(new Period());
       prc.getPerformedPeriod().setStartElement(readDateTime(csv.cell("starttime")));
       prc.getPerformedPeriod().setEndElement(readDateTime(csv.cell("endtime")));
       Item spec = items.get(csv.cell("itemid"));
@@ -743,7 +740,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("output-events");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -769,7 +765,7 @@ public class Mimic14Importer {
             obs.setSubject(new Reference("Patient/"+pat.getId()));
           }
           if (enc != null) {
-            obs.setEncounter(new Reference("Encounter/"+enc.getId()));
+            obs.setContext(new Reference("Encounter/"+enc.getId()));
           }
           obs.setEffective(readDateTime(csv.cell("charttime")));
           if (spec != null) {
@@ -805,7 +801,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("chart-events");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -823,7 +818,7 @@ public class Mimic14Importer {
           obs.setSubject(new Reference("Patient/"+pat.getId()));
         }
         if (enc != null) {
-          obs.setEncounter(new Reference("Encounter/"+enc.getId()));
+          obs.setContext(new Reference("Encounter/"+enc.getId()));
         }
         obs.setEffective(readDateTime(csv.cell("charttime")));
 
@@ -880,10 +875,12 @@ public class Mimic14Importer {
     } else
       return parseQuantity(cell, uom);
   }
-  private Quantity parseQuantity(String cell, String uom) {
+  private SimpleQuantity parseQuantity(String cell, String uom) {
     if (Utilities.noString(cell))
       return null;
-    Quantity qty = parseQuantity(cell);
+    SimpleQuantity qty = new SimpleQuantity();
+    qty.setValue(new BigDecimal(cell));
+    parseQuantity(cell);
     if (!Utilities.noString(uom)) {
       qty.setUnit(uom);
       if (ucum.validate(uom) == null) {
@@ -920,7 +917,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("encounters");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {
@@ -953,7 +949,7 @@ public class Mimic14Importer {
         pat.addExtension().setUrl("http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity").setValue(new CodeableConcept().setText(csv.cell("ethnicity")));
       }
       if (!csv.has("diagnosis")) {
-        enc.addReasonCode().setText(csv.cell("diagnosis"));
+        enc.addReason().setText(csv.cell("diagnosis"));
       }
       if ("1".equals(csv.cell("hospital_expire_flag"))) {
         enc.getHospitalization().getDischargeDisposition().addCoding().setSystem("http://terminology.hl7.org/CodeSystem/discharge-disposition").setCode("exp");
@@ -971,7 +967,6 @@ public class Mimic14Importer {
     Bundle bnd = new Bundle();
     bnd.setId("patients");
     bnd.setType(BundleType.COLLECTION);
-    bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
     while (csv.line()) {

@@ -22,7 +22,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("C:\\web\\hl7.org\\fhir\\us\\qicore\\STU2\\package.tgz");
+    new PackageHacker().edit("C:\\work\\fhir.org\\web-source\\source\\guides\\argonaut\\questionnaire\\package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -54,8 +54,8 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm, Map<String, byte[]> content) {
-    npm.remove("version");
-    npm.addProperty("version", "2.0.0");
+    npm.remove("name");
+    npm.addProperty("name", "fhir.argonaut.questionnaire");
 //    JsonArray fhirVersions = new JsonArray();
 //    fhirVersions.add("1.9.0");
 //    npm.add("fhirVersions", fhirVersions);

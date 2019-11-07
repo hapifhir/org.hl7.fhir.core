@@ -319,6 +319,25 @@ public class CodeableConcept extends Type implements ICompositeType {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(coding, text);
       }
 
+   // added from java-adornments.txt:
+      
+      public boolean hasCoding(String system, String code) {
+        for (Coding c : getCoding()) {
+          if (system.equals(c.getSystem()) && code.equals(c.getCode()))
+            return true;
+        }
+        return false;
+      } 
+
+      public CodeableConcept(Coding code) {
+        super();
+        addCoding(code);
+      }
+      
+      
+
+    // end addition
+
 
 }
 

@@ -44,7 +44,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.test.TestingUtilities;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 
 public class ResourceTest {
 

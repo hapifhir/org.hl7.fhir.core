@@ -11,6 +11,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.Utilities;
