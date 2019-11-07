@@ -1517,4 +1517,13 @@ public final class IniFile
             return strRet;
         }
     }
+
+    public boolean hasSection(String sectionName) {
+      for (String s : getAllSectionNames()) {
+        if (s.equalsIgnoreCase(sectionName)) {
+          return true;
+        }
+      }
+      return false;
+    }
 }

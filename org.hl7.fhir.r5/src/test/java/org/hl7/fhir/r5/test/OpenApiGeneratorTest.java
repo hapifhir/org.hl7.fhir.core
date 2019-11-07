@@ -11,7 +11,6 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.openapi.OpenApiGenerator;
 import org.hl7.fhir.r5.openapi.Writer;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.Test;
 import org.w3c.dom.Document;

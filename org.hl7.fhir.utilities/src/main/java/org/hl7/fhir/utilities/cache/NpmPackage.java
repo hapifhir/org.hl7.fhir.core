@@ -347,7 +347,7 @@ import com.google.gson.JsonObject;
     public String fhirVersion() {
       if ("hl7.fhir.core".equals(npm.get("name").getAsString()))
         return npm.get("version").getAsString();
-      else if (npm.get("name").getAsString().startsWith("hl7.fhir.r2.") || npm.get("name").getAsString().startsWith("hl7.fhir.r2b.") || npm.get("name").getAsString().startsWith("hl7.fhir.r3.") || npm.get("name").getAsString().startsWith("hl7.fhir.r4."))
+      else if (npm.get("name").getAsString().startsWith("hl7.fhir.r2.") || npm.get("name").getAsString().startsWith("hl7.fhir.r2b.") || npm.get("name").getAsString().startsWith("hl7.fhir.r3.") || npm.get("name").getAsString().startsWith("hl7.fhir.r4.") || npm.get("name").getAsString().startsWith("hl7.fhir.r5."))
         return npm.get("version").getAsString();
       else {        
         JsonObject dep = npm.getAsJsonObject("dependencies");

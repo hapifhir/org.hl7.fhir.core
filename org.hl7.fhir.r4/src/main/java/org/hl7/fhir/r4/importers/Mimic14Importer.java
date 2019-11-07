@@ -46,12 +46,15 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.DocumentReference;
 import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus;
+import org.hl7.fhir.r4.model.MedicationRequest;
+import org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
@@ -123,6 +126,8 @@ public class Mimic14Importer {
    processLabEvents(Utilities.path(src, "labevents.csv"), Utilities.path(dest, "lab-observations.json"));
    processMicroEvents(Utilities.path(src, "microbiologyevents.csv"), Utilities.path(dest, "micro-observations.json"));
    processNoteEvents(Utilities.path(src, "noteevents.csv"), Utilities.path(dest, "notes.json"));
+   processDiagnoses(Utilities.path(src, "diagnoses_icd.csv"), Utilities.path(dest, "diagnoses.json"));
+   processPrescriptions(Utilities.path(src, "prescriptions.csv"), Utilities.path(dest, "prescriptions.json"));
    
    System.out.println("saving");
    
@@ -131,6 +136,7 @@ public class Mimic14Importer {
    
    System.out.println("done");
   }
+
 
   private void loadItems(String src) throws NumberFormatException, FHIRException, IOException {
     System.out.print("Processing Items... ");
@@ -312,6 +318,20 @@ public class Mimic14Importer {
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("630-4").setDisplay("Bacteria identified in Urine by Culture");
         } else if ("70064".equals(csv.cell("spec_itemid"))) {
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("625-4").setDisplay("Bacteria identified in Stool by Culture");
+        } else if ("70005".equals(csv.cell("spec_itemid"))) {
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("43411-8").setDisplay("Bacteria identified in Aspirate by Culture");
+        } else if ("70045".equals(csv.cell("spec_itemid"))) {
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("16718-9").setDisplay("Cytomegalovirus Ag [Presence] in Blood");
+        } else if ("70088".equals(csv.cell("spec_itemid"))) {
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("5002-1").setDisplay("Epstein Barr virus DNA [Presence] in Blood by NAA with probe detection");
+        } else if ("70087".equals(csv.cell("spec_itemid"))) {
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("16712-2").setDisplay("Cytomegalovirus Ab [Units/volume] in Body fluid");
+        } else if ("70093".equals(csv.cell("spec_itemid"))) {
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("49447-6").setDisplay("Toxoplasma gondii DNA [#/volume] in Blood by NAA with probe detection");
         } else if ("70053".equals(csv.cell("spec_itemid"))) {
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("619-7").setDisplay("Bacteria identified in Peritoneal fluid by Culture");
 //        } else if ("70013".equals(csv.cell("spec_itemid"))) {
@@ -324,17 +344,68 @@ public class Mimic14Importer {
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("20447-9").setDisplay("HIV 1 RNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection");
         } else if ("70051".equals(csv.cell("spec_itemid"))) { 
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6463-4").setDisplay("Bacteria identified in Unspecified specimen by Culture");
+        } else if ("70069".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6463-4").setDisplay("Bacteria identified in Unspecified specimen by Culture");
+        } else if ("70040".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6463-4").setDisplay("Bacteria identified in Unspecified specimen by Culture");
+        } else if ("70057".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6463-4").setDisplay("Bacteria identified in Unspecified specimen by Culture");
+        } else if ("70027".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("88142-5").setDisplay("Bacteria identified in Cornea or Conjunctiva by Aerobe culture");
         } else if ("70062".equals(csv.cell("spec_itemid"))) { 
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6460-0").setDisplay("Bacteria identified in Sputum by Culture");
+        } else if ("70054".equals(csv.cell("spec_itemid"))) { 
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("618-9").setDisplay("Bacteria identified in Pleural fluid by Culture");
         } else if ("70067".equals(csv.cell("spec_itemid"))) { 
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6462-6").setDisplay("Bacteria identified in Wound by Culture");
+        } else if ("70028".equals(csv.cell("spec_itemid"))) { 
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("62873-5").setDisplay("PhenX - assay herpes simplex virus types 1 - 2 protocol");
         } else if ("70070".equals(csv.cell("spec_itemid"))) { // check...
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6462-6").setDisplay("Bacteria identified in Wound by Culture");
         } else if ("70091".equals(csv.cell("spec_itemid"))) { // check...
           obs.getCode().addCoding().setSystem("http://loinc.org").setCode("13317-3").setDisplay("Methicillin resistant Staphylococcus aureus [Presence] in Unspecified specimen by Organism specific culture");
+        } else if ("70061".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("620-5").setDisplay("Bacteria identified in Skin by Aerobe culture");
+        } else if ("70030".equals(csv.cell("spec_itemid"))) { // check...
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("31982-2").setDisplay("Varicella zoster virus Ag [Presence] in Unspecified specimen");
+        } else if ("70013".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("611-4").setDisplay("Bacteria identified in Body fluid by Culture");
+        } else if ("70011".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("533-0").setDisplay("Mycobacterium sp identified in Blood by Organism specific culture");
+        } else if ("70009".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("53911-4").setDisplay("Bacteria identified in Bile fluid by Culture");
+        } else if ("70019".equals(csv.cell("spec_itemid"))) { // check...
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("50659-2").setDisplay("Chromosome analysis.interphase [Interpretation] in Bone marrow by FISH Narrative");
+        } else if ("70026".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("606-4").setDisplay("Bacteria identified in Cerebral spinal fluid by Culture");
+        } else if ("70081".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("630-4").setDisplay("Bacteria identified in Urine by Culture");
+        } else if ("70075".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("626-2").setDisplay("Bacteria identified in Throat by Culture");
+        } else if ("70069".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("626-2").setDisplay("Bacteria identified in Throat by Culture");
+        } else if ("70021".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("88683-8").setDisplay("Bacteria identified in Bronchoalveolar lavage by Anaerobe culture");
+        } else if ("70076".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("43408-4").setDisplay("Bacteria identified in Tissue by Culture");
+        } else if ("70037".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("43408-4").setDisplay("Bacteria identified in Tissue by Culture");
+        } else if ("70090".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("88683-8").setDisplay("Bacteria identified in Bronchoalveolar lavage by Anaerobe culture");
+        } else if ("70047".equals(csv.cell("spec_itemid"))) { // check...
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("621-3").setDisplay("Bacteria identified in Synovial fluid by Culture");
+        } else if ("70017".equals(csv.cell("spec_itemid"))) { // check...
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("56874-1").setDisplay("Serology and blood bank studies (set)");
+        } else if ("70042".equals(csv.cell("spec_itemid"))) { // check...
+          isCulture = false;
+          obs.getCode().addCoding().setSystem("http://loinc.org").setCode("6438-6").setDisplay("Influenza virus A+B Ag [Presence] in Unspecified specimen by Immunofluorescence");
         } else
           throw new Error("Not coded yet: "+csv.cell("spec_itemid"));
-        obs.getCode().addCoding().setSystem("http://mimic.physionet.org/fhir/TestType").setCode(csv.cell("spec_itemid"));
+        // obs.getCode().addCoding().setSystem("http://mimic.physionet.org/fhir/TestType").setCode(csv.cell("spec_itemid"));
       }
 
       if (pat != null) {
@@ -405,6 +476,14 @@ public class Mimic14Importer {
           oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18943-1").setDisplay("Meropenem [Susceptibility]")).setText(csv.cell("ab_name")));
         } else if ("90031".equals(csv.cell("ab_itemid"))) {
           oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("29258-1").setDisplay("Linezolid [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90027".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18974-6").setDisplay("rifAMPin [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90009".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18903-5").setDisplay("Chloramphenicol [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90003".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18965-4").setDisplay("Penicillin G [Susceptibility]")).setText(csv.cell("ab_name")));
+        } else if ("90014".equals(csv.cell("ab_itemid"))) {
+          oc.setCode(new CodeableConcept(new Coding().setSystem("http://loinc.org").setCode("18860-7").setDisplay("Amikacin [Susceptibility]")).setText(csv.cell("ab_name")));
         } else
           throw new Error("Not coded yet: "+csv.cell("ab_itemid"));
         if (csv.has("dilution_text")) {
@@ -480,6 +559,77 @@ public class Mimic14Importer {
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), bnd);    
   }
   
+
+  private void processDiagnoses(String src, String dest) throws FileNotFoundException, IOException {
+    System.out.print("Processing Diagnoses... ");
+    CSVReader csv = new CSVReader(new FileInputStream(src));
+    Bundle bnd = new Bundle();
+    bnd.setId("diagnoses");
+    bnd.setType(BundleType.COLLECTION);
+    bnd.setTimestamp(date);    
+    csv.readHeaders();
+    int t = 0;
+    while (csv.line()) {
+      Condition cnd = new Condition();
+      t++;
+
+      Patient pat = patients.get(csv.cell("subject_id"));
+      Encounter enc = encounters.get(csv.cell("hadm_id"));
+
+      cnd.setId(csv.cell("row_id"));
+      cnd.setVerificationStatus(new CodeableConcept(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/condition-ver-status").setCode("confirmed")));
+      if (pat != null) {
+        cnd.setSubject(new Reference("Patient/"+pat.getId()));
+      }
+      if (enc != null) {
+        cnd.setEncounter(new Reference("Encounter/"+enc.getId()));
+        enc.addDiagnosis().setCondition(new Reference("Condition/"+cnd.getId())).setRank(Integer.parseInt(csv.cell("seq_num")));
+      }
+      cnd.setCode(new CodeableConcept(new Coding().setCode(csv.cell("icd9_code")).setSystem("http://hl7.org/fhir/sid/icd-9-cm")));
+
+      bnd.addEntry().setResource(cnd);
+    }
+    System.out.println(Integer.toString(t)+" found");
+    csv.close();
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), bnd);    
+  }
+
+  private void processPrescriptions(String src, String dest) throws FHIRException, FileNotFoundException, IOException {
+    System.out.print("Processing Prescriptions... ");
+    CSVReader csv = new CSVReader(new FileInputStream(src));
+    Bundle bnd = new Bundle();
+    bnd.setId("prescriptions");
+    bnd.setType(BundleType.COLLECTION);
+    bnd.setTimestamp(date);    
+    csv.readHeaders();
+    int t = 0;
+    while (csv.line()) {
+      MedicationRequest med = new MedicationRequest();
+      t++;
+
+      Patient pat = patients.get(csv.cell("subject_id"));
+      Encounter enc = encounters.get(csv.cell("hadm_id"));
+
+      med.setId(csv.cell("row_id"));
+      med.setStatus(MedicationRequestStatus.COMPLETED);
+      if (pat != null) {
+        med.setSubject(new Reference("Patient/"+pat.getId()));
+      }
+      if (enc != null) {
+        med.setEncounter(new Reference("Encounter/"+enc.getId()));
+      }
+      
+      
+//      cnd.setCode(new CodeableConcept(new Coding().setCode(csv.cell("icd9_code")).setSystem("http://hl7.org/fhir/sid/icd-9-cm")));
+
+      bnd.addEntry().setResource(med);
+    }
+    System.out.println(Integer.toString(t)+" found");
+    csv.close();
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), bnd);    
+
+    
+  }
 
   private Type parseQuantity(String cell) {
     if (cell.startsWith("<=")) {

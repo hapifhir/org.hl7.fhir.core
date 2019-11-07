@@ -11,7 +11,6 @@ import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
 import org.hl7.fhir.r5.model.Bundle.SearchEntryMode;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
