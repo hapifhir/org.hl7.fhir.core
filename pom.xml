@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>hapi-deployable-pom</artifactId>
-		<version>4.0.0</version>
+		<version>4.0.3</version>
 	</parent>
 
 	<!--
@@ -152,6 +152,7 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
+					<skip>true</skip>
 					<testFailureIgnore>false</testFailureIgnore>
           <argLine>-Xmx4096m</argLine>
 					<redirectTestOutputToFile>false</redirectTestOutputToFile>
