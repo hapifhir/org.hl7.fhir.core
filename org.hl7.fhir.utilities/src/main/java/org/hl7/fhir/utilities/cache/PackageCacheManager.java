@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -565,6 +566,20 @@ public class PackageCacheManager {
 
     //todo: load dependencies
     NpmPackage pck = loadPackageInfo(packRoot);
+    if (!id.equals(npm.getNpm().get("name").getAsString()) || !version.equals(npm.getNpm().get("version").getAsString())) {
+      if (!id.equals(npm.getNpm().get("name").getAsString())) {
+        npm.getNpm().addProperty("original-name", npm.getNpm().get("name").getAsString());
+        npm.getNpm().remove("name");
+        npm.getNpm().addProperty("name", id);
+      }
+      if (!version.equals(npm.getNpm().get("version").getAsString())) {
+        npm.getNpm().addProperty("original-version", npm.getNpm().get("version").getAsString());
+        npm.getNpm().remove("version");
+        npm.getNpm().addProperty("version", version);
+      }
+      TextFile.stringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(npm.getNpm()), Utilities.path(cacheFolder, id+"#"+version, "package", "package.json"), false);
+    }
+
     return pck;
   }
 

@@ -3906,6 +3906,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private String describe(FilterOperator op) {
+    if (op == null)
+      return " null ";
     switch (op) {
     case EQUAL: return " = ";
     case ISA: return " is-a ";

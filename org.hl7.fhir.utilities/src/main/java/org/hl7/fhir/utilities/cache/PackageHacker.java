@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
+    new PackageHacker().edit("C:\\web\\hl7.org\\fhir\\us\\qicore\\STU2\\package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -53,12 +54,14 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm, Map<String, byte[]> content) {
-    JsonArray fhirVersions = new JsonArray();
-    fhirVersions.add("1.9.0");
-    npm.add("fhirVersions", fhirVersions);
-    JsonObject dependencies = new JsonObject();
-    dependencies.addProperty("hl7.fhir.r3.core", "3.0.2");
-    npm.remove("dependencies");
+    npm.remove("version");
+    npm.addProperty("version", "2.0.0");
+//    JsonArray fhirVersions = new JsonArray();
+//    fhirVersions.add("1.9.0");
+//    npm.add("fhirVersions", fhirVersions);
+//    JsonObject dependencies = new JsonObject();
+//    dependencies.addProperty("hl7.fhir.r3.core", "3.0.2");
+//    npm.remove("dependencies");
 //    npm.add("dependencies", dependencies);
   }
 
