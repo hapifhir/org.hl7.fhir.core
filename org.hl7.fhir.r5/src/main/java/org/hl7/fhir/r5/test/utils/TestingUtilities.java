@@ -457,7 +457,7 @@ public class TestingUtilities {
 
   // TODO: JA need to figure out how to detect that we're running in maven
   private static boolean isTryToLoadFromFileSystem() {
-    return true;
+    return !"true".equals(System.getProperty("dont_load_from_filesystem"));
   }
 
   public static String loadTestResource(String... paths) throws IOException {
@@ -480,7 +480,7 @@ public class TestingUtilities {
   }
 
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists()) {
+    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return new FileInputStream(n);
     } else {
@@ -490,7 +490,7 @@ public class TestingUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists()) {
+    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return TextFile.fileToBytes(n);
     } else {
