@@ -1,4 +1,5 @@
 .attach*
+*.out
 /bin
 /target
 target/
