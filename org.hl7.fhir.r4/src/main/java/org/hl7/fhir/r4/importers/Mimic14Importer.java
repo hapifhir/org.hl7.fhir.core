@@ -808,6 +808,7 @@ public class Mimic14Importer {
     bnd.setTimestamp(date);    
     csv.readHeaders();
     int t = 0;
+    int fc = 1;
     while (csv.line()) {
       t++;
       Patient pat = patients.get(csv.cell("subject_id"));
@@ -853,11 +854,19 @@ public class Mimic14Importer {
           obs.addPerformer().setReference("PractitionerRole/"+prr.getId());
 
         bnd.addEntry().setResource(obs);
+        if (bnd.getEntry().size() > 100000) {
+          new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.changeFileExt(dest, ""+Integer.toString(fc)+".json")), bnd);
+          fc++;
+          bnd = new Bundle();
+          bnd.setId("chart-events");
+          bnd.setType(BundleType.COLLECTION);
+          bnd.setTimestamp(date);
+        }
       }
     }
     System.out.println(Integer.toString(t)+" found");
     csv.close();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), bnd);    
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.changeFileExt(dest, ""+Integer.toString(fc)+".json")), bnd);    
   }
 
   private Coding loincCoding(String loinc) {
