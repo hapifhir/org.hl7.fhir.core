@@ -485,7 +485,11 @@ public class TestingUtilities {
       return new FileInputStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      return TestingUtilities.class.getResourceAsStream(classpath);
+      InputStream s = TestingUtilities.class.getResourceAsStream(classpath);
+      if (s == null) {
+        throw new Error("unable to find resource "+classpath);
+      }
+      return s;
     }
   }
 
@@ -495,7 +499,11 @@ public class TestingUtilities {
       return TextFile.fileToBytes(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      return TextFile.streamToBytes(TestingUtilities.class.getResourceAsStream(classpath));
+      InputStream s = TestingUtilities.class.getResourceAsStream(classpath);
+      if (s == null) {
+        throw new Error("unable to find resource "+classpath);
+      }
+      return TextFile.streamToBytes(s);
     }
   }
 
