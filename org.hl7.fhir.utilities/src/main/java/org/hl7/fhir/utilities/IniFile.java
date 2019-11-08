@@ -1526,4 +1526,8 @@ public final class IniFile
       }
       return false;
     }
+
+    public boolean hasProperty(String section, String name) {
+      return getStringProperty(section, name) != null;
+    }
 }

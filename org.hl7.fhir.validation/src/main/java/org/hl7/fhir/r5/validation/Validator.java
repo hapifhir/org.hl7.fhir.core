@@ -160,8 +160,8 @@ public class Validator {
       System.out.println("");
       System.out.println("The FHIR validation tool validates a FHIR resource or bundle.");
       System.out.println("Schema and schematron checking is performed, then some additional checks are performed. ");
-      System.out.println("* XML & Json (FHIR versions 1.0, 1.4, 3.0, 3.4)");
-      System.out.println("* Turtle (FHIR versions 3.0, 3.4)");
+      System.out.println("* XML & Json (FHIR versions 1.0, 1.4, 3.0, 4.0, "+Constants.VERSION_MM+")");
+      System.out.println("* Turtle (FHIR versions 3.0, 4.0, "+Constants.VERSION_MM+")");
       System.out.println("");
       System.out.println("If requested, instances will also be verified against the appropriate schema");
       System.out.println("W3C XML Schema, JSON schema or ShEx, as appropriate");
@@ -264,8 +264,8 @@ public class Validator {
         if (v == null) v = Constants.VERSION;
         else if ("1.0".equals(v)) v = "1.0.2";
         else if ("1.4".equals(v)) v = "1.4.0";
-        else if ("3.0".equals(v)) v = "3.0.1";
-        else if ("4.0".equals(v)) v = "4.0.0";
+        else if ("3.0".equals(v)) v = "3.0.2";
+        else if ("4.0".equals(v)) v = "4.0.1";
         else if (v.startsWith(Constants.VERSION)) v = Constants.VERSION;
         String definitions = "hl7.fhir.core#"+v;
         System.out.println("Loading (v = "+v+", tx server http://tx.fhir.org)");
