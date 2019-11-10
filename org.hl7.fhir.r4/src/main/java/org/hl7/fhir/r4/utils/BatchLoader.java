@@ -26,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -84,10 +86,11 @@ public class BatchLoader {
 
 	
   private static void sendFile(FHIRToolingClient client, File f, int size, IniFile ini) throws FHIRFormatError, FileNotFoundException, IOException {
+    long ms = System.currentTimeMillis();
     System.out.print("Loading "+f.getName()+".. ");
     IParser parser = f.getName().endsWith(".json") ? new JsonParser() : new XmlParser();
     Resource res = parser.parse(new FileInputStream(f));
-    System.out.println("Done. Size = "+size);
+    System.out.println("  done: ("+Long.toString(System.currentTimeMillis()-ms)+" ms)");
     
     if (res instanceof Bundle) {
       Bundle bnd = (Bundle) res;
@@ -103,19 +106,20 @@ public class BatchLoader {
           be.getRequest().setUrl(be.getResource().getResourceType().toString()+"/"+be.getResource().getId());
         }
         System.out.print(f.getName()+" ("+cursor+"/"+bnd.getEntry().size()+"): ");
-        long ms = System.currentTimeMillis();
+        ms = System.currentTimeMillis();
         Bundle resp = client.transaction(bt);
 
-        cursor = cursor+size;
+        int ncursor = cursor+size;
         for (int i = 0; i < resp.getEntry().size(); i++) {
           BundleEntryComponent t = resp.getEntry().get(i);
           if (!t.getResponse().getStatus().startsWith("2")) { 
             System.out.println("failed status at "+Integer.toString(i)+": "+t.getResponse().getStatus());
-            cursor = cursor+i-1;
+            ncursor = cursor+i-1;
             break;
           }
         }
-        System.out.println("  .. done: ("+Long.toString(System.currentTimeMillis()-ms)+" ms)");
+        cursor = ncursor;
+        System.out.println("  .. done: ("+Long.toString(System.currentTimeMillis()-ms)+" ms) "+SimpleDateFormat.getInstance().format(new Date()));
         ini.setIntegerProperty("progress", f.getName(), cursor, null);
         ini.save();
       }
