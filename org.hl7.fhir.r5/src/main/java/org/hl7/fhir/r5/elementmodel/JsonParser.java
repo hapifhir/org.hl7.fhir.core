@@ -118,7 +118,7 @@ public class JsonParser extends ParserBase {
 			return null;
 		} else {
 			String name = rt.getAsString();
-			String path = "/"+name;
+			String path = name;
 
 			StructureDefinition sd = getDefinition(line(object), col(object), name);
 			if (sd == null)
@@ -193,12 +193,14 @@ public class JsonParser extends ParserBase {
 
 	private void parseChildComplex(String path, JsonObject object, Element context, Set<String> processed, Property property, String name) throws FHIRException {
 		processed.add(name);
-		String npath = path+"/"+property.getName();
+		String npath = path+"."+property.getName();
 		JsonElement e = object.get(name);
 		if (property.isList() && (e instanceof JsonArray)) {
 			JsonArray arr = (JsonArray) e;
+			int c = 0;
 			for (JsonElement am : arr) {
-				parseChildComplexInstance(npath, object, context, property, name, am);
+				parseChildComplexInstance(npath+"["+c+"]", object, context, property, name, am);
+				c++;
 			}
 		} else {
 		  if (property.isList()) {
@@ -231,11 +233,21 @@ public class JsonParser extends ParserBase {
 			else
 				parseChildren(npath, child, n, false);
 		} else 
-			logError(line(e), col(e), npath, IssueType.INVALID, "This property must be "+(property.isList() ? "an Array" : "an Object")+", not a "+e.getClass().getName(), IssueSeverity.ERROR);
+			logError(line(e), col(e), npath, IssueType.INVALID, "This property must be "+(property.isList() ? "an Array" : "an Object")+", not "+describe(e), IssueSeverity.ERROR);
 	}
 	
-	private void parseChildPrimitive(JsonObject object, Element context, Set<String> processed, Property property, String path, String name) throws FHIRException {
-		String npath = path+"/"+property.getName();
+	private String describe(JsonElement e) {
+	  if (e instanceof JsonArray) {
+	    return "an array";
+	  }
+    if (e instanceof JsonObject) {
+      return "an object";
+    }
+    return "a primitive property";
+  }
+
+  private void parseChildPrimitive(JsonObject object, Element context, Set<String> processed, Property property, String path, String name) throws FHIRException {
+		String npath = path+"."+property.getName();
 		processed.add(name);
 		processed.add("_"+name);
 		JsonElement main = object.has(name) ? object.get(name) : null; 
@@ -265,9 +277,9 @@ public class JsonParser extends ParserBase {
 	private void parseChildPrimitiveInstance(Element context, Property property, String name, String npath,
 	    JsonElement main, JsonElement fork) throws FHIRException {
 			if (main != null && !(main instanceof JsonPrimitive))
-				logError(line(main), col(main), npath, IssueType.INVALID, "This property must be an simple value, not a "+main.getClass().getName(), IssueSeverity.ERROR);
+				logError(line(main), col(main), npath, IssueType.INVALID, "This property must be an simple value, not "+describe(main), IssueSeverity.ERROR);
 			else if (fork != null && !(fork instanceof JsonObject))
-				logError(line(fork), col(fork), npath, IssueType.INVALID, "This property must be an object, not a "+fork.getClass().getName(), IssueSeverity.ERROR);
+				logError(line(fork), col(fork), npath, IssueType.INVALID, "This property must be an object, not "+describe(fork), IssueSeverity.ERROR);
 			else {
 				Element n = new Element(name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork));
 				context.getChildren().add(n);
