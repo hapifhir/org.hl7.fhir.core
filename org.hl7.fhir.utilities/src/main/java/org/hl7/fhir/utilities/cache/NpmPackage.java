@@ -55,6 +55,7 @@ import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
+import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -136,6 +137,7 @@ import com.google.gson.JsonObject;
     
     public static NpmPackage fromPackage(InputStream tgz, boolean progress) throws IOException {
       NpmPackage res = new NpmPackage(null);
+      boolean hasIndex = false;
       GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
       try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
         TarArchiveEntry entry;
@@ -147,6 +149,7 @@ import com.google.gson.JsonObject;
           if (entry.isDirectory()) {
             res.folders.add(entry.getName());
           } else {
+            hasIndex = hasIndex || "package/.index.json".equals(entry.getName());
             int count;
             byte data[] = new byte[BUFFER_SIZE];
             
@@ -171,7 +174,18 @@ import com.google.gson.JsonObject;
           }    
         }
       }
+      if (!hasIndex) {
+        NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+        indexer.start();
+        for (String n : res.getContent().keySet()) {
+          if (n.startsWith("package/")) {
+            indexer.seeFile(n.substring(8), res.content.get(n));
+          }          
+        }
+        res.content.put("package/.index.json", indexer.build().getBytes(Charsets.UTF_8));
+      }
       res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
+      res.readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/.index.json"))));
       return res;
     }
 
@@ -359,8 +373,16 @@ import com.google.gson.JsonObject;
           if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
             return e.getValue().getAsString();
         }
-        if (npm.has("fhirVersions"))
+        if (npm.has("fhirVersions")) {
           return npm.getAsJsonArray("fhirVersions").get(0).getAsString();
+        }
+        // legacy simplifier support:
+        if (dep.has("simplifier.core.r4"))
+          return "4.0";
+        if (dep.has("simplifier.core.r3"))
+          return "3.0";
+        if (dep.has("simplifier.core.r2"))
+          return "2.0";
         throw new FHIRException("no core dependency or FHIR Version found in the Package definition");
       }
     }
