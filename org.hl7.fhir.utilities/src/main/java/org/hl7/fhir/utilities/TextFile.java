@@ -192,6 +192,19 @@ public class TextFile {
     return streamToBytes(new FileInputStream(new CSFile(srcFile)));
   }
 
+  /**
+   * 
+   * fileToBytes insists in case correctness to ensure that stuff works across linux and windows, but it's not always appropriate to ceheck case (e.g. validator parameters)
+   * 
+   * @param srcFile
+   * @return
+   * @throws FileNotFoundException
+   * @throws IOException
+   */
+  public static byte[] fileToBytesNCS(String srcFile) throws FileNotFoundException, IOException {
+    return streamToBytes(new FileInputStream(new File(srcFile)));
+  }
+
   public static byte[] fileToBytes(File file) throws FileNotFoundException, IOException {
     return streamToBytes(new FileInputStream(file));
   }
