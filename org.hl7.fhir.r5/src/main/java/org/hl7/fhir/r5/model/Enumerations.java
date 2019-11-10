@@ -10290,7 +10290,7 @@ The primary difference between a medicationusage and a medicationadministration 
         }
 
         public static boolean isR4Plus(String version) {
-          return version != null && (version.startsWith("4.") || version.startsWith("5."));
+          return version != null && (version.startsWith("4.") || version.startsWith("5.") || "current".equals(version));
         }
         
        public static boolean isValidCode(String codeString) {
