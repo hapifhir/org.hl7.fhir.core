@@ -2505,6 +2505,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    if (r.hasLanguage()) {
+      x.setAttribute("xml:lang", r.getLanguage());
+    }
     if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
       r.setText(new Narrative());
       r.getText().setDiv(x);
