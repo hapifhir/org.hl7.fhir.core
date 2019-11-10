@@ -516,7 +516,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       FhirFormat fmt = checkIsResource(src);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
-        res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytes(src));
+        res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytesNCS(src));
         return res;
       }
     } else if ((src.matches(PackageCacheManager.PACKAGE_REGEX) || src.matches(PackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
@@ -1586,7 +1586,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return true; // we don't bother with those.
     if (context.fetchResource(Resource.class, url) != null)
       return true;
-    throw new Error("Not done yet - resolve "+url);
+    return false;
   }
 
 }

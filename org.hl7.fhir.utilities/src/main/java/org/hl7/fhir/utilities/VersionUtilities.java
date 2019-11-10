@@ -39,6 +39,9 @@ public class VersionUtilities {
     if (isR4Ver(v)) {
       return "hl7.fhir.r4.core";
     }
+    if ("current".equals(v)) {
+      return "hl7.fhir.r5.core";
+    }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "hl7.fhir.r5.core";
     }
@@ -59,10 +62,30 @@ public class VersionUtilities {
       return "4.0.1";
     }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
-      return "Constants.VERSION";
+      return "current";
     }
     return v;
   }
+
+  public static String getCurrentPackageVersion(String v) {
+    if (isR2Ver(v)) {
+      return "1.0";
+    }
+    if (isR2BVer(v)) {
+      return "1.4";
+    }
+    if (isR3Ver(v)) {
+      return "3.0";
+    }
+    if (isR4Ver(v)) {
+      return "4.0";
+    }
+    if (v != null && v.startsWith(CURRENT_VERSION)) {
+      return "current";
+    }
+    return v;
+  }
+
   public static boolean isSupportedVersion(String version) {
     return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", CURRENT_FULL_VERSION);
   }

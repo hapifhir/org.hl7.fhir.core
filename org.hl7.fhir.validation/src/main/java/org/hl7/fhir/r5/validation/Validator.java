@@ -261,13 +261,42 @@ public class Validator {
       else {
         // first, prepare the context
         String v = getParam(args, "-version");
-        if (v == null) v = Constants.VERSION;
-        else if ("1.0".equals(v)) v = "1.0.2";
-        else if ("1.4".equals(v)) v = "1.4.0";
-        else if ("3.0".equals(v)) v = "3.0.2";
-        else if ("4.0".equals(v)) v = "4.0.1";
-        else if (v.startsWith(Constants.VERSION)) v = Constants.VERSION;
-        String definitions = "hl7.fhir.core#"+v;
+        if (v == null) {
+          v = "current";
+          for (int i = 0; i < args.length; i++) {
+            if ("-ig".equals(args[i])) {
+              if (i+1 == args.length)
+                throw new Error("Specified -ig without indicating ig file");
+              else {
+                String n = args[i+1];
+                if (n.startsWith("hl7.fhir.core#")) {
+                  v = VersionUtilities.getCurrentPackageVersion(n.substring(14));
+                } else if (n.startsWith("hl7.fhir.r2.core#") || n.equals("hl7.fhir.r2.core")) {
+                  v = "1.0";
+                } else if (n.startsWith("hl7.fhir.r2b.core#") || n.equals("hl7.fhir.r2b.core")) {
+                  v = "1.4";
+                } else if (n.startsWith("hl7.fhir.r3.core#") || n.equals("hl7.fhir.r3.core")) {
+                  v = "3.0";
+                } else if (n.startsWith("hl7.fhir.r4.core#") || n.equals("hl7.fhir.r4.core")) {
+                  v = "4.0";
+                } else if (n.startsWith("hl7.fhir.r5.core#") || n.equals("hl7.fhir.r5.core")) {
+                  v = "current";
+                }
+              }
+            }
+          }
+        } else if ("1.0".equals(v)) {
+          v = "1.0";
+        } else if ("1.4".equals(v)) {
+          v = "1.4";
+        } else if ("3.0".equals(v)) {
+          v = "3.0";
+        } else if ("4.0".equals(v)) {
+          v = "4.0";
+        } else if (v.startsWith(Constants.VERSION)) {
+          v = "current";
+        }
+        String definitions = VersionUtilities.packageForVersion(v)+"#"+v;
         System.out.println("Loading (v = "+v+", tx server http://tx.fhir.org)");
         ValidationEngine validator = new ValidationEngine(definitions, "http://tx.fhir.org", null, FhirPublication.fromCode(v));
         for (int i = 0; i < args.length; i++) {
@@ -344,7 +373,6 @@ public class Validator {
       System.out.println();
       System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
 
-      String definitions = "hl7.fhir.core#current";
       String map = null;
       List<String> igs = new ArrayList<String>();
       List<String> questionnaires = new ArrayList<String>();
@@ -358,7 +386,7 @@ public class Validator {
       String output = null;
       List<String> sources= new ArrayList<String>();
       Map<String, String> locations = new HashMap<String, String>();
-      String sv = null;
+      String sv = "current";
       String txLog = null;
       String mapLog = null;
       String lang = null;
@@ -366,39 +394,15 @@ public class Validator {
 
       // load the parameters - so order doesn't matter
       for (int i = 0; i < args.length; i++) {
-        if (args[i].equals("-defn"))
-          if (i+1 == args.length)
-            throw new Error("Specified -defn without indicating definition file");
-          else
-            definitions = args[++i];
-        else if (args[i].equals("-version"))  {
+        if (args[i].equals("-version"))  {
           sv = args[++i];
-          if (sv.startsWith("1.0")) {
-            sv = "1.0.2";
-            definitions = "hl7.fhir.r2.core#"+sv;
-          }
-          if (sv.startsWith("1.4")) {
-            sv = "1.4.0";
-            definitions = "hl7.fhir.r2b.core#"+sv;
-          }
-          if (sv.startsWith("3.0")) {
-            sv = "3.0.2";
-            definitions = "hl7.fhir.r3.core#"+sv;
-          }
-          if (sv.startsWith("4.0")) {
-            sv = "4.0.1";
-            definitions = "hl7.fhir.r4.core#"+sv;
-          }
-          if (sv.startsWith(Constants.VERSION)) {
-            sv = Constants.VERSION;
-            definitions = "hl7.fhir.r5.core#"+sv;
-          }
-        } else if (args[i].equals("-output"))
+          sv = VersionUtilities.getCurrentPackageVersion(sv);
+        } else if (args[i].equals("-output")) {
           if (i+1 == args.length)
             throw new Error("Specified -output without indicating output file");
           else
             output = args[++i];
-        else if (args[i].equals("-profile")) {
+        } else if (args[i].equals("-profile")) {
           String p = null;
           if (i+1 == args.length)
             throw new Error("Specified -profile without indicating profile source");
@@ -413,79 +417,95 @@ public class Validator {
             else
               locations.put(p, args[++i]);
           }
-        } else if (args[i].equals("-questionnaire"))
+        } else if (args[i].equals("-questionnaire")) {
           if (i+1 == args.length)
             throw new Error("Specified -questionnaire without indicating questionnaire file");
           else
             questionnaires.add(args[++i]);
-        else if (args[i].equals("-native"))
+        } else if (args[i].equals("-native")) {
           doNative = true;          
-        else if (args[i].equals("-debug"))
+        } else if (args[i].equals("-debug")) {
           doDebug = true;
-        else if (args[i].equals("-recurse"))
+        } else if (args[i].equals("-recurse")) {
           recursive = true;
-        else if (args[i].equals("-strictExtensions"))
+        } else if (args[i].equals("-strictExtensions")) {
           anyExtensionsAllowed = false;
-        else if (args[i].equals("-hintAboutNonMustSupport"))
+        } else if (args[i].equals("-hintAboutNonMustSupport")) {
           hintAboutNonMustSupport = true;
-        else if (args[i].equals("-transform")) {
+        } else if (args[i].equals("-transform")) {
           map = args[++i];
           mode = EngineMode.TRANSFORM;
-        } else if (args[i].equals("-narrative"))
+        } else if (args[i].equals("-narrative")) {
           mode = EngineMode.NARRATIVE;
-        else if (args[i].equals("-snapshot"))
+        } else if (args[i].equals("-snapshot")) {
           mode = EngineMode.SNAPSHOT;
-        else if (args[i].equals("-scan"))
+        } else if (args[i].equals("-scan")) {
           mode = EngineMode.SCAN;
-        else if (args[i].equals("-tx"))
+        } else if (args[i].equals("-tx")) {
           if (i+1 == args.length)
             throw new Error("Specified -tx without indicating terminology server");
           else
             txServer = "n/a".equals(args[++i]) ? null : args[i];
-        else if (args[i].equals("-txLog"))
+        } else if (args[i].equals("-txLog")) {
           if (i+1 == args.length)
             throw new Error("Specified -txLog without indicating file");
           else
             txLog = args[++i];
-        else if (args[i].equals("-log"))
+        } else if (args[i].equals("-log")) {
           if (i+1 == args.length)
             throw new Error("Specified -log without indicating file");
           else
             mapLog = args[++i];
-        else if (args[i].equals("-language"))
+        } else if (args[i].equals("-language")) {
           if (i+1 == args.length)
             throw new Error("Specified -language without indicating language");
           else
             lang = args[++i];
-        else if (args[i].equals("-ig"))
+        } else if (args[i].equals("-ig") || args[i].equals("-defn")) {
           if (i+1 == args.length)
-            throw new Error("Specified -ig without indicating ig file");
+            throw new Error("Specified "+args[i]+" without indicating ig file");
           else {
             String s = args[++i];
-            if (s.startsWith("hl7.fhir.core-"))
-              definitions = s;
+            if (s.equals("hl7.fhir.core")) {
+              sv = "current";
+            } else if (s.startsWith("hl7.fhir.core#")) {
+              sv = VersionUtilities.getCurrentPackageVersion(s.substring(14));
+            } else if (s.startsWith("hl7.fhir.r2.core#") || s.equals("hl7.fhir.r2.core")) {
+              sv = "1.0";
+            } else if (s.startsWith("hl7.fhir.r2b.core#") || s.equals("hl7.fhir.r2b.core")) {
+              sv = "1.4";
+            } else if (s.startsWith("hl7.fhir.r3.core#") || s.equals("hl7.fhir.r3.core")) {
+              sv = "3.0";
+            } else if (s.startsWith("hl7.fhir.r4.core#") || s.equals("hl7.fhir.r4.core")) {
+              sv = "4.0";
+            } else if (s.startsWith("hl7.fhir.r5.core#") || s.equals("hl7.fhir.r5.core")) {
+              sv = "current";
+            }
             else
               igs.add(s);
           }
-        else if (args[i].equals("-map"))
-          if (map == null)
+        } else if (args[i].equals("-map")) {
+          if (map == null) {
             if (i+1 == args.length)
               throw new Error("Specified -map without indicating map file");
             else
               map = args[++i];
-          else
+          } else {
             throw new Exception("Can only nominate a single -map parameter");
-        else if (args[i].startsWith("-x"))
+          }
+        } else if (args[i].startsWith("-x")) {
           i++;
-        else
+        } else {
           sources.add(args[i]);
         }
+      }
       if  (sources.isEmpty())
         throw new Exception("Must provide at least one source file");
 
       // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
+      String definitions = VersionUtilities.packageForVersion(sv)+"#"+VersionUtilities.getCurrentVersion(sv);
+      System.out.println("  .. FHIR Version "+sv+", definitions from "+definitions);
       System.out.println("  .. connect to tx server @ "+txServer);
-      System.out.println("  .. definitions from "+definitions);
       ValidationEngine validator = new ValidationEngine(definitions, txServer, txLog, FhirPublication.fromCode(sv));
       validator.setDebug(doDebug);
       System.out.println("    (v"+validator.getContext().getVersion()+")");
