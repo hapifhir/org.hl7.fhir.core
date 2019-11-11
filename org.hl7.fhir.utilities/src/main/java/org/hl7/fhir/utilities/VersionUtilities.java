@@ -118,4 +118,11 @@ public class VersionUtilities {
     return v1.substring(0, 3).equals(v2.substring(0, 3));
   }
 
+  public static boolean isCorePackage(String s) {
+    if (s.contains("#")) {
+      s = s.substring(0, s.indexOf("#"));
+    }
+    return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core");
+  }
+
 }
