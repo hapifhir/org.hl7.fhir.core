@@ -397,9 +397,6 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
-
-
-
   }
 
   @Override
