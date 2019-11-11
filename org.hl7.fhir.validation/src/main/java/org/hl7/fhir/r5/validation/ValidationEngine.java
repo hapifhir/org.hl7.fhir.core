@@ -625,16 +625,16 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public Map<String, byte[]> loadPackage(NpmPackage pi) throws Exception {
     loadedIgs.add(pi.name()+"#"+pi.version());
+    Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
       if (!loadedIgs.contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
           System.out.println("+  .. load IG from "+s);
-          fetchByPackage(s);
+          res.putAll(fetchByPackage(s));
         }
       }
     }
     
-    Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
        res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }

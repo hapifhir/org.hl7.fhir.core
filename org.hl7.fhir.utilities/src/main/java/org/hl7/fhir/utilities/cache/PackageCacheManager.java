@@ -47,6 +47,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -198,7 +199,7 @@ public class PackageCacheManager {
     try {
       String url = ciList.get(id);
       JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
-      String currDate = json.get("date").getAsString();
+      String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
       if (!currDate.equals(packDate))
         return null; // nup, we need a new copy 
@@ -566,14 +567,14 @@ public class PackageCacheManager {
 
     //todo: load dependencies
     NpmPackage pck = loadPackageInfo(packRoot);
-    if (!id.equals(npm.getNpm().get("name").getAsString()) || !version.equals(npm.getNpm().get("version").getAsString())) {
-      if (!id.equals(npm.getNpm().get("name").getAsString())) {
-        npm.getNpm().addProperty("original-name", npm.getNpm().get("name").getAsString());
+    if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
+      if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
+        npm.getNpm().addProperty("original-name", JSONUtil.str(npm.getNpm(), "name"));
         npm.getNpm().remove("name");
         npm.getNpm().addProperty("name", id);
       }
-      if (!version.equals(npm.getNpm().get("version").getAsString())) {
-        npm.getNpm().addProperty("original-version", npm.getNpm().get("version").getAsString());
+      if (!version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
+        npm.getNpm().addProperty("original-version", JSONUtil.str(npm.getNpm(), "version"));
         npm.getNpm().remove("version");
         npm.getNpm().addProperty("version", version);
       }
@@ -633,14 +634,14 @@ public class PackageCacheManager {
       } catch (Exception e) {
         throw new FHIRException("Error fetching package list for "+id+" from "+pu+": "+e.getMessage(), e);
       }
-      if (!id.equals(json.get("package-id").getAsString()))
-        throw new FHIRException("Package ids do not match in "+pu+": "+id+" vs "+json.get("package-id").getAsString());
+      if (!id.equals(JSONUtil.str(json, "package-id")))
+        throw new FHIRException("Package ids do not match in "+pu+": "+id+" vs "+JSONUtil.str(json, "package-id"));
       for (JsonElement e : json.getAsJsonArray("list")) {
         JsonObject vo = (JsonObject) e;
-        if (v.equals(vo.get("version").getAsString())) {
-          InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(vo.get("path").getAsString(), "package.tgz"), true);
+        if (v.equals(JSONUtil.str(vo, "version"))) {
+          InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"), true);
           if (stream == null)
-            throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL(vo.get("path").getAsString(), "package.tgz"));
+            throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"));
           return addPackageToCache(id, v, stream);
         }
       }
@@ -706,14 +707,14 @@ public class PackageCacheManager {
     InputStream json = connection.getInputStream();
     JsonObject packageList = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
     VersionHistory res = new VersionHistory();
-    res.id = packageList.get("package-id").getAsString();
-    res.canonical = packageList.get("canonical").getAsString();
+    res.id = JSONUtil.str(packageList, "package-id");
+    res.canonical = JSONUtil.str(packageList, "canonical");
     for (JsonElement j : packageList.getAsJsonArray("list")) {
       JsonObject jo = (JsonObject) j;
-      if ("current".equals(jo.get("version").getAsString()))
-        res.current = jo.get("path").getAsString();
+      if ("current".equals(JSONUtil.str(jo, "version")))
+        res.current = JSONUtil.str(jo, "path");
       else
-        res.versions.put(jo.get("version").getAsString(), jo.get("path").getAsString());
+        res.versions.put(JSONUtil.str(jo, "version"), JSONUtil.str(jo, "path"));
     }
     historyCache.put(url, res);
     return res;
