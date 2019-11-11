@@ -513,7 +513,7 @@ public class Validator {
         validator.setVersion(sv);
       for (String src : igs) {
         System.out.println("+  .. load IG from "+src);
-          validator.loadIg(src, recursive);
+        validator.loadIg(src, recursive);
       }
       validator.setQuestionnaires(questionnaires);
       validator.setNative(doNative);

@@ -149,6 +149,7 @@ import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
@@ -310,6 +311,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private PackageCacheManager pcm;
   private PrintWriter mapLog;
   private boolean debug;
+  private Set<String> loadedIgs = new HashSet<>();
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -403,7 +405,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private void loadDefinitions(String src, boolean recursive) throws Exception {
-    Map<String, byte[]> source = loadIgSource(src, recursive);   
+    Map<String, byte[]> source = loadIgSource(src, recursive, true);   
     if (version == null)
       version = getVersionFromPack(source);
     context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion());
@@ -478,7 +480,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return TextFile.fileToBytes(src);
   }
 
-  private Map<String, byte[]> loadIgSource(String src, boolean recursive) throws Exception {
+  /** explore should be true if we're trying to load an -ig parameter, and false if we're loading source **/
+  
+  private Map<String, byte[]> loadIgSource(String src, boolean recursive, boolean explore) throws Exception {
     // src can be one of the following:
     // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
     // - a package id for an ig - this will be loaded into the cache
@@ -494,7 +498,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       if (!Utilities.noString(pid))
         return fetchByPackage(pid+(v == null ? "" : "#"+v));
       else
-        return fetchFromUrl(src+(v == null ? "" : "|"+v));
+        return fetchFromUrl(src+(v == null ? "" : "|"+v), explore);
     }
     
     File f = new File(src);
@@ -526,7 +530,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   
-  private Map<String, byte[]> fetchFromUrl(String src) throws Exception {
+  private Map<String, byte[]> fetchFromUrl(String src, boolean explore) throws Exception {
     if (src.endsWith(".tgz"))
       return loadPackage(fetchFromUrlSpecific(src, false), src);
     if (src.endsWith(".pack"))
@@ -534,18 +538,21 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     if (src.endsWith("igpack.zip"))
       return readZip(fetchFromUrlSpecific(src, false));
 
-    InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
-    if (stream != null)
-      return loadPackage(stream, Utilities.pathURL(src, "package.tgz"));
-    // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
-    stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
-    if (stream != null)
-      return readZip(stream);
-    stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
-    if (stream != null)
-      return readZip(stream);
-    stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
-    //// -----
+    InputStream stream = null;
+    if (explore) {
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
+      if (stream != null)
+        return loadPackage(stream, Utilities.pathURL(src, "package.tgz"));
+      // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
+      if (stream != null)
+        return readZip(stream);
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
+      if (stream != null)
+        return readZip(stream);
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
+      //// -----
+    }
     
     // ok, having tried all that... now we'll just try to access it directly
     byte[] cnt;
@@ -612,11 +619,21 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     
   }
 
-  private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FileNotFoundException, IOException {
+  private Map<String, byte[]> loadPackage(InputStream stream, String name) throws Exception {
     return loadPackage(NpmPackage.fromPackage(stream));
   }
 
-  public Map<String, byte[]> loadPackage(NpmPackage pi) throws IOException {
+  public Map<String, byte[]> loadPackage(NpmPackage pi) throws Exception {
+    loadedIgs.add(pi.name()+"#"+pi.version());
+    for (String s : pi.dependencies()) {
+      if (!loadedIgs.contains(s)) {
+        if (!VersionUtilities.isCorePackage(s)) {
+          System.out.println("+  .. load IG from "+s);
+          fetchByPackage(s);
+        }
+      }
+    }
+    
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
        res.put(s, TextFile.streamToBytes(pi.load("package", s)));
@@ -772,7 +789,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
     String canonical = null;
-    Map<String, byte[]> source = loadIgSource(src, recursive);
+    Map<String, byte[]> source = loadIgSource(src, recursive, true);
     String version = Constants.VERSION;
     if (this.version != null)
       version = this.version;
@@ -893,7 +910,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
   
   public Content loadContent(String source, String opName) throws Exception {
-    Map<String, byte[]> s = loadIgSource(source, false);
+    Map<String, byte[]> s = loadIgSource(source, false, false);
     Content res = new Content();
     if (s.size() != 1)
       throw new Exception("Unable to find resource " + source + " to "+opName);
