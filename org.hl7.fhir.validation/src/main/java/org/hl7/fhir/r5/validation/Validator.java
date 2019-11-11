@@ -549,18 +549,16 @@ public class Validator {
           e.printStackTrace();
         }
       } else if (mode == EngineMode.NARRATIVE) {
-        DomainResource r = validator.generate(sources.get(0));
+        DomainResource r = validator.generate(sources.get(0), sv);
         System.out.println(" ...generated narrative successfully");
         if (output != null) {
-          handleOutput(r, output);
+          validator.handleOutput(r, output, sv);
         }
-      } else if (mode == EngineMode.SNAPSHOT) {
-        if  (definitions == null)
-          throw new Exception("Must provide a defn when generating a snapshot");
-        StructureDefinition r = validator.snapshot(sources.get(0));
+      } else if (mode == EngineMode.SNAPSHOT) {        
+        StructureDefinition r = validator.snapshot(sources.get(0), sv);
         System.out.println(" ...generated snapshot successfully");
         if (output != null) {
-          handleOutput(r, output);
+          validator.handleOutput(r, output, sv);
         }
       } else {
         if  (definitions == null)
@@ -619,45 +617,6 @@ public class Validator {
 
   private static String getGitBuild() {
     return "??";
-  }
-
-  private static void handleOutput(Resource r, String output) throws IOException {
-    if (output.startsWith("http://") || output.startsWith("http://")) {
-      ByteArrayOutputStream bs = new ByteArrayOutputStream();
-      handleOutputToStream(r, output, bs);
-      URL url = new URL(output);
-      HttpURLConnection c = (HttpURLConnection) url.openConnection();
-      c.setDoOutput(true);
-      c.setDoInput(true);
-      c.setRequestMethod("POST");
-      c.setRequestProperty( "Content-type", "application/fhir+xml");
-      c.setRequestProperty( "Accept", "application/fhir+xml" );
-      c.getOutputStream().write(bs.toByteArray());
-      c.getOutputStream().close();
-
-      if (c.getResponseCode() >= 300) {
-//        String line;
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(c.getInputStream()));
-//        while ((line = reader.readLine()) != null) {
-//          System.out.println(line);
-//        }
-//        reader.close();
-        throw new IOException("Unable to PUT to "+output+": "+c.getResponseMessage());
-      }
-    } else {
-      FileOutputStream s = new FileOutputStream(output);
-      handleOutputToStream(r, output, s);
-    }
-  }
-
-  private static void handleOutputToStream(Resource r, String output, OutputStream s) throws IOException {
-    if (output.endsWith(".html") || output.endsWith(".htm") && r instanceof DomainResource)
-      new XhtmlComposer(XhtmlComposer.HTML, true).compose(s, ((DomainResource) r).getText().getDiv());
-    else if (output.endsWith(".json"))
-        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(s, r);
-    else
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, r);
-    s.close();
   }
 
   private static int displayOO(OperationOutcome oo) {

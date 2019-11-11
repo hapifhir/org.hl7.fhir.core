@@ -107,6 +107,16 @@ public class TextFile {
     sw.close();
   }
   
+  public static void stringToStream(String content, OutputStream stream, boolean bom) throws IOException {
+    OutputStreamWriter sw = new OutputStreamWriter(stream, "UTF-8");
+    if (bom) {
+      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
+    }
+    sw.write(content);
+    sw.flush();
+    sw.close();
+  }
+  
   public static byte[] stringToBytes(String content, boolean bom) throws IOException {
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     OutputStreamWriter sw = new OutputStreamWriter(bs, "UTF-8");
