@@ -182,7 +182,7 @@ public class NpmPackage {
           indexer.seeFile(n.substring(8), res.content.get(n));
         }          
       }
-      res.content.put("package/.index.json", indexer.build().getBytes(Charsets.UTF_8));
+      res.content.put("package/.index.json", TextFile.stringToBytes(indexer.build(), false));
     }
     try {
       res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
@@ -526,7 +526,7 @@ public class NpmPackage {
         tar.closeArchiveEntry();
       }
     }
-    byte[] cnt = new GsonBuilder().setPrettyPrinting().create().toJson(npm).getBytes(Charset.forName("UTF-8"));
+    byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
     TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
     entry.setSize(cnt.length);
     tar.putArchiveEntry(entry);

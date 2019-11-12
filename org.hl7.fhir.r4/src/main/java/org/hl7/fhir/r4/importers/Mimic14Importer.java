@@ -76,6 +76,7 @@ import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
 public class Mimic14Importer {
@@ -561,7 +562,7 @@ public class Mimic14Importer {
       } else {
         throw new FHIRException("Unhandled Note type '"+cat+"'/'"+desc+"'");
       }
-      dr.addContent().getAttachment().setContentType("text/plain; charset=UTF-8").setData(csv.cell("text").getBytes(Charset.forName("UTF-8")));
+      dr.addContent().getAttachment().setContentType("text/plain; charset=UTF-8").setData(TextFile.stringToBytes(csv.cell("text"), false));
       bnd.addEntry().setResource(dr);
     }
     System.out.println(Integer.toString(t)+" found");
