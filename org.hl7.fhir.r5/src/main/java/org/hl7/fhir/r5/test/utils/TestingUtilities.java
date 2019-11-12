@@ -49,7 +49,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.google.common.base.Charsets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -473,7 +472,7 @@ public class TestingUtilities {
         if (inputStream == null) {
           throw new IOException("Can't find file on classpath: " + classpath);
         }
-        contents = IOUtils.toString(inputStream, Charsets.UTF_8);
+        contents = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
       }
       return contents;
     }
