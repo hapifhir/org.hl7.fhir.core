@@ -115,7 +115,13 @@ public class VersionUtilities {
   }
 
   public static boolean versionsCompatible(String v1, String v2) {
-    return v1.substring(0, 3).equals(v2.substring(0, 3));
+    String mm1 = getMajMin(v1);
+    String mm2 = getMajMin(v2);
+    if (mm1 == null || mm2 == null) {
+      return false;
+    } else {
+      return mm1.equals(mm2);
+    }
   }
 
   public static boolean isCorePackage(String s) {
@@ -123,6 +129,18 @@ public class VersionUtilities {
       s = s.substring(0, s.indexOf("#"));
     }
     return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core");
+  }
+
+  public static String getMajMin(String version) {
+    if (version == null)
+      return null;
+    
+    if (Utilities.charCount(version, '.') == 2) {
+      String[] p = version.split("\\.");
+      return p[0]+"."+p[1];
+    } else {
+      return null;
+    }
   }
 
 }
