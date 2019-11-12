@@ -184,8 +184,16 @@ public class NpmPackage {
       }
       res.content.put("package/.index.json", indexer.build().getBytes(Charsets.UTF_8));
     }
-    res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
-    res.readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/.index.json"))));
+    try {
+      res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
+    } catch (Exception e) {
+      throw new IOException("Error parsing package/package.json: "+e.getMessage(), e);
+    }
+    try {
+      res.readIndexFile((JsonObject) JsonTrackingParser.parseJson(new String(res.content.get("package/.index.json"))));
+    } catch (Exception e) {
+      throw new IOException("Error parsing package/.index.json: "+e.getMessage(), e);
+    }
     return res;
   }
 
