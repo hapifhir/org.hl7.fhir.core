@@ -182,10 +182,18 @@ public class NpmPackage {
           indexer.seeFile(n.substring(8), res.content.get(n));
         }          
       }
-      res.content.put("package/.index.json", indexer.build().getBytes(Charsets.UTF_8));
+      res.content.put("package/.index.json", TextFile.stringToBytes(indexer.build(), false));
     }
-    res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
-    res.readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/.index.json"))));
+    try {
+      res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
+    } catch (Exception e) {
+      throw new IOException("Error parsing package/package.json: "+e.getMessage(), e);
+    }
+    try {
+      res.readIndexFile((JsonObject) JsonTrackingParser.parseJson(new String(res.content.get("package/.index.json"))));
+    } catch (Exception e) {
+      throw new IOException("Error parsing package/.index.json: "+e.getMessage(), e);
+    }
     return res;
   }
 
@@ -518,7 +526,7 @@ public class NpmPackage {
         tar.closeArchiveEntry();
       }
     }
-    byte[] cnt = new GsonBuilder().setPrettyPrinting().create().toJson(npm).getBytes(Charset.forName("UTF-8"));
+    byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
     TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
     entry.setSize(cnt.length);
     tar.putArchiveEntry(entry);
