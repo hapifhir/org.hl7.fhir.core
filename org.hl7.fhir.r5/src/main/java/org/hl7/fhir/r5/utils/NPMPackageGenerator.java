@@ -324,7 +324,7 @@ public class NPMPackageGenerator {
   }
 
   private void buildIndexJson() throws IOException {
-    byte[] content = indexer.build().getBytes(Charset.forName("UTF-8"));
+    byte[] content = TextFile.stringToBytes(indexer.build(), false);
     addFile(Category.RESOURCE, ".index.json", content); 
   }
 
