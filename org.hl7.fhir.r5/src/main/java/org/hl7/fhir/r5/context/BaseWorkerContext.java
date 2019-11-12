@@ -23,6 +23,8 @@ package org.hl7.fhir.r5.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +38,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.BaseWorkerContext.MetadataResourceVersionComparator;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -79,6 +82,7 @@ import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
@@ -86,22 +90,52 @@ import com.google.gson.JsonObject;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
 
+  public class MetadataResourceVersionComparator<T extends MetadataResource> implements Comparator<T> {
+
+    private List<T> list;
+
+    public MetadataResourceVersionComparator(List<T> list) {
+      this.list = list;
+    }
+
+    @Override
+    public int compare(T arg1, T arg2) {
+      String v1 = arg1.getVersion();
+      String v2 = arg2.getVersion();
+      if (v1 == null && v2 == null) {
+        return Integer.compare(list.indexOf(arg1), list.indexOf(arg2)); // retain original order
+      } else if (v1 == null) {
+        return -1;
+      } else if (v2 == null) {
+        return 1;
+      } else {
+        String mm1 = VersionUtilities.getMajMin(v1);
+        String mm2 = VersionUtilities.getMajMin(v2);
+        if (mm1 == null || mm2 == null) {
+          return v1.compareTo(v2);
+        } else {
+          return mm1.compareTo(mm2);
+        }
+      }
+    }
+  }
+
   private Object lock = new Object(); // used as a lock for the data that follows
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
-  private Map<String, CodeSystem> codeSystems = new HashMap<String, CodeSystem>();
+  private MetadataResourceManager<CodeSystem> codeSystems = new MetadataResourceManager<CodeSystem>();
   private Set<String> supportedCodeSystems = new HashSet<String>();
-  private Map<String, ValueSet> valueSets = new HashMap<String, ValueSet>();
-  private Map<String, ConceptMap> maps = new HashMap<String, ConceptMap>();
-  protected Map<String, StructureMap> transforms = new HashMap<String, StructureMap>();
-  private Map<String, StructureDefinition> structures = new HashMap<String, StructureDefinition>();
-  private Map<String, ImplementationGuide> guides = new HashMap<String, ImplementationGuide>();
-  private Map<String, CapabilityStatement> capstmts = new HashMap<String, CapabilityStatement>();
-  private Map<String, SearchParameter> searchParameters = new HashMap<String, SearchParameter>();
-  private Map<String, Questionnaire> questionnaires = new HashMap<String, Questionnaire>();
-  private Map<String, OperationDefinition> operations = new HashMap<String, OperationDefinition>();
-  private Map<String, PlanDefinition> plans = new HashMap<String, PlanDefinition>();
+  private MetadataResourceManager<ValueSet> valueSets = new MetadataResourceManager<ValueSet>();
+  private MetadataResourceManager<ConceptMap> maps = new MetadataResourceManager<ConceptMap>();
+  protected MetadataResourceManager<StructureMap> transforms = new MetadataResourceManager<StructureMap>();
+  private MetadataResourceManager<StructureDefinition> structures = new MetadataResourceManager<StructureDefinition>();
+  private MetadataResourceManager<ImplementationGuide> guides = new MetadataResourceManager<ImplementationGuide>();
+  private MetadataResourceManager<CapabilityStatement> capstmts = new MetadataResourceManager<CapabilityStatement>();
+  private MetadataResourceManager<SearchParameter> searchParameters = new MetadataResourceManager<SearchParameter>();
+  private MetadataResourceManager<Questionnaire> questionnaires = new MetadataResourceManager<Questionnaire>();
+  private MetadataResourceManager<OperationDefinition> operations = new MetadataResourceManager<OperationDefinition>();
+  private MetadataResourceManager<PlanDefinition> plans = new MetadataResourceManager<PlanDefinition>();
   private List<NamingSystem> systems = new ArrayList<NamingSystem>();
   private UcumService ucumService;
   
@@ -128,7 +162,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     txCache = new TerminologyCache(lock, null);
   }
 
-  public BaseWorkerContext(Map<String, CodeSystem> codeSystems, Map<String, ValueSet> valueSets, Map<String, ConceptMap> maps, Map<String, StructureDefinition> profiles, Map<String, ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
+  public BaseWorkerContext(MetadataResourceManager<CodeSystem> codeSystems, MetadataResourceManager<ValueSet> valueSets, MetadataResourceManager<ConceptMap> maps, MetadataResourceManager<StructureDefinition> profiles, 
+      MetadataResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
     super();
     this.codeSystems = codeSystems;
     this.valueSets = valueSets;
@@ -142,19 +177,19 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
       allResourcesById.putAll(other.allResourcesById);
       translator = other.translator;
-      codeSystems.putAll(other.codeSystems);
+      codeSystems.copy(other.codeSystems);
       txcaps = other.txcaps;
-      valueSets.putAll(other.valueSets);
-      maps.putAll(other.maps);
-      transforms.putAll(other.transforms);
-      structures.putAll(other.structures);
-      searchParameters.putAll(other.searchParameters);
-      plans.putAll(other.plans);
-      questionnaires.putAll(other.questionnaires);
-      operations.putAll(other.operations);
+      valueSets.copy(other.valueSets);
+      maps.copy(other.maps);
+      transforms.copy(other.transforms);
+      structures.copy(other.structures);
+      searchParameters.copy(other.searchParameters);
+      plans.copy(other.plans);
+      questionnaires.copy(other.questionnaires);
+      operations.copy(other.operations);
       systems.addAll(other.systems);
-      guides.putAll(other.guides);
-      capstmts.putAll(other.capstmts);
+      guides.copy(other.guides);
+      capstmts.copy(other.capstmts);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       tsServer = other.tsServer;
@@ -187,27 +222,27 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         if (!allowLoadingDuplicates && hasResource(r.getClass(), url))
           throw new DefinitionException("Duplicate Resource " + url);
         if (r instanceof StructureDefinition)
-          seeMetadataResource((StructureDefinition) m, structures, false);
+          structures.see((StructureDefinition) m);
         else if (r instanceof ValueSet)
-          seeMetadataResource((ValueSet) m, valueSets, false);
+          valueSets.see((ValueSet) m);
         else if (r instanceof CodeSystem)
-          seeMetadataResource((CodeSystem) m, codeSystems, false);
+          codeSystems.see((CodeSystem) m);
         else if (r instanceof ImplementationGuide)
-          seeMetadataResource((ImplementationGuide) m, guides, false);
+          guides.see((ImplementationGuide) m);
         else if (r instanceof CapabilityStatement)
-          seeMetadataResource((CapabilityStatement) m, capstmts, false);
+          capstmts.see((CapabilityStatement) m);
         else if (r instanceof SearchParameter)
-          seeMetadataResource((SearchParameter) m, searchParameters, false);
+          searchParameters.see((SearchParameter) m);
         else if (r instanceof PlanDefinition)
-          seeMetadataResource((PlanDefinition) m, plans, false);
+          plans.see((PlanDefinition) m);
         else if (r instanceof OperationDefinition)
-          seeMetadataResource((OperationDefinition) m, operations, false);
+          operations.see((OperationDefinition) m);
         else if (r instanceof Questionnaire)
-          seeMetadataResource((Questionnaire) m, questionnaires, true);
+          questionnaires.see((Questionnaire) m);
         else if (r instanceof ConceptMap)
-          seeMetadataResource((ConceptMap) m, maps, false);
+          maps.see((ConceptMap) m);
         else if (r instanceof StructureMap)
-          seeMetadataResource((StructureMap) m, transforms, false);
+          transforms.see((StructureMap) m);
         else if (r instanceof NamingSystem)
           systems.add((NamingSystem) r);
       }
@@ -261,26 +296,38 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     throw new Error("Delimited versions have exact match for delimiter '"+delimiter+"' : "+newParts+" vs "+oldParts);
   }
   
-  protected <T extends MetadataResource> void seeMetadataResource(T r, Map<String, T> map, boolean addId) throws FHIRException {
-    if (addId)
-      map.put(r.getId(), r); // todo: why?
-    if (!map.containsKey(r.getUrl()))
-      map.put(r.getUrl(), r);
-    else {
-      // If this resource already exists, see if it's the newest business version.  The default resource to return if not qualified is the most recent business version
-      MetadataResource existingResource = (MetadataResource)map.get(r.getUrl());
-      if (r.hasVersion() && existingResource.hasVersion() && !r.getVersion().equals(existingResource.getVersion())) {
-        if (laterVersion(r.getVersion(), existingResource.getVersion())) {
-          map.remove(r.getUrl());
-          map.put(r.getUrl(), r);
-        }
-      } else
-        map.remove(r.getUrl());
+  protected <T extends MetadataResource> void seeMetadataResource(T r, Map<String, T> map, List<T> list, boolean addId) throws FHIRException {
+//    if (addId)
+    //      map.put(r.getId(), r); // todo: why?
+    list.add(r);
+    if (r.hasUrl()) {
+      // first, this is the correct reosurce for this version (if it has a version)
+      if (r.hasVersion()) {
+        map.put(r.getUrl()+"|"+r.getVersion(), r);
+      }
+      // if we haven't get anything for this url, it's the correct version
+      if (!map.containsKey(r.getUrl()))
         map.put(r.getUrl(), r);
-//        throw new FHIRException("Multiple declarations of resource with same canonical URL (" + r.getUrl() + ") and version (" + (r.hasVersion() ? r.getVersion() : "" ) + ")");
+      else {
+        List<T> rl = new ArrayList<T>();
+        for (T t : list) {
+          if (t.getUrl().equals(r.getUrl()) && !rl.contains(t)) {
+            rl.add(t);
+          }
+        }
+        Collections.sort(rl, new MetadataResourceVersionComparator<T>(list));
+        map.put(r.getUrl(), rl.get(rl.size()-1));
+        T latest = null;
+        for (T t : rl) {
+          if (VersionUtilities.versionsCompatible(t.getVersion(), r.getVersion())) {
+            latest = t;
+          }
+        }
+        if (latest != null) { // might be null if it's not using semver
+          map.put(r.getUrl()+"|"+VersionUtilities.getMajMin(latest.getVersion()), rl.get(rl.size()-1));
+        }
+      }
     }
-    if (r.hasVersion())
-      map.put(r.getUrl()+"|"+r.getVersion(), r);
   }  
 
   @Override
@@ -293,7 +340,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public boolean supportsSystem(String system) throws TerminologyServiceException {
     synchronized (lock) {
-      if (codeSystems.containsKey(system) && codeSystems.get(system).getContent() != CodeSystemContentMode.NOTPRESENT)
+      if (codeSystems.has(system) && codeSystems.get(system).getContent() != CodeSystemContentMode.NOTPRESENT)
         return true;
       else if (supportedCodeSystems.contains(system))
         return true;
@@ -635,7 +682,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
     synchronized (lock) {
       List<ConceptMap> res = new ArrayList<ConceptMap>();
-      for (ConceptMap map : maps.values())
+      for (ConceptMap map : maps.getList())
         if (((Reference) map.getSource()).getReference().equals(url)) 
           res.add(map);
       return res;
@@ -706,27 +753,27 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         if (uri.contains("#"))
           uri = uri.substring(0, uri.indexOf("#"));
         if (class_ == Resource.class || class_ == null) {
-          if (structures.containsKey(uri))
+          if (structures.has(uri))
             return (T) structures.get(uri);
-          if (guides.containsKey(uri))
+          if (guides.has(uri))
             return (T) guides.get(uri);
-          if (capstmts.containsKey(uri))
+          if (capstmts.has(uri))
             return (T) capstmts.get(uri);
-          if (valueSets.containsKey(uri))
+          if (valueSets.has(uri))
             return (T) valueSets.get(uri);
-          if (codeSystems.containsKey(uri))
+          if (codeSystems.has(uri))
             return (T) codeSystems.get(uri);
-          if (operations.containsKey(uri))
+          if (operations.has(uri))
             return (T) operations.get(uri);
-          if (searchParameters.containsKey(uri))
+          if (searchParameters.has(uri))
             return (T) searchParameters.get(uri);
-          if (plans.containsKey(uri))
+          if (plans.has(uri))
             return (T) plans.get(uri);
-          if (maps.containsKey(uri))
+          if (maps.has(uri))
             return (T) maps.get(uri);
-          if (transforms.containsKey(uri))
+          if (transforms.has(uri))
             return (T) transforms.get(uri);
-          if (questionnaires.containsKey(uri))
+          if (questionnaires.has(uri))
             return (T) questionnaires.get(uri);
           for (Map<String, Resource> rt : allResourcesById.values()) {
             for (Resource r : rt.values()) {
@@ -747,13 +794,13 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         } else if (class_ == StructureMap.class) {
           return (T) transforms.get(uri);
         } else if (class_ == ValueSet.class) {
-          if (valueSets.containsKey(uri+"|"+version))
-            return (T) valueSets.get(uri+"|"+version);
+          if (valueSets.has(uri, version))
+            return (T) valueSets.get(uri, version);
           else
             return (T) valueSets.get(uri);
         } else if (class_ == CodeSystem.class) {
-          if (codeSystems.containsKey(uri+"|"+version))
-            return (T) codeSystems.get(uri+"|"+version);
+          if (codeSystems.has(uri, version))
+            return (T) codeSystems.get(uri, version);
           else
           return (T) codeSystems.get(uri);
         } else if (class_ == ConceptMap.class) {
@@ -765,17 +812,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           return (T) od;
         } else if (class_ == SearchParameter.class) {
           SearchParameter res = searchParameters.get(uri);
-          if (res == null) {
-            StringBuilder b = new StringBuilder();
-            for (String s : searchParameters.keySet()) {
-              b.append(s);
-              b.append("\r\n");
-            }
-          }
           return (T) res;
         }
       }
-      if (class_ == CodeSystem.class && codeSystems.containsKey(uri))
+      if (class_ == CodeSystem.class && codeSystems.has(uri))
         return (T) codeSystems.get(uri);
       
       if (class_ == Questionnaire.class)
@@ -943,23 +983,23 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         map.remove(id);
 
       if (fhirType.equals("StructureDefinition"))
-        dropMetadataResource(structures, id);
+        structures.drop(id);
       else if (fhirType.equals("ImplementationGuide"))
-        dropMetadataResource(guides, id);
+        guides.drop(id);
       else if (fhirType.equals("CapabilityStatement"))
-        dropMetadataResource(capstmts, id);
+        capstmts.drop(id);
       else if (fhirType.equals("ValueSet"))
-        dropMetadataResource(valueSets, id);
+        valueSets.drop(id);
       else if (fhirType.equals("CodeSystem"))
-        dropMetadataResource(codeSystems, id);
+        codeSystems.drop(id);
       else if (fhirType.equals("OperationDefinition"))
-        dropMetadataResource(operations, id);
+        operations.drop(id);
       else if (fhirType.equals("Questionnaire"))
-        dropMetadataResource(questionnaires, id);
+        questionnaires.drop(id);
       else if (fhirType.equals("ConceptMap"))
-        dropMetadataResource(maps, id);
+        maps.drop(id);
       else if (fhirType.equals("StructureMap"))
-        dropMetadataResource(transforms, id);
+        transforms.drop(id);
       else if (fhirType.equals("NamingSystem"))
         for (int i = systems.size()-1; i >= 0; i--) {
           if (systems.get(i).getId().equals(id))
@@ -984,15 +1024,15 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public List<MetadataResource> allConformanceResources() {
     synchronized (lock) {
       List<MetadataResource> result = new ArrayList<MetadataResource>();
-      result.addAll(structures.values());
-      result.addAll(guides.values());
-      result.addAll(capstmts.values());
-      result.addAll(codeSystems.values());
-      result.addAll(valueSets.values());
-      result.addAll(maps.values());
-      result.addAll(transforms.values());
-      result.addAll(plans.values());
-      result.addAll(questionnaires.values());
+      structures.listAllM(result);
+      guides.listAllM(result);
+      capstmts.listAllM(result);
+      codeSystems.listAllM(result);
+      valueSets.listAllM(result);
+      maps.listAllM(result);
+      transforms.listAllM(result);
+      plans.listAllM(result);
+      questionnaires.listAllM(result);
       return result;
     }
   }
@@ -1016,7 +1056,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public List<ConceptMap> listMaps() {
     List<ConceptMap> m = new ArrayList<ConceptMap>();
     synchronized (lock) {
-      m.addAll(maps.values());    
+      maps.listAll(m);
     }
     return m;
   }
@@ -1024,7 +1064,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public List<StructureMap> listTransforms() {
     List<StructureMap> m = new ArrayList<StructureMap>();
     synchronized (lock) {
-      m.addAll(transforms.values());    
+      transforms.listAll(m);    
     }
     return m;
   }
@@ -1038,7 +1078,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
     synchronized (lock) {
-      m.addAll(structures.values());    
+      structures.listAll(m);    
     }
     return m;
   }
@@ -1138,55 +1178,44 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public List<StructureDefinition> getStructures() {
     List<StructureDefinition> res = new ArrayList<>();
     synchronized (lock) { // tricky, because you need to lock this as well, but it's really not in use yet
-      res.addAll(structures.values());
+      structures.listAll(res);
     }
     return res;
   }
   
   public String getLinkForUrl(String corePath, String url) {
-    for (CodeSystem r : codeSystems.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (codeSystems.has(url))
+      return codeSystems.get(url).getUserString("path");
 
-    for (ValueSet r : valueSets.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (valueSets.has(url))
+      return valueSets.get(url).getUserString("path");
+
+    if (maps.has(url))
+      return maps.get(url).getUserString("path");
     
-    for (ConceptMap r : maps.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (transforms.has(url))
+      return transforms.get(url).getUserString("path");
     
-    for (StructureMap r : transforms.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (structures.has(url))
+      return structures.get(url).getUserString("path");
     
-    for (StructureDefinition r : structures.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (guides.has(url))
+      return guides.get(url).getUserString("path");
     
-    for (ImplementationGuide r : guides.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (capstmts.has(url))
+      return capstmts.get(url).getUserString("path");
+
+    if (searchParameters.has(url))
+      return searchParameters.get(url).getUserString("path");
+        
+    if (questionnaires.has(url))
+      return questionnaires.get(url).getUserString("path");
+
+    if (operations.has(url))
+      return operations.get(url).getUserString("path");
     
-    for (CapabilityStatement r : capstmts.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
-    
-    for (SearchParameter r : searchParameters.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
-    
-    for (Questionnaire r : questionnaires.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
-    
-    for (OperationDefinition r : operations.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
-    
-    for (PlanDefinition r : plans.values())
-      if (url.equals(r.getUrl()))
-        return r.getUserString("path");
+    if (plans.has(url))
+      return plans.get(url).getUserString("path");
 
     if (url.equals("http://loinc.org"))
       return corePath+"loinc.html";
@@ -1201,7 +1230,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
   public List<ImplementationGuide> allImplementationGuides() {
     List<ImplementationGuide> res = new ArrayList<>();
-    res.addAll(guides.values());
+    guides.listAll(res);
     return res;
   }
   
