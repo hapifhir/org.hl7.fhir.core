@@ -370,7 +370,7 @@ public class JsonTrackingParser {
 		JsonTrackingParser self = new JsonTrackingParser();
 		self.map = map;
 		self.setErrorOnDuplicates(!allowDuplicates);
-    return self.parse(source);
+    return self.parse(Utilities.stripBOM(source));
 	}
 
 	private JsonObject parse(String source) throws IOException {
