@@ -565,7 +565,6 @@ public class PackageCacheManager {
     if (progress)
       System.out.println(" done.");
 
-    //todo: load dependencies
     NpmPackage pck = loadPackageInfo(packRoot);
     if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
       if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
