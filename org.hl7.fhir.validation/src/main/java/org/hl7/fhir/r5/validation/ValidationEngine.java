@@ -1210,12 +1210,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return issue.getSeverity().toString()+" @ "+issue.getLocation() + " " +issue.getDetails().getText() +(source != null ? " (src = "+source+")" : "");    
   }
 
-  public Resource transform(String source, String map) throws Exception {
+  public org.hl7.fhir.r5.elementmodel.Element transform(String source, String map) throws Exception {
     Content cnt = loadContent(source, "validate");
     return transform(cnt.focus, cnt.cntType, map);
   }
   
-  public Resource transform(byte[] source, FhirFormat cntType, String mapUri) throws Exception {
+  public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws Exception {
     List<Resource> outputs = new ArrayList<Resource>();
     
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs));
@@ -1224,13 +1224,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     if (map == null)
       throw new Error("Unable to find map "+mapUri+" (Known Maps = "+context.listMapUrls()+")");
     
-    Resource resource = getTargetResourceFromStructureMap(map);
-
+    org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
     scu.transform(null, src, map, resource);
     return resource;
   }
 
-  private Resource getTargetResourceFromStructureMap(StructureMap map) {
+  private org.hl7.fhir.r5.elementmodel.Element getTargetResourceFromStructureMap(StructureMap map) {
     String targetTypeUrl = null;
     for(StructureMap.StructureMapStructureComponent component: map.getStructure()) {
       if(component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
@@ -1252,8 +1251,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
     if(structureDefinition == null)
       throw new FHIRException("Unable to determine StructureDefinition for target type");
-
-    return ResourceFactory.createResource(structureDefinition.getName());
+    
+    return Manager.build(getContext(), structureDefinition);
   }
 
   public DomainResource generate(String source, String version) throws Exception {
