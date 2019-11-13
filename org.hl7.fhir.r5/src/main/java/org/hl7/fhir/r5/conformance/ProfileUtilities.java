@@ -2922,7 +2922,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         
       } else {
         StructureDefinition sd = context.fetchTypeDefinition(t);
-        if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+        if (sd == null) {
+          System.out.println("Unable to find "+t);
+          sd = context.fetchTypeDefinition(t);
+        } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
           choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));

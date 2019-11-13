@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class MetadataResourceManagerTester {
 
-  private MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>();
+  private MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
   
   @Test
   public void testSingleNoVersion() {
