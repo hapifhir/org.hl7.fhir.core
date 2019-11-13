@@ -48,9 +48,16 @@ public class MetadataResourceManager<T extends MetadataResource> {
   }
 
 
+  private boolean enforceUniqueId; 
   private List<T> list = new ArrayList<>();
   private Map<String, T> map = new HashMap<>();
   
+  
+  public MetadataResourceManager(boolean enforceUniqueId) {
+    super();
+    this.enforceUniqueId = enforceUniqueId;
+  }
+
   public void copy(MetadataResourceManager<T> source) {
     list.clear();
     map.clear();
@@ -62,7 +69,7 @@ public class MetadataResourceManager<T extends MetadataResource> {
     if (!r.hasId()) {
       r.setId(UUID.randomUUID().toString());
     }
-    if (map.containsKey(r.getId())) {
+    if (enforceUniqueId && map.containsKey(r.getId())) {
       drop(r.getId());      
     }
     list.add(r);
@@ -98,7 +105,9 @@ public class MetadataResourceManager<T extends MetadataResource> {
           }
         }
         if (latest != null) { // might be null if it's not using semver
-          map.put(url+"|"+VersionUtilities.getMajMin(latest.getVersion()), rl.get(rl.size()-1));
+          String lv = VersionUtilities.getMajMin(latest.getVersion());
+          if (lv != null && !lv.equals(version))
+            map.put(url+"|"+lv, rl.get(rl.size()-1));
         }
       }
     }
@@ -175,6 +184,10 @@ public class MetadataResourceManager<T extends MetadataResource> {
 
   public Set<String> keys() {
     return map.keySet();
+  }
+
+  public boolean isEnforceUniqueId() {
+    return enforceUniqueId;
   }
   
 }

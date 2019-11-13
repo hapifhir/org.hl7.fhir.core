@@ -124,18 +124,18 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
-  private MetadataResourceManager<CodeSystem> codeSystems = new MetadataResourceManager<CodeSystem>();
+  private MetadataResourceManager<CodeSystem> codeSystems = new MetadataResourceManager<CodeSystem>(false);
   private Set<String> supportedCodeSystems = new HashSet<String>();
-  private MetadataResourceManager<ValueSet> valueSets = new MetadataResourceManager<ValueSet>();
-  private MetadataResourceManager<ConceptMap> maps = new MetadataResourceManager<ConceptMap>();
-  protected MetadataResourceManager<StructureMap> transforms = new MetadataResourceManager<StructureMap>();
-  private MetadataResourceManager<StructureDefinition> structures = new MetadataResourceManager<StructureDefinition>();
-  private MetadataResourceManager<ImplementationGuide> guides = new MetadataResourceManager<ImplementationGuide>();
-  private MetadataResourceManager<CapabilityStatement> capstmts = new MetadataResourceManager<CapabilityStatement>();
-  private MetadataResourceManager<SearchParameter> searchParameters = new MetadataResourceManager<SearchParameter>();
-  private MetadataResourceManager<Questionnaire> questionnaires = new MetadataResourceManager<Questionnaire>();
-  private MetadataResourceManager<OperationDefinition> operations = new MetadataResourceManager<OperationDefinition>();
-  private MetadataResourceManager<PlanDefinition> plans = new MetadataResourceManager<PlanDefinition>();
+  private MetadataResourceManager<ValueSet> valueSets = new MetadataResourceManager<ValueSet>(false);
+  private MetadataResourceManager<ConceptMap> maps = new MetadataResourceManager<ConceptMap>(false);
+  protected MetadataResourceManager<StructureMap> transforms = new MetadataResourceManager<StructureMap>(false);
+  private MetadataResourceManager<StructureDefinition> structures = new MetadataResourceManager<StructureDefinition>(false);
+  private MetadataResourceManager<ImplementationGuide> guides = new MetadataResourceManager<ImplementationGuide>(false);
+  private MetadataResourceManager<CapabilityStatement> capstmts = new MetadataResourceManager<CapabilityStatement>(false);
+  private MetadataResourceManager<SearchParameter> searchParameters = new MetadataResourceManager<SearchParameter>(false);
+  private MetadataResourceManager<Questionnaire> questionnaires = new MetadataResourceManager<Questionnaire>(false);
+  private MetadataResourceManager<OperationDefinition> operations = new MetadataResourceManager<OperationDefinition>(false);
+  private MetadataResourceManager<PlanDefinition> plans = new MetadataResourceManager<PlanDefinition>(false);
   private List<NamingSystem> systems = new ArrayList<NamingSystem>();
   private UcumService ucumService;
   
