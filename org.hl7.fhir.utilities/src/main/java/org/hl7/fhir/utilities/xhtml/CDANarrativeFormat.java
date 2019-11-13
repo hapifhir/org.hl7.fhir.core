@@ -152,7 +152,9 @@ public class CDANarrativeFormat {
   }
 
   private void processFootNote(Element e, XhtmlNode xn) {
-    throw new Error("element "+e.getNodeName()+" not handled yet");
+    XhtmlNode xc = xn.addTag("tfoot");
+    processAttributes(e, xc, "ID", "language", "styleCode", "align", "char", "charoff", "valign");
+    processChildren(e, xc);
   }
 
   private void processFootNodeRef(Element e, XhtmlNode xn) {
@@ -221,7 +223,9 @@ public class CDANarrativeFormat {
   }
 
   private void processTFoot(Element e, XhtmlNode xn) {
-    throw new Error("element "+e.getNodeName()+" not handled yet");
+    XhtmlNode xc = xn.addTag("tfoot");
+    processAttributes(e, xc, "ID", "language", "styleCode", "align", "char", "charoff", "valign");
+    processChildren(e, xc);
   }
 
   private void processTh(Element e, XhtmlNode xn) throws FHIRException {
@@ -450,8 +454,11 @@ public class CDANarrativeFormat {
     xml.exit("td");
   }
 
-  private void processTFoot(IXMLWriter xml, XhtmlNode n) {
-    throw new Error("element "+n.getName()+" not handled yet");
+  private void processTFoot(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+    processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
+    xml.enter("tfoot");
+    processChildren(xml, n);
+    xml.exit("tfoot");
   }
 
   private void processTh(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
