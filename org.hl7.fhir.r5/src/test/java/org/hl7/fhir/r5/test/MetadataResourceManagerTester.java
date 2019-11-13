@@ -10,10 +10,10 @@ import org.junit.Test;
 
 public class MetadataResourceManagerTester {
 
-  private MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
   
   @Test
   public void testSingleNoVersion() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -47,6 +47,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersion() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -66,6 +67,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersionNotSemVer() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -82,7 +84,152 @@ public class MetadataResourceManagerTester {
   }
 
   @Test
+  public void testSingleWithDuplicateIds1() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(false);
+    ValueSet vs1 = new ValueSet();
+    vs1.setId("2345");
+    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setVersion("4.0.1");
+    vs1.setName("1");
+    
+    ValueSet vs2 = new ValueSet();
+    vs2.setId("2345");
+    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setVersion("4.0.2");
+    vs2.setName("2");
+    
+    mrm.clear();
+    mrm.see(vs1);
+    
+    Assert.assertEquals(mrm.size(), 1);
+    Assert.assertNotNull(mrm.get("2345"));
+    Assert.assertEquals(mrm.get("2345").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+
+    mrm.see(vs2);
+
+    Assert.assertEquals(mrm.size(), 2);
+    Assert.assertNotNull(mrm.get("2345"));
+    Assert.assertEquals(mrm.get("2345").getName(), "2");
+    
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+
+    mrm.drop("2346"); // doesn't exist;
+    Assert.assertEquals(mrm.size(), 2);
+    Assert.assertNotNull(mrm.get("2345"));
+    Assert.assertNull(mrm.get("2346"));
+    Assert.assertEquals(mrm.get("2345").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    
+    mrm.drop("2345"); // vs2;
+    Assert.assertEquals(mrm.size(), 0);
+    Assert.assertNull(mrm.get("2345"));
+    Assert.assertNull(mrm.get("2346"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    
+  }
+
+  @Test
+  public void testSingleWithDuplicateIds2() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    ValueSet vs1 = new ValueSet();
+    vs1.setId("2345");
+    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setVersion("4.0.1");
+    vs1.setName("1");
+    
+    ValueSet vs2 = new ValueSet();
+    vs2.setId("2345");
+    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setVersion("4.0.2");
+    vs2.setName("2");
+    
+    mrm.clear();
+    mrm.see(vs1);
+    
+    Assert.assertEquals(mrm.size(), 1);
+    Assert.assertNotNull(mrm.get("2345"));
+    Assert.assertEquals(mrm.get("2345").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+
+    mrm.see(vs2);
+
+    Assert.assertEquals(mrm.size(), 1);
+    Assert.assertNotNull(mrm.get("2345"));
+    Assert.assertEquals(mrm.get("2345").getName(), "2");
+    
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
+    Assert.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+
+    mrm.drop("2345"); // vs2;
+    Assert.assertEquals(mrm.size(), 0);
+    Assert.assertNull(mrm.get("2345"));
+    Assert.assertNull(mrm.get("2346"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0"));
+    Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+  }
+
+  @Test
   public void testSingleWithVersions1() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -154,6 +301,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersions2() {
+    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");

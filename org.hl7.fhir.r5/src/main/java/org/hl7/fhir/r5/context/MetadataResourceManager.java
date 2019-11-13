@@ -147,20 +147,28 @@ public class MetadataResourceManager<T extends MetadataResource> {
   }
   
   public void drop(String id) {
-    T res = map.get(id);
-    if (res != null) {
-      list.remove(res);
-      map.remove(id);
-      map.remove(res.getUrl());
-      if (res.hasVersion()) {
-        map.remove(res.getUrl()+"|"+res.getVersion());
-        String mm = VersionUtilities.getMajMin(res.getVersion());
-        if (mm != null) {
-          map.remove(res.getUrl()+"|"+mm);
+    T res = null;
+    do {
+      res = null;
+      for (T t : list) {
+        if (t.getId().equals(id)) {
+          res = t;
         }
       }
-      updateList(res.getUrl(), res.getVersion()); 
-    }
+      if (res != null) {
+        list.remove(res);
+        map.remove(id);
+        map.remove(res.getUrl());
+        if (res.hasVersion()) {
+          map.remove(res.getUrl()+"|"+res.getVersion());
+          String mm = VersionUtilities.getMajMin(res.getVersion());
+          if (mm != null) {
+            map.remove(res.getUrl()+"|"+mm);
+          }
+        }
+        updateList(res.getUrl(), res.getVersion()); 
+      }
+    } while (res != null);
   }
   
   
