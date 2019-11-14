@@ -99,10 +99,12 @@ public class BatchLoader {
         bt.setType(BundleType.BATCH);     
         bt.setId(UUID.randomUUID().toString().toLowerCase());
         for (int i = cursor; i < Math.min(bnd.getEntry().size(), cursor+size); i++) {
-          BundleEntryComponent be = bt.addEntry();
-          be.setResource(bnd.getEntry().get(i).getResource());
-          be.getRequest().setMethod(HTTPVerb.PUT);
-          be.getRequest().setUrl(be.getResource().getResourceType().toString()+"/"+be.getResource().getId());
+          if (i >=0 && i < bnd.getEntry().size()) {
+            BundleEntryComponent be = bt.addEntry();
+            be.setResource(bnd.getEntry().get(i).getResource());
+            be.getRequest().setMethod(HTTPVerb.PUT);
+            be.getRequest().setUrl(be.getResource().getResourceType().toString()+"/"+be.getResource().getId());
+          }
         }
         System.out.print(f.getName()+" ("+cursor+"/"+bnd.getEntry().size()+"): ");
         ms = System.currentTimeMillis();

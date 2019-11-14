@@ -79,6 +79,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
@@ -129,6 +130,27 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return res;
   }
 
+  public static SimpleWorkerContext fromPackage(NpmPackage pi, boolean allowDuplicates) throws FileNotFoundException, IOException, FHIRException {
+    SimpleWorkerContext res = new SimpleWorkerContext();
+    res.setAllowLoadingDuplicates(allowDuplicates);
+    res.loadFromPackage(pi, null);
+    return res;
+  }
+
+  public static SimpleWorkerContext fromPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+    SimpleWorkerContext res = new SimpleWorkerContext();
+    res.loadFromPackage(pi, null);
+    return res;
+  }
+
+  public static SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    SimpleWorkerContext res = new SimpleWorkerContext();
+    res.setAllowLoadingDuplicates(true);
+    res.version = pi.getNpm().get("version").getAsString();
+    res.loadFromPackage(pi, loader);
+    return res;
+  }
+
   public static SimpleWorkerContext fromPack(String path, boolean allowDuplicates) throws FileNotFoundException, IOException, FHIRException {
     SimpleWorkerContext res = new SimpleWorkerContext();
     res.allowLoadingDuplicates = allowDuplicates;
@@ -163,6 +185,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		return res;
 	}
 
+  public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException  {
+    SimpleWorkerContext res = new SimpleWorkerContext();
+    for (String name : source.keySet()) { 
+      try {
+        res.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader);
+      } catch (Exception e) {
+        System.out.println("Error loading "+name+": "+e.getMessage());
+        throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);
+      }
+    }
+    return res;
+  }
 	private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
       loadFromFile(stream, name, loader);
@@ -215,14 +249,19 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         f = loader.loadBundle(stream, true);
       else {
         JsonParser json = new JsonParser();
-        f = (Bundle) json.parse(stream);
+        Resource r = json.parse(stream);
+        if (r instanceof Bundle)
+        f = (Bundle) r;
+        else {
+          f = new Bundle();
+          f.addEntry().setResource(r);
+        }
       }
     } catch (FHIRFormatError e1) {
       throw new org.hl7.fhir.exceptions.FHIRFormatError(e1.getMessage(), e1);
     }
     for (BundleEntryComponent e : f.getEntry()) {
-
-      if (e.getFullUrl() == null) {
+      if (e.getFullUrl() == null && logger != null) {
         logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
       }
       seeResource(e.getFullUrl(), e.getResource());
@@ -296,6 +335,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
 	private void loadFromPack(String path, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
 		loadFromStream(new CSFileInputStream(path), loader);
+	}
+
+	public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {
+	  if (types.length == 0)
+	    types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"};
+	  for (String s : pi.listResources(types)) {
+      loadDefinitionItem(s, pi.load("package", s), loader);
+	  }
+	  version = pi.version();
 	}
 
   public void loadFromFile(String file, IContextResourceLoader loader) throws IOException, FHIRException {
