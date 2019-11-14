@@ -57,5 +57,5 @@ public class Constants {
 
   public final static String VERSION = "3.0.2";
   public final static String REVISION = "12956";
-  public final static String DATE = "Fri Mar 16 15:21:19 AEDT 2018";
+  public final static String DATE = "Thu Nov 11 2019 23:11:26 AEDT";
 }
