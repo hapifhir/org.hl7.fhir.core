@@ -45,10 +45,12 @@ import org.fhir.ucum.UcumEssenceService;
 import org.fhir.ucum.UcumException;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.model.BaseDateTimeType;
 import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.dstu3.model.Bundle.BundleType;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
@@ -60,12 +62,14 @@ import org.hl7.fhir.dstu3.model.DocumentReference;
 import org.hl7.fhir.dstu3.model.Encounter;
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.dstu3.model.Enumerations.DocumentReferenceStatus;
+import org.hl7.fhir.dstu3.model.ExpansionProfile;
 import org.hl7.fhir.dstu3.model.InstantType;
 import org.hl7.fhir.dstu3.model.MedicationRequest;
 import org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestStatus;
 import org.hl7.fhir.dstu3.model.Observation;
 import org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
+import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Period;
 import org.hl7.fhir.dstu3.model.Practitioner;
@@ -78,10 +82,15 @@ import org.hl7.fhir.dstu3.model.Quantity.QuantityComparator;
 import org.hl7.fhir.dstu3.model.Range;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Type;
+import org.hl7.fhir.dstu3.utils.EOperationOutcome;
+import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
+import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.ToolsVersion;
 
 public class Mimic14Importer {
 
@@ -117,8 +126,9 @@ public class Mimic14Importer {
   private IniFile ini;
 
   private UcumService ucum;
+  private SimpleWorkerContext context;
   
-  public static void main(String[] args) throws IOException, UcumException {
+  public static void main(String[] args) throws IOException, UcumException, FHIRException, EOperationOutcome {
     new Mimic14Importer().execute(args[0], args[1], args[2]);
   }
 
@@ -128,7 +138,12 @@ public class Mimic14Importer {
   }
 
 
-  private void execute(String src, String dest, String ucumSrc) throws IOException, UcumException {
+  private void execute(String src, String dest, String ucumSrc) throws IOException, UcumException, FHIRException, EOperationOutcome {
+    System.out.println("Loading Context");
+    PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r3.core", "4.0.2"));
+    context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core", "1.1.0"), null, "StructureDefinition");
+    context.setExpansionProfile(new ExpansionProfile());
     System.out.println("Loading UCUM from "+ucumSrc);
   
    ucum = new UcumEssenceService(ucumSrc);
@@ -152,6 +167,15 @@ public class Mimic14Importer {
    
    System.out.println("saving");
    
+   NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
+   for (BundleEntryComponent be : patients.getEntry()) {
+     Patient p = (Patient) be.getResource();
+     gen.generate(p);
+   }
+   for (BundleEntryComponent be : encounters.getEntry()) {
+     Encounter p = (Encounter) be.getResource();
+     gen.generate(p);
+   }
    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "patients.json")), patients);    
    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "encounters.json")), encounters);
    
@@ -946,18 +970,23 @@ public class Mimic14Importer {
       }
       // ignore insurance
       if (csv.has("language")) {
+        pat.getCommunication().clear();
         pat.addCommunication().getLanguage().setText(csv.cell("language"));
       }
       if (csv.has("religion")) {
+        ToolingExtensions.removeExtension(pat, "http://hl7.org/fhir/StructureDefinition/patient-religion");
         pat.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/patient-religion").setValue(new CodeableConcept().setText(csv.cell("religion")));
       }
       if (csv.has("marital_status")) {
+        pat.getMaritalStatus().getCoding().clear();
         pat.getMaritalStatus().addCoding().setSystem("http://mimic.physionet.org/fhir/MaritalStatus").setCode(csv.cell("marital_status"));
       }
       if (csv.has("ethnicity")) {
+        ToolingExtensions.removeExtension(pat, "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity");
         pat.addExtension().setUrl("http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity").setValue(new CodeableConcept().setText(csv.cell("ethnicity")));
       }
       if (!csv.has("diagnosis")) {
+        enc.getReason().clear();
         enc.addReason().setText(csv.cell("diagnosis"));
       }
       if ("1".equals(csv.cell("hospital_expire_flag"))) {
