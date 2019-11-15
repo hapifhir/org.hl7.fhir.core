@@ -250,9 +250,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public class TransformSupportServices implements ITransformerServices {
 
-    private List<Resource> outputs;
+    private List<Base> outputs;
 
-    public TransformSupportServices(List<Resource> outputs) {
+    public TransformSupportServices(List<Base> outputs) {
       this.outputs = outputs;
     }
 
@@ -266,19 +266,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     @Override
     public Base createType(Object appInfo, String name) throws FHIRException {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, name);
-      if (sd != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-        return Manager.build(context, sd); 
-      } else {
-        if (name.startsWith("http://hl7.org/fhir/StructureDefinition/"))
-          name = name.substring("http://hl7.org/fhir/StructureDefinition/".length());
-        return ResourceFactory.createResourceOrType(name);
-      }
+      return Manager.build(context, sd); 
     }
 
     @Override
     public Base createResource(Object appInfo, Base res, boolean atRootofTransform) {
       if (atRootofTransform)
-        outputs.add((Resource) res);
+        outputs.add(res);
       return res;
     }
 
@@ -1216,7 +1210,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
   
   public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws Exception {
-    List<Resource> outputs = new ArrayList<Resource>();
+    List<Base> outputs = new ArrayList<Base>();
     
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs));
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType); 
