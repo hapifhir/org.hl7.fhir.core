@@ -189,6 +189,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return res;
     }
 
+    public ValidatorHostContext forEntry(Element element) {
+      ValidatorHostContext res = new ValidatorHostContext(appContext);
+      res.rootResource = element;
+      res.resource = element;
+      res.container = resource;
+      res.profile = profile;
+      return res;
+    }
+
     public ValidatorHostContext forProfile(StructureDefinition profile) {
       ValidatorHostContext res = new ValidatorHostContext(appContext);
       res.resource = resource;
@@ -3917,10 +3926,15 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
     sdTime = sdTime + (System.nanoTime() - t);
     // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
-    if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY || element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || element.getSpecial() == SpecialElement.PARAMETER )
+    ValidatorHostContext hc = null;
+    if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY || element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || element.getSpecial() == SpecialElement.PARAMETER ) {
       resource = element;
+      hc = hostContext.forEntry(element);
+    } else {
+      hc = hostContext.forContained(element);
+    }
     if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, "No profile found for contained resource of type '" + resourceName + "'"))
-      validateResource(hostContext.forContained(element), errors, resource, element, profile, null, idstatus, stack, false);
+      validateResource(hc, errors, resource, element, profile, null, idstatus, stack, false);
   }
 
   private void validateDocument(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id) {
