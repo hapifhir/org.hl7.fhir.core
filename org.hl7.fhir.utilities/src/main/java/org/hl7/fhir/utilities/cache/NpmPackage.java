@@ -374,13 +374,13 @@ public class NpmPackage {
       return npm.get("version").getAsString();
     else {        
       JsonObject dep = npm.getAsJsonObject("dependencies");
-      if (dep == null)
-        throw new FHIRException("no dependencies found in the Package definition");
-      for (Entry<String, JsonElement> e : dep.entrySet()) {
-        if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
-          return e.getValue().getAsString();
-        if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
-          return e.getValue().getAsString();
+      if (dep != null) {
+        for (Entry<String, JsonElement> e : dep.entrySet()) {
+          if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+            return e.getValue().getAsString();
+          if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
+            return e.getValue().getAsString();
+        }
       }
       if (npm.has("fhirVersions")) {
         return npm.getAsJsonArray("fhirVersions").get(0).getAsString();
@@ -408,7 +408,10 @@ public class NpmPackage {
   }
 
   public String type() {
-    return npm.get("type").getAsString();
+    if (npm.has("type"))
+      return npm.get("type").getAsString();
+    else
+      return null;
   }
 
   public String description() {
@@ -563,5 +566,51 @@ public class NpmPackage {
     }
     return res;
   }
+
+  public String homepage() {
+    if (npm.has("homepage"))
+      return npm.get("homepage").getAsString();
+    else
+      return null;
+  }
+
+  public String url() {
+    if (npm.has("url"))
+      return npm.get("url").getAsString();
+    else
+      return null;
+  }
+
+
+  public String title() {
+    if (npm.has("title"))
+      return npm.get("title").getAsString();
+    else
+      return null;
+  }
+
+  public String toolsVersion() {
+    if (npm.has("tools-version"))
+      return npm.get("tools-version").getAsString();
+    else
+      return null;
+  }
+
+  public String license() {
+    if (npm.has("license"))
+      return npm.get("license").getAsString();
+    else
+      return null;
+  }
+
+  public Map<String, List<String>> getTypes() {
+    return types;
+  }
+
+  public Map<String, String> getUrls() {
+    return urls;
+  }
+
+  
 }
 

@@ -327,6 +327,8 @@ public class PackageCacheManager {
     save = checkIniHasMapping("hl7.fhir.uv.phd", "http://hl7.org/fhir/devices", ini) || save;
     save = checkIniHasMapping("hl7.fhir.uv.vhdir", "http://hl7.org/fhir/ig/vhdir", ini) || save;
     save = checkIniHasMapping("hl7.fhir.vn.base", "http://hl7.org/fhir/ig/vietnam", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.uv.bulkdata", "http://hl7.org/fhir/uv/bulkdata", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.us.bulkdata", "http://hl7.org/fhir/uv/bulkdata", ini) || save;
     save = checkIniHasMapping("hl7.fhir.vocabpoc", "http://hl7.org/fhir/ig/vocab-poc", ini) || save;
     return save;
   }
