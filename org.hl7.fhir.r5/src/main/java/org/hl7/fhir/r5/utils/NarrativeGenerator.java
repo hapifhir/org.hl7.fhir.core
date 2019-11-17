@@ -56,6 +56,7 @@ Copyright (c) 2011+, HL7, Inc
 */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -4726,6 +4727,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       int i = 0;
       for (BundleEntryComponent be : b.getEntry()) {
         i++;
+        if (be.hasFullUrl())
+          root.an(makeInternalLink(be.getFullUrl()));
         if (be.hasResource() && be.getResource().hasId())
           root.an(be.getResource().getResourceType().name().toLowerCase() + "_" + be.getResource().getId());
         root.hr();
@@ -4741,12 +4744,42 @@ public class NarrativeGenerator implements INarrativeGenerator {
           if (be.hasResource() && be.getResource() instanceof DomainResource) {
             DomainResource dr = (DomainResource) be.getResource();
             if ( dr.getText().hasDiv())
-              root.blockquote().getChildNodes().addAll(dr.getText().getDiv().getChildNodes());
+              root.blockquote().getChildNodes().addAll(checkInternalLinks(b, dr.getText().getDiv().getChildNodes()));
           }
         }
       }
       return root;
     }
+  }
+
+  private List<XhtmlNode> checkInternalLinks(Bundle b, List<XhtmlNode> childNodes) {
+    scanNodesForInternalLinks(b, childNodes);
+    return childNodes;
+  }
+
+  private void scanNodesForInternalLinks(Bundle b, List<XhtmlNode> nodes) {
+   for (XhtmlNode n : nodes) {
+     if ("a".equals(n.getName()) && n.hasAttribute("href")) {
+       scanInternalLink(b, n);
+     }
+     scanNodesForInternalLinks(b, n.getChildNodes());
+   }
+  }
+
+  private void scanInternalLink(Bundle b, XhtmlNode n) {
+    boolean fix = false;
+    for (BundleEntryComponent be : b.getEntry()) {
+      if (be.hasFullUrl() && be.getFullUrl().equals(n.getAttribute("href"))) {
+        fix = true;
+      }
+    }
+    if (fix) {
+      n.setAttribute("href", "#"+makeInternalLink(n.getAttribute("href")));
+    }
+  }
+
+  private String makeInternalLink(String fullUrl) {
+    return fullUrl.replace(":", "-");
   }
 
   private void renderSearch(XhtmlNode root, BundleEntrySearchComponent search) {
