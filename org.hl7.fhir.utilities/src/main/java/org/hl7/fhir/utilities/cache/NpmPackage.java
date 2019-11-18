@@ -192,7 +192,7 @@ public class NpmPackage {
     try {
       res.readIndexFile((JsonObject) JsonTrackingParser.parseJson(new String(res.content.get("package/.index.json"))));
     } catch (Exception e) {
-      TextFile.bytesToFile(res.content.get("package/.index.json"), "c:\\temp\\.index.json");
+      TextFile.bytesToFile(res.content.get("package/.index.json"), Utilities.path("[tmp]", ".index.json"));
       throw new IOException("Error parsing package/.index.json: "+e.getMessage(), e);
     }
     return res;
