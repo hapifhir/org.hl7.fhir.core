@@ -106,8 +106,11 @@ public class Property {
       if (tail.endsWith("[x]") && elementName != null && elementName.startsWith(tail.substring(0, tail.length()-3))) {
 				String name = elementName.substring(tail.length()-3);
         return isPrimitive(lowFirst(name)) ? lowFirst(name) : name;        
-			} else
+			} else {
+	      if (ToolingExtensions.hasExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"))
+	        return ToolingExtensions.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
         throw new Error("logic error, gettype when types > 1, name mismatch for "+elementName+" on at "+ed.getPath());
+			}
     } else if (ed.getType().get(0).getCode() == null) {
       if (Utilities.existsInList(ed.getId(), "Element.id", "Extension.url"))
         return "string";

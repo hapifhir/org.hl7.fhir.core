@@ -309,8 +309,13 @@ public class XmlParser extends ParserBase {
     					if (property.getDefinition().hasRepresentation(PropertyRepresentation.TYPEATTR)) {
     						String xsiType = ((org.w3c.dom.Element) child).getAttributeNS(FormatUtilities.NS_XSI, "type");
     						if (Utilities.noString(xsiType)) {
-    		          logError(line(child), col(child), path, IssueType.STRUCTURE, "No type found on '"+child.getLocalName()+'"', IssueSeverity.ERROR);
-    		          ok = false;
+                  if (ToolingExtensions.hasExtension(property.getDefinition(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype")) {
+                    xsiType = ToolingExtensions.readStringExtension(property.getDefinition(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
+                    n.setType(xsiType);
+                  } else {
+      		          logError(line(child), col(child), path, IssueType.STRUCTURE, "No type found on '"+child.getLocalName()+'"', IssueSeverity.ERROR);
+      		          ok = false;
+                  }
     						} else {
     							if (xsiType.contains(":"))
     								xsiType = xsiType.substring(xsiType.indexOf(":")+1);
