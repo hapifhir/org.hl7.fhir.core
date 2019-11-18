@@ -952,6 +952,7 @@ public class Mimic14Importer {
     bnd.setType(BundleType.COLLECTION);
     csv.readHeaders();
     int t = 0;
+    Set<String> rell = new HashSet<>();
     while (csv.line()) {
       Encounter enc = new Encounter();
       t++;
@@ -970,16 +971,35 @@ public class Mimic14Importer {
       }
       // ignore insurance
       if (csv.has("language")) {
-        pat.getCommunication().clear();
-        pat.addCommunication().getLanguage().setText(csv.cell("language"));
+        String lang = ini.getStringProperty("language", csv.cell("language"));
+        if (lang == null) {
+          System.out.println("Unknown language: "+csv.cell("language"));
+        } else {
+          pat.getCommunication().clear();
+          pat.addCommunication().getLanguage().addCoding(iniCodeToCoding(lang, "urn:ietf:bcp:47", "language", csv.cell("language")));
+        }
       }
+      
       if (csv.has("religion")) {
-        ToolingExtensions.removeExtension(pat, "http://hl7.org/fhir/StructureDefinition/patient-religion");
-        pat.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/patient-religion").setValue(new CodeableConcept().setText(csv.cell("religion")));
+        String religion = ini.getStringProperty("religion", csv.cell("religion"));
+        if (religion == null) {
+          if (!rell.contains(csv.cell("religion"))) {
+            System.out.println("unknown religion "+csv.cell("religion"));
+          }
+          rell.add(csv.cell("religion"));
+        } else {
+          ToolingExtensions.removeExtension(pat, "http://hl7.org/fhir/StructureDefinition/patient-religion");
+          pat.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/patient-religion").setValue(new CodeableConcept(iniCodeToCoding(religion, null, "religion", csv.cell("religion"))));
+        }
       }
       if (csv.has("marital_status")) {
-        pat.getMaritalStatus().getCoding().clear();
-        pat.getMaritalStatus().addCoding().setSystem("http://mimic.physionet.org/fhir/MaritalStatus").setCode(csv.cell("marital_status"));
+        String ms = ini.getStringProperty("marital-status", csv.cell("marital_status"));
+        if (ms == null) {
+          System.out.println("Unknown marital-status: "+csv.cell("marital_status"));
+        } else {
+          pat.getMaritalStatus().getCoding().clear();
+          pat.getMaritalStatus().addCoding(iniCodeToCoding(ms, null, "marital-status", csv.cell("marital_status")));
+        }
       }
       if (csv.has("ethnicity")) {
         ToolingExtensions.removeExtension(pat, "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity");
@@ -999,6 +1019,25 @@ public class Mimic14Importer {
     return bnd;
   }
   
+  private Coding iniCodeToCoding(String code, String defSystem, String context, String value) {
+    Coding res = new Coding();
+    if (code.contains("#")) {
+      res.setSystem(code.substring(0, code.indexOf("#")).trim());
+      code = code.substring(code.indexOf("#")+1);
+    } else if (defSystem == null) {
+      throw new Error("Code for "+value+" in section ["+context+"] does not contain a system, and a system is required");
+    } else {
+      res.setSystem(defSystem);
+    }
+    if (code.contains(": ")) {
+      res.setCode(code.substring(0, code.indexOf(":")));
+      res.setDisplay(code.substring(code.indexOf(":")+1).trim());
+    } else {
+      res.setCode(code.trim());
+    }
+    return res;
+  }
+
   private Bundle processPatients(String src) throws FileNotFoundException, IOException {
     System.out.print("Processing Patients... ");
     CSVReader csv = new CSVReader(new FileInputStream(src));

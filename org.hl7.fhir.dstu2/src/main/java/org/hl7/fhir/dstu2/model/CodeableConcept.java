@@ -58,6 +58,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.dstu2.model.Coding;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 /**
@@ -251,6 +252,25 @@ public class CodeableConcept extends Type implements ICompositeType {
         return super.isEmpty() && (coding == null || coding.isEmpty()) && (text == null || text.isEmpty())
           ;
       }
+
+   // added from java-adornments.txt:
+      
+      public boolean hasCoding(String system, String code) {
+        for (Coding c : getCoding()) {
+          if (system.equals(c.getSystem()) && code.equals(c.getCode()))
+            return true;
+        }
+        return false;
+      } 
+
+      public CodeableConcept(Coding code) {
+        super();
+        addCoding(code);
+      }
+      
+      
+
+    // end addition
 
 
 }
