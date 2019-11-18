@@ -64,7 +64,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities.CapabilityStatementComparisonOutput;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
@@ -79,14 +78,12 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.MetadataResource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.KeyGenerator;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.utilities.TextFile;
@@ -94,7 +91,6 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
@@ -115,7 +111,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 public class Validator {
 
   public enum EngineMode {
-    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN
+    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN, CONVERT, FHIRPATH
   }
 
   private static String getNamedParam(String[] args, String param) {
@@ -239,6 +235,22 @@ public class Validator {
       System.out.println(" -narrative");
       System.out.println("");
       System.out.println("-narrative requires the parameters -defn, -txserver, -source, and -output. ig and profile may be used");
+      System.out.println("");
+      System.out.println("Alternatively, you can use the validator to convert a resource or logical model.");
+      System.out.println("To do this, you must provide a specific parameter:");
+      System.out.println("");
+      System.out.println(" -convert");
+      System.out.println("");
+      System.out.println("-convert requires the parameters -source and -output. ig may be used to provide a logical model");
+      System.out.println("");
+      System.out.println("Alternatively, you can use the validator to evaluate a FHIRPath expression on a resource or logical model.");
+      System.out.println("To do this, you must provide a specific parameter:");
+      System.out.println("");
+      System.out.println(" -fhirpath [FHIRPath]");
+      System.out.println("");
+      System.out.println("* [FHIRPath] the FHIRPath expression to evaluate");
+      System.out.println("");
+      System.out.println("-fhirpath requires the parameters -source. ig may be used to provide a logical model");
       System.out.println("");
       System.out.println("Finally, you can use the validator to generate a snapshot for a profile.");
       System.out.println("To do this, you must provide a specific parameter:");
@@ -390,6 +402,7 @@ public class Validator {
       String txLog = null;
       String mapLog = null;
       String lang = null;
+      String fhirpath = null;
       boolean doDebug = false;
 
       // load the parameters - so order doesn't matter
@@ -495,6 +508,17 @@ public class Validator {
           }
         } else if (args[i].startsWith("-x")) {
           i++;
+        } else if (args[i].equals("-convert")) {
+          mode = EngineMode.CONVERT;
+        } else if (args[i].equals("-fhirpath")) {
+            mode = EngineMode.FHIRPATH;
+            if (fhirpath == null)
+              if (i+1 == args.length)
+                throw new Error("Specified -fhirpath without indicating a FHIRPath expression");
+              else
+                fhirpath = args[++i];
+            else
+              throw new Exception("Can only nominate a single -fhirpath parameter");
         } else {
           sources.add(args[i]);
         }
@@ -563,6 +587,12 @@ public class Validator {
         if (output != null) {
           validator.handleOutput(r, output, sv);
         }
+      } else if (mode == EngineMode.CONVERT) {
+        validator.convert(sources.get(0), output);
+        System.out.println(" ...convert");
+      } else if (mode == EngineMode.FHIRPATH) {
+        System.out.println(" ...evaluating "+fhirpath);
+        System.out.println(validator.evaluateFhirPath(sources.get(0), fhirpath));
       } else {
         if  (definitions == null)
           throw new Exception("Must provide a defn when doing validation");
