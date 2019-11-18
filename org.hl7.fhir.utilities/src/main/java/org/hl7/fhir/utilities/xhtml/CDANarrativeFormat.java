@@ -250,10 +250,68 @@ public class CDANarrativeFormat {
     for (String n : names) {
       if (element.hasAttribute(n)) {
         String v = element.getAttribute(n);
-        if (n.equals("ID"))
-          xn.attribute("id", v);
-        else
-          xn.attribute(n, v);
+        switch(n) {
+          case "ID":
+            xn.attribute("id", v);
+            break;
+          case "styleCode":
+            String style = v;
+            switch(v) {
+              // according Table 15.2 CSS rendering, The CDAtm book, Keith W. Boone
+              case "Bold":
+                style = "font-weight: bold";
+                break;
+              case "Underline":
+                style = "text-decoration: underline";
+                break;
+              case "Italics":
+                style = "font-style: italic";
+                break;
+              case "Emphasis":
+                style = "font-weight: small-caps";
+                break;
+              case "Lrule":
+                style = "border-left: 1px";
+                break;
+              case "Rrule":
+                style = "border-right: 1px";
+                break;
+              case "Toprule":
+                style = "border-top: 1px";
+                break;
+              case "Botrule":
+                style = "border-bottom: 1px";
+                break;
+              case "Arabic":
+                style = "list-style-type: decimal";
+                break;
+              case "LittleRoman":
+                style = "list-style-type: lower-roman";
+                break;
+              case "BigRoman":
+                style = "list-style-type: upper-roman";
+                break;
+              case "LittleAlpha":
+                style = "list-style-type: lower-alpha";
+                break;
+              case "BigAlpha":
+                style = "list-style-type: upper-alpha";
+                break;
+              case "Disc":
+                style = "list-style-type: disc";
+                break;
+              case "Circle":
+                style = "list-style-type: circle";
+                break;
+              case "Square":
+                style = "list-style-type: square";
+                break;
+            }
+            xn.attribute("style", style);
+            break;
+          default:
+            xn.attribute(n, v);
+        }
       }
     }
   }
@@ -486,10 +544,68 @@ public class CDANarrativeFormat {
     for (String n : names) {
       if (xn.hasAttribute(n)) {
         String v = xn.getAttribute(n);
-        if (n.equals("id"))
-          xml.attribute("ID", v);
-        else
-          xml.attribute(n, v);
+        switch(n) {
+          case "id":
+            xml.attribute("ID", v);
+            break;
+          case "style":
+            String style = v;
+            switch(v) {
+              // according Table 15.2 CSS rendering, The CDAtm book, Keith W. Boone, will not cover everything, just reverse of processAttributes
+              case "font-weight: bold":
+                style = "Bold";
+                break;
+              case "text-decoration: underline":
+                style = "Underline";
+                break;
+              case "font-style: italic":
+                style = "Italics";
+                break;
+              case "font-weight: small-caps":
+                style = "Emphasis";
+                break;
+              case "border-left: 1px":
+                style = "Lrule";
+                break;
+              case "border-right: 1px":
+                style = "Rrule";
+                break;
+              case "border-top: 1px":
+                style = "Toprule";
+                break;
+              case "border-bottom: 1px":
+                style = "Botrule";
+                break;
+              case "List-style-type: decimal":
+                style = "Arabic";
+                break;
+              case "list-style-type: lower-roman":
+                style = "LittleRoman";
+                break;
+              case "list-style-type: upper-roman":
+                style = "BigRoman";
+                break;
+              case "list-style-type: lower-alpha":
+                style = "LittleAlpha";
+                break;
+              case "list-style-type: upper-alpha":
+                style = "BigAlpha";
+                break;
+              case "list-style-type: disc":
+                style = "Disc";
+                break;
+              case "list-style-type: circle":
+                style = "Circle";
+                break;
+              case "list-style-type: square":
+                style = "Square";
+                break;
+            }
+            xml.attribute("styleCode", style);
+            break;
+          default:
+            xml.attribute(n, v);
+        }
       }
     }
   }
