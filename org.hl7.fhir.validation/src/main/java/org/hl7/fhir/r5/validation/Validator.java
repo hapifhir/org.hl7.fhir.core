@@ -537,11 +537,14 @@ public class Validator {
           throw new Exception("Must provide a map when doing a transform");
         try {
           validator.setMapLog(mapLog);
-          Resource r = validator.transform(sources.get(0), map);
+          org.hl7.fhir.r5.elementmodel.Element r = validator.transform(sources.get(0), map);
           System.out.println(" ...success");
           if (output != null) {
             FileOutputStream s = new FileOutputStream(output);
-            x.compose(s, r);
+            if (output != null && output.endsWith(".json"))
+              new org.hl7.fhir.r5.elementmodel.JsonParser(validator.getContext()).compose(r, s, OutputStyle.PRETTY, null);
+            else
+              new org.hl7.fhir.r5.elementmodel.XmlParser(validator.getContext()).compose(r, s, OutputStyle.PRETTY, null);
             s.close();
           }
         } catch (Exception e) {
