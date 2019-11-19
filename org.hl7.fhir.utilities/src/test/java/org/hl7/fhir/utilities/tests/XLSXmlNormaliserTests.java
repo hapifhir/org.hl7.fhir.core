@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.xls;
+package org.hl7.fhir.utilities.tests;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.xls.XLSXmlNormaliser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.SAXException;

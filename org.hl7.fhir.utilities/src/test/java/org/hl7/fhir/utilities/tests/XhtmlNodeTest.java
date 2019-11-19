@@ -1,8 +1,10 @@
-package org.hl7.fhir.utilities.xhtml;
+package org.hl7.fhir.utilities.tests;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class XhtmlNodeTest {
 
