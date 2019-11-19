@@ -507,13 +507,13 @@ public class PackageCacheManager {
   /**
    * Add an already fetched package to the cache
    */
-  public NpmPackage addPackageToCache(String id, String version, InputStream tgz) throws IOException {
+  public NpmPackage addPackageToCache(String id, String version, InputStream tgz, String sourceDesc) throws IOException {
     if (progress ) {
       System.out.println("Installing "+id+"#"+(version == null ? "?" : version)+" to the package cache");
       System.out.print("  Fetching:");
     }
     
-    NpmPackage npm = NpmPackage.fromPackage(tgz, true);
+    NpmPackage npm = NpmPackage.fromPackage(tgz, sourceDesc, true);
     
     recordMap(npm.canonical(), npm.name());
     
@@ -613,7 +613,7 @@ public class PackageCacheManager {
     if (url.contains(".tgz")) {
       InputStream stream = fetchFromUrlSpecific(url, true);
       if (stream != null)
-        return addPackageToCache(id, v, stream);
+        return addPackageToCache(id, v, stream, url);
       throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);      
     }
     if (v == null) {
@@ -622,11 +622,11 @@ public class PackageCacheManager {
         stream = fetchFromUrlSpecific(Utilities.pathURL(buildPath(url), "package.tgz"), true);
       }
       if (stream != null)
-        return addPackageToCache(id, null,  stream);
+        return addPackageToCache(id, null, stream, url);
       throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);
     } else if ("current".equals(v) && ciList.containsKey(id)){
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), true);
-      return addPackageToCache(id, v, stream);
+      return addPackageToCache(id, v, stream, Utilities.pathURL(ciList.get(id), "package.tgz"));
     } else {
       String pu = Utilities.pathURL(url, "package-list.json");
       JsonObject json;
@@ -643,7 +643,7 @@ public class PackageCacheManager {
           InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"), true);
           if (stream == null)
             throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"));
-          return addPackageToCache(id, v, stream);
+          return addPackageToCache(id, v, stream, Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"));
         }
       }
 //      // special case: current version

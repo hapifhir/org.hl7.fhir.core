@@ -132,10 +132,14 @@ public class NpmPackage {
   private static final int BUFFER_SIZE = 1024;
 
   public static NpmPackage fromPackage(InputStream tgz) throws IOException {
-    return fromPackage(tgz, false);
+    return fromPackage(tgz, null, false);
   }
 
-  public static NpmPackage fromPackage(InputStream tgz, boolean progress) throws IOException {
+  public static NpmPackage fromPackage(InputStream tgz, String desc) throws IOException {
+    return fromPackage(tgz, desc, false);
+  }
+
+  public static NpmPackage fromPackage(InputStream tgz, String desc, boolean progress) throws IOException {
     NpmPackage res = new NpmPackage(null);
     boolean hasIndex = false;
     GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
@@ -187,13 +191,14 @@ public class NpmPackage {
     try {
       res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
     } catch (Exception e) {
-      throw new IOException("Error parsing package/package.json: "+e.getMessage(), e);
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     }
+    byte[] cnt = res.content.get("package/.index.json");
     try {
-      res.readIndexFile((JsonObject) JsonTrackingParser.parseJson(new String(res.content.get("package/.index.json"))));
+      res.readIndexFile((JsonObject) JsonTrackingParser.parseJson(cnt));
     } catch (Exception e) {
-      TextFile.bytesToFile(res.content.get("package/.index.json"), Utilities.path("[tmp]", ".index.json"));
-      throw new IOException("Error parsing package/.index.json: "+e.getMessage(), e);
+      TextFile.bytesToFile(cnt, Utilities.path("[tmp]", ".index.json"));
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/.index.json: "+e.getMessage(), e);
     }
     return res;
   }
