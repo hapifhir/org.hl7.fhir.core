@@ -70,6 +70,17 @@ import com.google.gson.JsonObject;
  */
 public class PackageCacheManager {
 
+  /** if you don't provide and implementation of this interface, the PackageCacheManager will use the web directly. 
+   * 
+   * You can use this interface to 
+   * @author graha
+   *
+   */
+  public interface INetworkServices {
+    
+    InputStream resolvePackage(String packageId, String version);
+  }
+  
   public class VersionHistory {
     private String id;
     private String canonical;
