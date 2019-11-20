@@ -498,10 +498,26 @@ public class NpmPackage {
   }
 
   public void unPack(String dir) throws IOException {
+    unPack (dir, false);
+  }
+
+  public void unPackWithAppend(String dir) throws IOException {
+    unPack (dir, true);
+  }
+
+  public void unPack(String dir, boolean withAppend) throws IOException {
     for (String s : content.keySet()) {
       String fn = Utilities.path(dir, s);
       String dn = Utilities.getDirectoryForFile(fn);
       Utilities.createDirectory(dn);
+      File f = new File(s);
+      if (withAppend && f.getName().startsWith("_append.")) {
+        String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
+        if (new File(appendFn).exists())
+          TextFile.appendBytesToFile(content.get(s), appendFn);        
+        else
+          TextFile.bytesToFile(content.get(s), appendFn);        
+      } else
       TextFile.bytesToFile(content.get(s), fn);
     }
     if (path != null)
