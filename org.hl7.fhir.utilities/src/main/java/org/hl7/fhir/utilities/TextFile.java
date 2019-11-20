@@ -61,6 +61,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -194,8 +197,13 @@ public class TextFile {
     OutputStream sw = new FileOutputStream(file);
     sw.write(bytes);
     sw.flush();
-    sw.close();
-    
+    sw.close(); 
+  }
+  
+  public static void appendBytesToFile(byte[] bytes, String path) throws IOException {
+    byte[] linebreak = new byte[] {13, 10};
+    Files.write(Paths.get(path), linebreak, StandardOpenOption.APPEND);
+    Files.write(Paths.get(path), bytes, StandardOpenOption.APPEND);
   }
 
   public static byte[] fileToBytes(String srcFile) throws FileNotFoundException, IOException {
