@@ -616,6 +616,14 @@ public class NpmPackage {
     return urls;
   }
 
+  public static boolean isValidName(String pid) {
+    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)+$");
+  }
+
+  public static boolean isValidVersion(String ver) {
+    return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
+  }
+
   
 }
 
