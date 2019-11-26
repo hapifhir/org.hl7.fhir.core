@@ -794,16 +794,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     for (Entry<String, byte[]> t : source.entrySet()) {
       String fn = t.getKey();
       if (!exemptFile(fn)) {
-        if (debug)
-          System.out.print("* load file: "+fn);
-        Resource r = null;
-        try { 
-          r = loadResourceByVersion(version, t.getValue(), fn);
-          if (debug)
-            System.out.println(" .. success");
-        } catch (Exception e) {
-          System.out.println(" - ignored due to error: "+e.getMessage());
-        }
+        Resource r = loadFileWithErrorChecking(version, t, fn);
         if (r != null) {
           context.cacheResource(r);
           if (r instanceof ImplementationGuide) {
@@ -820,6 +811,25 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     if (canonical != null)
       grabNatives(source, canonical);
 	}
+
+  public Resource loadFileWithErrorChecking(String version, Entry<String, byte[]> t, String fn) {
+    if (debug)
+      System.out.print("* load file: "+fn);
+    Resource r = null;
+    try { 
+      r = loadResourceByVersion(version, t.getValue(), fn);
+      if (debug)
+        System.out.println(" .. success");
+    } catch (Exception e) {
+      if (!debug) {
+        System.out.print("* load file: "+fn);
+      }
+      System.out.println(" - ignored due to error: "+(e.getMessage() == null ? " (null - NPE)" :  e.getMessage()));
+      if (debug)
+        e.printStackTrace();
+    }
+    return r;
+  }
 
   public Resource loadResourceByVersion(String version, byte[] content, String fn) throws IOException, Exception {
     Resource r;

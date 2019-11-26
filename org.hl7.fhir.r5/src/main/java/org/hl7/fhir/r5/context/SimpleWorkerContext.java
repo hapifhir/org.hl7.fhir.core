@@ -289,6 +289,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  for (String s : pi.listResources(types)) {
        loadDefinitionItem(s, pi.load("package", s), loader);
 	  }
+	  // todogg
 	  version = pi.version();
 	}
 
@@ -469,6 +470,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           generateSnapshot(sd);
         } catch (Exception e) {
           System.out.println("Unable to generate snapshot for "+sd.getUrl()+" because "+e.getMessage());
+          if (true) {
+            e.printStackTrace();
+          }
         }
         result.add(sd);
         set.add(sd);
@@ -586,6 +590,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
       pu.setThrowException(false);
       pu.sortDifferential(sd, p, p.getUrl(), errors);
+      pu.setDebug(false);
       for (String err : errors)
         msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getUserString("path"), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
       pu.generateSnapshot(sd, p, p.getUrl(), Utilities.extractBaseUrl(sd.getUserString("path")), p.getName());

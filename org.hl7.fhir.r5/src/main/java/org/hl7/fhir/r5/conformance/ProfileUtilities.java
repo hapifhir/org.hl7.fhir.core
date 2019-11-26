@@ -835,35 +835,45 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
           int ndl = findEndOfElement(differential, ndc);
           // the first element is setting up the slicing
-          if (diffMatches.get(0).getSlicing().hasRules())
-            if (diffMatches.get(0).getSlicing().getRules() != SlicingRules.CLOSED)
-              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.rules != closed");
-          if (diffMatches.get(0).getSlicing().hasOrdered())
-            if (diffMatches.get(0).getSlicing().getOrdered())
+          if (diffMatches.get(0).getSlicing().hasRules()) {
+            // this rule revoked at DevDays Amsterdam 2019 - discussion between Grahame Lloyd Alexander Ardon
+//            if (diffMatches.get(0).getSlicing().getRules() != SlicingRules.CLOSED) {
+//              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.rules != closed");
+//            }
+          }
+          if (diffMatches.get(0).getSlicing().hasOrdered()) {
+            if (diffMatches.get(0).getSlicing().getOrdered()) {
               throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.ordered = true");
+            }
+          }
           if (diffMatches.get(0).getSlicing().hasDiscriminator()) {
-            if (diffMatches.get(0).getSlicing().getDiscriminator().size() != 1)
+            if (diffMatches.get(0).getSlicing().getDiscriminator().size() != 1) {
               throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.count() > 1");
-            if (!"$this".equals(diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getPath()))
+            }
+            if (!"$this".equals(diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getPath())) {
               throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.path != '$this'");
-            if (diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getType() != DiscriminatorType.TYPE)
+            }
+            if (diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getType() != DiscriminatorType.TYPE) {
               throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.type != 'type'");
+            }
           }
           // check the slice names too while we're at it...
-          for (TypeSlice ts : typeList)
+          for (TypeSlice ts : typeList) {
             if (ts.type != null) {
               String tn = rootName(cpath)+Utilities.capitalize(ts.type);
-              if (!ts.defn.hasSliceName())
+              if (!ts.defn.hasSliceName()) {
                 ts.defn.setSliceName(tn);
-              else if (!ts.defn.getSliceName().equals(tn))
+              } else if (!ts.defn.getSliceName().equals(tn)) {
                 throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice name must be '"+tn+"' but is '"+ts.defn.getSliceName()+"'"); 
-              if (!ts.defn.hasType())
+              } if (!ts.defn.hasType()) {
                 ts.defn.addType().setCode(ts.type);
-              else if (ts.defn.getType().size() > 1)
+              } else if (ts.defn.getType().size() > 1) {
                 throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice for type '"+tn+"' has more than one type '"+ts.defn.typeSummary()+"'"); 
-              else if (!ts.defn.getType().get(0).getCode().equals(ts.type))
-                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice for type '"+tn+"' has wrong type '"+ts.defn.typeSummary()+"'"); 
+              } else if (!ts.defn.getType().get(0).getCode().equals(ts.type)) {
+                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice for type '"+tn+"' has wrong type '"+ts.defn.typeSummary()+"'");
+              }
             }
+          }
 
           // ok passed the checks. 
           // copy the root diff, and then process any children it has

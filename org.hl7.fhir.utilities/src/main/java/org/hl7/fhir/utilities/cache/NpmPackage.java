@@ -48,6 +48,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -250,10 +251,18 @@ public class NpmPackage {
       if (f.exists() && f.isDirectory())
         for (String s : f.list())
           res.add(s);
+      f = new File(Utilities.path(path, "package", folder));
+      if (f.exists() && f.isDirectory())
+        for (String s : f.list())
+          res.add(s);
     } else {
       for (String s : content.keySet()) {
-        if (s.startsWith(folder+"/") && !s.substring(folder.length()+2).contains("/"))
+        if (s.startsWith(folder+"/") && !s.substring(folder.length()+2).contains("/")) {
           res.add(s.substring(folder.length()+1));
+        }
+        if (s.startsWith("package/"+folder+"/")) {
+          res.add(s.substring(folder.length()+9));
+        }
       }
     }
     return res;
@@ -325,10 +334,15 @@ public class NpmPackage {
    * @throws IOException
    */
   public InputStream load(String folder, String file) throws IOException {
-    if (content.containsKey(folder+"/"+file))
+    if (content.containsKey(folder+"/"+file)) {
       return new ByteArrayInputStream(content.get(folder+"/"+file));
-    else {
+    } else if (content.containsKey("package/"+folder+"/"+file)) {
+      return new ByteArrayInputStream(content.get(folder+"/"+file));
+    } else {
       File f = new File(Utilities.path(path, folder, file));
+      if (f.exists())
+        return new FileInputStream(f);
+      f = new File(Utilities.path(path, "package", folder, file));
       if (f.exists())
         return new FileInputStream(f);
       throw new IOException("Unable to find the file "+folder+"/"+file+" in the package "+name());
@@ -534,14 +548,26 @@ public class NpmPackage {
     bufferedOutputStream = new BufferedOutputStream(OutputStream);
     gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
     tar = new TarArchiveOutputStream(gzipOutputStream);
-
-    NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-    indexer.start();
+    
+    Map<String, NpmPackageIndexBuilder> indexers = new HashMap<>();
 
     for (String s : content.keySet()) {
       byte[] b = content.get(s);
-      if (s.startsWith("package/")) { 
-        indexer.seeFile(tail(s), b);
+      if (s.startsWith("package/")) {
+        String n = s.substring(8);
+        String dir = null;
+        if (n.contains("/")) {
+          dir = n.substring(0, n.lastIndexOf("/"));
+          n = n.substring(n.lastIndexOf("/")+1);
+        }
+        if (!indexers.containsKey(dir)) {
+          NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+          indexer.start();
+          indexers.put(dir, indexer);
+        }
+        indexers.get(dir).seeFile(n, b);
+      } else {
+        throw new IOException("The package has an illegal file path "+s);
       }
       if (!s.endsWith(".index.json") && !s.equals("package/package.json")) {
         TarArchiveEntry entry = new TarArchiveEntry(s);
@@ -558,12 +584,14 @@ public class NpmPackage {
     tar.write(cnt);
     tar.closeArchiveEntry();
 
-    cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
-    entry = new TarArchiveEntry("package/.index.json");
-    entry.setSize(cnt.length);
-    tar.putArchiveEntry(entry);
-    tar.write(cnt);
-    tar.closeArchiveEntry();
+    for (String s : indexers.keySet()) {
+      cnt = indexers.get(s).build().getBytes(Charset.forName("UTF-8"));
+      entry = s == null ? new TarArchiveEntry("package/.index.json") : new TarArchiveEntry("package/"+s+"/.index.json");
+      entry.setSize(cnt.length);
+      tar.putArchiveEntry(entry);
+      tar.write(cnt);
+      tar.closeArchiveEntry();
+    }
 
     tar.finish();
     tar.close();
@@ -640,6 +668,27 @@ public class NpmPackage {
     return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
   }
 
+  public String fhirVersionList() {
+    if (npm.has("fhirVersions")) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (JsonElement n : npm.getAsJsonArray("fhirVersions")) {
+        b.append(n.getAsString());
+      }
+      return b.toString();
+    } else
+      return "";
+  }
+
+  public String dependencySummary() {
+    if (npm.has("dependencies")) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (Entry<String, JsonElement> e : npm.getAsJsonObject("dependencies").entrySet()) {
+        b.append(e.getKey()+"#"+e.getValue().getAsString());
+      }
+      return b.toString();
+    } else
+      return "";
+  }
   
 }
 
