@@ -13960,7 +13960,7 @@ public class VersionConvertor_30_50 {
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> convertMedicationDispenseStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus> src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus>();
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus>(new org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
     copyElement(src, tgt);
     switch (src.getValue()) {
     case PREPARATION: tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus.PREPARATION); break;

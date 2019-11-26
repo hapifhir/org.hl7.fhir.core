@@ -188,7 +188,9 @@ public class PackageCacheManager {
     int c = 0;
     File[] packages = new File(Utilities.path(dir, "package")).listFiles();
     for (File f : packages) {
-      indexer.seeFile(f.getName(), TextFile.fileToBytes(f));
+      if (!f.isDirectory()) {
+        indexer.seeFile(f.getName(), TextFile.fileToBytes(f));
+      }
       i++;
       if (progress && i % 50 == 0) {
         c++;
@@ -289,6 +291,7 @@ public class PackageCacheManager {
   
   public boolean initUrlMaps(IniFile ini, boolean save) {
     save = checkIniHasMapping("hl7.fhir.core", "http://hl7.org/fhir", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.pubpack", "http://fhir.org/packages/hl7.fhir.pubpack", ini) || save;
     
     save = checkIniHasMapping("hl7.fhir.r2.core", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.core.tgz", ini) || save;
     save = checkIniHasMapping("hl7.fhir.r2.examples", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.examples.tgz", ini) || save;
@@ -644,7 +647,13 @@ public class PackageCacheManager {
       try {
         json = fetchJson(pu);
       } catch (Exception e) {
-        throw new FHIRException("Error fetching package list for "+id+" from "+pu+": "+e.getMessage(), e);
+        String pv = Utilities.pathURL(url, v, "package.tgz");
+        try {
+          InputStream stream = fetchFromUrlSpecific(pv, true);
+          return addPackageToCache(id, v, stream, pv);
+        } catch (Exception e1) {
+          throw new FHIRException("Error fetching package directly ("+pv+"), or fetching package list for "+id+" from "+pu+": "+e1.getMessage(), e1);
+        }  
       }
       if (!id.equals(JSONUtil.str(json, "package-id")))
         throw new FHIRException("Package ids do not match in "+pu+": "+id+" vs "+JSONUtil.str(json, "package-id"));
