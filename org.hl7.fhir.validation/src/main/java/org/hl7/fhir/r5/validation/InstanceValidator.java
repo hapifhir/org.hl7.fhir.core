@@ -130,6 +130,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.r5.utils.ValidationProfileSet.ProfileRegistration;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.r5.validation.InstanceValidator.EntrySummary;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
@@ -365,6 +366,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private long fpeTime = 0;
 
   private boolean noBindingMsgSuppressed;
+  private boolean debug;
   private HashMap<Element, ResourceProfiles> resourceProfilesMap;
   private IValidatorResourceFetcher fetcher;
   long time = 0;
@@ -878,31 +880,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return v1 == null ? Utilities.noString(v1) : v1.equals(v2);
   }
 
-  private void checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed) {
-    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus);
-    checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus);
-    checkFixedValue(errors, path + ".city", focus.getNamedChild("city"), fixed.getCityElement(), "city", focus);
-    checkFixedValue(errors, path + ".state", focus.getNamedChild("state"), fixed.getStateElement(), "state", focus);
-    checkFixedValue(errors, path + ".country", focus.getNamedChild("country"), fixed.getCountryElement(), "country", focus);
-    checkFixedValue(errors, path + ".zip", focus.getNamedChild("zip"), fixed.getPostalCodeElement(), "postalCode", focus);
+  private void checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus, pattern);
+    checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus, pattern);
+    checkFixedValue(errors, path + ".city", focus.getNamedChild("city"), fixed.getCityElement(), "city", focus, pattern);
+    checkFixedValue(errors, path + ".state", focus.getNamedChild("state"), fixed.getStateElement(), "state", focus, pattern);
+    checkFixedValue(errors, path + ".country", focus.getNamedChild("country"), fixed.getCountryElement(), "country", focus, pattern);
+    checkFixedValue(errors, path + ".zip", focus.getNamedChild("zip"), fixed.getPostalCodeElement(), "postalCode", focus, pattern);
 
     List<Element> lines = new ArrayList<Element>();
     focus.getNamedChildren("line", lines);
     if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lines.size() == fixed.getLine().size(),
         "Expected " + Integer.toString(fixed.getLine().size()) + " but found " + Integer.toString(lines.size()) + " line elements")) {
       for (int i = 0; i < lines.size(); i++)
-        checkFixedValue(errors, path + ".coding", lines.get(i), fixed.getLine().get(i), "coding", focus);
+        checkFixedValue(errors, path + ".coding", lines.get(i), fixed.getLine().get(i), "coding", focus, pattern);
     }
   }
 
-  private void checkAttachment(List<ValidationMessage> errors, String path, Element focus, Attachment fixed) {
-    checkFixedValue(errors, path + ".contentType", focus.getNamedChild("contentType"), fixed.getContentTypeElement(), "contentType", focus);
-    checkFixedValue(errors, path + ".language", focus.getNamedChild("language"), fixed.getLanguageElement(), "language", focus);
-    checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), "data", focus);
-    checkFixedValue(errors, path + ".url", focus.getNamedChild("url"), fixed.getUrlElement(), "url", focus);
-    checkFixedValue(errors, path + ".size", focus.getNamedChild("size"), fixed.getSizeElement(), "size", focus);
-    checkFixedValue(errors, path + ".hash", focus.getNamedChild("hash"), fixed.getHashElement(), "hash", focus);
-    checkFixedValue(errors, path + ".title", focus.getNamedChild("title"), fixed.getTitleElement(), "title", focus);
+  private void checkAttachment(List<ValidationMessage> errors, String path, Element focus, Attachment fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".contentType", focus.getNamedChild("contentType"), fixed.getContentTypeElement(), "contentType", focus, pattern);
+    checkFixedValue(errors, path + ".language", focus.getNamedChild("language"), fixed.getLanguageElement(), "language", focus, pattern);
+    checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), "data", focus, pattern);
+    checkFixedValue(errors, path + ".url", focus.getNamedChild("url"), fixed.getUrlElement(), "url", focus, pattern);
+    checkFixedValue(errors, path + ".size", focus.getNamedChild("size"), fixed.getSizeElement(), "size", focus, pattern);
+    checkFixedValue(errors, path + ".hash", focus.getNamedChild("hash"), fixed.getHashElement(), "hash", focus, pattern);
+    checkFixedValue(errors, path + ".title", focus.getNamedChild("title"), fixed.getTitleElement(), "title", focus, pattern);
   }
 
   // public API
@@ -983,7 +985,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
   
   private void checkCodeableConcept(List<ValidationMessage> errors, String path, Element focus, CodeableConcept fixed, boolean pattern) {
-    checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus);
+    checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus, pattern);
     List<Element> codings = new ArrayList<Element>();
     focus.getNamedChildren("coding", codings);
     if (pattern) {
@@ -997,7 +999,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           List<ValidationMessage> errorsFixed;
           for (int j = 0; j < codings.size() && !found; ++j) {
             errorsFixed = new ArrayList<>();
-            checkFixedValue(errorsFixed, path + ".coding", codings.get(j), fixedCoding, "coding", focus);
+            checkFixedValue(errorsFixed, path + ".coding", codings.get(j), fixedCoding, "coding", focus, pattern);
             if (!hasErrors(errorsFixed)) {
               found = true;
             } else {
@@ -1010,7 +1012,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!found) {
             // The argonaut DSTU2 labs profile requires userSelected=false on the category.coding and this
             // needs to produce an understandable error message
-            String message = "Expected fixed CodeableConcept not found for" +
+            String message = "Expected CodeableConcept "+(pattern ? "pattern" : "fixed value")+" not found for" +
               " system: " + fixedCoding.getSystemElement().asStringValue() +
               " code: " + fixedCoding.getCodeElement().asStringValue() +
               " display: " + fixedCoding.getDisplayElement().asStringValue();
@@ -1195,11 +1197,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return b.toString();
   }
 
-  private void checkCoding(List<ValidationMessage> errors, String path, Element focus, Coding fixed) {
-    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus);
-    checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), "code", focus);
-    checkFixedValue(errors, path + ".display", focus.getNamedChild("display"), fixed.getDisplayElement(), "display", focus);
-    checkFixedValue(errors, path + ".userSelected", focus.getNamedChild("userSelected"), fixed.getUserSelectedElement(), "userSelected", focus);
+  private void checkCoding(List<ValidationMessage> errors, String path, Element focus, Coding fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus, pattern);
+    checkFixedValue(errors, path + ".version", focus.getNamedChild("version"), fixed.getVersionElement(), "version", focus, pattern);
+    checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), "code", focus, pattern);
+    checkFixedValue(errors, path + ".display", focus.getNamedChild("display"), fixed.getDisplayElement(), "display", focus, pattern);
+    checkFixedValue(errors, path + ".userSelected", focus.getNamedChild("userSelected"), fixed.getUserSelectedElement(), "userSelected", focus, pattern);
   }
 
   private void checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack)  {
@@ -1275,11 +1278,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkContactPoint(List<ValidationMessage> errors, String path, Element focus, ContactPoint fixed) {
-    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus);
-    checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), "value", focus);
-    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus);
-    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), "period", focus);
+  private void checkContactPoint(List<ValidationMessage> errors, String path, Element focus, ContactPoint fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus, pattern);
+    checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), "value", focus, pattern);
+    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus, pattern);
+    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), "period", focus, pattern);
 
   }
 
@@ -1456,8 +1459,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String propName, Element parent, boolean pattern) {
     if ((fixed == null || fixed.isEmpty()) && focus == null)
       ; // this is all good
-    else if (fixed == null && focus != null)
-      rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, "Unexpected element " + focus.getName());
+    else if ((fixed == null || fixed.isEmpty()) && focus != null)
+      rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, pattern, "Unexpected element " + focus.getName());
     else if (fixed != null && !fixed.isEmpty() && focus == null)
       rule(errors, IssueType.VALUE, parent == null ? -1 : parent.line(), parent == null ? -1 : parent.col(), path, false, "Missing element '" + propName+"'");
     else {
@@ -1505,31 +1508,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IdType) fixed).getValue(), value),
             "Value is '" + value + "' but must be '" + ((org.hl7.fhir.r5.model.IdType) fixed).getValue() + "'");
       else if (fixed instanceof Quantity)
-        checkQuantity(errors, path, focus, (Quantity) fixed);
+        checkQuantity(errors, path, focus, (Quantity) fixed, pattern);
       else if (fixed instanceof Address)
-        checkAddress(errors, path, focus, (Address) fixed);
+        checkAddress(errors, path, focus, (Address) fixed, pattern);
       else if (fixed instanceof ContactPoint)
-        checkContactPoint(errors, path, focus, (ContactPoint) fixed);
+        checkContactPoint(errors, path, focus, (ContactPoint) fixed, pattern);
       else if (fixed instanceof Attachment)
-        checkAttachment(errors, path, focus, (Attachment) fixed);
+        checkAttachment(errors, path, focus, (Attachment) fixed, pattern);
       else if (fixed instanceof Identifier)
-        checkIdentifier(errors, path, focus, (Identifier) fixed);
+        checkIdentifier(errors, path, focus, (Identifier) fixed, pattern);
       else if (fixed instanceof Coding)
-        checkCoding(errors, path, focus, (Coding) fixed);
+        checkCoding(errors, path, focus, (Coding) fixed, pattern);
       else if (fixed instanceof HumanName)
-        checkHumanName(errors, path, focus, (HumanName) fixed);
+        checkHumanName(errors, path, focus, (HumanName) fixed, pattern);
       else if (fixed instanceof CodeableConcept)
         checkCodeableConcept(errors, path, focus, (CodeableConcept) fixed, pattern);
       else if (fixed instanceof Timing)
-        checkTiming(errors, path, focus, (Timing) fixed);
+        checkTiming(errors, path, focus, (Timing) fixed, pattern);
       else if (fixed instanceof Period)
-        checkPeriod(errors, path, focus, (Period) fixed);
+        checkPeriod(errors, path, focus, (Period) fixed, pattern);
       else if (fixed instanceof Range)
-        checkRange(errors, path, focus, (Range) fixed);
+        checkRange(errors, path, focus, (Range) fixed, pattern);
       else if (fixed instanceof Ratio)
-        checkRatio(errors, path, focus, (Ratio) fixed);
+        checkRatio(errors, path, focus, (Ratio) fixed, pattern);
       else if (fixed instanceof SampledData)
-        checkSampledData(errors, path, focus, (SampledData) fixed);
+        checkSampledData(errors, path, focus, (SampledData) fixed, pattern);
 
       else
         rule(errors, IssueType.EXCEPTION, focus.line(), focus.col(), path, false, "Unhandled fixed value type " + fixed.getClass().getName());
@@ -1549,35 +1552,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkHumanName(List<ValidationMessage> errors, String path, Element focus, HumanName fixed) {
-    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus);
-    checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus);
-    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), "period", focus);
+  private void checkHumanName(List<ValidationMessage> errors, String path, Element focus, HumanName fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus, pattern);
+    checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), "text", focus, pattern);
+    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), "period", focus, pattern);
 
     List<Element> parts = new ArrayList<Element>();
     focus.getNamedChildren("family", parts);
     if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() > 0 == fixed.hasFamily(),
         "Expected " + (fixed.hasFamily() ? "1" : "0") + " but found " + Integer.toString(parts.size()) + " family elements")) {
       for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".family", parts.get(i), fixed.getFamilyElement(), "family", focus);
+        checkFixedValue(errors, path + ".family", parts.get(i), fixed.getFamilyElement(), "family", focus, pattern);
     }
     focus.getNamedChildren("given", parts);
     if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getGiven().size(),
         "Expected " + Integer.toString(fixed.getGiven().size()) + " but found " + Integer.toString(parts.size()) + " given elements")) {
       for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".given", parts.get(i), fixed.getGiven().get(i), "given", focus);
+        checkFixedValue(errors, path + ".given", parts.get(i), fixed.getGiven().get(i), "given", focus, pattern);
     }
     focus.getNamedChildren("prefix", parts);
     if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getPrefix().size(),
         "Expected " + Integer.toString(fixed.getPrefix().size()) + " but found " + Integer.toString(parts.size()) + " prefix elements")) {
       for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".prefix", parts.get(i), fixed.getPrefix().get(i), "prefix", focus);
+        checkFixedValue(errors, path + ".prefix", parts.get(i), fixed.getPrefix().get(i), "prefix", focus, pattern);
     }
     focus.getNamedChildren("suffix", parts);
     if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getSuffix().size(),
         "Expected " + Integer.toString(fixed.getSuffix().size()) + " but found " + Integer.toString(parts.size()) + " suffix elements")) {
       for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".suffix", parts.get(i), fixed.getSuffix().get(i), "suffix", focus);
+        checkFixedValue(errors, path + ".suffix", parts.get(i), fixed.getSuffix().get(i), "suffix", focus, pattern);
     }
   }
 
@@ -1586,18 +1589,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), "Identifier.system must be an absolute reference, not a local reference");
   }
 
-  private void checkIdentifier(List<ValidationMessage> errors, String path, Element focus, Identifier fixed) {
-    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus);
-    checkFixedValue(errors, path + ".type", focus.getNamedChild("type"), fixed.getType(), "type", focus);
-    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus);
-    checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), "value", focus);
-    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), "period", focus);
-    checkFixedValue(errors, path + ".assigner", focus.getNamedChild("assigner"), fixed.getAssigner(), "assigner", focus);
+  private void checkIdentifier(List<ValidationMessage> errors, String path, Element focus, Identifier fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), "use", focus, pattern);
+    checkFixedValue(errors, path + ".type", focus.getNamedChild("type"), fixed.getType(), "type", focus, pattern);
+    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus,  pattern);
+    checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), "value", focus, pattern);
+    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), "period", focus, pattern);
+    checkFixedValue(errors, path + ".assigner", focus.getNamedChild("assigner"), fixed.getAssigner(), "assigner", focus, pattern);
   }
 
-  private void checkPeriod(List<ValidationMessage> errors, String path, Element focus, Period fixed) {
-    checkFixedValue(errors, path + ".start", focus.getNamedChild("start"), fixed.getStartElement(), "start", focus);
-    checkFixedValue(errors, path + ".end", focus.getNamedChild("end"), fixed.getEndElement(), "end", focus);
+  private void checkPeriod(List<ValidationMessage> errors, String path, Element focus, Period fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".start", focus.getNamedChild("start"), fixed.getStartElement(), "start", focus, pattern);
+    checkFixedValue(errors, path + ".end", focus.getNamedChild("end"), fixed.getEndElement(), "end", focus, pattern);
   }
 
   private void checkPrimitive(Object appContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile, NodeStack node) throws FHIRException, IOException {
@@ -1866,25 +1869,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), "Binding has no source, so can't be checked");
   }
 
-  private void checkQuantity(List<ValidationMessage> errors, String path, Element focus, Quantity fixed) {
-    checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), "value", focus);
-    checkFixedValue(errors, path + ".comparator", focus.getNamedChild("comparator"), fixed.getComparatorElement(), "comparator", focus);
-    checkFixedValue(errors, path + ".units", focus.getNamedChild("unit"), fixed.getUnitElement(), "units", focus);
-    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus);
-    checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), "code", focus);
+  private void checkQuantity(List<ValidationMessage> errors, String path, Element focus, Quantity fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), "value", focus, pattern);
+    checkFixedValue(errors, path + ".comparator", focus.getNamedChild("comparator"), fixed.getComparatorElement(), "comparator", focus, pattern);
+    checkFixedValue(errors, path + ".units", focus.getNamedChild("unit"), fixed.getUnitElement(), "units", focus, pattern);
+    checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), "system", focus, pattern);
+    checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), "code", focus, pattern);
   }
 
   // implementation
 
-  private void checkRange(List<ValidationMessage> errors, String path, Element focus, Range fixed) {
-    checkFixedValue(errors, path + ".low", focus.getNamedChild("low"), fixed.getLow(), "low", focus);
-    checkFixedValue(errors, path + ".high", focus.getNamedChild("high"), fixed.getHigh(), "high", focus);
+  private void checkRange(List<ValidationMessage> errors, String path, Element focus, Range fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".low", focus.getNamedChild("low"), fixed.getLow(), "low", focus, pattern);
+    checkFixedValue(errors, path + ".high", focus.getNamedChild("high"), fixed.getHigh(), "high", focus, pattern);
 
   }
 
-  private void checkRatio(List<ValidationMessage> errors, String path, Element focus, Ratio fixed) {
-    checkFixedValue(errors, path + ".numerator", focus.getNamedChild("numerator"), fixed.getNumerator(), "numerator", focus);
-    checkFixedValue(errors, path + ".denominator", focus.getNamedChild("denominator"), fixed.getDenominator(), "denominator", focus);
+  private void checkRatio(List<ValidationMessage> errors, String path, Element focus, Ratio fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".numerator", focus.getNamedChild("numerator"), fixed.getNumerator(), "numerator", focus, pattern);
+    checkFixedValue(errors, path + ".denominator", focus.getNamedChild("denominator"), fixed.getDenominator(), "denominator", focus, pattern);
   }
 
   private void checkReference(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition container, String parentType, NodeStack stack) throws FHIRException, IOException {
@@ -2081,25 +2084,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void checkSampledData(List<ValidationMessage> errors, String path, Element focus, SampledData fixed) {
-    checkFixedValue(errors, path + ".origin", focus.getNamedChild("origin"), fixed.getOrigin(), "origin", focus);
-    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriodElement(), "period", focus);
-    checkFixedValue(errors, path + ".factor", focus.getNamedChild("factor"), fixed.getFactorElement(), "factor", focus);
-    checkFixedValue(errors, path + ".lowerLimit", focus.getNamedChild("lowerLimit"), fixed.getLowerLimitElement(), "lowerLimit", focus);
-    checkFixedValue(errors, path + ".upperLimit", focus.getNamedChild("upperLimit"), fixed.getUpperLimitElement(), "upperLimit", focus);
-    checkFixedValue(errors, path + ".dimensions", focus.getNamedChild("dimensions"), fixed.getDimensionsElement(), "dimensions", focus);
-    checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), "data", focus);
+  private void checkSampledData(List<ValidationMessage> errors, String path, Element focus, SampledData fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".origin", focus.getNamedChild("origin"), fixed.getOrigin(), "origin", focus, pattern);
+    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriodElement(), "period", focus, pattern);
+    checkFixedValue(errors, path + ".factor", focus.getNamedChild("factor"), fixed.getFactorElement(), "factor", focus, pattern);
+    checkFixedValue(errors, path + ".lowerLimit", focus.getNamedChild("lowerLimit"), fixed.getLowerLimitElement(), "lowerLimit", focus, pattern);
+    checkFixedValue(errors, path + ".upperLimit", focus.getNamedChild("upperLimit"), fixed.getUpperLimitElement(), "upperLimit", focus, pattern);
+    checkFixedValue(errors, path + ".dimensions", focus.getNamedChild("dimensions"), fixed.getDimensionsElement(), "dimensions", focus, pattern);
+    checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), "data", focus, pattern);
   }
 
-  private void checkTiming(List<ValidationMessage> errors, String path, Element focus, Timing fixed) {
-    checkFixedValue(errors, path + ".repeat", focus.getNamedChild("repeat"), fixed.getRepeat(), "value", focus);
+  private void checkTiming(List<ValidationMessage> errors, String path, Element focus, Timing fixed, boolean pattern) {
+    checkFixedValue(errors, path + ".repeat", focus.getNamedChild("repeat"), fixed.getRepeat(), "value", focus, pattern);
 
     List<Element> events = new ArrayList<Element>();
     focus.getNamedChildren("event", events);
     if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, events.size() == fixed.getEvent().size(),
         "Expected " + Integer.toString(fixed.getEvent().size()) + " but found " + Integer.toString(events.size()) + " event elements")) {
       for (int i = 0; i < events.size(); i++)
-        checkFixedValue(errors, path + ".event", events.get(i), fixed.getEvent().get(i), "event", focus);
+        checkFixedValue(errors, path + ".event", events.get(i), fixed.getEvent().get(i), "event", focus, pattern);
     }
   }
 
@@ -3731,7 +3734,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath("entry", ":0"), resource != null, "No resource on first entry")) {
           validateDocument(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id);
         }
-        checkAllInterlinked(errors, entries, stack, bundle);
+        checkAllInterlinked(errors, entries, stack, bundle, false);
       }
       if (type.equals("message")) {
         Element resource = firstEntry.getNamedChild("resource");
@@ -3739,7 +3742,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath("entry", ":0"), resource != null, "No resource on first entry")) {
           validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id);
         }
-        checkAllInterlinked(errors, entries, stack, bundle);
+        checkAllInterlinked(errors, entries, stack, bundle, true);
       }
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
       //      validateResourceIds(errors, entries, stack);
@@ -3815,55 +3818,86 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
    }
   }
 
-  private void checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle) {
-    Map<String, Element> visitedResources = new HashMap<String, Element>();
-    HashMap<Element,Element> candidateEntries = new HashMap<Element,Element>();
-    List<Element> candidateResources = new ArrayList<Element>();
+  public class EntrySummary {
+    Element entry;
+    Element resource;
+    List<EntrySummary> targets = new ArrayList<>();
+    public EntrySummary(Element entry, Element resource) {
+      this.entry = entry;
+      this.resource = resource;
+    }
+
+  }
+
+  private void checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isError) {
+    List<EntrySummary> entryList = new ArrayList<>();
     for (Element entry: entries) {
-      candidateEntries.put(entry.getNamedChild("resource"), entry);
-      candidateResources.add(entry.getNamedChild("resource"));
-    }
-    // Find resources that are pointed to as stylesheet links
-    List<String> sheets = new ArrayList<>();
-    List<Element> links = bundle.getChildren("link");
-    for (Element link : links) {
-      if (link.getChildValue("relation").equals("stylesheet")) {
-        sheets.add(link.getChildValue("url"));
+      Element r = entry.getNamedChild("resource");
+      if (r != null) {
+        entryList.add(new EntrySummary(entry, r));
       }
     }
-
-    if (!sheets.isEmpty()) {
-      for (Element r : candidateResources) {
-        String url = r.getChildValue("fullUrl");
-        if (sheets.contains(url))
-          visitedResources.put(url, r);
-      }
-    }
-
-    List<Element> unusedResources = new ArrayList<Element>();
-    boolean reverseLinksFound;
-    do {
-      reverseLinksFound = false;
-      followResourceLinks(entries.get(0), visitedResources, candidateEntries, candidateResources, errors, stack);
-      unusedResources.clear();
-      unusedResources.addAll(candidateResources);
-      unusedResources.removeAll(visitedResources.values());
-      for (Element unusedResource: unusedResources) {
-        List<String> references = findReferences(unusedResource);
-        for (String reference: references) {
-          if (!visitedResources.containsKey(reference)) {
-            visitedResources.put(reference, unusedResource);
-            reverseLinksFound = true;
+    for (EntrySummary e : entryList) {
+      Set<String> references = findReferences(e.entry);
+      for (String ref : references) {
+        Element tgt = resolveInBundle(entries, ref, e.entry.getChildValue("fullUrl"), e.resource.fhirType(), e.resource.getIdBase());
+        if (tgt != null) {
+          EntrySummary t = entryForTarget(entryList, tgt);
+          if (t != null) {
+            e.targets.add(t);
           }
         }
       }
-    } while (reverseLinksFound);
-    // Lloyd Todo - Loop above four lines to check if the remaining unused resources point *to* any of the visitedResources and if so, add those to the visitedList until nothing more is added.  Any that are still left over are errors
+    }
 
+    Set<EntrySummary> visited = new HashSet<>();
+    visitLinked(visited, entryList.get(0));
+    boolean foundRevLinks;
+    do {
+      foundRevLinks = false;
+      for (EntrySummary e : entryList) {
+        if (!visited.contains(e)) {
+          boolean add = false;
+          for (EntrySummary t : e.targets) {
+            if (visited.contains(t)) {
+              add = true;
+            }
+          }
+          if (add) {
+            foundRevLinks = true;
+            visitLinked(visited, e);              
+          }
+        }
+      }
+    } while (foundRevLinks);
+    
     int i = 0;
-    for (Element entry : entries) {
-      rule(errors, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath("entry" + '[' + (i+1) + ']'), !unusedResources.contains(entry.getNamedChild("resource")), "Entry isn't reachable by traversing from first Bundle entry");
+    for (EntrySummary e : entryList) {
+      Element entry = e.entry;
+      if (isError) {
+        rule(errors, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath("entry" + '[' + (i+1) + ']'), visited.contains(e), "Entry "+(entry.getChildValue("fullUrl") != null ? "'"+entry.getChildValue("fullUrl")+"'" : "")+" isn't reachable by traversing from first Bundle entry");
+      } else {
+        warning(errors, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath("entry" + '[' + (i+1) + ']'), visited.contains(e), "Entry "+(entry.getChildValue("fullUrl") != null ? "'"+entry.getChildValue("fullUrl")+"'" : "")+" isn't reachable by traversing from first Bundle entry");
+      }
       i++;
+    }
+  }
+
+  private EntrySummary entryForTarget(List<EntrySummary> entryList, Element tgt) {
+    for (EntrySummary e : entryList) {
+      if (e.entry == tgt) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  private void visitLinked(Set<EntrySummary> visited, EntrySummary t) {
+    if (!visited.contains(t)) {
+      visited.add(t);
+      for (EntrySummary e : t.targets) {
+        visitLinked(visited, e);
+      }
     }
   }
 
@@ -3879,7 +3913,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     visitedResources.put(entry.getNamedChildValue("fullUrl"), resource);
 
     String type = null;
-    List<String> references = findReferences(resource);
+    Set<String> references = findReferences(resource);
     for (String reference: references) {
       // We don't want errors when just retrieving the element as they will be caught (with better path info) in subsequent processing
       Element r = getFromBundle(stack.getElement(), reference, entry.getChildValue("fullUrl"), new ArrayList<ValidationMessage>(), stack.addToLiteralPath("entry[" + candidateResources.indexOf(resource) + "]"), type);
@@ -3889,17 +3923,22 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     }
   }
 
-  private List<String> findReferences(Element start) {
-    List<String> references = new ArrayList<String>();
+  private Set<String> findReferences(Element start) {
+    Set<String> references = new HashSet<String>();
     findReferences(start, references);
     return references;
   }
 
-  private void findReferences(Element start, List<String> references) {
+  private void findReferences(Element start, Set<String> references) {
     for (Element child : start.getChildren()) {
       if (child.getType().equals("Reference")) {
         String ref = child.getChildValue("reference");
-        if (ref!=null && !ref.startsWith("#"))
+        if (ref != null && !ref.startsWith("#"))
+          references.add(ref);
+      }
+      if (child.getType().equals("url") || child.getType().equals("uri") || child.getType().equals("canonical")) {
+        String ref = child.primitiveValue();
+        if (ref != null && !ref.startsWith("#"))
           references.add(ref);
       }
       findReferences(child, references);
@@ -3993,9 +4032,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext) throws FHIRException, FHIRException, IOException {
     // element.markValidation(profile, definition);
 
-    //		System.out.println("  "+stack.getLiteralPath()+" "+Long.toString((System.nanoTime() - time) / 1000000));
+    if (debug) {
+    	System.out.println("  "+stack.getLiteralPath());
+    }
     //		time = System.nanoTime();
-    checkInvariants(hostContext, errors, profile, definition, resource, element, stack);
+    // check type invariants
+    checkInvariants(hostContext, errors, profile, definition, resource, element, stack, false);
+    if (definition.getFixed() != null)
+      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), definition.getSliceName(), null);
 
 
     // get the list of direct defined children, including slices
@@ -4033,26 +4077,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     if (ei.definition != null) {
       String type = null;
       ElementDefinition typeDefn = null;
-
-      String usesMustSupport = profile.getUserString("usesMustSupport");
-      if (usesMustSupport == null) {
-        usesMustSupport = "N";
-        for (ElementDefinition pe: profile.getSnapshot().getElement()) {
-          if (pe.getMustSupport()) {
-            usesMustSupport = "Y";
-            break;
-          }
-        }
-        profile.setUserData("usesMustSupport", usesMustSupport);
-      }
-      if (usesMustSupport.equals("Y")) {
-        String elementSupported = ei.element.getUserString("elementSupported");
-        if (elementSupported==null || ei.definition.getMustSupport())
-          if (ei.definition.getMustSupport())
-            ei.element.setUserData("elementSupported", "Y");
-          else
-            ei.element.setUserData("elementSupported", "N");
-      }
+      checkMustSupport(profile, ei);
 
       if (ei.definition.getType().size() == 1 && !"*".equals(ei.definition.getType().get(0).getWorkingCode()) && !"Element".equals(ei.definition.getType().get(0).getWorkingCode())
           && !"BackboneElement".equals(ei.definition.getType().get(0).getWorkingCode())) {
@@ -4119,6 +4144,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
       boolean thisIsCodeableConcept = false;
       boolean checkDisplay = true;
+
+      checkInvariants(hostContext, errors, profile, ei.definition, resource, ei.element, localStack, true);
 
       ei.element.markValidation(profile, ei.definition);
       if (type != null) {
@@ -4225,6 +4252,28 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
         }
       }
+    }
+  }
+
+  public void checkMustSupport(StructureDefinition profile, ElementInfo ei) {
+    String usesMustSupport = profile.getUserString("usesMustSupport");
+    if (usesMustSupport == null) {
+      usesMustSupport = "N";
+      for (ElementDefinition pe: profile.getSnapshot().getElement()) {
+        if (pe.getMustSupport()) {
+          usesMustSupport = "Y";
+          break;
+        }
+      }
+      profile.setUserData("usesMustSupport", usesMustSupport);
+    }
+    if (usesMustSupport.equals("Y")) {
+      String elementSupported = ei.element.getUserString("elementSupported");
+      if (elementSupported==null || ei.definition.getMustSupport())
+        if (ei.definition.getMustSupport())
+          ei.element.setUserData("elementSupported", "Y");
+        else
+          ei.element.setUserData("elementSupported", "N");
     }
   }
 
@@ -4363,7 +4412,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   }
 
   public void checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
-      Element resource, Element element, NodeStack stack) throws FHIRException {
+      Element resource, Element element, NodeStack stack, boolean onlyNonInherited) throws FHIRException {
 	  // this was an old work around for resource/rootresource issue.
 //    if (resource.getName().equals("contained")) {
 //      NodeStack ancestor = stack;
@@ -4372,9 +4421,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 //      if (ancestor != null && ancestor.element != null)
 //        checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, ancestor.element, element);
 //    } else
-      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element);
-    if (definition.getFixed()!=null)
-      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), definition.getSliceName(), null);
+      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element, onlyNonInherited);
   }
 
   public boolean matchSlice(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, NodeStack stack,
@@ -4468,12 +4515,12 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       return IdStatus.REQUIRED; 
   }
 
-  private void checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element) throws FHIRException, FHIRException {
+  private void checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, FHIRException {
     if (noInvariantChecks)
       return;
 
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-      if (inv.hasExpression()) {
+      if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || profile.getUrl().equals(inv.getSource()))) {
         @SuppressWarnings("unchecked")
         Set<String> invList = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Set<String>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
         if (invList == null) {
@@ -4951,6 +4998,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   private String fixExpr(String expr) {
     // this is a hack work around for past publication of wrong FHIRPath expressions
     // R4
+    // waiting for 4.0.2
+
+    // handled in 4.0.1
     if ("(component.empty() and hasMember.empty()) implies (dataAbsentReason or value)".equals(expr))
       return "(component.empty() and hasMember.empty()) implies (dataAbsentReason.exists() or value.exists())";
     if ("isModifier implies isModifierReason.exists()".equals(expr))
@@ -4997,6 +5047,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   public void setValidationLanguage(String validationLanguage) {
     this.validationLanguage = validationLanguage;
+  }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
   }
 
 
