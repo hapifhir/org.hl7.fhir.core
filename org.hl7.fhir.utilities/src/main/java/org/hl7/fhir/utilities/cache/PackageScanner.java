@@ -12,12 +12,27 @@ import java.util.Map.Entry;
 import org.hl7.fhir.utilities.CSVWriter;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.PackageScanner.ResourceInfo;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class PackageScanner {
+  public class ResourceInfo {
+
+    private String filenameRoot;
+    private String htmlName;
+    private String id;
+    
+    public ResourceInfo(String filename, String id) {
+      this.filenameRoot = Utilities.changeFileExt(filename, "");
+      this.id = id;
+    }
+
+  }
+
   public static void main(String[] args) throws FileNotFoundException, IOException {
     new PackageScanner().scan(new File("C:\\web\\hl7.org\\fhir"), "c:\\temp\\package-scan.csv", "http://hl7.org/fhir");
   }
@@ -25,7 +40,7 @@ public class PackageScanner {
   private void scan(File folder, String dest, String url) throws IOException {
     CSVWriter csv = new CSVWriter(new FileOutputStream(dest));
     csv.line("path", "error", "name", "version", "fhir-version", "fhir-version-explicit", "canonical", "homepage",
-        "url", "type", "#types", "#urls", "dependencies");
+        "url", "type", "#types", "#urls", "dependencies", "spec.internals");
     scanFolders(folder, csv, folder.getAbsolutePath(), url);
     csv.close();    
     System.out.println("done");
@@ -47,7 +62,7 @@ public class PackageScanner {
       NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(file));
       fix(npm, file, root, url);
       csv.line(file.getAbsolutePath(), "", npm.name(), npm.version(), npm.fhirVersion(), npm.fhirVersionList(), npm.canonical(), npm.homepage(),
-          npm.url(), npm.type(), Integer.toString(npm.getTypes().size()), Integer.toString(npm.getUrls().size()), npm.dependencySummary());
+          npm.url(), npm.type(), Integer.toString(npm.getTypes().size()), Integer.toString(npm.getUrls().size()), npm.dependencySummary(), Boolean.toString(npm.hasFile("other", "spec.internals")));
     } catch (Exception e) {
       try {
         csv.line(file.getAbsolutePath(), e.getMessage() == null ? "NPE" : e.getMessage());
@@ -55,8 +70,6 @@ public class PackageScanner {
         e1.printStackTrace();
       }
     }
-    
-    
   }
 
   private void fix(NpmPackage npm, File file, String root, String url) throws FileNotFoundException, IOException {
@@ -109,6 +122,10 @@ public class PackageScanner {
         }
       }
     }
+    if (!npm.hasFile("other", "spec.internals") && !file.getName().startsWith("hl7.fhir.r")) {
+      save = true;
+      npm.getContent().put("package/other/spec.internals", buildSpecInternals(npm.canonical(), Utilities.getDirectoryForFile(file.getAbsolutePath())));
+    }
 //    if (npm.url() == null || !npm.url().equals(u)) {
 //      npm.getNpm().remove("url");
 //      npm.getNpm().addProperty("url", u);
@@ -128,6 +145,75 @@ public class PackageScanner {
       file.renameTo(bck);
       npm.save(new FileOutputStream(file));
     }
+  }
+
+  private byte[] buildSpecInternals(String canonical, String dir) throws FileNotFoundException, IOException {
+    // the spec internals file contains 2 important things: a map from canonical URL to html path 
+    // and a list of html target files
+    
+    List<ResourceInfo> rl = makeResList(dir);
+    List<String> targets = new ArrayList<>();
+    for (File f : new File(dir).listFiles()) {
+      if (f.getName().endsWith(".html")) {
+        targets.add(f.getName());
+        String src = TextFile.fileToString(f);
+        for (ResourceInfo r : rl) {
+          if (r.htmlName == null) {
+            if (src.contains(r.filenameRoot+".json")) {
+              r.htmlName = f.getName();
+            }
+          }
+        }
+      }
+    }
+    StringBuilder b = new StringBuilder();
+    b.append("{\r\n");
+    b.append("  \"paths\": {");
+    boolean first = true;
+    for (ResourceInfo r : rl) {
+      String link = r.htmlName;
+      if (link == null) {
+        System.out.println("No link found for "+r.id);
+      } else {
+        if (first) first = false; else b.append(",");
+        b.append("\r\n    \"");
+        b.append(Utilities.pathURL(canonical, r.id));
+        b.append("\": \"");
+        if (link.contains(".json.html") && new File(Utilities.path(dir,link. replace(".json", ""))).exists()) {
+          link = link.replace(".json", "");
+        }
+        b.append(link);
+        b.append("\"");
+      }
+    }
+    b.append("\r\n  },\r\n");
+    b.append("  \"targets\": [");
+    first = true;
+    for (String s : targets) {
+      if (first) first = false; else b.append(",");
+      b.append("\r\n    \"");
+      b.append(s);
+      b.append("\"");
+    }
+    b.append("  ]\r\n");
+    b.append("}\r\n");
+    return TextFile.stringToBytes(b.toString(), false);
+  }
+
+  private List<ResourceInfo> makeResList(String dir) {
+    List<ResourceInfo> rl = new ArrayList<>();
+    for (File f : new File(dir).listFiles()) {
+      if (f.getName().endsWith(".json") && !f.getName().endsWith(".canonical.json")) {
+        try {
+          JsonObject obj = JsonTrackingParser.parseJson(f);
+          if (obj.has("resourceType") && obj.has("id")) {
+            rl.add(new ResourceInfo(f.getName(), obj.get("resourceType").getAsString() +"/"+ obj.get("id").getAsString()));
+          }
+        } catch (IOException e) {
+        }
+      }
+    }
+    return rl;
   }
  
 }

@@ -337,7 +337,7 @@ public class NpmPackage {
     if (content.containsKey(folder+"/"+file)) {
       return new ByteArrayInputStream(content.get(folder+"/"+file));
     } else if (content.containsKey("package/"+folder+"/"+file)) {
-      return new ByteArrayInputStream(content.get(folder+"/"+file));
+      return new ByteArrayInputStream(content.get("package/"+folder+"/"+file));
     } else {
       File f = new File(Utilities.path(path, folder, file));
       if (f.exists())
@@ -463,7 +463,7 @@ public class NpmPackage {
 
   public boolean hasFile(String folder, String name) throws IOException {
     String file = folder+"/"+name;
-    return content.containsKey(file);
+    return content.containsKey(file) || content.containsKey("package/"+file) ;
   }
 
   public InputStream loadResource(String type, String id) throws IOException {
