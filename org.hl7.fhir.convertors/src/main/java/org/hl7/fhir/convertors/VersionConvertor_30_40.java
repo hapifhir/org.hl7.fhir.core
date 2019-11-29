@@ -4701,9 +4701,8 @@ public class VersionConvertor_30_40 {
       tgt.addPatchFormat(t.getValue());
     for (org.hl7.fhir.dstu3.model.UriType t : src.getImplementationGuide())
       tgt.addImplementationGuide(t.getValue());
-//    for (org.hl7.fhir.dstu3.model.Reference t : src.getProfile())
-//      
-//      tgt.addProfile(convertReference(t));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getProfile())
+      tgt.addExtension("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.profile", convertReference(t));
     for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest())
       tgt.addRest(convertCapabilityStatementRestComponent(t));
     for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging())
@@ -4769,6 +4768,11 @@ public class VersionConvertor_30_40 {
       for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent rr : r.getResource())
         for (org.hl7.fhir.r4.model.CanonicalType t : rr.getSupportedProfile())
           tgt.addProfile(convertCanonicalToReference(t));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtension()) {
+      if ("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.profile".equals(ext.getUrl())) {
+        tgt.addProfile(convertReference((org.hl7.fhir.r4.model.Reference) ext.getValue()));
+      }
+    }
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest())
       tgt.addRest(convertCapabilityStatementRestComponent(t));
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging())
