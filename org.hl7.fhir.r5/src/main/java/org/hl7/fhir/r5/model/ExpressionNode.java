@@ -121,6 +121,7 @@ public class ExpressionNode {
       if (name.equals("alias")) return Function.Alias;
       if (name.equals("aliasAs")) return Function.AliasAs;
       if (name.equals("htmlChecks")) return Function.HtmlChecks;
+      if (name.equals("htmlchecks")) return Function.HtmlChecks; // support change of care from R3
       if (name.equals("ofType")) return Function.OfType;      
       if (name.equals("type")) return Function.Type;      
       if (name.equals("toInteger")) return Function.ToInteger;
