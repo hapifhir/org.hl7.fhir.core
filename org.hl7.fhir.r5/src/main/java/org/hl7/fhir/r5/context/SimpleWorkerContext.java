@@ -470,7 +470,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (!set.contains(sd)) {
         try {
           generateSnapshot(sd);
-          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("c:\\temp", "snapshot", tail(sd.getUrl())+".xml")), sd);
+          // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
         } catch (Exception e) {
           System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
           if (true) {
