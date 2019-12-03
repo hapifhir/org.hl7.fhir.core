@@ -850,11 +850,11 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (diffMatches.get(0).getSlicing().getDiscriminator().size() != 1) {
               throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.count() > 1");
             }
-            if (!"$this".equals(diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getPath())) {
-              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.path != '$this'");
-            }
             if (diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getType() != DiscriminatorType.TYPE) {
               throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.type != 'type'");
+            }
+            if (!"$this".equals(diffMatches.get(0).getSlicing().getDiscriminatorFirstRep().getPath())) {
+              throw new FHIRException("Error at path "+cpath+" in "+url+": Type slicing with slicing.discriminator.path != '$this'");
             }
           }
           // check the slice names too while we're at it...
@@ -884,7 +884,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           // now set up slicing on the e (cause it was wiped by what we called.
           e.setSlicing(new ElementDefinitionSlicingComponent());
           e.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
-          e.getSlicing().setRules(SlicingRules.CLOSED);
+          e.getSlicing().setRules(SlicingRules.CLOSED); // type slicing is always closed; the differential might call it open, but that just means it's not constraining the slices it doesn't mention 
           e.getSlicing().setOrdered(false);
           start++;
 
@@ -1049,7 +1049,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               throw new DefinitionException("Slicing rules on differential ("+summarizeSlicing(dSlice)+") do not match those on base ("+summarizeSlicing(bSlice)+") - order @ "+path+" ("+contextName+")");
             if (!discriminatorMatches(dSlice.getDiscriminator(), bSlice.getDiscriminator()))
              throw new DefinitionException("Slicing rules on differential ("+summarizeSlicing(dSlice)+") do not match those on base ("+summarizeSlicing(bSlice)+") - disciminator @ "+path+" ("+contextName+")");
-            if (!ruleMatches(dSlice.getRules(), bSlice.getRules()))
+            if (!currentBase.isChoice() && !ruleMatches(dSlice.getRules(), bSlice.getRules()))
              throw new DefinitionException("Slicing rules on differential ("+summarizeSlicing(dSlice)+") do not match those on base ("+summarizeSlicing(bSlice)+") - rule @ "+path+" ("+contextName+")");
           }
           ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
@@ -1057,6 +1057,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           updateFromBase(outcome, currentBase);
           if (diffMatches.get(0).hasSlicing() || !diffMatches.get(0).hasSliceName()) {
             updateFromSlicing(outcome.getSlicing(), diffMatches.get(0).getSlicing());
+            if (currentBase.isChoice()) {
+              outcome.getSlicing().setRules(SlicingRules.CLOSED);
+            }
             updateFromDefinition(outcome, diffMatches.get(0), profileName, closed, url, srcSD); // if there's no slice, we don't want to update the unsliced description
             removeStatusExtensions(outcome);
           } else if (!diffMatches.get(0).hasSliceName())
@@ -1123,8 +1126,15 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
           // finally, we process any remaining entries in diff, which are new (and which are only allowed if the base wasn't closed
-          if (closed && diffpos < diffMatches.size())
-            throw new DefinitionException("The base snapshot marks a slicing as closed, but the differential tries to extend it in "+profileName+" at "+path+" ("+cpath+")");
+          boolean checkImplicitTypes = false;
+          if (closed && diffpos < diffMatches.size()) {
+            // this is a problem, unless we're on a polymorhpic type and we're going to constrain a slice that actually implicitly exists 
+            if (currentBase.getPath().endsWith("[x]")) {
+              checkImplicitTypes = true;
+            } else {
+              throw new DefinitionException("The base snapshot marks a slicing as closed, but the differential tries to extend it in "+profileName+" at "+path+" ("+cpath+")");
+            }
+          } 
           if (diffpos == diffMatches.size()) {
 //Lloyd This was causing problems w/ Telus
 //            diffCursor++;
@@ -2016,7 +2026,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
 
       if (derived.hasType()) {
-        if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
+        if (derived.getPath().endsWith("[x]") && derived.hasSlicing() && derived.getSlicing().getRules() != SlicingRules.CLOSED) {
+          // if we're slicing, and not closed, then it's the same list
+
+          derived.getType().clear();
+          derived.getType().addAll(base.getType());
+        } else if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
           if (base.hasType()) {
             for (TypeRefComponent ts : derived.getType()) {
 //              if (!ts.hasCode()) { // ommitted in the differential; copy it over....

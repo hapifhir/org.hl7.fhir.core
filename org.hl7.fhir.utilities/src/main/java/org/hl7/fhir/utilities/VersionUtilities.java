@@ -143,4 +143,12 @@ public class VersionUtilities {
     }
   }
 
+  public static boolean isSemVer(String version) {
+    if (Utilities.charCount(version, '.') != 2) {
+      return false;
+    }
+    String[] p = version.split("\\.");
+    return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
+  }
+
 }
