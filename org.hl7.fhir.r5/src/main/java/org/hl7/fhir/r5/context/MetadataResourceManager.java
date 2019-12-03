@@ -187,7 +187,13 @@ public class MetadataResourceManager<T extends MetadataResource> {
   }
 
   public List<T> getList() {
-    return list;
+    List<T> res = new ArrayList<>();
+    for (T t : list) {
+      if (!res.contains(t)) {
+        res.add(t);
+      }
+    }
+    return res;
   }
 
   public Set<String> keys() {
