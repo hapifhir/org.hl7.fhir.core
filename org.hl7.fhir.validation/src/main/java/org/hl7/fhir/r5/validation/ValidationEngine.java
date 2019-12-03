@@ -1328,7 +1328,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       try {
         makeSnapshot(sd);
       } catch (Exception e) {
-        System.out.println("Process Note: Unable to generate snapshot for "+sd.present());
+        System.out.println("Process Note: Unable to generate snapshot for "+sd.present()+": "+e.getMessage());
+        if (debug) {
+          e.printStackTrace();
+        }
       }
     }
   }
@@ -1698,6 +1701,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       throw new Exception("Unsupported version "+version);
 
     s.close();
+  }
+
+  public void setSnomedExtension(String sct) {
+    context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|"+sct);
   }
 
 

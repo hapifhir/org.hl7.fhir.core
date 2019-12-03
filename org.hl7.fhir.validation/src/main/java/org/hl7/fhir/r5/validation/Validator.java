@@ -200,6 +200,11 @@ public class Validator {
       System.out.println("     Produce additional information about the loading/validation process");
       System.out.println("-recurse");
       System.out.println("     Look in subfolders when -ig refers to a folder");
+      System.out.println("-sct");
+      System.out.println("     Specify the edition of SNOMED CT to use. Valid Choices:");
+      System.out.println("       intl | us | uk | au | nl | ca | se | dk | es");
+      System.out.println("     tx.fhir.org only supports a subset. To add to this list or tx.fhir.org");
+      System.out.println("     ask on https://chat.fhir.org/#narrow/stream/179202-terminology");
       System.out.println("-native: use schema for validation as well");
       System.out.println("     * XML: w3c schema+schematron");
       System.out.println("     * JSON: json.schema");
@@ -403,6 +408,7 @@ public class Validator {
       String mapLog = null;
       String lang = null;
       String fhirpath = null;
+      String snomedCT = "900000000000207008";
       boolean doDebug = false;
 
       // load the parameters - so order doesn't matter
@@ -439,6 +445,28 @@ public class Validator {
           doNative = true;          
         } else if (args[i].equals("-debug")) {
           doDebug = true;
+        } else if (args[i].equals("-sct")) {
+          String s = args[++i];
+          if ("intl".equalsIgnoreCase(s))
+            snomedCT = "900000000000207008";
+          else if ("us".equalsIgnoreCase(s))
+            snomedCT = "731000124108";
+          else if ("uk".equalsIgnoreCase(s))
+            snomedCT = "999000041000000102";
+          else if ("au".equalsIgnoreCase(s))
+            snomedCT = "32506021000036107";
+          else if ("ca".equalsIgnoreCase(s))
+            snomedCT = "20611000087101";
+          else if ("nl".equalsIgnoreCase(s))
+            snomedCT = "11000146104";
+          else if ("se".equalsIgnoreCase(s))
+            snomedCT = "45991000052106";
+          else if ("es".equalsIgnoreCase(s))
+            snomedCT = "449081005";
+          else if ("dk".equalsIgnoreCase(s))
+            snomedCT = "554471000005108";
+          else 
+            throw new Error("Snomed edition '"+s+"' not known");            
         } else if (args[i].equals("-recurse")) {
           recursive = true;
         } else if (args[i].equals("-strictExtensions")) {
@@ -544,6 +572,7 @@ public class Validator {
       validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
       validator.setLanguage(lang);
+      validator.setSnomedExtension(snomedCT);
 
       IParser x;
       if (output != null && output.endsWith(".json"))
