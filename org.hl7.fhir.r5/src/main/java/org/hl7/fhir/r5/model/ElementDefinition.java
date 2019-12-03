@@ -7657,6 +7657,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         return true;
     }
     return false;
+  }
+
+  public boolean isChoice() {
+    return getPath().endsWith("[x]");
   }  
 
 
