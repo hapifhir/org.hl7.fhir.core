@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -50,6 +51,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -468,8 +470,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (!set.contains(sd)) {
         try {
           generateSnapshot(sd);
+          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("c:\\temp", "snapshot", tail(sd.getUrl())+".xml")), sd);
         } catch (Exception e) {
-          System.out.println("Unable to generate snapshot for "+sd.getUrl()+" because "+e.getMessage());
+          System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
           if (true) {
             e.printStackTrace();
           }
@@ -479,6 +482,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
     }
     return result;
+  }
+
+  private String tail(String url) {
+    if (Utilities.noString(url)) {
+      return "noname";
+    }
+    if (url.contains("/")) {
+      return url.substring(url.lastIndexOf("/")+1);
+    }
+    return url;
   }
 
   public void loadBinariesFromFolder(String folder) throws FileNotFoundException, Exception {
