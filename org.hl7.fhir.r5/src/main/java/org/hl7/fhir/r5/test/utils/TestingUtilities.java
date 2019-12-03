@@ -513,7 +513,8 @@ public class TestingUtilities {
   }
   
   public static String tempFolder(String name) throws IOException {
-    if (new File("C:\\temp").exists()) {
+    File tmp = new File("C:\\temp");
+    if (tmp.exists() && tmp.isDirectory()) {
       String path = Utilities.path("C:\\temp", name);
       Utilities.createDirectory(path);
       return path;
