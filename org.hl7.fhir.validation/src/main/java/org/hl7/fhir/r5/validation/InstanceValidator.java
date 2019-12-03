@@ -3734,7 +3734,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath("entry", ":0"), resource != null, "No resource on first entry")) {
           validateDocument(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id);
         }
-        checkAllInterlinked(errors, entries, stack, bundle, false);
+        checkAllInterlinked(errors, entries, stack, bundle, true);
       }
       if (type.equals("message")) {
         Element resource = firstEntry.getNamedChild("resource");
@@ -3742,7 +3742,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath("entry", ":0"), resource != null, "No resource on first entry")) {
           validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id);
         }
-        checkAllInterlinked(errors, entries, stack, bundle, true);
+        checkAllInterlinked(errors, entries, stack, bundle, VersionUtilities.isR5Ver(context.getVersion()));
       }
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
       //      validateResourceIds(errors, entries, stack);
