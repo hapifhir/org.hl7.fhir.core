@@ -84,7 +84,7 @@ public class NpmPackage {
     return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
   }
 
-  private class NpmPackageFolder {
+  public class NpmPackageFolder {
     private String name;
     private Map<String, List<String>> types = new HashMap<>();
     private Map<String, byte[]> content = new HashMap<String, byte[]>(); 
@@ -94,6 +94,10 @@ public class NpmPackage {
     public NpmPackageFolder(String name) {
       super();
       this.name = name;
+    }
+
+    public String getName() {
+      return name;
     }
 
     public void readIndex(JsonObject index) {
@@ -125,6 +129,10 @@ public class NpmPackage {
       }
       Collections.sort(res);
       return res;
+    }
+
+    public Map<String, byte[]> getContent() {
+      return content;
     }
 
     public byte[] fetchFile(String file) throws FileNotFoundException, IOException {
@@ -263,18 +271,17 @@ public class NpmPackage {
           fos.close();
           loadFile(n, fos.toByteArray());
         }
-      }
-      i++;
-      if (progress && i % 50 == 0) {
-        c++;
-        System.out.print(".");
-        if (c == 120) {
-          System.out.println("");
-          System.out.print("  ");
-          c = 2;
+        if (progress && i % 50 == 0) {
+          c++;
+          System.out.print(".");
+          if (c == 120) {
+            System.out.println("");
+            System.out.print("  ");
+            c = 2;
+          }
         }
-      }    
-    }
+      }
+    } 
     try {
       npm = JsonTrackingParser.parseJson(folders.get("package").fetchFile("package.json"));
     } catch (Exception e) {
@@ -569,8 +576,8 @@ public class NpmPackage {
   }
 
   /** special case when playing around inside the package **/
-  public Map<String, byte[]> getContent() {
-    return folders.get("package").content;
+  public Map<String, NpmPackageFolder> getFolders() {
+    return folders;
   }
 
   //
@@ -624,9 +631,9 @@ public class NpmPackage {
       for (String s : folder.content.keySet()) {
         byte[] b = folder.content.get(s);
         String name = n+"/"+s;
-        indexer.seeFile(n, b);
+        indexer.seeFile(s, b);
         if (!s.equals(".index.json") && !s.equals("package.json")) {
-          TarArchiveEntry entry = new TarArchiveEntry(s);
+          TarArchiveEntry entry = new TarArchiveEntry(name);
           entry.setSize(b.length);
           tar.putArchiveEntry(entry);
           tar.write(b);
@@ -634,7 +641,7 @@ public class NpmPackage {
         }
       }
       byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
-      TarArchiveEntry entry = new TarArchiveEntry(n+".index.json");
+      TarArchiveEntry entry = new TarArchiveEntry(n+"/.index.json");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);
       tar.write(cnt);

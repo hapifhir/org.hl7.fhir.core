@@ -47,6 +47,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.json.JSONUtil;
 
 import com.google.gson.GsonBuilder;
@@ -181,29 +182,7 @@ public class PackageCacheManager {
     return cacheFolder;
   }
 
-  private void analysePackage(String dir) throws IOException {
-    NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-    indexer.start();
-    int i = 0;
-    int c = 0;
-    File[] packages = new File(Utilities.path(dir, "package")).listFiles();
-    for (File f : packages) {
-      if (!f.isDirectory()) {
-        indexer.seeFile(f.getName(), TextFile.fileToBytes(f));
-      }
-      i++;
-      if (progress && i % 50 == 0) {
-        c++;
-        System.out.print(".");
-        if (c == 120) {
-          System.out.println("");
-          System.out.print("  ");
-          c = 2;
-        }
-      }    
-    }
-    TextFile.stringToFile(indexer.build(), Utilities.path(dir, "package", ".index.json"));
-  }
+
 
 
 
@@ -531,8 +510,10 @@ public class PackageCacheManager {
     
     recordMap(npm.canonical(), npm.name());
     
-    if (progress )
-      System.out.print("|");
+    if (progress ) {
+      System.out.println();
+      System.out.print("  Installing: ");
+    }
     if (npm.name() == null || id == null || !id.equals(npm.name())) {
       if (!id.equals("hl7.fhir.r5.core")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected "+id+", got "+npm.name());
@@ -548,30 +529,28 @@ public class PackageCacheManager {
     int i = 0;
     int c = 0;
     int size = 0;
-    for (Entry<String, byte[]> e : npm.getContent().entrySet()) {
-      String fn = Utilities.path(packRoot, "package", e.getKey());
-      String dir = Utilities.getDirectoryForFile(fn);
+    for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
+      String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
       if (!(new File(dir).exists()))
         Utilities.createDirectory(dir);
-      TextFile.bytesToFile(e.getValue(), fn);
-      size = size + e.getValue().length;
-      i++;
-      if (progress && i % 50 == 0) {
-        c++;
-        System.out.print(".");
-        if (c == 120) {
-          System.out.println("");
-          System.out.print("  ");
-          c = 2;
-        }
-      }    
+      for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
+        String fn = Utilities.path(dir, fe.getKey());
+        byte[] cnt = fe.getValue();
+        TextFile.bytesToFile(cnt, fn);
+        size = size + cnt.length;
+        i++;
+        if (progress && i % 50 == 0) {
+          c++;
+          System.out.print(".");
+          if (c == 120) {
+            System.out.println("");
+            System.out.print("  ");
+            c = 2;
+          }
+        }    
+      }
     }
-    if (progress) {
-      System.out.println("");
-      System.out.print("  Analysing");
-    }      
-    
-    analysePackage(packRoot); // do this whether there's an index.json or not.
+ 
     
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
     ini.setTimeStampFormat("yyyyMMddhhmmss");

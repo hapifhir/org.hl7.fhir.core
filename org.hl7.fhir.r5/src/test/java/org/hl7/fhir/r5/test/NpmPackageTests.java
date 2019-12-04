@@ -2,6 +2,8 @@ package org.hl7.fhir.r5.test;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,6 +55,16 @@ public class NpmPackageTests {
     NpmPackage npm = NpmPackage.fromPackage(TestingUtilities.loadTestResourceStream("npm", "test.format.new.tgz"));
     checkNpm(npm);
   }
+
+  @Test
+  public void testSave() throws IOException {
+    NpmPackage npm = NpmPackage.fromPackage(TestingUtilities.loadTestResourceStream("npm", "test.format.old.tgz"));
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    npm.save(bs);
+    npm = NpmPackage.fromPackage(new ByteArrayInputStream(bs.toByteArray()));
+    checkNpm(npm);
+  }
+
 
   private void checkNpm(NpmPackage npm) throws IOException {
     Assert.assertEquals(1, npm.list("other").size());
