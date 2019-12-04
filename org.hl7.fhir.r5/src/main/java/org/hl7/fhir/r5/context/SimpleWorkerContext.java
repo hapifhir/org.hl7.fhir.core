@@ -71,6 +71,7 @@ import org.hl7.fhir.r5.utils.INarrativeGenerator;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.CSFileInputStream;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -292,7 +293,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  for (String s : pi.listResources(types)) {
        loadDefinitionItem(s, pi.load("package", s), loader);
 	  }
-	  // todogg
+	  for (String s : pi.list("other")) {
+	    binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
+	  }
 	  version = pi.version();
 	}
 
