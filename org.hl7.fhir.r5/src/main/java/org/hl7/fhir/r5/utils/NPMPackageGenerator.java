@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -296,6 +297,14 @@ public class NPMPackageGenerator {
     String path = cat.getDirectory()+name;
     if (!path.startsWith("package/")) {
       path = "package/" +path;
+    }
+    if (path.length() > 100) {
+      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString();
+      path = cat.getDirectory()+name;
+      if (!path.startsWith("package/")) {
+        path = "package/" +path;
+      }
+      
     }
       
     if (created.contains(path)) {
