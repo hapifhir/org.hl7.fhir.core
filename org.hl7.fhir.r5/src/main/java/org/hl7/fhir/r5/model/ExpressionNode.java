@@ -60,7 +60,7 @@ public class ExpressionNode {
     Custom, 
     
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
-    First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
+    First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
     ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo;
@@ -96,6 +96,7 @@ public class ExpressionNode {
       if (name.equals("lower")) return Function.Lower;
       if (name.equals("upper")) return Function.Upper;
       if (name.equals("toChars")) return Function.ToChars;
+      if (name.equals("indexOf")) return Function.IndexOf;
       if (name.equals("substring")) return Function.Substring;
       if (name.equals("startsWith")) return Function.StartsWith;
       if (name.equals("endsWith")) return Function.EndsWith;
@@ -173,6 +174,7 @@ public class ExpressionNode {
       case ToChars : return "toChars";
       case Lower : return "lower";
       case Upper : return "upper";
+      case IndexOf : return "indexOf";
       case Substring : return "substring";
       case StartsWith : return "startsWith";
       case EndsWith : return "endsWith";
