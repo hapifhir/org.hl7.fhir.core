@@ -9,6 +9,9 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
@@ -1078,6 +1081,7 @@ public class FHIRPathEngine {
     case Lower: return checkParamCount(lexer, location, exp, 0);
     case Upper: return checkParamCount(lexer, location, exp, 0);
     case ToChars: return checkParamCount(lexer, location, exp, 0);
+    case IndexOf : return checkParamCount(lexer, location, exp, 1);
     case Substring: return checkParamCount(lexer, location, exp, 1, 2);
     case StartsWith: return checkParamCount(lexer, location, exp, 1);
     case EndsWith: return checkParamCount(lexer, location, exp, 1);
@@ -2486,6 +2490,11 @@ public class FHIRPathEngine {
       checkContextString(focus, "toChars");
       return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String); 
     }
+    case IndexOf : {
+      checkContextString(focus, "indexOf");
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer); 
+    }
     case Substring : {
       checkContextString(focus, "subString");
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
@@ -2722,6 +2731,7 @@ public class FHIRPathEngine {
     case Lower : return funcLower(context, focus, exp);
     case Upper : return funcUpper(context, focus, exp);
     case ToChars : return funcToChars(context, focus, exp);
+    case IndexOf : return funcIndexOf(context, focus, exp);
     case Substring : return funcSubstring(context, focus, exp);
     case StartsWith : return funcStartsWith(context, focus, exp);
     case EndsWith : return funcEndsWith(context, focus, exp);
@@ -3608,6 +3618,24 @@ public class FHIRPathEngine {
       String s = convertToString(focus.get(0));
       for (char c : s.toCharArray())  
         result.add(new StringType(String.valueOf(c)).noExtensions());
+    }
+    return result;
+  }
+  
+  private List<Base> funcIndexOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> result = new ArrayList<Base>();
+    
+    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    if (focus.size() == 0) {
+      result.add(new IntegerType(0).noExtensions());
+    } else if (Utilities.noString(sw)) {
+      result.add(new IntegerType(0).noExtensions());
+    } else {
+      String s = convertToString(focus.get(0));
+      if (s == null)
+        result.add(new IntegerType(0).noExtensions());
+      else
+        result.add(new IntegerType(s.indexOf(sw)).noExtensions());
     }
     return result;
   }
