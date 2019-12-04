@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -54,6 +55,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.common.base.Charsets;
@@ -74,60 +76,147 @@ import com.google.gson.JsonObject;
  */
 public class NpmPackage {
 
-  private String path;
-  private List<String> folders = new ArrayList<String>();
-  private Map<String, byte[]> content = new HashMap<String, byte[]>();
-  private JsonObject npm;
-  private IniFile cache;
-  private Map<String, List<String>> types = new HashMap<>();
-  private Map<String, String> urls = new HashMap<>();
-
-  public NpmPackage(JsonObject npm, Map<String, byte[]> content, List<String> folders) {
-    this.path = null;
-    this.content = content;
-    this.npm = npm;
-    this.folders = folders;
+  public static boolean isValidName(String pid) {
+    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)+$");
   }
 
-  public NpmPackage(String path) throws IOException {
-    this.path = path;
-    if (path != null) {
-      for (String f : sorted(new File(path).list())) {
-        if (new File(Utilities.path(path, f)).isDirectory()) {
-          folders.add(f); 
+  public static boolean isValidVersion(String ver) {
+    return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
+  }
+
+  private class NpmPackageFolder {
+    private String name;
+    private Map<String, List<String>> types = new HashMap<>();
+    private Map<String, byte[]> content = new HashMap<String, byte[]>(); 
+    private JsonObject index;
+    private File folder;
+
+    public NpmPackageFolder(String name) {
+      super();
+      this.name = name;
+    }
+
+    public void readIndex(JsonObject index) {
+      this.index = index;
+      for (JsonElement e : index.getAsJsonArray("files")) {
+        JsonObject file = (JsonObject) e;
+        String type = file.get("resourceType").getAsString();
+        String name = file.get("filename").getAsString();
+        if (!types.containsKey(type))
+          types.put(type, new ArrayList<>());
+        types.get(type).add(name);
+      }
+    }
+
+    public List<String> listFiles() {
+      List<String> res = new ArrayList<>();
+      if (folder != null) {
+        for (File f : folder.listFiles()) {
+          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json")) {
+            res.add(f.getName());
+          }
+        }
+      } else {
+        for (String s : content.keySet()) {
+          if (!Utilities.existsInList(s, "package.json", ".index.json")) {
+            res.add(s);
+          }
         }
       }
-      npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
-      File ji = new File(Utilities.path(path, "package", ".index.json"));
-      if (ji.exists()) {
-        readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(ji)));
+      Collections.sort(res);
+      return res;
+    }
+
+    public byte[] fetchFile(String file) throws FileNotFoundException, IOException {
+      if (folder != null) {
+        File f = new File(Utilities.path(folder.getAbsolutePath(), file));
+        if (f.exists()) {
+          return TextFile.fileToBytes(f);
+        } else {
+          return null;
+        }
+      } else {
+        return content.get(file);
       }
-      cache = new IniFile(Utilities.path(path, "cache.ini"));        
+    }
+
+    public boolean hasFile(String file) throws IOException {
+      if (folder != null) {
+        return new File(Utilities.path(folder.getAbsolutePath(), file)).exists();
+      } else {
+        return content.containsKey(file);
+      }
+
+    }
+
+  }
+
+  private String path;
+  private JsonObject npm;
+  private Map<String, NpmPackageFolder> folders = new HashMap<>();
+
+  private NpmPackage() {
+
+  }
+  //  public NpmPackage(JsonObject npm, Map<String, byte[]> content, List<String> folders) {
+  //    this.path = null;
+  //    this.content = content;
+  //    this.npm = npm;
+  //    this.folders = folders;
+  //  }
+
+  public static NpmPackage fromFolder(String path) throws IOException {
+    NpmPackage res = new NpmPackage();
+    loadFiles(res, path, new File(path));
+    res.checkIndexed(path);
+    return res;
+  }
+
+  public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
+    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
+
+    for (File f : new File(path).listFiles()) {
+      if (f.isDirectory()) {
+        NpmPackageFolder folder = res.new NpmPackageFolder(f.getName());
+        folder.folder = f;
+        res.folders.put(f.getName(), folder);
+        File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
+        if (ij.exists()) {
+          try {
+            folder.readIndex(JsonTrackingParser.parseJson(ij));
+          } catch (Exception e) {
+            throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
+          }
+        }
+      }
+    }
+    for (File f : new File(Utilities.path(path, "package")).listFiles()) {
+      if (f.isDirectory()) {
+        NpmPackageFolder folder = res.new NpmPackageFolder(f.getName());
+        folder.folder = f;
+        res.folders.put(f.getName(), folder);
+        File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
+        if (ij.exists()) {
+          try {
+            folder.readIndex(JsonTrackingParser.parseJson(ij));
+          } catch (Exception e) {
+            throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
+          }
+        }
+      }
     }
   }
 
-  private void readIndexFile(JsonObject index) throws IOException {
-    for (JsonElement e : index.getAsJsonArray("files")) {
-      JsonObject file = (JsonObject) e;
-      String type = file.get("resourceType").getAsString();
-      String name = file.get("filename").getAsString();
-      String url = file.has("url") ? file.get("url").getAsString() : null;
-      String version = file.has("version") ? file.get("version").getAsString() : null;
-      if (!types.containsKey(type))
-        types.put(type, new ArrayList<>());
-      types.get(type).add(name);
-      if (version != null)
-        url = url + "|" + version;
-      urls.put(url, name);
+  public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
+    NpmPackage res = new NpmPackage();
+    loadFiles(res, folder, new File(folder), exemptions);
+    if (res.folders.containsKey("package")) {
+      res.folders.put("package", res.new NpmPackageFolder("package"));
     }
-  }
-
-  private List<String> sorted(String[] keys) {
-    List<String> names = new ArrayList<String>();
-    for (String s : keys)
-      names.add(s);
-    Collections.sort(names);
-    return names;
+    if (!res.folders.get("package").content.containsKey("package/package.json") && defType != null)
+      res.folders.get("package").content.put("package/package.json", TextFile.stringToBytes("{ \"type\" : \""+defType.getCode()+"\"}", false));
+    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.folders.get("package").content.get("package/package.json")));
+    return res;
   }
 
   private static final int BUFFER_SIZE = 1024;
@@ -141,8 +230,12 @@ public class NpmPackage {
   }
 
   public static NpmPackage fromPackage(InputStream tgz, String desc, boolean progress) throws IOException {
-    NpmPackage res = new NpmPackage(null);
-    boolean hasIndex = false;
+    NpmPackage res = new NpmPackage();
+    res.readStream(tgz, desc, progress);
+    return res;
+  }
+
+  public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
     GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
     try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
@@ -151,13 +244,16 @@ public class NpmPackage {
       int c = 12;
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         i++;
+        String n = entry.getName();
         if (entry.isDirectory()) {
-          res.folders.add(entry.getName());
-        } else {
-          hasIndex = hasIndex || "package/.index.json".equals(entry.getName());
+          String dir = n.substring(0, n.length()-1);
+          if (dir.startsWith("package/")) {
+            dir = dir.substring(8);
+          }
+          folders.put(dir, new NpmPackageFolder(dir));
+        } else if (n.contains("/")) {
           int count;
           byte data[] = new byte[BUFFER_SIZE];
-
           ByteArrayOutputStream fos = new ByteArrayOutputStream();
           try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
             while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
@@ -165,48 +261,64 @@ public class NpmPackage {
             }
           }
           fos.close();
-          res.content.put(entry.getName(), fos.toByteArray());
+          loadFile(n, fos.toByteArray());
         }
-        i++;
-        if (progress && i % 50 == 0) {
-          c++;
-          System.out.print(".");
-          if (c == 120) {
-            System.out.println("");
-            System.out.print("  ");
-            c = 2;
-          }
-        }    
       }
-    }
-    if (!hasIndex) {
-      NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-      indexer.start();
-      for (String n : res.getContent().keySet()) {
-        if (n.startsWith("package/")) {
-          indexer.seeFile(n.substring(8), res.content.get(n));
-        }          
-      }
-      res.content.put("package/.index.json", TextFile.stringToBytes(indexer.build(), false));
+      i++;
+      if (progress && i % 50 == 0) {
+        c++;
+        System.out.print(".");
+        if (c == 120) {
+          System.out.println("");
+          System.out.print("  ");
+          c = 2;
+        }
+      }    
     }
     try {
-      res.npm = JsonTrackingParser.parseJson(res.content.get("package/package.json"));
+      npm = JsonTrackingParser.parseJson(folders.get("package").fetchFile("package.json"));
     } catch (Exception e) {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     }
-    byte[] cnt = res.content.get("package/.index.json");
-    try {
-      res.readIndexFile((JsonObject) JsonTrackingParser.parseJson(cnt));
-    } catch (Exception e) {
-      TextFile.bytesToFile(cnt, Utilities.path("[tmp]", ".index.json"));
-      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/.index.json: "+e.getMessage(), e);
+    checkIndexed(desc);
+  }
+
+  public void loadFile(String n, byte[] data) throws IOException {
+    String dir = n.substring(0, n.lastIndexOf("/"));
+    if (dir.startsWith("package/")) {
+      dir = dir.substring(8);
     }
-    return res;
+    n = n.substring(n.lastIndexOf("/")+1);
+    NpmPackageFolder index = folders.get(dir);
+    if (index == null) {
+      index = new NpmPackageFolder(dir);
+      folders.put(dir, index);
+    }
+    index.content.put(n, data);
+  }
+
+  private void checkIndexed(String desc) throws IOException {
+    for (NpmPackageFolder folder : folders.values()) {
+      if (folder.index == null) {
+        NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+        indexer.start();
+        for (String n : folder.listFiles()) {
+          indexer.seeFile(n, folder.fetchFile(n));
+        }       
+        String json = indexer.build();
+        try {
+          folder.readIndex(JsonTrackingParser.parseJson(json));
+        } catch (Exception e) {
+          TextFile.stringToFile(json, Utilities.path("[tmp]", ".index.json"));
+          throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/"+folder.name+"/.index.json: "+e.getMessage(), e);
+        }
+      }
+    }
   }
 
 
-  public static NpmPackage fromZip(InputStream stream, boolean dropRootFolder) throws IOException {
-    NpmPackage res = new NpmPackage(null);
+  public static NpmPackage fromZip(InputStream stream, boolean dropRootFolder, String desc) throws IOException {
+    NpmPackage res = new NpmPackage();
     ZipInputStream zip = new ZipInputStream(stream);
     ZipEntry ze;
     while ((ze = zip.getNextEntry()) != null) {
@@ -221,18 +333,22 @@ public class NpmPackage {
       }
       bos.flush();
       bos.close();
-      if (bytes.size() > 0)
-        if (dropRootFolder)
-          res.content.put(ze.getName().substring(ze.getName().indexOf("/")+1), bytes.toByteArray());
-        else
-          res.content.put(ze.getName(), bytes.toByteArray());
-
+      if (bytes.size() > 0) {
+        if (dropRootFolder) {
+          res.loadFile(ze.getName().substring(ze.getName().indexOf("/")+1), bytes.toByteArray());
+        } else {
+          res.loadFile(ze.getName(), bytes.toByteArray());
+        }
+      }
       zip.closeEntry();
     }
     zip.close();         
-    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/package.json")));
-    if (res.content.containsKey("package/.index.json"))
-      res.readIndexFile((JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/.index.json"))));
+    try {
+      res.npm = JsonTrackingParser.parseJson(res.folders.get("package").fetchFile("package.json"));
+    } catch (Exception e) {
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
+    }
+    res.checkIndexed(desc);
     return res;
   }
 
@@ -246,83 +362,21 @@ public class NpmPackage {
    */
   public List<String> list(String folder) throws IOException {
     List<String> res = new ArrayList<String>();
-    if (path != null) {
-      File f = new File(Utilities.path(path, folder));
-      if (f.exists() && f.isDirectory())
-        for (String s : f.list())
-          res.add(s);
-      f = new File(Utilities.path(path, "package", folder));
-      if (f.exists() && f.isDirectory())
-        for (String s : f.list())
-          res.add(s);
-    } else {
-      for (String s : content.keySet()) {
-        if (s.startsWith(folder+"/") && !s.substring(folder.length()+2).contains("/")) {
-          res.add(s.substring(folder.length()+1));
-        }
-        if (s.startsWith("package/"+folder+"/")) {
-          res.add(s.substring(folder.length()+9));
-        }
-      }
+    if (folders.containsKey(folder)) {
+      res.addAll(folders.get(folder).listFiles());
     }
     return res;
   }
 
   public List<String> listResources(String... types) throws IOException {
     List<String> res = new ArrayList<String>();
-    if (this.types.size() > 0) {
-      for (String s : types) {
-        if (this.types.containsKey(s))
-          res.addAll(this.types.get(s));
-      }
-    } else {
-      List<String> files = list("package");
-      for (String s : files) {
-        String[] n = s.split("\\-");
-        if (Utilities.existsInList(n[0], types))
-          res.add(s);
-      }
+    NpmPackageFolder folder = folders.get("package");
+    for (String s : types) {
+      if (folder.types.containsKey(s))
+        res.addAll(folder.types.get(s));
     }
+    Collections.sort(res);
     return res;
-  }
-
-  /** 
-   * Copies all the files in the package folder [folder] to the nominated dest, 
-   * and returns a list of all the file names copied
-   *  
-   * @param folder
-   * @return
-   * @throws IOException 
-   */
-  public List<String> copyTo(String folder, String dest) throws IOException {
-    List<String> res = new ArrayList<String>();
-    if (path != null) {
-      copyToDest(Utilities.path(path, folder), Utilities.path(path, folder), dest, res);
-    } else {
-      for (Entry<String, byte[]> e : content.entrySet()) {
-        if (e.getKey().startsWith(folder+"/")) {
-          String s = e.getKey().substring(folder.length()+1);
-          res.add(s);
-          String dst = Utilities.path(dest, s);
-          String dstDir = Utilities.getDirectoryForFile(dst);
-          Utilities.createDirectory(dstDir);
-          TextFile.bytesToFile(e.getValue(), dst);
-        }
-      }
-    }
-    return res;
-  }
-
-  private void copyToDest(String base, String folder, String dest, List<String> res) throws IOException {
-    for (File f : new File(folder).listFiles()) {
-      if (f.isDirectory()) {
-        copyToDest(base, f.getAbsolutePath(),  Utilities.path(dest, f.getName()), res);
-      } else {
-        String dst = Utilities.path(dest, f.getName());
-        FileUtils.copyFile(f, new File(dst), true);
-        res.add(f.getAbsolutePath().substring(base.length()+1));
-      }
-    }
   }
 
   /**
@@ -334,20 +388,19 @@ public class NpmPackage {
    * @throws IOException
    */
   public InputStream load(String folder, String file) throws IOException {
-    if (content.containsKey(folder+"/"+file)) {
-      return new ByteArrayInputStream(content.get(folder+"/"+file));
-    } else if (content.containsKey("package/"+folder+"/"+file)) {
-      return new ByteArrayInputStream(content.get("package/"+folder+"/"+file));
+    NpmPackageFolder f = folders.get(folder);
+    if (f != null && f.hasFile(file)) {
+      return new ByteArrayInputStream(f.fetchFile(file));
     } else {
-      File f = new File(Utilities.path(path, folder, file));
-      if (f.exists())
-        return new FileInputStream(f);
-      f = new File(Utilities.path(path, "package", folder, file));
-      if (f.exists())
-        return new FileInputStream(f);
       throw new IOException("Unable to find the file "+folder+"/"+file+" in the package "+name());
     }
   }
+
+  public boolean hasFile(String folder, String file) throws IOException {
+    NpmPackageFolder f = folders.get(folder);
+    return f != null && f.hasFile(file);
+  }
+
 
   /**
    * Handle to the package json file
@@ -441,171 +494,6 @@ public class NpmPackage {
     return path;
   }
 
-  public IniFile getCache() {
-    return cache;
-  }
-
-  /**
-   * only for use by the package manager itself
-   * 
-   * @param path
-   */
-  public void setPath(String path) {
-    this.path = path;
-  }
-
-  public String getWebLocation() {
-    if (npm.has("url"))
-      return npm.get("url").getAsString();
-    else
-      return npm.get("canonical").getAsString();
-  }
-
-  public boolean hasFile(String folder, String name) throws IOException {
-    String file = folder+"/"+name;
-    return content.containsKey(file) || content.containsKey("package/"+file) ;
-  }
-
-  public InputStream loadResource(String type, String id) throws IOException {
-    String file = type+"-"+id+".json";
-    if (content.containsKey("package/"+file))
-      return new ByteArrayInputStream(content.get("package/"+file));
-    else {
-      File f = new File(Utilities.path(path, "package", file));
-      if (f.exists())
-        return new FileInputStream(f);
-      else
-        return null;
-    }
-  }
-
-  /** special case when playing around inside the package **/
-  public Map<String, byte[]> getContent() {
-    return content;
-  }
-
-  public static NpmPackage fromFolder(String folder, String... exemptions) throws IOException {
-    return fromFolder(folder, null, exemptions);
-  }
-
-  public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
-    NpmPackage res = new NpmPackage(null);
-    loadFiles(res, folder, new File(folder), exemptions);
-    if (!res.content.containsKey("package/package.json") && defType != null)
-      res.content.put("package/package.json", TextFile.stringToBytes("{ \"type\" : \""+defType.getCode()+"\"}", false));
-    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.content.get("package/package.json")));
-    return res;
-  }
-
-  private static void loadFiles(NpmPackage res, String base, File folder, String... exemptions) throws FileNotFoundException, IOException {
-    for (File f : folder.listFiles()) {
-      if (!f.getName().equals(".git") || !Utilities.existsInList(f.getName(), exemptions)) {
-        if (f.isDirectory()) 
-          loadFiles(res, base, f);
-        else {
-          String name = f.getAbsolutePath().substring(base.length()+1).replace("\\",  "/");
-          byte[] cnt = TextFile.fileToBytes(f);
-          res.content.put(name, cnt);
-        }
-      }
-    }
-  }
-
-  public void unPack(String dir) throws IOException {
-    unPack (dir, false);
-  }
-
-  public void unPackWithAppend(String dir) throws IOException {
-    unPack (dir, true);
-  }
-
-  public void unPack(String dir, boolean withAppend) throws IOException {
-    for (String s : content.keySet()) {
-      String fn = Utilities.path(dir, s);
-      String dn = Utilities.getDirectoryForFile(fn);
-      Utilities.createDirectory(dn);
-      File f = new File(s);
-      if (withAppend && f.getName().startsWith("_append.")) {
-        String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
-        if (new File(appendFn).exists())
-          TextFile.appendBytesToFile(content.get(s), appendFn);        
-        else
-          TextFile.bytesToFile(content.get(s), appendFn);        
-      } else
-      TextFile.bytesToFile(content.get(s), fn);
-    }
-    if (path != null)
-      FileUtils.copyDirectory(new File(path), new File(dir));      
-  }
-
-  public void save(OutputStream stream) throws IOException {
-    TarArchiveOutputStream tar;
-    ByteArrayOutputStream OutputStream;
-    BufferedOutputStream bufferedOutputStream;
-    GzipCompressorOutputStream gzipOutputStream;
-
-    OutputStream = new ByteArrayOutputStream();
-    bufferedOutputStream = new BufferedOutputStream(OutputStream);
-    gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
-    tar = new TarArchiveOutputStream(gzipOutputStream);
-    
-    Map<String, NpmPackageIndexBuilder> indexers = new HashMap<>();
-
-    for (String s : content.keySet()) {
-      byte[] b = content.get(s);
-      if (s.startsWith("package/")) {
-        String n = s.substring(8);
-        String dir = null;
-        if (n.contains("/")) {
-          dir = n.substring(0, n.lastIndexOf("/"));
-          n = n.substring(n.lastIndexOf("/")+1);
-        }
-        if (!indexers.containsKey(dir)) {
-          NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-          indexer.start();
-          indexers.put(dir, indexer);
-        }
-        indexers.get(dir).seeFile(n, b);
-      } else {
-        throw new IOException("The package has an illegal file path "+s);
-      }
-      if (!s.endsWith(".index.json") && !s.equals("package/package.json")) {
-        TarArchiveEntry entry = new TarArchiveEntry(s);
-        entry.setSize(b.length);
-        tar.putArchiveEntry(entry);
-        tar.write(b);
-        tar.closeArchiveEntry();
-      }
-    }
-    byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
-    TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
-    entry.setSize(cnt.length);
-    tar.putArchiveEntry(entry);
-    tar.write(cnt);
-    tar.closeArchiveEntry();
-
-    for (String s : indexers.keySet()) {
-      cnt = indexers.get(s).build().getBytes(Charset.forName("UTF-8"));
-      entry = s == null ? new TarArchiveEntry("package/.index.json") : new TarArchiveEntry("package/"+s+"/.index.json");
-      entry.setSize(cnt.length);
-      tar.putArchiveEntry(entry);
-      tar.write(cnt);
-      tar.closeArchiveEntry();
-    }
-
-    tar.finish();
-    tar.close();
-    gzipOutputStream.close();
-    bufferedOutputStream.close();
-    OutputStream.close();
-    byte[] b = OutputStream.toByteArray();
-    stream.write(b);
-  }
-
-  private String tail(String s) {
-    return s.substring(s.lastIndexOf("/")+1);
-  }
-  
   public List<String> dependencies() {
     List<String> res = new ArrayList<>();
     if (npm.has("dependencies")) {
@@ -652,20 +540,125 @@ public class NpmPackage {
       return null;
   }
 
+  //  /**
+  //   * only for use by the package manager itself
+  //   * 
+  //   * @param path
+  //   */
+  //  public void setPath(String path) {
+  //    this.path = path;
+  //  }
+
+  public String getWebLocation() {
+    if (npm.has("url"))
+      return npm.get("url").getAsString();
+    else
+      return npm.get("canonical").getAsString();
+  }
+
+  public InputStream loadResource(String type, String id) throws IOException {
+    NpmPackageFolder f = folders.get("package");
+    JsonArray files = f.index.getAsJsonArray("files");
+    for (JsonElement e : files) {
+      JsonObject i = (JsonObject) e;
+      if (type.equals(JSONUtil.str(i, "resourceType")) && id.equals(JSONUtil.str(i, "id"))) {
+        return load("package", JSONUtil.str(i, "filename"));
+      }
+    }
+    return null;
+  }
+
+  /** special case when playing around inside the package **/
+  public Map<String, byte[]> getContent() {
+    return folders.get("package").content;
+  }
+
+  //
+  //
+  //  public void unPack(String dir) throws IOException {
+  //    unPack (dir, false);
+  //  }
+  //
+  //  public void unPackWithAppend(String dir) throws IOException {
+  //    unPack (dir, true);
+  //  }
+  //
+  //  public void unPack(String dir, boolean withAppend) throws IOException {
+  //    for (String s : content.keySet()) {
+  //      String fn = Utilities.path(dir, s);
+  //      String dn = Utilities.getDirectoryForFile(fn);
+  //      Utilities.createDirectory(dn);
+  //      File f = new File(s);
+  //      if (withAppend && f.getName().startsWith("_append.")) {
+  //        String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
+  //        if (new File(appendFn).exists())
+  //          TextFile.appendBytesToFile(content.get(s), appendFn);        
+  //        else
+  //          TextFile.bytesToFile(content.get(s), appendFn);        
+  //      } else
+  //      TextFile.bytesToFile(content.get(s), fn);
+  //    }
+  //    if (path != null)
+  //      FileUtils.copyDirectory(new File(path), new File(dir));      
+  //  }
+
+  public void save(OutputStream stream) throws IOException {
+    TarArchiveOutputStream tar;
+    ByteArrayOutputStream OutputStream;
+    BufferedOutputStream bufferedOutputStream;
+    GzipCompressorOutputStream gzipOutputStream;
+
+    OutputStream = new ByteArrayOutputStream();
+    bufferedOutputStream = new BufferedOutputStream(OutputStream);
+    gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
+    tar = new TarArchiveOutputStream(gzipOutputStream);
+
+
+    for (NpmPackageFolder folder : folders.values()) {
+      String n = folder.name;
+      if (!"package".equals(n)) {
+        n = "package/"+n;
+      }
+      NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+      indexer.start();
+      for (String s : folder.content.keySet()) {
+        byte[] b = folder.content.get(s);
+        String name = n+"/"+s;
+        indexer.seeFile(n, b);
+        if (!s.equals(".index.json") && !s.equals("package.json")) {
+          TarArchiveEntry entry = new TarArchiveEntry(s);
+          entry.setSize(b.length);
+          tar.putArchiveEntry(entry);
+          tar.write(b);
+          tar.closeArchiveEntry();
+        }
+      }
+      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      TarArchiveEntry entry = new TarArchiveEntry(n+".index.json");
+      entry.setSize(cnt.length);
+      tar.putArchiveEntry(entry);
+      tar.write(cnt);
+      tar.closeArchiveEntry();
+    }
+    byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
+    TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
+    entry.setSize(cnt.length);
+    tar.putArchiveEntry(entry);
+    tar.write(cnt);
+    tar.closeArchiveEntry();
+
+    tar.finish();
+    tar.close();
+    gzipOutputStream.close();
+    bufferedOutputStream.close();
+    OutputStream.close();
+    byte[] b = OutputStream.toByteArray();
+    stream.write(b);
+  }
+
+
   public Map<String, List<String>> getTypes() {
-    return types;
-  }
-
-  public Map<String, String> getUrls() {
-    return urls;
-  }
-
-  public static boolean isValidName(String pid) {
-    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)+$");
-  }
-
-  public static boolean isValidVersion(String ver) {
-    return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
+    return folders.get("package").types;
   }
 
   public String fhirVersionList() {
@@ -689,6 +682,34 @@ public class NpmPackage {
     } else
       return "";
   }
-  
+
+  public void unPack(String dir) throws IOException {
+    unPack (dir, false);
+  }
+
+  public void unPackWithAppend(String dir) throws IOException {
+    unPack (dir, true);
+  }
+
+  public void unPack(String dir, boolean withAppend) throws IOException {
+    for (NpmPackageFolder folder : folders.values()) {
+      for (String s : folder.content.keySet()) {
+        String fn = Utilities.path(dir, folder.name, s);
+        String dn = Utilities.getDirectoryForFile(fn);
+        Utilities.createDirectory(dn);
+        File f = new File(s);
+        if (withAppend && f.getName().startsWith("_append.")) {
+          String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
+          if (new File(appendFn).exists())
+            TextFile.appendBytesToFile(folder.content.get(s), appendFn);        
+          else
+            TextFile.bytesToFile(folder.content.get(s), appendFn);        
+        } else
+          TextFile.bytesToFile(folder.content.get(s), fn);
+      }
+      if (path != null)
+        FileUtils.copyDirectory(new File(path), new File(dir));      
+    }
+  }
 }
 

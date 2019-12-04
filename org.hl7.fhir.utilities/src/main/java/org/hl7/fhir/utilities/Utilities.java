@@ -543,8 +543,13 @@ public class Utilities {
       else if (!s.toString().endsWith(File.separator))
         s.append(File.separator);
       String a = arg;
-      if ("[tmp]".equals(a))
-        a = System.getProperty("java.io.tmpdir");
+      if ("[tmp]".equals(a)) {
+        if (hasCTempDir()) {
+          a = "c:\\temp";
+        } else {
+          a = System.getProperty("java.io.tmpdir");
+        }
+      }
       a = a.replace("\\", File.separator);
       a = a.replace("/", File.separator);
       if (s.length() > 0 && a.startsWith(File.separator))
@@ -566,6 +571,11 @@ public class Utilities {
         s.append(a);
     }
     return s.toString();
+  }
+
+  private static boolean hasCTempDir() {
+    File tmp = new File("c:\\temp");
+    return tmp.exists() && tmp.isDirectory();
   }
 
   public static String pathURL(String... args) {

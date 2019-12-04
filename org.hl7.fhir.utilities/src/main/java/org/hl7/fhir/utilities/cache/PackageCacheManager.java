@@ -173,7 +173,7 @@ public class PackageCacheManager {
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
-    NpmPackage pi = new NpmPackage(path);
+    NpmPackage pi = NpmPackage.fromFolder(path);
     return pi;
   }
 
@@ -549,7 +549,7 @@ public class PackageCacheManager {
     int c = 0;
     int size = 0;
     for (Entry<String, byte[]> e : npm.getContent().entrySet()) {
-      String fn = Utilities.path(packRoot, e.getKey());
+      String fn = Utilities.path(packRoot, "package", e.getKey());
       String dir = Utilities.getDirectoryForFile(fn);
       if (!(new File(dir).exists()))
         Utilities.createDirectory(dir);
