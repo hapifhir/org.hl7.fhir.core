@@ -286,6 +286,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	}
   
 	public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {
+	  System.out.println("Load Package "+pi.name()+"#"+pi.version());
 	  if (types.length == 0)
 	    types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"};
 	  for (String s : pi.listResources(types)) {
