@@ -575,6 +575,20 @@ public class NpmPackage {
     return null;
   }
 
+  public InputStream loadExampleResource(String type, String id) throws IOException {
+    NpmPackageFolder f = folders.get("example");
+    if (f != null) {
+      JsonArray files = f.index.getAsJsonArray("files");
+      for (JsonElement e : files) {
+        JsonObject i = (JsonObject) e;
+        if (type.equals(JSONUtil.str(i, "resourceType")) && id.equals(JSONUtil.str(i, "id"))) {
+          return load("example", JSONUtil.str(i, "filename"));
+        }
+      }
+    }
+    return null;
+  }
+
   /** special case when playing around inside the package **/
   public Map<String, NpmPackageFolder> getFolders() {
     return folders;
