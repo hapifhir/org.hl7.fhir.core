@@ -72,15 +72,15 @@ public class NPMPackageGenerator {
 
     private String getDirectory() {
       switch (this) {
-      case RESOURCE: return "/package/";
-      case EXAMPLE: return "/example/";
-      case OPENAPI: return "/openapi/";
-      case SCHEMATRON: return "/xml/";
-      case RDF: return "/rdf/";      
-      case OTHER: return "/other/";      
-      case TEMPLATE: return "/other/";      
-      case JEKYLL: return "/jekyll/";      
-      case TOOL: return "/bin/";      
+      case RESOURCE: return "package/";
+      case EXAMPLE: return "example/";
+      case OPENAPI: return "openapi/";
+      case SCHEMATRON: return "xml/";
+      case RDF: return "rdf/";      
+      case OTHER: return "other/";      
+      case TEMPLATE: return "other/";      
+      case JEKYLL: return "jekyll/";      
+      case TOOL: return "bin/";      
       }
       return "/";
     }
@@ -294,9 +294,13 @@ public class NPMPackageGenerator {
 
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
-    if (created.contains(path)) 
+    if (!path.startsWith("package/")) {
+      path = "package/" +path;
+    }
+      
+    if (created.contains(path)) {
       System.out.println("Duplicate package file "+path);
-    else {
+    } else {
       created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
       entry.setSize(content.length);
