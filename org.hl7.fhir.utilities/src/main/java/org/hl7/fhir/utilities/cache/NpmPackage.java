@@ -157,6 +157,10 @@ public class NpmPackage {
 
     }
 
+    public String dump() {
+      return name + " ("+ (folder == null ? "null" : folder.toString())+") | "+Boolean.toString(index != null)+" | "+content.size()+" | "+types.size();
+    }
+
   }
 
   private String path;
@@ -484,13 +488,15 @@ public class NpmPackage {
       if (npm.has("fhirVersions")) {
         return npm.getAsJsonArray("fhirVersions").get(0).getAsString();
       }
-      // legacy simplifier support:
-      if (dep.has("simplifier.core.r4"))
-        return "4.0";
-      if (dep.has("simplifier.core.r3"))
-        return "3.0";
-      if (dep.has("simplifier.core.r2"))
-        return "2.0";
+      if (dep != null) {
+        // legacy simplifier support:
+        if (dep.has("simplifier.core.r4"))
+          return "4.0";
+        if (dep.has("simplifier.core.r3"))
+          return "3.0";
+        if (dep.has("simplifier.core.r2"))
+          return "2.0";
+      }
       throw new FHIRException("no core dependency or FHIR Version found in the Package definition");
     }
   }
@@ -730,6 +736,23 @@ public class NpmPackage {
 //      if (path != null)
 //        FileUtils.copyDirectory(new File(path), new File(dir));      
     }
+  }
+
+  public void debugDump(String purpose) {
+    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
+    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
+    System.out.println("  folders = "+folders.size());
+    for (String s : sorted(folders.keySet())) {
+      NpmPackageFolder folder = folders.get(s);
+      System.out.println("    "+folder.dump());
+    }
+  }
+
+  private List<String> sorted(Set<String> keys) {
+    List<String> res = new ArrayList<String>();
+    res.addAll(keys);
+    Collections.sort(res);
+    return res ;
   }
 }
 
