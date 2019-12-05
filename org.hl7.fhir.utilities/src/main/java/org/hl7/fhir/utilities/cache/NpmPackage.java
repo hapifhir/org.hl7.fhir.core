@@ -185,14 +185,17 @@ public class NpmPackage {
   }
 
   public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
+    System.out.println("Load Package from "+path);
     res.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
 
-    for (File f : new File(path).listFiles()) {
+    File dir = new File(path);
+    for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
         String d = f.getName();
         if (!d.equals("package")) {
           d = Utilities.path("package", d);
         }
+        System.out.println("  see "+f.getAbsolutePath()+" as "+d);
         NpmPackageFolder folder = res.new NpmPackageFolder(d);
         folder.folder = f;
         res.folders.put(f.getName(), folder);
@@ -204,7 +207,7 @@ public class NpmPackage {
             throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
-        loadSubFolders(res, path, f);
+        loadSubFolders(res, dir.getAbsolutePath(), f);
       }
     }
   }
@@ -216,7 +219,7 @@ public class NpmPackage {
         if (!d.startsWith("package")) {
           d = Utilities.path("package", d);
         }
-          
+        System.out.println("  see "+f.getAbsolutePath()+" as "+d);
         NpmPackageFolder folder = res.new NpmPackageFolder(d);
         folder.folder = f;
         res.folders.put(d, folder);
@@ -237,7 +240,7 @@ public class NpmPackage {
   public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
     NpmPackage res = new NpmPackage();
     loadFiles(res, folder, new File(folder), exemptions);
-    if (res.folders.containsKey("package")) {
+    if (!res.folders.containsKey("package")) {
       res.folders.put("package", res.new NpmPackageFolder("package"));
     }
     if (!res.folders.get("package").content.containsKey("package/package.json") && defType != null)
