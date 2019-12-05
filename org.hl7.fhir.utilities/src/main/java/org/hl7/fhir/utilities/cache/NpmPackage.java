@@ -185,7 +185,11 @@ public class NpmPackage {
 
     for (File f : new File(path).listFiles()) {
       if (f.isDirectory()) {
-        NpmPackageFolder folder = res.new NpmPackageFolder(f.getName());
+        String d = f.getName();
+        if (!d.equals("package")) {
+          d = Utilities.path("package", d);
+        }
+        NpmPackageFolder folder = res.new NpmPackageFolder(d);
         folder.folder = f;
         res.folders.put(f.getName(), folder);
         File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
@@ -196,13 +200,22 @@ public class NpmPackage {
             throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
+        loadSubFolders(res, path, f);
       }
     }
-    for (File f : new File(Utilities.path(path, "package")).listFiles()) {
+  }
+
+  private static void loadSubFolders(NpmPackage res, String rootPath, File dir) throws IOException {
+    for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
-        NpmPackageFolder folder = res.new NpmPackageFolder(f.getName());
+        String d = f.getAbsolutePath().substring(rootPath.length()+1);
+        if (!d.startsWith("package")) {
+          d = Utilities.path("package", d);
+        }
+          
+        NpmPackageFolder folder = res.new NpmPackageFolder(d);
         folder.folder = f;
-        res.folders.put(f.getName(), folder);
+        res.folders.put(d, folder);
         File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
         if (ij.exists()) {
           try {
@@ -211,8 +224,10 @@ public class NpmPackage {
             throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
+        loadSubFolders(res, rootPath, f);
+        
       }
-    }
+    }    
   }
 
   public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
@@ -259,7 +274,7 @@ public class NpmPackage {
             dir = dir.substring(8);
           }
           folders.put(dir, new NpmPackageFolder(dir));
-        } else if (n.contains("/")) {
+        } else {
           int count;
           byte data[] = new byte[BUFFER_SIZE];
           ByteArrayOutputStream fos = new ByteArrayOutputStream();
@@ -291,7 +306,7 @@ public class NpmPackage {
   }
 
   public void loadFile(String n, byte[] data) throws IOException {
-    String dir = n.substring(0, n.lastIndexOf("/"));
+    String dir = n.contains("/") ? n.substring(0, n.lastIndexOf("/")) : "$root";
     if (dir.startsWith("package/")) {
       dir = dir.substring(8);
     }
@@ -371,6 +386,8 @@ public class NpmPackage {
     List<String> res = new ArrayList<String>();
     if (folders.containsKey(folder)) {
       res.addAll(folders.get(folder).listFiles());
+    } else if (folders.containsKey(Utilities.path("package", folder))) {
+      res.addAll(folders.get(Utilities.path("package", folder)).listFiles());
     }
     return res;
   }
@@ -714,22 +731,30 @@ public class NpmPackage {
 
   public void unPack(String dir, boolean withAppend) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
-      for (String s : folder.content.keySet()) {
-        String fn = Utilities.path(dir, folder.name, s);
-        String dn = Utilities.getDirectoryForFile(fn);
-        Utilities.createDirectory(dn);
-        File f = new File(s);
+      String dn = folder.getName();
+      if (!dn.equals("package")) {
+        dn = dn.substring(8);
+      }
+      if (dn.equals("$root")) {
+        dn = dir;
+      } else {
+         dn = Utilities.path(dir, dn);
+      }
+      Utilities.createDirectory(dn);
+      for (String s : folder.listFiles()) {
+        String fn = Utilities.path(dn, s);
+        File f = new File(fn);
         if (withAppend && f.getName().startsWith("_append.")) {
           String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
           if (new File(appendFn).exists())
-            TextFile.appendBytesToFile(folder.content.get(s), appendFn);        
+            TextFile.appendBytesToFile(folder.fetchFile(s), appendFn);        
           else
-            TextFile.bytesToFile(folder.content.get(s), appendFn);        
+            TextFile.bytesToFile(folder.fetchFile(s), appendFn);        
         } else
-          TextFile.bytesToFile(folder.content.get(s), fn);
+          TextFile.bytesToFile(folder.fetchFile(s), fn);
       }
-      if (path != null)
-        FileUtils.copyDirectory(new File(path), new File(dir));      
+//      if (path != null)
+//        FileUtils.copyDirectory(new File(path), new File(dir));      
     }
   }
 }
