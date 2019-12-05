@@ -728,7 +728,7 @@ public class NpmPackage {
         String fn = Utilities.path(dn, s);
         File f = new File(fn);
         if (withAppend && f.getName().startsWith("_append.")) {
-          String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
+          String appendFn = Utilities.path(dir, f.getName().substring(8));
           if (new File(appendFn).exists())
             TextFile.appendBytesToFile(folder.fetchFile(s), appendFn);        
           else
