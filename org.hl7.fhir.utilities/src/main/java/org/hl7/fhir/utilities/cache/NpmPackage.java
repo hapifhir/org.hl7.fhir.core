@@ -185,7 +185,6 @@ public class NpmPackage {
   }
 
   public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
-    System.out.println("Load Package from "+path);
     res.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
 
     File dir = new File(path);
@@ -195,7 +194,6 @@ public class NpmPackage {
         if (!d.equals("package")) {
           d = Utilities.path("package", d);
         }
-        System.out.println("  see "+f.getAbsolutePath()+" as "+d);
         NpmPackageFolder folder = res.new NpmPackageFolder(d);
         folder.folder = f;
         res.folders.put(f.getName(), folder);
@@ -219,7 +217,6 @@ public class NpmPackage {
         if (!d.startsWith("package")) {
           d = Utilities.path("package", d);
         }
-        System.out.println("  see "+f.getAbsolutePath()+" as "+d);
         NpmPackageFolder folder = res.new NpmPackageFolder(d);
         folder.folder = f;
         res.folders.put(d, folder);
@@ -715,7 +712,7 @@ public class NpmPackage {
   public void unPack(String dir, boolean withAppend) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       String dn = folder.getName();
-      if (!dn.equals("package")) {
+      if (!dn.equals("package") && dn.startsWith("package/")) {
         dn = dn.substring(8);
       }
       if (dn.equals("$root")) {
@@ -728,7 +725,7 @@ public class NpmPackage {
         String fn = Utilities.path(dn, s);
         File f = new File(fn);
         if (withAppend && f.getName().startsWith("_append.")) {
-          String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
+          String appendFn = Utilities.path(dn, s.substring(8));
           if (new File(appendFn).exists())
             TextFile.appendBytesToFile(folder.fetchFile(s), appendFn);        
           else
@@ -742,13 +739,13 @@ public class NpmPackage {
   }
 
   public void debugDump(String purpose) {
-    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
-    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
-    System.out.println("  folders = "+folders.size());
-    for (String s : sorted(folders.keySet())) {
-      NpmPackageFolder folder = folders.get(s);
-      System.out.println("    "+folder.dump());
-    }
+//    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
+//    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
+//    System.out.println("  folders = "+folders.size());
+//    for (String s : sorted(folders.keySet())) {
+//      NpmPackageFolder folder = folders.get(s);
+//      System.out.println("    "+folder.dump());
+//    }
   }
 
   private List<String> sorted(Set<String> keys) {
