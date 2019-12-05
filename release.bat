@@ -1,7 +1,7 @@
 @echo off
 
-set oldver=4.1.17
-set newver=4.1.18
+set oldver=4.1.18
+set newver=4.1.19
 
 echo ..
 echo =====================================================================
