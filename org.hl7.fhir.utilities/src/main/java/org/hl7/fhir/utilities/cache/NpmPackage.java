@@ -712,7 +712,7 @@ public class NpmPackage {
   public void unPack(String dir, boolean withAppend) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       String dn = folder.getName();
-      if (!dn.equals("package") && dn.startsWith("package/")) {
+      if (!dn.equals("package") && (dn.startsWith("package/") || dn.startsWith("package\\"))) {
         dn = dn.substring(8);
       }
       if (dn.equals("$root")) {
@@ -739,13 +739,13 @@ public class NpmPackage {
   }
 
   public void debugDump(String purpose) {
-//    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
-//    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
-//    System.out.println("  folders = "+folders.size());
-//    for (String s : sorted(folders.keySet())) {
-//      NpmPackageFolder folder = folders.get(s);
-//      System.out.println("    "+folder.dump());
-//    }
+    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
+    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
+    System.out.println("  folders = "+folders.size());
+    for (String s : sorted(folders.keySet())) {
+      NpmPackageFolder folder = folders.get(s);
+      System.out.println("    "+folder.dump());
+    }
   }
 
   private List<String> sorted(Set<String> keys) {
