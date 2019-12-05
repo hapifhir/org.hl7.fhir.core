@@ -103,6 +103,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private String date;
   private IValidatorFactory validatorFactory;
   private boolean ignoreProfileErrors;
+  private boolean progress;
   
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -287,7 +288,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	}
   
 	public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {
-	  System.out.println("Load Package "+pi.name()+"#"+pi.version());
+	  if (progress) {
+	    System.out.println("Load Package "+pi.name()+"#"+pi.version());
+	  }
 	  if (types.length == 0)
 	    types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"};
 	  for (String s : pi.listResources(types)) {
@@ -631,6 +634,14 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public String listMapUrls() {
     return Utilities.listCanonicalUrls(transforms.keys());
+  }
+
+  public boolean isProgress() {
+    return progress;
+  }
+
+  public void setProgress(boolean progress) {
+    this.progress = progress;
   }
 
 

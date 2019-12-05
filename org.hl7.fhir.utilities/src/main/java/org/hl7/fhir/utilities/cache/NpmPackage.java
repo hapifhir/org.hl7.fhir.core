@@ -413,6 +413,9 @@ public class NpmPackage {
    */
   public InputStream load(String folder, String file) throws IOException {
     NpmPackageFolder f = folders.get(folder);
+    if (f == null) {
+      f = folders.get(Utilities.path("package", folder));
+    }
     if (f != null && f.hasFile(file)) {
       return new ByteArrayInputStream(f.fetchFile(file));
     } else {
@@ -610,35 +613,6 @@ public class NpmPackage {
   public Map<String, NpmPackageFolder> getFolders() {
     return folders;
   }
-
-  //
-  //
-  //  public void unPack(String dir) throws IOException {
-  //    unPack (dir, false);
-  //  }
-  //
-  //  public void unPackWithAppend(String dir) throws IOException {
-  //    unPack (dir, true);
-  //  }
-  //
-  //  public void unPack(String dir, boolean withAppend) throws IOException {
-  //    for (String s : content.keySet()) {
-  //      String fn = Utilities.path(dir, s);
-  //      String dn = Utilities.getDirectoryForFile(fn);
-  //      Utilities.createDirectory(dn);
-  //      File f = new File(s);
-  //      if (withAppend && f.getName().startsWith("_append.")) {
-  //        String appendFn = Utilities.path(dir, Utilities.getDirectoryForFile(s), f.getName().substring(8));
-  //        if (new File(appendFn).exists())
-  //          TextFile.appendBytesToFile(content.get(s), appendFn);        
-  //        else
-  //          TextFile.bytesToFile(content.get(s), appendFn);        
-  //      } else
-  //      TextFile.bytesToFile(content.get(s), fn);
-  //    }
-  //    if (path != null)
-  //      FileUtils.copyDirectory(new File(path), new File(dir));      
-  //  }
 
   public void save(OutputStream stream) throws IOException {
     TarArchiveOutputStream tar;
