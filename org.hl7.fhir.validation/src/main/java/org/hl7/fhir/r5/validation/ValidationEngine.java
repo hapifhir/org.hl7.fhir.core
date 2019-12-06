@@ -595,8 +595,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private Map<String, byte[]> scanDirectory(File f, boolean recursive) throws FileNotFoundException, IOException {
     Map<String, byte[]> res = new HashMap<>();
     for (File ff : f.listFiles()) {
-      if (ff.isDirectory()){
-        if (recursive)
+      if (ff.isDirectory() && recursive){
           res.putAll(scanDirectory(ff, true));
       }
       else if (!isIgnoreFile(ff)) {
