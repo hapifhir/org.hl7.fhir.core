@@ -744,79 +744,81 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
     synchronized (lock) {
 
-      if (uri.startsWith("http:") || uri.startsWith("https:")) {
-        String version = null;
-        if (uri.contains("|")) {
-          version = uri.substring(uri.lastIndexOf("|")+1);
-          uri = uri.substring(0, uri.lastIndexOf("|"));
-        }
-        if (uri.contains("#"))
-          uri = uri.substring(0, uri.indexOf("#"));
-        if (class_ == Resource.class || class_ == null) {
-          if (structures.has(uri))
-            return (T) structures.get(uri);
-          if (guides.has(uri))
-            return (T) guides.get(uri);
-          if (capstmts.has(uri))
-            return (T) capstmts.get(uri);
-          if (valueSets.has(uri))
-            return (T) valueSets.get(uri);
-          if (codeSystems.has(uri))
-            return (T) codeSystems.get(uri);
-          if (operations.has(uri))
-            return (T) operations.get(uri);
-          if (searchParameters.has(uri))
-            return (T) searchParameters.get(uri);
-          if (plans.has(uri))
-            return (T) plans.get(uri);
-          if (maps.has(uri))
-            return (T) maps.get(uri);
-          if (transforms.has(uri))
-            return (T) transforms.get(uri);
-          if (questionnaires.has(uri))
-            return (T) questionnaires.get(uri);
-          for (Map<String, Resource> rt : allResourcesById.values()) {
-            for (Resource r : rt.values()) {
-              if (r instanceof MetadataResource) {
-                MetadataResource mr = (MetadataResource) r;
-                if (uri.equals(mr.getUrl()))
-                  return (T) mr;
-              }
-            }            
-          }
-          return null;      
-        } else if (class_ == ImplementationGuide.class) {
-          return (T) guides.get(uri);
-        } else if (class_ == CapabilityStatement.class) {
-          return (T) capstmts.get(uri);
-        } else if (class_ == StructureDefinition.class) {
+      String version = null;
+      if (uri.contains("|")) {
+        version = uri.substring(uri.lastIndexOf("|")+1);
+        uri = uri.substring(0, uri.lastIndexOf("|"));
+      }
+      if (uri.contains("#"))
+        uri = uri.substring(0, uri.indexOf("#"));
+      if (class_ == Resource.class || class_ == null) {
+        if (structures.has(uri))
           return (T) structures.get(uri);
-        } else if (class_ == StructureMap.class) {
-          return (T) transforms.get(uri);
-        } else if (class_ == ValueSet.class) {
-          if (valueSets.has(uri, version))
-            return (T) valueSets.get(uri, version);
-          else
-            return (T) valueSets.get(uri);
-        } else if (class_ == CodeSystem.class) {
-          if (codeSystems.has(uri, version))
-            return (T) codeSystems.get(uri, version);
-          else
+        if (guides.has(uri))
+          return (T) guides.get(uri);
+        if (capstmts.has(uri))
+          return (T) capstmts.get(uri);
+        if (valueSets.has(uri))
+          return (T) valueSets.get(uri);
+        if (codeSystems.has(uri))
           return (T) codeSystems.get(uri);
-        } else if (class_ == ConceptMap.class) {
-          return (T) maps.get(uri);
-        } else if (class_ == PlanDefinition.class) {
+        if (operations.has(uri))
+          return (T) operations.get(uri);
+        if (searchParameters.has(uri))
+          return (T) searchParameters.get(uri);
+        if (plans.has(uri))
           return (T) plans.get(uri);
-        } else if (class_ == OperationDefinition.class) {
-          OperationDefinition od = operations.get(uri);
-          return (T) od;
-        } else if (class_ == SearchParameter.class) {
-          SearchParameter res = searchParameters.get(uri);
-          return (T) res;
+        if (maps.has(uri))
+          return (T) maps.get(uri);
+        if (transforms.has(uri))
+          return (T) transforms.get(uri);
+        if (questionnaires.has(uri))
+          return (T) questionnaires.get(uri);
+        for (Map<String, Resource> rt : allResourcesById.values()) {
+          for (Resource r : rt.values()) {
+            if (r instanceof MetadataResource) {
+              MetadataResource mr = (MetadataResource) r;
+              if (uri.equals(mr.getUrl()))
+                return (T) mr;
+            }
+          }            
         }
+        return null;      
+      } else if (class_ == ImplementationGuide.class) {
+        return (T) guides.get(uri);
+      } else if (class_ == CapabilityStatement.class) {
+        return (T) capstmts.get(uri);
+      } else if (class_ == StructureDefinition.class) {
+        return (T) structures.get(uri);
+      } else if (class_ == StructureMap.class) {
+        return (T) transforms.get(uri);
+      } else if (class_ == ValueSet.class) {
+        if (valueSets.has(uri, version))
+          return (T) valueSets.get(uri, version);
+        else
+          return (T) valueSets.get(uri);
+      } else if (class_ == CodeSystem.class) {
+        if (codeSystems.has(uri, version))
+          return (T) codeSystems.get(uri, version);
+        else
+          return (T) codeSystems.get(uri);
+      } else if (class_ == ConceptMap.class) {
+        return (T) maps.get(uri);
+      } else if (class_ == PlanDefinition.class) {
+        return (T) plans.get(uri);
+      } else if (class_ == OperationDefinition.class) {
+        OperationDefinition od = operations.get(uri);
+        return (T) od;
+      } else if (class_ == Questionnaire.class) {
+        return (T) questionnaires.get(uri);
+      } else if (class_ == SearchParameter.class) {
+        SearchParameter res = searchParameters.get(uri);
+        return (T) res;
       }
       if (class_ == CodeSystem.class && codeSystems.has(uri))
         return (T) codeSystems.get(uri);
+      if (class_ == ValueSet.class && valueSets.has(uri))
+        return (T) valueSets.get(uri);
       
       if (class_ == Questionnaire.class)
         return (T) questionnaires.get(uri);
