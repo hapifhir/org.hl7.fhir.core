@@ -281,7 +281,7 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean heirarchical) throws TerminologyServiceException;
+  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
   
   public class ValidationResult {
     private ConceptDefinitionComponent definition;
