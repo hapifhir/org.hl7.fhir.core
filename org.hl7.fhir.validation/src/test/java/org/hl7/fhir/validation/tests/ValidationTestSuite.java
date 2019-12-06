@@ -154,6 +154,14 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("profile")) {
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       JsonObject profile = content.getAsJsonObject("profile");
+      if (profile.has("supporting")) {
+        for (JsonElement e : profile.getAsJsonArray("supporting")) {
+          String filename =  e.getAsString();
+          String contents = TestingUtilities.loadTestResource("validator", filename);
+          MetadataResource mr = (MetadataResource) loadResource(filename, contents, v);
+          val.getContext().cacheResource(mr);
+        }
+      }
       String filename =  profile.get("source").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
       System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
