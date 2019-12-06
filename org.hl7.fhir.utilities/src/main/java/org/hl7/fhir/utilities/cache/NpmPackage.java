@@ -189,23 +189,29 @@ public class NpmPackage {
 
     File dir = new File(path);
     for (File f : dir.listFiles()) {
-      if (f.isDirectory()) {
-        String d = f.getName();
-        if (!d.equals("package")) {
-          d = Utilities.path("package", d);
-        }
-        NpmPackageFolder folder = res.new NpmPackageFolder(d);
-        folder.folder = f;
-        res.folders.put(f.getName(), folder);
-        File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
-        if (ij.exists()) {
-          try {
-            folder.readIndex(JsonTrackingParser.parseJson(ij));
-          } catch (Exception e) {
-            throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
+      if (!Utilities.existsInList(f.getName(), ".git", ".svn") && !Utilities.existsInList(f.getName(), exemptions)) {
+        if (f.isDirectory()) {
+          String d = f.getName();
+          if (!d.equals("package")) {
+            d = Utilities.path("package", d);
           }
+          NpmPackageFolder folder = res.new NpmPackageFolder(d);
+          folder.folder = f;
+          res.folders.put(f.getName(), folder);
+          File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
+          if (ij.exists()) {
+            try {
+              folder.readIndex(JsonTrackingParser.parseJson(ij));
+            } catch (Exception e) {
+              throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
+            }
+          }
+          loadSubFolders(res, dir.getAbsolutePath(), f);
+        } else {
+          NpmPackageFolder folder = res.new NpmPackageFolder("package/$root");
+          folder.folder = dir;
+          res.folders.put("package/$root", folder);        
         }
-        loadSubFolders(res, dir.getAbsolutePath(), f);
       }
     }
   }
