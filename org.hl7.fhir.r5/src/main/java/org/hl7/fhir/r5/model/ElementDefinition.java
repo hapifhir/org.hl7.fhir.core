@@ -5507,6 +5507,18 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       return this != null && this.minValue instanceof IntegerType;
     }
 
+    public Integer64Type getMinValueInteger64Type() throws FHIRException { 
+      if (this.minValue == null)
+        this.minValue = new Integer64Type();
+      if (!(this.minValue instanceof Integer64Type))
+        throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.minValue.getClass().getName()+" was encountered");
+      return (Integer64Type) this.minValue;
+    }
+
+    public boolean hasMinValueInteger64Type() { 
+      return this != null && this.minValue instanceof IntegerType;
+    }
+
     /**
      * @return {@link #minValue} (The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
@@ -5560,7 +5572,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
      * @param value {@link #minValue} (The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
     public ElementDefinition setMinValue(Type value) { 
-      if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
+      if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
         throw new Error("Not the right type for ElementDefinition.minValue[x]: "+value.fhirType());
       this.minValue = value;
       return this;
@@ -5663,6 +5675,19 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       return this != null && this.maxValue instanceof IntegerType;
     }
 
+    public Integer64Type getMaxValueInteger64Type() throws FHIRException { 
+      if (this.maxValue == null)
+        this.maxValue = new Integer64Type();
+      if (!(this.maxValue instanceof Integer64Type))
+        throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.maxValue.getClass().getName()+" was encountered");
+      return (Integer64Type) this.maxValue;
+    }
+
+    public boolean hasMaxValueInteger64Type() { 
+      return this != null && this.maxValue instanceof Integer64Type;
+    }
+
+
     /**
      * @return {@link #maxValue} (The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
@@ -5716,7 +5741,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
      * @param value {@link #maxValue} (The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
     public ElementDefinition setMaxValue(Type value) { 
-      if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
+      if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
         throw new Error("Not the right type for ElementDefinition.maxValue[x]: "+value.fhirType());
       this.maxValue = value;
       return this;

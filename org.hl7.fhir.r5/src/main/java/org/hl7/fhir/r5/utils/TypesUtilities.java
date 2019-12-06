@@ -98,6 +98,7 @@ public class TypesUtilities {
     res.add(new WildcardInformation("id", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("instant", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("integer", TypeClassification.PRIMITIVE));
+    res.add(new WildcardInformation("integer64", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("markdown", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("oid", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("positiveInt", TypeClassification.PRIMITIVE));
@@ -148,7 +149,7 @@ public class TypesUtilities {
   }
 
   public static boolean isPrimitive(String code) {
-    return Utilities.existsInList(code, "boolean", "integer", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml");
+    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml");
   }
 }
 

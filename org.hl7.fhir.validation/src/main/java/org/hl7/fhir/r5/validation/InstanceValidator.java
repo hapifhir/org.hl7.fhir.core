@@ -1735,6 +1735,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, v > 0, "value is less than permitted minimum value of 1");
       }
     }
+    if (type.equals("integer64")) {
+      if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(e.primitiveValue()), "The value '" + e.primitiveValue() + "' is not a valid integer64")) {
+        Long v = new Long(e.getValue()).longValue();
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), "value is greater than permitted maximum value of " + (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type() : ""));
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), "value is less than permitted minimum value of " + (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type() : ""));
+        if (type.equals("unsignedInt"))
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, v >= 0, "value is less than permitted minimum value of 0");
+        if (type.equals("positiveInt"))
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, v > 0, "value is less than permitted minimum value of 1");
+      }
+    }
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
         DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);

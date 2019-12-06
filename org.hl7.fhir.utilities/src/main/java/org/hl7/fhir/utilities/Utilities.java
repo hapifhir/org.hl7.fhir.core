@@ -142,6 +142,29 @@ public class Utilities {
       return true;
     }
     
+    public static boolean isLong(String string) {
+      if (isBlank(string)) {
+        return false;
+      }
+      String value = string.startsWith("-") ? string.substring(1) : string;
+      for (char next : value.toCharArray()) {
+        if (!Character.isDigit(next)) {
+          return false;
+        }
+      }
+      // check bounds  -9,223,372,036,854,775,808 to +9,223,372,036,854,775,807
+      if (value.length() > 20)
+        return false;
+      if (string.startsWith("-")) {
+        if (value.length() == 20 && string.compareTo("9223372036854775808") > 0)
+          return false;       
+      } else {
+        if (value.length() == 20 && string.compareTo("9223372036854775807") > 0)
+          return false;
+      }
+      return true;
+    }
+    
     public static boolean isHex(String string) {
       try {
         int i = Integer.parseInt(string, 16);

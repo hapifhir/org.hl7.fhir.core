@@ -158,6 +158,14 @@ public class RdfParser extends RdfParserBase {
     composeElement(t, parentType, name, value, index);
   }
 
+  protected void composeInteger64(Complex parent, String parentType, String name, Integer64Type value, int index) {
+    if (value == null)
+      return;
+    Complex t = parent.predicate("fhir:"+parentType+"."+name);
+    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    composeElement(t, parentType, name, value, index);
+  }
+
   protected void composeOid(Complex parent, String parentType, String name, OidType value, int index) {
     if (value == null)
       return;
@@ -18416,6 +18424,8 @@ public class RdfParser extends RdfParserBase {
       composeString(parent, parentType, name, (StringType)value, index);
     else if (value instanceof IntegerType)
       composeInteger(parent, parentType, name, (IntegerType)value, index);
+    else if (value instanceof Integer64Type)
+      composeInteger64(parent, parentType, name, (Integer64Type)value, index);
     else if (value instanceof OidType)
       composeOid(parent, parentType, name, (OidType)value, index);
     else if (value instanceof CanonicalType)

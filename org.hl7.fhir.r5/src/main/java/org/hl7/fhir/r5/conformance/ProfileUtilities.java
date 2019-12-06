@@ -3736,7 +3736,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public boolean isPrimitive(String value) {
     StructureDefinition sd = context.fetchTypeDefinition(value);
     if (sd == null) // might be running before all SDs are available
-      return Utilities.existsInList(value, "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid");
+      return Utilities.existsInList(value, "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid");
     else 
       return sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
