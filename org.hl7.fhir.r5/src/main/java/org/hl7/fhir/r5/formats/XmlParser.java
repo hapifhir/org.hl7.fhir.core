@@ -190,6 +190,21 @@ public class XmlParser extends XmlParserBase {
     return res;
   }
 
+  protected Integer64Type parseInteger64(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    Integer64Type res = new Integer64Type(xpp.getAttributeValue(null, "value"));
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+      if (!parseElementContent(eventType, xpp, res))
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
   protected OidType parseOid(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     OidType res = new OidType(xpp.getAttributeValue(null, "value"));
     parseElementAttributes(xpp, res);
@@ -24697,6 +24712,8 @@ public class XmlParser extends XmlParserBase {
       return parseString(xpp);
     else if (xpp.getName().equals(prefix+"integer"))
       return parseInteger(xpp);
+    else if (xpp.getName().equals(prefix+"integer64"))
+      return parseInteger64(xpp);
     else if (xpp.getName().equals(prefix+"oid"))
       return parseOid(xpp);
     else if (xpp.getName().equals(prefix+"canonical"))
@@ -24815,6 +24832,8 @@ public class XmlParser extends XmlParserBase {
       return parseString(xpp);
     else if (xpp.getName().equals(prefix+"Integer"))
       return parseInteger(xpp);
+    else if (xpp.getName().equals(prefix+"Integer64"))
+      return parseInteger64(xpp);
     else if (xpp.getName().equals(prefix+"Oid"))
       return parseOid(xpp);
     else if (xpp.getName().equals(prefix+"Canonical"))
@@ -24857,6 +24876,8 @@ public class XmlParser extends XmlParserBase {
       return parseString(xpp);
     else if (type.equals("integer"))
       return parseInteger(xpp);
+    else if (type.equals("integer64"))
+      return parseInteger64(xpp);
     else if (type.equals("oid"))
       return parseOid(xpp);
     else if (type.equals("canonical"))
@@ -25343,6 +25364,8 @@ public class XmlParser extends XmlParserBase {
       return parseString(xpp);
     else if (type.equals("integer"))
       return parseInteger(xpp);
+    else if (type.equals("integer64"))
+      return parseInteger64(xpp);
     else if (type.equals("oid"))
       return parseOid(xpp);
     else if (type.equals("canonical"))
@@ -25745,6 +25768,8 @@ public class XmlParser extends XmlParserBase {
       return true;
     if (xpp.getName().equals(prefix+"Integer"))
       return true;
+    if (xpp.getName().equals(prefix+"Integer64"))
+      return true;
     if (xpp.getName().equals(prefix+"Oid"))
       return true;
     if (xpp.getName().equals(prefix+"Canonical"))
@@ -25872,6 +25897,19 @@ public class XmlParser extends XmlParserBase {
   }    
 
   protected void composeInteger(String name, IntegerType value) throws IOException  {
+    if (value != null) { // integer
+      composeElementAttributes(value);
+      if (value.asStringValue() != null) 
+        xml.attribute("value", value.asStringValue());
+        
+      xml.enter(FHIR_NS, name);
+      composeElementElements(value);
+      composeElementClose(value);
+      xml.exit(FHIR_NS, name);
+    }    
+  }    
+
+  protected void composeInteger64(String name, Integer64Type value) throws IOException  {
     if (value != null) { // integer
       composeElementAttributes(value);
       if (value.asStringValue() != null) 
@@ -51805,7 +51843,9 @@ public class XmlParser extends XmlParserBase {
     else if (type instanceof StringType)
        composeString(prefix+"String", (StringType) type);
     else if (type instanceof IntegerType)
-       composeInteger(prefix+"Integer", (IntegerType) type);
+      composeInteger(prefix+"Integer", (IntegerType) type);
+    else if (type instanceof Integer64Type)
+      composeInteger64(prefix+"Integer64", (Integer64Type) type);
     else if (type instanceof UriType)
        composeUri(prefix+"Uri", (UriType) type);
     else if (type instanceof InstantType)

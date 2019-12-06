@@ -220,6 +220,8 @@ public class Factory {
       return new BooleanType();
     else if (name.equals("integer"))
       return new IntegerType();
+    else if (name.equals("integer64"))
+      return new Integer64Type();
     else if (name.equals("decimal"))
       return new DecimalType();
     else if (name.equals("base64Binary"))

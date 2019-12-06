@@ -141,6 +141,11 @@ public class JsonParser extends JsonParserBase {
     return res;
   }
 
+  protected Integer64Type parseInteger64(java.lang.Long v) throws IOException, FHIRFormatError {
+    Integer64Type res = new Integer64Type(v);
+    return res;
+  }
+
   protected OidType parseOid(String v) throws IOException, FHIRFormatError {
     OidType res = new OidType(v);
     return res;
@@ -28567,6 +28572,12 @@ public class JsonParser extends JsonParserBase {
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Integer"), t);
       return t;
     }
+    else if (json.has(prefix+"Integer64") || json.has("_"+prefix+"Integer64")) {
+      Type t = json.has(prefix+"Integer64") ? parseInteger64(json.get(prefix+"Integer64").getAsLong()) : new Integer64Type();
+      if (json.has("_"+prefix+"Integer64"))
+        parseElementProperties(json.getAsJsonObject("_"+prefix+"Integer64"), t);
+      return t;
+    }
     else if (json.has(prefix+"Oid") || json.has("_"+prefix+"Oid")) {
       Type t = json.has(prefix+"Oid") ? parseOid(json.get(prefix+"Oid").getAsString()) : new OidType();
       if (json.has("_"+prefix+"Oid"))
@@ -29113,6 +29124,8 @@ public class JsonParser extends JsonParserBase {
       return true;
     if (json.has(prefix+"Integer") || json.has("_"+prefix+"Integer"))
       return true;
+    if (json.has(prefix+"Integer64") || json.has("_"+prefix+"Integer64"))
+      return true;
     if (json.has(prefix+"Oid") || json.has("_"+prefix+"Oid"))
       return true;
     if (json.has(prefix+"Canonical") || json.has("_"+prefix+"Canonical"))
@@ -29293,6 +29306,24 @@ public class JsonParser extends JsonParserBase {
   }    
 
   protected void composeIntegerExtras(String name, IntegerType value, boolean inArray) throws IOException {
+    if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || makeComments(value))) {
+      open(inArray ? null : "_"+name);
+      composeElement(value);
+      close();
+    }
+    else if (inArray) 
+      writeNull(name); 
+  }
+
+  protected void composeInteger64Core(String name, Integer64Type value, boolean inArray) throws IOException {
+    if (value != null && value.hasValue()) {
+        prop(name, value.getValue().toString());
+    }    
+    else if (inArray) 
+      writeNull(name); 
+  }    
+
+  protected void composeInteger64Extras(String name, Integer64Type value, boolean inArray) throws IOException {
     if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || makeComments(value))) {
       open(inArray ? null : "_"+name);
       composeElement(value);
@@ -60261,6 +60292,10 @@ public class JsonParser extends JsonParserBase {
     else if (type instanceof IntegerType) {
       composeIntegerCore(prefix+"Integer", (IntegerType) type, false);
       composeIntegerExtras(prefix+"Integer", (IntegerType) type, false);
+    }
+    else if (type instanceof Integer64Type) {
+      composeInteger64Core(prefix+"Integer64", (Integer64Type) type, false);
+      composeInteger64Extras(prefix+"Integer64", (Integer64Type) type, false);
     }
     else if (type instanceof UriType) {
       composeUriCore(prefix+"Uri", (UriType) type, false);

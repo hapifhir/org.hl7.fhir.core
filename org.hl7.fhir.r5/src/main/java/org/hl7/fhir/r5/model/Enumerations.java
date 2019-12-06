@@ -1440,6 +1440,10 @@ public class Enumerations {
          */
         INTEGER, 
         /**
+         * A whole number
+         */
+        INTEGER64, 
+        /**
          * A string that may contain Github Flavored Markdown syntax for optional processing by a mark down presentation engine
          */
         MARKDOWN, 
@@ -1596,6 +1600,8 @@ public class Enumerations {
           return INSTANT;
         if ("integer".equals(codeString))
           return INTEGER;
+        if ("integer64".equals(codeString))
+          return INTEGER64;
         if ("markdown".equals(codeString))
           return MARKDOWN;
         if ("oid".equals(codeString))
@@ -1675,6 +1681,7 @@ public class Enumerations {
             case ID: return "id";
             case INSTANT: return "instant";
             case INTEGER: return "integer";
+            case INTEGER64: return "integer64";
             case MARKDOWN: return "markdown";
             case OID: return "oid";
             case POSITIVEINT: return "positiveInt";
@@ -1745,6 +1752,7 @@ public class Enumerations {
             case ID: return "http://hl7.org/fhir/data-types";
             case INSTANT: return "http://hl7.org/fhir/data-types";
             case INTEGER: return "http://hl7.org/fhir/data-types";
+            case INTEGER64: return "http://hl7.org/fhir/data-types";
             case MARKDOWN: return "http://hl7.org/fhir/data-types";
             case OID: return "http://hl7.org/fhir/data-types";
             case POSITIVEINT: return "http://hl7.org/fhir/data-types";
@@ -1885,6 +1893,7 @@ public class Enumerations {
             case ID: return "id";
             case INSTANT: return "instant";
             case INTEGER: return "integer";
+            case INTEGER64: return "integer64";
             case MARKDOWN: return "markdown";
             case OID: return "oid";
             case POSITIVEINT: return "positiveInt";
@@ -2015,6 +2024,8 @@ public class Enumerations {
           return DataType.INSTANT;
         if ("integer".equals(codeString))
           return DataType.INTEGER;
+        if ("integer64".equals(codeString))
+          return DataType.INTEGER64;
         if ("markdown".equals(codeString))
           return DataType.MARKDOWN;
         if ("oid".equals(codeString))
@@ -2155,6 +2166,8 @@ public class Enumerations {
           return new Enumeration<DataType>(this, DataType.INSTANT);
         if ("integer".equals(codeString))
           return new Enumeration<DataType>(this, DataType.INTEGER);
+        if ("integer64".equals(codeString))
+          return new Enumeration<DataType>(this, DataType.INTEGER64);
         if ("markdown".equals(codeString))
           return new Enumeration<DataType>(this, DataType.MARKDOWN);
         if ("oid".equals(codeString))
@@ -2288,6 +2301,8 @@ public class Enumerations {
         return "instant";
       if (code == DataType.INTEGER)
         return "integer";
+      if (code == DataType.INTEGER64)
+        return "integer64";
       if (code == DataType.MARKDOWN)
         return "markdown";
       if (code == DataType.OID)
@@ -3396,6 +3411,10 @@ public class Enumerations {
          */
         INTEGER, 
         /**
+         * A whole number
+         */
+        INTEGER64, 
+        /**
          * A string that may contain Github Flavored Markdown syntax for optional processing by a mark down presentation engine
          */
         MARKDOWN, 
@@ -4139,6 +4158,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return INSTANT;
         if ("integer".equals(codeString))
           return INTEGER;
+        if ("integer64".equals(codeString))
+          return INTEGER64;
         if ("markdown".equals(codeString))
           return MARKDOWN;
         if ("oid".equals(codeString))
@@ -4510,6 +4531,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ID: return "id";
             case INSTANT: return "instant";
             case INTEGER: return "integer";
+            case INTEGER64: return "integer64";
             case MARKDOWN: return "markdown";
             case OID: return "oid";
             case POSITIVEINT: return "positiveInt";
@@ -5158,6 +5180,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ID: return "id";
             case INSTANT: return "instant";
             case INTEGER: return "integer";
+            case INTEGER64: return "integer64";
             case MARKDOWN: return "markdown";
             case OID: return "oid";
             case POSITIVEINT: return "positiveInt";
@@ -5434,6 +5457,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.INSTANT;
         if ("integer".equals(codeString))
           return FHIRAllTypes.INTEGER;
+        if ("integer64".equals(codeString))
+          return FHIRAllTypes.INTEGER64;
         if ("markdown".equals(codeString))
           return FHIRAllTypes.MARKDOWN;
         if ("oid".equals(codeString))
@@ -5866,6 +5891,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INSTANT);
         if ("integer".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INTEGER);
+        if ("integer64".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INTEGER64);
         if ("markdown".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MARKDOWN);
         if ("oid".equals(codeString))
@@ -6291,6 +6318,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "instant";
       if (code == FHIRAllTypes.INTEGER)
         return "integer";
+      if (code == FHIRAllTypes.INTEGER64)
+        return "integer64";
       if (code == FHIRAllTypes.MARKDOWN)
         return "markdown";
       if (code == FHIRAllTypes.OID)
@@ -6831,6 +6860,10 @@ The primary difference between a medicationusage and a medicationadministration 
          * A whole number
          */
         INTEGER, 
+        /**
+         * A whole number
+         */
+        INTEGER64, 
         /**
          * A string that may contain Github Flavored Markdown syntax for optional processing by a mark down presentation engine
          */
@@ -7567,6 +7600,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return INSTANT;
         if ("integer".equals(codeString))
           return INTEGER;
+        if ("integer64".equals(codeString))
+          return INTEGER64;
         if ("markdown".equals(codeString))
           return MARKDOWN;
         if ("oid".equals(codeString))
@@ -7934,6 +7969,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ID: return "id";
             case INSTANT: return "instant";
             case INTEGER: return "integer";
+            case INTEGER64: return "integer64";
             case MARKDOWN: return "markdown";
             case OID: return "oid";
             case POSITIVEINT: return "positiveInt";
@@ -8576,6 +8612,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ID: return "id";
             case INSTANT: return "instant";
             case INTEGER: return "integer";
+            case INTEGER64: return "integer64";
             case MARKDOWN: return "markdown";
             case OID: return "oid";
             case POSITIVEINT: return "positiveInt";
@@ -8850,6 +8887,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRDefinedType.INSTANT;
         if ("integer".equals(codeString))
           return FHIRDefinedType.INTEGER;
+        if ("integer64".equals(codeString))
+          return FHIRDefinedType.INTEGER64;
         if ("markdown".equals(codeString))
           return FHIRDefinedType.MARKDOWN;
         if ("oid".equals(codeString))
@@ -9278,6 +9317,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.INSTANT);
         if ("integer".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.INTEGER);
+        if ("integer64".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.INTEGER64);
         if ("markdown".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.MARKDOWN);
         if ("oid".equals(codeString))
@@ -9699,6 +9740,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "instant";
       if (code == FHIRDefinedType.INTEGER)
         return "integer";
+      if (code == FHIRDefinedType.INTEGER64)
+        return "integer64";
       if (code == FHIRDefinedType.MARKDOWN)
         return "markdown";
       if (code == FHIRDefinedType.OID)

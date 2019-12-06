@@ -249,6 +249,12 @@ public class VersionConvertor_30_50 {
     return tgt;
   }
 
+  public static org.hl7.fhir.dstu3.model.DecimalType convertInteger64(org.hl7.fhir.r5.model.Integer64Type src) throws FHIRException {
+    org.hl7.fhir.dstu3.model.DecimalType tgt = new org.hl7.fhir.dstu3.model.DecimalType(src.getValue().toString());
+    copyElement(src, tgt);
+    return tgt;
+  }
+
   public static org.hl7.fhir.r5.model.MarkdownType convertMarkdown(org.hl7.fhir.dstu3.model.MarkdownType src) throws FHIRException {
     org.hl7.fhir.r5.model.MarkdownType tgt = new org.hl7.fhir.r5.model.MarkdownType(src.getValue());
     copyElement(src, tgt);
@@ -2838,6 +2844,8 @@ public class VersionConvertor_30_50 {
       return convertInstant((org.hl7.fhir.r5.model.InstantType) src);
     if (src instanceof org.hl7.fhir.r5.model.IntegerType)
       return convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
+    if (src instanceof org.hl7.fhir.r5.model.Integer64Type)
+      return convertInteger64((org.hl7.fhir.r5.model.Integer64Type) src);
     if (src instanceof org.hl7.fhir.r5.model.MarkdownType)
       return convertMarkdown((org.hl7.fhir.r5.model.MarkdownType) src);
     if (src instanceof org.hl7.fhir.r5.model.OidType)
