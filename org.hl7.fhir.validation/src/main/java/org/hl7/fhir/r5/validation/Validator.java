@@ -88,7 +88,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
