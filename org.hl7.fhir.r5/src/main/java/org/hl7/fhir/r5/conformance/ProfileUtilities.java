@@ -3352,7 +3352,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           erow.getSubRows().add(row);
           Cell c = gen.new Cell();
           row.getCells().add(c);
-          c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath()), t.getName(), null));
+          c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(context.getVersion().compareTo("4.0") > 0 ? "types-definitions.html#"+ed.getBase().getPath() : "\"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
           c = gen.new Cell();
           row.getCells().add(c);
           c.addPiece(gen.new Piece(null, null, null));
@@ -3397,7 +3397,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
             Cell c = gen.new Cell();
             row.getCells().add(c);
-            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath()), t.getName(), null));
+            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (context.getVersion().compareTo("4.0") > 0 ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath()), t.getName(), null));
 
             c = gen.new Cell();
             row.getCells().add(c);
