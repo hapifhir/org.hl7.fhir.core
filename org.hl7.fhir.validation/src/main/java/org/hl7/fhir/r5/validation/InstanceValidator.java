@@ -1457,13 +1457,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @SuppressWarnings("rawtypes")
   private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String propName, Element parent, boolean pattern) {
-    if ((fixed == null || fixed.isEmpty()) && focus == null)
+    if ((fixed == null || fixed.isEmpty()) && focus == null) {
       ; // this is all good
-    else if ((fixed == null || fixed.isEmpty()) && focus != null)
-      rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, pattern, "Unexpected element " + focus.getName());
-    else if (fixed != null && !fixed.isEmpty() && focus == null)
+    } else if ((fixed == null || fixed.isEmpty()) && focus != null) {
+      rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, pattern, "The element " + focus.getName()+" is present in the instance but not allowed in the applicable "+(pattern ? "pattern" : "fixed value")+" specified in profile");
+    } else if (fixed != null && !fixed.isEmpty() && focus == null) {
       rule(errors, IssueType.VALUE, parent == null ? -1 : parent.line(), parent == null ? -1 : parent.col(), path, false, "Missing element '" + propName+"'");
-    else {
+    } else {
       String value = focus.primitiveValue();
       if (fixed instanceof org.hl7.fhir.r5.model.BooleanType)
         rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.BooleanType) fixed).asStringValue(), value),
@@ -4094,18 +4094,22 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           && !"BackboneElement".equals(ei.definition.getType().get(0).getWorkingCode())) {
         type = ei.definition.getType().get(0).getWorkingCode();
         // Excluding reference is a kludge to get around versioning issues
-        if (ei.definition.getType().get(0).hasProfile())
-          profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
-
+        if (ei.definition.getType().get(0).hasProfile()) {
+          for (CanonicalType p : ei.definition.getType().get(0).getProfile()) {
+            profiles.add(p.getValue());
+          }
+        }
       } else if (ei.definition.getType().size() == 1 && "*".equals(ei.definition.getType().get(0).getWorkingCode())) {
         String prefix = tail(ei.definition.getPath());
         assert prefix.endsWith("[x]");
         type = ei.name.substring(prefix.length() - 3);
         if (isPrimitiveType(type))
           type = Utilities.uncapitalize(type);
-        // Excluding reference is a kludge to get around versioning issues
-        if (ei.definition.getType().get(0).hasProfile() && !type.equals("Reference"))
-          profiles.add(ei.definition.getType().get(0).getProfile().get(0).getValue());
+        if (ei.definition.getType().get(0).hasProfile()) {
+          for (CanonicalType p : ei.definition.getType().get(0).getProfile()) {
+            profiles.add(p.getValue());
+          }
+        }
       } else if (ei.definition.getType().size() > 1) {
 
         String prefix = tail(ei.definition.getPath());
@@ -4217,7 +4221,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       } else {
         elementValidated = true;
         HashMap<String, List<ValidationMessage>> goodProfiles = new HashMap<String, List<ValidationMessage>>();
-        List<List<ValidationMessage>> badProfiles = new ArrayList<List<ValidationMessage>>();
+        HashMap<String, List<ValidationMessage>> badProfiles = new HashMap<String, List<ValidationMessage>>();
         for (String typeProfile : profiles) {
           String url = typeProfile;
           tail = null;
@@ -4230,22 +4234,30 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
             validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
             if (hasErrors(profileErrors))
-              badProfiles.add(profileErrors);
+              badProfiles.put(typeProfile, profileErrors);
             else
               goodProfiles.put(typeProfile, profileErrors);
           }
-          if (goodProfiles.size()==1) {
-            errors.addAll(goodProfiles.values().iterator().next());
-          } else if (goodProfiles.size()==0) {
-            rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
-            for (List<ValidationMessage> messages : badProfiles) {
-              errors.addAll(messages);
+        }
+        if (goodProfiles.size()==1) {
+          errors.addAll(goodProfiles.values().iterator().next());
+        } else if (goodProfiles.size()==0) {
+          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
+          for (String m : badProfiles.keySet()) {
+            p = this.context.fetchResource(StructureDefinition.class, m);
+            for (ValidationMessage message : badProfiles.get(m)) {
+              message.setMessage(message.getMessage()+" (validating against "+p.getUrl()+(p.hasVersion() ?"|"+p.getVersion(): "")+" ["+p.getName()+"])");
+              errors.add(message);
             }
-          } else {
-            warning(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
-            for (List<ValidationMessage> messages : goodProfiles.values()) {
-              errors.addAll(messages);
-            }                    
+          }
+        } else {
+          warning(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
+          for (String m : goodProfiles.keySet()) {
+            p = this.context.fetchResource(StructureDefinition.class, m);
+            for (ValidationMessage message : goodProfiles.get(m)) {
+              message.setMessage(message.getMessage()+" (validating against "+p.getUrl()+(p.hasVersion() ?"|"+p.getVersion(): "")+" ["+p.getName()+"])");
+              errors.add(message);
+            }
           }
         }
       }
