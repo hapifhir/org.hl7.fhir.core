@@ -415,18 +415,18 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
   
   @Override
-  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean heirachical) throws TerminologyServiceException {
+  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().getInclude().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, heirachical);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null)
       return res;
     Parameters p = expParameters.copy(); 
     p.setParameter("includeDefinition", false);
-    p.setParameter("excludeNested", !heirachical);
+    p.setParameter("excludeNested", !hierarchical);
     
     if (noTerminologyServer)
       return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
