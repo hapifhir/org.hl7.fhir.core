@@ -230,6 +230,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus) {
     int ec = 0;
     int wc = 0;
+    int hc = 0;
     for (ValidationMessage vm : errors) {
       if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
         ec++;
@@ -239,11 +240,16 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         wc++;
         System.out.println("warning: "+vm.getDisplay());
       }
+      if (vm.getLevel() == IssueSeverity.INFORMATION) { 
+        hc++;
+      }
     }
     if (TestingUtilities.context().isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Expected "+Integer.toString(focus.get("errorCount").getAsInt())+" errors, but found "+Integer.toString(ec)+".", focus.get("errorCount").getAsInt(), ec);
       if (focus.has("warningCount"))
         Assert.assertEquals("Expected "+Integer.toString(focus.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", focus.get("warningCount").getAsInt(), wc);
+      if (focus.has("infoCount"))
+        Assert.assertEquals("Expected "+Integer.toString(focus.get("infoCount").getAsInt())+" hints, but found "+Integer.toString(hc)+".", focus.get("infoCount").getAsInt(), hc);
     }
   }
 
