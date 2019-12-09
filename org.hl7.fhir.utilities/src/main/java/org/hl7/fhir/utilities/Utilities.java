@@ -63,12 +63,14 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -1221,6 +1223,18 @@ public class Utilities {
       i++;
     }
     return b.toString();
+  }
+
+  public static String describeDuration(Duration d) {
+    if (d.toDays() > 2) {
+      return String.format("%s days", d.toDays());
+    } else if (d.toHours() > 2) {
+      return String.format("%s hours", d.toHours());
+    } else if (d.toMinutes() > 2) {
+      return String.format("%s mins", d.toMinutes());
+    } else { 
+      return String.format("%s ms", d.toMillis());
+    }
   }
 
 
