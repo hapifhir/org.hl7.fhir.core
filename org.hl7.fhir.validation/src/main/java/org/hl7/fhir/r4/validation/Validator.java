@@ -75,7 +75,7 @@ import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.r5.validation.VersionUtil;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
