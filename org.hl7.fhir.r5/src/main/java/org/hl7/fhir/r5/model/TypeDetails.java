@@ -197,7 +197,7 @@ public class TypeDetails {
         if (tail != null && typesContains(sd.getUrl()+"#"+sd.getType()+tail))
           return true;
         if (sd.hasBaseDefinition()) {
-          if (sd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Element") && !sd.getType().equals("string") && sd.getType().equals("uri"))
+          if (sd.getType().equals("uri"))
             sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string");
           else
             sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
