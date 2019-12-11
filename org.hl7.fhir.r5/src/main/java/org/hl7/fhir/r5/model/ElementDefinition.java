@@ -2322,6 +2322,29 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     return getCode();
   }
 
+  @Override
+  public String toString() {
+    String res = getCode();
+    if (hasProfile()) {
+      res = res + "{";
+      boolean first = true;
+      for (CanonicalType s : getProfile()) {
+        if (first) first = false; else res = res + "|";
+        res = res + s.getValue();
+      }
+      res = res + "}";
+    }
+    if (hasTargetProfile()) {
+      res = res + "->(";
+      boolean first = true;
+      for (CanonicalType s : getProfile()) {
+        if (first) first = false; else res = res + "|";
+        res = res + s.getValue();
+      }
+      res = res + ")";
+    }    
+    return res;
+  }
 // end addition
   }
 
