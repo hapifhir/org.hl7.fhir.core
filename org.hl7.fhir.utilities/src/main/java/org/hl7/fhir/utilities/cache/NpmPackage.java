@@ -104,8 +104,8 @@ public class NpmPackage {
       this.index = index;
       for (JsonElement e : index.getAsJsonArray("files")) {
         JsonObject file = (JsonObject) e;
-        String type = file.get("resourceType").getAsString();
-        String name = file.get("filename").getAsString();
+        String type = JSONUtil.str(file, "resourceType");
+        String name = JSONUtil.str(file, "filename");
         if (!types.containsKey(type))
           types.put(type, new ArrayList<>());
         types.get(type).add(name);
@@ -197,7 +197,7 @@ public class NpmPackage {
           }
           NpmPackageFolder folder = res.new NpmPackageFolder(d);
           folder.folder = f;
-          res.folders.put(f.getName(), folder);
+          res.folders.put(d, folder);
           File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
           if (ij.exists()) {
             try {
@@ -246,9 +246,10 @@ public class NpmPackage {
     if (!res.folders.containsKey("package")) {
       res.folders.put("package", res.new NpmPackageFolder("package"));
     }
-    if (!res.folders.get("package").content.containsKey("package/package.json") && defType != null)
-      res.folders.get("package").content.put("package/package.json", TextFile.stringToBytes("{ \"type\" : \""+defType.getCode()+"\"}", false));
-    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.folders.get("package").content.get("package/package.json")));
+    if (!res.folders.get("package").hasFile("package.json") && defType != null) {
+      TextFile.stringToFile("{ \"type\" : \""+defType.getCode()+"\"}", Utilities.path(res.folders.get("package").folder.getAbsolutePath(), "package.json"));
+    }
+    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(new String(res.folders.get("package").fetchFile("package.json")));
     return res;
   }
 
@@ -453,15 +454,15 @@ public class NpmPackage {
    * @return
    */
   public String name() {
-    return npm.get("name").getAsString();
+    return JSONUtil.str(npm, "name");
   }
 
   public String date() {
-    return npm.has("date") ? npm.get("date").getAsString() : null;
+    return JSONUtil.str(npm, "date");
   }
 
   public String canonical() {
-    return npm.has("canonical") ? npm.get("canonical").getAsString() : null;
+    return JSONUtil.str(npm, "canonical");
   }
 
   /**
@@ -469,7 +470,7 @@ public class NpmPackage {
    * @return
    */
   public String version() {
-    return npm.get("version").getAsString();
+    return JSONUtil.str(npm, "version");
   }
 
   /**
@@ -477,10 +478,10 @@ public class NpmPackage {
    * @return
    */
   public String fhirVersion() {
-    if ("hl7.fhir.core".equals(npm.get("name").getAsString()))
-      return npm.get("version").getAsString();
-    else if (npm.get("name").getAsString().startsWith("hl7.fhir.r2.") || npm.get("name").getAsString().startsWith("hl7.fhir.r2b.") || npm.get("name").getAsString().startsWith("hl7.fhir.r3.") || npm.get("name").getAsString().startsWith("hl7.fhir.r4.") || npm.get("name").getAsString().startsWith("hl7.fhir.r5."))
-      return npm.get("version").getAsString();
+    if ("hl7.fhir.core".equals(JSONUtil.str(npm, "name")))
+      return JSONUtil.str(npm, "version");
+    else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
+      return JSONUtil.str(npm, "version");
     else {        
       JsonObject dep = npm.getAsJsonObject("dependencies");
       if (dep != null) {
@@ -519,14 +520,11 @@ public class NpmPackage {
   }
 
   public String type() {
-    if (npm.has("type"))
-      return npm.get("type").getAsString();
-    else
-      return null;
+    return JSONUtil.str(npm, "type");
   }
 
   public String description() {
-    return npm.has("description") ? npm.get("description").getAsString() : null;
+    return JSONUtil.str(npm, "description");
   }
 
   public String getPath() {
@@ -544,39 +542,24 @@ public class NpmPackage {
   }
 
   public String homepage() {
-    if (npm.has("homepage"))
-      return npm.get("homepage").getAsString();
-    else
-      return null;
+    return JSONUtil.str(npm, "homepage");
   }
 
   public String url() {
-    if (npm.has("url"))
-      return npm.get("url").getAsString();
-    else
-      return null;
+    return JSONUtil.str(npm, "url");
   }
 
 
   public String title() {
-    if (npm.has("title"))
-      return npm.get("title").getAsString();
-    else
-      return null;
+    return JSONUtil.str(npm, "title");
   }
 
   public String toolsVersion() {
-    if (npm.has("tools-version"))
-      return npm.get("tools-version").getAsString();
-    else
-      return null;
+    return JSONUtil.str(npm, "tools-version");
   }
 
   public String license() {
-    if (npm.has("license"))
-      return npm.get("license").getAsString();
-    else
-      return null;
+    return JSONUtil.str(npm, "license");
   }
 
   //  /**
@@ -589,10 +572,11 @@ public class NpmPackage {
   //  }
 
   public String getWebLocation() {
-    if (npm.has("url"))
+    if (npm.has("url")) {
       return npm.get("url").getAsString();
-    else
-      return npm.get("canonical").getAsString();
+    } else {
+      return JSONUtil.str(npm, "canonical");
+    }
   }
 
   public InputStream loadResource(String type, String id) throws IOException {
@@ -745,13 +729,13 @@ public class NpmPackage {
   }
 
   public void debugDump(String purpose) {
-    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
-    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
-    System.out.println("  folders = "+folders.size());
-    for (String s : sorted(folders.keySet())) {
-      NpmPackageFolder folder = folders.get(s);
-      System.out.println("    "+folder.dump());
-    }
+//    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
+//    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
+//    System.out.println("  folders = "+folders.size());
+//    for (String s : sorted(folders.keySet())) {
+//      NpmPackageFolder folder = folders.get(s);
+//      System.out.println("    "+folder.dump());
+//    }
   }
 
   private List<String> sorted(Set<String> keys) {
