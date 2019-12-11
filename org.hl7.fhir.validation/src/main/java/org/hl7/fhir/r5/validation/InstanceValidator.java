@@ -859,7 +859,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
      String elementUsage = element.getUserString("elementSupported");
     hint(errors, IssueType.INFORMATIONAL, element.line(),element.col(), stack.getLiteralPath(), elementUsage==null || elementUsage.equals("Y"),
-        String.format("The element %s is not marked as 'mustSupport' in the profile %s. Consider not using the element, or marking the element as must-Support in the profile", element.getName(), element.getProperty().getStructure().getUrl()));	  
+        "The element " + element.getName() + " is not marked as 'mustSupport' in the profile " + element.getProperty().getStructure().getUrl() + ". Consider not using the element, or marking the element as must-Support in the profile");
 	  
     if (element.hasChildren()) {
       String prevName = "";
