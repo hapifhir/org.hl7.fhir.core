@@ -1072,7 +1072,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
                     ValidationResult vr = context.validateCode(new TerminologyServiceOptions(stack.workingLang), cc, valueset);
-                    res = false;
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -1093,11 +1092,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           else if (!noExtensibleWarnings)
                             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code) (codes = "+ccSummary(cc)+")");
-                        } else if (binding.getStrength() == BindingStrength.PREFERRED)
+                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false,  "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code is recommended to come from this value set) (codes = "+ccSummary(cc)+")");
+                        }
                       }
-                    } else if (vr.getMessage()!=null)
+                    } else if (vr.getMessage()!=null) {
                       txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                    } else {
+                      res = false;
+                    }
                   }
                   // Then, for any codes that are in code systems we are able
                   // to validate, we'll validate that the codes actually exist
