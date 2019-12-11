@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
     GraphQLEngineTests.class,
     LiquidEngineTests.class,
     FHIRPathTests.class,
+    NarrativeGenerationTests.class,
     NarrativeGeneratorTests.class,
     ShexGeneratorTests.class,
     BaseDateTimeTypeTest.class,

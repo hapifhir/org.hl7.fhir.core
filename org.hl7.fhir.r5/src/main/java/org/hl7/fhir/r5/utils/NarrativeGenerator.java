@@ -177,6 +177,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
@@ -317,6 +318,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return res;
   }
 
+  public boolean generate(DomainResource r) throws EOperationOutcome, FHIRException, IOException {
+    return generate(null, r, new HashSet<>());
+  }
   public boolean generate(DomainResource r, Set<String> outputTracker) throws EOperationOutcome, FHIRException, IOException {
     return generate(null, r, outputTracker);
   }
@@ -2667,7 +2671,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (header) {
       XhtmlNode h = x.h2();
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
-      addMarkdown(x, cs.getDescription());
+ // ....     addMarkdown(x, cs.getDescription());
       if (cs.hasCopyright())
         generateCopyright(x, cs, lang);
     }
@@ -2768,9 +2772,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
       version = version || conceptsHaveVersion(c);
       hierarchy = hierarchy || c.hasConcept();
     }
+    CodeSystemNavigator csNav = new CodeSystemNavigator(cs);
     addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, true, commentS, version, deprecated, lang, properties), maps);
-    for (ConceptDefinitionComponent c : cs.getConcept()) {
-      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, commentS, version, deprecated, maps, cs.getUrl(), cs, lang, properties) || hasExtensions;
+    for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
+      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy || csNav.isRestructure(), display, commentS, version, deprecated, maps, cs.getUrl(), cs, lang, properties, csNav) || hasExtensions;
     }
 //    if (langs.size() > 0) {
 //      Collections.sort(langs);
@@ -2799,10 +2804,19 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private boolean showPropertyInTable(PropertyComponent cp) {
     if (cp.hasCode()) {
+      if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+        return true;
+      }
+      String uri = cp.getUri();
+      if (Utilities.noString(uri)){
+        return false;
+      }
+      if (uri.contains("#")) {
+        uri = uri.substring(0, uri.indexOf("#"));
+      }
       return 
-        Utilities.existsInList(cp.getUri(), "http://hl7.org/fhir/concept-properties") ||
-        codeSystemPropList.contains(cp.getUri()) || 
-        cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE);
+        Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") ||
+        codeSystemPropList.contains(uri);
     }
     return false;
   }
@@ -3449,7 +3463,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return "??Lang";
   }
  
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang, List<PropertyComponent> properties) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang, List<PropertyComponent> properties, CodeSystemNavigator csNav) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
@@ -3618,16 +3632,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
           td.i().tx("("+mapping.comp.getComment()+")");
       }
     }
-    for (String e : CodeSystemUtilities.getOtherChildren(cs, c)) {
+    for (ConceptDefinitionComponent cc : csNav.getOtherChildren(c)) {
       tr = t.tr();
       td = tr.td();
       String s = Utilities.padLeft("", '.', i*2);
       td.addText(s);
-      a = td.ah("#"+Utilities.nmtokenize(e));
+      a = td.ah("#"+Utilities.nmtokenize(cc.getCode()));
       a.addText(c.getCode());
     }
-    for (ConceptDefinitionComponent cc : c.getConcept()) {
-      hasExtensions = addDefineRowToTable(t, cc, i+1, hasHierarchy, hasDisplay, comment, version, deprecated, maps, system, cs, lang, properties) || hasExtensions;
+    for (ConceptDefinitionComponent cc : csNav.getConcepts(c)) {
+      hasExtensions = addDefineRowToTable(t, cc, i+1, hasHierarchy, hasDisplay, comment, version, deprecated, maps, system, cs, lang, properties, csNav) || hasExtensions;
     }
     return hasExtensions;
   }
