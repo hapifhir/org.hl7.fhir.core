@@ -2671,7 +2671,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (header) {
       XhtmlNode h = x.h2();
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
- // ....     addMarkdown(x, cs.getDescription());
+      addMarkdown(x, cs.getDescription());
       if (cs.hasCopyright())
         generateCopyright(x, cs, lang);
     }

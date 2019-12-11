@@ -66,7 +66,7 @@ public class CodeSystemUtilities {
 
     private boolean hasExtraRelationships(List<ConceptDefinitionComponent> concept) {
       for (ConceptDefinitionComponent cd : concept) {
-        if (getSubsumedBy(cd) != null) {
+        if (!getSubsumedBy(cd).isEmpty()) {
           return true;
         }
         for (ConceptDefinitionComponent cdc : cd.getConcept()) {
@@ -83,11 +83,12 @@ public class CodeSystemUtilities {
         if (restructure) {
           List<ConceptDefinitionComponent> res = new ArrayList<>();
           for (ConceptDefinitionComponent cd : cs.getConcept()) {
-            if (getSubsumedBy(cd) == null) {
+            if (getSubsumedBy(cd).isEmpty()) {
               res.add(cd);
               processed.add(cd.getCode());
             }
           }
+          System.out.println("children of (root): "+res);
           return res;
         } else {
           return cs.getConcept();
@@ -100,11 +101,12 @@ public class CodeSystemUtilities {
             processed.add(cd.getCode());
           }
           for (ConceptDefinitionComponent cd : cs.getConcept()) {
-            if (context.getCode().equals(getSubsumedBy(cd)) && !processed.contains(cd.getCode())) {
+            if (getSubsumedBy(cd).contains(context.getCode()) && !processed.contains(cd.getCode())) {
               res.add(cd);
               processed.add(cd.getCode());
             }
           }
+          System.out.println("children of "+context+": "+res);
           return res;
         } else {
           return context.getConcept();
@@ -112,22 +114,24 @@ public class CodeSystemUtilities {
       }
     }
 
-    private String getSubsumedBy(ConceptDefinitionComponent cd) {
+    private List<String> getSubsumedBy(ConceptDefinitionComponent cd) {
+      List<String> codes = new ArrayList<>();
       for (ConceptPropertyComponent cp : cd.getProperty()) {
         if (cp.getCode().equals("subsumedBy")) {
-          return cp.getValue().primitiveValue();
+          codes.add(cp.getValue().primitiveValue());
         }
       }
-      return null;
+      return codes;
     }
 
     public List<ConceptDefinitionComponent> getOtherChildren(ConceptDefinitionComponent context) {
       List<ConceptDefinitionComponent> res = new ArrayList<>();
       for (ConceptDefinitionComponent cd : cs.getConcept()) {
-        if (context.getCode().equals(getSubsumedBy(cd)) && processed.contains(cd.getCode())) {
+        if (getSubsumedBy(cd).contains(context.getCode()) && processed.contains(cd.getCode())) {
           res.add(cd);
         }
       }
+      System.out.println("non-children of "+context+": "+res);
       return res;
     }
   }

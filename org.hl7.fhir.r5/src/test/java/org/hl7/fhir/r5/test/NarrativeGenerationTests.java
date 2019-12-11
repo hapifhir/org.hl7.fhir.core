@@ -123,6 +123,7 @@ public class NarrativeGenerationTests {
     DomainResource target = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId()+"-expected.xml"));
     gen.generate(source);
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId()+"-actual.xml")), source);
+    source = (DomainResource) new XmlParser().parse(new FileInputStream(TestingUtilities.tempFile("narrative", test.getId()+"-actual.xml")));
     Assert.assertTrue("Output does not match expected", source.equalsDeep(target));
   }
 
