@@ -108,6 +108,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -228,7 +229,7 @@ public class StructureMapUtilities {
 	private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private Map<String, Integer> ids = new HashMap<String, Integer>();
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions(); 
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(); 
 
 	public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
 		super();
@@ -2969,11 +2970,11 @@ public class StructureMapUtilities {
     return null;
   }
 
-  public TerminologyServiceOptions getTerminologyServiceOptions() {
+  public ValidationOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
   }
 
-  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+  public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
   }
 	

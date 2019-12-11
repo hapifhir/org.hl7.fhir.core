@@ -95,6 +95,7 @@ import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -254,7 +255,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private ProfileKnowledgeProvider pkp;
   private boolean igmode;
   private boolean exception;
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean newSlicingProcessing;
   private String defWebRoot;
 
@@ -5161,12 +5162,12 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public TerminologyServiceOptions getTerminologyServiceOptions() {
+  public ValidationOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
   }
 
 
-  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+  public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
   }
 

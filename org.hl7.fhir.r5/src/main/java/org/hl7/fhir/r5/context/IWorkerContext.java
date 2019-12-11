@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.context;
 
+import java.util.EnumSet;
+
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -50,6 +52,7 @@ import org.hl7.fhir.r5.utils.INarrativeGenerator;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 
@@ -209,17 +212,57 @@ public interface IWorkerContext {
   
   // -- profile services ---------------------------------------------------------
   
+  /**
+   * @return a list of the resource names defined for this version
+   */
   public List<String> getResourceNames();
+  /**
+   * @return a set of the resource names defined for this version
+   */
   public Set<String> getResourceNamesAsSet();
+
+  /**
+   * @return a list of the resource and type names defined for this version
+   */
   public List<String> getTypeNames();
-  public List<StructureDefinition> allStructures(); // ensure snapshot exists...
+  
+  /**
+   * @return a list of all structure definitions, with snapshots generated (if possible)
+   */
+  public List<StructureDefinition> allStructures();
+  
+  /**
+   * @return a list of all structure definitions, without trying to generate snapshots
+   */
   public List<StructureDefinition> getStructures();
+  
+  /**
+   * @return a list of all conformance resources
+   */
   public List<MetadataResource> allConformanceResources();
+  
+  /**
+   * Given a structure definition, generate a snapshot (or regenerate it)
+   * @param p
+   * @throws DefinitionException
+   * @throws FHIRException
+   */
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException;
   
   // -- Terminology services ------------------------------------------------------
 
+  /**
+   * Set the expansion parameters passed through the terminology server when txServer calls are made
+   * 
+   * Note that the Validation Options override these when they are specified on validateCode
+   */
   public Parameters getExpansionParameters();
+
+  /**
+   * Get the expansion parameters passed through the terminology server when txServer calls are made
+   * 
+   * Note that the Validation Options override these when they are specified on validateCode
+   */
   public void setExpansionProfile(Parameters expParameters);
 
   // these are the terminology services used internally by the tools
@@ -272,6 +315,7 @@ public interface IWorkerContext {
    * @throws FHIRException 
    */
   public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heiarchical) throws FHIRException;
+  
   /**
    * Value set expanion inside the internal expansion engine - used 
    * for references to supported system (see "supportsSystem") for
@@ -364,68 +408,108 @@ public interface IWorkerContext {
   }
 
   /**
-   * Validation of a code - consult the terminology service 
+   * Validation of a code - consult the terminology infrstructure and/or service 
    * to see whether it is known. If known, return a description of it
    * 
-   *  note: always return a result, with either an error or a code description
+   * note: always return a result, with either an error or a code description
    *  
    * corresponds to 2 terminology service calls: $validate-code and $lookup
    * 
-   * @param system
-   * @param code
-   * @param display
+   * in this case, the system will be inferred from the value set. It's an error to call this one without the value set
+   * 
+   * @param options - validation options (required)
+   * @param code he code to validate (required)
+   * @param vs the applicable valueset (required)
    * @return
    */
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display);
-
-  /**
-   * Validation of a code - consult the terminology service 
-   * to see whether it is known. If known, return a description of it
-   * Also, check whether it's in the provided value set
-   * 
-   * note: always return a result, with either an error or a code description, or both (e.g. known code, but not in the value set)
-   *  
-   * corresponds to 2 terminology service calls: $validate-code and $lookup
-   * 
-   * @param system
-   * @param code
-   * @param display
-   * @return
-   */
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ValueSet vs);
-  public ValidationResult validateCode(TerminologyServiceOptions options, String code, ValueSet vs);
-  public ValidationResult validateCode(TerminologyServiceOptions options, Coding code, ValueSet vs);
-  public ValidationResult validateCode(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs);
   
   /**
-   * Validation of a code - consult the terminology service 
+   * Validation of a code - consult the terminology infrstructure and/or service 
    * to see whether it is known. If known, return a description of it
-   * Also, check whether it's in the provided value set fragment (for supported systems with no value set definition)
    * 
-   * note: always return a result, with either an error or a code description, or both (e.g. known code, but not in the value set)
+   * note: always return a result, with either an error or a code description
    *  
    * corresponds to 2 terminology service calls: $validate-code and $lookup
    * 
-   * @param system
-   * @param code
-   * @param display
+   * @param options - validation options (required)
+   * @param system - equals Coding.system (required)
+   * @param code - equals Coding.code (required)
+   * @param display - equals Coding.display (optional)
    * @return
    */
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ConceptSetComponent vsi);
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display);
+  
+  /**
+   * Validation of a code - consult the terminology infrstructure and/or service 
+   * to see whether it is known. If known, return a description of it
+   * 
+   * note: always return a result, with either an error or a code description
+   *  
+   * corresponds to 2 terminology service calls: $validate-code and $lookup
+   * 
+   * @param options - validation options (required)
+   * @param system - equals Coding.system (required)
+   * @param code - equals Coding.code (required)
+   * @param display - equals Coding.display (optional)
+   * @param vs the applicable valueset (optional)
+   * @return
+   */
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs);
 
   /**
-   * returns the recommended tla for the type 
+   * Validation of a code - consult the terminology infrstructure and/or service 
+   * to see whether it is known. If known, return a description of it
+   * 
+   * note: always return a result, with either an error or a code description
+   *  
+   * corresponds to 2 terminology service calls: $validate-code and $lookup
+   * 
+   * Note that this doesn't validate binding strength (e.g. is just text allowed?)
+   * 
+   * @param options - validation options (required)
+   * @param code - CodeableConcept to validate
+   * @param vs the applicable valueset (optional)
+   * @return
+   */
+  public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs);
+
+  /**
+   * Validation of a code - consult the terminology infrstructure and/or service 
+   * to see whether it is known. If known, return a description of it
+   * 
+   * note: always return a result, with either an error or a code description
+   *  
+   * corresponds to 2 terminology service calls: $validate-code and $lookup
+   * 
+   * in this case, the system will be inferred from the value set. It's an error to call this one without the value set
+   * 
+   * @param options - validation options (required)
+   * @param code - Coding to validate
+   * @param vs the applicable valueset (optional)
+   * @return
+   */
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+  
+  /**
+   * returns the recommended tla for the type  (from the structure definitions)
    * 
    * @param name
    * @return
    */
   public String getAbbreviation(String name);
 
-  // return a set of types that have tails
-  public Set<String> typeTails();
 
+  /**
+   * translate an OID to a URI (look through known NamingSystems)
+   * @param code
+   * @return
+   */
 	public String oid2Uri(String code);
 
+	/** 
+	 * @return true if the contxt has a terminology caching service internally
+	 */
   public boolean hasCache();
 
   public interface ILoggingService {
@@ -458,4 +542,5 @@ public interface IWorkerContext {
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);
+
 }

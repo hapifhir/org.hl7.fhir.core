@@ -173,7 +173,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           return new ValidationResult(cc);
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" should be one of '"+b.toString()+"'", cc);
+    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" should be one of '"+b.toString()+"' instead of "+code.getDisplay(), cc);
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {

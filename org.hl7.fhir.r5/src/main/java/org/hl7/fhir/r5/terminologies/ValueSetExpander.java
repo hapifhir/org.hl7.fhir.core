@@ -29,7 +29,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
-    UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED;
+    UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED, BLOCKED_BY_OPTIONS;
 
     public boolean isInfrastructure() {
       return this == NOSERVICE || this == SERVER_ERROR || this == VALUESET_UNSUPPORTED;

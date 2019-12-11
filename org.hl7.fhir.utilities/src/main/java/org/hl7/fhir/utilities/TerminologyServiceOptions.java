@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
 
+import org.hl7.fhir.utilities.validation.ValidationOptions;
+
 /*-
  * #%L
  * org.hl7.fhir.utilities
@@ -20,28 +22,19 @@ package org.hl7.fhir.utilities;
  * #L%
  */
 
-public class TerminologyServiceOptions {
-  private String language;
+/**
+ * This class is superceded by TerminologyValidationOptions but retained here for backwards compatibility
+ * @author graha
+ *
+ */
+public class TerminologyServiceOptions extends ValidationOptions {
 
   public TerminologyServiceOptions() {
     super();
   }
-
-  public TerminologyServiceOptions(String language) {
-    super();
-    this.language = language;
+  
+  public TerminologyServiceOptions(String lang) {
+    super(lang);
   }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
-  public String toJson() {
-    return "\"lang\":\""+language+"\"";
-  }
-
+  
 }

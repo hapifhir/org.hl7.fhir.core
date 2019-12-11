@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -153,7 +154,7 @@ public class FHIRPathEngine {
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -4353,7 +4354,7 @@ public class FHIRPathEngine {
   }
 
 
-  public TerminologyServiceOptions getTerminologyServiceOptions() {
+  public ValidationOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
   }
 
