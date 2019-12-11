@@ -22,6 +22,7 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,8 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValueSetCheckerSimple implements ValueSetChecker {
@@ -52,9 +55,9 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private ValueSet valueset;
   private IWorkerContext context;
   private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
-  private TerminologyServiceOptions options;
+  private ValidationOptions options;
 
-  public ValueSetCheckerSimple(TerminologyServiceOptions options, ValueSet source, IWorkerContext context) {
+  public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context) {
     this.valueset = source;
     this.context = context;
     this.options = options;
@@ -66,19 +69,18 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     List<String> warnings = new ArrayList<String>();
     for (Coding c : code.getCoding()) {
       if (!c.hasSystem())
-        warnings.add("Coding has no system");
+        warnings.add("Coding has no system - cannot validate");
       CodeSystem cs = context.fetchCodeSystem(c.getSystem());
-      if (cs == null)
-        warnings.add("Unsupported system "+c.getSystem()+" - system is not specified or implicit");
-      else if (cs.getContent() != CodeSystemContentMode.COMPLETE)
-        warnings.add("Unable to resolve system "+c.getSystem()+" - system is not complete");
-      else {
-        ValidationResult res = validateCode(c, cs);
-        if (!res.isOk())
-          errors.add(res.getMessage());
-        else if (res.getMessage() != null)
-          warnings.add(res.getMessage());
+      ValidationResult res = null;
+      if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+        res = context.validateCode(options.noClient(), c, null);
+      } else {
+        res = validateCode(c, cs);
       }
+      if (!res.isOk())
+        errors.add(res.getMessage());
+      else if (res.getMessage() != null)
+        warnings.add(res.getMessage());
     }
     if (valueset != null) {
       boolean ok = false;
@@ -182,7 +184,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           return new ValidationResult(cc);
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" should be one of '"+b.toString()+"'", cc);
+    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" should be one of '"+b.toString()+"' instead of '"+code.getDisplay()+"'", cc);
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {
@@ -346,36 +348,40 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     
     if (!system.equals(vsi.getSystem()))
       return false;
-    if (vsi.hasFilter()) {
-      boolean ok = true;
-      for (ConceptSetFilterComponent f : vsi.getFilter())
-        if (!codeInFilter(system, f, code)) {
-          ok = false;
-          break;
-        }
-      if (ok)
-        return true;
-    }
-
-    CodeSystem def = context.fetchCodeSystem(system);
-    if (def.getContent() != CodeSystemContentMode.COMPLETE) 
-      throw new FHIRException("Unable to resolve system "+vsi.getSystem()+" - system is not complete");
-    
-    List<ConceptDefinitionComponent> list = def.getConcept();
-    boolean ok = validateCodeInConceptList(code, def, list);
-    if (ok && vsi.hasConcept()) {
-      for (ConceptReferenceComponent cc : vsi.getConcept())
-        if (cc.getCode().equals(code)) 
+    // ok, we need the code system
+    CodeSystem cs = context.fetchCodeSystem(system);
+    if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+      // make up a transient value set with 
+      ValueSet vs = new ValueSet();
+      vs.setUrl(Utilities.makeUuidUrn());
+      vs.getCompose().addInclude(vsi);
+      ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
+      return res.isOk();
+    } else {
+      if (vsi.hasFilter()) {
+        boolean ok = true;
+        for (ConceptSetFilterComponent f : vsi.getFilter())
+          if (!codeInFilter(cs, system, f, code)) {
+            ok = false;
+            break;
+          }
+        if (ok)
           return true;
-      return false;
-    } else
-      return ok;
+      }
+      
+      List<ConceptDefinitionComponent> list = cs.getConcept();
+      boolean ok = validateCodeInConceptList(code, cs, list);
+      if (ok && vsi.hasConcept()) {
+        for (ConceptReferenceComponent cc : vsi.getConcept())
+          if (cc.getCode().equals(code)) 
+            return true;
+        return false;
+      } else
+        return ok;
+    }
   }
 
-  private boolean codeInFilter(String system, ConceptSetFilterComponent f, String code) throws FHIRException {
-    CodeSystem cs = context.fetchCodeSystem(system);
-    if (cs == null)
-      throw new FHIRException("Unable to evaluate filters on unknown code system '"+system+"'");
+  private boolean codeInFilter(CodeSystem cs, String system, ConceptSetFilterComponent f, String code) throws FHIRException {
     if ("concept".equals(f.getProperty()))
       return codeInConceptFilter(cs, f, code);
     else {

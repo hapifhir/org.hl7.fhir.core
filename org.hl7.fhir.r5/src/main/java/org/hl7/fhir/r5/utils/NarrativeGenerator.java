@@ -187,6 +187,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -1006,7 +1007,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
   private boolean pretty;
   private boolean canonicalUrlsAsLinks;
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean noSlowLookup;
   private List<String> codeSystemPropList = new ArrayList<>();
 
@@ -2773,9 +2774,11 @@ public class NarrativeGenerator implements INarrativeGenerator {
       hierarchy = hierarchy || c.hasConcept();
     }
     CodeSystemNavigator csNav = new CodeSystemNavigator(cs);
+    hierarchy = hierarchy || csNav.isRestructure();
+    
     addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, true, commentS, version, deprecated, lang, properties), maps);
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
-      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy || csNav.isRestructure(), display, commentS, version, deprecated, maps, cs.getUrl(), cs, lang, properties, csNav) || hasExtensions;
+      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, commentS, version, deprecated, maps, cs.getUrl(), cs, lang, properties, csNav) || hasExtensions;
     }
 //    if (langs.size() > 0) {
 //      Collections.sort(langs);
@@ -3463,14 +3466,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return "??Lang";
   }
  
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int i, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang, List<PropertyComponent> properties, CodeSystemNavigator csNav) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang, List<PropertyComponent> properties, CodeSystemNavigator csNav) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
     if (hasHierarchy) {
-      td.addText(Integer.toString(i+1));
+      td.addText(Integer.toString(level+1));
       td = tr.td();
-      String s = Utilities.padLeft("", '\u00A0', i*2);
+      String s = Utilities.padLeft("", '\u00A0', level*2);
       td.addText(s);
     }
     td.attribute("style", "white-space:nowrap").addText(c.getCode());
@@ -3481,31 +3484,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
     if (hasDisplay) {
       td = tr.td();
-      if (c.hasDisplayElement()) {
-        if (lang == null) {
-          td.addText(c.getDisplay());
-        } else if (lang.equals("*")) {
-          boolean sl = false;
-          for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && !c.getDisplay().equalsIgnoreCase(cd.getValue())) 
-              sl = true;
-          td.addText((sl ? cs.getLanguage("en")+": " : "")+c.getDisplay());
-          for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && !c.getDisplay().equalsIgnoreCase(cd.getValue())) {
-              td.br();
-              td.addText(cd.getLanguage()+": "+cd.getValue());
-            }
-          }
-       } else if (lang.equals(cs.getLanguage()) || (lang.equals("en") && !cs.hasLanguage())) {
-         td.addText(c.getDisplay());
-       } else {
-         for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-           if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
-             td.addText(cd.getValue());
-           }
-         }
-       }
-      }
+      renderDisplayName(c, cs, lang, td);
     }
     td = tr.td();
     if (c != null && 
@@ -3632,18 +3611,59 @@ public class NarrativeGenerator implements INarrativeGenerator {
           td.i().tx("("+mapping.comp.getComment()+")");
       }
     }
-    for (ConceptDefinitionComponent cc : csNav.getOtherChildren(c)) {
+    List<ConceptDefinitionComponent> ocl = csNav.getOtherChildren(c);
+    for (ConceptDefinitionComponent cc : csNav.getConcepts(c)) {
+      hasExtensions = addDefineRowToTable(t, cc, level+1, hasHierarchy, hasDisplay, comment, version, deprecated, maps, system, cs, lang, properties, csNav) || hasExtensions;
+    }
+    for (ConceptDefinitionComponent cc : ocl) {
       tr = t.tr();
       td = tr.td();
-      String s = Utilities.padLeft("", '.', i*2);
+      td.addText(Integer.toString(level+2));
+      td = tr.td();
+      String s = Utilities.padLeft("", '\u00A0', (level+1)*2);
       td.addText(s);
-      a = td.ah("#"+Utilities.nmtokenize(cc.getCode()));
-      a.addText(c.getCode());
-    }
-    for (ConceptDefinitionComponent cc : csNav.getConcepts(c)) {
-      hasExtensions = addDefineRowToTable(t, cc, i+1, hasHierarchy, hasDisplay, comment, version, deprecated, maps, system, cs, lang, properties, csNav) || hasExtensions;
+      td.attribute("style", "white-space:nowrap");
+      a = td.ah("#"+cs.getId()+"-" + Utilities.nmtokenize(cc.getCode()));
+      a.addText(cc.getCode());
+      if (hasDisplay) {
+        td = tr.td();
+        renderDisplayName(c, cs, lang, td);
+      }
+      int w = 1 + (deprecated ? 1 : 0) + (comment ? 1 : 0) + (version ? 1 : 0) + maps.size();
+      if (properties != null) {
+        w = w + properties.size();
+      }
+      td = tr.td().colspan(Integer.toString(w));
     }
     return hasExtensions;
+  }
+
+  public void renderDisplayName(ConceptDefinitionComponent c, CodeSystem cs, String lang, XhtmlNode td) {
+    if (c.hasDisplayElement()) {
+      if (lang == null) {
+        td.addText(c.getDisplay());
+      } else if (lang.equals("*")) {
+        boolean sl = false;
+        for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
+          if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && !c.getDisplay().equalsIgnoreCase(cd.getValue())) 
+            sl = true;
+        td.addText((sl ? cs.getLanguage("en")+": " : "")+c.getDisplay());
+        for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+          if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && !c.getDisplay().equalsIgnoreCase(cd.getValue())) {
+            td.br();
+            td.addText(cd.getLanguage()+": "+cd.getValue());
+          }
+        }
+     } else if (lang.equals(cs.getLanguage()) || (lang.equals("en") && !cs.hasLanguage())) {
+       td.addText(c.getDisplay());
+     } else {
+       for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+         if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+           td.addText(cd.getValue());
+         }
+       }
+     }
+    }
   }
 
 
@@ -4922,11 +4942,11 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return this;
   }
 
-  public TerminologyServiceOptions getTerminologyServiceOptions() {
+  public ValidationOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
   }
 
-  public void setTerminologyServiceOptions(TerminologyServiceOptions terminologyServiceOptions) {
+  public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
   }
 

@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +47,9 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 import com.google.gson.JsonElement;
@@ -112,7 +113,7 @@ public class TerminologyCache {
       load();
   }
   
-  public CacheToken generateValidationToken(TerminologyServiceOptions options, Coding code, ValueSet vs) {
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
       ct.name = getNameForSystem(code.getSystem());
@@ -130,7 +131,7 @@ public class TerminologyCache {
     return ct;
   }
 
-  public CacheToken generateValidationToken(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs) {
+  public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     for (Coding c : code.getCoding()) {
       if (c.hasSystem())

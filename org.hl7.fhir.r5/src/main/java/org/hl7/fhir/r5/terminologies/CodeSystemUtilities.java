@@ -88,7 +88,6 @@ public class CodeSystemUtilities {
               processed.add(cd.getCode());
             }
           }
-          System.out.println("children of (root): "+res);
           return res;
         } else {
           return cs.getConcept();
@@ -106,7 +105,6 @@ public class CodeSystemUtilities {
               processed.add(cd.getCode());
             }
           }
-          System.out.println("children of "+context+": "+res);
           return res;
         } else {
           return context.getConcept();
@@ -131,7 +129,6 @@ public class CodeSystemUtilities {
           res.add(cd);
         }
       }
-      System.out.println("non-children of "+context+": "+res);
       return res;
     }
   }

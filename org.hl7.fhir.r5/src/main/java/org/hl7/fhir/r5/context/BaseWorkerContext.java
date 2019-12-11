@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -83,6 +84,7 @@ import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
@@ -512,38 +514,25 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   // --- validate code -------------------------------------------------------------------------------
   
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display) {
     Coding c = new Coding(system, code, display);
     return validateCode(options, c, null);
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs) {
     Coding c = new Coding(system, code, display);
     return validateCode(options, c, vs);
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String code, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs) {
     Coding c = new Coding(null, code, null);
-    return doValidateCode(options, c, vs, true);
+    return validateCode(options.guessSystem(), c, vs);
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ConceptSetComponent vsi) {
-    Coding c = new Coding(system, code, display);
-    ValueSet vs = new ValueSet();
-    vs.setUrl(Utilities.makeUuidUrn());
-    vs.getCompose().addInclude(vsi);
-    return validateCode(options, c, vs);
-  }
-
-  @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, Coding code, ValueSet vs) {
-    return doValidateCode(options, code, vs, false);
-  }
-  
-  public ValidationResult doValidateCode(TerminologyServiceOptions options, Coding code, ValueSet vs, boolean implySystem) {
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) 
@@ -551,31 +540,38 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     if (res != null)
       return res;
 
-    // ok, first we try to validate locally
-    try {
-      ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
-      res = vsc.validateCode(code);
-      if (txCache != null)
-        txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
-      return res;
-    } catch (Exception e) {
+    if (options.isUseClient()) {
+      // ok, first we try to validate locally
+      try {
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
+        res = vsc.validateCode(code);
+        if (txCache != null)
+          txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        return res;
+      } catch (Exception e) {
+      }
+    }
+    
+    if (!options.isUseServer()) {
+      return new ValidationResult(IssueSeverity.WARNING, "Unable to validate code without using server", TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);      
     }
     
     // if that failed, we try to validate on the server
-    if (noTerminologyServer)
+    if (noTerminologyServer) {
       return new ValidationResult(IssueSeverity.ERROR,  "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
+    }
     String csumm =  txCache != null ? txCache.summary(code) : null;
-    if (txCache != null)
+    if (txCache != null) {
       tlog("$validate "+csumm+" for "+ txCache.summary(vs));
-    else
+    } else {
       tlog("$validate "+csumm+" before cache exists");
+    }
     try {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("coding").setValue(code);
-      if (implySystem)
+      if (options.isGuessSystem())
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
-      if (options != null)
-        setTerminologyOptions(options, pIn);
+      setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -585,29 +581,33 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return res;
   }
 
-  private void setTerminologyOptions(TerminologyServiceOptions options, Parameters pIn) {
-    if (options != null) {
-      if (!Utilities.noString(options.getLanguage()))
-        pIn.addParameter("displayLanguage", options.getLanguage());
-     } 
+  private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
+    if (!Utilities.noString(options.getLanguage()))
+      pIn.addParameter("displayLanguage", options.getLanguage());
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs);
     ValidationResult res = txCache.getValidation(cacheToken);
     if (res != null)
       return res;
 
-    // ok, first we try to validate locally
-    try {
-      ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
-      res = vsc.validateCode(code);
-      txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
-      return res;
-    } catch (Exception e) {
+    if (options.isUseClient()) {
+      // ok, first we try to validate locally
+      try {
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
+        res = vsc.validateCode(code);
+        txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        return res;
+      } catch (Exception e) {
+      }
     }
 
+    if (!options.isUseServer()) {
+      return new ValidationResult(IssueSeverity.WARNING, "Unable to validate code without using server", TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);      
+    }
+    
     // if that failed, we try to validate on the server
     if (noTerminologyServer)
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
@@ -615,8 +615,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     try {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
-      if (options != null)
-        setTerminologyOptions(options, pIn);
+      setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
