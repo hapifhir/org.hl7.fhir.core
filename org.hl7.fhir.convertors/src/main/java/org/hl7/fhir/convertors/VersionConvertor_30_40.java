@@ -77,6 +77,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 
 public class VersionConvertor_30_40 {
+  private static final String EXT_SRC_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   private static List<String> CANONICAL_URLS = new ArrayList<>();
   static {
     CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/11179-permitted-value-conceptmap");
@@ -98,19 +99,23 @@ public class VersionConvertor_30_40 {
     CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/valueset-system");    
   }
   
-  private static void copyElement(org.hl7.fhir.dstu3.model.Element src, org.hl7.fhir.r4.model.Element tgt) throws FHIRException {
+  private static void copyElement(org.hl7.fhir.dstu3.model.Element src, org.hl7.fhir.r4.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.dstu3.model.Extension  e : src.getExtension()) {
-      tgt.addExtension(convertExtension(e));
+      if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
+        tgt.addExtension(convertExtension(e));
+      }
     }
   }
 
-  private static void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.dstu3.model.Element tgt) throws FHIRException {
+  private static void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.dstu3.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.r4.model.Extension  e : src.getExtension()) {
-      tgt.addExtension(convertExtension(e));
+      if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
+        tgt.addExtension(convertExtension(e));
+      }
     }
   }
 
@@ -1953,17 +1958,20 @@ public class VersionConvertor_30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent();
-    copyElement(src, tgt);
+    copyElement(src, tgt, EXT_SRC_TYPE);
     if (src.hasStrength())
       tgt.setStrength(convertBindingStrength(src.getStrength()));
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasValueSet()) {
       Type t = convertType(src.getValueSet());
-      if (t instanceof org.hl7.fhir.r4.model.Reference)
+      if (t instanceof org.hl7.fhir.r4.model.Reference) {
         tgt.setValueSet(((org.hl7.fhir.r4.model.Reference) t).getReference());
-      else
+        tgt.getValueSetElement().addExtension(EXT_SRC_TYPE, new UriType("Reference"));
+      } else {
         tgt.setValueSet(t.primitiveValue());
+        tgt.getValueSetElement().addExtension(EXT_SRC_TYPE, new UriType("uri"));
+      }
       tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
     }
     return tgt;
@@ -1973,17 +1981,26 @@ public class VersionConvertor_30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent();
-    copyElement(src, tgt);
+    copyElement(src, tgt, EXT_SRC_TYPE);
     if (src.hasStrength())
       tgt.setStrength(convertBindingStrength(src.getStrength()));
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasValueSet()) {
+      org.hl7.fhir.r4.model.Extension ex = src.getValueSetElement().getExtensionByUrl(EXT_SRC_TYPE);
       String vsr = VersionConvertorConstants.vsToRef(src.getValueSet());
-      if (vsr != null)
-        tgt.setValueSet(new org.hl7.fhir.dstu3.model.UriType(vsr));
-      else
-        tgt.setValueSet(new org.hl7.fhir.dstu3.model.Reference(src.getValueSet()));
+      if (ex != null) {
+        if ("uri".equals(ex.getValue().primitiveValue())) {
+          tgt.setValueSet(new org.hl7.fhir.dstu3.model.UriType(vsr == null ? src.getValueSet() : vsr));
+        } else {
+          tgt.setValueSet(new org.hl7.fhir.dstu3.model.Reference(src.getValueSet()));
+        }
+      } else {
+        if (vsr != null)
+          tgt.setValueSet(new org.hl7.fhir.dstu3.model.UriType(vsr));
+        else
+          tgt.setValueSet(new org.hl7.fhir.dstu3.model.Reference(src.getValueSet()));
+      }
     }
     return tgt;
   }
