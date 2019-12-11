@@ -23,7 +23,9 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -46,6 +48,90 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
+
+  public static class CodeSystemNavigator {
+
+    private CodeSystem cs;
+    private boolean restructure;
+    private Set<String> processed = new HashSet<>();
+
+    public CodeSystemNavigator(CodeSystem cs) {
+      this.cs = cs;
+      restructure = hasExtraRelationships(cs.getConcept());
+    }
+
+    public boolean isRestructure() {
+      return restructure;
+    }
+
+    private boolean hasExtraRelationships(List<ConceptDefinitionComponent> concept) {
+      for (ConceptDefinitionComponent cd : concept) {
+        if (getSubsumedBy(cd) != null) {
+          return true;
+        }
+        for (ConceptDefinitionComponent cdc : cd.getConcept()) {
+          if (hasExtraRelationships(cdc.getConcept())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    public List<ConceptDefinitionComponent> getConcepts(ConceptDefinitionComponent context) {
+      if (context == null) {
+        if (restructure) {
+          List<ConceptDefinitionComponent> res = new ArrayList<>();
+          for (ConceptDefinitionComponent cd : cs.getConcept()) {
+            if (getSubsumedBy(cd) == null) {
+              res.add(cd);
+              processed.add(cd.getCode());
+            }
+          }
+          return res;
+        } else {
+          return cs.getConcept();
+        }
+      } else {
+        if (restructure) {
+          List<ConceptDefinitionComponent> res = new ArrayList<>();
+          for (ConceptDefinitionComponent cd : context.getConcept()) {
+            res.add(cd);
+            processed.add(cd.getCode());
+          }
+          for (ConceptDefinitionComponent cd : cs.getConcept()) {
+            if (context.getCode().equals(getSubsumedBy(cd)) && !processed.contains(cd.getCode())) {
+              res.add(cd);
+              processed.add(cd.getCode());
+            }
+          }
+          return res;
+        } else {
+          return context.getConcept();
+        }
+      }
+    }
+
+    private String getSubsumedBy(ConceptDefinitionComponent cd) {
+      for (ConceptPropertyComponent cp : cd.getProperty()) {
+        if (cp.getCode().equals("subsumedBy")) {
+          return cp.getValue().primitiveValue();
+        }
+      }
+      return null;
+    }
+
+    public List<ConceptDefinitionComponent> getOtherChildren(ConceptDefinitionComponent context) {
+      List<ConceptDefinitionComponent> res = new ArrayList<>();
+      for (ConceptDefinitionComponent cd : cs.getConcept()) {
+        if (context.getCode().equals(getSubsumedBy(cd)) && processed.contains(cd.getCode())) {
+          res.add(cd);
+        }
+      }
+      return res;
+    }
+  }
+
 
   public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
     for (ConceptPropertyComponent p : def.getProperty()) {
