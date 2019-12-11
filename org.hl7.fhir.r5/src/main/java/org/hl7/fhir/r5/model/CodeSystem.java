@@ -2080,6 +2080,10 @@ public class CodeSystem extends MetadataResource {
 
   }
 
+   @Override
+   public String toString() {
+     return getCode()+": "+getDisplay();
+   }
   }
 
     @Block()
