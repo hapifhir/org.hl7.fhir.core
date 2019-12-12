@@ -69,4 +69,8 @@ public class ValidationOptions {
   public String toJson() {
     return "\"lang\":\""+language+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", \"guessSystem\":\""+Boolean.toString(guessSystem)+"\"";
   }
+
+  public static ValidationOptions defaults() {
+    return new ValidationOptions("en-US");
+  }
 }
