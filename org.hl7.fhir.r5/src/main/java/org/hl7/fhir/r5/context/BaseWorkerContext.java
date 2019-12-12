@@ -515,24 +515,29 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   
   @Override
   public ValidationResult validateCode(ValidationOptions options, String system, String code, String display) {
+    assert options != null;
     Coding c = new Coding(system, code, display);
     return validateCode(options, c, null);
   }
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs) {
+    assert options != null;
     Coding c = new Coding(system, code, display);
     return validateCode(options, c, vs);
   }
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs) {
+    assert options != null;
     Coding c = new Coding(null, code, null);
     return validateCode(options.guessSystem(), c, vs);
   }
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
+    assert options != null;
+    
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) 
