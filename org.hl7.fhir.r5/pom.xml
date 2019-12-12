@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3_xpath</artifactId>
-			<scope>test</scope>
+			<optional>true</optional>
 		</dependency>
 		<!-- commonmark Parser -->
 		<dependency>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
-			<optional>true</optional>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Apache POI -->
