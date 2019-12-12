@@ -49,6 +49,7 @@
 			<artifactId>xpp3_xpath</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<!-- commonmark Parser -->
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
@@ -58,6 +59,11 @@
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.rjeschke</groupId>
+			<artifactId>txtmark</artifactId>
 			<scope>test</scope>
 		</dependency>
 
