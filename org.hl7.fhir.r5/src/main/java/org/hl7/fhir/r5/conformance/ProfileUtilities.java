@@ -910,10 +910,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (diffMatches.size() > i+1) {
                 throw new FHIRException("Invalid slicing : there is more than one type slice at "+diffMatches.get(i).getPath()+", but one of them ("+diffMatches.get(i).getSliceName()+") has min = 1, so the other slices cannot exist");
               }
-              if (diffMatches.get(i).getType().size() != 1) {
-                throw new FHIRException("Unexpected condition in differential: type-slice.type-list.size() != 1 at "+diffMatches.get(i).getPath()+"/"+diffMatches.get(i).getSliceName());
-              }
-              fixedType = diffMatches.get(i).getType().get(0).getCode();
+              fixedType = determineFixedType(diffMatches, fixedType, i);
             }
             ndc = differential.getElement().indexOf(diffMatches.get(i));
             ndl = findEndOfElement(differential, ndc);
@@ -1159,10 +1156,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           // now process the siblings, which should each be type constrained - and may also have their own children. they may match existing slices
           // now we process the base scope repeatedly for each instance of the item in the differential list
           for (int i = start; i < diffMatches.size(); i++) {
-            if (diffMatches.get(i).getType().size() != 1) {
-              throw new FHIRException("Unexpected condition in differential: type-slice.type-list.size() != 1 at "+diffMatches.get(i).getPath()+"/"+diffMatches.get(i).getSliceName());
-            }
-            String type = diffMatches.get(i).getType().get(0).getCode();
+            String type = determineFixedType(diffMatches, fixedType, i);
             // our processing scope for the differential is the item in the list, and all the items before the next one in the list
             if (diffMatches.get(i).getMin() > 0) {
               if (diffMatches.size() > i+1) {
@@ -1378,6 +1372,26 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error("null min");
     }
     return res;
+  }
+
+
+  public String determineFixedType(List<ElementDefinition> diffMatches, String fixedType, int i) {
+    if (diffMatches.get(i).getType().size() == 0 && diffMatches.get(i).hasSliceName()) {
+      String n = tail(diffMatches.get(i).getPath()).replace("[x]", "");
+      String t = diffMatches.get(i).getSliceName().substring(n.length());
+      if (isDataType(t)) {
+        fixedType = t;
+      } else if (isPrimitive(Utilities.uncapitalize(t))) {
+        fixedType = Utilities.uncapitalize(t);
+      } else {
+        throw new FHIRException("Unexpected condition in differential: type-slice.type-list.size() == 10 and implicit slice name does not contain a valid type ('"+t+"'?) at "+diffMatches.get(i).getPath()+"/"+diffMatches.get(i).getSliceName());
+      }                
+    } else if (diffMatches.get(i).getType().size() == 1) {
+      fixedType = diffMatches.get(i).getType().get(0).getCode();
+    } else {
+      throw new FHIRException("Unexpected condition in differential: type-slice.type-list.size() != 1 at "+diffMatches.get(i).getPath()+"/"+diffMatches.get(i).getSliceName());
+    }
+    return fixedType;
   }
 
 
