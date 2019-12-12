@@ -108,6 +108,17 @@
 			<scope>test</scope>
 		</dependency>
 
+    <dependency>
+        <groupId>com.atlassian.commonmark</groupId>
+        <artifactId>commonmark</artifactId>
+        <optional>test</optional>
+    </dependency>
+    <dependency>
+        <groupId>com.atlassian.commonmark</groupId>
+        <artifactId>commonmark-ext-gfm-tables</artifactId>
+        <optional>test</optional>
+    </dependency>
+
 	</dependencies>
 
 	<build>
