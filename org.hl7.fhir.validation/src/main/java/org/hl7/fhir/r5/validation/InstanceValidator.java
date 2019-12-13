@@ -84,6 +84,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -112,6 +113,7 @@ import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TimeType;
@@ -165,6 +167,7 @@ import ca.uhn.fhir.util.ObjectUtil;
  */
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
+
 
   public class ValidatorHostContext {
     private Object appContext;
@@ -1129,6 +1132,245 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Binding by URI reference cannot be checked");
         } else if (!noBindingMsgSuppressed) {
           hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Binding for path " + path + " has no source, so can't be checked");
+        }
+      }
+    }
+    return res;
+  }
+
+  private boolean checkTerminologyCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, StructureDefinition logical)  {
+    boolean res = true;
+    if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
+      ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
+      if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing (cc)")) {
+        if (binding.hasValueSet()) {
+          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+          if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(binding.getValueSet()) + " not found by validator")) {
+            try {
+              CodeableConcept cc = convertToCodeableConcept(element, logical);
+              if (!cc.hasCoding()) {
+                if (binding.getStrength() == BindingStrength.REQUIRED)
+                  rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code is required from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl());
+                else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                  if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
+                    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code must be provided from the value set " + describeReference(ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet")) + " (max value set " + valueset.getUrl()+")");
+                  else
+                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code should be provided from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl()+")");
+                }
+              } else {
+                long t = System.nanoTime();
+
+                // Check whether the codes are appropriate for the type of binding we have
+                boolean bindingsOk = true;
+                if (binding.getStrength() != BindingStrength.EXAMPLE) {
+                  boolean atLeastOneSystemIsSupported = false;
+                  for (Coding nextCoding : cc.getCoding()) {
+                    String nextSystem = nextCoding.getSystem();
+                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
+                      atLeastOneSystemIsSupported = true;
+                      break;
+                    }
+                  }
+
+                  if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
+                    // ignore this since we can't validate but it doesn't matter..
+                  } else {
+                    ValidationResult vr = context.validateCode(new ValidationOptions(stack.workingLang), cc, valueset); // we're going to validate the codings directly
+                    if (!vr.isOk()) {
+                      bindingsOk = false;
+                      if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
+                        if (binding.getStrength() == BindingStrength.REQUIRED)
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " and a code from this value set is required (class = "+vr.getErrorClass().toString()+")");
+                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                          if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
+                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
+                          else if (!noExtensibleWarnings)
+                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " and a code should come from this value set unless it has no suitable code (class = "+vr.getErrorClass().toString()+")");
+                        } else if (binding.getStrength() == BindingStrength.PREFERRED)
+                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false,  "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " and a code is recommended to come from this value set (class = "+vr.getErrorClass().toString()+")");
+                      } else {
+                        if (binding.getStrength() == BindingStrength.REQUIRED)
+                          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl()+", and a code from this value set is required) (codes = "+ccSummary(cc)+")");
+                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                          if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
+                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
+                          if (!noExtensibleWarnings)
+                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code) (codes = "+ccSummary(cc)+")");
+                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
+                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false,  "None of the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code is recommended to come from this value set) (codes = "+ccSummary(cc)+")");
+                        }
+                      }
+                    } else if (vr.getMessage()!=null) {
+                      res = false;
+                      txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                    } else {
+                      res = false;
+                    }
+                  }
+                  // Then, for any codes that are in code systems we are able
+                  // to validate, we'll validate that the codes actually exist
+                  if (bindingsOk) {
+                    for (Coding nextCoding : cc.getCoding()) {
+                      String nextCode = nextCoding.getCode();
+                      String nextSystem = nextCoding.getSystem();
+                      if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
+                        ValidationResult vr = context.validateCode(new ValidationOptions(stack.workingLang), nextSystem, nextCode, null);
+                        if (!vr.isOk()) {
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Code {0} is not a valid code in code system {1}", nextCode, nextSystem);
+                        }
+                      }
+                    }
+                  }
+                  txTime = txTime + (System.nanoTime() - t);
+                }
+              }
+            } catch (Exception e) {
+              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating CodeableConcept");
+            }
+            // special case: if the logical model has both CodeableConcept and Coding mappings, we'll also check the first coding.
+            if (getMapping("http://hl7.org/fhir/terminology-pattern", logical, logical.getSnapshot().getElementFirstRep()).contains("Coding")) {
+              checkTerminologyCoding(errors, path, element, profile, theElementCntext, true, true, stack, logical);
+            }
+          }
+        } else if (binding.hasValueSet()) {
+          hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Binding by URI reference cannot be checked");
+        } else if (!noBindingMsgSuppressed) {
+          hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Binding for path " + path + " has no source, so can't be checked");
+        }
+      }
+    }
+    return res;
+  }
+
+  private void checkTerminologyCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack, StructureDefinition logical)  {
+    Coding c = convertToCoding(element, logical);
+    String code = c.getCode();
+    String system = c.getSystem();
+    String display = c.getDisplay();
+    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), "Coding.system must be an absolute reference, not a local reference");
+
+    if (system != null && code != null && !noTerminologyChecks) {
+      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system (\""+system+"\")");
+      try {
+        if (checkCode(errors, element, path, code, system, display, checkDisplay, stack))
+          if (theElementCntext != null && theElementCntext.hasBinding()) {
+            ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
+            if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, "Binding for " + path + " missing")) {
+              if (binding.hasValueSet()) {
+                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+                if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, "ValueSet " + describeReference(binding.getValueSet()) + " not found by validator")) {
+                  try {
+                    long t = System.nanoTime();
+                    ValidationResult vr = null;
+                    if (binding.getStrength() != BindingStrength.EXAMPLE) {
+                      vr = context.validateCode(new ValidationOptions(stack.workingLang), c, valueset);
+                    }
+                    txTime = txTime + (System.nanoTime() - t);
+                    if (vr != null && !vr.isOk()) {
+                      if (vr.IsNoService())
+                        txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false,  "The value provided could not be validated in the absence of a terminology server");
+                      else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
+                        if (binding.getStrength() == BindingStrength.REQUIRED)
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl()+", and a code from this value set is required)");
+                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                          if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
+                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
+                          else if (!noExtensibleWarnings)
+                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code)");
+                        } else if (binding.getStrength() == BindingStrength.PREFERRED)
+                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false,  "Could not confirm that the codes provided are in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code is recommended to come from this value set)");
+                      } else if (binding.getStrength() == BindingStrength.REQUIRED)
+                        txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "The Coding provided is not in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code is required from this value set)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
+                      else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                        if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
+                          checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
+                        else
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "The Coding provided is not in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code should come from this value set unless it has no suitable code)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
+                      } else if (binding.getStrength() == BindingStrength.PREFERRED)
+                        txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false,  "The Coding provided is not in the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getUrl() + ", and a code is recommended to come from this value set)"+(vr.getMessage() != null ? " (error message = "+vr.getMessage()+")" : ""));
+                    }
+                  } catch (Exception e) {
+                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding");
+                  }
+                }
+              } else if (binding.hasValueSet()) {
+                hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Binding by URI reference cannot be checked");
+              } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
+                hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Binding for path " + path + " has no source, so can't be checked");
+              }
+            }
+          }
+      } catch (Exception e) {
+        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Error "+e.getMessage()+" validating Coding: " + e.toString());
+      }
+    }
+  }
+
+  private CodeableConcept convertToCodeableConcept(Element element, StructureDefinition logical) {
+    CodeableConcept res = new CodeableConcept();
+    for (ElementDefinition ed : logical.getSnapshot().getElement()) {
+      if (Utilities.charCount(ed.getPath(), '.') == 1) {
+        List<String> maps = getMapping("http://hl7.org/fhir/terminology-pattern", logical, ed);
+        for (String m : maps) {
+          String name = tail(ed.getPath());
+          List<Element> list = new ArrayList<>();
+          element.getNamedChildren(name, list);
+          if (!list.isEmpty()) {
+            if ("Coding.code".equals(m)) {
+              res.getCodingFirstRep().setCode(list.get(0).primitiveValue());
+            } else if ("Coding.system[fmt:OID]".equals(m)) {
+              String oid = list.get(0).primitiveValue();
+              String url = context.oid2Uri(oid);
+              if (url != null) {
+                res.getCodingFirstRep().setSystem(url);                
+              } else {
+                res.getCodingFirstRep().setSystem("urn:oid:"+oid);
+              }
+            } else if ("Coding.version".equals(m)) {
+              res.getCodingFirstRep().setVersion(list.get(0).primitiveValue());
+            } else if ("Coding.display".equals(m)) {
+              res.getCodingFirstRep().setDisplay(list.get(0).primitiveValue());
+            } else if ("CodeableConcept.text".equals(m)) {
+              res.setText(list.get(0).primitiveValue());
+            } else if ("CodeableConcept.coding".equals(m)) {
+              StructureDefinition c = context.fetchTypeDefinition(ed.getTypeFirstRep().getCode());
+              for (Element e : list) {
+                res.addCoding(convertToCoding(e, c));
+              }
+            }
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  private Coding convertToCoding(Element element, StructureDefinition logical) {
+    Coding res = new Coding();
+    for (ElementDefinition ed : logical.getSnapshot().getElement()) {
+      if (Utilities.charCount(ed.getPath(), '.') == 1) {
+        List<String> maps = getMapping("http://hl7.org/fhir/terminology-pattern", logical, ed);
+        for (String m : maps) {
+          String name = tail(ed.getPath());
+          List<Element> list = new ArrayList<>();
+          element.getNamedChildren(name, list);
+          if (!list.isEmpty()) {
+            if ("Coding.code".equals(m)) {
+              res.setCode(list.get(0).primitiveValue());
+            } else if ("Coding.system[fmt:OID]".equals(m)) {
+              String oid = list.get(0).primitiveValue();
+              String url = context.oid2Uri(oid);
+              if (url != null) {
+                res.setSystem(url);                
+              } else {
+                res.setSystem("urn:oid:"+oid);
+              }
+            } else if ("Coding.version".equals(m)) {
+              res.setVersion(list.get(0).primitiveValue());
+            } else if ("Coding.display".equals(m)) {
+              res.setDisplay(list.get(0).primitiveValue());
+            }
+          }
         }
       }
     }
@@ -4194,7 +4436,18 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         } else if (type.equals("Resource")) {
           validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
         // (str.matches(".*([.,/])work\\1$"))
-        } 
+        } else if (Utilities.isAbsoluteUrl(type)) {
+          StructureDefinition defn = context.fetchTypeDefinition(type);
+          if (defn != null && hasMapping("http://hl7.org/fhir/terminology-pattern", defn, defn.getSnapshot().getElementFirstRep())) {
+            List<String> txtype = getMapping("http://hl7.org/fhir/terminology-pattern", defn, defn.getSnapshot().getElementFirstRep());
+            if (txtype.contains("CodeableConcept")) {
+              checkTerminologyCodeableConcept(errors, ei.path, ei.element, profile, ei.definition, stack, defn);
+              thisIsCodeableConcept = true;
+            } else if (txtype.contains("Coding")) {
+              checkTerminologyCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack, defn);
+            }
+          }
+        }
       } else {
         if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
           validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true);
@@ -4281,6 +4534,44 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
       }
     }
+  }
+
+  private boolean hasMapping(String url, StructureDefinition defn, ElementDefinition elem) {
+    String id = null;
+    for (StructureDefinitionMappingComponent m : defn.getMapping()) {
+      if (url.equals(m.getUri())) {
+        id = m.getIdentity();
+        break;
+      }
+    }
+    if (id != null) {
+      for (ElementDefinitionMappingComponent m : elem.getMapping()) {
+        if (id.equals(m.getIdentity())) {
+          return true;
+        }
+      }
+      
+    }
+    return false;
+  }
+
+  private List<String> getMapping(String url, StructureDefinition defn, ElementDefinition elem) {
+    List<String> res = new ArrayList<>();
+    String id = null;
+    for (StructureDefinitionMappingComponent m : defn.getMapping()) {
+      if (url.equals(m.getUri())) {
+        id = m.getIdentity();
+        break;
+      }
+    }
+    if (id != null) {
+      for (ElementDefinitionMappingComponent m : elem.getMapping()) {
+        if (id.equals(m.getIdentity())) {
+          res.add(m.getMap());
+        }
+      }
+    }
+    return res;
   }
 
   public void checkMustSupport(StructureDefinition profile, ElementInfo ei) {

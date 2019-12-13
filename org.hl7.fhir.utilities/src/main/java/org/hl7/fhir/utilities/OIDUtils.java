@@ -31,6 +31,9 @@ public class OIDUtils {
 	 */
 
 	public static String getUriForOid(String r) {
+	  if (r == null) {
+	    return null;
+	  }
 		if (r.equals("2.16.840.1.113883.6.96"))
 			return "http://snomed.info/sct";
 		if (r.equals("2.16.840.1.113883.6.1"))

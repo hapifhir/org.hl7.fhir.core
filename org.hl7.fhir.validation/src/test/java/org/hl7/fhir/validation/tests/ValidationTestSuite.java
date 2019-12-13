@@ -23,11 +23,14 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.r5.validation.InstanceValidator;
 import org.hl7.fhir.r5.validation.ValidationEngine;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -72,7 +75,6 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   private String name;
   private JsonObject content;
-  private static String veVersion;
   
   public ValidationTestSuite(String name, JsonObject content) {
     this.name = name;
@@ -81,7 +83,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   private static final String DEF_TX = "http://tx.fhir.org";
 //  private static final String DEF_TX = "http://local.fhir.org:960";
-  private static ValidationEngine ve;
+  private static Map<String, ValidationEngine> ve = new HashMap<>();
+  private static ValidationEngine vCurr;
   
   @SuppressWarnings("deprecation")
   @Test
@@ -92,27 +95,28 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("version")) 
       v = content.get("version").getAsString();
       
-    if (ve == null || !v.equals(veVersion)) {
+    v = VersionUtilities.getMajMin(v);
+    if (!ve.containsKey(v)) {
       if (v.startsWith("5.0"))
-        ve = new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, null, FhirPublication.R5, true);
+        ve.put(v, new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, null, FhirPublication.R5, true));
       else if (v.startsWith("3.0"))
-        ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, true);
+        ve.put(v, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, true));
       else if (v.startsWith("4.0"))
-        ve = new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, true);
+        ve.put(v, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, true));
       else if (v.startsWith("1.0"))
-        ve = new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, true);
+        ve.put(v, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, true));
       else
         throw new Exception("unknown version "+v);
-      TestingUtilities.fcontext = ve.getContext();
-      veVersion = v;
     }
+    vCurr = ve.get(v);
+    TestingUtilities.fcontext = vCurr.getContext();
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
     String testCaseContent = TestingUtilities.loadTestResource("validator", name.substring(name.indexOf(".")+1));
 
-    InstanceValidator val = ve.getValidator();
+    InstanceValidator val = vCurr.getValidator();
     val.setDebug(false);
     if (content.has("allowed-extension-domain")) 
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
@@ -127,7 +131,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("questionnaire")) {
       String filename = content.get("questionnaire").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
-      ve.getContext().cacheResource(loadResource(filename, contents, v));
+      vCurr.getContext().cacheResource(loadResource(filename, contents, v));
     }
     if (content.has("codesystems")) {
       for (JsonElement je : content.getAsJsonArray("codesystems")) {
@@ -152,7 +156,6 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
     checkOutcomes(errors, content);
     if (content.has("profile")) {
-      List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       JsonObject profile = content.getAsJsonObject("profile");
       if (profile.has("supporting")) {
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
@@ -167,12 +170,37 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, contents, v, messages);
+      List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       if (name.startsWith("Json."))
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, sd);
       else
          val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, sd);
       checkOutcomes(errorsProfile, profile);
-    } 
+    }
+    if (content.has("logical")) {
+      JsonObject logical = content.getAsJsonObject("logical");
+      if (logical.has("supporting")) {
+        for (JsonElement e : logical.getAsJsonArray("supporting")) {
+          String filename =  e.getAsString();
+          String contents = TestingUtilities.loadTestResource("validator", filename);
+          MetadataResource mr = (MetadataResource) loadResource(filename, contents, v);
+          if (mr instanceof StructureDefinition) {
+            val.getContext().generateSnapshot((StructureDefinition) mr, true);
+          }
+          val.getContext().cacheResource(mr);
+        }
+      }
+      List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
+      Element le = val.validate(null, errorsLogical, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), (name.startsWith("Json.")) ? FhirFormat.JSON : FhirFormat.XML);
+      if (logical.has("expressions")) {
+        FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
+        for (JsonElement e : logical.getAsJsonArray("expressions")) {
+          String exp = e.getAsString();
+          Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
+        }
+      }
+      checkOutcomes(errorsLogical, logical);
+    }
   }
 
   public StructureDefinition loadProfile(String filename, String contents, String v, List<ValidationMessage> messages)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
@@ -339,7 +367,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public ValueSet resolveValueSet(Object appContext, String url) {
-    return ve.getContext().fetchResource(ValueSet.class, url);
+    return vCurr.getContext().fetchResource(ValueSet.class, url);
   }
 
 }

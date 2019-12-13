@@ -135,7 +135,10 @@ public class VersionUtilities {
     if (version == null)
       return null;
     
-    if (Utilities.charCount(version, '.') == 2) {
+    if (Utilities.charCount(version, '.') == 1) {
+      String[] p = version.split("\\.");
+      return p[0]+"."+p[1];
+    } else if (Utilities.charCount(version, '.') == 2) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
     } else {
