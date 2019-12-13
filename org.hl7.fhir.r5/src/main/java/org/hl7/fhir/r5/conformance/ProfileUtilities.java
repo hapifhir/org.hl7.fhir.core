@@ -2520,7 +2520,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           r1.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#extension."+ed.getName(), ((UriType) ued.getFixed()).getValue(), null, null));
           r1.getCells().add(gen.new Cell());
           r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null));
-          genTypes(gen, r1, ved, defFile, ed, corePath, imagePath);
+          genTypes(gen, r1, ved, defFile, ed, corePath, imagePath, false);
           Cell cell = gen.new Cell();
           cell.addMarkdown(c.getDefinition());
           r1.getCells().add(cell);
@@ -2533,7 +2533,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           ved = ted;
       }
 
-      genTypes(gen, r, ved, defFile, ed, corePath, imagePath);
+      genTypes(gen, r, ved, defFile, ed, corePath, imagePath, false);
 
       r.setIcon("icon_"+m+"extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);      
     }
@@ -2588,12 +2588,22 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final int AGG_GR = 2;
   private static final boolean TABLE_FORMAT_FOR_FIXED_VALUES = false;
   
-  private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath) {
+  private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root) {
     Cell c = gen.new Cell();
     r.getCells().add(c);
     List<TypeRefComponent> types = e.getType();
     if (!e.hasType()) {
-      if (e.hasContentReference()) {
+      if (root) { // we'll use base instead of types then
+        StructureDefinition bsd = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+        if (bsd != null) {
+          if (bsd.hasUserData("path")) {
+            c.getPieces().add(gen.new Piece(bsd.getUserString("path"), bsd.getName(), null));
+          } else {
+            c.getPieces().add(gen.new Piece(null, bsd.getName(), null));
+          }
+        }
+        return c;
+      } else if (e.hasContentReference()) {
         return c;
       } else {
         ElementDefinition d = (ElementDefinition) e.getUserData(DERIVATION_POINTER);
@@ -2968,9 +2978,13 @@ public class ProfileUtilities extends TranslatingUtilities {
           row.setIcon("icon_modifier_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
         else
           row.setIcon("icon_modifier_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
-      } else if (!hasDef || element.getType().size() == 0)
-        row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
-      else if (hasDef && element.getType().size() > 1) {
+      } else if (!hasDef || element.getType().size() == 0) {
+        if (root && context.getResourceNames().contains(profile.getType())) {
+          row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+        } else {
+          row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
+        }
+      } else if (hasDef && element.getType().size() > 1) {
         if (allAreReference(element.getType()))
           row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
         else {
@@ -3022,7 +3036,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             genCardinality(gen, element, row, hasDef, used, extDefn.getElement());
             ElementDefinition valueDefn = extDefn.getExtensionValueDefinition();
             if (valueDefn != null && !"0".equals(valueDefn.getMax()))
-               genTypes(gen, row, valueDefn, profileBaseFileName, profile, corePath, imagePath);
+               genTypes(gen, row, valueDefn, profileBaseFileName, profile, corePath, imagePath, root);
              else // if it's complex, we just call it nothing
                 // genTypes(gen, row, extDefn.getSnapshot().getElement().get(0), profileBaseFileName, profile);
               row.getCells().add(gen.new Cell(null, null, "("+translate("sd.table", "Complex")+")", null, null));
@@ -3033,7 +3047,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if ("0".equals(element.getMax()))
             row.getCells().add(gen.new Cell());            
           else
-            genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath);
+            genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
           generateDescription(gen, row, element, null, used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
         }
       } else {
@@ -3041,7 +3055,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (element.hasSlicing())
           row.getCells().add(gen.new Cell(null, corePath+"profiling.html#slicing", "(Slice Definition)", null, null));
         else if (hasDef && !"0".equals(element.getMax()) && typesRow == null)
-          genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath);
+          genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
         else
           row.getCells().add(gen.new Cell());
         generateDescription(gen, row, element, null, used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
@@ -3251,7 +3265,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       ExtensionContext extDefn = null;
       genCardinality(gen, element, row, hasDef, used, null);
       if (hasDef && !"0".equals(element.getMax()))
-        genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath);
+        genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
       else
         row.getCells().add(gen.new Cell());
       generateGridDescription(gen, row, element, null, used.used, null, null, profile, corePath, imagePath, root, null);
@@ -4359,8 +4373,12 @@ public class ProfileUtilities extends TranslatingUtilities {
   
   // generate an Excel representation of the structure definition
   public void generateXlsx(OutputStream dest, StructureDefinition structure, boolean asXml, boolean hideMustSupportFalse) throws IOException, DefinitionException, Exception {
-    if (!structure.hasSnapshot())
+    if (structure == null) {
+      System.out.println("no structure!");
+    }
+    if (!structure.hasSnapshot()) {
       throw new DefinitionException("needs a snapshot");
+    }
 
     XLSXWriter xlsx = new XLSXWriter(dest, structure, asXml, hideMustSupportFalse);
 
