@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,6 +67,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -5215,6 +5217,36 @@ public class ProfileUtilities extends TranslatingUtilities {
     this.defWebRoot = defWebRoot;
     if (!this.defWebRoot.endsWith("/"))
       this.defWebRoot = this.defWebRoot + '/';
+  }
+
+
+  public static StructureDefinition makeBaseDefinition(FHIRVersion fhirVersion) {
+    StructureDefinition base = new StructureDefinition();
+    base.setId("Base");
+    base.setUrl("http://hl7.org/fhir/StructureDefinition/Base");
+    base.setVersion(fhirVersion.toCode());
+    base.setName("Base"); 
+    base.setStatus(PublicationStatus.ACTIVE);
+    base.setDate(new Date());
+    base.setFhirVersion(fhirVersion);
+    base.setKind(StructureDefinitionKind.COMPLEXTYPE); 
+    base.setAbstract(true); 
+    base.setType("Base");
+    ElementDefinition e = base.getSnapshot().getElementFirstRep();
+    e.setId("Base");
+    e.setPath("Base"); 
+    e.setMin(0); 
+    e.setMax("*"); 
+    e.getBase().setPath("Base");
+    e.getBase().setMin(0); 
+    e.getBase().setMax("*"); 
+    e.setIsModifier(false); 
+    e = base.getDifferential().getElementFirstRep();
+    e.setId("Base");
+    e.setPath("Base"); 
+    e.setMin(0); 
+    e.setMax("*"); 
+    return base;
   }
 
 

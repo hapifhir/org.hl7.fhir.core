@@ -594,17 +594,27 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
   
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException {
-    if (!p.hasSnapshot() && p.getKind() != StructureDefinitionKind.LOGICAL) {
+    generateSnapshot(p, false);
+  }
+  
+  public void generateSnapshot(StructureDefinition p, boolean logical) throws DefinitionException, FHIRException {
+    if (!p.hasSnapshot() && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+") has no base and no snapshot");
       StructureDefinition sd = fetchResource(StructureDefinition.class, p.getBaseDefinition());
-      if (sd == null)
+      if (sd == null && "http://hl7.org/fhir/StructureDefinition/Base".equals(p.getBaseDefinition())) {
+        sd = ProfileUtilities.makeBaseDefinition(p.getFhirVersion());
+      }
+      if (sd == null) {
         throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+") base "+p.getBaseDefinition()+" could not be resolved");
+      }
       List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
       List<String> errors = new ArrayList<String>();
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
       pu.setThrowException(false);
-      pu.sortDifferential(sd, p, p.getUrl(), errors);
+      if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+        pu.sortDifferential(sd, p, p.getUrl(), errors);
+      }
       pu.setDebug(false);
       for (String err : errors)
         msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getUserString("path"), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
