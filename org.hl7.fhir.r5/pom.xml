@@ -107,7 +107,6 @@
 			<version>${validator_test_case_version}</version>
 			<scope>test</scope>
 		</dependency>
-
     <dependency>
         <groupId>com.atlassian.commonmark</groupId>
         <artifactId>commonmark</artifactId>
