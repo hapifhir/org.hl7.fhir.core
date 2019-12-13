@@ -31,9 +31,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +52,8 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
+import org.hl7.fhir.utilities.cache.PackageCacheManager.BuildRecord;
+import org.hl7.fhir.utilities.cache.PackageCacheManager.BuildRecordSorter;
 import org.hl7.fhir.utilities.json.JSONUtil;
 
 import com.google.gson.GsonBuilder;
@@ -70,6 +76,43 @@ import com.google.gson.JsonObject;
  *
  */
 public class PackageCacheManager {
+
+  public class BuildRecordSorter implements Comparator<BuildRecord> {
+
+    @Override
+    public int compare(BuildRecord arg0, BuildRecord arg1) {
+      return arg1.date.compareTo(arg0.date);
+    }
+  }
+
+  public class BuildRecord {
+
+    private String url;
+    private String packageId;
+    private String repo;
+    private Date date;
+    public BuildRecord(String url, String packageId, String repo, Date date) {
+      super();
+      this.url = url;
+      this.packageId = packageId;
+      this.repo = repo;
+      this.date = date;
+    }
+    public String getUrl() {
+      return url;
+    }
+    public String getPackageId() {
+      return packageId;
+    }
+    public String getRepo() {
+      return repo;
+    }
+    public Date getDate() {
+      return date;
+    }
+    
+
+  }
 
   /** if you don't provide and implementation of this interface, the PackageCacheManager will use the web directly. 
    * 
@@ -369,7 +412,7 @@ public class PackageCacheManager {
     return null;
   }
   
-  public JsonArray loadFromBuildServer() throws IOException {
+  public void loadFromBuildServer() throws IOException, ParseException {
     buildLoaded = true; // whether it succeeds or not
     URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -377,17 +420,29 @@ public class PackageCacheManager {
     InputStream json = connection.getInputStream();
     buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
   
+    List<BuildRecord> builds = new ArrayList<>();
+    
     for (JsonElement n : buildInfo) {
       JsonObject o = (JsonObject) n;
       if (o.has("url") && o.has("package-id") && o.get("package-id").getAsString().contains(".")) {
         String u = o.get("url").getAsString();
         if (u.contains("/ImplementationGuide/"))
           u = u.substring(0, u.indexOf("/ImplementationGuide/"));
-        recordMap(u, o.get("package-id").getAsString());
-        ciList.put(o.get("package-id").getAsString(), "https://build.fhir.org/ig/"+o.get("repo").getAsString());
+        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), o.get("repo").getAsString(), readDate(o.get("date").getAsString())));
       }
     }
-    return buildInfo;
+    Collections.sort(builds, new BuildRecordSorter());
+    for (BuildRecord bld : builds) {
+      if (!ciList.containsKey(bld.getPackageId())) {
+        recordMap(bld.getUrl(), bld.getPackageId());
+        ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/"+bld.getRepo());        
+      }
+    }
+  }
+
+  private Date readDate(String s) throws ParseException {
+    SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM, yyyy HH:mm:ss Z");
+    return sdf.parse(s);
   }
 
   public boolean isBuildLoaded() {
@@ -405,7 +460,7 @@ public class PackageCacheManager {
     return null;
   }
  
-  public boolean checkBuildLoaded() throws IOException {
+  public boolean checkBuildLoaded() throws IOException, ParseException {
     if (isBuildLoaded())
       return true;
     loadFromBuildServer();
