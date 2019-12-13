@@ -248,6 +248,7 @@ public interface IWorkerContext {
    * @throws FHIRException
    */
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException;
+  public void generateSnapshot(StructureDefinition mr, boolean ifLogical);
   
   // -- Terminology services ------------------------------------------------------
 
@@ -542,5 +543,6 @@ public interface IWorkerContext {
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);
+
 
 }

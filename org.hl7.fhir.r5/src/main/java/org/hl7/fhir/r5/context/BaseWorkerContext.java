@@ -1098,6 +1098,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public String oid2Uri(String oid) {
     synchronized (lock) {
+      if (oid != null && oid.startsWith("urn:oid:")) {
+        oid = oid.substring(8);
+      }
+
       String uri = OIDUtils.getUriForOid(oid);
       if (uri != null)
         return uri;

@@ -31,7 +31,7 @@ public class ValidationOptions {
   public boolean isGuessSystem() {
     return guessSystem;
   }
-
+  
   private ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions(language);
     n.useServer = useServer;

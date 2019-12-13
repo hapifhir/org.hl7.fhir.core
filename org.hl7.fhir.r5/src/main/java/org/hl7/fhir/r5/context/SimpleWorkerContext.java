@@ -593,10 +593,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return r;
   }
   
+  @Override
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException {
     generateSnapshot(p, false);
   }
   
+  @Override
   public void generateSnapshot(StructureDefinition p, boolean logical) throws DefinitionException, FHIRException {
     if (!p.hasSnapshot() && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
