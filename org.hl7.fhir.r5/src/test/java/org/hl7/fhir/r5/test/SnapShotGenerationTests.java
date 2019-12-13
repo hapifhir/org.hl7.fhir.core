@@ -175,9 +175,9 @@ public class SnapShotGenerationTests {
       if (!Utilities.noString(include))
         included = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", include+".xml"));
       if (!Utilities.noString(register)) {
-        try {
+        if (TestingUtilities.findTestResource("r5", "snapshot-generation", register+".xml")) {
           included = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", register+".xml"));
-        } catch (Exception e) {
+        } else {
           included = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", register+".json"));          
         }
       }

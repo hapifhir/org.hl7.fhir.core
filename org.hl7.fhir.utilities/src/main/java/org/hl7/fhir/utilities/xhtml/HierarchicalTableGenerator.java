@@ -97,7 +97,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   public static final int CONTINUE_SLICER = 3;
   public static final int NEW_SLICE = 4;
   public static final int CONTINUE_SLICE = 5;
-  private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";  
+  private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
+  private static final boolean ACTIVE_TABLE = false;  
   
   private static Map<String, String> files = new HashMap<String, String>();
 
@@ -377,6 +378,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String hint;
     private String color;
     private int lineColor;
+    private String id;
     
     public List<Row> getSubRows() {
       return subRows;
@@ -414,16 +416,26 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       assert lineColor <= 2;
       this.lineColor = lineColor;
     }
-    
-    
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
   }
 
   public class TableModel {
+    private String id;
     private List<Title> titles = new ArrayList<HierarchicalTableGenerator.Title>();
     private List<Row> rows = new ArrayList<HierarchicalTableGenerator.Row>();
     private String docoRef;
     private String docoImg;
     private boolean alternating;
+        
+    public TableModel(String id) {
+      super();
+      this.id = id;
+    }
     public List<Title> getTitles() {
       return titles;
     }
@@ -441,6 +453,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     }
     public void setDocoImg(String docoImg) {
       this.docoImg = docoImg;
+    }
+    public String getId() {
+      return id;
     }
     
   }
@@ -476,8 +491,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     this.makeTargets = makeTargets;
   }
 
-  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating) {
-    TableModel model = new TableModel();
+  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id) {
+    TableModel model = new TableModel(id);
     
     model.alternating = alternating;
     model.setDocoImg(prefix+"help16.png");
@@ -494,8 +509,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   }
 
 
-  public TableModel initGridTable(String prefix) {
-    TableModel model = new TableModel();
+  public TableModel initGridTable(String prefix, String id) {
+    TableModel model = new TableModel(id);
     
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The name of the element (Slice name in brackets).  Mouse-over provides definition"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"), null, 0));
@@ -548,6 +563,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       color = BACKGROUND_ALT_COLOR;
     
     tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+";");
+    tr.setAttribute("id", model.getId()+r.getId());
     boolean first = true;
     for (Cell t : r.getCells()) {
       renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker);
@@ -595,29 +611,31 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
             throw new Error("Unrecognized indent level: " + indents.get(i));
         }
       }
-      if (!indents.isEmpty())
+      if (!indents.isEmpty()) {
+        String sfx = ACTIVE_TABLE && hasChildren ? "-open" : "";
         switch (indents.get(indents.size()-1)) {
         case NEW_REGULAR:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case NEW_SLICER:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slicer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case NEW_SLICE:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slice.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_REGULAR:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_SLICER:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_slicer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_SLICE:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_slice.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         default:
           throw new Error("Unrecognized indent level: " + indents.get(indents.size()-1));
         }
+      }
     }
     else
       tc.setAttribute("style", "vertical-align: top; text-align : left; background-color: "+color+"; border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px");
@@ -700,7 +718,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       check(c);
     int i = 0;
     for (Row r : model.getRows()) { 
-      check(r, "rows", model.getTitles().size(), Integer.toString(i));
+      check(r, "rows", model.getTitles().size(), "", i, model.getRows().size());
       i++;
     }
   }
@@ -715,11 +733,18 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   }
 
 
-  private void check(Row r, String string, int size, String path) throws FHIRException  {    
+  private void check(Row r, String string, int size, String path, int index, int total) throws FHIRException  {
+    String id = Integer.toString(index)+".";
+    if (total <= 26) {
+      char c = (char) ('a'+index);
+      id = Character.toString(c);
+    }
+    path = path + id;
+    r.setId(path);
     check(r.getCells().size() == size, "All rows must have the same number of columns ("+Integer.toString(size)+") as the titles but row "+path+" doesn't ("+r.getCells().get(0).text()+"): "+r.getCells());
     int i = 0;
     for (Row c : r.getSubRows()) {
-      check(c, "rows", size, path+"."+Integer.toString(i));
+      check(c, "rows", size, path, i, r.getSubRows().size());
       i++;
     }
   }
