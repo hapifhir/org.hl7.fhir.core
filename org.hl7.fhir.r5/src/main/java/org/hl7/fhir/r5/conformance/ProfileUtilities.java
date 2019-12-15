@@ -911,6 +911,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (diffMatches.get(i).getMin() > 0) {
               if (diffMatches.size() > i+1) {
                 throw new FHIRException("Invalid slicing : there is more than one type slice at "+diffMatches.get(i).getPath()+", but one of them ("+diffMatches.get(i).getSliceName()+") has min = 1, so the other slices cannot exist");
+              } else {
+                e.setMin(1);
               }
               fixedType = determineFixedType(diffMatches, fixedType, i);
             }
@@ -2467,7 +2469,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker) throws IOException, FHIRException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, ed.getId());
+    TableModel model = gen.initNormalTable(corePath, false, true, ed.getId()+(full ? "f" : "n"), true);
 
     boolean deep = false;
     String m = "";
@@ -2597,7 +2599,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         StructureDefinition bsd = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
         if (bsd != null) {
           if (bsd.hasUserData("path")) {
-            c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getUserString("path")) ? bsd.getUserString("path") : corePath +bsd.getUserString("path"), bsd.getName(), null));
+            c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getUserString("path")) ? bsd.getUserString("path") : imagePath +bsd.getUserString("path"), bsd.getName(), null));
           } else {
             c.getPieces().add(gen.new Piece(null, bsd.getName(), null));
           }
@@ -2844,11 +2846,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     return piece;
   }
 
-  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, Set<String> outputTracker) throws IOException, FHIRException {
+  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"));
+    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), active);
     List<ElementDefinition> list = new ArrayList<>();
     if (diff)
       list.addAll(profile.getDifferential().getElement());
@@ -5079,7 +5082,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public TableModel initSpanningTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, String id) {
-    TableModel model = gen.new TableModel(id);
+    TableModel model = gen.new TableModel(id, true);
     
     model.setDocoImg(prefix+"help16.png");
     model.setDocoRef(prefix+"formats.html#table"); // todo: change to graph definition

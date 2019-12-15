@@ -98,8 +98,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   public static final int NEW_SLICE = 4;
   public static final int CONTINUE_SLICE = 5;
   private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
-  private static final boolean ACTIVE_TABLE = false;  
-  
+  public static boolean ACTIVE_TABLES = false;
+    
   private static Map<String, String> files = new HashMap<String, String>();
 
   private class Counter {
@@ -426,15 +426,17 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
   public class TableModel {
     private String id;
+    private boolean active;
     private List<Title> titles = new ArrayList<HierarchicalTableGenerator.Title>();
     private List<Row> rows = new ArrayList<HierarchicalTableGenerator.Row>();
     private String docoRef;
     private String docoImg;
     private boolean alternating;
         
-    public TableModel(String id) {
+    public TableModel(String id, boolean active) {
       super();
       this.id = id;
+      this.active = active;
     }
     public List<Title> getTitles() {
       return titles;
@@ -458,6 +460,16 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return id;
     }
     
+    public void setId(String id) {
+      this.id = id;
+    }
+    public boolean isActive() {
+      return active && ACTIVE_TABLES;
+    }
+    public boolean isAlternating() {
+      return alternating;
+    }
+    
   }
 
 
@@ -470,8 +482,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
    * (all the styles are inlined anyway, since the table fbuiler has even less control over the styling
    *  
    */
-  private boolean inLineGraphics;
-  
+  private boolean inLineGraphics;  
   
   public HierarchicalTableGenerator() {
     super();
@@ -491,8 +502,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     this.makeTargets = makeTargets;
   }
 
-  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id) {
-    TableModel model = new TableModel(id);
+  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive) {
+    TableModel model = new TableModel(id, isActive);
     
     model.alternating = alternating;
     model.setDocoImg(prefix+"help16.png");
@@ -510,7 +521,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
 
   public TableModel initGridTable(String prefix, String id) {
-    TableModel model = new TableModel(id);
+    TableModel model = new TableModel(id, false);
     
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The name of the element (Slice name in brackets).  Mouse-over provides definition"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"), null, 0));
@@ -522,17 +533,26 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   public XhtmlNode generate(TableModel model, String imagePath, int border, Set<String> outputTracker) throws IOException, FHIRException  {
     checkModel(model);
     XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
+    
+    if (model.isActive()) {      
+      table.setAttribute("id", model.getId());
+    }
     table.setAttribute("style", "border: " + border + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
     XhtmlNode tr = table.addTag("tr");
     tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
     XhtmlNode tc = null;
     for (Title t : model.getTitles()) {
-      tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker);
+      tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null);
       if (t.width != 0)
         tc.setAttribute("style", "width: "+Integer.toString(t.width)+"px");
     }
-    if (tc != null && model.getDocoRef() != null)
-      tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef()).addTag("img").setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
+    if (tc != null && model.getDocoRef() != null) {
+      XhtmlNode img = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef()).addTag("img");
+      img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
+      if (model.isActive()) {
+        img.setAttribute("onload", "fhirTableInit(this)");
+      }
+    }
       
     Counter counter = new Counter();
     for (Row r : model.getRows()) {
@@ -563,10 +583,12 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       color = BACKGROUND_ALT_COLOR;
     
     tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+";");
-    tr.setAttribute("id", model.getId()+r.getId());
+    if (model.isActive()) {
+      tr.setAttribute("id", r.getId());
+    }
     boolean first = true;
     for (Cell t : r.getCells()) {
-      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker);
+      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r);
       first = false;
     }
     table.addText("\r\n");
@@ -585,7 +607,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   }
 
 
-  private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker) throws IOException  {
+  private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker, TableModel table, Row row) throws IOException  {
     XhtmlNode tc = tr.addTag(name);
     tc.setAttribute("class", "hierarchy");
     if (indents != null) {
@@ -612,28 +634,32 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         }
       }
       if (!indents.isEmpty()) {
-        String sfx = ACTIVE_TABLE && hasChildren ? "-open" : "";
+        String sfx = table.isActive() && hasChildren ? "-open" : "";
+        XhtmlNode img = tc.addTag("img");
         switch (indents.get(indents.size()-1)) {
         case NEW_REGULAR:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case NEW_SLICER:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case NEW_SLICE:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_REGULAR:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_SLICER:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_SLICE:
-          tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vjoin_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         default:
           throw new Error("Unrecognized indent level: " + indents.get(indents.size()-1));
+        }
+        if (table.isActive() && hasChildren) {
+          img.setAttribute("onClick", "tableRowAction(this)");
         }
       }
     }
