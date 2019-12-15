@@ -1515,7 +1515,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   private String genCompModel(StructureDefinition sd, String name, String base, String prefix, String dest) throws FHIRException, IOException {
     if (sd == null)
       return "<p style=\"color: maroon\">No "+name+" could be generated</p>\r\n";
-    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("??", sd, false, dest, false, base, true, prefix, prefix, false, false, null));
+    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("??", sd, false, dest, false, base, true, prefix, prefix, false, false, null, true));
   }
 
 

@@ -1593,7 +1593,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker) throws IOException, FHIRException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, ed.getId());
+    TableModel model = gen.initNormalTable(corePath, false, true, ed.getId(), false);
 
     boolean deep = false;
     String m = "";
@@ -1962,7 +1962,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     assert(diff != snapshot);// check it's ok to get rid of one of these
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"));
+    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), false);
     List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();
     List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
     profiles.add(profile);
@@ -3608,7 +3608,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public TableModel initSpanningTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, String id) {
-    TableModel model = gen.new TableModel(id);
+    TableModel model = gen.new TableModel(id, false);
     
     model.setDocoImg(prefix+"help16.png");
     model.setDocoRef(prefix+"formats.html#table"); // todo: change to graph definition
