@@ -924,8 +924,9 @@ public class VersionConvertor_10_50 {
     tgt.setSystem(convertContactPointSystem(src.getSystem()));
     tgt.setValue(src.getValue());
     tgt.setUse(convertContactPointUse(src.getUse()));
-    if (src.hasRank())
+    if (src.hasRank()) {
       tgt.setRank(src.getRank());
+    }
     tgt.setPeriod(convertPeriod(src.getPeriod()));
     return tgt;
   }
@@ -939,7 +940,9 @@ public class VersionConvertor_10_50 {
       tgt.setSystem(convertContactPointSystem(src.getSystem()));
     tgt.setValue(src.getValue());
     tgt.setUse(convertContactPointUse(src.getUse()));
-    tgt.setRank(src.getRank());
+    if (src.hasRank()) {
+      tgt.setRank(src.getRank());
+    }
     if (src.hasPeriod())
       tgt.setPeriod(convertPeriod(src.getPeriod()));
     return tgt;
