@@ -1600,9 +1600,11 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   @Override
   public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
-    if (!url.startsWith("http://hl7.org/fhir"))
+    if (!url.startsWith("http://hl7.org/fhir")) {
       return ReferenceValidationPolicy.IGNORE;
-    throw new Error("Not done yet");
+    } else {
+      return ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE;      
+    }
   }
 
   @Override
