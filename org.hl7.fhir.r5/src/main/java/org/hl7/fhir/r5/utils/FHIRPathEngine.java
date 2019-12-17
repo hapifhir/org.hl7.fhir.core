@@ -397,7 +397,7 @@ public class FHIRPathEngine {
 	if (context == null) {
 	  types = null; // this is a special case; the first path reference will have to resolve to something in the context
 	} else if (!context.contains(".")) {
-    StructureDefinition sd = worker.fetchResource(StructureDefinition.class, context);
+    StructureDefinition sd = worker.fetchTypeDefinition(context);
 	  types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl());
 	} else {
 	  String ctxt = context.substring(0, context.indexOf('.'));

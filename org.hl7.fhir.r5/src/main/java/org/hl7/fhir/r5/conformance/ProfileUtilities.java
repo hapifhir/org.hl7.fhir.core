@@ -2533,8 +2533,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       r.setIcon(deep ? "icon_"+m+"extension_complex.png" : "icon_extension_simple.png", deep ? HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX : HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
       List<ElementDefinition> children = getChildren(ed.getSnapshot().getElement(), ed.getSnapshot().getElement().get(0));
       for (ElementDefinition child : children)
-        if (!child.getPath().endsWith(".id"))
-          genElement(defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), null, true, defFile, true, full, corePath, imagePath, true, false, false, false, null);
+        if (!child.getPath().endsWith(".id")) {
+          List<StructureDefinition> sdl = new ArrayList<>();
+          sdl.add(ed);
+          genElement(defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null);
+        }
     } else if (deep) {
       List<ElementDefinition> children = new ArrayList<ElementDefinition>();
       for (ElementDefinition ted : ed.getSnapshot().getElement()) {
@@ -2704,7 +2707,14 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().get(0).getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
       } else {
         String tc = t.getWorkingCode();
-        if (pkp != null && pkp.hasLinkFor(tc)) {
+        if (Utilities.isAbsoluteUrl(tc)) {
+          StructureDefinition sd = context.fetchTypeDefinition(tc);
+          if (sd == null) {
+            c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), tc, null)));
+          } else {
+            c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), sd.getName(), null)));           
+          }
+        } else if (pkp != null && pkp.hasLinkFor(tc)) {
           c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), tc, null)));
         } else
           c.addPiece(checkForNoChange(t, gen.new Piece(null, tc, null)));
