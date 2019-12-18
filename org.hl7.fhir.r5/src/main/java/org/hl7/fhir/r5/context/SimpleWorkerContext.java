@@ -97,7 +97,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 	private Questionnaire questionnaire;
-	private Map<String, byte[]> binaries = new HashMap<String, byte[]>();
   private String version;
   private String revision;
   private String date;
@@ -299,7 +298,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  for (String s : pi.list("other")) {
 	    binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
 	  }
-	  version = pi.version();
+	  if (version == null) {
+	    version = pi.version();
+	  }
 	}
 
   public void loadFromFile(String file, IContextResourceLoader loader) throws IOException, FHIRException {
@@ -531,10 +532,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   	} catch (Exception e) {
     	return;
     }
-  }
-
-  public Map<String, byte[]> getBinaries() {
-    return binaries;
   }
 
   @Override
