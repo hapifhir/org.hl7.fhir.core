@@ -314,6 +314,7 @@ public class PackageCacheManager {
   public boolean initUrlMaps(IniFile ini, boolean save) {
     save = checkIniHasMapping("hl7.fhir.core", "http://hl7.org/fhir", ini) || save;
     save = checkIniHasMapping("hl7.fhir.pubpack", "http://fhir.org/packages/hl7.fhir.pubpack", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.xver-extensions", "http://fhir.org/packages/hl7.fhir.xver-extensions", ini) || save;
     
     save = checkIniHasMapping("hl7.fhir.r2.core", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.core.tgz", ini) || save;
     save = checkIniHasMapping("hl7.fhir.r2.examples", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.examples.tgz", ini) || save;
