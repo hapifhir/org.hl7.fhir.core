@@ -97,6 +97,7 @@ import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
@@ -421,8 +422,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           break;
         }
       }
-      if (!found)
+      if (!found) {
         derived.getMapping().add(baseMap);
+      }
     }
   }
   
@@ -2042,7 +2044,6 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
     // Before applying changes, apply them to what's in the profile
-    // TODO: follow Chris's rules - Done by Lloyd
     StructureDefinition profile = null;
     if (base.hasSliceName())
       profile = base.getType().size() == 1 && base.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, base.getTypeFirstRep().getProfile().get(0).getValue()) : null;
@@ -2335,6 +2336,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         else
           for (ElementDefinitionMappingComponent t : derived.getMapping())
             t.setUserData(DERIVATION_EQUALS, true);
+      }
+      for (ElementDefinitionMappingComponent m : base.getMapping()) {
+        if (m.hasMap()) {
+          m.setMap(m.getMap().trim());
+        }
       }
 
       // todo: constraints are cumulative. there is no replacing
@@ -3626,7 +3632,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           erow.getSubRows().add(row);
           Cell c = gen.new Cell();
           row.getCells().add(c);
-          c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(context.getVersion().compareTo("4.0") > 0 ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
+          c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isThisOrLater("4.1", context.getVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
           c = gen.new Cell();
           row.getCells().add(c);
           c.addPiece(gen.new Piece(null, null, null));
@@ -3671,7 +3677,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
             Cell c = gen.new Cell();
             row.getCells().add(c);
-            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (context.getVersion().compareTo("4.0") > 0 ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
+            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isThisOrLater("4.1", context.getVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
 
             c = gen.new Cell();
             row.getCells().add(c);

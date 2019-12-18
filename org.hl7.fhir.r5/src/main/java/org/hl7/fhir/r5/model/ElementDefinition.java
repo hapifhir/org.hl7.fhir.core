@@ -2273,7 +2273,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 // added from java-adornments.txt:
 
   public boolean hasTarget() {
-    return Utilities.existsInList(getCode(), "Reference", "canonical");
+    return Utilities.existsInList(getCode(), "Reference", "canonical", "CodeableReference");
   }
 
   /**
