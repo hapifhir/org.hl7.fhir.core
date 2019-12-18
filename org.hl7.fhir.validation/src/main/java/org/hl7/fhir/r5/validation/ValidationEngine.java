@@ -406,6 +406,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion());
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionProfile(makeExpProfile());
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.1");
+    context.loadFromPackage(npm, null);
     grabNatives(source, "http://hl7.org/fhir");
   }
 
@@ -1614,7 +1616,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     if (context.fetchResource(Resource.class, url) != null)
       return true;
     if (Utilities.existsInList(url, "http://hl7.org/fhir/sid/us-ssn", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/us-npi",
-       "http://hl7.org/fhir/sid/icd-10-vn", "http://hl7.org/fhir/sid/icd-10-cm", "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/w5", "http://hl7.org/fhir/fivews", "http://hl7.org/fhir/workflow")) {
+       "http://hl7.org/fhir/sid/icd-10-vn", "http://hl7.org/fhir/sid/icd-10-cm", "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/w5", "http://hl7.org/fhir/fivews", 
+       "http://hl7.org/fhir/workflow", "http://hl7.org/fhir/ConsentPolicy/opt-out", "http://hl7.org/fhir/ConsentPolicy/opt-in")) {
       return true;
     }
     return false;

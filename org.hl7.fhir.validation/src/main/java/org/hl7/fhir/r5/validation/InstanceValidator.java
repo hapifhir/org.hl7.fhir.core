@@ -381,6 +381,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
   private EnableWhenEvaluator myEnableWhenEvaluator = new EnableWhenEvaluator();
   private String executionId;
+  private XVerExtensionManager xverManager;
 
   /*
    * Keeps track of whether a particular profile has been checked or not yet
@@ -1551,25 +1552,53 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack) throws FHIRException, IOException {
+  private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, String extensionUrl) throws FHIRException, IOException {
     String url = element.getNamedChildValue("url");
     boolean isModifier = element.getName().equals("modifierExtension");
 
     long t = System.nanoTime();
-    StructureDefinition ex = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
     sdTime = sdTime + (System.nanoTime() - t);
     if (ex == null) {
-      if (!url.startsWith("http://hl7.org/fhir/4.0/StructureDefinition/extension-"))
-        if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), "The extension " + url + " is unknown, and not allowed here"))
-          hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, isKnownExtension(url), "Unknown extension " + url);
-    } else {
-      if (def.getIsModifier())
+      if (xverManager == null) {
+        xverManager = new XVerExtensionManager(context);
+      }
+      if (xverManager.matchingUrl(url)) {
+        switch (xverManager.status(url)) {
+        case BadVersion:
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state is not valid (invalidVersion \""+xverManager.getVersion(url)+"\")");
+          break;
+        case Unknown:
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state is not valid (unknown Element id \""+xverManager.getElementId(url)+"\")");
+          break;
+        case Invalid:
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state is not valid (Element id \""+xverManager.getElementId(url)+"\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
+          break;
+        case Valid:
+          ex = xverManager.makeDefinition(url);
+          context.generateSnapshot(ex);
+          context.cacheResource(ex);
+          break;
+        default:
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state illegal");
+          break;
+        }
+      } else if (extensionUrl != null && !isAbsolute(url)) {
+        if (extensionUrl.equals(profile.getUrl())) {
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), "Sub-extension url '" + url + "' is not defined by the Extension "+profile.getUrl());
+        }
+      } else if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), "The extension " + url + " is unknown, and not allowed here")) {
+        hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, isKnownExtension(url), "Unknown extension " + url);
+      }
+    }
+    if (ex != null) {
+      if (def.getIsModifier()) {
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(),
             "Extension modifier mismatch: the extension element is labelled as a modifier, but the underlying extension is not");
-      else
+      } else {
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", !ex.getSnapshot().getElement().get(0).getIsModifier(),
             "Extension modifier mismatch: the extension element is not labelled as a modifier, but the underlying extension is");
-
+      }
       // two questions
       // 1. can this extension be used here?
       checkExtensionContext(errors, element, /* path+"[url='"+url+"']", */ ex, stack, ex.getUrl());
@@ -1590,10 +1619,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", allowedTypes.contains(actualType), "The Extension '" + url + "' definition allows for the types "+allowedTypes.toString()+" but found type "+actualType);
 
       // 3. is the content of the extension valid?
-      validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true);
+      validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true, url);
 
     }
     return ex;
+  }
+
+  private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      if (ed.getPath().equals("Extension.extension.url") && ed.hasFixed() && sliceName.equals(ed.getFixed().primitiveValue())) {
+        return true;        
+      }
+    }
+    return false;
   }
 
   private String getExtensionType(Element element) {
@@ -3232,7 +3270,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(),
               "StructureDefinition has no snapshot - validation is against the snapshot, so it must be provided"))) {
         // Don't need to validate against the resource if there's a profile because the profile snapshot will include the relevant parts of the resources
-        validateElement(hostContext, errors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true);
+        validateElement(hostContext, errors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null);
       }
 
       // specific known special validations
@@ -3253,7 +3291,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 // todo: re-enable this when I can deal with the impact...   (GG)
 //      if (!profileUsage.getProfile().getType().equals(resource.fhirType()))
 //        throw new FHIRException("Profile type mismatch - resource is "+resource.fhirType()+", and profile is for "+profileUsage.getProfile().getType());
-      validateElement(hostContext, errors, profileUsage.getProfile(), profileUsage.getProfile().getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true);
+      validateElement(hostContext, errors, profileUsage.getProfile(), profileUsage.getProfile().getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null);
     }
   }
 
@@ -4287,7 +4325,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   // firstBase = ebase == null ? base : ebase;
 
   private void validateElement(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
-      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext) throws FHIRException, FHIRException, IOException {
+      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl) throws FHIRException, FHIRException, IOException {
     // element.markValidation(profile, definition);
 
     if (debug) {
@@ -4324,12 +4362,12 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
     // 5. inspect each child for validity
     for (ElementInfo ei : children) {
-      checkChild(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei);
+      checkChild(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl);
     }
   }
 
   public void checkChild(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
-      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei)
+      Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl)
       throws FHIRException, IOException, DefinitionException {
     List<String> profiles = new ArrayList<String>();
     if (ei.definition != null) {
@@ -4405,6 +4443,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       String eiPath = ei.path;
       assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
       boolean thisIsCodeableConcept = false;
+      String thisExtension = null;
       boolean checkDisplay = true;
 
       checkInvariants(hostContext, errors, profile, ei.definition, resource, ei.element, localStack, true);
@@ -4431,8 +4470,17 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         } else if (type.equals("Reference")) {
           checkReference(hostContext, errors, ei.path, ei.element, profile, ei.definition, actualType, localStack);
         // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
-        } else if (type.equals("Extension") && ei.element.getChildValue("url") != null && ei.element.getChildValue("url").contains("/")) {
-          checkExtension(hostContext, errors, ei.path, resource, ei.element, ei.definition, profile, localStack);
+        } else if (type.equals("Extension")) {
+          Element eurl = ei.element.getNamedChild("url");
+          if (rule(errors, IssueType.INVALID, ei.path, eurl != null, "Extension.url is required")) {
+            String url = eurl.primitiveValue();
+            thisExtension = url;
+            if (rule(errors, IssueType.INVALID, ei.path, !Utilities.noString(url), "Extension.url is required")) {
+              if (rule(errors, IssueType.INVALID, ei.path, (extensionUrl != null) || Utilities.isAbsoluteUrl(url), "Extension.url must be an absolute URL")) {
+                checkExtension(hostContext, errors, ei.path, resource, ei.element, ei.definition, profile, localStack, extensionUrl);
+              }
+            }
+          }
         } else if (type.equals("Resource")) {
           validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
         // (str.matches(".*([.,/])work\\1$"))
@@ -4450,7 +4498,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
       } else {
         if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
-          validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true);
+          validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true, null);
       }
       StructureDefinition p = null;
       boolean elementValidated = false;
@@ -4490,7 +4538,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           p = this.context.fetchResource(StructureDefinition.class, typeProfile);
           if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + typeProfile)) {
             List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
-            validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+            validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
             if (hasErrors(profileErrors))
               badProfiles.put(typeProfile, profileErrors);
             else
@@ -4522,15 +4570,15 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       if (p!=null) {
         if (!elementValidated) {
           if (ei.element.getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.element.getSpecial() == SpecialElement.PARAMETER )
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.element, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.element, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
           else
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
         }
         int index = profile.getSnapshot().getElement().indexOf(ei.definition);
         if (index < profile.getSnapshot().getElement().size() - 1) {
           String nextPath = profile.getSnapshot().getElement().get(index+1).getPath();
           if (!nextPath.equals(ei.definition.getPath()) && nextPath.startsWith(ei.definition.getPath()))
-            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay);
+            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
         }
       }
     }
