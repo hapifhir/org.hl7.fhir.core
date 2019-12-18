@@ -270,6 +270,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) { 
         hc++;
+        if (focus.has("infoCount")) {
+          System.out.println("hint: "+vm.getDisplay());          
+        }
       }
     }
     if (TestingUtilities.context().isNoTerminologyServer() || !focus.has("tx-dependent")) {
