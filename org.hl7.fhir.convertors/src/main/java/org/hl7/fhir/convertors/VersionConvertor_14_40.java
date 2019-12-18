@@ -109,20 +109,23 @@ public class VersionConvertor_14_40 {
     CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/valueset-system");    
   }
   
-  private static void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.r4.model.Element tgt) throws FHIRException {
+  private static void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.r4.model.Element tgt, String... exemptExtensions) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.dstu2016may.model.Extension  e : src.getExtension()) {
-      if (!(e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION) || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION)))
+      if (!Utilities.existsInList(e.getUrl(), exemptExtensions) && (!(e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION) || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION)))) {
         tgt.addExtension(convertExtension(e));
+      }
     }
   }
 
-  private static void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt) throws FHIRException {
+  private static void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt, String... exemptExtensions) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.r4.model.Extension  e : src.getExtension()) {
-      tgt.addExtension(convertExtension(e));
+      if (!Utilities.existsInList(e.getUrl(), exemptExtensions)) {
+        tgt.addExtension(convertExtension(e));
+      }
     }
   }
 

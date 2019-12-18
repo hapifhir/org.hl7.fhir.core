@@ -74,19 +74,23 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class VersionConvertor_14_30 {
 
-  private static void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.dstu3.model.Element tgt) throws FHIRException {
+  private static void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.dstu3.model.Element tgt, String... exemptExtensions) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.dstu2016may.model.Extension  e : src.getExtension()) {
-      tgt.addExtension(convertExtension(e));
+      if (!Utilities.existsInList(e.getUrl(), exemptExtensions)) {
+        tgt.addExtension(convertExtension(e));
+      }
     }
   }
 
-  private static void copyElement(org.hl7.fhir.dstu3.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt) throws FHIRException {
+  private static void copyElement(org.hl7.fhir.dstu3.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt, String... exemptExtensions) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.dstu3.model.Extension  e : src.getExtension()) {
-      tgt.addExtension(convertExtension(e));
+      if (!Utilities.existsInList(e.getUrl(), exemptExtensions)) {
+        tgt.addExtension(convertExtension(e));
+      }
     }
   }
 
