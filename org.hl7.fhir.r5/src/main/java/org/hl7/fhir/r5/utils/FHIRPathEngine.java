@@ -1244,7 +1244,7 @@ public class FHIRPathEngine {
           result.update(executeType(s, exp, atEntry));
         }
         if (result.hasNoTypes()) 
-          throw new PathEngineException("The name "+exp.getName()+" is not valid for any of the possible types: "+focus.describe());
+          throw new PathEngineException("The name '"+exp.getName()+"' is not valid for any of the possible types: "+focus.describe());
       }
       break;
     case Function:
