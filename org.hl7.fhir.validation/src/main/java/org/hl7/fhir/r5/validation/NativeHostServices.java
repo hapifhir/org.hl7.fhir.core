@@ -50,6 +50,7 @@ import org.hl7.fhir.exceptions.FHIRException;
  */
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -219,9 +220,16 @@ public class NativeHostServices {
    * @param source
    * @throws Exception
    */
-  public void seeResource(byte[] source) throws Exception {
+  public void seeResource(byte[] source, FhirFormat fmt) throws Exception {
     try {
-      Resource r = new XmlParser().parse(source);
+      Resource r;
+      if (fmt == FhirFormat.JSON) {
+        r = new JsonParser().parse(source);
+      } else if (fmt == FhirFormat.JSON) {
+        r = new XmlParser().parse(source);
+      } else {
+        throw new Exception("Unsupported format "+fmt.name());
+      }
       validator.seeResource(r);
       resourceCount++;
     } catch (Exception e) {

@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
   ValidationTestSuite.class, 
   ValidationEngineTests.class,
   JsonSchemaTests.class,
-//  CDAValidationTestCase.class,
+  NativeHostServiceTester.class,
+  // CDAValidationTestCase.class,
   ProfileComparisonTests.class})
 public class AllR5ValidationTests {
 

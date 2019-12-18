@@ -550,7 +550,7 @@ public class ValidationEngine {
       version = src.substring(src.indexOf("#")+1);
     }
     if (pcm == null) {
-      log("Creating Package manager?");
+      // native host services...
       pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     }
     NpmPackage pi = null;
