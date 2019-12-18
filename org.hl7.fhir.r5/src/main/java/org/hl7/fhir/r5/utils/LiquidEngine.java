@@ -37,6 +37,8 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class LiquidEngine implements IEvaluationContext {
 
@@ -425,6 +427,44 @@ public class LiquidEngine implements IEvaluationContext {
       return externalHostServices.resolveValueSet(ctxt.externalContext, url);
     else
       return engine.getWorker().fetchResource(ValueSet.class, url);
+  }
+
+  /**
+   * Lightweight method to replace fixed constants in resources
+   * 
+   * @param node
+   * @param vars
+   * @return
+   */
+  public boolean replaceInHtml(XhtmlNode node, Map<String, String> vars) {
+    boolean replaced = false;
+    if (node.getNodeType() == NodeType.Text || node.getNodeType() == NodeType.Comment) {
+      String cnt = node.getContent();
+      for (String n : vars.keySet()) {
+        cnt = cnt.replace(n, vars.get(n));
+      }
+      if (!cnt.equals(node.getContent())) {
+        node.setContent(cnt);
+        replaced = true;
+      }
+    } else if (node.getNodeType() == NodeType.Element || node.getNodeType() == NodeType.Document) {
+      for (XhtmlNode c : node.getChildNodes()) {
+        if (replaceInHtml(c, vars)) {
+          replaced = true;
+        }
+      }
+      for (String an : node.getAttributes().keySet()) {
+        String cnt = node.getAttributes().get(an);
+        for (String n : vars.keySet()) {
+          cnt = cnt.replace(n, vars.get(n));
+        }
+        if (!cnt.equals(node.getAttributes().get(an))) {
+          node.getAttributes().put(an, cnt);
+          replaced = true;
+        }        
+      }
+    }
+    return replaced;
   }
 
 }
