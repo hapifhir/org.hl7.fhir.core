@@ -5140,18 +5140,20 @@ public class ProfileUtilities extends TranslatingUtilities {
     rows.add(row);
     row.setAnchor(span.getId());
     //row.setColor(..?);
-    if (span.isProfile()) 
+    if (span.isProfile()) {
       row.setIcon("icon_profile.png", HierarchicalTableGenerator.TEXT_ICON_PROFILE);
-    else
+    } else {
       row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+    }
     
     row.getCells().add(gen.new Cell(null, null, span.getName(), null, null));
     row.getCells().add(gen.new Cell(null, null, span.getCardinality(), null, null));
     row.getCells().add(gen.new Cell(null, span.getProfileLink(), span.getType(), null, null));
     row.getCells().add(gen.new Cell(null, null, span.getDescription(), null, null));
 
-    for (SpanEntry child : span.getChildren())
+    for (SpanEntry child : span.getChildren()) {
       genSpanEntry(gen, row.getSubRows(), child);
+    }
   }
 
 
