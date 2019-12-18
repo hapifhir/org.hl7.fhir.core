@@ -1,21 +1,24 @@
 package org.hl7.fhir.validation.tests;
 
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.validation.NativeHostServices;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.junit.Test;
 
 public class NativeHostServiceTester {
 
-  public static void main(String[] args) throws Exception {
+  @Test
+  public void test() throws Exception {
     System.out.println("starting...");
     
     NativeHostServices svc = new NativeHostServices();
-    svc.init("hl7.fhir.core#4.0.0");
+    svc.init("hl7.fhir.r4.core#4.0.1");
     svc.connectToTxSvc("http://tx.fhir.org/r4", null);
     System.out.println("base: "+svc.status());
 
-    svc.seeResource(TestingUtilities.loadTestResourceBytes("validator", "misc", "ValueSet-dicm-2-AnatomicModifier.json"));
+    svc.seeResource(TestingUtilities.loadTestResourceBytes("validator", "misc", "ValueSet-dicm-2-AnatomicModifier.json"), FhirFormat.JSON);
     System.out.println("added: "+svc.status());
     
     svc.dropResource("ValueSet", "dicm-2-AnatomicModifier");
@@ -26,11 +29,11 @@ public class NativeHostServiceTester {
     System.out.println(new String(res));
     
     System.out.println("convert:");
-    byte[] r4 = svc.convertResource(TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "xml", "r2");
+    byte[] r4 = svc.convertResource(TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "xml", "4.0");
     System.out.println(new String(r4));    
     
     System.out.println("unconvert:");
-    byte[] r2 = svc.convertResource(TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "xml", "r2");
+    byte[] r2 = svc.convertResource(TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "xml", "1.0");
     System.out.println(new String(r2));    
     
     
