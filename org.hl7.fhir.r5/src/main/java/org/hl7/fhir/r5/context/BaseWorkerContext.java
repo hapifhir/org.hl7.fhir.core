@@ -140,7 +140,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   private MetadataResourceManager<PlanDefinition> plans = new MetadataResourceManager<PlanDefinition>(false);
   private List<NamingSystem> systems = new ArrayList<NamingSystem>();
   private UcumService ucumService;
-  
+  protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
+
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
   protected String tsServer;
   protected String name;
@@ -1243,5 +1244,11 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     guides.listAll(res);
     return res;
   }
-  
+
+  @Override
+  public Map<String, byte[]> getBinaries() {
+    return binaries;
+  }
+
+
 }

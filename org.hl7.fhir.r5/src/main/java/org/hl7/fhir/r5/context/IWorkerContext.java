@@ -543,6 +543,7 @@ public interface IWorkerContext {
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);
+  public Map<String, byte[]> getBinaries();
 
 
 }
