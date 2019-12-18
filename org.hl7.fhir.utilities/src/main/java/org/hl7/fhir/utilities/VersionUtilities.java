@@ -154,4 +154,20 @@ public class VersionUtilities {
     return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
   }
 
+  /** 
+   * return true if the current vresion equals test, or later 
+   * 
+   * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))...
+   *  
+   * @param test
+   * @param current
+   * @return
+   */
+  public static boolean isThisOrLater(String test, String current) {
+    String t = getMajMin(test);
+    String c = getMajMin(current);
+    boolean ok = c.compareTo(t) >= 0;
+    return ok;
+  }
+
 }
