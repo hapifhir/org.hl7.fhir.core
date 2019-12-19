@@ -680,7 +680,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       List<ElementDefinition> diffMatches = getDiffMatches(differential, cpath, diffCursor, diffLimit, profileName); // get a list of matching elements in scope
 
       // in the simple case, source is not sliced.
-      if (!currentBase.hasSlicing() || currentBase.getPath().equals(typeSlicingPath)) {
+      if (!currentBase.hasSlicing() || cpath.equals(typeSlicingPath)) {
         if (diffMatches.isEmpty()) { // the differential doesn't say anything about this item
           // so we just copy it in
           ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
