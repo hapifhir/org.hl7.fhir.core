@@ -4705,7 +4705,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           String errorContext = "profile " + profile.getUrl();
           if (!resource.getChildValue("id").isEmpty())
               errorContext += "; instance " + resource.getChildValue("id");
-          throw new DefinitionException("Slice encountered midway through path on " + slicer.getPath() + "; " + errorContext);
+          throw new DefinitionException("Slice encountered midway through set (path = " + slicer.getPath() + ", id = "+slicer.getId()+"); " + errorContext);
         }
         slicer = ed;
         process = false;
