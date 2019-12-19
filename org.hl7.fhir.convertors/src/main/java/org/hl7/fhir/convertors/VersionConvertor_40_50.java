@@ -3005,20 +3005,20 @@ public class VersionConvertor_40_50 {
       return convertId((org.hl7.fhir.r4.model.IdType) src);
     if (src instanceof org.hl7.fhir.r4.model.InstantType)
       return convertInstant((org.hl7.fhir.r4.model.InstantType) src);
+    if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
+      return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
+    if (src instanceof org.hl7.fhir.r4.model.PositiveIntType)
+      return convertPositiveInt((org.hl7.fhir.r4.model.PositiveIntType) src);
     if (src instanceof org.hl7.fhir.r4.model.IntegerType)
       return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
     if (src instanceof org.hl7.fhir.r4.model.MarkdownType)
       return convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src);
     if (src instanceof org.hl7.fhir.r4.model.OidType)
       return convertOid((org.hl7.fhir.r4.model.OidType) src);
-    if (src instanceof org.hl7.fhir.r4.model.PositiveIntType)
-      return convertPositiveInt((org.hl7.fhir.r4.model.PositiveIntType) src);
     if (src instanceof org.hl7.fhir.r4.model.StringType)
       return convertString((org.hl7.fhir.r4.model.StringType) src);
     if (src instanceof org.hl7.fhir.r4.model.TimeType)
       return convertTime((org.hl7.fhir.r4.model.TimeType) src);
-    if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
-      return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r4.model.UrlType)
       return convertUrl((org.hl7.fhir.r4.model.UrlType) src);
     if (src instanceof org.hl7.fhir.r4.model.UriType)
@@ -3131,8 +3131,6 @@ public class VersionConvertor_40_50 {
       return convertId((org.hl7.fhir.r5.model.IdType) src);
     if (src instanceof org.hl7.fhir.r5.model.InstantType)
       return convertInstant((org.hl7.fhir.r5.model.InstantType) src);
-    if (src instanceof org.hl7.fhir.r5.model.IntegerType)
-      return convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
     if (src instanceof org.hl7.fhir.r5.model.MarkdownType)
       return convertMarkdown((org.hl7.fhir.r5.model.MarkdownType) src);
     if (src instanceof org.hl7.fhir.r5.model.OidType)
@@ -3145,6 +3143,8 @@ public class VersionConvertor_40_50 {
       return convertTime((org.hl7.fhir.r5.model.TimeType) src);
     if (src instanceof org.hl7.fhir.r5.model.UnsignedIntType)
       return convertUnsignedInt((org.hl7.fhir.r5.model.UnsignedIntType) src);
+    if (src instanceof org.hl7.fhir.r5.model.IntegerType)
+      return convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
     if (src instanceof org.hl7.fhir.r5.model.UrlType)
       return convertUrl((org.hl7.fhir.r5.model.UrlType) src);
     if (src instanceof org.hl7.fhir.r5.model.UriType)
