@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
@@ -498,7 +499,7 @@ public class ClientUtils {
     String dateTime = null;
     try {
       dateTime = serverConnection.getHeaderField("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", new Locale("en", "US"));
       Date lastModifiedTimestamp = format.parse(dateTime);
       Calendar calendar=Calendar.getInstance();
       calendar.setTime(lastModifiedTimestamp);
