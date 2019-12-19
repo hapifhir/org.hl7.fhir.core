@@ -17,6 +17,8 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.validation.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.gson.JsonElement;
@@ -88,7 +90,7 @@ public class XVerExtensionManager {
       sd.getDifferential().addElement().setPath("Extension.extension").setMax("0");
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.value[x]").setMin(1);
-      populateTypes(path, val);
+      populateTypes(path, val, v);
     } else if (path.has("elements")) {
       for (JsonElement i : path.getAsJsonArray("elements")) {
         String s = i.getAsString();
@@ -100,7 +102,7 @@ public class XVerExtensionManager {
         if (!elt.has("types")) {
           throw new FHIRException("Internal error - nested elements not supported yet");
         }
-        populateTypes(elt, val);
+        populateTypes(elt, val, v);
       }      
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       sd.getDifferential().addElement().setPath("Extension.value[x]").setMax("0");
@@ -110,19 +112,57 @@ public class XVerExtensionManager {
     return sd;
   }
 
-  public void populateTypes(JsonObject path, ElementDefinition val) {
+  public void populateTypes(JsonObject path, ElementDefinition val, String v) {
     for (JsonElement i : path.getAsJsonArray("types")) {
       String s = i.getAsString();
       if (s.contains("(")) {
         String t = s.substring(0, s.indexOf("("));
-        TypeRefComponent tr = val.addType().setCode(s);
-        s = s.substring(t.length()+1);
-        for (String p : s.substring(0, s.length()-1).split("\\|")) {
-          tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);
+        TypeRefComponent tr = val.addType().setCode(translateDataType(v, s));
+        if (hasTargets(tr.getCode()) ) {
+          s = s.substring(t.length()+1);
+          for (String p : s.substring(0, s.length()-1).split("\\|")) {
+            tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);
+          }
         }
       } else {
-        val.addType().setCode(s);
+        val.addType().setCode(translateDataType(v, s));
       }
+    }
+  }
+
+  private boolean hasTargets(String dt) {
+    return Utilities.existsInList(dt, "canonical", "Reference", "CodeableReference");
+  }
+
+  private String translateDataType(String v, String dt) {
+    if (VersionUtilities.versionsCompatible("1.0", v) || VersionUtilities.versionsCompatible("1.4", v)) {
+      return translateToR2(dt);
+    } else if (VersionUtilities.versionsCompatible("3.0", v)) {
+      return translateToR3(dt);
+    } else {
+      return dt;
+    }
+  }
+
+  private String translateToR3(String dt) {
+    if ("canonical".equals(dt)) {
+      return "uri";
+    } else if ("url".equals(dt)) {
+      return "uri";
+    } else {
+      return dt;
+    }
+  }
+
+  private String translateToR2(String dt) {
+    if ("canonical".equals(dt)) {
+      return "uri";
+    } else if ("url".equals(dt)) {
+      return "uri";
+    } else if ("uuid".equals(dt)) {
+      return "id";
+    } else {
+      return dt;
     }
   }
 
