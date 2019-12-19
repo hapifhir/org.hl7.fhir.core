@@ -3627,7 +3627,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       a.addText(cc.getCode());
       if (hasDisplay) {
         td = tr.td();
-        renderDisplayName(c, cs, lang, td);
+        renderDisplayName(cc, cs, lang, td);
       }
       int w = 1 + (deprecated ? 1 : 0) + (comment ? 1 : 0) + (version ? 1 : 0) + maps.size();
       if (properties != null) {
