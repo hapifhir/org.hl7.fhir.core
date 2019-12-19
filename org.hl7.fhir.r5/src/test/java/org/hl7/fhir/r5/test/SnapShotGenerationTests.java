@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -413,19 +414,23 @@ public class SnapShotGenerationTests {
     if (test.isFail()) {
       try {
         if (test.isGen())
-          testGen();
+          testGen(true);
         else
           testSort();
         Assert.assertTrue("Should have failed", false);
       } catch (Throwable e) {
-        if (!Utilities.noString(test.regex))
+        System.out.println("Error running test: "+e.getMessage());
+        if (!Utilities.noString(test.regex)) {
           Assert.assertTrue("correct error message", e.getMessage().matches(test.regex));
-        else
+        } else if ("Should have failed".equals(e.getMessage())) {
+          throw e;
+        } else {
           Assert.assertTrue("all ok", true);
+        }
         
       }
     } else if (test.isGen())
-      testGen();
+      testGen(false);
     else
       testSort();
     for (Rule r : test.getRules()) {
@@ -450,7 +455,7 @@ public class SnapShotGenerationTests {
     Assert.assertTrue("Output does not match expected", test.expected.equalsDeep(test.output));
   }
 
-  private void testGen() throws Exception {
+  private void testGen(boolean fail) throws Exception {
     if (!Utilities.noString(test.register)) {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
       pu.setNewSlicingProcessing(true);
@@ -479,25 +484,37 @@ public class SnapShotGenerationTests {
         throw new FHIRException("Sort failed: "+errors.toString());
     }
     try {
+      messages.clear();
       pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile", test.getSource().getName());
+      List<ValidationMessage> ml = new ArrayList<>();
+      for (ValidationMessage vm : messages) {
+        if (vm.getLevel() == IssueSeverity.ERROR) {
+          ml.add(vm);
+        }
+      }
+      if (ml.size() > 0) {
+        throw new FHIRException("Snapshot Generation failed: "+ml.toString());
+      }
     } catch (Throwable e) {
       System.out.println("\r\nException: "+e.getMessage());
       throw e;
     }
     if (output.getDifferential().hasElement())
       new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilities.context()).setPkp(new TestPKP()).generate(output, null);
-    test.output = output;
-    TestingUtilities.context().cacheResource(output);
-    File dst = new File(TestingUtilities.tempFile("snapshot", test.getId()+"-expected.xml"));
-    if (dst.exists())
-      dst.delete();
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(dst));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId()+"-actual.xml")), output);
-    StructureDefinition t1 = test.expected.copy();
-    t1.setText(null);
-    StructureDefinition t2 = test.output.copy();
-    t2.setText(null);
-    Assert.assertTrue("Output does not match expected", t1.equalsDeep(t2));
+    if (!fail) {
+      test.output = output;
+      TestingUtilities.context().cacheResource(output);
+      File dst = new File(TestingUtilities.tempFile("snapshot", test.getId()+"-expected.xml"));
+      if (dst.exists())
+        dst.delete();
+      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(dst));
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId()+"-actual.xml")), output);
+      StructureDefinition t1 = test.expected.copy();
+      t1.setText(null);
+      StructureDefinition t2 = test.output.copy();
+      t2.setText(null);
+      Assert.assertTrue("Output does not match expected", t1.equalsDeep(t2));
+    }
   }
 
   private StructureDefinition getSD(String url) throws DefinitionException, FHIRException, IOException {

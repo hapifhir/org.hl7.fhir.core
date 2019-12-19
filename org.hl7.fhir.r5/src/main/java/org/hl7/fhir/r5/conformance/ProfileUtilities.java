@@ -100,6 +100,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -2373,6 +2375,27 @@ public class ProfileUtilities extends TranslatingUtilities {
           ToolingExtensions.removeExtension(dest, ex.getUrl());
         dest.addExtension(ex.copy());
       }
+    }
+    if (dest.hasFixed()) {
+      checkTypeOk(dest, dest.getFixed().fhirType());
+    }
+    if (dest.hasPattern()) {
+      checkTypeOk(dest, dest.getPattern().fhirType());
+    }
+  }
+
+
+  public void checkTypeOk(ElementDefinition dest, String ft) {
+    boolean ok = false;
+    Set<String> types = new HashSet<>();
+    for (TypeRefComponent t : dest.getType()) {
+      if (t.hasCode()) {
+        types.add(t.getWorkingCode());
+      }
+      ok = ft.equals(t.getWorkingCode());
+    }
+    if (!ok) {
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.CONFLICT, dest.getId(), "The fixed value has type '"+ft+"' which is not valid (valid "+Utilities.pluralize("type", dest.getType().size())+": "+types.toString()+")", IssueSeverity.ERROR));
     }
   }
 
