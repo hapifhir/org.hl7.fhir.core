@@ -631,7 +631,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       }
     }
     
-    for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
+    for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
        res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }
     String ini = "[FHIR]\r\nversion="+pi.fhirVersion()+"\r\n";
