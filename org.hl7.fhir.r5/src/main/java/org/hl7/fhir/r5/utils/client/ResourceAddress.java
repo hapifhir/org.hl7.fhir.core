@@ -58,6 +58,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -415,7 +416,7 @@ public class ResourceAddress {
 	}
 	
 	public static String getCalendarDateInIsoTimeFormat(Calendar calendar) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");//TODO Move out
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", new Locale("en", "US"));//TODO Move out
 		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 	    return format.format(calendar.getTime());
 	}

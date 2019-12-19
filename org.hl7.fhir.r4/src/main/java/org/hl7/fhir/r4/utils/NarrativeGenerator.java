@@ -2925,7 +2925,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     } catch (ParseException e) {
       return ds;
     }
-    return new SimpleDateFormat("dd-MMM yyyy").format(date);
+    return new SimpleDateFormat("dd-MMM yyyy", new Locale("en", "US")).format(date);
   }
 
   private String describeModule(String module) {
