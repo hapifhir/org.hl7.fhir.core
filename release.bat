@@ -1,19 +1,15 @@
 @echo off
 
-set oldver=4.1.31
-set newver=4.1.32
+set oldver=4.1.32
+set newver=4.1.33
 
 echo ..
 echo =====================================================================
 echo upgrade and release fhir.core from %oldver%-SNAPSHOT to %newver%-SNAPSHOT
 echo =====================================================================
 echo ..
-echo check versions and make sure committed...
-pause
 
 call mvn versions:set -DnewVersion=%newver%-SNAPSHOT
-
-pause
 
 call git commit -a -m "Release new version"
 call git push origin master

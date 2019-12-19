@@ -1933,7 +1933,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("id")) {
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), "id value '"+e.primitiveValue()+"' is not valid");
-
     }
     if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
       if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().length() > 0, "@value cannot be empty")) {
