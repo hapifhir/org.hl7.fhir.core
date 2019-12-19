@@ -442,7 +442,7 @@ public class PackageCacheManager {
   }
 
   private Date readDate(String s) throws ParseException {
-    SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM, yyyy HH:mm:ss Z");
+    SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM, yyyy HH:mm:ss Z");
     return sdf.parse(s);
   }
 
