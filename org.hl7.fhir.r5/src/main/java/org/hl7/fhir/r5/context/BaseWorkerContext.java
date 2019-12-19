@@ -222,8 +222,13 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       if (r instanceof MetadataResource) {
         MetadataResource m = (MetadataResource) r;
         String url = m.getUrl();
-        if (!allowLoadingDuplicates && hasResource(r.getClass(), url))
+        if (!allowLoadingDuplicates && hasResource(r.getClass(), url)) {
+          // spcial workaround for known problems with existing packages
+          if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
+            return;
+          }
           throw new DefinitionException("Duplicate Resource " + url);
+        }
         if (r instanceof StructureDefinition)
           structures.see((StructureDefinition) m);
         else if (r instanceof ValueSet)
