@@ -49,7 +49,7 @@ public class R3ToR5Loader implements IContextResourceLoader, VersionConvertorAdv
 
   private List<CodeSystem> cslist = new ArrayList<>();
   private boolean patchUrls;
-  private boolean killPrimitives;;
+  private boolean killPrimitives;
   
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
