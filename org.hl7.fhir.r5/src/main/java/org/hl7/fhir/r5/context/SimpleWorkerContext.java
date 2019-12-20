@@ -98,6 +98,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public interface IContextResourceLoader {
     Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
+
+    String[] getTypes();
   }
 
   public interface IValidatorFactory {
@@ -292,15 +294,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         Resource r = json.parse(stream);
         if (r instanceof Bundle)
           f = (Bundle) r;
-        else if (filter == null || filter.isOkToLoad(f))
+        else if (filter == null || filter.isOkToLoad(f)) {
           cacheResource(r);
+        }
       }
     } catch (FHIRFormatError e1) {
       throw new org.hl7.fhir.exceptions.FHIRFormatError(e1.getMessage(), e1);
     }
     if (f != null)
       for (BundleEntryComponent e : f.getEntry()) {
-        cacheResource(e.getResource());
+        if (filter == null || filter.isOkToLoad(e.getResource())) {
+          cacheResource(e.getResource());
+        }
     }
   }
 
@@ -312,7 +317,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
     }
-    for (String s : pi.listResources()) {
+    for (String s : pi.listResources(loader.getTypes())) {
        loadDefinitionItem(s, pi.load("package", s), loader, filter);
     }
     for (String s : pi.list("other")) {
