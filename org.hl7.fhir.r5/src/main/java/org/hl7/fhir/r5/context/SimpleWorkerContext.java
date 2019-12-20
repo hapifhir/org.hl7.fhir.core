@@ -79,6 +79,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
+import ca.uhn.fhir.fluentpath.IFluentPath;
 import ca.uhn.fhir.parser.DataFormatException;
 
 /*
@@ -165,10 +166,14 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public static SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    return fromPackage(pi, loader, null);  
+  }
+  
+  public static SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, ILoadFilter filter) throws FileNotFoundException, IOException, FHIRException {
     SimpleWorkerContext res = new SimpleWorkerContext();
     res.setAllowLoadingDuplicates(true);
     res.version = pi.getNpm().get("version").getAsString();
-    res.loadFromPackage(pi, loader);
+    res.loadFromPackage(pi, loader, filter);
     return res;
   }
 
