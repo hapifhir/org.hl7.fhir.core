@@ -43,7 +43,11 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 
-public class R2016MayToR5Loader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+
+  public R2016MayToR5Loader(String[] types) {
+    super(types);
+  }
 
   private List<CodeSystem> cslist = new ArrayList<>();
   private boolean patchUrls;
