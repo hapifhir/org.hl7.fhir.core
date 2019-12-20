@@ -64,9 +64,10 @@ public class XVerExtensionManager {
   }
 
   public StructureDefinition makeDefinition(String url) {
-    String v = url.substring(20, 23);
+    String verSource = url.substring(20, 23);
+    String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
-    JsonObject root = lists.get(v);
+    JsonObject root = lists.get(verSource);
     JsonObject path = root.getAsJsonObject(e);
     
     StructureDefinition sd = new StructureDefinition();
@@ -76,8 +77,8 @@ public class XVerExtensionManager {
     sd.setKind(StructureDefinitionKind.COMPLEXTYPE);
     sd.setType("Extension");
     sd.setDerivation(TypeDerivationRule.CONSTRAINT);
-    sd.setName("Extension-"+v+"-"+e);
-    sd.setTitle("Extension Definition for "+e+" for Version "+v);
+    sd.setName("Extension-"+verSource+"-"+e);
+    sd.setTitle("Extension Definition for "+e+" for Version "+verSource);
     sd.setStatus(PublicationStatus.ACTIVE);
     sd.setExperimental(false);
     sd.setDate(new Date());
@@ -90,7 +91,7 @@ public class XVerExtensionManager {
       sd.getDifferential().addElement().setPath("Extension.extension").setMax("0");
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.value[x]").setMin(1);
-      populateTypes(path, val, v);
+      populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.getAsJsonArray("elements")) {
         String s = i.getAsString();
@@ -102,7 +103,7 @@ public class XVerExtensionManager {
         if (!elt.has("types")) {
           throw new FHIRException("Internal error - nested elements not supported yet");
         }
-        populateTypes(elt, val, v);
+        populateTypes(elt, val, verSource, verTarget);
       }      
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       sd.getDifferential().addElement().setPath("Extension.value[x]").setMax("0");
@@ -112,12 +113,12 @@ public class XVerExtensionManager {
     return sd;
   }
 
-  public void populateTypes(JsonObject path, ElementDefinition val, String v) {
+  public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
     for (JsonElement i : path.getAsJsonArray("types")) {
       String s = i.getAsString();
       if (s.contains("(")) {
         String t = s.substring(0, s.indexOf("("));
-        TypeRefComponent tr = val.addType().setCode(translateDataType(v, s));
+        TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
         if (hasTargets(tr.getCode()) ) {
           s = s.substring(t.length()+1);
           for (String p : s.substring(0, s.length()-1).split("\\|")) {
@@ -125,7 +126,7 @@ public class XVerExtensionManager {
           }
         }
       } else {
-        val.addType().setCode(translateDataType(v, s));
+        val.addType().setCode(translateDataType(verTarget, s));
       }
     }
   }
