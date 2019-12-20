@@ -415,13 +415,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader();
+      return new R2ToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(); // special case
+      return new R2016MayToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader();    
+      return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader();    
+      return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
     return null;
   }
 
