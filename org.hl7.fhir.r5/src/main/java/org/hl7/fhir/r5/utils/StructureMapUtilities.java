@@ -1922,7 +1922,7 @@ public class StructureMapUtilities {
 	          id = UUID.randomUUID().toString().toLowerCase();
 	          b.setIdBase(id);
 	        }
-	        return new Reference().setReference(b.fhirType()+"/"+id);
+          return new StringType(b.fhirType()+"/"+id);
 	      }
 	    case DATEOP :
 	      throw new Error("Rule \""+ruleId+"\": Transform "+tgt.getTransform().toCode()+" not supported yet");
