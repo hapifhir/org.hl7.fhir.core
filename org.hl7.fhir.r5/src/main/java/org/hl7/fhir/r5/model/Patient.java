@@ -554,26 +554,26 @@ public class Patient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -261851592: // relationship
-          this.getRelationship().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getRelationship().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToHumanName(value); // HumanName
+          this.name = TypeConvertor.castToHumanName(value); // HumanName
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1147692044: // address
-          this.address = castToAddress(value); // Address
+          this.address = TypeConvertor.castToAddress(value); // Address
           return value;
         case -1249512767: // gender
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
           return value;
         case 1178922291: // organization
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -583,20 +583,20 @@ public class Patient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("relationship")) {
-          this.getRelationship().add(castToCodeableConcept(value));
+          this.getRelationship().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("name")) {
-          this.name = castToHumanName(value); // HumanName
+          this.name = TypeConvertor.castToHumanName(value); // HumanName
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
-          this.address = castToAddress(value); // Address
+          this.address = TypeConvertor.castToAddress(value); // Address
         } else if (name.equals("gender")) {
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
         } else if (name.equals("organization")) {
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -855,10 +855,10 @@ public class Patient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1613589672: // language
-          this.language = castToCodeableConcept(value); // CodeableConcept
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1294005119: // preferred
-          this.preferred = castToBoolean(value); // BooleanType
+          this.preferred = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -868,9 +868,9 @@ public class Patient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("language")) {
-          this.language = castToCodeableConcept(value); // CodeableConcept
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("preferred")) {
-          this.preferred = castToBoolean(value); // BooleanType
+          this.preferred = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1086,10 +1086,10 @@ public class Patient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 106069776: // other
-          this.other = castToReference(value); // Reference
+          this.other = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3575610: // type
-          value = new LinkTypeEnumFactory().fromType(castToCode(value));
+          value = new LinkTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<LinkType>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -1100,9 +1100,9 @@ public class Patient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("other")) {
-          this.other = castToReference(value); // Reference
+          this.other = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("type")) {
-          value = new LinkTypeEnumFactory().fromType(castToCode(value));
+          value = new LinkTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<LinkType>
         } else
           return super.setProperty(name, value);
@@ -1238,7 +1238,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
      */
     @Child(name = "deceased", type = {BooleanType.class, DateTimeType.class}, order=6, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="Indicates if the individual is deceased or not", formalDefinition="Indicates if the individual is deceased or not." )
-    protected Type deceased;
+    protected DataType deceased;
 
     /**
      * An address for the individual.
@@ -1260,7 +1260,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
      */
     @Child(name = "multipleBirth", type = {BooleanType.class, IntegerType.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Whether patient is part of a multiple birth", formalDefinition="Indicates whether the patient is part of a multiple (boolean) or indicates the actual birth order (integer)." )
-    protected Type multipleBirth;
+    protected DataType multipleBirth;
 
     /**
      * Image of the patient.
@@ -1638,7 +1638,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     /**
      * @return {@link #deceased} (Indicates if the individual is deceased or not.)
      */
-    public Type getDeceased() { 
+    public DataType getDeceased() { 
       return this.deceased;
     }
 
@@ -1679,7 +1679,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     /**
      * @param value {@link #deceased} (Indicates if the individual is deceased or not.)
      */
-    public Patient setDeceased(Type value) { 
+    public Patient setDeceased(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof DateTimeType))
         throw new Error("Not the right type for Patient.deceased[x]: "+value.fhirType());
       this.deceased = value;
@@ -1766,7 +1766,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     /**
      * @return {@link #multipleBirth} (Indicates whether the patient is part of a multiple (boolean) or indicates the actual birth order (integer).)
      */
-    public Type getMultipleBirth() { 
+    public DataType getMultipleBirth() { 
       return this.multipleBirth;
     }
 
@@ -1807,7 +1807,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     /**
      * @param value {@link #multipleBirth} (Indicates whether the patient is part of a multiple (boolean) or indicates the actual birth order (integer).)
      */
-    public Patient setMultipleBirth(Type value) { 
+    public Patient setMultipleBirth(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof IntegerType))
         throw new Error("Not the right type for Patient.multipleBirth[x]: "+value.fhirType());
       this.multipleBirth = value;
@@ -2181,38 +2181,38 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3373707: // name
-          this.getName().add(castToHumanName(value)); // HumanName
+          this.getName().add(TypeConvertor.castToHumanName(value)); // HumanName
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1249512767: // gender
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
           return value;
         case -1210031859: // birthDate
-          this.birthDate = castToDate(value); // DateType
+          this.birthDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case 561497972: // deceased
-          this.deceased = castToType(value); // Type
+          this.deceased = TypeConvertor.castToType(value); // Type
           return value;
         case -1147692044: // address
-          this.getAddress().add(castToAddress(value)); // Address
+          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
           return value;
         case 1756919302: // maritalStatus
-          this.maritalStatus = castToCodeableConcept(value); // CodeableConcept
+          this.maritalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -677369713: // multipleBirth
-          this.multipleBirth = castToType(value); // Type
+          this.multipleBirth = TypeConvertor.castToType(value); // Type
           return value;
         case 106642994: // photo
-          this.getPhoto().add(castToAttachment(value)); // Attachment
+          this.getPhoto().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
         case 951526432: // contact
           this.getContact().add((ContactComponent) value); // ContactComponent
@@ -2221,10 +2221,10 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
           this.getCommunication().add((PatientCommunicationComponent) value); // PatientCommunicationComponent
           return value;
         case 1488292898: // generalPractitioner
-          this.getGeneralPractitioner().add(castToReference(value)); // Reference
+          this.getGeneralPractitioner().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -2058947787: // managingOrganization
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3321850: // link
           this.getLink().add((PatientLinkComponent) value); // PatientLinkComponent
@@ -2237,36 +2237,36 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("name")) {
-          this.getName().add(castToHumanName(value));
+          this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("gender")) {
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
         } else if (name.equals("birthDate")) {
-          this.birthDate = castToDate(value); // DateType
+          this.birthDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("deceased[x]")) {
-          this.deceased = castToType(value); // Type
+          this.deceased = TypeConvertor.castToType(value); // Type
         } else if (name.equals("address")) {
-          this.getAddress().add(castToAddress(value));
+          this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("maritalStatus")) {
-          this.maritalStatus = castToCodeableConcept(value); // CodeableConcept
+          this.maritalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("multipleBirth[x]")) {
-          this.multipleBirth = castToType(value); // Type
+          this.multipleBirth = TypeConvertor.castToType(value); // Type
         } else if (name.equals("photo")) {
-          this.getPhoto().add(castToAttachment(value));
+          this.getPhoto().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("contact")) {
           this.getContact().add((ContactComponent) value);
         } else if (name.equals("communication")) {
           this.getCommunication().add((PatientCommunicationComponent) value);
         } else if (name.equals("generalPractitioner")) {
-          this.getGeneralPractitioner().add(castToReference(value));
+          this.getGeneralPractitioner().add(TypeConvertor.castToReference(value));
         } else if (name.equals("managingOrganization")) {
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("link")) {
           this.getLink().add((PatientLinkComponent) value);
         } else

@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="EvidenceVariable", profile="http://hl7.org/fhir/StructureDefinition/EvidenceVariable")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "shortTitle", "subtitle", "status", "date", "publisher", "contact", "description", "note", "useContext", "jurisdiction", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "type", "actual", "characteristic"})
-public class EvidenceVariable extends MetadataResource {
+public class EvidenceVariable extends CanonicalResource {
 
     public enum EvidenceVariableType {
         /**
@@ -351,7 +351,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         @Child(name = "definition", type = {Group.class, CanonicalType.class, CodeableConcept.class, Expression.class, DataRequirement.class, TriggerDefinition.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="What code or expression defines members?", formalDefinition="Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year)." )
-        protected Type definition;
+        protected DataType definition;
 
         /**
          * Method used for describing characteristic.
@@ -387,7 +387,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         @Child(name = "participantEffective", type = {DateTimeType.class, Period.class, Duration.class, Timing.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="What time period do participants cover", formalDefinition="Indicates what effective period the study covers." )
-        protected Type participantEffective;
+        protected DataType participantEffective;
 
         /**
          * Indicates duration from the participant's study entry.
@@ -416,7 +416,7 @@ public class EvidenceVariable extends MetadataResource {
     /**
      * Constructor
      */
-      public EvidenceVariableCharacteristicComponent(Type definition) {
+      public EvidenceVariableCharacteristicComponent(DataType definition) {
         super();
         this.definition = definition;
       }
@@ -473,7 +473,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @return {@link #definition} (Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).)
          */
-        public Type getDefinition() { 
+        public DataType getDefinition() { 
           return this.definition;
         }
 
@@ -574,7 +574,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @param value {@link #definition} (Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).)
          */
-        public EvidenceVariableCharacteristicComponent setDefinition(Type value) { 
+        public EvidenceVariableCharacteristicComponent setDefinition(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CanonicalType || value instanceof CodeableConcept || value instanceof Expression || value instanceof DataRequirement || value instanceof TriggerDefinition))
             throw new Error("Not the right type for EvidenceVariable.characteristic.definition[x]: "+value.fhirType());
           this.definition = value;
@@ -738,7 +738,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @return {@link #participantEffective} (Indicates what effective period the study covers.)
          */
-        public Type getParticipantEffective() { 
+        public DataType getParticipantEffective() { 
           return this.participantEffective;
         }
 
@@ -809,7 +809,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @param value {@link #participantEffective} (Indicates what effective period the study covers.)
          */
-        public EvidenceVariableCharacteristicComponent setParticipantEffective(Type value) { 
+        public EvidenceVariableCharacteristicComponent setParticipantEffective(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Duration || value instanceof Timing))
             throw new Error("Not the right type for EvidenceVariable.characteristic.participantEffective[x]: "+value.fhirType());
           this.participantEffective = value;
@@ -952,31 +952,31 @@ public class EvidenceVariable extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // Type
           return value;
         case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1335157162: // device
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
           return value;
         case -613382374: // booleanSet
-          this.getBooleanSet().add(castToString(value)); // StringType
+          this.getBooleanSet().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1321148966: // exclude
-          this.exclude = castToBoolean(value); // BooleanType
+          this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1376306100: // participantEffective
-          this.participantEffective = castToType(value); // Type
+          this.participantEffective = TypeConvertor.castToType(value); // Type
           return value;
         case 2100140683: // timeFromStart
-          this.timeFromStart = castToDuration(value); // Duration
+          this.timeFromStart = TypeConvertor.castToDuration(value); // Duration
           return value;
         case 588892639: // groupMeasure
-          value = new GroupMeasureEnumFactory().fromType(castToCode(value));
+          value = new GroupMeasureEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupMeasure = (Enumeration) value; // Enumeration<GroupMeasure>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -987,23 +987,23 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition[x]")) {
-          this.definition = castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // Type
         } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("device")) {
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("booleanSet")) {
-          this.getBooleanSet().add(castToString(value));
+          this.getBooleanSet().add(TypeConvertor.castToString(value));
         } else if (name.equals("exclude")) {
-          this.exclude = castToBoolean(value); // BooleanType
+          this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("participantEffective[x]")) {
-          this.participantEffective = castToType(value); // Type
+          this.participantEffective = TypeConvertor.castToType(value); // Type
         } else if (name.equals("timeFromStart")) {
-          this.timeFromStart = castToDuration(value); // Duration
+          this.timeFromStart = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("groupMeasure")) {
-          value = new GroupMeasureEnumFactory().fromType(castToCode(value));
+          value = new GroupMeasureEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupMeasure = (Enumeration) value; // Enumeration<GroupMeasure>
         } else
           return super.setProperty(name, value);
@@ -2810,87 +2810,87 @@ public class EvidenceVariable extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case 1555503932: // shortTitle
-          this.shortTitle = castToString(value); // StringType
+          this.shortTitle = TypeConvertor.castToString(value); // StringType
           return value;
         case -2060497896: // subtitle
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 110546223: // topic
-          this.getTopic().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToContactDetail(value)); // ContactDetail
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1307827859: // editor
-          this.getEditor().add(castToContactDetail(value)); // ContactDetail
+          this.getEditor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -261190139: // reviewer
-          this.getReviewer().add(castToContactDetail(value)); // ContactDetail
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 1740277666: // endorser
-          this.getEndorser().add(castToContactDetail(value)); // ContactDetail
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 666807069: // relatedArtifact
-          this.getRelatedArtifact().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case 3575610: // type
-          value = new EvidenceVariableTypeEnumFactory().fromType(castToCode(value));
+          value = new EvidenceVariableTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<EvidenceVariableType>
           return value;
         case -1422939762: // actual
-          this.actual = castToBoolean(value); // BooleanType
+          this.actual = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value); // EvidenceVariableCharacteristicComponent
@@ -2903,61 +2903,61 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("shortTitle")) {
-          this.shortTitle = castToString(value); // StringType
+          this.shortTitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subtitle")) {
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("topic")) {
-          this.getTopic().add(castToCodeableConcept(value));
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToContactDetail(value));
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("editor")) {
-          this.getEditor().add(castToContactDetail(value));
+          this.getEditor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("reviewer")) {
-          this.getReviewer().add(castToContactDetail(value));
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("endorser")) {
-          this.getEndorser().add(castToContactDetail(value));
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
-          this.getRelatedArtifact().add(castToRelatedArtifact(value));
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("type")) {
-          value = new EvidenceVariableTypeEnumFactory().fromType(castToCode(value));
+          value = new EvidenceVariableTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<EvidenceVariableType>
         } else if (name.equals("actual")) {
-          this.actual = castToBoolean(value); // BooleanType
+          this.actual = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value);
         } else

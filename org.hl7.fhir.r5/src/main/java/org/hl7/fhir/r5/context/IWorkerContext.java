@@ -39,7 +39,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -239,7 +239,7 @@ public interface IWorkerContext {
   /**
    * @return a list of all conformance resources
    */
-  public List<MetadataResource> allConformanceResources();
+  public List<CanonicalResource> allConformanceResources();
   
   /**
    * Given a structure definition, generate a snapshot (or regenerate it)

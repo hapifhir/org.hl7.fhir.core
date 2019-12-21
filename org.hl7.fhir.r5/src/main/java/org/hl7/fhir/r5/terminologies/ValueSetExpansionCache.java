@@ -62,7 +62,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -111,7 +111,7 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
   private static final String VS_ID_EXT = "http://tools/cache";
 
   private final Map<String, ValueSetExpansionOutcome> expansions = new HashMap<String, ValueSetExpansionOutcome>();
-  private final Map<String, MetadataResource> canonicals = new HashMap<String, MetadataResource>();
+  private final Map<String, CanonicalResource> canonicals = new HashMap<String, CanonicalResource>();
   private final IWorkerContext context;
   private final String cacheFolder;
 
@@ -157,8 +157,8 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
               if (vs.hasVersion())
                 canonicals.put(vs.getUrl()+"|"+vs.getVersion(), vs);
             }
-          } else if (r instanceof MetadataResource) {
-            MetadataResource md = (MetadataResource) r;
+          } else if (r instanceof CanonicalResource) {
+            CanonicalResource md = (CanonicalResource) r;
             canonicals.put(md.getUrl(), md);
             if (md.hasVersion())
               canonicals.put(md.getUrl()+"|"+md.getVersion(), md);
@@ -176,13 +176,13 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 		// return new ValueSetExpander(valuesets, codesystems);
 	}
 
-  public MetadataResource getStoredResource(String canonicalUri) {
+  public CanonicalResource getStoredResource(String canonicalUri) {
     synchronized (lock) {
     return canonicals.get(canonicalUri);
     }
   }
 
-  public void storeResource(MetadataResource md) throws IOException {
+  public void storeResource(CanonicalResource md) throws IOException {
     synchronized (lock) {
       canonicals.put(md.getUrl(), md);
       if (md.hasVersion())

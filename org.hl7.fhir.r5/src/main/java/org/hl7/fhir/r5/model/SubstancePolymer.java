@@ -203,7 +203,7 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 344937957: // ratioType
-          this.ratioType = castToCodeableConcept(value); // CodeableConcept
+          this.ratioType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 442919303: // startingMaterial
           this.getStartingMaterial().add((SubstancePolymerMonomerSetStartingMaterialComponent) value); // SubstancePolymerMonomerSetStartingMaterialComponent
@@ -216,7 +216,7 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("ratioType")) {
-          this.ratioType = castToCodeableConcept(value); // CodeableConcept
+          this.ratioType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("startingMaterial")) {
           this.getStartingMaterial().add((SubstancePolymerMonomerSetStartingMaterialComponent) value);
         } else
@@ -498,16 +498,16 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 299066663: // material
-          this.material = castToCodeableConcept(value); // CodeableConcept
+          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -141812990: // isDefining
-          this.isDefining = castToBoolean(value); // BooleanType
+          this.isDefining = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1413853096: // amount
-          this.amount = castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -517,13 +517,13 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("material")) {
-          this.material = castToCodeableConcept(value); // CodeableConcept
+          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("isDefining")) {
-          this.isDefining = castToBoolean(value); // BooleanType
+          this.isDefining = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("amount")) {
-          this.amount = castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
         } else
           return super.setProperty(name, value);
         return value;
@@ -867,13 +867,13 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1321430961: // numberOfUnits
-          this.numberOfUnits = castToInteger(value); // IntegerType
+          this.numberOfUnits = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 111461715: // averageMolecularFormula
-          this.averageMolecularFormula = castToString(value); // StringType
+          this.averageMolecularFormula = TypeConvertor.castToString(value); // StringType
           return value;
         case -1994025263: // repeatUnitAmountType
-          this.repeatUnitAmountType = castToCodeableConcept(value); // CodeableConcept
+          this.repeatUnitAmountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1159607743: // repeatUnit
           this.getRepeatUnit().add((SubstancePolymerRepeatRepeatUnitComponent) value); // SubstancePolymerRepeatRepeatUnitComponent
@@ -886,11 +886,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("numberOfUnits")) {
-          this.numberOfUnits = castToInteger(value); // IntegerType
+          this.numberOfUnits = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("averageMolecularFormula")) {
-          this.averageMolecularFormula = castToString(value); // StringType
+          this.averageMolecularFormula = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("repeatUnitAmountType")) {
-          this.repeatUnitAmountType = castToCodeableConcept(value); // CodeableConcept
+          this.repeatUnitAmountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("repeatUnit")) {
           this.getRepeatUnit().add((SubstancePolymerRepeatRepeatUnitComponent) value);
         } else
@@ -1282,13 +1282,13 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1795817828: // orientationOfPolymerisation
-          this.orientationOfPolymerisation = castToCodeableConcept(value); // CodeableConcept
+          this.orientationOfPolymerisation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1159607743: // repeatUnit
-          this.repeatUnit = castToString(value); // StringType
+          this.repeatUnit = TypeConvertor.castToString(value); // StringType
           return value;
         case -1413853096: // amount
-          this.amount = castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
           return value;
         case -159251872: // degreeOfPolymerisation
           this.getDegreeOfPolymerisation().add((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value); // SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent
@@ -1304,11 +1304,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("orientationOfPolymerisation")) {
-          this.orientationOfPolymerisation = castToCodeableConcept(value); // CodeableConcept
+          this.orientationOfPolymerisation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("repeatUnit")) {
-          this.repeatUnit = castToString(value); // StringType
+          this.repeatUnit = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("amount")) {
-          this.amount = castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
         } else if (name.equals("degreeOfPolymerisation")) {
           this.getDegreeOfPolymerisation().add((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value);
         } else if (name.equals("structuralRepresentation")) {
@@ -1527,10 +1527,10 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1335595316: // degree
-          this.degree = castToCodeableConcept(value); // CodeableConcept
+          this.degree = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1540,9 +1540,9 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("degree")) {
-          this.degree = castToCodeableConcept(value); // CodeableConcept
+          this.degree = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
         } else
           return super.setProperty(name, value);
         return value;
@@ -1787,13 +1787,13 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -671065907: // representation
-          this.representation = castToString(value); // StringType
+          this.representation = TypeConvertor.castToString(value); // StringType
           return value;
         case -1963501277: // attachment
-          this.attachment = castToAttachment(value); // Attachment
+          this.attachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1803,11 +1803,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("representation")) {
-          this.representation = castToString(value); // StringType
+          this.representation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("attachment")) {
-          this.attachment = castToAttachment(value); // Attachment
+          this.attachment = TypeConvertor.castToAttachment(value); // Attachment
         } else
           return super.setProperty(name, value);
         return value;
@@ -2259,16 +2259,16 @@ public class SubstancePolymer extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 94742904: // class
-          this.class_ = castToCodeableConcept(value); // CodeableConcept
+          this.class_ = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1846020210: // geometry
-          this.geometry = castToCodeableConcept(value); // CodeableConcept
+          this.geometry = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 997107577: // copolymerConnectivity
-          this.getCopolymerConnectivity().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCopolymerConnectivity().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -684600932: // modification
-          this.getModification().add(castToString(value)); // StringType
+          this.getModification().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1622483765: // monomerSet
           this.getMonomerSet().add((SubstancePolymerMonomerSetComponent) value); // SubstancePolymerMonomerSetComponent
@@ -2284,13 +2284,13 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("class")) {
-          this.class_ = castToCodeableConcept(value); // CodeableConcept
+          this.class_ = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("geometry")) {
-          this.geometry = castToCodeableConcept(value); // CodeableConcept
+          this.geometry = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("copolymerConnectivity")) {
-          this.getCopolymerConnectivity().add(castToCodeableConcept(value));
+          this.getCopolymerConnectivity().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("modification")) {
-          this.getModification().add(castToString(value));
+          this.getModification().add(TypeConvertor.castToString(value));
         } else if (name.equals("monomerSet")) {
           this.getMonomerSet().add((SubstancePolymerMonomerSetComponent) value);
         } else if (name.equals("repeat")) {

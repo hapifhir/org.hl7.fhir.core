@@ -50,7 +50,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -669,7 +669,7 @@ public class SpecDifferenceEvaluator {
   }
 
   @SuppressWarnings("rawtypes")
-  private String describeValue(Type v) {
+  private String describeValue(DataType v) {
     if (v instanceof PrimitiveType) {
       return "\""+((PrimitiveType) v).asStringValue()+"\"";
     }

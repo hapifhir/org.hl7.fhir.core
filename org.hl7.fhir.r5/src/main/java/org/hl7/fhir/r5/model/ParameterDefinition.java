@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
  */
 @DatatypeDef(name="ParameterDefinition")
-public class ParameterDefinition extends Type implements ICompositeType {
+public class ParameterDefinition extends DataType implements ICompositeType {
 
     public enum ParameterUse {
         /**
@@ -607,26 +607,26 @@ public class ParameterDefinition extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToCode(value); // CodeType
+          this.name = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 116103: // use
-          value = new ParameterUseEnumFactory().fromType(castToCode(value));
+          value = new ParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<ParameterUse>
           return value;
         case 108114: // min
-          this.min = castToInteger(value); // IntegerType
+          this.min = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 107876: // max
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
           return value;
         case 1587405498: // documentation
-          this.documentation = castToString(value); // StringType
+          this.documentation = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -636,20 +636,20 @@ public class ParameterDefinition extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToCode(value); // CodeType
+          this.name = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("use")) {
-          value = new ParameterUseEnumFactory().fromType(castToCode(value));
+          value = new ParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<ParameterUse>
         } else if (name.equals("min")) {
-          this.min = castToInteger(value); // IntegerType
+          this.min = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("max")) {
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("documentation")) {
-          this.documentation = castToString(value); // StringType
+          this.documentation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;

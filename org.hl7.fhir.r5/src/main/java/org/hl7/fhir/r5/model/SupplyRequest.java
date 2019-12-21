@@ -381,7 +381,7 @@ public class SupplyRequest extends DomainResource {
          */
         @Child(name = "value", type = {CodeableConcept.class, Quantity.class, Range.class, BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Value of detail", formalDefinition="The value of the device detail." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = 884525025L;
 
@@ -419,7 +419,7 @@ public class SupplyRequest extends DomainResource {
         /**
          * @return {@link #value} (The value of the device detail.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -490,7 +490,7 @@ public class SupplyRequest extends DomainResource {
         /**
          * @param value {@link #value} (The value of the device detail.)
          */
-        public SupplyRequestParameterComponent setValue(Type value) { 
+        public SupplyRequestParameterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof BooleanType))
             throw new Error("Not the right type for SupplyRequest.parameter.value[x]: "+value.fhirType());
           this.value = value;
@@ -532,10 +532,10 @@ public class SupplyRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -545,9 +545,9 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -680,7 +680,7 @@ public class SupplyRequest extends DomainResource {
     @Child(name = "item", type = {CodeableConcept.class, Medication.class, Substance.class, Device.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Medication, Substance, or Device requested to be supplied", formalDefinition="The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supply-item")
-    protected Type item;
+    protected DataType item;
 
     /**
      * The amount that is being ordered of the indicated item.
@@ -701,7 +701,7 @@ public class SupplyRequest extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the request should be fulfilled", formalDefinition="When the request should be fulfilled." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * When the request was made.
@@ -765,7 +765,7 @@ public class SupplyRequest extends DomainResource {
   /**
    * Constructor
    */
-    public SupplyRequest(Type item, Quantity quantity) {
+    public SupplyRequest(DataType item, Quantity quantity) {
       super();
       this.item = item;
       this.quantity = quantity;
@@ -949,7 +949,7 @@ public class SupplyRequest extends DomainResource {
     /**
      * @return {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
-    public Type getItem() { 
+    public DataType getItem() { 
       return this.item;
     }
 
@@ -990,7 +990,7 @@ public class SupplyRequest extends DomainResource {
     /**
      * @param value {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
-    public SupplyRequest setItem(Type value) { 
+    public SupplyRequest setItem(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for SupplyRequest.item[x]: "+value.fhirType());
       this.item = value;
@@ -1077,7 +1077,7 @@ public class SupplyRequest extends DomainResource {
     /**
      * @return {@link #occurrence} (When the request should be fulfilled.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1133,7 +1133,7 @@ public class SupplyRequest extends DomainResource {
     /**
      * @param value {@link #occurrence} (When the request should be fulfilled.)
      */
-    public SupplyRequest setOccurrence(Type value) { 
+    public SupplyRequest setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
         throw new Error("Not the right type for SupplyRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1496,51 +1496,51 @@ public class SupplyRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new SupplyRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new SupplyRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SupplyRequestStatus>
           return value;
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3242771: // item
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 1954460585: // parameter
           this.getParameter().add((SupplyRequestParameterComponent) value); // SupplyRequestParameterComponent
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -1500852503: // authoredOn
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 693933948: // requester
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1663305268: // supplier
-          this.getSupplier().add(castToReference(value)); // Reference
+          this.getSupplier().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -949323153: // deliverFrom
-          this.deliverFrom = castToReference(value); // Reference
+          this.deliverFrom = TypeConvertor.castToReference(value); // Reference
           return value;
         case -242327936: // deliverTo
-          this.deliverTo = castToReference(value); // Reference
+          this.deliverTo = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1550,37 +1550,37 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new SupplyRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new SupplyRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SupplyRequestStatus>
         } else if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("item[x]")) {
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("parameter")) {
           this.getParameter().add((SupplyRequestParameterComponent) value);
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("authoredOn")) {
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("supplier")) {
-          this.getSupplier().add(castToReference(value));
+          this.getSupplier().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("deliverFrom")) {
-          this.deliverFrom = castToReference(value); // Reference
+          this.deliverFrom = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("deliverTo")) {
-          this.deliverTo = castToReference(value); // Reference
+          this.deliverTo = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

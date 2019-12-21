@@ -49,27 +49,35 @@ package org.hl7.fhir.r5.model;
   
 */
 
-// Generated on Mon, Mar 5, 2018 18:26+1100 for FHIR v3.2.0
-import java.util.ArrayList;
-import java.util.List;
+// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 /**
- * Base definition for all elements that are defined inside a resource - but not those in a data type.
+ * Base definition for the few data types that are allowed to carry modifier extensions.
  */
-@DatatypeDef(name="BackboneElement")
-public abstract class BackboneType extends Type implements IBaseBackboneElement {
+@DatatypeDef(name="BackboneType")
+public abstract class BackboneType extends DataType implements IBaseBackboneElement {
 
     /**
-     * May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.
+     * May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.
+
+Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).
      */
     @Child(name = "modifierExtension", type = {Extension.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=true, summary=true)
-    @Description(shortDefinition="Extensions that cannot be ignored", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions." )
+    @Description(shortDefinition="Extensions that cannot be ignored even if unrecognized", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)." )
     protected List<Extension> modifierExtension;
 
     private static final long serialVersionUID = -1431673179L;
@@ -82,7 +90,9 @@ public abstract class BackboneType extends Type implements IBaseBackboneElement 
     }
 
     /**
-     * @return {@link #modifierExtension} (May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.)
+     * @return {@link #modifierExtension} (May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.
+
+Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).)
      */
     public List<Extension> getModifierExtension() { 
       if (this.modifierExtension == null)
@@ -135,13 +145,14 @@ public abstract class BackboneType extends Type implements IBaseBackboneElement 
     }
 
       protected void listChildren(List<Property> children) {
-        children.add(new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.", 0, java.lang.Integer.MAX_VALUE, modifierExtension));
+        super.listChildren(children);
+        children.add(new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).", 0, java.lang.Integer.MAX_VALUE, modifierExtension));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -298878168: /*modifierExtension*/  return new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.", 0, java.lang.Integer.MAX_VALUE, modifierExtension);
+        case -298878168: /*modifierExtension*/  return new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).", 0, java.lang.Integer.MAX_VALUE, modifierExtension);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -160,7 +171,7 @@ public abstract class BackboneType extends Type implements IBaseBackboneElement 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -298878168: // modifierExtension
-          this.getModifierExtension().add(castToExtension(value)); // Extension
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value)); // Extension
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -170,7 +181,7 @@ public abstract class BackboneType extends Type implements IBaseBackboneElement 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("modifierExtension")) {
-          this.getModifierExtension().add(castToExtension(value));
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -204,7 +215,7 @@ public abstract class BackboneType extends Type implements IBaseBackboneElement 
       }
 
   public String fhirType() {
-    return "BackboneElement";
+    return "BackboneType";
 
   }
 

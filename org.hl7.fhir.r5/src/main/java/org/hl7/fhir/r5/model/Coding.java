@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A reference to a code defined by a terminology system.
  */
 @DatatypeDef(name="Coding")
-public class Coding extends Type implements IBaseCoding, ICompositeType, ICoding {
+public class Coding extends DataType implements IBaseCoding, ICompositeType, ICoding {
 
     /**
      * The identification of the code system that defines the meaning of the symbol in the code.
@@ -406,19 +406,19 @@ public class Coding extends Type implements IBaseCoding, ICompositeType, ICoding
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -887328209: // system
-          this.system = castToUri(value); // UriType
+          this.system = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         case 423643014: // userSelected
-          this.userSelected = castToBoolean(value); // BooleanType
+          this.userSelected = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -428,15 +428,15 @@ public class Coding extends Type implements IBaseCoding, ICompositeType, ICoding
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("system")) {
-          this.system = castToUri(value); // UriType
+          this.system = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("userSelected")) {
-          this.userSelected = castToBoolean(value); // BooleanType
+          this.userSelected = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -566,6 +566,8 @@ public class Coding extends Type implements IBaseCoding, ICompositeType, ICoding
         return base;
         
       }
+      
+
 // end addition
 
 }

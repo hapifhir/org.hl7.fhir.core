@@ -313,11 +313,11 @@ public class Linkage extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new LinkageTypeEnumFactory().fromType(castToCode(value));
+          value = new LinkageTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<LinkageType>
           return value;
         case -341064690: // resource
-          this.resource = castToReference(value); // Reference
+          this.resource = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -327,10 +327,10 @@ public class Linkage extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new LinkageTypeEnumFactory().fromType(castToCode(value));
+          value = new LinkageTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<LinkageType>
         } else if (name.equals("resource")) {
-          this.resource = castToReference(value); // Reference
+          this.resource = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -597,10 +597,10 @@ public class Linkage extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3242771: // item
           this.getItem().add((LinkageItemComponent) value); // LinkageItemComponent
@@ -613,9 +613,9 @@ public class Linkage extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("item")) {
           this.getItem().add((LinkageItemComponent) value);
         } else

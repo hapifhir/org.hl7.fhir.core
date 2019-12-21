@@ -25,18 +25,18 @@ import org.hl7.fhir.instance.model.api.IBaseExtension;
 import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
-public abstract class BaseExtension extends Type implements IBaseExtension<Extension, Type>, IBaseHasExtensions {
+public abstract class BaseExtension extends DataType implements IBaseExtension<Extension, DataType>, IBaseHasExtensions {
 
 	private static final long serialVersionUID = 1L;
 
 
 	@Override
 	public Extension setValue(IBaseDatatype theValue) {
-		setValue((Type)theValue);
+		setValue((DataType)theValue);
 		return (Extension) this;
 	}
 	
-	public abstract Extension setValue(Type theValue);
+	public abstract Extension setValue(DataType theValue);
 	
 	
 	/**

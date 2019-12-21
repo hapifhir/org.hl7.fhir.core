@@ -1342,47 +1342,47 @@ public class VisionPrescription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -309474065: // product
-          this.product = castToCodeableConcept(value); // CodeableConcept
+          this.product = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 100913: // eye
-          value = new VisionEyesEnumFactory().fromType(castToCode(value));
+          value = new VisionEyesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.eye = (Enumeration) value; // Enumeration<VisionEyes>
           return value;
         case -895981619: // sphere
-          this.sphere = castToDecimal(value); // DecimalType
+          this.sphere = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -349378602: // cylinder
-          this.cylinder = castToDecimal(value); // DecimalType
+          this.cylinder = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 3008417: // axis
-          this.axis = castToInteger(value); // IntegerType
+          this.axis = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 106935105: // prism
           this.getPrism().add((PrismComponent) value); // PrismComponent
           return value;
         case 96417: // add
-          this.add = castToDecimal(value); // DecimalType
+          this.add = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 106858757: // power
-          this.power = castToDecimal(value); // DecimalType
+          this.power = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 1309344840: // backCurve
-          this.backCurve = castToDecimal(value); // DecimalType
+          this.backCurve = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -233204595: // diameter
-          this.diameter = castToDecimal(value); // DecimalType
+          this.diameter = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1992012396: // duration
-          this.duration = castToQuantity(value); // Quantity
+          this.duration = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 94842723: // color
-          this.color = castToString(value); // StringType
+          this.color = TypeConvertor.castToString(value); // StringType
           return value;
         case 93997959: // brand
-          this.brand = castToString(value); // StringType
+          this.brand = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1392,34 +1392,34 @@ public class VisionPrescription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("product")) {
-          this.product = castToCodeableConcept(value); // CodeableConcept
+          this.product = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("eye")) {
-          value = new VisionEyesEnumFactory().fromType(castToCode(value));
+          value = new VisionEyesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.eye = (Enumeration) value; // Enumeration<VisionEyes>
         } else if (name.equals("sphere")) {
-          this.sphere = castToDecimal(value); // DecimalType
+          this.sphere = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("cylinder")) {
-          this.cylinder = castToDecimal(value); // DecimalType
+          this.cylinder = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("axis")) {
-          this.axis = castToInteger(value); // IntegerType
+          this.axis = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("prism")) {
           this.getPrism().add((PrismComponent) value);
         } else if (name.equals("add")) {
-          this.add = castToDecimal(value); // DecimalType
+          this.add = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("power")) {
-          this.power = castToDecimal(value); // DecimalType
+          this.power = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("backCurve")) {
-          this.backCurve = castToDecimal(value); // DecimalType
+          this.backCurve = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("diameter")) {
-          this.diameter = castToDecimal(value); // DecimalType
+          this.diameter = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("duration")) {
-          this.duration = castToQuantity(value); // Quantity
+          this.duration = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("color")) {
-          this.color = castToString(value); // StringType
+          this.color = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("brand")) {
-          this.brand = castToString(value); // StringType
+          this.brand = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1764,10 +1764,10 @@ public class VisionPrescription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1413853096: // amount
-          this.amount = castToDecimal(value); // DecimalType
+          this.amount = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 3016401: // base
-          value = new VisionBaseEnumFactory().fromType(castToCode(value));
+          value = new VisionBaseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.base = (Enumeration) value; // Enumeration<VisionBase>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -1778,9 +1778,9 @@ public class VisionPrescription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("amount")) {
-          this.amount = castToDecimal(value); // DecimalType
+          this.amount = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("base")) {
-          value = new VisionBaseEnumFactory().fromType(castToCode(value));
+          value = new VisionBaseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.base = (Enumeration) value; // Enumeration<VisionBase>
         } else
           return super.setProperty(name, value);
@@ -2301,26 +2301,26 @@ public class VisionPrescription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new VisionStatusEnumFactory().fromType(castToCode(value));
+          value = new VisionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<VisionStatus>
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1496880759: // dateWritten
-          this.dateWritten = castToDateTime(value); // DateTimeType
+          this.dateWritten = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1430631077: // prescriber
-          this.prescriber = castToReference(value); // Reference
+          this.prescriber = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1767318363: // lensSpecification
           this.getLensSpecification().add((VisionPrescriptionLensSpecificationComponent) value); // VisionPrescriptionLensSpecificationComponent
@@ -2333,20 +2333,20 @@ public class VisionPrescription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new VisionStatusEnumFactory().fromType(castToCode(value));
+          value = new VisionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<VisionStatus>
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("dateWritten")) {
-          this.dateWritten = castToDateTime(value); // DateTimeType
+          this.dateWritten = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("prescriber")) {
-          this.prescriber = castToReference(value); // Reference
+          this.prescriber = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("lensSpecification")) {
           this.getLensSpecification().add((VisionPrescriptionLensSpecificationComponent) value);
         } else

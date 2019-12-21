@@ -40,7 +40,7 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 
 
 public class ObjectConverter  {
@@ -61,7 +61,7 @@ public class ObjectConverter  {
     return new JsonParser(context).parse(bi);
   }
 
-  public Element convert(Property property, Type type) throws FHIRException {
+  public Element convert(Property property, DataType type) throws FHIRException {
     return convertElement(property, type);
   }
   
@@ -97,8 +97,8 @@ public class ObjectConverter  {
       return path;
   }
 
-  public Type convertToType(Element element) throws FHIRException {
-    Type b = new Factory().create(element.fhirType());
+  public DataType convertToType(Element element) throws FHIRException {
+    DataType b = new Factory().create(element.fhirType());
     if (b instanceof PrimitiveType) {
       ((PrimitiveType) b).setValueAsString(element.primitiveValue());
     } else {

@@ -567,13 +567,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 94742588: // claim
-          this.claim = castToReference(value); // Reference
+          this.claim = TypeConvertor.castToReference(value); // Reference
           return value;
         case -261851592: // relationship
-          this.relationship = castToCodeableConcept(value); // CodeableConcept
+          this.relationship = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -925155509: // reference
-          this.reference = castToIdentifier(value); // Identifier
+          this.reference = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -583,11 +583,11 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("claim")) {
-          this.claim = castToReference(value); // Reference
+          this.claim = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("relationship")) {
-          this.relationship = castToCodeableConcept(value); // CodeableConcept
+          this.relationship = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reference")) {
-          this.reference = castToIdentifier(value); // Identifier
+          this.reference = TypeConvertor.castToIdentifier(value); // Identifier
         } else
           return super.setProperty(name, value);
         return value;
@@ -783,10 +783,10 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 106437350: // party
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -796,9 +796,9 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("party")) {
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1139,19 +1139,19 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -987494927: // provider
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1847674614: // responsible
-          this.responsible = castToBoolean(value); // BooleanType
+          this.responsible = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -631333393: // qualification
-          this.qualification = castToCodeableConcept(value); // CodeableConcept
+          this.qualification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1161,15 +1161,15 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("provider")) {
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("responsible")) {
-          this.responsible = castToBoolean(value); // BooleanType
+          this.responsible = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("qualification")) {
-          this.qualification = castToCodeableConcept(value); // CodeableConcept
+          this.qualification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1304,14 +1304,14 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "timing", type = {DateType.class, Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When it occurred", formalDefinition="The date when or period to which this information refers." )
-        protected Type timing;
+        protected DataType timing;
 
         /**
          * Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.
          */
         @Child(name = "value", type = {BooleanType.class, StringType.class, Quantity.class, Attachment.class, Reference.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Data to be provided", formalDefinition="Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data." )
-        protected Type value;
+        protected DataType value;
 
         /**
          * Provides the reason in the situation where a reason code is required in addition to the content.
@@ -1435,7 +1435,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #timing} (The date when or period to which this information refers.)
          */
-        public Type getTiming() { 
+        public DataType getTiming() { 
           return this.timing;
         }
 
@@ -1476,7 +1476,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #timing} (The date when or period to which this information refers.)
          */
-        public SupportingInformationComponent setTiming(Type value) { 
+        public SupportingInformationComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
             throw new Error("Not the right type for ExplanationOfBenefit.supportingInfo.timing[x]: "+value.fhirType());
           this.timing = value;
@@ -1486,7 +1486,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #value} (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -1572,7 +1572,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #value} (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
          */
-        public SupportingInformationComponent setValue(Type value) { 
+        public SupportingInformationComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof StringType || value instanceof Quantity || value instanceof Attachment || value instanceof Reference))
             throw new Error("Not the right type for ExplanationOfBenefit.supportingInfo.value[x]: "+value.fhirType());
           this.value = value;
@@ -1654,22 +1654,22 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -873664438: // timing
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         case -934964668: // reason
-          this.reason = castToCoding(value); // Coding
+          this.reason = TypeConvertor.castToCoding(value); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1679,17 +1679,17 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("timing[x]")) {
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else if (name.equals("reason")) {
-          this.reason = castToCoding(value); // Coding
+          this.reason = TypeConvertor.castToCoding(value); // Coding
         } else
           return super.setProperty(name, value);
         return value;
@@ -1839,7 +1839,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "diagnosis", type = {CodeableConcept.class, Condition.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Nature of illness or problem", formalDefinition="The nature of illness or problem in a coded form or as a reference to an external defined Condition." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/icd-10")
-        protected Type diagnosis;
+        protected DataType diagnosis;
 
         /**
          * When the condition was observed or the relative ranking.
@@ -1877,7 +1877,7 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public DiagnosisComponent(PositiveIntType sequence, Type diagnosis) {
+      public DiagnosisComponent(PositiveIntType sequence, DataType diagnosis) {
         super();
         this.sequence = sequence;
         this.diagnosis = diagnosis;
@@ -1931,7 +1931,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #diagnosis} (The nature of illness or problem in a coded form or as a reference to an external defined Condition.)
          */
-        public Type getDiagnosis() { 
+        public DataType getDiagnosis() { 
           return this.diagnosis;
         }
 
@@ -1972,7 +1972,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #diagnosis} (The nature of illness or problem in a coded form or as a reference to an external defined Condition.)
          */
-        public DiagnosisComponent setDiagnosis(Type value) { 
+        public DiagnosisComponent setDiagnosis(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for ExplanationOfBenefit.diagnosis.diagnosis[x]: "+value.fhirType());
           this.diagnosis = value;
@@ -2122,19 +2122,19 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1196993265: // diagnosis
-          this.diagnosis = castToType(value); // Type
+          this.diagnosis = TypeConvertor.castToType(value); // Type
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -3386134: // onAdmission
-          this.onAdmission = castToCodeableConcept(value); // CodeableConcept
+          this.onAdmission = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 908444499: // packageCode
-          this.packageCode = castToCodeableConcept(value); // CodeableConcept
+          this.packageCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2144,15 +2144,15 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("diagnosis[x]")) {
-          this.diagnosis = castToType(value); // Type
+          this.diagnosis = TypeConvertor.castToType(value); // Type
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("onAdmission")) {
-          this.onAdmission = castToCodeableConcept(value); // CodeableConcept
+          this.onAdmission = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("packageCode")) {
-          this.packageCode = castToCodeableConcept(value); // CodeableConcept
+          this.packageCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -2296,7 +2296,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "procedure", type = {CodeableConcept.class, Procedure.class}, order=4, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Specific clinical procedure", formalDefinition="The code or reference to a Procedure resource which identifies the clinical intervention performed." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/icd-10-procedures")
-        protected Type procedure;
+        protected DataType procedure;
 
         /**
          * Unique Device Identifiers associated with this line item.
@@ -2317,7 +2317,7 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public ProcedureComponent(PositiveIntType sequence, Type procedure) {
+      public ProcedureComponent(PositiveIntType sequence, DataType procedure) {
         super();
         this.sequence = sequence;
         this.procedure = procedure;
@@ -2473,7 +2473,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #procedure} (The code or reference to a Procedure resource which identifies the clinical intervention performed.)
          */
-        public Type getProcedure() { 
+        public DataType getProcedure() { 
           return this.procedure;
         }
 
@@ -2514,7 +2514,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #procedure} (The code or reference to a Procedure resource which identifies the clinical intervention performed.)
          */
-        public ProcedureComponent setProcedure(Type value) { 
+        public ProcedureComponent setProcedure(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for ExplanationOfBenefit.procedure.procedure[x]: "+value.fhirType());
           this.procedure = value;
@@ -2616,19 +2616,19 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1095204141: // procedure
-          this.procedure = castToType(value); // Type
+          this.procedure = TypeConvertor.castToType(value); // Type
           return value;
         case 115642: // udi
-          this.getUdi().add(castToReference(value)); // Reference
+          this.getUdi().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2638,15 +2638,15 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("procedure[x]")) {
-          this.procedure = castToType(value); // Type
+          this.procedure = TypeConvertor.castToType(value); // Type
         } else if (name.equals("udi")) {
-          this.getUdi().add(castToReference(value));
+          this.getUdi().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2965,13 +2965,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 97604197: // focal
-          this.focal = castToBoolean(value); // BooleanType
+          this.focal = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -351767064: // coverage
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
           return value;
         case 522246568: // preAuthRef
-          this.getPreAuthRef().add(castToString(value)); // StringType
+          this.getPreAuthRef().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2981,11 +2981,11 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("focal")) {
-          this.focal = castToBoolean(value); // BooleanType
+          this.focal = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("coverage")) {
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("preAuthRef")) {
-          this.getPreAuthRef().add(castToString(value));
+          this.getPreAuthRef().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -3101,7 +3101,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "location", type = {Address.class, Location.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Where the event occurred", formalDefinition="The physical location of the accident event." )
-        protected Type location;
+        protected DataType location;
 
         private static final long serialVersionUID = 622904984L;
 
@@ -3188,7 +3188,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #location} (The physical location of the accident event.)
          */
-        public Type getLocation() { 
+        public DataType getLocation() { 
           return this.location;
         }
 
@@ -3229,7 +3229,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #location} (The physical location of the accident event.)
          */
-        public AccidentComponent setLocation(Type value) { 
+        public AccidentComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof Address || value instanceof Reference))
             throw new Error("Not the right type for ExplanationOfBenefit.accident.location[x]: "+value.fhirType());
           this.location = value;
@@ -3272,13 +3272,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3076014: // date
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1901043637: // location
-          this.location = castToType(value); // Type
+          this.location = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3288,11 +3288,11 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("date")) {
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("location[x]")) {
-          this.location = castToType(value); // Type
+          this.location = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -3469,7 +3469,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "serviced", type = {DateType.class, Period.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date or dates of service or product delivery", formalDefinition="The date or dates when the service or product was supplied, performed or completed." )
-        protected Type serviced;
+        protected DataType serviced;
 
         /**
          * Where the product or service was provided.
@@ -3477,7 +3477,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Place of service or where product was supplied", formalDefinition="Where the product or service was provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-place")
-        protected Type location;
+        protected DataType location;
 
         /**
          * The number of repetitions of a service or product.
@@ -4046,7 +4046,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #serviced} (The date or dates when the service or product was supplied, performed or completed.)
          */
-        public Type getServiced() { 
+        public DataType getServiced() { 
           return this.serviced;
         }
 
@@ -4087,7 +4087,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #serviced} (The date or dates when the service or product was supplied, performed or completed.)
          */
-        public ItemComponent setServiced(Type value) { 
+        public ItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
             throw new Error("Not the right type for ExplanationOfBenefit.item.serviced[x]: "+value.fhirType());
           this.serviced = value;
@@ -4097,7 +4097,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #location} (Where the product or service was provided.)
          */
-        public Type getLocation() { 
+        public DataType getLocation() { 
           return this.location;
         }
 
@@ -4153,7 +4153,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #location} (Where the product or service was provided.)
          */
-        public ItemComponent setLocation(Type value) { 
+        public ItemComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Address || value instanceof Reference))
             throw new Error("Not the right type for ExplanationOfBenefit.item.location[x]: "+value.fhirType());
           this.location = value;
@@ -4749,67 +4749,67 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1070083823: // careTeamSequence
-          this.getCareTeamSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getCareTeamSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -909769262: // diagnosisSequence
-          this.getDiagnosisSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getDiagnosisSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -808920140: // procedureSequence
-          this.getProcedureSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getProcedureSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -702585587: // informationSequence
-          this.getInformationSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getInformationSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case 1099842588: // revenue
-          this.revenue = castToCodeableConcept(value); // CodeableConcept
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1010065041: // programCode
-          this.getProgramCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1379209295: // serviced
-          this.serviced = castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // Type
           return value;
         case 1901043637: // location
-          this.location = castToType(value); // Type
+          this.location = TypeConvertor.castToType(value); // Type
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 115642: // udi
-          this.getUdi().add(castToReference(value)); // Reference
+          this.getUdi().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1868566105: // subSite
-          this.getSubSite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1524132147: // encounter
-          this.getEncounter().add(castToReference(value)); // Reference
+          this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1110033957: // noteNumber
-          this.getNoteNumber().add(castToPositiveInt(value)); // PositiveIntType
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -4825,47 +4825,47 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("careTeamSequence")) {
-          this.getCareTeamSequence().add(castToPositiveInt(value));
+          this.getCareTeamSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("diagnosisSequence")) {
-          this.getDiagnosisSequence().add(castToPositiveInt(value));
+          this.getDiagnosisSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("procedureSequence")) {
-          this.getProcedureSequence().add(castToPositiveInt(value));
+          this.getProcedureSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("informationSequence")) {
-          this.getInformationSequence().add(castToPositiveInt(value));
+          this.getInformationSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("revenue")) {
-          this.revenue = castToCodeableConcept(value); // CodeableConcept
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
-          this.getProgramCode().add(castToCodeableConcept(value));
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviced[x]")) {
-          this.serviced = castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // Type
         } else if (name.equals("location[x]")) {
-          this.location = castToType(value); // Type
+          this.location = TypeConvertor.castToType(value); // Type
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("udi")) {
-          this.getUdi().add(castToReference(value));
+          this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subSite")) {
-          this.getSubSite().add(castToCodeableConcept(value));
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("encounter")) {
-          this.getEncounter().add(castToReference(value));
+          this.getEncounter().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
-          this.getNoteNumber().add(castToPositiveInt(value));
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
@@ -5386,16 +5386,16 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -934964668: // reason
-          this.reason = castToCodeableConcept(value); // CodeableConcept
+          this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         case 111972721: // value
-          this.value = castToDecimal(value); // DecimalType
+          this.value = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5405,13 +5405,13 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reason")) {
-          this.reason = castToCodeableConcept(value); // CodeableConcept
+          this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("value")) {
-          this.value = castToDecimal(value); // DecimalType
+          this.value = TypeConvertor.castToDecimal(value); // DecimalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6280,40 +6280,40 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1099842588: // revenue
-          this.revenue = castToCodeableConcept(value); // CodeableConcept
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1010065041: // programCode
-          this.getProgramCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 115642: // udi
-          this.getUdi().add(castToReference(value)); // Reference
+          this.getUdi().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1110033957: // noteNumber
-          this.getNoteNumber().add(castToPositiveInt(value)); // PositiveIntType
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -6329,29 +6329,29 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("revenue")) {
-          this.revenue = castToCodeableConcept(value); // CodeableConcept
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
-          this.getProgramCode().add(castToCodeableConcept(value));
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("udi")) {
-          this.getUdi().add(castToReference(value));
+          this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
-          this.getNoteNumber().add(castToPositiveInt(value));
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
@@ -7254,40 +7254,40 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1099842588: // revenue
-          this.revenue = castToCodeableConcept(value); // CodeableConcept
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1010065041: // programCode
-          this.getProgramCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 115642: // udi
-          this.getUdi().add(castToReference(value)); // Reference
+          this.getUdi().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1110033957: // noteNumber
-          this.getNoteNumber().add(castToPositiveInt(value)); // PositiveIntType
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -7300,29 +7300,29 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("revenue")) {
-          this.revenue = castToCodeableConcept(value); // CodeableConcept
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
-          this.getProgramCode().add(castToCodeableConcept(value));
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("udi")) {
-          this.getUdi().add(castToReference(value));
+          this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
-          this.getNoteNumber().add(castToPositiveInt(value));
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else
@@ -7564,7 +7564,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "serviced", type = {DateType.class, Period.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date or dates of service or product delivery", formalDefinition="The date or dates when the service or product was supplied, performed or completed." )
-        protected Type serviced;
+        protected DataType serviced;
 
         /**
          * Where the product or service was provided.
@@ -7572,7 +7572,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Place of service or where product was supplied", formalDefinition="Where the product or service was provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-place")
-        protected Type location;
+        protected DataType location;
 
         /**
          * The number of repetitions of a service or product.
@@ -8025,7 +8025,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #serviced} (The date or dates when the service or product was supplied, performed or completed.)
          */
-        public Type getServiced() { 
+        public DataType getServiced() { 
           return this.serviced;
         }
 
@@ -8066,7 +8066,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #serviced} (The date or dates when the service or product was supplied, performed or completed.)
          */
-        public AddedItemComponent setServiced(Type value) { 
+        public AddedItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
             throw new Error("Not the right type for ExplanationOfBenefit.addItem.serviced[x]: "+value.fhirType());
           this.serviced = value;
@@ -8076,7 +8076,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #location} (Where the product or service was provided.)
          */
-        public Type getLocation() { 
+        public DataType getLocation() { 
           return this.location;
         }
 
@@ -8132,7 +8132,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #location} (Where the product or service was provided.)
          */
-        public AddedItemComponent setLocation(Type value) { 
+        public AddedItemComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Address || value instanceof Reference))
             throw new Error("Not the right type for ExplanationOfBenefit.addItem.location[x]: "+value.fhirType());
           this.location = value;
@@ -8607,52 +8607,52 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1977979892: // itemSequence
-          this.getItemSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getItemSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case 1321472818: // detailSequence
-          this.getDetailSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getDetailSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -855462510: // subDetailSequence
-          this.getSubDetailSequence().add(castToPositiveInt(value)); // PositiveIntType
+          this.getSubDetailSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -987494927: // provider
-          this.getProvider().add(castToReference(value)); // Reference
+          this.getProvider().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1010065041: // programCode
-          this.getProgramCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1379209295: // serviced
-          this.serviced = castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // Type
           return value;
         case 1901043637: // location
-          this.location = castToType(value); // Type
+          this.location = TypeConvertor.castToType(value); // Type
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1868566105: // subSite
-          this.getSubSite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1110033957: // noteNumber
-          this.getNoteNumber().add(castToPositiveInt(value)); // PositiveIntType
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -8668,37 +8668,37 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("itemSequence")) {
-          this.getItemSequence().add(castToPositiveInt(value));
+          this.getItemSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("detailSequence")) {
-          this.getDetailSequence().add(castToPositiveInt(value));
+          this.getDetailSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("subDetailSequence")) {
-          this.getSubDetailSequence().add(castToPositiveInt(value));
+          this.getSubDetailSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("provider")) {
-          this.getProvider().add(castToReference(value));
+          this.getProvider().add(TypeConvertor.castToReference(value));
         } else if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
-          this.getProgramCode().add(castToCodeableConcept(value));
+          this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviced[x]")) {
-          this.serviced = castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // Type
         } else if (name.equals("location[x]")) {
-          this.location = castToType(value); // Type
+          this.location = TypeConvertor.castToType(value); // Type
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subSite")) {
-          this.getSubSite().add(castToCodeableConcept(value));
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("noteNumber")) {
-          this.getNoteNumber().add(castToPositiveInt(value));
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
@@ -9470,25 +9470,25 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1110033957: // noteNumber
-          this.getNoteNumber().add(castToPositiveInt(value)); // PositiveIntType
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -9504,19 +9504,19 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("noteNumber")) {
-          this.getNoteNumber().add(castToPositiveInt(value));
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
@@ -10122,25 +10122,25 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1110033957: // noteNumber
-          this.getNoteNumber().add(castToPositiveInt(value)); // PositiveIntType
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -10153,19 +10153,19 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("noteNumber")) {
-          this.getNoteNumber().add(castToPositiveInt(value));
+          this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else
@@ -10417,10 +10417,10 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -10430,9 +10430,9 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else
           return super.setProperty(name, value);
         return value;
@@ -10781,22 +10781,22 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1977085293: // adjustment
-          this.adjustment = castToMoney(value); // Money
+          this.adjustment = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1255938543: // adjustmentReason
-          this.adjustmentReason = castToCodeableConcept(value); // CodeableConcept
+          this.adjustmentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3076014: // date
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -10806,17 +10806,17 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjustment")) {
-          this.adjustment = castToMoney(value); // Money
+          this.adjustment = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("adjustmentReason")) {
-          this.adjustmentReason = castToCodeableConcept(value); // CodeableConcept
+          this.adjustmentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("date")) {
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else
           return super.setProperty(name, value);
         return value;
@@ -11173,17 +11173,17 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1034364087: // number
-          this.number = castToPositiveInt(value); // PositiveIntType
+          this.number = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 3575610: // type
-          value = new NoteTypeEnumFactory().fromType(castToCode(value));
+          value = new NoteTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<NoteType>
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case -1613589672: // language
-          this.language = castToCodeableConcept(value); // CodeableConcept
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -11193,14 +11193,14 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("number")) {
-          this.number = castToPositiveInt(value); // PositiveIntType
+          this.number = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("type")) {
-          value = new NoteTypeEnumFactory().fromType(castToCode(value));
+          value = new NoteTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<NoteType>
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("language")) {
-          this.language = castToCodeableConcept(value); // CodeableConcept
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -11716,25 +11716,25 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1994055114: // excluded
-          this.excluded = castToBoolean(value); // BooleanType
+          this.excluded = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 1843485230: // network
-          this.network = castToCodeableConcept(value); // CodeableConcept
+          this.network = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3594628: // unit
-          this.unit = castToCodeableConcept(value); // CodeableConcept
+          this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3556460: // term
-          this.term = castToCodeableConcept(value); // CodeableConcept
+          this.term = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 357555337: // financial
           this.getFinancial().add((BenefitComponent) value); // BenefitComponent
@@ -11747,19 +11747,19 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("excluded")) {
-          this.excluded = castToBoolean(value); // BooleanType
+          this.excluded = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("network")) {
-          this.network = castToCodeableConcept(value); // CodeableConcept
+          this.network = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unit")) {
-          this.unit = castToCodeableConcept(value); // CodeableConcept
+          this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("term")) {
-          this.term = castToCodeableConcept(value); // CodeableConcept
+          this.term = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("financial")) {
           this.getFinancial().add((BenefitComponent) value);
         } else
@@ -11905,14 +11905,14 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "allowed", type = {UnsignedIntType.class, StringType.class, Money.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefits allowed", formalDefinition="The quantity of the benefit which is permitted under the coverage." )
-        protected Type allowed;
+        protected DataType allowed;
 
         /**
          * The quantity of the benefit which have been consumed to date.
          */
         @Child(name = "used", type = {UnsignedIntType.class, Money.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefits used", formalDefinition="The quantity of the benefit which have been consumed to date." )
-        protected Type used;
+        protected DataType used;
 
         private static final long serialVersionUID = -1506285314L;
 
@@ -11958,7 +11958,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #allowed} (The quantity of the benefit which is permitted under the coverage.)
          */
-        public Type getAllowed() { 
+        public DataType getAllowed() { 
           return this.allowed;
         }
 
@@ -12014,7 +12014,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #allowed} (The quantity of the benefit which is permitted under the coverage.)
          */
-        public BenefitComponent setAllowed(Type value) { 
+        public BenefitComponent setAllowed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof StringType || value instanceof Money))
             throw new Error("Not the right type for ExplanationOfBenefit.benefitBalance.financial.allowed[x]: "+value.fhirType());
           this.allowed = value;
@@ -12024,7 +12024,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #used} (The quantity of the benefit which have been consumed to date.)
          */
-        public Type getUsed() { 
+        public DataType getUsed() { 
           return this.used;
         }
 
@@ -12065,7 +12065,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @param value {@link #used} (The quantity of the benefit which have been consumed to date.)
          */
-        public BenefitComponent setUsed(Type value) { 
+        public BenefitComponent setUsed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof Money))
             throw new Error("Not the right type for ExplanationOfBenefit.benefitBalance.financial.used[x]: "+value.fhirType());
           this.used = value;
@@ -12112,13 +12112,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -911343192: // allowed
-          this.allowed = castToType(value); // Type
+          this.allowed = TypeConvertor.castToType(value); // Type
           return value;
         case 3599293: // used
-          this.used = castToType(value); // Type
+          this.used = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -12128,11 +12128,11 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("allowed[x]")) {
-          this.allowed = castToType(value); // Type
+          this.allowed = TypeConvertor.castToType(value); // Type
         } else if (name.equals("used[x]")) {
-          this.used = castToType(value); // Type
+          this.used = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -14328,85 +14328,85 @@ public class ExplanationOfBenefit extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ExplanationOfBenefitStatusEnumFactory().fromType(castToCode(value));
+          value = new ExplanationOfBenefitStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ExplanationOfBenefitStatus>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1868521062: // subType
-          this.subType = castToCodeableConcept(value); // CodeableConcept
+          this.subType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 116103: // use
-          value = new UseEnumFactory().fromType(castToCode(value));
+          value = new UseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<Use>
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case -332066046: // billablePeriod
-          this.billablePeriod = castToPeriod(value); // Period
+          this.billablePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1591951995: // enterer
-          this.enterer = castToReference(value); // Reference
+          this.enterer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1957615864: // insurer
-          this.insurer = castToReference(value); // Reference
+          this.insurer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -987494927: // provider
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1165461084: // priority
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1688904576: // fundsReserveRequested
-          this.fundsReserveRequested = castToCodeableConcept(value); // CodeableConcept
+          this.fundsReserveRequested = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1314609806: // fundsReserve
-          this.fundsReserve = castToCodeableConcept(value); // CodeableConcept
+          this.fundsReserve = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1090493483: // related
           this.getRelated().add((RelatedClaimComponent) value); // RelatedClaimComponent
           return value;
         case 460301338: // prescription
-          this.prescription = castToReference(value); // Reference
+          this.prescription = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1814015861: // originalPrescription
-          this.originalPrescription = castToReference(value); // Reference
+          this.originalPrescription = TypeConvertor.castToReference(value); // Reference
           return value;
         case 106443592: // payee
           this.payee = (PayeeComponent) value; // PayeeComponent
           return value;
         case -722568291: // referral
-          this.referral = castToReference(value); // Reference
+          this.referral = TypeConvertor.castToReference(value); // Reference
           return value;
         case 501116579: // facility
-          this.facility = castToReference(value); // Reference
+          this.facility = TypeConvertor.castToReference(value); // Reference
           return value;
         case 94742588: // claim
-          this.claim = castToReference(value); // Reference
+          this.claim = TypeConvertor.castToReference(value); // Reference
           return value;
         case 689513629: // claimResponse
-          this.claimResponse = castToReference(value); // Reference
+          this.claimResponse = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
           return value;
         case 583380919: // disposition
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
           return value;
         case 522246568: // preAuthRef
-          this.getPreAuthRef().add(castToString(value)); // StringType
+          this.getPreAuthRef().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1262920311: // preAuthRefPeriod
-          this.getPreAuthRefPeriod().add(castToPeriod(value)); // Period
+          this.getPreAuthRefPeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
         case -7323378: // careTeam
           this.getCareTeam().add((CareTeamComponent) value); // CareTeamComponent
@@ -14421,7 +14421,7 @@ public class ExplanationOfBenefit extends DomainResource {
           this.getProcedure().add((ProcedureComponent) value); // ProcedureComponent
           return value;
         case 159695370: // precedence
-          this.precedence = castToPositiveInt(value); // PositiveIntType
+          this.precedence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 73049818: // insurance
           this.getInsurance().add((InsuranceComponent) value); // InsuranceComponent
@@ -14445,16 +14445,16 @@ public class ExplanationOfBenefit extends DomainResource {
           this.payment = (PaymentComponent) value; // PaymentComponent
           return value;
         case 473181393: // formCode
-          this.formCode = castToCodeableConcept(value); // CodeableConcept
+          this.formCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3148996: // form
-          this.form = castToAttachment(value); // Attachment
+          this.form = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case 202339073: // processNote
           this.getProcessNote().add((NoteComponent) value); // NoteComponent
           return value;
         case -407369416: // benefitPeriod
-          this.benefitPeriod = castToPeriod(value); // Period
+          this.benefitPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 596003397: // benefitBalance
           this.getBenefitBalance().add((BenefitBalanceComponent) value); // BenefitBalanceComponent
@@ -14467,60 +14467,60 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ExplanationOfBenefitStatusEnumFactory().fromType(castToCode(value));
+          value = new ExplanationOfBenefitStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ExplanationOfBenefitStatus>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subType")) {
-          this.subType = castToCodeableConcept(value); // CodeableConcept
+          this.subType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("use")) {
-          value = new UseEnumFactory().fromType(castToCode(value));
+          value = new UseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<Use>
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("billablePeriod")) {
-          this.billablePeriod = castToPeriod(value); // Period
+          this.billablePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("enterer")) {
-          this.enterer = castToReference(value); // Reference
+          this.enterer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("insurer")) {
-          this.insurer = castToReference(value); // Reference
+          this.insurer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("provider")) {
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("priority")) {
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("fundsReserveRequested")) {
-          this.fundsReserveRequested = castToCodeableConcept(value); // CodeableConcept
+          this.fundsReserveRequested = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("fundsReserve")) {
-          this.fundsReserve = castToCodeableConcept(value); // CodeableConcept
+          this.fundsReserve = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("related")) {
           this.getRelated().add((RelatedClaimComponent) value);
         } else if (name.equals("prescription")) {
-          this.prescription = castToReference(value); // Reference
+          this.prescription = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("originalPrescription")) {
-          this.originalPrescription = castToReference(value); // Reference
+          this.originalPrescription = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("payee")) {
           this.payee = (PayeeComponent) value; // PayeeComponent
         } else if (name.equals("referral")) {
-          this.referral = castToReference(value); // Reference
+          this.referral = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("facility")) {
-          this.facility = castToReference(value); // Reference
+          this.facility = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("claim")) {
-          this.claim = castToReference(value); // Reference
+          this.claim = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("claimResponse")) {
-          this.claimResponse = castToReference(value); // Reference
+          this.claimResponse = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
         } else if (name.equals("disposition")) {
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("preAuthRef")) {
-          this.getPreAuthRef().add(castToString(value));
+          this.getPreAuthRef().add(TypeConvertor.castToString(value));
         } else if (name.equals("preAuthRefPeriod")) {
-          this.getPreAuthRefPeriod().add(castToPeriod(value));
+          this.getPreAuthRefPeriod().add(TypeConvertor.castToPeriod(value));
         } else if (name.equals("careTeam")) {
           this.getCareTeam().add((CareTeamComponent) value);
         } else if (name.equals("supportingInfo")) {
@@ -14530,7 +14530,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("procedure")) {
           this.getProcedure().add((ProcedureComponent) value);
         } else if (name.equals("precedence")) {
-          this.precedence = castToPositiveInt(value); // PositiveIntType
+          this.precedence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("insurance")) {
           this.getInsurance().add((InsuranceComponent) value);
         } else if (name.equals("accident")) {
@@ -14546,13 +14546,13 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("payment")) {
           this.payment = (PaymentComponent) value; // PaymentComponent
         } else if (name.equals("formCode")) {
-          this.formCode = castToCodeableConcept(value); // CodeableConcept
+          this.formCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("form")) {
-          this.form = castToAttachment(value); // Attachment
+          this.form = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("processNote")) {
           this.getProcessNote().add((NoteComponent) value);
         } else if (name.equals("benefitPeriod")) {
-          this.benefitPeriod = castToPeriod(value); // Period
+          this.benefitPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("benefitBalance")) {
           this.getBenefitBalance().add((BenefitBalanceComponent) value);
         } else

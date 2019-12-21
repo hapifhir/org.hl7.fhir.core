@@ -341,13 +341,13 @@ public class Substance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1289159373: // expiry
-          this.expiry = castToDateTime(value); // DateTimeType
+          this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -357,11 +357,11 @@ public class Substance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("expiry")) {
-          this.expiry = castToDateTime(value); // DateTimeType
+          this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;
@@ -467,7 +467,7 @@ public class Substance extends DomainResource {
         @Child(name = "substance", type = {CodeableConcept.class, Substance.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A component of the substance", formalDefinition="Another substance that is a component of this substance." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-code")
-        protected Type substance;
+        protected DataType substance;
 
         private static final long serialVersionUID = -469805322L;
 
@@ -481,7 +481,7 @@ public class Substance extends DomainResource {
     /**
      * Constructor
      */
-      public SubstanceIngredientComponent(Type substance) {
+      public SubstanceIngredientComponent(DataType substance) {
         super();
         this.substance = substance;
       }
@@ -513,7 +513,7 @@ public class Substance extends DomainResource {
         /**
          * @return {@link #substance} (Another substance that is a component of this substance.)
          */
-        public Type getSubstance() { 
+        public DataType getSubstance() { 
           return this.substance;
         }
 
@@ -554,7 +554,7 @@ public class Substance extends DomainResource {
         /**
          * @param value {@link #substance} (Another substance that is a component of this substance.)
          */
-        public SubstanceIngredientComponent setSubstance(Type value) { 
+        public SubstanceIngredientComponent setSubstance(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Substance.ingredient.substance[x]: "+value.fhirType());
           this.substance = value;
@@ -594,10 +594,10 @@ public class Substance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1285004149: // quantity
-          this.quantity = castToRatio(value); // Ratio
+          this.quantity = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 530040176: // substance
-          this.substance = castToType(value); // Type
+          this.substance = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -607,9 +607,9 @@ public class Substance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("quantity")) {
-          this.quantity = castToRatio(value); // Ratio
+          this.quantity = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("substance[x]")) {
-          this.substance = castToType(value); // Type
+          this.substance = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1145,20 +1145,20 @@ public class Substance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new FHIRSubstanceStatusEnumFactory().fromType(castToCode(value));
+          value = new FHIRSubstanceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRSubstanceStatus>
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 555127957: // instance
           this.getInstance().add((SubstanceInstanceComponent) value); // SubstanceInstanceComponent
@@ -1174,16 +1174,16 @@ public class Substance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new FHIRSubstanceStatusEnumFactory().fromType(castToCode(value));
+          value = new FHIRSubstanceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRSubstanceStatus>
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("instance")) {
           this.getInstance().add((SubstanceInstanceComponent) value);
         } else if (name.equals("ingredient")) {

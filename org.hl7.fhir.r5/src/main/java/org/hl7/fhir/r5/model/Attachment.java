@@ -70,7 +70,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * For referring to data content defined in other formats.
  */
 @DatatypeDef(name="Attachment")
-public class Attachment extends Type implements ICompositeType {
+public class Attachment extends DataType implements ICompositeType {
 
     /**
      * Identifies the type of the data in the attachment and allows a method to be chosen to interpret or render the data. Includes mime type parameters such as charset where appropriate.
@@ -105,9 +105,9 @@ public class Attachment extends Type implements ICompositeType {
     /**
      * The number of bytes of data that make up this attachment (before base64 encoding, if that is done).
      */
-    @Child(name = "size", type = {UnsignedIntType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "size", type = {Integer64Type.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Number of bytes of content (if url provided)", formalDefinition="The number of bytes of data that make up this attachment (before base64 encoding, if that is done)." )
-    protected UnsignedIntType size;
+    protected Integer64Type size;
 
     /**
      * The calculated hash of the data using SHA-1. Represented using base64.
@@ -165,7 +165,7 @@ public class Attachment extends Type implements ICompositeType {
     @Description(shortDefinition="Number of printed pages", formalDefinition="The number of pages when printed." )
     protected PositiveIntType pages;
 
-    private static final long serialVersionUID = -738137631L;
+    private static final long serialVersionUID = -1904332061L;
 
   /**
    * Constructor
@@ -373,12 +373,12 @@ public class Attachment extends Type implements ICompositeType {
     /**
      * @return {@link #size} (The number of bytes of data that make up this attachment (before base64 encoding, if that is done).). This is the underlying object with id, value and extensions. The accessor "getSize" gives direct access to the value
      */
-    public UnsignedIntType getSizeElement() { 
+    public Integer64Type getSizeElement() { 
       if (this.size == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Attachment.size");
         else if (Configuration.doAutoCreate())
-          this.size = new UnsignedIntType(); // bb
+          this.size = new Integer64Type(); // bb
       return this.size;
     }
 
@@ -393,7 +393,7 @@ public class Attachment extends Type implements ICompositeType {
     /**
      * @param value {@link #size} (The number of bytes of data that make up this attachment (before base64 encoding, if that is done).). This is the underlying object with id, value and extensions. The accessor "getSize" gives direct access to the value
      */
-    public Attachment setSizeElement(UnsignedIntType value) { 
+    public Attachment setSizeElement(Integer64Type value) { 
       this.size = value;
       return this;
     }
@@ -401,16 +401,15 @@ public class Attachment extends Type implements ICompositeType {
     /**
      * @return The number of bytes of data that make up this attachment (before base64 encoding, if that is done).
      */
-    public int getSize() { 
+    public long getSize() { 
       return this.size == null || this.size.isEmpty() ? 0 : this.size.getValue();
     }
 
     /**
      * @param value The number of bytes of data that make up this attachment (before base64 encoding, if that is done).
      */
-    public Attachment setSize(int value) { 
-        if (this.size == null)
-          this.size = new UnsignedIntType();
+    public Attachment setSize(long value) { 
+          this.size = new Integer64Type();
         this.size.setValue(value);
       return this;
     }
@@ -815,7 +814,7 @@ public class Attachment extends Type implements ICompositeType {
         children.add(new Property("language", "code", "The human language of the content. The value can be any valid value according to BCP 47.", 0, 1, language));
         children.add(new Property("data", "base64Binary", "The actual data of the attachment - a sequence of bytes, base64 encoded.", 0, 1, data));
         children.add(new Property("url", "url", "A location where the data can be accessed.", 0, 1, url));
-        children.add(new Property("size", "unsignedInt", "The number of bytes of data that make up this attachment (before base64 encoding, if that is done).", 0, 1, size));
+        children.add(new Property("size", "integer64", "The number of bytes of data that make up this attachment (before base64 encoding, if that is done).", 0, 1, size));
         children.add(new Property("hash", "base64Binary", "The calculated hash of the data using SHA-1. Represented using base64.", 0, 1, hash));
         children.add(new Property("title", "string", "A label or set of text to display in place of the data.", 0, 1, title));
         children.add(new Property("creation", "dateTime", "The date that the attachment was first created.", 0, 1, creation));
@@ -833,7 +832,7 @@ public class Attachment extends Type implements ICompositeType {
         case -1613589672: /*language*/  return new Property("language", "code", "The human language of the content. The value can be any valid value according to BCP 47.", 0, 1, language);
         case 3076010: /*data*/  return new Property("data", "base64Binary", "The actual data of the attachment - a sequence of bytes, base64 encoded.", 0, 1, data);
         case 116079: /*url*/  return new Property("url", "url", "A location where the data can be accessed.", 0, 1, url);
-        case 3530753: /*size*/  return new Property("size", "unsignedInt", "The number of bytes of data that make up this attachment (before base64 encoding, if that is done).", 0, 1, size);
+        case 3530753: /*size*/  return new Property("size", "integer64", "The number of bytes of data that make up this attachment (before base64 encoding, if that is done).", 0, 1, size);
         case 3195150: /*hash*/  return new Property("hash", "base64Binary", "The calculated hash of the data using SHA-1. Represented using base64.", 0, 1, hash);
         case 110371416: /*title*/  return new Property("title", "string", "A label or set of text to display in place of the data.", 0, 1, title);
         case 1820421855: /*creation*/  return new Property("creation", "dateTime", "The date that the attachment was first created.", 0, 1, creation);
@@ -854,7 +853,7 @@ public class Attachment extends Type implements ICompositeType {
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeType
         case 3076010: /*data*/ return this.data == null ? new Base[0] : new Base[] {this.data}; // Base64BinaryType
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UrlType
-        case 3530753: /*size*/ return this.size == null ? new Base[0] : new Base[] {this.size}; // UnsignedIntType
+        case 3530753: /*size*/ return this.size == null ? new Base[0] : new Base[] {this.size}; // Integer64Type
         case 3195150: /*hash*/ return this.hash == null ? new Base[0] : new Base[] {this.hash}; // Base64BinaryType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case 1820421855: /*creation*/ return this.creation == null ? new Base[0] : new Base[] {this.creation}; // DateTimeType
@@ -872,43 +871,43 @@ public class Attachment extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -389131437: // contentType
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1613589672: // language
-          this.language = castToCode(value); // CodeType
+          this.language = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 3076010: // data
-          this.data = castToBase64Binary(value); // Base64BinaryType
+          this.data = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
           return value;
         case 116079: // url
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case 3530753: // size
-          this.size = castToUnsignedInt(value); // UnsignedIntType
+          this.size = TypeConvertor.castToInteger64(value); // Integer64Type
           return value;
         case 3195150: // hash
-          this.hash = castToBase64Binary(value); // Base64BinaryType
+          this.hash = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case 1820421855: // creation
-          this.creation = castToDateTime(value); // DateTimeType
+          this.creation = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1221029593: // height
-          this.height = castToPositiveInt(value); // PositiveIntType
+          this.height = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 113126854: // width
-          this.width = castToPositiveInt(value); // PositiveIntType
+          this.width = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -1266514778: // frames
-          this.frames = castToPositiveInt(value); // PositiveIntType
+          this.frames = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -1992012396: // duration
-          this.duration = castToDecimal(value); // DecimalType
+          this.duration = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 106426308: // pages
-          this.pages = castToPositiveInt(value); // PositiveIntType
+          this.pages = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -918,31 +917,31 @@ public class Attachment extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("contentType")) {
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("language")) {
-          this.language = castToCode(value); // CodeType
+          this.language = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("data")) {
-          this.data = castToBase64Binary(value); // Base64BinaryType
+          this.data = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
         } else if (name.equals("url")) {
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("size")) {
-          this.size = castToUnsignedInt(value); // UnsignedIntType
+          this.size = TypeConvertor.castToInteger64(value); // Integer64Type
         } else if (name.equals("hash")) {
-          this.hash = castToBase64Binary(value); // Base64BinaryType
+          this.hash = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("creation")) {
-          this.creation = castToDateTime(value); // DateTimeType
+          this.creation = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("height")) {
-          this.height = castToPositiveInt(value); // PositiveIntType
+          this.height = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("width")) {
-          this.width = castToPositiveInt(value); // PositiveIntType
+          this.width = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("frames")) {
-          this.frames = castToPositiveInt(value); // PositiveIntType
+          this.frames = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("duration")) {
-          this.duration = castToDecimal(value); // DecimalType
+          this.duration = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("pages")) {
-          this.pages = castToPositiveInt(value); // PositiveIntType
+          this.pages = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -976,7 +975,7 @@ public class Attachment extends Type implements ICompositeType {
         case -1613589672: /*language*/ return new String[] {"code"};
         case 3076010: /*data*/ return new String[] {"base64Binary"};
         case 116079: /*url*/ return new String[] {"url"};
-        case 3530753: /*size*/ return new String[] {"unsignedInt"};
+        case 3530753: /*size*/ return new String[] {"integer64"};
         case 3195150: /*hash*/ return new String[] {"base64Binary"};
         case 110371416: /*title*/ return new String[] {"string"};
         case 1820421855: /*creation*/ return new String[] {"dateTime"};

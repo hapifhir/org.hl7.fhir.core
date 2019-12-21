@@ -104,7 +104,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
   }
 
   @Override
-  protected Type typedCopy() {
+  protected DataType typedCopy() {
     return null;
   }
 

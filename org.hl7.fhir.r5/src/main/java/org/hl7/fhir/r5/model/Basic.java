@@ -336,19 +336,19 @@ public class Basic extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1028554472: // created
-          this.created = castToDate(value); // DateType
+          this.created = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -358,15 +358,15 @@ public class Basic extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("created")) {
-          this.created = castToDate(value); // DateType
+          this.created = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

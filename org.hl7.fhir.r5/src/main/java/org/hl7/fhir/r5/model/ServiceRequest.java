@@ -673,7 +673,7 @@ public class ServiceRequest extends DomainResource {
      */
     @Child(name = "quantity", type = {Quantity.class, Ratio.class, Range.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Service amount", formalDefinition="An amount of service being requested which can be a quantity ( for example $1,500 home modification), a ratio ( for example, 20 half day visits per month), or a range (2.0 to 1.8 Gy per fraction)." )
-    protected Type quantity;
+    protected DataType quantity;
 
     /**
      * On whom or what the service is to be performed. This is usually a human patient, but can also be requested on animals, groups of humans or animals, devices such as dialysis machines, or even locations (typically for environmental scans).
@@ -694,7 +694,7 @@ public class ServiceRequest extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When service should occur", formalDefinition="The date/time at which the requested service should occur." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.
@@ -702,7 +702,7 @@ public class ServiceRequest extends DomainResource {
     @Child(name = "asNeeded", type = {BooleanType.class, CodeableConcept.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Preconditions for service", formalDefinition="If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-as-needed-reason")
-    protected Type asNeeded;
+    protected DataType asNeeded;
 
     /**
      * When the request transitioned to being actionable.
@@ -1454,7 +1454,7 @@ public class ServiceRequest extends DomainResource {
     /**
      * @return {@link #quantity} (An amount of service being requested which can be a quantity ( for example $1,500 home modification), a ratio ( for example, 20 half day visits per month), or a range (2.0 to 1.8 Gy per fraction).)
      */
-    public Type getQuantity() { 
+    public DataType getQuantity() { 
       return this.quantity;
     }
 
@@ -1510,7 +1510,7 @@ public class ServiceRequest extends DomainResource {
     /**
      * @param value {@link #quantity} (An amount of service being requested which can be a quantity ( for example $1,500 home modification), a ratio ( for example, 20 half day visits per month), or a range (2.0 to 1.8 Gy per fraction).)
      */
-    public ServiceRequest setQuantity(Type value) { 
+    public ServiceRequest setQuantity(DataType value) { 
       if (value != null && !(value instanceof Quantity || value instanceof Ratio || value instanceof Range))
         throw new Error("Not the right type for ServiceRequest.quantity[x]: "+value.fhirType());
       this.quantity = value;
@@ -1568,7 +1568,7 @@ public class ServiceRequest extends DomainResource {
     /**
      * @return {@link #occurrence} (The date/time at which the requested service should occur.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1624,7 +1624,7 @@ public class ServiceRequest extends DomainResource {
     /**
      * @param value {@link #occurrence} (The date/time at which the requested service should occur.)
      */
-    public ServiceRequest setOccurrence(Type value) { 
+    public ServiceRequest setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
         throw new Error("Not the right type for ServiceRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1634,7 +1634,7 @@ public class ServiceRequest extends DomainResource {
     /**
      * @return {@link #asNeeded} (If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.)
      */
-    public Type getAsNeeded() { 
+    public DataType getAsNeeded() { 
       return this.asNeeded;
     }
 
@@ -1675,7 +1675,7 @@ public class ServiceRequest extends DomainResource {
     /**
      * @param value {@link #asNeeded} (If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.)
      */
-    public ServiceRequest setAsNeeded(Type value) { 
+    public ServiceRequest setAsNeeded(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
         throw new Error("Not the right type for ServiceRequest.asNeeded[x]: "+value.fhirType());
       this.asNeeded = value;
@@ -2545,106 +2545,106 @@ public class ServiceRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -430332865: // replaces
-          this.getReplaces().add(castToReference(value)); // Reference
+          this.getReplaces().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 395923612: // requisition
-          this.requisition = castToIdentifier(value); // Identifier
+          this.requisition = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new ServiceRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new ServiceRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ServiceRequestStatus>
           return value;
         case -1183762788: // intent
-          value = new ServiceRequestIntentEnumFactory().fromType(castToCode(value));
+          value = new ServiceRequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<ServiceRequestIntent>
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1165461084: // priority
-          value = new ServiceRequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new ServiceRequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<ServiceRequestPriority>
           return value;
         case -1788508167: // doNotPerform
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1187338559: // orderDetail
-          this.getOrderDetail().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getOrderDetail().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToType(value); // Type
+          this.quantity = TypeConvertor.castToType(value); // Type
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -1432923513: // asNeeded
-          this.asNeeded = castToType(value); // Type
+          this.asNeeded = TypeConvertor.castToType(value); // Type
           return value;
         case -1500852503: // authoredOn
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 693933948: // requester
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
           return value;
         case -901444568: // performerType
-          this.performerType = castToCodeableConcept(value); // CodeableConcept
+          this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 481140686: // performer
-          this.getPerformer().add(castToReference(value)); // Reference
+          this.getPerformer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -58794174: // locationCode
-          this.getLocationCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getLocationCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 755866390: // locationReference
-          this.getLocationReference().add(castToReference(value)); // Reference
+          this.getLocationReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 73049818: // insurance
-          this.getInsurance().add(castToReference(value)); // Reference
+          this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1922406657: // supportingInfo
-          this.getSupportingInfo().add(castToReference(value)); // Reference
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -2132868344: // specimen
-          this.getSpecimen().add(castToReference(value)); // Reference
+          this.getSpecimen().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.getBodySite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 737543241: // patientInstruction
-          this.patientInstruction = castToString(value); // StringType
+          this.patientInstruction = TypeConvertor.castToString(value); // StringType
           return value;
         case 1538891575: // relevantHistory
-          this.getRelevantHistory().add(castToReference(value)); // Reference
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2654,74 +2654,74 @@ public class ServiceRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("replaces")) {
-          this.getReplaces().add(castToReference(value));
+          this.getReplaces().add(TypeConvertor.castToReference(value));
         } else if (name.equals("requisition")) {
-          this.requisition = castToIdentifier(value); // Identifier
+          this.requisition = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new ServiceRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new ServiceRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ServiceRequestStatus>
         } else if (name.equals("intent")) {
-          value = new ServiceRequestIntentEnumFactory().fromType(castToCode(value));
+          value = new ServiceRequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<ServiceRequestIntent>
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("priority")) {
-          value = new ServiceRequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new ServiceRequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<ServiceRequestPriority>
         } else if (name.equals("doNotPerform")) {
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("orderDetail")) {
-          this.getOrderDetail().add(castToCodeableConcept(value));
+          this.getOrderDetail().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity[x]")) {
-          this.quantity = castToType(value); // Type
+          this.quantity = TypeConvertor.castToType(value); // Type
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("asNeeded[x]")) {
-          this.asNeeded = castToType(value); // Type
+          this.asNeeded = TypeConvertor.castToType(value); // Type
         } else if (name.equals("authoredOn")) {
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performerType")) {
-          this.performerType = castToCodeableConcept(value); // CodeableConcept
+          this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("performer")) {
-          this.getPerformer().add(castToReference(value));
+          this.getPerformer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("locationCode")) {
-          this.getLocationCode().add(castToCodeableConcept(value));
+          this.getLocationCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("locationReference")) {
-          this.getLocationReference().add(castToReference(value));
+          this.getLocationReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("insurance")) {
-          this.getInsurance().add(castToReference(value));
+          this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add(castToReference(value));
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value));
         } else if (name.equals("specimen")) {
-          this.getSpecimen().add(castToReference(value));
+          this.getSpecimen().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add(castToCodeableConcept(value));
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("patientInstruction")) {
-          this.patientInstruction = castToString(value); // StringType
+          this.patientInstruction = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("relevantHistory")) {
-          this.getRelevantHistory().add(castToReference(value));
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

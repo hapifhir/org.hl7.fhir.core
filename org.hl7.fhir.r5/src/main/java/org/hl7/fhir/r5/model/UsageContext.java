@@ -66,7 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Specifies clinical/business/etc. metadata that can be used to retrieve, index and/or categorize an artifact. This metadata can either be specific to the applicable population (e.g., age category, DRG) or the specific context of care (e.g., venue, care setting, provider of care).
  */
 @DatatypeDef(name="UsageContext")
-public class UsageContext extends Type implements ICompositeType {
+public class UsageContext extends DataType implements ICompositeType {
 
     /**
      * A code that identifies the type of context being specified by this usage context.
@@ -82,9 +82,9 @@ public class UsageContext extends Type implements ICompositeType {
     @Child(name = "value", type = {CodeableConcept.class, Quantity.class, Range.class, PlanDefinition.class, ResearchStudy.class, InsurancePlan.class, HealthcareService.class, Group.class, Location.class, Organization.class}, order=1, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value that defines the context", formalDefinition="A value that defines the context specified in this context of use. The interpretation of the value is defined by the code." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/use-context")
-    protected Type value;
+    protected DataType value;
 
-    private static final long serialVersionUID = -1092486508L;
+    private static final long serialVersionUID = -1546390646L;
 
   /**
    * Constructor
@@ -96,7 +96,7 @@ public class UsageContext extends Type implements ICompositeType {
   /**
    * Constructor
    */
-    public UsageContext(Coding code, Type value) {
+    public UsageContext(Coding code, DataType value) {
       super();
       this.code = code;
       this.value = value;
@@ -129,7 +129,7 @@ public class UsageContext extends Type implements ICompositeType {
     /**
      * @return {@link #value} (A value that defines the context specified in this context of use. The interpretation of the value is defined by the code.)
      */
-    public Type getValue() { 
+    public DataType getValue() { 
       return this.value;
     }
 
@@ -200,7 +200,7 @@ public class UsageContext extends Type implements ICompositeType {
     /**
      * @param value {@link #value} (A value that defines the context specified in this context of use. The interpretation of the value is defined by the code.)
      */
-    public UsageContext setValue(Type value) { 
+    public UsageContext setValue(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof Reference))
         throw new Error("Not the right type for UsageContext.value[x]: "+value.fhirType());
       this.value = value;
@@ -232,7 +232,7 @@ public class UsageContext extends Type implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Coding
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -242,10 +242,10 @@ public class UsageContext extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCoding(value); // Coding
+          this.code = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -255,9 +255,9 @@ public class UsageContext extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCoding(value); // Coding
+          this.code = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;

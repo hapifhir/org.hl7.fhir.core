@@ -57,7 +57,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceType;
@@ -277,7 +277,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		      cacheResource(e.getResource());
 	      }
 		  }
-		} else if (f instanceof MetadataResource) {
+		} else if (f instanceof CanonicalResource) {
 		  if (filter == null || filter.isOkToLoad(f)) {
 		    cacheResource(f);
 		  }

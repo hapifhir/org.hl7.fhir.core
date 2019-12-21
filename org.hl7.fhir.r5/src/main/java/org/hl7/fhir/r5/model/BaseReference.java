@@ -26,7 +26,7 @@ import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 import org.hl7.fhir.instance.model.api.IIdType;
 
-public abstract class BaseReference extends Type implements IBaseReference, ICompositeType {
+public abstract class BaseReference extends DataType implements IBaseReference, ICompositeType {
 
     /**
      * This is not a part of the "wire format" resource, but can be changed/accessed by parsers

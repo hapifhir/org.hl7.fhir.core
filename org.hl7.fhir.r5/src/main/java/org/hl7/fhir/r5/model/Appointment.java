@@ -815,21 +815,21 @@ A specific time might or might not be pre-allocated.
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         case -393139297: // required
-          value = new ParticipantRequiredEnumFactory().fromType(castToCode(value));
+          value = new ParticipantRequiredEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.required = (Enumeration) value; // Enumeration<ParticipantRequired>
           return value;
         case -892481550: // status
-          value = new ParticipationStatusEnumFactory().fromType(castToCode(value));
+          value = new ParticipationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ParticipationStatus>
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -839,17 +839,17 @@ A specific time might or might not be pre-allocated.
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("required")) {
-          value = new ParticipantRequiredEnumFactory().fromType(castToCode(value));
+          value = new ParticipantRequiredEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.required = (Enumeration) value; // Enumeration<ParticipantRequired>
         } else if (name.equals("status")) {
-          value = new ParticipationStatusEnumFactory().fromType(castToCode(value));
+          value = new ParticipationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ParticipationStatus>
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -2288,71 +2288,71 @@ The duration (usually in minutes) could also be provided to indicate the length 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new AppointmentStatusEnumFactory().fromType(castToCode(value));
+          value = new AppointmentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AppointmentStatus>
           return value;
         case 987811551: // cancelationReason
-          this.cancelationReason = castToCodeableConcept(value); // CodeableConcept
+          this.cancelationReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1281188563: // serviceCategory
-          this.getServiceCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1928370289: // serviceType
-          this.getServiceType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getServiceType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1694759682: // specialty
-          this.getSpecialty().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1596426375: // appointmentType
-          this.appointmentType = castToCodeableConcept(value); // CodeableConcept
+          this.appointmentType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1165461084: // priority
-          this.priority = castToUnsignedInt(value); // UnsignedIntType
+          this.priority = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1248768647: // supportingInformation
-          this.getSupportingInformation().add(castToReference(value)); // Reference
+          this.getSupportingInformation().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 109757538: // start
-          this.start = castToInstant(value); // InstantType
+          this.start = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 100571: // end
-          this.end = castToInstant(value); // InstantType
+          this.end = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -413630573: // minutesDuration
-          this.minutesDuration = castToPositiveInt(value); // PositiveIntType
+          this.minutesDuration = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 3533310: // slot
-          this.getSlot().add(castToReference(value)); // Reference
+          this.getSlot().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         case 737543241: // patientInstruction
-          this.patientInstruction = castToString(value); // StringType
+          this.patientInstruction = TypeConvertor.castToString(value); // StringType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 767422259: // participant
           this.getParticipant().add((AppointmentParticipantComponent) value); // AppointmentParticipantComponent
           return value;
         case -897241393: // requestedPeriod
-          this.getRequestedPeriod().add(castToPeriod(value)); // Period
+          this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2362,50 +2362,50 @@ The duration (usually in minutes) could also be provided to indicate the length 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new AppointmentStatusEnumFactory().fromType(castToCode(value));
+          value = new AppointmentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AppointmentStatus>
         } else if (name.equals("cancelationReason")) {
-          this.cancelationReason = castToCodeableConcept(value); // CodeableConcept
+          this.cancelationReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("serviceCategory")) {
-          this.getServiceCategory().add(castToCodeableConcept(value));
+          this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviceType")) {
-          this.getServiceType().add(castToCodeableConcept(value));
+          this.getServiceType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specialty")) {
-          this.getSpecialty().add(castToCodeableConcept(value));
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("appointmentType")) {
-          this.appointmentType = castToCodeableConcept(value); // CodeableConcept
+          this.appointmentType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("priority")) {
-          this.priority = castToUnsignedInt(value); // UnsignedIntType
+          this.priority = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("supportingInformation")) {
-          this.getSupportingInformation().add(castToReference(value));
+          this.getSupportingInformation().add(TypeConvertor.castToReference(value));
         } else if (name.equals("start")) {
-          this.start = castToInstant(value); // InstantType
+          this.start = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("end")) {
-          this.end = castToInstant(value); // InstantType
+          this.end = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("minutesDuration")) {
-          this.minutesDuration = castToPositiveInt(value); // PositiveIntType
+          this.minutesDuration = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("slot")) {
-          this.getSlot().add(castToReference(value));
+          this.getSlot().add(TypeConvertor.castToReference(value));
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("patientInstruction")) {
-          this.patientInstruction = castToString(value); // StringType
+          this.patientInstruction = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("participant")) {
           this.getParticipant().add((AppointmentParticipantComponent) value);
         } else if (name.equals("requestedPeriod")) {
-          this.getRequestedPeriod().add(castToPeriod(value));
+          this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value));
         } else
           return super.setProperty(name, value);
         return value;

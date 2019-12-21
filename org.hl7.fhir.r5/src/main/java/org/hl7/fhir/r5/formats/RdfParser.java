@@ -403,7 +403,7 @@ public class RdfParser extends RdfParserBase {
     if (element.hasUrlElement())
       composeUrl(t, "Attachment", "url", element.getUrlElement(), -1);
     if (element.hasSizeElement())
-      composeUnsignedInt(t, "Attachment", "size", element.getSizeElement(), -1);
+      composeInteger64(t, "Attachment", "size", element.getSizeElement(), -1);
     if (element.hasHashElement())
       composeBase64Binary(t, "Attachment", "hash", element.getHashElement(), -1);
     if (element.hasTitleElement())
@@ -18411,7 +18411,7 @@ public class RdfParser extends RdfParserBase {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
   }
 
-  protected void composeType(Complex parent, String parentType, String name, Type value, int index) {
+  protected void composeType(Complex parent, String parentType, String name, DataType value, int index) {
     if (value == null)
       return;
     else if (value instanceof DateType)

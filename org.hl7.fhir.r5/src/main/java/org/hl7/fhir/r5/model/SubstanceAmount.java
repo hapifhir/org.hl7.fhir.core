@@ -172,10 +172,10 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1841058617: // lowLimit
-          this.lowLimit = castToQuantity(value); // Quantity
+          this.lowLimit = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -710757575: // highLimit
-          this.highLimit = castToQuantity(value); // Quantity
+          this.highLimit = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -185,9 +185,9 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("lowLimit")) {
-          this.lowLimit = castToQuantity(value); // Quantity
+          this.lowLimit = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("highLimit")) {
-          this.highLimit = castToQuantity(value); // Quantity
+          this.highLimit = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;
@@ -275,7 +275,7 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
      */
     @Child(name = "amount", type = {Quantity.class, Range.class, StringType.class}, order=0, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field", formalDefinition="Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field." )
-    protected Type amount;
+    protected DataType amount;
 
     /**
      * Most elements that require a quantitative value will also have a field called amount type. Amount type should always be specified because the actual value of the amount is often dependent on it. EXAMPLE: In capturing the actual relative amounts of substances or molecular fragments it is essential to indicate whether the amount refers to a mole ratio or weight ratio. For any given element an effort should be made to use same the amount type for all related definitional elements.
@@ -310,7 +310,7 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
     /**
      * @return {@link #amount} (Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.)
      */
-    public Type getAmount() { 
+    public DataType getAmount() { 
       return this.amount;
     }
 
@@ -366,7 +366,7 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
     /**
      * @param value {@link #amount} (Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.)
      */
-    public SubstanceAmount setAmount(Type value) { 
+    public SubstanceAmount setAmount(DataType value) { 
       if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof StringType))
         throw new Error("Not the right type for SubstanceAmount.amount[x]: "+value.fhirType());
       this.amount = value;
@@ -510,13 +510,13 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1413853096: // amount
-          this.amount = castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // Type
           return value;
         case -1424857166: // amountType
-          this.amountType = castToCodeableConcept(value); // CodeableConcept
+          this.amountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1424876123: // amountText
-          this.amountText = castToString(value); // StringType
+          this.amountText = TypeConvertor.castToString(value); // StringType
           return value;
         case -1912545102: // referenceRange
           this.referenceRange = (SubstanceAmountReferenceRangeComponent) value; // SubstanceAmountReferenceRangeComponent
@@ -529,11 +529,11 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("amount[x]")) {
-          this.amount = castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // Type
         } else if (name.equals("amountType")) {
-          this.amountType = castToCodeableConcept(value); // CodeableConcept
+          this.amountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amountText")) {
-          this.amountText = castToString(value); // StringType
+          this.amountText = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("referenceRange")) {
           this.referenceRange = (SubstanceAmountReferenceRangeComponent) value; // SubstanceAmountReferenceRangeComponent
         } else

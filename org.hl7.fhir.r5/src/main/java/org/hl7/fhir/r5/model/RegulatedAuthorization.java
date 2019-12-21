@@ -78,7 +78,7 @@ public class RegulatedAuthorization extends DomainResource {
          */
         @Child(name = "date", type = {Period.class, DateTimeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Another date associated with the authorization", formalDefinition="Another date associated with the authorization." )
-        protected Type date;
+        protected DataType date;
 
         /**
          * Type of this date, for example the data exclusitity period for a medicinal product.
@@ -99,7 +99,7 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * Constructor
      */
-      public RegulatedAuthorizationRelatedDateComponent(Type date, CodeableConcept type) {
+      public RegulatedAuthorizationRelatedDateComponent(DataType date, CodeableConcept type) {
         super();
         this.date = date;
         this.type = type;
@@ -108,7 +108,7 @@ public class RegulatedAuthorization extends DomainResource {
         /**
          * @return {@link #date} (Another date associated with the authorization.)
          */
-        public Type getDate() { 
+        public DataType getDate() { 
           return this.date;
         }
 
@@ -149,7 +149,7 @@ public class RegulatedAuthorization extends DomainResource {
         /**
          * @param value {@link #date} (Another date associated with the authorization.)
          */
-        public RegulatedAuthorizationRelatedDateComponent setDate(Type value) { 
+        public RegulatedAuthorizationRelatedDateComponent setDate(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof DateTimeType))
             throw new Error("Not the right type for RegulatedAuthorization.relatedDate.date[x]: "+value.fhirType());
           this.date = value;
@@ -213,10 +213,10 @@ public class RegulatedAuthorization extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3076014: // date
-          this.date = castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // Type
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -226,9 +226,9 @@ public class RegulatedAuthorization extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("date[x]")) {
-          this.date = castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // Type
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -344,7 +344,7 @@ public class RegulatedAuthorization extends DomainResource {
          */
         @Child(name = "date", type = {Period.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Date of case", formalDefinition="Date of case." )
-        protected Type date;
+        protected DataType date;
 
         /**
          * Applcations submitted to obtain a marketing authorization. Steps within the longer running case or procedure.
@@ -437,7 +437,7 @@ public class RegulatedAuthorization extends DomainResource {
         /**
          * @return {@link #date} (Date of case.)
          */
-        public Type getDate() { 
+        public DataType getDate() { 
           return this.date;
         }
 
@@ -478,7 +478,7 @@ public class RegulatedAuthorization extends DomainResource {
         /**
          * @param value {@link #date} (Date of case.)
          */
-        public RegulatedAuthorizationCaseComponent setDate(Type value) { 
+        public RegulatedAuthorizationCaseComponent setDate(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof DateTimeType))
             throw new Error("Not the right type for RegulatedAuthorization.case.date[x]: "+value.fhirType());
           this.date = value;
@@ -580,16 +580,16 @@ public class RegulatedAuthorization extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3076014: // date
-          this.date = castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // Type
           return value;
         case 1554253136: // application
           this.getApplication().add((RegulatedAuthorizationCaseComponent) value); // RegulatedAuthorizationCaseComponent
@@ -602,13 +602,13 @@ public class RegulatedAuthorization extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("date[x]")) {
-          this.date = castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // Type
         } else if (name.equals("application")) {
           this.getApplication().add((RegulatedAuthorizationCaseComponent) value);
         } else
@@ -1428,43 +1428,43 @@ public class RegulatedAuthorization extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -934795532: // region
-          this.getRegion().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getRegion().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -892481550: // status
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 247524032: // statusDate
-          this.statusDate = castToDateTime(value); // DateTimeType
+          this.statusDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1434195053: // validityPeriod
-          this.validityPeriod = castToPeriod(value); // Period
+          this.validityPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 93508670: // basis
-          this.getBasis().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBasis().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1112535673: // relatedDate
           this.getRelatedDate().add((RegulatedAuthorizationRelatedDateComponent) value); // RegulatedAuthorizationRelatedDateComponent
           return value;
         case 1459432557: // jurisdictionalAuthorization
-          this.getJurisdictionalAuthorization().add(castToReference(value)); // Reference
+          this.getJurisdictionalAuthorization().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1211707988: // holder
-          this.holder = castToReference(value); // Reference
+          this.holder = TypeConvertor.castToReference(value); // Reference
           return value;
         case 414760449: // regulator
-          this.regulator = castToReference(value); // Reference
+          this.regulator = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3046192: // case
           this.case_ = (RegulatedAuthorizationCaseComponent) value; // RegulatedAuthorizationCaseComponent
@@ -1477,31 +1477,31 @@ public class RegulatedAuthorization extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("region")) {
-          this.getRegion().add(castToCodeableConcept(value));
+          this.getRegion().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("status")) {
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("statusDate")) {
-          this.statusDate = castToDateTime(value); // DateTimeType
+          this.statusDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("validityPeriod")) {
-          this.validityPeriod = castToPeriod(value); // Period
+          this.validityPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("basis")) {
-          this.getBasis().add(castToCodeableConcept(value));
+          this.getBasis().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("relatedDate")) {
           this.getRelatedDate().add((RegulatedAuthorizationRelatedDateComponent) value);
         } else if (name.equals("jurisdictionalAuthorization")) {
-          this.getJurisdictionalAuthorization().add(castToReference(value));
+          this.getJurisdictionalAuthorization().add(TypeConvertor.castToReference(value));
         } else if (name.equals("holder")) {
-          this.holder = castToReference(value); // Reference
+          this.holder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("regulator")) {
-          this.regulator = castToReference(value); // Reference
+          this.regulator = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("case")) {
           this.case_ = (RegulatedAuthorizationCaseComponent) value; // RegulatedAuthorizationCaseComponent
         } else

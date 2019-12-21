@@ -553,13 +553,13 @@ public class QuestionnaireResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1102667083: // linkId
-          this.linkId = castToString(value); // StringType
+          this.linkId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = castToUri(value); // UriType
+          this.definition = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case -1412808770: // answer
           this.getAnswer().add((QuestionnaireResponseItemAnswerComponent) value); // QuestionnaireResponseItemAnswerComponent
@@ -575,11 +575,11 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("linkId")) {
-          this.linkId = castToString(value); // StringType
+          this.linkId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition")) {
-          this.definition = castToUri(value); // UriType
+          this.definition = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("answer")) {
           this.getAnswer().add((QuestionnaireResponseItemAnswerComponent) value);
         } else if (name.equals("item")) {
@@ -701,7 +701,7 @@ public class QuestionnaireResponse extends DomainResource {
         @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Single-valued answer to the question", formalDefinition="The answer (or one of the answers) provided by the respondent to the question." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-answers")
-        protected Type value;
+        protected DataType value;
 
         /**
          * Nested groups and/or questions found within this particular answer.
@@ -722,7 +722,7 @@ public class QuestionnaireResponse extends DomainResource {
         /**
          * @return {@link #value} (The answer (or one of the answers) provided by the respondent to the question.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -913,7 +913,7 @@ public class QuestionnaireResponse extends DomainResource {
         /**
          * @param value {@link #value} (The answer (or one of the answers) provided by the respondent to the question.)
          */
-        public QuestionnaireResponseItemAnswerComponent setValue(Type value) { 
+        public QuestionnaireResponseItemAnswerComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
             throw new Error("Not the right type for QuestionnaireResponse.item.answer.value[x]: "+value.fhirType());
           this.value = value;
@@ -1016,7 +1016,7 @@ public class QuestionnaireResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         case 3242771: // item
           this.getItem().add((QuestionnaireResponseItemComponent) value); // QuestionnaireResponseItemComponent
@@ -1029,7 +1029,7 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else if (name.equals("item")) {
           this.getItem().add((QuestionnaireResponseItemComponent) value);
         } else
@@ -1736,35 +1736,35 @@ public class QuestionnaireResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1017049693: // questionnaire
-          this.questionnaire = castToCanonical(value); // CanonicalType
+          this.questionnaire = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -892481550: // status
-          value = new QuestionnaireResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new QuestionnaireResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<QuestionnaireResponseStatus>
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1433073514: // authored
-          this.authored = castToDateTime(value); // DateTimeType
+          this.authored = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case -896505829: // source
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3242771: // item
           this.getItem().add((QuestionnaireResponseItemComponent) value); // QuestionnaireResponseItemComponent
@@ -1777,26 +1777,26 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("questionnaire")) {
-          this.questionnaire = castToCanonical(value); // CanonicalType
+          this.questionnaire = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("status")) {
-          value = new QuestionnaireResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new QuestionnaireResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<QuestionnaireResponseStatus>
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("authored")) {
-          this.authored = castToDateTime(value); // DateTimeType
+          this.authored = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("source")) {
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("item")) {
           this.getItem().add((QuestionnaireResponseItemComponent) value);
         } else

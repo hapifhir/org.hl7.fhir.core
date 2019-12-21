@@ -230,7 +230,7 @@ public class JsonParser extends JsonParserBase {
       res.setUrlElement(parseUri(json.get("url").getAsString()));
     if (json.has("_url"))
       parseElementProperties(json.getAsJsonObject("_url"), res.getUrlElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -408,7 +408,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_url"))
       parseElementProperties(json.getAsJsonObject("_url"), res.getUrlElement());
     if (json.has("size"))
-      res.setSizeElement(parseUnsignedInt(json.get("size").getAsString()));
+      res.setSizeElement(parseInteger64(json.get("size").getAsLong()));
     if (json.has("_size"))
       parseElementProperties(json.getAsJsonObject("_size"), res.getSizeElement());
     if (json.has("hash"))
@@ -482,7 +482,7 @@ public class JsonParser extends JsonParserBase {
           parseElementProperties(array.get(i).getAsJsonObject(), res.getProfile().get(i));
       }
     };
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("mustSupport")) {
@@ -568,7 +568,7 @@ public class JsonParser extends JsonParserBase {
       res.setSearchParamElement(parseString(json.get("searchParam").getAsString()));
     if (json.has("_searchParam"))
       parseElementProperties(json.getAsJsonObject("_searchParam"), res.getSearchParamElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -619,7 +619,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_patientInstruction"), res.getPatientInstructionElement());
     if (json.has("timing"))
       res.setTiming(parseTiming(json.getAsJsonObject("timing")));
-    Type asNeeded = parseType("asNeeded", json);
+    DataType asNeeded = parseType("asNeeded", json);
     if (asNeeded != null)
       res.setAsNeeded(asNeeded);
     if (json.has("site"))
@@ -652,10 +652,10 @@ public class JsonParser extends JsonParserBase {
     parseTypeProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type dose = parseType("dose", json);
+    DataType dose = parseType("dose", json);
     if (dose != null)
       res.setDose(dose);
-    Type rate = parseType("rate", json);
+    DataType rate = parseType("rate", json);
     if (rate != null)
       res.setRate(rate);
   }
@@ -833,7 +833,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseSubstanceAmountProperties(JsonObject json, SubstanceAmount res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type amount = parseType("amount", json);
+    DataType amount = parseType("amount", json);
     if (amount != null)
       res.setAmount(amount);
     if (json.has("amountType"))
@@ -1068,7 +1068,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parsePopulationProperties(JsonObject json, Population res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type age = parseType("age", json);
+    DataType age = parseType("age", json);
     if (age != null)
       res.setAge(age);
     if (json.has("gender"))
@@ -1207,7 +1207,7 @@ public class JsonParser extends JsonParserBase {
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(json.getAsJsonObject("_name"), res.getNameElement());
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
     if (json.has("data")) {
@@ -1336,7 +1336,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseAnnotationProperties(JsonObject json, Annotation res) throws IOException, FHIRFormatError {
     parseTypeProperties(json, res);
-    Type author = parseType("author", json);
+    DataType author = parseType("author", json);
     if (author != null)
       res.setAuthor(author);
     if (json.has("time"))
@@ -1401,7 +1401,7 @@ public class JsonParser extends JsonParserBase {
     parseTypeProperties(json, res);
     if (json.has("code"))
       res.setCode(parseCoding(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -1509,7 +1509,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseTimingTimingRepeatComponentProperties(JsonObject json, Timing owner, Timing.TimingRepeatComponent res) throws IOException, FHIRFormatError {
     parseTypeProperties(json, res);
-    Type bounds = parseType("bounds", json);
+    DataType bounds = parseType("bounds", json);
     if (bounds != null)
       res.setBounds(bounds);
     if (json.has("count"))
@@ -1555,14 +1555,14 @@ public class JsonParser extends JsonParserBase {
     if (json.has("dayOfWeek")) {
       JsonArray array = json.getAsJsonArray("dayOfWeek");
       for (int i = 0; i < array.size(); i++) {
-        res.getDayOfWeek().add(parseEnumeration(array.get(i).getAsString(), Timing.DayOfWeek.NULL, new Timing.DayOfWeekEnumFactory()));
+        res.getDayOfWeek().add(parseEnumeration(array.get(i).getAsString(), Timing.DaysOfWeek.NULL, new Timing.DaysOfWeekEnumFactory()));
       }
     };
     if (json.has("_dayOfWeek")) {
       JsonArray array = json.getAsJsonArray("_dayOfWeek");
       for (int i = 0; i < array.size(); i++) {
         if (i == res.getDayOfWeek().size())
-          res.getDayOfWeek().add(parseEnumeration(null, Timing.DayOfWeek.NULL, new Timing.DayOfWeekEnumFactory()));
+          res.getDayOfWeek().add(parseEnumeration(null, Timing.DaysOfWeek.NULL, new Timing.DaysOfWeekEnumFactory()));
         if (array.get(i) instanceof JsonObject) 
           parseElementProperties(array.get(i).getAsJsonObject(), res.getDayOfWeek().get(i));
       }
@@ -1823,7 +1823,7 @@ public class JsonParser extends JsonParserBase {
         res.getType().add(parseElementDefinitionTypeRefComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type defaultValue = parseType("defaultValue", json);
+    DataType defaultValue = parseType("defaultValue", json);
     if (defaultValue != null)
       res.setDefaultValue(defaultValue);
     if (json.has("meaningWhenMissing"))
@@ -1834,10 +1834,10 @@ public class JsonParser extends JsonParserBase {
       res.setOrderMeaningElement(parseString(json.get("orderMeaning").getAsString()));
     if (json.has("_orderMeaning"))
       parseElementProperties(json.getAsJsonObject("_orderMeaning"), res.getOrderMeaningElement());
-    Type fixed = parseType("fixed", json);
+    DataType fixed = parseType("fixed", json);
     if (fixed != null)
       res.setFixed(fixed);
-    Type pattern = parseType("pattern", json);
+    DataType pattern = parseType("pattern", json);
     if (pattern != null)
       res.setPattern(pattern);
     if (json.has("example")) {
@@ -1846,10 +1846,10 @@ public class JsonParser extends JsonParserBase {
         res.getExample().add(parseElementDefinitionElementDefinitionExampleComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type minValue = parseType("minValue", json);
+    DataType minValue = parseType("minValue", json);
     if (minValue != null)
       res.setMinValue(minValue);
-    Type maxValue = parseType("maxValue", json);
+    DataType maxValue = parseType("maxValue", json);
     if (maxValue != null)
       res.setMaxValue(maxValue);
     if (json.has("maxLength"))
@@ -2046,7 +2046,7 @@ public class JsonParser extends JsonParserBase {
       res.setLabelElement(parseString(json.get("label").getAsString()));
     if (json.has("_label"))
       parseElementProperties(json.getAsJsonObject("_label"), res.getLabelElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -2189,7 +2189,7 @@ public class JsonParser extends JsonParserBase {
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(json.getAsJsonObject("_name"), res.getNameElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("resource"))
@@ -2349,7 +2349,7 @@ public class JsonParser extends JsonParserBase {
       res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
     if (json.has("_experimental"))
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -2477,7 +2477,7 @@ public class JsonParser extends JsonParserBase {
       res.setDoNotPerformElement(parseBoolean(json.get("doNotPerform").getAsBoolean()));
     if (json.has("_doNotPerform"))
       parseElementProperties(json.getAsJsonObject("_doNotPerform"), res.getDoNotPerformElement());
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
     if (json.has("location"))
@@ -2488,7 +2488,7 @@ public class JsonParser extends JsonParserBase {
         res.getParticipant().add(parseActivityDefinitionActivityDefinitionParticipantComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type product = parseType("product", json);
+    DataType product = parseType("product", json);
     if (product != null)
       res.setProduct(product);
     if (json.has("quantity"))
@@ -2729,7 +2729,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("detected"))
@@ -2802,7 +2802,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseAdverseEventAdverseEventSuspectEntityComponentProperties(JsonObject json, AdverseEvent owner, AdverseEvent.AdverseEventSuspectEntityComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type instance = parseType("instance", json);
+    DataType instance = parseType("instance", json);
     if (instance != null)
       res.setInstance(instance);
     if (json.has("causality"))
@@ -2888,7 +2888,7 @@ public class JsonParser extends JsonParserBase {
       res.setPatient(parseReference(json.getAsJsonObject("patient")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type onset = parseType("onset", json);
+    DataType onset = parseType("onset", json);
     if (onset != null)
       res.setOnset(onset);
     if (json.has("recordedDate"))
@@ -3350,7 +3350,7 @@ public class JsonParser extends JsonParserBase {
       res.setTypeElement(parseString(json.get("type").getAsString()));
     if (json.has("_type"))
       parseElementProperties(json.getAsJsonObject("_type"), res.getTypeElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -3471,7 +3471,7 @@ public class JsonParser extends JsonParserBase {
       res.setCollector(parseReference(json.getAsJsonObject("collector")));
     if (json.has("source"))
       res.setSource(parseReference(json.getAsJsonObject("source")));
-    Type collected = parseType("collected", json);
+    DataType collected = parseType("collected", json);
     if (collected != null)
       res.setCollected(collected);
   }
@@ -3492,7 +3492,7 @@ public class JsonParser extends JsonParserBase {
       res.setProcedure(parseCodeableConcept(json.getAsJsonObject("procedure")));
     if (json.has("additive"))
       res.setAdditive(parseReference(json.getAsJsonObject("additive")));
-    Type time = parseType("time", json);
+    DataType time = parseType("time", json);
     if (time != null)
       res.setTime(time);
   }
@@ -3509,7 +3509,7 @@ public class JsonParser extends JsonParserBase {
       res.setDescriptionElement(parseString(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(json.getAsJsonObject("_description"), res.getDescriptionElement());
-    Type time = parseType("time", json);
+    DataType time = parseType("time", json);
     if (time != null)
       res.setTime(time);
   }
@@ -4997,12 +4997,12 @@ public class JsonParser extends JsonParserBase {
       res.setDoNotPerformElement(parseBoolean(json.get("doNotPerform").getAsBoolean()));
     if (json.has("_doNotPerform"))
       parseElementProperties(json.getAsJsonObject("_doNotPerform"), res.getDoNotPerformElement());
-    Type scheduled = parseType("scheduled", json);
+    DataType scheduled = parseType("scheduled", json);
     if (scheduled != null)
       res.setScheduled(scheduled);
     if (json.has("location"))
       res.setLocation(parseReference(json.getAsJsonObject("location")));
-    Type reported = parseType("reported", json);
+    DataType reported = parseType("reported", json);
     if (reported != null)
       res.setReported(reported);
     if (json.has("performer")) {
@@ -5011,7 +5011,7 @@ public class JsonParser extends JsonParserBase {
         res.getPerformer().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type product = parseType("product", json);
+    DataType product = parseType("product", json);
     if (product != null)
       res.setProduct(product);
     if (json.has("dailyAmount"))
@@ -5108,7 +5108,7 @@ public class JsonParser extends JsonParserBase {
       res.setMember(parseReference(json.getAsJsonObject("member")));
     if (json.has("onBehalfOf"))
       res.setOnBehalfOf(parseReference(json.getAsJsonObject("onBehalfOf")));
-    Type coverage = parseType("coverage", json);
+    DataType coverage = parseType("coverage", json);
     if (coverage != null)
       res.setCoverage(coverage);
   }
@@ -5263,7 +5263,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("context"))
       res.setContext(parseReference(json.getAsJsonObject("context")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("performer")) {
@@ -5314,7 +5314,7 @@ public class JsonParser extends JsonParserBase {
         res.getService().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type product = parseType("product", json);
+    DataType product = parseType("product", json);
     if (product != null)
       res.setProduct(product);
     if (json.has("account")) {
@@ -5734,10 +5734,10 @@ public class JsonParser extends JsonParserBase {
       res.setCategory(parseCodeableConcept(json.getAsJsonObject("category")));
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("reason"))
@@ -5756,7 +5756,7 @@ public class JsonParser extends JsonParserBase {
       res.setSequenceElement(parsePositiveInt(json.get("sequence").getAsString()));
     if (json.has("_sequence"))
       parseElementProperties(json.getAsJsonObject("_sequence"), res.getSequenceElement());
-    Type diagnosis = parseType("diagnosis", json);
+    DataType diagnosis = parseType("diagnosis", json);
     if (diagnosis != null)
       res.setDiagnosis(diagnosis);
     if (json.has("type")) {
@@ -5793,7 +5793,7 @@ public class JsonParser extends JsonParserBase {
       res.setDateElement(parseDateTime(json.get("date").getAsString()));
     if (json.has("_date"))
       parseElementProperties(json.getAsJsonObject("_date"), res.getDateElement());
-    Type procedure = parseType("procedure", json);
+    DataType procedure = parseType("procedure", json);
     if (procedure != null)
       res.setProcedure(procedure);
     if (json.has("udi")) {
@@ -5861,7 +5861,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_date"), res.getDateElement());
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type location = parseType("location", json);
+    DataType location = parseType("location", json);
     if (location != null)
       res.setLocation(location);
   }
@@ -5956,10 +5956,10 @@ public class JsonParser extends JsonParserBase {
         res.getProgramCode().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type serviced = parseType("serviced", json);
+    DataType serviced = parseType("serviced", json);
     if (serviced != null)
       res.setServiced(serviced);
-    Type location = parseType("location", json);
+    DataType location = parseType("location", json);
     if (location != null)
       res.setLocation(location);
     if (json.has("quantity"))
@@ -6424,10 +6424,10 @@ public class JsonParser extends JsonParserBase {
         res.getProgramCode().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type serviced = parseType("serviced", json);
+    DataType serviced = parseType("serviced", json);
     if (serviced != null)
       res.setServiced(serviced);
-    Type location = parseType("location", json);
+    DataType location = parseType("location", json);
     if (location != null)
       res.setLocation(location);
     if (json.has("quantity"))
@@ -6723,7 +6723,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type effective = parseType("effective", json);
+    DataType effective = parseType("effective", json);
     if (effective != null)
       res.setEffective(effective);
     if (json.has("date"))
@@ -6897,7 +6897,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("therapyRelationshipType"))
       res.setTherapyRelationshipType(parseCodeableConcept(json.getAsJsonObject("therapyRelationshipType")));
-    Type medication = parseType("medication", json);
+    DataType medication = parseType("medication", json);
     if (medication != null)
       res.setMedication(medication);
   }
@@ -6970,7 +6970,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseClinicalUseIssueClinicalUseIssueInteractionInteractantComponentProperties(JsonObject json, ClinicalUseIssue owner, ClinicalUseIssue.ClinicalUseIssueInteractionInteractantComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type item = parseType("item", json);
+    DataType item = parseType("item", json);
     if (item != null)
       res.setItem(item);
   }
@@ -7254,7 +7254,7 @@ public class JsonParser extends JsonParserBase {
       res.setCodeElement(parseCode(json.get("code").getAsString()));
     if (json.has("_code"))
       parseElementProperties(json.getAsJsonObject("_code"), res.getCodeElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -7405,7 +7405,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseCommunicationCommunicationPayloadComponentProperties(JsonObject json, Communication owner, Communication.CommunicationPayloadComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type content = parseType("content", json);
+    DataType content = parseType("content", json);
     if (content != null)
       res.setContent(content);
   }
@@ -7480,7 +7480,7 @@ public class JsonParser extends JsonParserBase {
         res.getPayload().add(parseCommunicationRequestCommunicationRequestPayloadComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("authoredOn"))
@@ -7529,7 +7529,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseCommunicationRequestCommunicationRequestPayloadComponentProperties(JsonObject json, CommunicationRequest owner, CommunicationRequest.CommunicationRequestPayloadComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type content = parseType("content", json);
+    DataType content = parseType("content", json);
     if (content != null)
       res.setContent(content);
   }
@@ -7743,7 +7743,7 @@ public class JsonParser extends JsonParserBase {
       res.setCodeElement(parseEnumeration(json.get("code").getAsString(), Composition.DocumentRelationshipType.NULL, new Composition.DocumentRelationshipTypeEnumFactory()));
     if (json.has("_code"))
       parseElementProperties(json.getAsJsonObject("_code"), res.getCodeElement());
-    Type target = parseType("target", json);
+    DataType target = parseType("target", json);
     if (target != null)
       res.setTarget(target);
   }
@@ -7890,10 +7890,10 @@ public class JsonParser extends JsonParserBase {
       res.setCopyrightElement(parseMarkdown(json.get("copyright").getAsString()));
     if (json.has("_copyright"))
       parseElementProperties(json.getAsJsonObject("_copyright"), res.getCopyrightElement());
-    Type source = parseType("source", json);
+    DataType source = parseType("source", json);
     if (source != null)
       res.setSource(source);
-    Type target = parseType("target", json);
+    DataType target = parseType("target", json);
     if (target != null)
       res.setTarget(target);
     if (json.has("group")) {
@@ -8094,10 +8094,10 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type onset = parseType("onset", json);
+    DataType onset = parseType("onset", json);
     if (onset != null)
       res.setOnset(onset);
-    Type abatement = parseType("abatement", json);
+    DataType abatement = parseType("abatement", json);
     if (abatement != null)
       res.setAbatement(abatement);
     if (json.has("recordedDate"))
@@ -8357,7 +8357,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_type"), res.getTypeElement());
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -8699,7 +8699,7 @@ public class JsonParser extends JsonParserBase {
       res.setAuthor(parseReference(json.getAsJsonObject("author")));
     if (json.has("scope"))
       res.setScope(parseCodeableConcept(json.getAsJsonObject("scope")));
-    Type topic = parseType("topic", json);
+    DataType topic = parseType("topic", json);
     if (topic != null)
       res.setTopic(topic);
     if (json.has("type"))
@@ -8754,7 +8754,7 @@ public class JsonParser extends JsonParserBase {
         res.getRule().add(parseContractComputableLanguageComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type legallyBinding = parseType("legallyBinding", json);
+    DataType legallyBinding = parseType("legallyBinding", json);
     if (legallyBinding != null)
       res.setLegallyBinding(legallyBinding);
   }
@@ -8803,7 +8803,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_issued"), res.getIssuedElement());
     if (json.has("applies"))
       res.setApplies(parsePeriod(json.getAsJsonObject("applies")));
-    Type topic = parseType("topic", json);
+    DataType topic = parseType("topic", json);
     if (topic != null)
       res.setTopic(topic);
     if (json.has("type"))
@@ -8981,7 +8981,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseContractAnswerComponentProperties(JsonObject json, Contract owner, Contract.AnswerComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -9122,7 +9122,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseContractValuedItemComponentProperties(JsonObject json, Contract owner, Contract.ValuedItemComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type entity = parseType("entity", json);
+    DataType entity = parseType("entity", json);
     if (entity != null)
       res.setEntity(entity);
     if (json.has("identifier"))
@@ -9245,7 +9245,7 @@ public class JsonParser extends JsonParserBase {
           parseElementProperties(array.get(i).getAsJsonObject(), res.getContextLinkId().get(i));
       }
     };
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("requester")) {
@@ -9405,7 +9405,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseContractFriendlyLanguageComponentProperties(JsonObject json, Contract owner, Contract.FriendlyLanguageComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type content = parseType("content", json);
+    DataType content = parseType("content", json);
     if (content != null)
       res.setContent(content);
   }
@@ -9418,7 +9418,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseContractLegalLanguageComponentProperties(JsonObject json, Contract owner, Contract.LegalLanguageComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type content = parseType("content", json);
+    DataType content = parseType("content", json);
     if (content != null)
       res.setContent(content);
   }
@@ -9431,7 +9431,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseContractComputableLanguageComponentProperties(JsonObject json, Contract owner, Contract.ComputableLanguageComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type content = parseType("content", json);
+    DataType content = parseType("content", json);
     if (content != null)
       res.setContent(content);
   }
@@ -9540,7 +9540,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("exception")) {
@@ -9602,7 +9602,7 @@ public class JsonParser extends JsonParserBase {
     };
     if (json.has("patient"))
       res.setPatient(parseReference(json.getAsJsonObject("patient")));
-    Type serviced = parseType("serviced", json);
+    DataType serviced = parseType("serviced", json);
     if (serviced != null)
       res.setServiced(serviced);
     if (json.has("created"))
@@ -9740,7 +9740,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseCoverageEligibilityRequestDiagnosisComponentProperties(JsonObject json, CoverageEligibilityRequest owner, CoverageEligibilityRequest.DiagnosisComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type diagnosis = parseType("diagnosis", json);
+    DataType diagnosis = parseType("diagnosis", json);
     if (diagnosis != null)
       res.setDiagnosis(diagnosis);
   }
@@ -9780,7 +9780,7 @@ public class JsonParser extends JsonParserBase {
     };
     if (json.has("patient"))
       res.setPatient(parseReference(json.getAsJsonObject("patient")));
-    Type serviced = parseType("serviced", json);
+    DataType serviced = parseType("serviced", json);
     if (serviced != null)
       res.setServiced(serviced);
     if (json.has("created"))
@@ -9915,10 +9915,10 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type allowed = parseType("allowed", json);
+    DataType allowed = parseType("allowed", json);
     if (allowed != null)
       res.setAllowed(allowed);
-    Type used = parseType("used", json);
+    DataType used = parseType("used", json);
     if (used != null)
       res.setUsed(used);
   }
@@ -9961,7 +9961,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_severity"), res.getSeverityElement());
     if (json.has("patient"))
       res.setPatient(parseReference(json.getAsJsonObject("patient")));
-    Type identified = parseType("identified", json);
+    DataType identified = parseType("identified", json);
     if (identified != null)
       res.setIdentified(identified);
     if (json.has("author"))
@@ -10286,7 +10286,7 @@ public class JsonParser extends JsonParserBase {
         res.getUdiDeviceIdentifier().add(parseDeviceDefinitionDeviceDefinitionUdiDeviceIdentifierComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type manufacturer = parseType("manufacturer", json);
+    DataType manufacturer = parseType("manufacturer", json);
     if (manufacturer != null)
       res.setManufacturer(manufacturer);
     if (json.has("deviceName")) {
@@ -10644,7 +10644,7 @@ public class JsonParser extends JsonParserBase {
       res.setPriorityElement(parseEnumeration(json.get("priority").getAsString(), DeviceRequest.RequestPriority.NULL, new DeviceRequest.RequestPriorityEnumFactory()));
     if (json.has("_priority"))
       parseElementProperties(json.getAsJsonObject("_priority"), res.getPriorityElement());
-    Type code = parseType("code", json);
+    DataType code = parseType("code", json);
     if (code != null)
       res.setCode(code);
     if (json.has("parameter")) {
@@ -10657,7 +10657,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("authoredOn"))
@@ -10718,7 +10718,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -10755,7 +10755,7 @@ public class JsonParser extends JsonParserBase {
         res.getDerivedFrom().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
     if (json.has("recordedOn"))
@@ -10824,7 +10824,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type effective = parseType("effective", json);
+    DataType effective = parseType("effective", json);
     if (effective != null)
       res.setEffective(effective);
     if (json.has("issued"))
@@ -11649,7 +11649,7 @@ public class JsonParser extends JsonParserBase {
       res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
     if (json.has("_experimental"))
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -12120,7 +12120,7 @@ public class JsonParser extends JsonParserBase {
       res.setDescriptionElement(parseString(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(json.getAsJsonObject("_description"), res.getDescriptionElement());
-    Type definition = parseType("definition", json);
+    DataType definition = parseType("definition", json);
     if (definition != null)
       res.setDefinition(definition);
     if (json.has("method"))
@@ -12146,7 +12146,7 @@ public class JsonParser extends JsonParserBase {
       res.setExcludeElement(parseBoolean(json.get("exclude").getAsBoolean()));
     if (json.has("_exclude"))
       parseElementProperties(json.getAsJsonObject("_exclude"), res.getExcludeElement());
-    Type participantEffective = parseType("participantEffective", json);
+    DataType participantEffective = parseType("participantEffective", json);
     if (participantEffective != null)
       res.setParticipantEffective(participantEffective);
     if (json.has("timeFromStart"))
@@ -12737,10 +12737,10 @@ public class JsonParser extends JsonParserBase {
       res.setCategory(parseCodeableConcept(json.getAsJsonObject("category")));
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("reason"))
@@ -12759,7 +12759,7 @@ public class JsonParser extends JsonParserBase {
       res.setSequenceElement(parsePositiveInt(json.get("sequence").getAsString()));
     if (json.has("_sequence"))
       parseElementProperties(json.getAsJsonObject("_sequence"), res.getSequenceElement());
-    Type diagnosis = parseType("diagnosis", json);
+    DataType diagnosis = parseType("diagnosis", json);
     if (diagnosis != null)
       res.setDiagnosis(diagnosis);
     if (json.has("type")) {
@@ -12796,7 +12796,7 @@ public class JsonParser extends JsonParserBase {
       res.setDateElement(parseDateTime(json.get("date").getAsString()));
     if (json.has("_date"))
       parseElementProperties(json.getAsJsonObject("_date"), res.getDateElement());
-    Type procedure = parseType("procedure", json);
+    DataType procedure = parseType("procedure", json);
     if (procedure != null)
       res.setProcedure(procedure);
     if (json.has("udi")) {
@@ -12852,7 +12852,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_date"), res.getDateElement());
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type location = parseType("location", json);
+    DataType location = parseType("location", json);
     if (location != null)
       res.setLocation(location);
   }
@@ -12947,10 +12947,10 @@ public class JsonParser extends JsonParserBase {
         res.getProgramCode().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type serviced = parseType("serviced", json);
+    DataType serviced = parseType("serviced", json);
     if (serviced != null)
       res.setServiced(serviced);
-    Type location = parseType("location", json);
+    DataType location = parseType("location", json);
     if (location != null)
       res.setLocation(location);
     if (json.has("quantity"))
@@ -13249,10 +13249,10 @@ public class JsonParser extends JsonParserBase {
         res.getProgramCode().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type serviced = parseType("serviced", json);
+    DataType serviced = parseType("serviced", json);
     if (serviced != null)
       res.setServiced(serviced);
-    Type location = parseType("location", json);
+    DataType location = parseType("location", json);
     if (location != null)
       res.setLocation(location);
     if (json.has("quantity"))
@@ -13514,10 +13514,10 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type allowed = parseType("allowed", json);
+    DataType allowed = parseType("allowed", json);
     if (allowed != null)
       res.setAllowed(allowed);
-    Type used = parseType("used", json);
+    DataType used = parseType("used", json);
     if (used != null)
       res.setUsed(used);
   }
@@ -13586,17 +13586,17 @@ public class JsonParser extends JsonParserBase {
       res.setRelationship(parseCodeableConcept(json.getAsJsonObject("relationship")));
     if (json.has("sex"))
       res.setSex(parseCodeableConcept(json.getAsJsonObject("sex")));
-    Type born = parseType("born", json);
+    DataType born = parseType("born", json);
     if (born != null)
       res.setBorn(born);
-    Type age = parseType("age", json);
+    DataType age = parseType("age", json);
     if (age != null)
       res.setAge(age);
     if (json.has("estimatedAge"))
       res.setEstimatedAgeElement(parseBoolean(json.get("estimatedAge").getAsBoolean()));
     if (json.has("_estimatedAge"))
       parseElementProperties(json.getAsJsonObject("_estimatedAge"), res.getEstimatedAgeElement());
-    Type deceased = parseType("deceased", json);
+    DataType deceased = parseType("deceased", json);
     if (deceased != null)
       res.setDeceased(deceased);
     if (json.has("reasonCode")) {
@@ -13647,7 +13647,7 @@ public class JsonParser extends JsonParserBase {
       res.setContributedToDeathElement(parseBoolean(json.get("contributedToDeath").getAsBoolean()));
     if (json.has("_contributedToDeath"))
       parseElementProperties(json.getAsJsonObject("_contributedToDeath"), res.getContributedToDeathElement());
-    Type onset = parseType("onset", json);
+    DataType onset = parseType("onset", json);
     if (onset != null)
       res.setOnset(onset);
     if (json.has("note")) {
@@ -13674,7 +13674,7 @@ public class JsonParser extends JsonParserBase {
       res.setContributedToDeathElement(parseBoolean(json.get("contributedToDeath").getAsBoolean()));
     if (json.has("_contributedToDeath"))
       parseElementProperties(json.getAsJsonObject("_contributedToDeath"), res.getContributedToDeathElement());
-    Type performed = parseType("performed", json);
+    DataType performed = parseType("performed", json);
     if (performed != null)
       res.setPerformed(performed);
     if (json.has("note")) {
@@ -13757,7 +13757,7 @@ public class JsonParser extends JsonParserBase {
       res.setDescription(parseCodeableConcept(json.getAsJsonObject("description")));
     if (json.has("subject"))
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
-    Type start = parseType("start", json);
+    DataType start = parseType("start", json);
     if (start != null)
       res.setStart(start);
     if (json.has("target")) {
@@ -13812,10 +13812,10 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("measure"))
       res.setMeasure(parseCodeableConcept(json.getAsJsonObject("measure")));
-    Type detail = parseType("detail", json);
+    DataType detail = parseType("detail", json);
     if (detail != null)
       res.setDetail(detail);
-    Type due = parseType("due", json);
+    DataType due = parseType("due", json);
     if (due != null)
       res.setDue(due);
   }
@@ -14060,7 +14060,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("exclude"))
@@ -14105,7 +14105,7 @@ public class JsonParser extends JsonParserBase {
         res.getIdentifier().add(parseIdentifier(array.get(i).getAsJsonObject()));
       }
     };
-    Type module = parseType("module", json);
+    DataType module = parseType("module", json);
     if (module != null)
       res.setModule(module);
     if (json.has("status"))
@@ -14585,7 +14585,7 @@ public class JsonParser extends JsonParserBase {
       res.setPatient(parseReference(json.getAsJsonObject("patient")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("recorded"))
@@ -14596,7 +14596,7 @@ public class JsonParser extends JsonParserBase {
       res.setPrimarySourceElement(parseBoolean(json.get("primarySource").getAsBoolean()));
     if (json.has("_primarySource"))
       parseElementProperties(json.getAsJsonObject("_primarySource"), res.getPrimarySourceElement());
-    Type informationSource = parseType("informationSource", json);
+    DataType informationSource = parseType("informationSource", json);
     if (informationSource != null)
       res.setInformationSource(informationSource);
     if (json.has("location"))
@@ -14759,10 +14759,10 @@ public class JsonParser extends JsonParserBase {
         res.getTargetDisease().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type doseNumber = parseType("doseNumber", json);
+    DataType doseNumber = parseType("doseNumber", json);
     if (doseNumber != null)
       res.setDoseNumber(doseNumber);
-    Type seriesDoses = parseType("seriesDoses", json);
+    DataType seriesDoses = parseType("seriesDoses", json);
     if (seriesDoses != null)
       res.setSeriesDoses(seriesDoses);
   }
@@ -14813,10 +14813,10 @@ public class JsonParser extends JsonParserBase {
       res.setSeriesElement(parseString(json.get("series").getAsString()));
     if (json.has("_series"))
       parseElementProperties(json.getAsJsonObject("_series"), res.getSeriesElement());
-    Type doseNumber = parseType("doseNumber", json);
+    DataType doseNumber = parseType("doseNumber", json);
     if (doseNumber != null)
       res.setDoseNumber(doseNumber);
-    Type seriesDoses = parseType("seriesDoses", json);
+    DataType seriesDoses = parseType("seriesDoses", json);
     if (seriesDoses != null)
       res.setSeriesDoses(seriesDoses);
   }
@@ -14899,10 +14899,10 @@ public class JsonParser extends JsonParserBase {
       res.setSeriesElement(parseString(json.get("series").getAsString()));
     if (json.has("_series"))
       parseElementProperties(json.getAsJsonObject("_series"), res.getSeriesElement());
-    Type doseNumber = parseType("doseNumber", json);
+    DataType doseNumber = parseType("doseNumber", json);
     if (doseNumber != null)
       res.setDoseNumber(doseNumber);
-    Type seriesDoses = parseType("seriesDoses", json);
+    DataType seriesDoses = parseType("seriesDoses", json);
     if (seriesDoses != null)
       res.setSeriesDoses(seriesDoses);
     if (json.has("supportingImmunization")) {
@@ -15169,7 +15169,7 @@ public class JsonParser extends JsonParserBase {
       res.setDescriptionElement(parseString(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(json.getAsJsonObject("_description"), res.getDescriptionElement());
-    Type example = parseType("example", json);
+    DataType example = parseType("example", json);
     if (example != null)
       res.setExample(example);
     if (json.has("groupingId"))
@@ -15186,7 +15186,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseImplementationGuideImplementationGuideDefinitionPageComponentProperties(JsonObject json, ImplementationGuide owner, ImplementationGuide.ImplementationGuideDefinitionPageComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type name = parseType("name", json);
+    DataType name = parseType("name", json);
     if (name != null)
       res.setName(name);
     if (json.has("title"))
@@ -15311,7 +15311,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("reference"))
       res.setReference(parseReference(json.getAsJsonObject("reference")));
-    Type example = parseType("example", json);
+    DataType example = parseType("example", json);
     if (example != null)
       res.setExample(example);
     if (json.has("relativePath"))
@@ -15393,7 +15393,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseIngredientIngredientSpecifiedSubstanceComponentProperties(JsonObject json, Ingredient owner, Ingredient.IngredientSpecifiedSubstanceComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type code = parseType("code", json);
+    DataType code = parseType("code", json);
     if (code != null)
       res.setCode(code);
     if (json.has("group"))
@@ -15450,7 +15450,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseIngredientIngredientSpecifiedSubstanceStrengthReferenceStrengthComponentProperties(JsonObject json, Ingredient owner, Ingredient.IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type substance = parseType("substance", json);
+    DataType substance = parseType("substance", json);
     if (substance != null)
       res.setSubstance(substance);
     if (json.has("strength"))
@@ -15477,7 +15477,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseIngredientIngredientSubstanceComponentProperties(JsonObject json, Ingredient owner, Ingredient.IngredientSubstanceComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type code = parseType("code", json);
+    DataType code = parseType("code", json);
     if (code != null)
       res.setCode(code);
     if (json.has("strength")) {
@@ -15875,7 +15875,7 @@ public class JsonParser extends JsonParserBase {
       res.setSequenceElement(parsePositiveInt(json.get("sequence").getAsString()));
     if (json.has("_sequence"))
       parseElementProperties(json.getAsJsonObject("_sequence"), res.getSequenceElement());
-    Type chargeItem = parseType("chargeItem", json);
+    DataType chargeItem = parseType("chargeItem", json);
     if (chargeItem != null)
       res.setChargeItem(chargeItem);
     if (json.has("priceComponent")) {
@@ -15952,7 +15952,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -16401,7 +16401,7 @@ public class JsonParser extends JsonParserBase {
       res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
     if (json.has("_experimental"))
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -16904,14 +16904,14 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseMedicationMedicationIngredientComponentProperties(JsonObject json, Medication owner, Medication.MedicationIngredientComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type item = parseType("item", json);
+    DataType item = parseType("item", json);
     if (item != null)
       res.setItem(item);
     if (json.has("isActive"))
       res.setIsActiveElement(parseBoolean(json.get("isActive").getAsBoolean()));
     if (json.has("_isActive"))
       parseElementProperties(json.getAsJsonObject("_isActive"), res.getIsActiveElement());
-    Type strength = parseType("strength", json);
+    DataType strength = parseType("strength", json);
     if (strength != null)
       res.setStrength(strength);
   }
@@ -17006,7 +17006,7 @@ public class JsonParser extends JsonParserBase {
         res.getCategory().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type medication = parseType("medication", json);
+    DataType medication = parseType("medication", json);
     if (medication != null)
       res.setMedication(medication);
     if (json.has("subject"))
@@ -17019,7 +17019,7 @@ public class JsonParser extends JsonParserBase {
         res.getSupportingInformation().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type occurence = parseType("occurence", json);
+    DataType occurence = parseType("occurence", json);
     if (occurence != null)
       res.setOccurence(occurence);
     if (json.has("recorded"))
@@ -17102,7 +17102,7 @@ public class JsonParser extends JsonParserBase {
       res.setMethod(parseCodeableConcept(json.getAsJsonObject("method")));
     if (json.has("dose"))
       res.setDose(parseQuantity(json.getAsJsonObject("dose")));
-    Type rate = parseType("rate", json);
+    DataType rate = parseType("rate", json);
     if (rate != null)
       res.setRate(rate);
   }
@@ -17137,7 +17137,7 @@ public class JsonParser extends JsonParserBase {
       res.setStatusElement(parseEnumeration(json.get("status").getAsString(), MedicationDispense.MedicationDispenseStatus.NULL, new MedicationDispense.MedicationDispenseStatusEnumFactory()));
     if (json.has("_status"))
       parseElementProperties(json.getAsJsonObject("_status"), res.getStatusElement());
-    Type statusReason = parseType("statusReason", json);
+    DataType statusReason = parseType("statusReason", json);
     if (statusReason != null)
       res.setStatusReason(statusReason);
     if (json.has("category")) {
@@ -17146,7 +17146,7 @@ public class JsonParser extends JsonParserBase {
         res.getCategory().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type medication = parseType("medication", json);
+    DataType medication = parseType("medication", json);
     if (medication != null)
       res.setMedication(medication);
     if (json.has("subject"))
@@ -17440,7 +17440,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseMedicationKnowledgeMedicationKnowledgeIngredientComponentProperties(JsonObject json, MedicationKnowledge owner, MedicationKnowledge.MedicationKnowledgeIngredientComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type item = parseType("item", json);
+    DataType item = parseType("item", json);
     if (item != null)
       res.setItem(item);
     if (json.has("isActive"))
@@ -17499,7 +17499,7 @@ public class JsonParser extends JsonParserBase {
         res.getDosage().add(parseMedicationKnowledgeMedicationKnowledgeAdministrationGuidelineDosageComponent(array.get(i).getAsJsonObject(), owner));
       }
     };
-    Type indication = parseType("indication", json);
+    DataType indication = parseType("indication", json);
     if (indication != null)
       res.setIndication(indication);
     if (json.has("patientCharacteristic")) {
@@ -17536,7 +17536,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseMedicationKnowledgeMedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponentProperties(JsonObject json, MedicationKnowledge owner, MedicationKnowledge.MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type characteristic = parseType("characteristic", json);
+    DataType characteristic = parseType("characteristic", json);
     if (characteristic != null)
       res.setCharacteristic(characteristic);
     if (json.has("value")) {
@@ -17608,7 +17608,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -17679,7 +17679,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -17728,7 +17728,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_reported"), res.getReportedElement());
     if (json.has("informationSource"))
       res.setInformationSource(parseReference(json.getAsJsonObject("informationSource")));
-    Type medication = parseType("medication", json);
+    DataType medication = parseType("medication", json);
     if (medication != null)
       res.setMedication(medication);
     if (json.has("subject"))
@@ -17891,7 +17891,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseMedicationRequestMedicationRequestSubstitutionComponentProperties(JsonObject json, MedicationRequest owner, MedicationRequest.MedicationRequestSubstitutionComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type allowed = parseType("allowed", json);
+    DataType allowed = parseType("allowed", json);
     if (allowed != null)
       res.setAllowed(allowed);
     if (json.has("reason"))
@@ -17940,14 +17940,14 @@ public class JsonParser extends JsonParserBase {
         res.getCategory().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type medication = parseType("medication", json);
+    DataType medication = parseType("medication", json);
     if (medication != null)
       res.setMedication(medication);
     if (json.has("subject"))
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type effective = parseType("effective", json);
+    DataType effective = parseType("effective", json);
     if (effective != null)
       res.setEffective(effective);
     if (json.has("dateAsserted"))
@@ -18239,7 +18239,7 @@ public class JsonParser extends JsonParserBase {
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
     if (json.has("intendedUse"))
       res.setIntendedUse(parseCodeableConcept(json.getAsJsonObject("intendedUse")));
-    Type indication = parseType("indication", json);
+    DataType indication = parseType("indication", json);
     if (indication != null)
       res.setIndication(indication);
     if (json.has("status"))
@@ -18362,7 +18362,7 @@ public class JsonParser extends JsonParserBase {
           parseElementProperties(array.get(i).getAsJsonObject(), res.getParent().get(i));
       }
     };
-    Type event = parseType("event", json);
+    DataType event = parseType("event", json);
     if (event != null)
       res.setEvent(event);
     if (json.has("category"))
@@ -18454,7 +18454,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseMessageHeaderProperties(JsonObject json, MessageHeader res) throws IOException, FHIRFormatError {
     parseDomainResourceProperties(json, res);
-    Type event = parseType("event", json);
+    DataType event = parseType("event", json);
     if (event != null)
       res.setEvent(event);
     if (json.has("destination")) {
@@ -19130,7 +19130,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type effective = parseType("effective", json);
+    DataType effective = parseType("effective", json);
     if (effective != null)
       res.setEffective(effective);
     if (json.has("dateAsserted"))
@@ -19468,7 +19468,7 @@ public class JsonParser extends JsonParserBase {
       res.setSchedule(parseTiming(json.getAsJsonObject("schedule")));
     if (json.has("quantity"))
       res.setQuantity(parseQuantity(json.getAsJsonObject("quantity")));
-    Type rate = parseType("rate", json);
+    DataType rate = parseType("rate", json);
     if (rate != null)
       res.setRate(rate);
   }
@@ -19521,7 +19521,7 @@ public class JsonParser extends JsonParserBase {
     };
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type effective = parseType("effective", json);
+    DataType effective = parseType("effective", json);
     if (effective != null)
       res.setEffective(effective);
     if (json.has("issued"))
@@ -19534,7 +19534,7 @@ public class JsonParser extends JsonParserBase {
         res.getPerformer().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("dataAbsentReason"))
@@ -19623,7 +19623,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("dataAbsentReason"))
@@ -19702,7 +19702,7 @@ public class JsonParser extends JsonParserBase {
       res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
     if (json.has("_experimental"))
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -20553,7 +20553,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -20572,7 +20572,7 @@ public class JsonParser extends JsonParserBase {
         res.getItem().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type amount = parseType("amount", json);
+    DataType amount = parseType("amount", json);
     if (amount != null)
       res.setAmount(amount);
   }
@@ -20615,7 +20615,7 @@ public class JsonParser extends JsonParserBase {
       res.setBirthDateElement(parseDate(json.get("birthDate").getAsString()));
     if (json.has("_birthDate"))
       parseElementProperties(json.getAsJsonObject("_birthDate"), res.getBirthDateElement());
-    Type deceased = parseType("deceased", json);
+    DataType deceased = parseType("deceased", json);
     if (deceased != null)
       res.setDeceased(deceased);
     if (json.has("address")) {
@@ -20626,7 +20626,7 @@ public class JsonParser extends JsonParserBase {
     };
     if (json.has("maritalStatus"))
       res.setMaritalStatus(parseCodeableConcept(json.getAsJsonObject("maritalStatus")));
-    Type multipleBirth = parseType("multipleBirth", json);
+    DataType multipleBirth = parseType("multipleBirth", json);
     if (multipleBirth != null)
       res.setMultipleBirth(multipleBirth);
     if (json.has("photo")) {
@@ -21001,7 +21001,7 @@ public class JsonParser extends JsonParserBase {
       res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
     if (json.has("_experimental"))
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -21167,7 +21167,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("measure"))
       res.setMeasure(parseCodeableConcept(json.getAsJsonObject("measure")));
-    Type detail = parseType("detail", json);
+    DataType detail = parseType("detail", json);
     if (detail != null)
       res.setDetail(detail);
     if (json.has("due"))
@@ -21235,7 +21235,7 @@ public class JsonParser extends JsonParserBase {
           parseElementProperties(array.get(i).getAsJsonObject(), res.getGoalId().get(i));
       }
     };
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("trigger")) {
@@ -21268,7 +21268,7 @@ public class JsonParser extends JsonParserBase {
         res.getRelatedAction().add(parsePlanDefinitionPlanDefinitionActionRelatedActionComponent(array.get(i).getAsJsonObject(), owner));
       }
     };
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
     if (json.has("participant")) {
@@ -21299,7 +21299,7 @@ public class JsonParser extends JsonParserBase {
       res.setCardinalityBehaviorElement(parseEnumeration(json.get("cardinalityBehavior").getAsString(), PlanDefinition.ActionCardinalityBehavior.NULL, new PlanDefinition.ActionCardinalityBehaviorEnumFactory()));
     if (json.has("_cardinalityBehavior"))
       parseElementProperties(json.getAsJsonObject("_cardinalityBehavior"), res.getCardinalityBehaviorElement());
-    Type definition = parseType("definition", json);
+    DataType definition = parseType("definition", json);
     if (definition != null)
       res.setDefinition(definition);
     if (json.has("transform"))
@@ -21352,7 +21352,7 @@ public class JsonParser extends JsonParserBase {
       res.setRelationshipElement(parseEnumeration(json.get("relationship").getAsString(), PlanDefinition.ActionRelationshipType.NULL, new PlanDefinition.ActionRelationshipTypeEnumFactory()));
     if (json.has("_relationship"))
       parseElementProperties(json.getAsJsonObject("_relationship"), res.getRelationshipElement());
-    Type offset = parseType("offset", json);
+    DataType offset = parseType("offset", json);
     if (offset != null)
       res.setOffset(offset);
   }
@@ -21680,7 +21680,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("recorded"))
@@ -21689,7 +21689,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_recorded"), res.getRecordedElement());
     if (json.has("recorder"))
       res.setRecorder(parseReference(json.getAsJsonObject("recorder")));
-    Type reported = parseType("reported", json);
+    DataType reported = parseType("reported", json);
     if (reported != null)
       res.setReported(reported);
     if (json.has("performer")) {
@@ -21814,7 +21814,7 @@ public class JsonParser extends JsonParserBase {
         res.getTarget().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type occurred = parseType("occurred", json);
+    DataType occurred = parseType("occurred", json);
     if (occurred != null)
       res.setOccurred(occurred);
     if (json.has("recorded"))
@@ -22140,7 +22140,7 @@ public class JsonParser extends JsonParserBase {
       res.setOperatorElement(parseEnumeration(json.get("operator").getAsString(), Questionnaire.QuestionnaireItemOperator.NULL, new Questionnaire.QuestionnaireItemOperatorEnumFactory()));
     if (json.has("_operator"))
       parseElementProperties(json.getAsJsonObject("_operator"), res.getOperatorElement());
-    Type answer = parseType("answer", json);
+    DataType answer = parseType("answer", json);
     if (answer != null)
       res.setAnswer(answer);
   }
@@ -22153,7 +22153,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseQuestionnaireQuestionnaireItemAnswerOptionComponentProperties(JsonObject json, Questionnaire owner, Questionnaire.QuestionnaireItemAnswerOptionComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("initialSelected"))
@@ -22170,7 +22170,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseQuestionnaireQuestionnaireItemInitialComponentProperties(JsonObject json, Questionnaire owner, Questionnaire.QuestionnaireItemInitialComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -22267,7 +22267,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseQuestionnaireResponseQuestionnaireResponseItemAnswerComponentProperties(JsonObject json, QuestionnaireResponse owner, QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
     if (json.has("item")) {
@@ -22348,7 +22348,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseRegulatedAuthorizationRegulatedAuthorizationRelatedDateComponentProperties(JsonObject json, RegulatedAuthorization owner, RegulatedAuthorization.RegulatedAuthorizationRelatedDateComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type date = parseType("date", json);
+    DataType date = parseType("date", json);
     if (date != null)
       res.setDate(date);
     if (json.has("type"))
@@ -22369,7 +22369,7 @@ public class JsonParser extends JsonParserBase {
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
     if (json.has("status"))
       res.setStatus(parseCodeableConcept(json.getAsJsonObject("status")));
-    Type date = parseType("date", json);
+    DataType date = parseType("date", json);
     if (date != null)
       res.setDate(date);
     if (json.has("application")) {
@@ -22624,7 +22624,7 @@ public class JsonParser extends JsonParserBase {
         res.getRelatedAction().add(parseRequestGroupRequestGroupActionRelatedActionComponent(array.get(i).getAsJsonObject(), owner));
       }
     };
-    Type timing = parseType("timing", json);
+    DataType timing = parseType("timing", json);
     if (timing != null)
       res.setTiming(timing);
     if (json.has("participant")) {
@@ -22697,7 +22697,7 @@ public class JsonParser extends JsonParserBase {
       res.setRelationshipElement(parseEnumeration(json.get("relationship").getAsString(), RequestGroup.ActionRelationshipType.NULL, new RequestGroup.ActionRelationshipTypeEnumFactory()));
     if (json.has("_relationship"))
       parseElementProperties(json.getAsJsonObject("_relationship"), res.getRelationshipElement());
-    Type offset = parseType("offset", json);
+    DataType offset = parseType("offset", json);
     if (offset != null)
       res.setOffset(offset);
   }
@@ -22928,7 +22928,7 @@ public class JsonParser extends JsonParserBase {
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("condition"))
@@ -22981,7 +22981,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("outcome"))
       res.setOutcome(parseCodeableConcept(json.getAsJsonObject("outcome")));
-    Type probability = parseType("probability", json);
+    DataType probability = parseType("probability", json);
     if (probability != null)
       res.setProbability(probability);
     if (json.has("qualitativeRisk"))
@@ -22990,7 +22990,7 @@ public class JsonParser extends JsonParserBase {
       res.setRelativeRiskElement(parseDecimal(json.get("relativeRisk").getAsBigDecimal()));
     if (json.has("_relativeRisk"))
       parseElementProperties(json.getAsJsonObject("_relativeRisk"), res.getRelativeRiskElement());
-    Type when = parseType("when", json);
+    DataType when = parseType("when", json);
     if (when != null)
       res.setWhen(when);
     if (json.has("rationale"))
@@ -23332,17 +23332,17 @@ public class JsonParser extends JsonParserBase {
         res.getOrderDetail().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
       }
     };
-    Type quantity = parseType("quantity", json);
+    DataType quantity = parseType("quantity", json);
     if (quantity != null)
       res.setQuantity(quantity);
     if (json.has("subject"))
       res.setSubject(parseReference(json.getAsJsonObject("subject")));
     if (json.has("encounter"))
       res.setEncounter(parseReference(json.getAsJsonObject("encounter")));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
-    Type asNeeded = parseType("asNeeded", json);
+    DataType asNeeded = parseType("asNeeded", json);
     if (asNeeded != null)
       res.setAsNeeded(asNeeded);
     if (json.has("authoredOn"))
@@ -23561,7 +23561,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("collector"))
       res.setCollector(parseReference(json.getAsJsonObject("collector")));
-    Type collected = parseType("collected", json);
+    DataType collected = parseType("collected", json);
     if (collected != null)
       res.setCollected(collected);
     if (json.has("duration"))
@@ -23572,7 +23572,7 @@ public class JsonParser extends JsonParserBase {
       res.setMethod(parseCodeableConcept(json.getAsJsonObject("method")));
     if (json.has("bodySite"))
       res.setBodySite(parseCodeableConcept(json.getAsJsonObject("bodySite")));
-    Type fastingStatus = parseType("fastingStatus", json);
+    DataType fastingStatus = parseType("fastingStatus", json);
     if (fastingStatus != null)
       res.setFastingStatus(fastingStatus);
   }
@@ -23597,7 +23597,7 @@ public class JsonParser extends JsonParserBase {
         res.getAdditive().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
-    Type time = parseType("time", json);
+    DataType time = parseType("time", json);
     if (time != null)
       res.setTime(time);
   }
@@ -23626,7 +23626,7 @@ public class JsonParser extends JsonParserBase {
       res.setCapacity(parseQuantity(json.getAsJsonObject("capacity")));
     if (json.has("specimenQuantity"))
       res.setSpecimenQuantity(parseQuantity(json.getAsJsonObject("specimenQuantity")));
-    Type additive = parseType("additive", json);
+    DataType additive = parseType("additive", json);
     if (additive != null)
       res.setAdditive(additive);
   }
@@ -23691,7 +23691,7 @@ public class JsonParser extends JsonParserBase {
       res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
     if (json.has("_experimental"))
       parseElementProperties(json.getAsJsonObject("_experimental"), res.getExperimentalElement());
-    Type subject = parseType("subject", json);
+    DataType subject = parseType("subject", json);
     if (subject != null)
       res.setSubject(subject);
     if (json.has("date"))
@@ -23836,7 +23836,7 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(json.getAsJsonObject("_description"), res.getDescriptionElement());
     if (json.has("capacity"))
       res.setCapacity(parseQuantity(json.getAsJsonObject("capacity")));
-    Type minimumVolume = parseType("minimumVolume", json);
+    DataType minimumVolume = parseType("minimumVolume", json);
     if (minimumVolume != null)
       res.setMinimumVolume(minimumVolume);
     if (json.has("additive")) {
@@ -23859,7 +23859,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseSpecimenDefinitionSpecimenDefinitionTypeTestedContainerAdditiveComponentProperties(JsonObject json, SpecimenDefinition owner, SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type additive = parseType("additive", json);
+    DataType additive = parseType("additive", json);
     if (additive != null)
       res.setAdditive(additive);
   }
@@ -24360,7 +24360,7 @@ public class JsonParser extends JsonParserBase {
       res.setTypeElement(parseString(json.get("type").getAsString()));
     if (json.has("_type"))
       parseElementProperties(json.getAsJsonObject("_type"), res.getTypeElement());
-    Type defaultValue = parseType("defaultValue", json);
+    DataType defaultValue = parseType("defaultValue", json);
     if (defaultValue != null)
       res.setDefaultValue(defaultValue);
     if (json.has("element"))
@@ -24452,7 +24452,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseStructureMapStructureMapGroupRuleTargetParameterComponentProperties(JsonObject json, StructureMap owner, StructureMap.StructureMapGroupRuleTargetParameterComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -24693,7 +24693,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("quantity"))
       res.setQuantity(parseRatio(json.getAsJsonObject("quantity")));
-    Type substance = parseType("substance", json);
+    DataType substance = parseType("substance", json);
     if (substance != null)
       res.setSubstance(substance);
   }
@@ -24804,7 +24804,7 @@ public class JsonParser extends JsonParserBase {
       res.setMolecularFormulaElement(parseString(json.get("molecularFormula").getAsString()));
     if (json.has("_molecularFormula"))
       parseElementProperties(json.getAsJsonObject("_molecularFormula"), res.getMolecularFormulaElement());
-    Type amount = parseType("amount", json);
+    DataType amount = parseType("amount", json);
     if (amount != null)
       res.setAmount(amount);
     if (json.has("amountType"))
@@ -24827,10 +24827,10 @@ public class JsonParser extends JsonParserBase {
       res.setParametersElement(parseString(json.get("parameters").getAsString()));
     if (json.has("_parameters"))
       parseElementProperties(json.getAsJsonObject("_parameters"), res.getParametersElement());
-    Type definingSubstance = parseType("definingSubstance", json);
+    DataType definingSubstance = parseType("definingSubstance", json);
     if (definingSubstance != null)
       res.setDefiningSubstance(definingSubstance);
-    Type amount = parseType("amount", json);
+    DataType amount = parseType("amount", json);
     if (amount != null)
       res.setAmount(amount);
     if (json.has("referenceRange"))
@@ -25059,7 +25059,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseSubstanceDefinitionSubstanceDefinitionRelationshipComponentProperties(JsonObject json, SubstanceDefinition owner, SubstanceDefinition.SubstanceDefinitionRelationshipComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    Type substanceDefinition = parseType("substanceDefinition", json);
+    DataType substanceDefinition = parseType("substanceDefinition", json);
     if (substanceDefinition != null)
       res.setSubstanceDefinition(substanceDefinition);
     if (json.has("relationship"))
@@ -25068,7 +25068,7 @@ public class JsonParser extends JsonParserBase {
       res.setIsDefiningElement(parseBoolean(json.get("isDefining").getAsBoolean()));
     if (json.has("_isDefining"))
       parseElementProperties(json.getAsJsonObject("_isDefining"), res.getIsDefiningElement());
-    Type amount = parseType("amount", json);
+    DataType amount = parseType("amount", json);
     if (amount != null)
       res.setAmount(amount);
     if (json.has("amountRatioLowLimit"))
@@ -25563,7 +25563,7 @@ public class JsonParser extends JsonParserBase {
       res.setOrganism(parseCodeableConcept(json.getAsJsonObject("organism")));
     if (json.has("organismType"))
       res.setOrganismType(parseCodeableConcept(json.getAsJsonObject("organismType")));
-    Type amount = parseType("amount", json);
+    DataType amount = parseType("amount", json);
     if (amount != null)
       res.setAmount(amount);
     if (json.has("amountType"))
@@ -25816,7 +25816,7 @@ public class JsonParser extends JsonParserBase {
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
     if (json.has("suppliedItem"))
       res.setSuppliedItem(parseSupplyDeliverySupplyDeliverySuppliedItemComponent(json.getAsJsonObject("suppliedItem"), res));
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("supplier"))
@@ -25841,7 +25841,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("quantity"))
       res.setQuantity(parseQuantity(json.getAsJsonObject("quantity")));
-    Type item = parseType("item", json);
+    DataType item = parseType("item", json);
     if (item != null)
       res.setItem(item);
   }
@@ -25870,7 +25870,7 @@ public class JsonParser extends JsonParserBase {
       res.setPriorityElement(parseEnumeration(json.get("priority").getAsString(), SupplyRequest.RequestPriority.NULL, new SupplyRequest.RequestPriorityEnumFactory()));
     if (json.has("_priority"))
       parseElementProperties(json.getAsJsonObject("_priority"), res.getPriorityElement());
-    Type item = parseType("item", json);
+    DataType item = parseType("item", json);
     if (item != null)
       res.setItem(item);
     if (json.has("quantity"))
@@ -25881,7 +25881,7 @@ public class JsonParser extends JsonParserBase {
         res.getParameter().add(parseSupplyRequestSupplyRequestParameterComponent(array.get(i).getAsJsonObject(), res));
       }
     };
-    Type occurrence = parseType("occurrence", json);
+    DataType occurrence = parseType("occurrence", json);
     if (occurrence != null)
       res.setOccurrence(occurrence);
     if (json.has("authoredOn"))
@@ -25924,7 +25924,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
       res.setCode(parseCodeableConcept(json.getAsJsonObject("code")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -26085,7 +26085,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -26100,7 +26100,7 @@ public class JsonParser extends JsonParserBase {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(json.getAsJsonObject("type")));
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -27785,7 +27785,7 @@ public class JsonParser extends JsonParserBase {
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(json.getAsJsonObject("_name"), res.getNameElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -27872,7 +27872,7 @@ public class JsonParser extends JsonParserBase {
       res.setCodeElement(parseCode(json.get("code").getAsString()));
     if (json.has("_code"))
       parseElementProperties(json.getAsJsonObject("_code"), res.getCodeElement());
-    Type value = parseType("value", json);
+    DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
   }
@@ -28461,7 +28461,7 @@ public class JsonParser extends JsonParserBase {
     throw new FHIRFormatError("Unknown.Unrecognised resource type '"+t+"' (in property 'resourceType')");
   }
 
-  protected Type parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
+  protected DataType parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
     if (json.has(prefix+"Extension"))
       return parseExtension(json.getAsJsonObject(prefix+"Extension"));
     else if (json.has(prefix+"Narrative"))
@@ -28543,121 +28543,121 @@ public class JsonParser extends JsonParserBase {
     else if (json.has(prefix+"ParameterDefinition"))
       return parseParameterDefinition(json.getAsJsonObject(prefix+"ParameterDefinition"));
     else if (json.has(prefix+"Date") || json.has("_"+prefix+"Date")) {
-      Type t = json.has(prefix+"Date") ? parseDate(json.get(prefix+"Date").getAsString()) : new DateType();
+      DataType t = json.has(prefix+"Date") ? parseDate(json.get(prefix+"Date").getAsString()) : new DateType();
       if (json.has("_"+prefix+"Date"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Date"), t);
       return t;
     }
     else if (json.has(prefix+"DateTime") || json.has("_"+prefix+"DateTime")) {
-      Type t = json.has(prefix+"DateTime") ? parseDateTime(json.get(prefix+"DateTime").getAsString()) : new DateTimeType();
+      DataType t = json.has(prefix+"DateTime") ? parseDateTime(json.get(prefix+"DateTime").getAsString()) : new DateTimeType();
       if (json.has("_"+prefix+"DateTime"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"DateTime"), t);
       return t;
     }
     else if (json.has(prefix+"Code") || json.has("_"+prefix+"Code")) {
-      Type t = json.has(prefix+"Code") ? parseCode(json.get(prefix+"Code").getAsString()) : new CodeType();
+      DataType t = json.has(prefix+"Code") ? parseCode(json.get(prefix+"Code").getAsString()) : new CodeType();
       if (json.has("_"+prefix+"Code"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Code"), t);
       return t;
     }
     else if (json.has(prefix+"String") || json.has("_"+prefix+"String")) {
-      Type t = json.has(prefix+"String") ? parseString(json.get(prefix+"String").getAsString()) : new StringType();
+      DataType t = json.has(prefix+"String") ? parseString(json.get(prefix+"String").getAsString()) : new StringType();
       if (json.has("_"+prefix+"String"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"String"), t);
       return t;
     }
     else if (json.has(prefix+"Integer") || json.has("_"+prefix+"Integer")) {
-      Type t = json.has(prefix+"Integer") ? parseInteger(json.get(prefix+"Integer").getAsLong()) : new IntegerType();
+      DataType t = json.has(prefix+"Integer") ? parseInteger(json.get(prefix+"Integer").getAsLong()) : new IntegerType();
       if (json.has("_"+prefix+"Integer"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Integer"), t);
       return t;
     }
     else if (json.has(prefix+"Integer64") || json.has("_"+prefix+"Integer64")) {
-      Type t = json.has(prefix+"Integer64") ? parseInteger64(json.get(prefix+"Integer64").getAsLong()) : new Integer64Type();
+      DataType t = json.has(prefix+"Integer64") ? parseInteger64(json.get(prefix+"Integer64").getAsLong()) : new Integer64Type();
       if (json.has("_"+prefix+"Integer64"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Integer64"), t);
       return t;
     }
     else if (json.has(prefix+"Oid") || json.has("_"+prefix+"Oid")) {
-      Type t = json.has(prefix+"Oid") ? parseOid(json.get(prefix+"Oid").getAsString()) : new OidType();
+      DataType t = json.has(prefix+"Oid") ? parseOid(json.get(prefix+"Oid").getAsString()) : new OidType();
       if (json.has("_"+prefix+"Oid"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Oid"), t);
       return t;
     }
     else if (json.has(prefix+"Canonical") || json.has("_"+prefix+"Canonical")) {
-      Type t = json.has(prefix+"Canonical") ? parseCanonical(json.get(prefix+"Canonical").getAsString()) : new CanonicalType();
+      DataType t = json.has(prefix+"Canonical") ? parseCanonical(json.get(prefix+"Canonical").getAsString()) : new CanonicalType();
       if (json.has("_"+prefix+"Canonical"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Canonical"), t);
       return t;
     }
     else if (json.has(prefix+"Uri") || json.has("_"+prefix+"Uri")) {
-      Type t = json.has(prefix+"Uri") ? parseUri(json.get(prefix+"Uri").getAsString()) : new UriType();
+      DataType t = json.has(prefix+"Uri") ? parseUri(json.get(prefix+"Uri").getAsString()) : new UriType();
       if (json.has("_"+prefix+"Uri"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Uri"), t);
       return t;
     }
     else if (json.has(prefix+"Uuid") || json.has("_"+prefix+"Uuid")) {
-      Type t = json.has(prefix+"Uuid") ? parseUuid(json.get(prefix+"Uuid").getAsString()) : new UuidType();
+      DataType t = json.has(prefix+"Uuid") ? parseUuid(json.get(prefix+"Uuid").getAsString()) : new UuidType();
       if (json.has("_"+prefix+"Uuid"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Uuid"), t);
       return t;
     }
     else if (json.has(prefix+"Url") || json.has("_"+prefix+"Url")) {
-      Type t = json.has(prefix+"Url") ? parseUrl(json.get(prefix+"Url").getAsString()) : new UrlType();
+      DataType t = json.has(prefix+"Url") ? parseUrl(json.get(prefix+"Url").getAsString()) : new UrlType();
       if (json.has("_"+prefix+"Url"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Url"), t);
       return t;
     }
     else if (json.has(prefix+"Instant") || json.has("_"+prefix+"Instant")) {
-      Type t = json.has(prefix+"Instant") ? parseInstant(json.get(prefix+"Instant").getAsString()) : new InstantType();
+      DataType t = json.has(prefix+"Instant") ? parseInstant(json.get(prefix+"Instant").getAsString()) : new InstantType();
       if (json.has("_"+prefix+"Instant"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Instant"), t);
       return t;
     }
     else if (json.has(prefix+"Boolean") || json.has("_"+prefix+"Boolean")) {
-      Type t = json.has(prefix+"Boolean") ? parseBoolean(json.get(prefix+"Boolean").getAsBoolean()) : new BooleanType();
+      DataType t = json.has(prefix+"Boolean") ? parseBoolean(json.get(prefix+"Boolean").getAsBoolean()) : new BooleanType();
       if (json.has("_"+prefix+"Boolean"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Boolean"), t);
       return t;
     }
     else if (json.has(prefix+"Base64Binary") || json.has("_"+prefix+"Base64Binary")) {
-      Type t = json.has(prefix+"Base64Binary") ? parseBase64Binary(json.get(prefix+"Base64Binary").getAsString()) : new Base64BinaryType();
+      DataType t = json.has(prefix+"Base64Binary") ? parseBase64Binary(json.get(prefix+"Base64Binary").getAsString()) : new Base64BinaryType();
       if (json.has("_"+prefix+"Base64Binary"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Base64Binary"), t);
       return t;
     }
     else if (json.has(prefix+"UnsignedInt") || json.has("_"+prefix+"UnsignedInt")) {
-      Type t = json.has(prefix+"UnsignedInt") ? parseUnsignedInt(json.get(prefix+"UnsignedInt").getAsString()) : new UnsignedIntType();
+      DataType t = json.has(prefix+"UnsignedInt") ? parseUnsignedInt(json.get(prefix+"UnsignedInt").getAsString()) : new UnsignedIntType();
       if (json.has("_"+prefix+"UnsignedInt"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"UnsignedInt"), t);
       return t;
     }
     else if (json.has(prefix+"Markdown") || json.has("_"+prefix+"Markdown")) {
-      Type t = json.has(prefix+"Markdown") ? parseMarkdown(json.get(prefix+"Markdown").getAsString()) : new MarkdownType();
+      DataType t = json.has(prefix+"Markdown") ? parseMarkdown(json.get(prefix+"Markdown").getAsString()) : new MarkdownType();
       if (json.has("_"+prefix+"Markdown"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Markdown"), t);
       return t;
     }
     else if (json.has(prefix+"Time") || json.has("_"+prefix+"Time")) {
-      Type t = json.has(prefix+"Time") ? parseTime(json.get(prefix+"Time").getAsString()) : new TimeType();
+      DataType t = json.has(prefix+"Time") ? parseTime(json.get(prefix+"Time").getAsString()) : new TimeType();
       if (json.has("_"+prefix+"Time"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Time"), t);
       return t;
     }
     else if (json.has(prefix+"Id") || json.has("_"+prefix+"Id")) {
-      Type t = json.has(prefix+"Id") ? parseId(json.get(prefix+"Id").getAsString()) : new IdType();
+      DataType t = json.has(prefix+"Id") ? parseId(json.get(prefix+"Id").getAsString()) : new IdType();
       if (json.has("_"+prefix+"Id"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Id"), t);
       return t;
     }
     else if (json.has(prefix+"PositiveInt") || json.has("_"+prefix+"PositiveInt")) {
-      Type t = json.has(prefix+"PositiveInt") ? parsePositiveInt(json.get(prefix+"PositiveInt").getAsString()) : new PositiveIntType();
+      DataType t = json.has(prefix+"PositiveInt") ? parsePositiveInt(json.get(prefix+"PositiveInt").getAsString()) : new PositiveIntType();
       if (json.has("_"+prefix+"PositiveInt"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"PositiveInt"), t);
       return t;
     }
     else if (json.has(prefix+"Decimal") || json.has("_"+prefix+"Decimal")) {
-      Type t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal").getAsBigDecimal()) : new DecimalType();
+      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal").getAsBigDecimal()) : new DecimalType();
       if (json.has("_"+prefix+"Decimal"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Decimal"), t);
       return t;
@@ -28665,7 +28665,7 @@ public class JsonParser extends JsonParserBase {
     return null;
   }
 
-  protected Type parseType(JsonObject json, String type) throws IOException, FHIRFormatError {
+  protected DataType parseType(JsonObject json, String type) throws IOException, FHIRFormatError {
     if (type.equals("Extension"))
       return parseExtension(json);
     else if (type.equals("Narrative"))
@@ -29157,7 +29157,7 @@ public class JsonParser extends JsonParserBase {
     return false;
   }
 
-  protected Type parseAnyType(JsonObject json, String type) throws IOException, FHIRFormatError {
+  protected DataType parseAnyType(JsonObject json, String type) throws IOException, FHIRFormatError {
     if (type.equals("ElementDefinition"))
       return parseElementDefinition(json);
     else if (type.equals("DataRequirement"))
@@ -30174,13 +30174,13 @@ public class JsonParser extends JsonParserBase {
       }
       if (element.hasDayOfWeek()) {
         openArray("dayOfWeek");
-        for (Enumeration<Timing.DayOfWeek> e : element.getDayOfWeek()) 
-          composeEnumerationCore(null, e, new Timing.DayOfWeekEnumFactory(), true);
+        for (Enumeration<Timing.DaysOfWeek> e : element.getDayOfWeek()) 
+          composeEnumerationCore(null, e, new Timing.DaysOfWeekEnumFactory(), true);
         closeArray();
         if (anyHasExtras(element.getDayOfWeek())) {
           openArray("_dayOfWeek");
-          for (Enumeration<Timing.DayOfWeek> e : element.getDayOfWeek()) 
-            composeEnumerationExtras(null, e, new Timing.DayOfWeekEnumFactory(), true);
+          for (Enumeration<Timing.DaysOfWeek> e : element.getDayOfWeek()) 
+            composeEnumerationExtras(null, e, new Timing.DaysOfWeekEnumFactory(), true);
           closeArray();
         }
       };
@@ -30441,8 +30441,8 @@ public class JsonParser extends JsonParserBase {
         composeUrlExtras("url", element.getUrlElement(), false);
       }
       if (element.hasSizeElement()) {
-        composeUnsignedIntCore("size", element.getSizeElement(), false);
-        composeUnsignedIntExtras("size", element.getSizeElement(), false);
+        composeInteger64Core("size", element.getSizeElement(), false);
+        composeInteger64Extras("size", element.getSizeElement(), false);
       }
       if (element.hasHashElement()) {
         composeBase64BinaryCore("hash", element.getHashElement(), false);
@@ -60158,7 +60158,7 @@ public class JsonParser extends JsonParserBase {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
   }
 
-  protected void composeType(String prefix, Type type) throws IOException {
+  protected void composeType(String prefix, DataType type) throws IOException {
     if (type == null)
       ;
     else if (type instanceof Extension)
@@ -60325,7 +60325,7 @@ public class JsonParser extends JsonParserBase {
       throw new Error("Unhandled type");
   }
 
-  protected void composeTypeInner(Type type) throws IOException {
+  protected void composeTypeInner(DataType type) throws IOException {
     if (type == null)
       ;
     else if (type instanceof Extension)

@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="Questionnaire", profile="http://hl7.org/fhir/StructureDefinition/Questionnaire")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "derivedFrom", "status", "experimental", "subjectType", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "code", "item"})
-public class Questionnaire extends MetadataResource {
+public class Questionnaire extends CanonicalResource {
 
     public enum QuestionnaireItemType {
         /**
@@ -1696,45 +1696,45 @@ public class Questionnaire extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1102667083: // linkId
-          this.linkId = castToString(value); // StringType
+          this.linkId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = castToUri(value); // UriType
+          this.definition = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3059181: // code
-          this.getCode().add(castToCoding(value)); // Coding
+          this.getCode().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case -980110702: // prefix
-          this.prefix = castToString(value); // StringType
+          this.prefix = TypeConvertor.castToString(value); // StringType
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          value = new QuestionnaireItemTypeEnumFactory().fromType(castToCode(value));
+          value = new QuestionnaireItemTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<QuestionnaireItemType>
           return value;
         case 1893321565: // enableWhen
           this.getEnableWhen().add((QuestionnaireItemEnableWhenComponent) value); // QuestionnaireItemEnableWhenComponent
           return value;
         case 1854802165: // enableBehavior
-          value = new EnableWhenBehaviorEnumFactory().fromType(castToCode(value));
+          value = new EnableWhenBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.enableBehavior = (Enumeration) value; // Enumeration<EnableWhenBehavior>
           return value;
         case -393139297: // required
-          this.required = castToBoolean(value); // BooleanType
+          this.required = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1094288952: // repeats
-          this.repeats = castToBoolean(value); // BooleanType
+          this.repeats = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -867683742: // readOnly
-          this.readOnly = castToBoolean(value); // BooleanType
+          this.readOnly = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -791400086: // maxLength
-          this.maxLength = castToInteger(value); // IntegerType
+          this.maxLength = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -743278833: // answerValueSet
-          this.answerValueSet = castToCanonical(value); // CanonicalType
+          this.answerValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -1527878189: // answerOption
           this.getAnswerOption().add((QuestionnaireItemAnswerOptionComponent) value); // QuestionnaireItemAnswerOptionComponent
@@ -1753,33 +1753,33 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("linkId")) {
-          this.linkId = castToString(value); // StringType
+          this.linkId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition")) {
-          this.definition = castToUri(value); // UriType
+          this.definition = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("code")) {
-          this.getCode().add(castToCoding(value));
+          this.getCode().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("prefix")) {
-          this.prefix = castToString(value); // StringType
+          this.prefix = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          value = new QuestionnaireItemTypeEnumFactory().fromType(castToCode(value));
+          value = new QuestionnaireItemTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<QuestionnaireItemType>
         } else if (name.equals("enableWhen")) {
           this.getEnableWhen().add((QuestionnaireItemEnableWhenComponent) value);
         } else if (name.equals("enableBehavior")) {
-          value = new EnableWhenBehaviorEnumFactory().fromType(castToCode(value));
+          value = new EnableWhenBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.enableBehavior = (Enumeration) value; // Enumeration<EnableWhenBehavior>
         } else if (name.equals("required")) {
-          this.required = castToBoolean(value); // BooleanType
+          this.required = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("repeats")) {
-          this.repeats = castToBoolean(value); // BooleanType
+          this.repeats = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("readOnly")) {
-          this.readOnly = castToBoolean(value); // BooleanType
+          this.readOnly = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("maxLength")) {
-          this.maxLength = castToInteger(value); // IntegerType
+          this.maxLength = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("answerValueSet")) {
-          this.answerValueSet = castToCanonical(value); // CanonicalType
+          this.answerValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("answerOption")) {
           this.getAnswerOption().add((QuestionnaireItemAnswerOptionComponent) value);
         } else if (name.equals("initial")) {
@@ -2044,7 +2044,7 @@ public class Questionnaire extends MetadataResource {
         @Child(name = "answer", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, Coding.class, Quantity.class, Reference.class}, order=3, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Value for question comparison based on operator", formalDefinition="A value that the referenced question is tested using the specified operator in order for the item to be enabled." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-answers")
-        protected Type answer;
+        protected DataType answer;
 
         private static final long serialVersionUID = -1815133868L;
 
@@ -2058,7 +2058,7 @@ public class Questionnaire extends MetadataResource {
     /**
      * Constructor
      */
-      public QuestionnaireItemEnableWhenComponent(StringType question, Enumeration<QuestionnaireItemOperator> operator, Type answer) {
+      public QuestionnaireItemEnableWhenComponent(StringType question, Enumeration<QuestionnaireItemOperator> operator, DataType answer) {
         super();
         this.question = question;
         this.operator = operator;
@@ -2158,7 +2158,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @return {@link #answer} (A value that the referenced question is tested using the specified operator in order for the item to be enabled.)
          */
-        public Type getAnswer() { 
+        public DataType getAnswer() { 
           return this.answer;
         }
 
@@ -2319,7 +2319,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @param value {@link #answer} (A value that the referenced question is tested using the specified operator in order for the item to be enabled.)
          */
-        public QuestionnaireItemEnableWhenComponent setAnswer(Type value) { 
+        public QuestionnaireItemEnableWhenComponent setAnswer(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
             throw new Error("Not the right type for Questionnaire.item.enableWhen.answer[x]: "+value.fhirType());
           this.answer = value;
@@ -2370,14 +2370,14 @@ public class Questionnaire extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1165870106: // question
-          this.question = castToString(value); // StringType
+          this.question = TypeConvertor.castToString(value); // StringType
           return value;
         case -500553564: // operator
-          value = new QuestionnaireItemOperatorEnumFactory().fromType(castToCode(value));
+          value = new QuestionnaireItemOperatorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operator = (Enumeration) value; // Enumeration<QuestionnaireItemOperator>
           return value;
         case -1412808770: // answer
-          this.answer = castToType(value); // Type
+          this.answer = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2387,12 +2387,12 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("question")) {
-          this.question = castToString(value); // StringType
+          this.question = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("operator")) {
-          value = new QuestionnaireItemOperatorEnumFactory().fromType(castToCode(value));
+          value = new QuestionnaireItemOperatorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operator = (Enumeration) value; // Enumeration<QuestionnaireItemOperator>
         } else if (name.equals("answer[x]")) {
-          this.answer = castToType(value); // Type
+          this.answer = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -2527,7 +2527,7 @@ public class Questionnaire extends MetadataResource {
         @Child(name = "value", type = {IntegerType.class, DateType.class, TimeType.class, StringType.class, Coding.class, Reference.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Answer value", formalDefinition="A potential answer that's allowed as the answer to this question." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-answers")
-        protected Type value;
+        protected DataType value;
 
         /**
          * Indicates whether the answer value is selected when the list of possible answers is initially shown.
@@ -2548,7 +2548,7 @@ public class Questionnaire extends MetadataResource {
     /**
      * Constructor
      */
-      public QuestionnaireItemAnswerOptionComponent(Type value) {
+      public QuestionnaireItemAnswerOptionComponent(DataType value) {
         super();
         this.value = value;
       }
@@ -2556,7 +2556,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @return {@link #value} (A potential answer that's allowed as the answer to this question.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -2657,7 +2657,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @param value {@link #value} (A potential answer that's allowed as the answer to this question.)
          */
-        public QuestionnaireItemAnswerOptionComponent setValue(Type value) { 
+        public QuestionnaireItemAnswerOptionComponent setValue(DataType value) { 
           if (value != null && !(value instanceof IntegerType || value instanceof DateType || value instanceof TimeType || value instanceof StringType || value instanceof Coding || value instanceof Reference))
             throw new Error("Not the right type for Questionnaire.item.answerOption.value[x]: "+value.fhirType());
           this.value = value;
@@ -2746,10 +2746,10 @@ public class Questionnaire extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         case -1310184961: // initialSelected
-          this.initialSelected = castToBoolean(value); // BooleanType
+          this.initialSelected = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2759,9 +2759,9 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else if (name.equals("initialSelected")) {
-          this.initialSelected = castToBoolean(value); // BooleanType
+          this.initialSelected = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2873,7 +2873,7 @@ public class Questionnaire extends MetadataResource {
         @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Actual value for initializing the question", formalDefinition="The actual value to for an initial answer." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-answers")
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = -732981989L;
 
@@ -2887,7 +2887,7 @@ public class Questionnaire extends MetadataResource {
     /**
      * Constructor
      */
-      public QuestionnaireItemInitialComponent(Type value) {
+      public QuestionnaireItemInitialComponent(DataType value) {
         super();
         this.value = value;
       }
@@ -2895,7 +2895,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @return {@link #value} (The actual value to for an initial answer.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -3086,7 +3086,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @param value {@link #value} (The actual value to for an initial answer.)
          */
-        public QuestionnaireItemInitialComponent setValue(Type value) { 
+        public QuestionnaireItemInitialComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
             throw new Error("Not the right type for Questionnaire.item.initial.value[x]: "+value.fhirType());
           this.value = value;
@@ -3133,7 +3133,7 @@ public class Questionnaire extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3143,7 +3143,7 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -4536,68 +4536,68 @@ public class Questionnaire extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case 1077922663: // derivedFrom
-          this.getDerivedFrom().add(castToCanonical(value)); // CanonicalType
+          this.getDerivedFrom().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -603200890: // subjectType
-          this.getSubjectType().add(castToCode(value)); // CodeType
+          this.getSubjectType().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 3059181: // code
-          this.getCode().add(castToCoding(value)); // Coding
+          this.getCode().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 3242771: // item
           this.getItem().add((QuestionnaireItemComponent) value); // QuestionnaireItemComponent
@@ -4610,48 +4610,48 @@ public class Questionnaire extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("derivedFrom")) {
-          this.getDerivedFrom().add(castToCanonical(value));
+          this.getDerivedFrom().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subjectType")) {
-          this.getSubjectType().add(castToCode(value));
+          this.getSubjectType().add(TypeConvertor.castToCode(value));
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("code")) {
-          this.getCode().add(castToCoding(value));
+          this.getCode().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("item")) {
           this.getItem().add((QuestionnaireItemComponent) value);
         } else

@@ -378,11 +378,11 @@ public class EpisodeOfCare extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -892481550: // status
-          value = new EpisodeOfCareStatusEnumFactory().fromType(castToCode(value));
+          value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -392,10 +392,10 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("status")) {
-          value = new EpisodeOfCareStatusEnumFactory().fromType(castToCode(value));
+          value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -644,13 +644,13 @@ public class EpisodeOfCare extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -861311717: // condition
-          this.condition = castToReference(value); // Reference
+          this.condition = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3492908: // rank
-          this.rank = castToPositiveInt(value); // PositiveIntType
+          this.rank = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -660,11 +660,11 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("condition")) {
-          this.condition = castToReference(value); // Reference
+          this.condition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("rank")) {
-          this.rank = castToPositiveInt(value); // PositiveIntType
+          this.rank = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1430,41 +1430,41 @@ public class EpisodeOfCare extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EpisodeOfCareStatusEnumFactory().fromType(castToCode(value));
+          value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
           return value;
         case -986695614: // statusHistory
           this.getStatusHistory().add((EpisodeOfCareStatusHistoryComponent) value); // EpisodeOfCareStatusHistoryComponent
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1196993265: // diagnosis
           this.getDiagnosis().add((DiagnosisComponent) value); // DiagnosisComponent
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2058947787: // managingOrganization
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -310299598: // referralRequest
-          this.getReferralRequest().add(castToReference(value)); // Reference
+          this.getReferralRequest().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1147746468: // careManager
-          this.careManager = castToReference(value); // Reference
+          this.careManager = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3555933: // team
-          this.getTeam().add(castToReference(value)); // Reference
+          this.getTeam().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1177318867: // account
-          this.getAccount().add(castToReference(value)); // Reference
+          this.getAccount().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1474,30 +1474,30 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EpisodeOfCareStatusEnumFactory().fromType(castToCode(value));
+          value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
         } else if (name.equals("statusHistory")) {
           this.getStatusHistory().add((EpisodeOfCareStatusHistoryComponent) value);
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("diagnosis")) {
           this.getDiagnosis().add((DiagnosisComponent) value);
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("managingOrganization")) {
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("referralRequest")) {
-          this.getReferralRequest().add(castToReference(value));
+          this.getReferralRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("careManager")) {
-          this.careManager = castToReference(value); // Reference
+          this.careManager = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("team")) {
-          this.getTeam().add(castToReference(value));
+          this.getTeam().add(TypeConvertor.castToReference(value));
         } else if (name.equals("account")) {
-          this.getAccount().add(castToReference(value));
+          this.getAccount().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

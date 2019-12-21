@@ -913,26 +913,26 @@ public class AllergyIntolerance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 530040176: // substance
-          this.substance = castToCodeableConcept(value); // CodeableConcept
+          this.substance = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1115984422: // manifestation
-          this.getManifestation().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getManifestation().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 105901603: // onset
-          this.onset = castToDateTime(value); // DateTimeType
+          this.onset = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1478300413: // severity
-          value = new AllergyIntoleranceSeverityEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<AllergyIntoleranceSeverity>
           return value;
         case 421286274: // exposureRoute
-          this.exposureRoute = castToCodeableConcept(value); // CodeableConcept
+          this.exposureRoute = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -942,20 +942,20 @@ public class AllergyIntolerance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("substance")) {
-          this.substance = castToCodeableConcept(value); // CodeableConcept
+          this.substance = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("manifestation")) {
-          this.getManifestation().add(castToCodeableConcept(value));
+          this.getManifestation().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("onset")) {
-          this.onset = castToDateTime(value); // DateTimeType
+          this.onset = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("severity")) {
-          value = new AllergyIntoleranceSeverityEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<AllergyIntoleranceSeverity>
         } else if (name.equals("exposureRoute")) {
-          this.exposureRoute = castToCodeableConcept(value); // CodeableConcept
+          this.exposureRoute = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1154,7 +1154,7 @@ public class AllergyIntolerance extends DomainResource {
      */
     @Child(name = "onset", type = {DateTimeType.class, Age.class, Period.class, Range.class, StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When allergy or intolerance was identified", formalDefinition="Estimated or actual date,  date-time, or age when allergy or intolerance was identified." )
-    protected Type onset;
+    protected DataType onset;
 
     /**
      * The recordedDate represents when this particular AllergyIntolerance record was created in the system, which is often a system-generated date.
@@ -1550,7 +1550,7 @@ public class AllergyIntolerance extends DomainResource {
     /**
      * @return {@link #onset} (Estimated or actual date,  date-time, or age when allergy or intolerance was identified.)
      */
-    public Type getOnset() { 
+    public DataType getOnset() { 
       return this.onset;
     }
 
@@ -1636,7 +1636,7 @@ public class AllergyIntolerance extends DomainResource {
     /**
      * @param value {@link #onset} (Estimated or actual date,  date-time, or age when allergy or intolerance was identified.)
      */
-    public AllergyIntolerance setOnset(Type value) { 
+    public AllergyIntolerance setOnset(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof StringType))
         throw new Error("Not the right type for AllergyIntolerance.onset[x]: "+value.fhirType());
       this.onset = value;
@@ -1973,52 +1973,52 @@ public class AllergyIntolerance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -462853915: // clinicalStatus
-          this.clinicalStatus = castToCodeableConcept(value); // CodeableConcept
+          this.clinicalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -842509843: // verificationStatus
-          this.verificationStatus = castToCodeableConcept(value); // CodeableConcept
+          this.verificationStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3575610: // type
-          value = new AllergyIntoleranceTypeEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<AllergyIntoleranceType>
           return value;
         case 50511102: // category
-          value = new AllergyIntoleranceCategoryEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getCategory().add((Enumeration) value); // Enumeration<AllergyIntoleranceCategory>
           return value;
         case -1608054609: // criticality
-          value = new AllergyIntoleranceCriticalityEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceCriticalityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.criticality = (Enumeration) value; // Enumeration<AllergyIntoleranceCriticality>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 105901603: // onset
-          this.onset = castToType(value); // Type
+          this.onset = TypeConvertor.castToType(value); // Type
           return value;
         case -1952893826: // recordedDate
-          this.recordedDate = castToDateTime(value); // DateTimeType
+          this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -799233858: // recorder
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
           return value;
         case -373242253: // asserter
-          this.asserter = castToReference(value); // Reference
+          this.asserter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1896977671: // lastOccurrence
-          this.lastOccurrence = castToDateTime(value); // DateTimeType
+          this.lastOccurrence = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -867509719: // reaction
           this.getReaction().add((AllergyIntoleranceReactionComponent) value); // AllergyIntoleranceReactionComponent
@@ -2031,38 +2031,38 @@ public class AllergyIntolerance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("clinicalStatus")) {
-          this.clinicalStatus = castToCodeableConcept(value); // CodeableConcept
+          this.clinicalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("verificationStatus")) {
-          this.verificationStatus = castToCodeableConcept(value); // CodeableConcept
+          this.verificationStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("type")) {
-          value = new AllergyIntoleranceTypeEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<AllergyIntoleranceType>
         } else if (name.equals("category")) {
-          value = new AllergyIntoleranceCategoryEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getCategory().add((Enumeration) value);
         } else if (name.equals("criticality")) {
-          value = new AllergyIntoleranceCriticalityEnumFactory().fromType(castToCode(value));
+          value = new AllergyIntoleranceCriticalityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.criticality = (Enumeration) value; // Enumeration<AllergyIntoleranceCriticality>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onset[x]")) {
-          this.onset = castToType(value); // Type
+          this.onset = TypeConvertor.castToType(value); // Type
         } else if (name.equals("recordedDate")) {
-          this.recordedDate = castToDateTime(value); // DateTimeType
+          this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("recorder")) {
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("asserter")) {
-          this.asserter = castToReference(value); // Reference
+          this.asserter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("lastOccurrence")) {
-          this.lastOccurrence = castToDateTime(value); // DateTimeType
+          this.lastOccurrence = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("reaction")) {
           this.getReaction().add((AllergyIntoleranceReactionComponent) value);
         } else

@@ -1099,33 +1099,33 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1499470472: // chromosome
-          this.chromosome = castToCodeableConcept(value); // CodeableConcept
+          this.chromosome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1061239735: // genomeBuild
-          this.genomeBuild = castToString(value); // StringType
+          this.genomeBuild = TypeConvertor.castToString(value); // StringType
           return value;
         case -1439500848: // orientation
-          value = new OrientationTypeEnumFactory().fromType(castToCode(value));
+          value = new OrientationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.orientation = (Enumeration) value; // Enumeration<OrientationType>
           return value;
         case -1911500465: // referenceSeqId
-          this.referenceSeqId = castToCodeableConcept(value); // CodeableConcept
+          this.referenceSeqId = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1923414665: // referenceSeqPointer
-          this.referenceSeqPointer = castToReference(value); // Reference
+          this.referenceSeqPointer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1648301499: // referenceSeqString
-          this.referenceSeqString = castToString(value); // StringType
+          this.referenceSeqString = TypeConvertor.castToString(value); // StringType
           return value;
         case -891993594: // strand
-          value = new StrandTypeEnumFactory().fromType(castToCode(value));
+          value = new StrandTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.strand = (Enumeration) value; // Enumeration<StrandType>
           return value;
         case 1903685202: // windowStart
-          this.windowStart = castToInteger(value); // IntegerType
+          this.windowStart = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -217026869: // windowEnd
-          this.windowEnd = castToInteger(value); // IntegerType
+          this.windowEnd = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1135,25 +1135,25 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("chromosome")) {
-          this.chromosome = castToCodeableConcept(value); // CodeableConcept
+          this.chromosome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("genomeBuild")) {
-          this.genomeBuild = castToString(value); // StringType
+          this.genomeBuild = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("orientation")) {
-          value = new OrientationTypeEnumFactory().fromType(castToCode(value));
+          value = new OrientationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.orientation = (Enumeration) value; // Enumeration<OrientationType>
         } else if (name.equals("referenceSeqId")) {
-          this.referenceSeqId = castToCodeableConcept(value); // CodeableConcept
+          this.referenceSeqId = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("referenceSeqPointer")) {
-          this.referenceSeqPointer = castToReference(value); // Reference
+          this.referenceSeqPointer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("referenceSeqString")) {
-          this.referenceSeqString = castToString(value); // StringType
+          this.referenceSeqString = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("strand")) {
-          value = new StrandTypeEnumFactory().fromType(castToCode(value));
+          value = new StrandTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.strand = (Enumeration) value; // Enumeration<StrandType>
         } else if (name.equals("windowStart")) {
-          this.windowStart = castToInteger(value); // IntegerType
+          this.windowStart = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("windowEnd")) {
-          this.windowEnd = castToInteger(value); // IntegerType
+          this.windowEnd = TypeConvertor.castToInteger(value); // IntegerType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1643,22 +1643,22 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 109757538: // start
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 100571: // end
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -1418745787: // observedAllele
-          this.observedAllele = castToString(value); // StringType
+          this.observedAllele = TypeConvertor.castToString(value); // StringType
           return value;
         case 364045960: // referenceAllele
-          this.referenceAllele = castToString(value); // StringType
+          this.referenceAllele = TypeConvertor.castToString(value); // StringType
           return value;
         case 94658738: // cigar
-          this.cigar = castToString(value); // StringType
+          this.cigar = TypeConvertor.castToString(value); // StringType
           return value;
         case -1654319624: // variantPointer
-          this.variantPointer = castToReference(value); // Reference
+          this.variantPointer = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1668,17 +1668,17 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("start")) {
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("end")) {
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("observedAllele")) {
-          this.observedAllele = castToString(value); // StringType
+          this.observedAllele = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("referenceAllele")) {
-          this.referenceAllele = castToString(value); // StringType
+          this.referenceAllele = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("cigar")) {
-          this.cigar = castToString(value); // StringType
+          this.cigar = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("variantPointer")) {
-          this.variantPointer = castToReference(value); // Reference
+          this.variantPointer = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -2751,47 +2751,47 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new QualityTypeEnumFactory().fromType(castToCode(value));
+          value = new QualityTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<QualityType>
           return value;
         case -1861227106: // standardSequence
-          this.standardSequence = castToCodeableConcept(value); // CodeableConcept
+          this.standardSequence = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 109757538: // start
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 100571: // end
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 109264530: // score
-          this.score = castToQuantity(value); // Quantity
+          this.score = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1048421849: // truthTP
-          this.truthTP = castToDecimal(value); // DecimalType
+          this.truthTP = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 655102276: // queryTP
-          this.queryTP = castToDecimal(value); // DecimalType
+          this.queryTP = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1048422285: // truthFN
-          this.truthFN = castToDecimal(value); // DecimalType
+          this.truthFN = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 655101842: // queryFP
-          this.queryFP = castToDecimal(value); // DecimalType
+          this.queryFP = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 3182199: // gtFP
-          this.gtFP = castToDecimal(value); // DecimalType
+          this.gtFP = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1376177026: // precision
-          this.precision = castToDecimal(value); // DecimalType
+          this.precision = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -934922479: // recall
-          this.recall = castToDecimal(value); // DecimalType
+          this.recall = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1295082036: // fScore
-          this.fScore = castToDecimal(value); // DecimalType
+          this.fScore = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 113094: // roc
           this.roc = (MolecularSequenceQualityRocComponent) value; // MolecularSequenceQualityRocComponent
@@ -2804,34 +2804,34 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new QualityTypeEnumFactory().fromType(castToCode(value));
+          value = new QualityTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<QualityType>
         } else if (name.equals("standardSequence")) {
-          this.standardSequence = castToCodeableConcept(value); // CodeableConcept
+          this.standardSequence = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("start")) {
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("end")) {
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("score")) {
-          this.score = castToQuantity(value); // Quantity
+          this.score = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("truthTP")) {
-          this.truthTP = castToDecimal(value); // DecimalType
+          this.truthTP = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("queryTP")) {
-          this.queryTP = castToDecimal(value); // DecimalType
+          this.queryTP = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("truthFN")) {
-          this.truthFN = castToDecimal(value); // DecimalType
+          this.truthFN = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("queryFP")) {
-          this.queryFP = castToDecimal(value); // DecimalType
+          this.queryFP = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("gtFP")) {
-          this.gtFP = castToDecimal(value); // DecimalType
+          this.gtFP = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("precision")) {
-          this.precision = castToDecimal(value); // DecimalType
+          this.precision = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("recall")) {
-          this.recall = castToDecimal(value); // DecimalType
+          this.recall = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("fScore")) {
-          this.fScore = castToDecimal(value); // DecimalType
+          this.fScore = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("roc")) {
           this.roc = (MolecularSequenceQualityRocComponent) value; // MolecularSequenceQualityRocComponent
         } else
@@ -3538,25 +3538,25 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 109264530: // score
-          this.getScore().add(castToInteger(value)); // IntegerType
+          this.getScore().add(TypeConvertor.castToInteger(value)); // IntegerType
           return value;
         case 105180290: // numTP
-          this.getNumTP().add(castToInteger(value)); // IntegerType
+          this.getNumTP().add(TypeConvertor.castToInteger(value)); // IntegerType
           return value;
         case 105179856: // numFP
-          this.getNumFP().add(castToInteger(value)); // IntegerType
+          this.getNumFP().add(TypeConvertor.castToInteger(value)); // IntegerType
           return value;
         case 105179854: // numFN
-          this.getNumFN().add(castToInteger(value)); // IntegerType
+          this.getNumFN().add(TypeConvertor.castToInteger(value)); // IntegerType
           return value;
         case -1376177026: // precision
-          this.getPrecision().add(castToDecimal(value)); // DecimalType
+          this.getPrecision().add(TypeConvertor.castToDecimal(value)); // DecimalType
           return value;
         case 564403871: // sensitivity
-          this.getSensitivity().add(castToDecimal(value)); // DecimalType
+          this.getSensitivity().add(TypeConvertor.castToDecimal(value)); // DecimalType
           return value;
         case -18997736: // fMeasure
-          this.getFMeasure().add(castToDecimal(value)); // DecimalType
+          this.getFMeasure().add(TypeConvertor.castToDecimal(value)); // DecimalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3566,19 +3566,19 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("score")) {
-          this.getScore().add(castToInteger(value));
+          this.getScore().add(TypeConvertor.castToInteger(value));
         } else if (name.equals("numTP")) {
-          this.getNumTP().add(castToInteger(value));
+          this.getNumTP().add(TypeConvertor.castToInteger(value));
         } else if (name.equals("numFP")) {
-          this.getNumFP().add(castToInteger(value));
+          this.getNumFP().add(TypeConvertor.castToInteger(value));
         } else if (name.equals("numFN")) {
-          this.getNumFN().add(castToInteger(value));
+          this.getNumFN().add(TypeConvertor.castToInteger(value));
         } else if (name.equals("precision")) {
-          this.getPrecision().add(castToDecimal(value));
+          this.getPrecision().add(TypeConvertor.castToDecimal(value));
         } else if (name.equals("sensitivity")) {
-          this.getSensitivity().add(castToDecimal(value));
+          this.getSensitivity().add(TypeConvertor.castToDecimal(value));
         } else if (name.equals("fMeasure")) {
-          this.getFMeasure().add(castToDecimal(value));
+          this.getFMeasure().add(TypeConvertor.castToDecimal(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -4116,23 +4116,23 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new RepositoryTypeEnumFactory().fromType(castToCode(value));
+          value = new RepositoryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<RepositoryType>
           return value;
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -345342029: // datasetId
-          this.datasetId = castToString(value); // StringType
+          this.datasetId = TypeConvertor.castToString(value); // StringType
           return value;
         case 1929752504: // variantsetId
-          this.variantsetId = castToString(value); // StringType
+          this.variantsetId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1095407289: // readsetId
-          this.readsetId = castToString(value); // StringType
+          this.readsetId = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4142,18 +4142,18 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new RepositoryTypeEnumFactory().fromType(castToCode(value));
+          value = new RepositoryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<RepositoryType>
         } else if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("datasetId")) {
-          this.datasetId = castToString(value); // StringType
+          this.datasetId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("variantsetId")) {
-          this.variantsetId = castToString(value); // StringType
+          this.variantsetId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("readsetId")) {
-          this.readsetId = castToString(value); // StringType
+          this.readsetId = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4510,13 +4510,13 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1601222305: // variantType
-          this.variantType = castToCodeableConcept(value); // CodeableConcept
+          this.variantType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 96946943: // exact
-          this.exact = castToBoolean(value); // BooleanType
+          this.exact = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1106363674: // length
-          this.length = castToInteger(value); // IntegerType
+          this.length = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 106111099: // outer
           this.outer = (MolecularSequenceStructureVariantOuterComponent) value; // MolecularSequenceStructureVariantOuterComponent
@@ -4532,11 +4532,11 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("variantType")) {
-          this.variantType = castToCodeableConcept(value); // CodeableConcept
+          this.variantType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("exact")) {
-          this.exact = castToBoolean(value); // BooleanType
+          this.exact = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("length")) {
-          this.length = castToInteger(value); // IntegerType
+          this.length = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("outer")) {
           this.outer = (MolecularSequenceStructureVariantOuterComponent) value; // MolecularSequenceStructureVariantOuterComponent
         } else if (name.equals("inner")) {
@@ -4789,10 +4789,10 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 109757538: // start
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 100571: // end
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4802,9 +4802,9 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("start")) {
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("end")) {
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5030,10 +5030,10 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 109757538: // start
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 100571: // end
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5043,9 +5043,9 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("start")) {
-          this.start = castToInteger(value); // IntegerType
+          this.start = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("end")) {
-          this.end = castToInteger(value); // IntegerType
+          this.end = TypeConvertor.castToInteger(value); // IntegerType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5978,29 +5978,29 @@ public class MolecularSequence extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3575610: // type
-          value = new SequenceTypeEnumFactory().fromType(castToCode(value));
+          value = new SequenceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SequenceType>
           return value;
         case 354212295: // coordinateSystem
-          this.coordinateSystem = castToInteger(value); // IntegerType
+          this.coordinateSystem = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2132868344: // specimen
-          this.specimen = castToReference(value); // Reference
+          this.specimen = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1335157162: // device
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
           return value;
         case 481140686: // performer
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -502547180: // referenceSeq
           this.referenceSeq = (MolecularSequenceReferenceSeqComponent) value; // MolecularSequenceReferenceSeqComponent
@@ -6009,19 +6009,19 @@ public class MolecularSequence extends DomainResource {
           this.getVariant().add((MolecularSequenceVariantComponent) value); // MolecularSequenceVariantComponent
           return value;
         case 125541495: // observedSeq
-          this.observedSeq = castToString(value); // StringType
+          this.observedSeq = TypeConvertor.castToString(value); // StringType
           return value;
         case 651215103: // quality
           this.getQuality().add((MolecularSequenceQualityComponent) value); // MolecularSequenceQualityComponent
           return value;
         case -1798816354: // readCoverage
-          this.readCoverage = castToInteger(value); // IntegerType
+          this.readCoverage = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 1950800714: // repository
           this.getRepository().add((MolecularSequenceRepositoryComponent) value); // MolecularSequenceRepositoryComponent
           return value;
         case -400605635: // pointer
-          this.getPointer().add(castToReference(value)); // Reference
+          this.getPointer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 757269394: // structureVariant
           this.getStructureVariant().add((MolecularSequenceStructureVariantComponent) value); // MolecularSequenceStructureVariantComponent
@@ -6034,36 +6034,36 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("type")) {
-          value = new SequenceTypeEnumFactory().fromType(castToCode(value));
+          value = new SequenceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SequenceType>
         } else if (name.equals("coordinateSystem")) {
-          this.coordinateSystem = castToInteger(value); // IntegerType
+          this.coordinateSystem = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("specimen")) {
-          this.specimen = castToReference(value); // Reference
+          this.specimen = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("device")) {
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performer")) {
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("referenceSeq")) {
           this.referenceSeq = (MolecularSequenceReferenceSeqComponent) value; // MolecularSequenceReferenceSeqComponent
         } else if (name.equals("variant")) {
           this.getVariant().add((MolecularSequenceVariantComponent) value);
         } else if (name.equals("observedSeq")) {
-          this.observedSeq = castToString(value); // StringType
+          this.observedSeq = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("quality")) {
           this.getQuality().add((MolecularSequenceQualityComponent) value);
         } else if (name.equals("readCoverage")) {
-          this.readCoverage = castToInteger(value); // IntegerType
+          this.readCoverage = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("repository")) {
           this.getRepository().add((MolecularSequenceRepositoryComponent) value);
         } else if (name.equals("pointer")) {
-          this.getPointer().add(castToReference(value));
+          this.getPointer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("structureVariant")) {
           this.getStructureVariant().add((MolecularSequenceStructureVariantComponent) value);
         } else

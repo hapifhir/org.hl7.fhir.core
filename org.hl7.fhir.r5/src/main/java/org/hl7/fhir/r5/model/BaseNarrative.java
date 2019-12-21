@@ -25,7 +25,7 @@ import org.hl7.fhir.instance.model.api.INarrative;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-public abstract class BaseNarrative extends Type implements INarrative {
+public abstract class BaseNarrative extends DataType implements INarrative {
 
 	/**
 	 * Sets the value of

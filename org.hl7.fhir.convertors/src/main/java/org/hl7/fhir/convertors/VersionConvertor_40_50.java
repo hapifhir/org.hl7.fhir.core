@@ -242,6 +242,18 @@ public class VersionConvertor_40_50 {
     return tgt;
   }
 
+  public static org.hl7.fhir.r5.model.Integer64Type convertUnsignedIntToInteger64(org.hl7.fhir.r4.model.UnsignedIntType src) throws FHIRException {
+    org.hl7.fhir.r5.model.Integer64Type tgt = new org.hl7.fhir.r5.model.Integer64Type(Long.valueOf(src.getValue()));
+    copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.UnsignedIntType convertInteger64ToUnsignedInt(org.hl7.fhir.r5.model.Integer64Type src) throws FHIRException {
+    org.hl7.fhir.r4.model.UnsignedIntType tgt = new org.hl7.fhir.r4.model.UnsignedIntType(Math.toIntExact(src.getValue()));
+    copyElement(src, tgt);
+    return tgt;
+  }
+
   public static org.hl7.fhir.r4.model.IntegerType convertInteger(org.hl7.fhir.r5.model.IntegerType src) throws FHIRException {
     org.hl7.fhir.r4.model.IntegerType tgt = new org.hl7.fhir.r4.model.IntegerType(src.getValue());
     copyElement(src, tgt);
@@ -590,7 +602,7 @@ public class VersionConvertor_40_50 {
     if (src.hasUrl())
       tgt.setUrlElement(convertUrl(src.getUrlElement()));
     if (src.hasSize())
-      tgt.setSizeElement(convertUnsignedInt(src.getSizeElement()));
+      tgt.setSizeElement(convertUnsignedIntToInteger64(src.getSizeElement()));
     if (src.hasHash())
       tgt.setHashElement(convertBase64Binary(src.getHashElement()));
     if (src.hasTitle())
@@ -614,7 +626,7 @@ public class VersionConvertor_40_50 {
     if (src.hasUrl())
       tgt.setUrlElement(convertUrl(src.getUrlElement()));
     if (src.hasSize())
-      tgt.setSizeElement(convertUnsignedInt(src.getSizeElement()));
+      tgt.setSizeElement(convertInteger64ToUnsignedInt(src.getSizeElement()));
     if (src.hasHash())
       tgt.setHashElement(convertBase64Binary(src.getHashElement()));
     if (src.hasTitle())
@@ -1182,28 +1194,6 @@ public class VersionConvertor_40_50 {
     if (src.hasReference())
       tgt.setReferenceElement(convertUri(src.getReferenceElement()));
     return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.Expression.ExpressionLanguage convertExpressionLanguage(org.hl7.fhir.r4.model.Expression.ExpressionLanguage src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case TEXT_CQL: return org.hl7.fhir.r5.model.Expression.ExpressionLanguage.TEXT_CQL;
-    case TEXT_FHIRPATH: return org.hl7.fhir.r5.model.Expression.ExpressionLanguage.TEXT_FHIRPATH;
-    case APPLICATION_XFHIRQUERY: return org.hl7.fhir.r5.model.Expression.ExpressionLanguage.APPLICATION_XFHIRQUERY;
-    default: return org.hl7.fhir.r5.model.Expression.ExpressionLanguage.NULL;
-    }
-  }
-
-  public static org.hl7.fhir.r4.model.Expression.ExpressionLanguage convertExpressionLanguage(org.hl7.fhir.r5.model.Expression.ExpressionLanguage src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case TEXT_CQL: return org.hl7.fhir.r4.model.Expression.ExpressionLanguage.TEXT_CQL;
-    case TEXT_FHIRPATH: return org.hl7.fhir.r4.model.Expression.ExpressionLanguage.TEXT_FHIRPATH;
-    case APPLICATION_XFHIRQUERY: return org.hl7.fhir.r4.model.Expression.ExpressionLanguage.APPLICATION_XFHIRQUERY;
-    default: return org.hl7.fhir.r4.model.Expression.ExpressionLanguage.NULL;
-    }
   }
 
   public static org.hl7.fhir.r5.model.HumanName convertHumanName(org.hl7.fhir.r4.model.HumanName src) throws FHIRException {
@@ -2143,7 +2133,7 @@ public class VersionConvertor_40_50 {
       tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
-    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DayOfWeek> t : src.getDayOfWeek())
+    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DaysOfWeek> t : src.getDayOfWeek())
       copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.r5.model.TimeType t : src.getTimeOfDay())
       tgt.getTimeOfDay().add(convertTime(t));
@@ -2184,22 +2174,22 @@ public class VersionConvertor_40_50 {
     }
   }
 
-  public static org.hl7.fhir.r5.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r4.model.Timing.DayOfWeek src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Timing.DaysOfWeek convertDayOfWeek(org.hl7.fhir.r4.model.Timing.DayOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case MON: return org.hl7.fhir.r5.model.Timing.DayOfWeek.MON;
-    case TUE: return org.hl7.fhir.r5.model.Timing.DayOfWeek.TUE;
-    case WED: return org.hl7.fhir.r5.model.Timing.DayOfWeek.WED;
-    case THU: return org.hl7.fhir.r5.model.Timing.DayOfWeek.THU;
-    case FRI: return org.hl7.fhir.r5.model.Timing.DayOfWeek.FRI;
-    case SAT: return org.hl7.fhir.r5.model.Timing.DayOfWeek.SAT;
-    case SUN: return org.hl7.fhir.r5.model.Timing.DayOfWeek.SUN;
-    default: return org.hl7.fhir.r5.model.Timing.DayOfWeek.NULL;
+    case MON: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.MON;
+    case TUE: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.TUE;
+    case WED: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.WED;
+    case THU: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.THU;
+    case FRI: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.FRI;
+    case SAT: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.SAT;
+    case SUN: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.SUN;
+    default: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.NULL;
     }
   }
 
-  public static org.hl7.fhir.r4.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r5.model.Timing.DayOfWeek src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r5.model.Timing.DaysOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -2984,7 +2974,7 @@ public class VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.DataType convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
     if (src == null)
       return null;
     if (src instanceof org.hl7.fhir.r4.model.Base64BinaryType)
@@ -3110,7 +3100,7 @@ public class VersionConvertor_40_50 {
     throw new Error("Unknown type "+src.fhirType());
   }
 
-  public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.r5.model.Type src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
     if (src == null)
       return null;
     if (src instanceof org.hl7.fhir.r5.model.Base64BinaryType)

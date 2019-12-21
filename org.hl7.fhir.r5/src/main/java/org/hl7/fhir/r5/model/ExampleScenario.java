@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ExampleScenario", profile="http://hl7.org/fhir/StructureDefinition/ExampleScenario")
 @ChildOrder(names={"url", "identifier", "version", "name", "status", "experimental", "date", "publisher", "contact", "useContext", "jurisdiction", "copyright", "purpose", "actor", "instance", "process", "workflow"})
-public class ExampleScenario extends MetadataResource {
+public class ExampleScenario extends CanonicalResource {
 
     public enum ExampleScenarioActorType {
         /**
@@ -2805,17 +2805,17 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1161623056: // actorId
-          this.actorId = castToString(value); // StringType
+          this.actorId = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          value = new ExampleScenarioActorTypeEnumFactory().fromType(castToCode(value));
+          value = new ExampleScenarioActorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ExampleScenarioActorType>
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2825,14 +2825,14 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("actorId")) {
-          this.actorId = castToString(value); // StringType
+          this.actorId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          value = new ExampleScenarioActorTypeEnumFactory().fromType(castToCode(value));
+          value = new ExampleScenarioActorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ExampleScenarioActorType>
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3327,17 +3327,17 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1345650231: // resourceId
-          this.resourceId = castToString(value); // StringType
+          this.resourceId = TypeConvertor.castToString(value); // StringType
           return value;
         case -384364440: // resourceType
-          value = new FHIRResourceTypeEnumFactory().fromType(castToCode(value));
+          value = new FHIRResourceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.resourceType = (Enumeration) value; // Enumeration<FHIRResourceType>
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 351608024: // version
           this.getVersion().add((ExampleScenarioInstanceVersionComponent) value); // ExampleScenarioInstanceVersionComponent
@@ -3353,14 +3353,14 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("resourceId")) {
-          this.resourceId = castToString(value); // StringType
+          this.resourceId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("resourceType")) {
-          value = new FHIRResourceTypeEnumFactory().fromType(castToCode(value));
+          value = new FHIRResourceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.resourceType = (Enumeration) value; // Enumeration<FHIRResourceType>
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("version")) {
           this.getVersion().add((ExampleScenarioInstanceVersionComponent) value);
         } else if (name.equals("containedInstance")) {
@@ -3635,10 +3635,10 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1407102957: // versionId
-          this.versionId = castToString(value); // StringType
+          this.versionId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3648,9 +3648,9 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("versionId")) {
-          this.versionId = castToString(value); // StringType
+          this.versionId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3890,10 +3890,10 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1345650231: // resourceId
-          this.resourceId = castToString(value); // StringType
+          this.resourceId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1407102957: // versionId
-          this.versionId = castToString(value); // StringType
+          this.versionId = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3903,9 +3903,9 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("resourceId")) {
-          this.resourceId = castToString(value); // StringType
+          this.resourceId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("versionId")) {
-          this.versionId = castToString(value); // StringType
+          this.versionId = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4326,16 +4326,16 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1006692933: // preConditions
-          this.preConditions = castToMarkdown(value); // MarkdownType
+          this.preConditions = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1738302328: // postConditions
-          this.postConditions = castToMarkdown(value); // MarkdownType
+          this.postConditions = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3540684: // step
           this.getStep().add((ExampleScenarioProcessStepComponent) value); // ExampleScenarioProcessStepComponent
@@ -4348,13 +4348,13 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("preConditions")) {
-          this.preConditions = castToMarkdown(value); // MarkdownType
+          this.preConditions = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("postConditions")) {
-          this.postConditions = castToMarkdown(value); // MarkdownType
+          this.postConditions = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("step")) {
           this.getStep().add((ExampleScenarioProcessStepComponent) value);
         } else
@@ -4715,7 +4715,7 @@ The primary difference between a medicationusage and a medicationadministration 
           this.getProcess().add((ExampleScenarioProcessComponent) value); // ExampleScenarioProcessComponent
           return value;
         case 106440182: // pause
-          this.pause = castToBoolean(value); // BooleanType
+          this.pause = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1662702951: // operation
           this.operation = (ExampleScenarioProcessStepOperationComponent) value; // ExampleScenarioProcessStepOperationComponent
@@ -4733,7 +4733,7 @@ The primary difference between a medicationusage and a medicationadministration 
         if (name.equals("process")) {
           this.getProcess().add((ExampleScenarioProcessComponent) value);
         } else if (name.equals("pause")) {
-          this.pause = castToBoolean(value); // BooleanType
+          this.pause = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("operation")) {
           this.operation = (ExampleScenarioProcessStepOperationComponent) value; // ExampleScenarioProcessStepOperationComponent
         } else if (name.equals("alternative")) {
@@ -5412,28 +5412,28 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1034364087: // number
-          this.number = castToString(value); // StringType
+          this.number = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToString(value); // StringType
+          this.type = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -248987089: // initiator
-          this.initiator = castToString(value); // StringType
+          this.initiator = TypeConvertor.castToString(value); // StringType
           return value;
         case -808719889: // receiver
-          this.receiver = castToString(value); // StringType
+          this.receiver = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 384339477: // initiatorActive
-          this.initiatorActive = castToBoolean(value); // BooleanType
+          this.initiatorActive = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -285284907: // receiverActive
-          this.receiverActive = castToBoolean(value); // BooleanType
+          this.receiverActive = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1095692943: // request
           this.request = (ExampleScenarioInstanceContainedInstanceComponent) value; // ExampleScenarioInstanceContainedInstanceComponent
@@ -5449,21 +5449,21 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("number")) {
-          this.number = castToString(value); // StringType
+          this.number = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToString(value); // StringType
+          this.type = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("initiator")) {
-          this.initiator = castToString(value); // StringType
+          this.initiator = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("receiver")) {
-          this.receiver = castToString(value); // StringType
+          this.receiver = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("initiatorActive")) {
-          this.initiatorActive = castToBoolean(value); // BooleanType
+          this.initiatorActive = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("receiverActive")) {
-          this.receiverActive = castToBoolean(value); // BooleanType
+          this.receiverActive = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("request")) {
           this.request = (ExampleScenarioInstanceContainedInstanceComponent) value; // ExampleScenarioInstanceContainedInstanceComponent
         } else if (name.equals("response")) {
@@ -5825,10 +5825,10 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3540684: // step
           this.getStep().add((ExampleScenarioProcessStepComponent) value); // ExampleScenarioProcessStepComponent
@@ -5841,9 +5841,9 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("step")) {
           this.getStep().add((ExampleScenarioProcessStepComponent) value);
         } else
@@ -6944,44 +6944,44 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 92645877: // actor
           this.getActor().add((ExampleScenarioActorComponent) value); // ExampleScenarioActorComponent
@@ -6993,7 +6993,7 @@ The primary difference between a medicationusage and a medicationadministration 
           this.getProcess().add((ExampleScenarioProcessComponent) value); // ExampleScenarioProcessComponent
           return value;
         case 35379135: // workflow
-          this.getWorkflow().add(castToCanonical(value)); // CanonicalType
+          this.getWorkflow().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -7003,32 +7003,32 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("actor")) {
           this.getActor().add((ExampleScenarioActorComponent) value);
         } else if (name.equals("instance")) {
@@ -7036,7 +7036,7 @@ The primary difference between a medicationusage and a medicationadministration 
         } else if (name.equals("process")) {
           this.getProcess().add((ExampleScenarioProcessComponent) value);
         } else if (name.equals("workflow")) {
-          this.getWorkflow().add(castToCanonical(value));
+          this.getWorkflow().add(TypeConvertor.castToCanonical(value));
         } else
           return super.setProperty(name, value);
         return value;

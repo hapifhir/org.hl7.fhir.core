@@ -326,16 +326,16 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3556653: // text
-          this.text = castToNarrative(value); // Narrative
+          this.text = TypeConvertor.castToNarrative(value); // Narrative
           return value;
         case -410956685: // contained
-          this.getContained().add(castToResource(value)); // Resource
+          this.getContained().add(TypeConvertor.castToResource(value)); // Resource
           return value;
         case -612557761: // extension
-          this.getExtension().add(castToExtension(value)); // Extension
+          this.getExtension().add(TypeConvertor.castToExtension(value)); // Extension
           return value;
         case -298878168: // modifierExtension
-          this.getModifierExtension().add(castToExtension(value)); // Extension
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value)); // Extension
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -345,13 +345,13 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("text")) {
-          this.text = castToNarrative(value); // Narrative
+          this.text = TypeConvertor.castToNarrative(value); // Narrative
         } else if (name.equals("contained")) {
-          this.getContained().add(castToResource(value));
+          this.getContained().add(TypeConvertor.castToResource(value));
         } else if (name.equals("extension")) {
-          this.getExtension().add(castToExtension(value));
+          this.getExtension().add(TypeConvertor.castToExtension(value));
         } else if (name.equals("modifierExtension")) {
-          this.getModifierExtension().add(castToExtension(value));
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -462,7 +462,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         
   }
 
-  public void addExtension(String url, Type value) {
+  public void addExtension(String url, DataType value) {
     Extension ex = new Extension();
     ex.setUrl(url);
     ex.setValue(value);

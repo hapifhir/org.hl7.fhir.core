@@ -41,7 +41,6 @@ import org.hl7.fhir.r4.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r4.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.r4.utils.StructureMapUtilities;
 import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
-import org.hl7.fhir.r4.validation.InstanceValidatorFactory;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -353,7 +352,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     contextR3.setName("R3");
     contextR4.setName("R4");
 
-    contextR4.setValidatorFactory(new InstanceValidatorFactory());
+ //   contextR4.setValidatorFactory(new InstanceValidatorFactory());
 // TODO: this has to be R% now...    contextR4.setValidatorFactory(new InstanceValidatorFactory());
 
     System.out.println("loading Maps");

@@ -877,38 +877,38 @@ public class Endpoint extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EndpointStatusEnumFactory().fromType(castToCode(value));
+          value = new EndpointStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EndpointStatus>
           return value;
         case 1270211384: // connectionType
-          this.connectionType = castToCoding(value); // Coding
+          this.connectionType = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -2058947787: // managingOrganization
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactPoint(value)); // ContactPoint
+          this.getContact().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 909929960: // payloadType
-          this.getPayloadType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getPayloadType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1702836932: // payloadMimeType
-          this.getPayloadMimeType().add(castToCode(value)); // CodeType
+          this.getPayloadMimeType().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         case -1147692044: // address
-          this.address = castToUrl(value); // UrlType
+          this.address = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case -1221270899: // header
-          this.getHeader().add(castToString(value)); // StringType
+          this.getHeader().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -918,28 +918,28 @@ public class Endpoint extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EndpointStatusEnumFactory().fromType(castToCode(value));
+          value = new EndpointStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EndpointStatus>
         } else if (name.equals("connectionType")) {
-          this.connectionType = castToCoding(value); // Coding
+          this.connectionType = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("managingOrganization")) {
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactPoint(value));
+          this.getContact().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("payloadType")) {
-          this.getPayloadType().add(castToCodeableConcept(value));
+          this.getPayloadType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("payloadMimeType")) {
-          this.getPayloadMimeType().add(castToCode(value));
+          this.getPayloadMimeType().add(TypeConvertor.castToCode(value));
         } else if (name.equals("address")) {
-          this.address = castToUrl(value); // UrlType
+          this.address = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("header")) {
-          this.getHeader().add(castToString(value));
+          this.getHeader().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;

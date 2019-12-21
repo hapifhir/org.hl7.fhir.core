@@ -281,16 +281,16 @@ public class Practitioner extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -1179159879: // issuer
-          this.issuer = castToReference(value); // Reference
+          this.issuer = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -300,13 +300,13 @@ public class Practitioner extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("issuer")) {
-          this.issuer = castToReference(value); // Reference
+          this.issuer = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1057,35 +1057,35 @@ public class Practitioner extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3373707: // name
-          this.getName().add(castToHumanName(value)); // HumanName
+          this.getName().add(TypeConvertor.castToHumanName(value)); // HumanName
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1147692044: // address
-          this.getAddress().add(castToAddress(value)); // Address
+          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
           return value;
         case -1249512767: // gender
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
           return value;
         case -1210031859: // birthDate
-          this.birthDate = castToDate(value); // DateType
+          this.birthDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case 106642994: // photo
-          this.getPhoto().add(castToAttachment(value)); // Attachment
+          this.getPhoto().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
         case -631333393: // qualification
           this.getQualification().add((PractitionerQualificationComponent) value); // PractitionerQualificationComponent
           return value;
         case -1035284522: // communication
-          this.getCommunication().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1095,26 +1095,26 @@ public class Practitioner extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("name")) {
-          this.getName().add(castToHumanName(value));
+          this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
-          this.getAddress().add(castToAddress(value));
+          this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("gender")) {
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
         } else if (name.equals("birthDate")) {
-          this.birthDate = castToDate(value); // DateType
+          this.birthDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("photo")) {
-          this.getPhoto().add(castToAttachment(value));
+          this.getPhoto().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("qualification")) {
           this.getQualification().add((PractitionerQualificationComponent) value);
         } else if (name.equals("communication")) {
-          this.getCommunication().add(castToCodeableConcept(value));
+          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;

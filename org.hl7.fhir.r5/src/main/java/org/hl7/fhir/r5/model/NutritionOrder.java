@@ -858,10 +858,10 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -697920873: // schedule
-          this.getSchedule().add(castToTiming(value)); // Timing
+          this.getSchedule().add(TypeConvertor.castToTiming(value)); // Timing
           return value;
         case -1671151641: // nutrient
           this.getNutrient().add((NutritionOrderOralDietNutrientComponent) value); // NutritionOrderOralDietNutrientComponent
@@ -870,10 +870,10 @@ public class NutritionOrder extends DomainResource {
           this.getTexture().add((NutritionOrderOralDietTextureComponent) value); // NutritionOrderOralDietTextureComponent
           return value;
         case -525105592: // fluidConsistencyType
-          this.getFluidConsistencyType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getFluidConsistencyType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 301526158: // instruction
-          this.instruction = castToString(value); // StringType
+          this.instruction = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -883,17 +883,17 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("schedule")) {
-          this.getSchedule().add(castToTiming(value));
+          this.getSchedule().add(TypeConvertor.castToTiming(value));
         } else if (name.equals("nutrient")) {
           this.getNutrient().add((NutritionOrderOralDietNutrientComponent) value);
         } else if (name.equals("texture")) {
           this.getTexture().add((NutritionOrderOralDietTextureComponent) value);
         } else if (name.equals("fluidConsistencyType")) {
-          this.getFluidConsistencyType().add(castToCodeableConcept(value));
+          this.getFluidConsistencyType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("instruction")) {
-          this.instruction = castToString(value); // StringType
+          this.instruction = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1125,10 +1125,10 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -615513385: // modifier
-          this.modifier = castToCodeableConcept(value); // CodeableConcept
+          this.modifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1138,9 +1138,9 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("modifier")) {
-          this.modifier = castToCodeableConcept(value); // CodeableConcept
+          this.modifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;
@@ -1328,10 +1328,10 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -615513385: // modifier
-          this.modifier = castToCodeableConcept(value); // CodeableConcept
+          this.modifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 379498680: // foodType
-          this.foodType = castToCodeableConcept(value); // CodeableConcept
+          this.foodType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1341,9 +1341,9 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("modifier")) {
-          this.modifier = castToCodeableConcept(value); // CodeableConcept
+          this.modifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("foodType")) {
-          this.foodType = castToCodeableConcept(value); // CodeableConcept
+          this.foodType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1711,19 +1711,19 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1491817446: // productName
-          this.productName = castToString(value); // StringType
+          this.productName = TypeConvertor.castToString(value); // StringType
           return value;
         case -697920873: // schedule
-          this.getSchedule().add(castToTiming(value)); // Timing
+          this.getSchedule().add(TypeConvertor.castToTiming(value)); // Timing
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 301526158: // instruction
-          this.instruction = castToString(value); // StringType
+          this.instruction = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1733,15 +1733,15 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productName")) {
-          this.productName = castToString(value); // StringType
+          this.productName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("schedule")) {
-          this.getSchedule().add(castToTiming(value));
+          this.getSchedule().add(TypeConvertor.castToTiming(value));
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("instruction")) {
-          this.instruction = castToString(value); // StringType
+          this.instruction = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2297,31 +2297,31 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -138930641: // baseFormulaType
-          this.baseFormulaType = castToCodeableConcept(value); // CodeableConcept
+          this.baseFormulaType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1267705979: // baseFormulaProductName
-          this.baseFormulaProductName = castToString(value); // StringType
+          this.baseFormulaProductName = TypeConvertor.castToString(value); // StringType
           return value;
         case -470746842: // additiveType
-          this.additiveType = castToCodeableConcept(value); // CodeableConcept
+          this.additiveType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 488079534: // additiveProductName
-          this.additiveProductName = castToString(value); // StringType
+          this.additiveProductName = TypeConvertor.castToString(value); // StringType
           return value;
         case 186983261: // caloricDensity
-          this.caloricDensity = castToQuantity(value); // Quantity
+          this.caloricDensity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1710107042: // routeofAdministration
-          this.routeofAdministration = castToCodeableConcept(value); // CodeableConcept
+          this.routeofAdministration = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1255702622: // administration
           this.getAdministration().add((NutritionOrderEnteralFormulaAdministrationComponent) value); // NutritionOrderEnteralFormulaAdministrationComponent
           return value;
         case 2017924652: // maxVolumeToDeliver
-          this.maxVolumeToDeliver = castToQuantity(value); // Quantity
+          this.maxVolumeToDeliver = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 427085136: // administrationInstruction
-          this.administrationInstruction = castToString(value); // StringType
+          this.administrationInstruction = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2331,23 +2331,23 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("baseFormulaType")) {
-          this.baseFormulaType = castToCodeableConcept(value); // CodeableConcept
+          this.baseFormulaType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("baseFormulaProductName")) {
-          this.baseFormulaProductName = castToString(value); // StringType
+          this.baseFormulaProductName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("additiveType")) {
-          this.additiveType = castToCodeableConcept(value); // CodeableConcept
+          this.additiveType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("additiveProductName")) {
-          this.additiveProductName = castToString(value); // StringType
+          this.additiveProductName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("caloricDensity")) {
-          this.caloricDensity = castToQuantity(value); // Quantity
+          this.caloricDensity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("routeofAdministration")) {
-          this.routeofAdministration = castToCodeableConcept(value); // CodeableConcept
+          this.routeofAdministration = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("administration")) {
           this.getAdministration().add((NutritionOrderEnteralFormulaAdministrationComponent) value);
         } else if (name.equals("maxVolumeToDeliver")) {
-          this.maxVolumeToDeliver = castToQuantity(value); // Quantity
+          this.maxVolumeToDeliver = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("administrationInstruction")) {
-          this.administrationInstruction = castToString(value); // StringType
+          this.administrationInstruction = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2507,7 +2507,7 @@ public class NutritionOrder extends DomainResource {
          */
         @Child(name = "rate", type = {Quantity.class, Ratio.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Speed with which the formula is provided per period of time", formalDefinition="The rate of administration of formula via a feeding pump, e.g. 60 mL per hour, according to the specified schedule." )
-        protected Type rate;
+        protected DataType rate;
 
         private static final long serialVersionUID = 673093291L;
 
@@ -2569,7 +2569,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return {@link #rate} (The rate of administration of formula via a feeding pump, e.g. 60 mL per hour, according to the specified schedule.)
          */
-        public Type getRate() { 
+        public DataType getRate() { 
           return this.rate;
         }
 
@@ -2610,7 +2610,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #rate} (The rate of administration of formula via a feeding pump, e.g. 60 mL per hour, according to the specified schedule.)
          */
-        public NutritionOrderEnteralFormulaAdministrationComponent setRate(Type value) { 
+        public NutritionOrderEnteralFormulaAdministrationComponent setRate(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Ratio))
             throw new Error("Not the right type for NutritionOrder.enteralFormula.administration.rate[x]: "+value.fhirType());
           this.rate = value;
@@ -2653,13 +2653,13 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -697920873: // schedule
-          this.schedule = castToTiming(value); // Timing
+          this.schedule = TypeConvertor.castToTiming(value); // Timing
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 3493088: // rate
-          this.rate = castToType(value); // Type
+          this.rate = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2669,11 +2669,11 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("schedule")) {
-          this.schedule = castToTiming(value); // Timing
+          this.schedule = TypeConvertor.castToTiming(value); // Timing
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("rate[x]")) {
-          this.rate = castToType(value); // Type
+          this.rate = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -3744,45 +3744,45 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -246883639: // instantiates
-          this.getInstantiates().add(castToUri(value)); // UriType
+          this.getInstantiates().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -892481550: // status
-          value = new NutritionOrderStatusEnumFactory().fromType(castToCode(value));
+          value = new NutritionOrderStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NutritionOrderStatus>
           return value;
         case -1183762788: // intent
-          value = new NutritiionOrderIntentEnumFactory().fromType(castToCode(value));
+          value = new NutritiionOrderIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<NutritiionOrderIntent>
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1792749467: // dateTime
-          this.dateTime = castToDateTime(value); // DateTimeType
+          this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1207109509: // orderer
-          this.orderer = castToReference(value); // Reference
+          this.orderer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -120164120: // allergyIntolerance
-          this.getAllergyIntolerance().add(castToReference(value)); // Reference
+          this.getAllergyIntolerance().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 659473872: // foodPreferenceModifier
-          this.getFoodPreferenceModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getFoodPreferenceModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1760260175: // excludeFoodModifier
-          this.getExcludeFoodModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getExcludeFoodModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1153521250: // oralDiet
           this.oralDiet = (NutritionOrderOralDietComponent) value; // NutritionOrderOralDietComponent
@@ -3794,7 +3794,7 @@ public class NutritionOrder extends DomainResource {
           this.enteralFormula = (NutritionOrderEnteralFormulaComponent) value; // NutritionOrderEnteralFormulaComponent
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3804,33 +3804,33 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("instantiates")) {
-          this.getInstantiates().add(castToUri(value));
+          this.getInstantiates().add(TypeConvertor.castToUri(value));
         } else if (name.equals("status")) {
-          value = new NutritionOrderStatusEnumFactory().fromType(castToCode(value));
+          value = new NutritionOrderStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NutritionOrderStatus>
         } else if (name.equals("intent")) {
-          value = new NutritiionOrderIntentEnumFactory().fromType(castToCode(value));
+          value = new NutritiionOrderIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<NutritiionOrderIntent>
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("dateTime")) {
-          this.dateTime = castToDateTime(value); // DateTimeType
+          this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("orderer")) {
-          this.orderer = castToReference(value); // Reference
+          this.orderer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("allergyIntolerance")) {
-          this.getAllergyIntolerance().add(castToReference(value));
+          this.getAllergyIntolerance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("foodPreferenceModifier")) {
-          this.getFoodPreferenceModifier().add(castToCodeableConcept(value));
+          this.getFoodPreferenceModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("excludeFoodModifier")) {
-          this.getExcludeFoodModifier().add(castToCodeableConcept(value));
+          this.getExcludeFoodModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("oralDiet")) {
           this.oralDiet = (NutritionOrderOralDietComponent) value; // NutritionOrderOralDietComponent
         } else if (name.equals("supplement")) {
@@ -3838,7 +3838,7 @@ public class NutritionOrder extends DomainResource {
         } else if (name.equals("enteralFormula")) {
           this.enteralFormula = (NutritionOrderEnteralFormulaComponent) value; // NutritionOrderEnteralFormulaComponent
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

@@ -230,10 +230,10 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -656537982: // rankOrder
-          this.rankOrder = castToInteger(value); // IntegerType
+          this.rankOrder = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 227099147: // intervalStatistic
-          this.getIntervalStatistic().add(castToStatistic(value)); // Statistic
+          this.getIntervalStatistic().add(TypeConvertor.castToStatistic(value)); // Statistic
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -243,9 +243,9 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("rankOrder")) {
-          this.rankOrder = castToInteger(value); // IntegerType
+          this.rankOrder = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("intervalStatistic")) {
-          this.getIntervalStatistic().add(castToStatistic(value));
+          this.getIntervalStatistic().add(TypeConvertor.castToStatistic(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -681,22 +681,22 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -569541330: // numberOfIntervals
-          this.numberOfIntervals = castToInteger(value); // IntegerType
+          this.numberOfIntervals = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 37889363: // bottomOfFirstInterval
-          this.bottomOfFirstInterval = castToQuantity(value); // Quantity
+          this.bottomOfFirstInterval = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 570418373: // interval
           this.getInterval().add((OrderedDistributionIntervalComponent) value); // OrderedDistributionIntervalComponent
           return value;
         case 691816177: // topOfInterval
-          this.topOfInterval = castToQuantity(value); // Quantity
+          this.topOfInterval = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -706,17 +706,17 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("numberOfIntervals")) {
-          this.numberOfIntervals = castToInteger(value); // IntegerType
+          this.numberOfIntervals = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("bottomOfFirstInterval")) {
-          this.bottomOfFirstInterval = castToQuantity(value); // Quantity
+          this.bottomOfFirstInterval = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("interval")) {
           this.getInterval().add((OrderedDistributionIntervalComponent) value);
         } else if (name.equals("topOfInterval")) {
-          this.topOfInterval = castToQuantity(value); // Quantity
+          this.topOfInterval = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;

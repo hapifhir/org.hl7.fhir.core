@@ -782,14 +782,14 @@ public class TestReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new TestReportParticipantTypeEnumFactory().fromType(castToCode(value));
+          value = new TestReportParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<TestReportParticipantType>
           return value;
         case 116076: // uri
-          this.uri = castToUri(value); // UriType
+          this.uri = TypeConvertor.castToUri(value); // UriType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -799,12 +799,12 @@ public class TestReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new TestReportParticipantTypeEnumFactory().fromType(castToCode(value));
+          value = new TestReportParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<TestReportParticipantType>
         } else if (name.equals("uri")) {
-          this.uri = castToUri(value); // UriType
+          this.uri = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1498,14 +1498,14 @@ public class TestReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -934426595: // result
-          value = new TestReportActionResultEnumFactory().fromType(castToCode(value));
+          value = new TestReportActionResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportActionResult>
           return value;
         case 954925063: // message
-          this.message = castToMarkdown(value); // MarkdownType
+          this.message = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1335224239: // detail
-          this.detail = castToUri(value); // UriType
+          this.detail = TypeConvertor.castToUri(value); // UriType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1515,12 +1515,12 @@ public class TestReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("result")) {
-          value = new TestReportActionResultEnumFactory().fromType(castToCode(value));
+          value = new TestReportActionResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportActionResult>
         } else if (name.equals("message")) {
-          this.message = castToMarkdown(value); // MarkdownType
+          this.message = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("detail")) {
-          this.detail = castToUri(value); // UriType
+          this.detail = TypeConvertor.castToUri(value); // UriType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1827,14 +1827,14 @@ public class TestReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -934426595: // result
-          value = new TestReportActionResultEnumFactory().fromType(castToCode(value));
+          value = new TestReportActionResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportActionResult>
           return value;
         case 954925063: // message
-          this.message = castToMarkdown(value); // MarkdownType
+          this.message = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1335224239: // detail
-          this.detail = castToString(value); // StringType
+          this.detail = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1844,12 +1844,12 @@ public class TestReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("result")) {
-          value = new TestReportActionResultEnumFactory().fromType(castToCode(value));
+          value = new TestReportActionResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportActionResult>
         } else if (name.equals("message")) {
-          this.message = castToMarkdown(value); // MarkdownType
+          this.message = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("detail")) {
-          this.detail = castToString(value); // StringType
+          this.detail = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2155,10 +2155,10 @@ public class TestReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1422950858: // action
           this.getAction().add((TestActionComponent) value); // TestActionComponent
@@ -2171,9 +2171,9 @@ public class TestReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("action")) {
           this.getAction().add((TestActionComponent) value);
         } else
@@ -3490,30 +3490,30 @@ public class TestReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new TestReportStatusEnumFactory().fromType(castToCode(value));
+          value = new TestReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<TestReportStatus>
           return value;
         case 1712049149: // testScript
-          this.testScript = castToReference(value); // Reference
+          this.testScript = TypeConvertor.castToReference(value); // Reference
           return value;
         case -934426595: // result
-          value = new TestReportResultEnumFactory().fromType(castToCode(value));
+          value = new TestReportResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportResult>
           return value;
         case 109264530: // score
-          this.score = castToDecimal(value); // DecimalType
+          this.score = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -877169473: // tester
-          this.tester = castToString(value); // StringType
+          this.tester = TypeConvertor.castToString(value); // StringType
           return value;
         case -1179159893: // issued
-          this.issued = castToDateTime(value); // DateTimeType
+          this.issued = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 767422259: // participant
           this.getParticipant().add((TestReportParticipantComponent) value); // TestReportParticipantComponent
@@ -3535,23 +3535,23 @@ public class TestReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new TestReportStatusEnumFactory().fromType(castToCode(value));
+          value = new TestReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<TestReportStatus>
         } else if (name.equals("testScript")) {
-          this.testScript = castToReference(value); // Reference
+          this.testScript = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("result")) {
-          value = new TestReportResultEnumFactory().fromType(castToCode(value));
+          value = new TestReportResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportResult>
         } else if (name.equals("score")) {
-          this.score = castToDecimal(value); // DecimalType
+          this.score = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("tester")) {
-          this.tester = castToString(value); // StringType
+          this.tester = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("issued")) {
-          this.issued = castToDateTime(value); // DateTimeType
+          this.issued = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("participant")) {
           this.getParticipant().add((TestReportParticipantComponent) value);
         } else if (name.equals("setup")) {

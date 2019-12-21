@@ -554,22 +554,22 @@ public class Observation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 107348: // low
-          this.low = castToQuantity(value); // Quantity
+          this.low = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 3202466: // high
-          this.high = castToQuantity(value); // Quantity
+          this.high = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2089924569: // appliesTo
-          this.getAppliesTo().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAppliesTo().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 96511: // age
-          this.age = castToRange(value); // Range
+          this.age = TypeConvertor.castToRange(value); // Range
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -579,17 +579,17 @@ public class Observation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("low")) {
-          this.low = castToQuantity(value); // Quantity
+          this.low = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("high")) {
-          this.high = castToQuantity(value); // Quantity
+          this.high = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("appliesTo")) {
-          this.getAppliesTo().add(castToCodeableConcept(value));
+          this.getAppliesTo().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("age")) {
-          this.age = castToRange(value); // Range
+          this.age = TypeConvertor.castToRange(value); // Range
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -720,7 +720,7 @@ public class Observation extends DomainResource {
          */
         @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Ratio.class, SampledData.class, TimeType.class, DateTimeType.class, Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Actual component result", formalDefinition="The information determined as a result of making the observation, if the information has a simple value." )
-        protected Type value;
+        protected DataType value;
 
         /**
          * Provides a reason why the expected value in the element Observation.component.value[x] is missing.
@@ -789,7 +789,7 @@ public class Observation extends DomainResource {
         /**
          * @return {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -965,7 +965,7 @@ public class Observation extends DomainResource {
         /**
          * @param value {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
          */
-        public ObservationComponentComponent setValue(Type value) { 
+        public ObservationComponentComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period))
             throw new Error("Not the right type for Observation.component.value[x]: "+value.fhirType());
           this.value = value;
@@ -1153,16 +1153,16 @@ public class Observation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         case 1034315687: // dataAbsentReason
-          this.dataAbsentReason = castToCodeableConcept(value); // CodeableConcept
+          this.dataAbsentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -297950712: // interpretation
-          this.getInterpretation().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getInterpretation().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1912545102: // referenceRange
           this.getReferenceRange().add((ObservationReferenceRangeComponent) value); // ObservationReferenceRangeComponent
@@ -1175,13 +1175,13 @@ public class Observation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else if (name.equals("dataAbsentReason")) {
-          this.dataAbsentReason = castToCodeableConcept(value); // CodeableConcept
+          this.dataAbsentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("interpretation")) {
-          this.getInterpretation().add(castToCodeableConcept(value));
+          this.getInterpretation().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("referenceRange")) {
           this.getReferenceRange().add((ObservationReferenceRangeComponent) value);
         } else
@@ -1408,7 +1408,7 @@ public class Observation extends DomainResource {
      */
     @Child(name = "effective", type = {DateTimeType.class, Period.class, Timing.class, InstantType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Clinically relevant time/time-period for observation", formalDefinition="The time or time-period the observed value is asserted as being true. For biological subjects - e.g. human patients - this is usually called the \"physiologically relevant time\". This is usually either the time of the procedure or of specimen collection, but very often the source of the date/time is not known, only the date/time itself." )
-    protected Type effective;
+    protected DataType effective;
 
     /**
      * The date and time this version of the observation was made available to providers, typically after the results have been reviewed and verified.
@@ -1429,7 +1429,7 @@ public class Observation extends DomainResource {
      */
     @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Ratio.class, SampledData.class, TimeType.class, DateTimeType.class, Period.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Actual result", formalDefinition="The information determined as a result of making the observation, if the information has a simple value." )
-    protected Type value;
+    protected DataType value;
 
     /**
      * Provides a reason why the expected value in the element Observation.value[x] is missing.
@@ -1915,7 +1915,7 @@ public class Observation extends DomainResource {
     /**
      * @return {@link #effective} (The time or time-period the observed value is asserted as being true. For biological subjects - e.g. human patients - this is usually called the "physiologically relevant time". This is usually either the time of the procedure or of specimen collection, but very often the source of the date/time is not known, only the date/time itself.)
      */
-    public Type getEffective() { 
+    public DataType getEffective() { 
       return this.effective;
     }
 
@@ -1986,7 +1986,7 @@ public class Observation extends DomainResource {
     /**
      * @param value {@link #effective} (The time or time-period the observed value is asserted as being true. For biological subjects - e.g. human patients - this is usually called the "physiologically relevant time". This is usually either the time of the procedure or of specimen collection, but very often the source of the date/time is not known, only the date/time itself.)
      */
-    public Observation setEffective(Type value) { 
+    public Observation setEffective(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing || value instanceof InstantType))
         throw new Error("Not the right type for Observation.effective[x]: "+value.fhirType());
       this.effective = value;
@@ -2098,7 +2098,7 @@ public class Observation extends DomainResource {
     /**
      * @return {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
      */
-    public Type getValue() { 
+    public DataType getValue() { 
       return this.value;
     }
 
@@ -2274,7 +2274,7 @@ public class Observation extends DomainResource {
     /**
      * @param value {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
      */
-    public Observation setValue(Type value) { 
+    public Observation setValue(DataType value) { 
       if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period))
         throw new Error("Not the right type for Observation.value[x]: "+value.fhirType());
       this.value = value;
@@ -2832,74 +2832,74 @@ public class Observation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new ObservationStatusEnumFactory().fromType(castToCode(value));
+          value = new ObservationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ObservationStatus>
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 97604824: // focus
-          this.getFocus().add(castToReference(value)); // Reference
+          this.getFocus().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1468651097: // effective
-          this.effective = castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // Type
           return value;
         case -1179159893: // issued
-          this.issued = castToInstant(value); // InstantType
+          this.issued = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 481140686: // performer
-          this.getPerformer().add(castToReference(value)); // Reference
+          this.getPerformer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         case 1034315687: // dataAbsentReason
-          this.dataAbsentReason = castToCodeableConcept(value); // CodeableConcept
+          this.dataAbsentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -297950712: // interpretation
-          this.getInterpretation().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getInterpretation().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2132868344: // specimen
-          this.specimen = castToReference(value); // Reference
+          this.specimen = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1335157162: // device
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1912545102: // referenceRange
           this.getReferenceRange().add((ObservationReferenceRangeComponent) value); // ObservationReferenceRangeComponent
           return value;
         case -458019372: // hasMember
-          this.getHasMember().add(castToReference(value)); // Reference
+          this.getHasMember().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1077922663: // derivedFrom
-          this.getDerivedFrom().add(castToReference(value)); // Reference
+          this.getDerivedFrom().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1399907075: // component
           this.getComponent().add((ObservationComponentComponent) value); // ObservationComponentComponent
@@ -2912,52 +2912,52 @@ public class Observation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new ObservationStatusEnumFactory().fromType(castToCode(value));
+          value = new ObservationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ObservationStatus>
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("focus")) {
-          this.getFocus().add(castToReference(value));
+          this.getFocus().add(TypeConvertor.castToReference(value));
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("effective[x]")) {
-          this.effective = castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // Type
         } else if (name.equals("issued")) {
-          this.issued = castToInstant(value); // InstantType
+          this.issued = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("performer")) {
-          this.getPerformer().add(castToReference(value));
+          this.getPerformer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else if (name.equals("dataAbsentReason")) {
-          this.dataAbsentReason = castToCodeableConcept(value); // CodeableConcept
+          this.dataAbsentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("interpretation")) {
-          this.getInterpretation().add(castToCodeableConcept(value));
+          this.getInterpretation().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("specimen")) {
-          this.specimen = castToReference(value); // Reference
+          this.specimen = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("device")) {
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("referenceRange")) {
           this.getReferenceRange().add((ObservationReferenceRangeComponent) value);
         } else if (name.equals("hasMember")) {
-          this.getHasMember().add(castToReference(value));
+          this.getHasMember().add(TypeConvertor.castToReference(value));
         } else if (name.equals("derivedFrom")) {
-          this.getDerivedFrom().add(castToReference(value));
+          this.getDerivedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("component")) {
           this.getComponent().add((ObservationComponentComponent) value);
         } else

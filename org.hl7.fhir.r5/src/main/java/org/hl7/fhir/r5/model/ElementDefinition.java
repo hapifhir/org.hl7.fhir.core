@@ -1054,13 +1054,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           this.getDiscriminator().add((ElementDefinitionSlicingDiscriminatorComponent) value); // ElementDefinitionSlicingDiscriminatorComponent
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1207109523: // ordered
-          this.ordered = castToBoolean(value); // BooleanType
+          this.ordered = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 108873975: // rules
-          value = new SlicingRulesEnumFactory().fromType(castToCode(value));
+          value = new SlicingRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.rules = (Enumeration) value; // Enumeration<SlicingRules>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -1073,11 +1073,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         if (name.equals("discriminator")) {
           this.getDiscriminator().add((ElementDefinitionSlicingDiscriminatorComponent) value);
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("ordered")) {
-          this.ordered = castToBoolean(value); // BooleanType
+          this.ordered = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("rules")) {
-          value = new SlicingRulesEnumFactory().fromType(castToCode(value));
+          value = new SlicingRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.rules = (Enumeration) value; // Enumeration<SlicingRules>
         } else
           return super.setProperty(name, value);
@@ -1333,11 +1333,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new DiscriminatorTypeEnumFactory().fromType(castToCode(value));
+          value = new DiscriminatorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<DiscriminatorType>
           return value;
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1347,10 +1347,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new DiscriminatorTypeEnumFactory().fromType(castToCode(value));
+          value = new DiscriminatorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<DiscriminatorType>
         } else if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1641,13 +1641,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case 108114: // min
-          this.min = castToUnsignedInt(value); // UnsignedIntType
+          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 107876: // max
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1657,11 +1657,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("min")) {
-          this.min = castToUnsignedInt(value); // UnsignedIntType
+          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("max")) {
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2123,20 +2123,20 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToUri(value); // UriType
+          this.code = TypeConvertor.castToUri(value); // UriType
           return value;
         case -309425751: // profile
-          this.getProfile().add(castToCanonical(value)); // CanonicalType
+          this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 1994521304: // targetProfile
-          this.getTargetProfile().add(castToCanonical(value)); // CanonicalType
+          this.getTargetProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 841524962: // aggregation
-          value = new AggregationModeEnumFactory().fromType(castToCode(value));
+          value = new AggregationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getAggregation().add((Enumeration) value); // Enumeration<AggregationMode>
           return value;
         case -670487542: // versioning
-          value = new ReferenceVersionRulesEnumFactory().fromType(castToCode(value));
+          value = new ReferenceVersionRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.versioning = (Enumeration) value; // Enumeration<ReferenceVersionRules>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -2147,16 +2147,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToUri(value); // UriType
+          this.code = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("profile")) {
-          this.getProfile().add(castToCanonical(value));
+          this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("targetProfile")) {
-          this.getTargetProfile().add(castToCanonical(value));
+          this.getTargetProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("aggregation")) {
-          value = new AggregationModeEnumFactory().fromType(castToCode(value));
+          value = new AggregationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getAggregation().add((Enumeration) value);
         } else if (name.equals("versioning")) {
-          value = new ReferenceVersionRulesEnumFactory().fromType(castToCode(value));
+          value = new ReferenceVersionRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.versioning = (Enumeration) value; // Enumeration<ReferenceVersionRules>
         } else
           return super.setProperty(name, value);
@@ -2362,7 +2362,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
          */
         @Child(name = "value", type = {}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Value of Example (one of allowed types)", formalDefinition="The actual value for the element, which must be one of the types allowed for this element." )
-        protected org.hl7.fhir.r5.model.Type value;
+        protected org.hl7.fhir.r5.model.DataType value;
 
         private static final long serialVersionUID = 668923394L;
 
@@ -2376,7 +2376,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionExampleComponent(StringType label, org.hl7.fhir.r5.model.Type value) {
+      public ElementDefinitionExampleComponent(StringType label, org.hl7.fhir.r5.model.DataType value) {
         super();
         this.label = label;
         this.value = value;
@@ -2430,7 +2430,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         /**
          * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
          */
-        public org.hl7.fhir.r5.model.Type getValue() { 
+        public org.hl7.fhir.r5.model.DataType getValue() { 
           return this.value;
         }
 
@@ -2441,7 +2441,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
          */
-        public ElementDefinitionExampleComponent setValue(org.hl7.fhir.r5.model.Type value) { 
+        public ElementDefinitionExampleComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
           this.value = value;
           return this;
         }
@@ -2513,10 +2513,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 102727412: // label
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
           return value;
         case 111972721: // value
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2526,9 +2526,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("label")) {
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -3254,26 +3254,26 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 106079: // key
-          this.key = castToId(value); // IdType
+          this.key = TypeConvertor.castToId(value); // IdType
           return value;
         case -1619874672: // requirements
-          this.requirements = castToString(value); // StringType
+          this.requirements = TypeConvertor.castToString(value); // StringType
           return value;
         case 1478300413: // severity
-          value = new ConstraintSeverityEnumFactory().fromType(castToCode(value));
+          value = new ConstraintSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<ConstraintSeverity>
           return value;
         case 99639597: // human
-          this.human = castToString(value); // StringType
+          this.human = TypeConvertor.castToString(value); // StringType
           return value;
         case -1795452264: // expression
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
           return value;
         case 114256029: // xpath
-          this.xpath = castToString(value); // StringType
+          this.xpath = TypeConvertor.castToString(value); // StringType
           return value;
         case -896505829: // source
-          this.source = castToCanonical(value); // CanonicalType
+          this.source = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3283,20 +3283,20 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("key")) {
-          this.key = castToId(value); // IdType
+          this.key = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("requirements")) {
-          this.requirements = castToString(value); // StringType
+          this.requirements = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("severity")) {
-          value = new ConstraintSeverityEnumFactory().fromType(castToCode(value));
+          value = new ConstraintSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<ConstraintSeverity>
         } else if (name.equals("human")) {
-          this.human = castToString(value); // StringType
+          this.human = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expression")) {
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("xpath")) {
-          this.xpath = castToString(value); // StringType
+          this.xpath = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("source")) {
-          this.source = castToCanonical(value); // CanonicalType
+          this.source = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3629,14 +3629,14 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1791316033: // strength
-          value = new BindingStrengthEnumFactory().fromType(castToCode(value));
+          value = new BindingStrengthEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.strength = (Enumeration) value; // Enumeration<BindingStrength>
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1410174671: // valueSet
-          this.valueSet = castToCanonical(value); // CanonicalType
+          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3646,12 +3646,12 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("strength")) {
-          value = new BindingStrengthEnumFactory().fromType(castToCode(value));
+          value = new BindingStrengthEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.strength = (Enumeration) value; // Enumeration<BindingStrength>
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("valueSet")) {
-          this.valueSet = castToCanonical(value); // CanonicalType
+          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4014,16 +4014,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -135761730: // identity
-          this.identity = castToId(value); // IdType
+          this.identity = TypeConvertor.castToId(value); // IdType
           return value;
         case -1613589672: // language
-          this.language = castToCode(value); // CodeType
+          this.language = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 107868: // map
-          this.map = castToString(value); // StringType
+          this.map = TypeConvertor.castToString(value); // StringType
           return value;
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4033,13 +4033,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identity")) {
-          this.identity = castToId(value); // IdType
+          this.identity = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("language")) {
-          this.language = castToCode(value); // CodeType
+          this.language = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("map")) {
-          this.map = castToString(value); // StringType
+          this.map = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4261,7 +4261,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      */
     @Child(name = "defaultValue", type = {}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specified value if missing from instance", formalDefinition="The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false')." )
-    protected org.hl7.fhir.r5.model.Type defaultValue;
+    protected org.hl7.fhir.r5.model.DataType defaultValue;
 
     /**
      * The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').
@@ -4282,7 +4282,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      */
     @Child(name = "fixed", type = {}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value must be exactly this", formalDefinition="Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing." )
-    protected org.hl7.fhir.r5.model.Type fixed;
+    protected org.hl7.fhir.r5.model.DataType fixed;
 
     /**
      * Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
@@ -4299,7 +4299,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
      */
     @Child(name = "pattern", type = {}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value must have at least these property values", formalDefinition="Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value." )
-    protected org.hl7.fhir.r5.model.Type pattern;
+    protected org.hl7.fhir.r5.model.DataType pattern;
 
     /**
      * A sample value for this element demonstrating the type of information that would typically be found in the element.
@@ -4313,14 +4313,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
      */
     @Child(name = "minValue", type = {DateType.class, DateTimeType.class, InstantType.class, TimeType.class, DecimalType.class, IntegerType.class, PositiveIntType.class, UnsignedIntType.class, Quantity.class}, order=23, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Minimum Allowed Value (for some types)", formalDefinition="The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity." )
-    protected Type minValue;
+    protected DataType minValue;
 
     /**
      * The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.
      */
     @Child(name = "maxValue", type = {DateType.class, DateTimeType.class, InstantType.class, TimeType.class, DecimalType.class, IntegerType.class, PositiveIntType.class, UnsignedIntType.class, Quantity.class}, order=24, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Maximum Allowed Value (for some types)", formalDefinition="The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity." )
-    protected Type maxValue;
+    protected DataType maxValue;
 
     /**
      * Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element.
@@ -5208,7 +5208,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
      */
-    public org.hl7.fhir.r5.model.Type getDefaultValue() { 
+    public org.hl7.fhir.r5.model.DataType getDefaultValue() { 
       return this.defaultValue;
     }
 
@@ -5219,7 +5219,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @param value {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
      */
-    public ElementDefinition setDefaultValue(org.hl7.fhir.r5.model.Type value) { 
+    public ElementDefinition setDefaultValue(org.hl7.fhir.r5.model.DataType value) { 
       this.defaultValue = value;
       return this;
     }
@@ -5325,7 +5325,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
      */
-    public org.hl7.fhir.r5.model.Type getFixed() { 
+    public org.hl7.fhir.r5.model.DataType getFixed() { 
       return this.fixed;
     }
 
@@ -5336,7 +5336,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @param value {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
      */
-    public ElementDefinition setFixed(org.hl7.fhir.r5.model.Type value) { 
+    public ElementDefinition setFixed(org.hl7.fhir.r5.model.DataType value) { 
       this.fixed = value;
       return this;
     }
@@ -5354,7 +5354,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.)
      */
-    public org.hl7.fhir.r5.model.Type getPattern() { 
+    public org.hl7.fhir.r5.model.DataType getPattern() { 
       return this.pattern;
     }
 
@@ -5375,7 +5375,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.)
      */
-    public ElementDefinition setPattern(org.hl7.fhir.r5.model.Type value) { 
+    public ElementDefinition setPattern(org.hl7.fhir.r5.model.DataType value) { 
       this.pattern = value;
       return this;
     }
@@ -5436,7 +5436,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #minValue} (The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
-    public Type getMinValue() { 
+    public DataType getMinValue() { 
       return this.minValue;
     }
 
@@ -5594,7 +5594,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @param value {@link #minValue} (The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
-    public ElementDefinition setMinValue(Type value) { 
+    public ElementDefinition setMinValue(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
         throw new Error("Not the right type for ElementDefinition.minValue[x]: "+value.fhirType());
       this.minValue = value;
@@ -5604,7 +5604,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #maxValue} (The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
-    public Type getMaxValue() { 
+    public DataType getMaxValue() { 
       return this.maxValue;
     }
 
@@ -5763,7 +5763,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @param value {@link #maxValue} (The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
      */
-    public ElementDefinition setMaxValue(Type value) { 
+    public ElementDefinition setMaxValue(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
         throw new Error("Not the right type for ElementDefinition.maxValue[x]: "+value.fhirType());
       this.maxValue = value;
@@ -6447,101 +6447,101 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -671065907: // representation
-          value = new PropertyRepresentationEnumFactory().fromType(castToCode(value));
+          value = new PropertyRepresentationEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getRepresentation().add((Enumeration) value); // Enumeration<PropertyRepresentation>
           return value;
         case -825289923: // sliceName
-          this.sliceName = castToString(value); // StringType
+          this.sliceName = TypeConvertor.castToString(value); // StringType
           return value;
         case 333040519: // sliceIsConstraining
-          this.sliceIsConstraining = castToBoolean(value); // BooleanType
+          this.sliceIsConstraining = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 102727412: // label
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
           return value;
         case 3059181: // code
-          this.getCode().add(castToCoding(value)); // Coding
+          this.getCode().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case -2119287345: // slicing
           this.slicing = (ElementDefinitionSlicingComponent) value; // ElementDefinitionSlicingComponent
           return value;
         case 109413500: // short
-          this.short_ = castToString(value); // StringType
+          this.short_ = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = castToMarkdown(value); // MarkdownType
+          this.definition = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 950398559: // comment
-          this.comment = castToMarkdown(value); // MarkdownType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1619874672: // requirements
-          this.requirements = castToMarkdown(value); // MarkdownType
+          this.requirements = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 92902992: // alias
-          this.getAlias().add(castToString(value)); // StringType
+          this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 108114: // min
-          this.min = castToUnsignedInt(value); // UnsignedIntType
+          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 107876: // max
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
           return value;
         case 3016401: // base
           this.base = (ElementDefinitionBaseComponent) value; // ElementDefinitionBaseComponent
           return value;
         case 1193747154: // contentReference
-          this.contentReference = castToUri(value); // UriType
+          this.contentReference = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3575610: // type
           this.getType().add((TypeRefComponent) value); // TypeRefComponent
           return value;
         case -659125328: // defaultValue
-          this.defaultValue = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.defaultValue = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         case 1857257103: // meaningWhenMissing
-          this.meaningWhenMissing = castToMarkdown(value); // MarkdownType
+          this.meaningWhenMissing = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1828196047: // orderMeaning
-          this.orderMeaning = castToString(value); // StringType
+          this.orderMeaning = TypeConvertor.castToString(value); // StringType
           return value;
         case 97445748: // fixed
-          this.fixed = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.fixed = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         case -791090288: // pattern
-          this.pattern = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.pattern = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         case -1322970774: // example
           this.getExample().add((ElementDefinitionExampleComponent) value); // ElementDefinitionExampleComponent
           return value;
         case -1376969153: // minValue
-          this.minValue = castToType(value); // Type
+          this.minValue = TypeConvertor.castToType(value); // Type
           return value;
         case 399227501: // maxValue
-          this.maxValue = castToType(value); // Type
+          this.maxValue = TypeConvertor.castToType(value); // Type
           return value;
         case -791400086: // maxLength
-          this.maxLength = castToInteger(value); // IntegerType
+          this.maxLength = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -861311717: // condition
-          this.getCondition().add(castToId(value)); // IdType
+          this.getCondition().add(TypeConvertor.castToId(value)); // IdType
           return value;
         case -190376483: // constraint
           this.getConstraint().add((ElementDefinitionConstraintComponent) value); // ElementDefinitionConstraintComponent
           return value;
         case -1402857082: // mustSupport
-          this.mustSupport = castToBoolean(value); // BooleanType
+          this.mustSupport = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1408783839: // isModifier
-          this.isModifier = castToBoolean(value); // BooleanType
+          this.isModifier = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1854387259: // isModifierReason
-          this.isModifierReason = castToString(value); // StringType
+          this.isModifierReason = TypeConvertor.castToString(value); // StringType
           return value;
         case 1857548060: // isSummary
-          this.isSummary = castToBoolean(value); // BooleanType
+          this.isSummary = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -108220795: // binding
           this.binding = (ElementDefinitionBindingComponent) value; // ElementDefinitionBindingComponent
@@ -6557,70 +6557,70 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("representation")) {
-          value = new PropertyRepresentationEnumFactory().fromType(castToCode(value));
+          value = new PropertyRepresentationEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getRepresentation().add((Enumeration) value);
         } else if (name.equals("sliceName")) {
-          this.sliceName = castToString(value); // StringType
+          this.sliceName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("sliceIsConstraining")) {
-          this.sliceIsConstraining = castToBoolean(value); // BooleanType
+          this.sliceIsConstraining = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("label")) {
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("code")) {
-          this.getCode().add(castToCoding(value));
+          this.getCode().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("slicing")) {
           this.slicing = (ElementDefinitionSlicingComponent) value; // ElementDefinitionSlicingComponent
         } else if (name.equals("short")) {
-          this.short_ = castToString(value); // StringType
+          this.short_ = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition")) {
-          this.definition = castToMarkdown(value); // MarkdownType
+          this.definition = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("comment")) {
-          this.comment = castToMarkdown(value); // MarkdownType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("requirements")) {
-          this.requirements = castToMarkdown(value); // MarkdownType
+          this.requirements = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("alias")) {
-          this.getAlias().add(castToString(value));
+          this.getAlias().add(TypeConvertor.castToString(value));
         } else if (name.equals("min")) {
-          this.min = castToUnsignedInt(value); // UnsignedIntType
+          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("max")) {
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("base")) {
           this.base = (ElementDefinitionBaseComponent) value; // ElementDefinitionBaseComponent
         } else if (name.equals("contentReference")) {
-          this.contentReference = castToUri(value); // UriType
+          this.contentReference = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("type")) {
           this.getType().add((TypeRefComponent) value);
         } else if (name.equals("defaultValue[x]")) {
-          this.defaultValue = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.defaultValue = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else if (name.equals("meaningWhenMissing")) {
-          this.meaningWhenMissing = castToMarkdown(value); // MarkdownType
+          this.meaningWhenMissing = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("orderMeaning")) {
-          this.orderMeaning = castToString(value); // StringType
+          this.orderMeaning = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("fixed[x]")) {
-          this.fixed = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.fixed = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else if (name.equals("pattern[x]")) {
-          this.pattern = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.pattern = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else if (name.equals("example")) {
           this.getExample().add((ElementDefinitionExampleComponent) value);
         } else if (name.equals("minValue[x]")) {
-          this.minValue = castToType(value); // Type
+          this.minValue = TypeConvertor.castToType(value); // Type
         } else if (name.equals("maxValue[x]")) {
-          this.maxValue = castToType(value); // Type
+          this.maxValue = TypeConvertor.castToType(value); // Type
         } else if (name.equals("maxLength")) {
-          this.maxLength = castToInteger(value); // IntegerType
+          this.maxLength = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("condition")) {
-          this.getCondition().add(castToId(value));
+          this.getCondition().add(TypeConvertor.castToId(value));
         } else if (name.equals("constraint")) {
           this.getConstraint().add((ElementDefinitionConstraintComponent) value);
         } else if (name.equals("mustSupport")) {
-          this.mustSupport = castToBoolean(value); // BooleanType
+          this.mustSupport = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("isModifier")) {
-          this.isModifier = castToBoolean(value); // BooleanType
+          this.isModifier = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("isModifierReason")) {
-          this.isModifierReason = castToString(value); // StringType
+          this.isModifierReason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("isSummary")) {
-          this.isSummary = castToBoolean(value); // BooleanType
+          this.isSummary = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("binding")) {
           this.binding = (ElementDefinitionBindingComponent) value; // ElementDefinitionBindingComponent
         } else if (name.equals("mapping")) {

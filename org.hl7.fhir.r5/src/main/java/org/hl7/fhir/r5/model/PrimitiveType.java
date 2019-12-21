@@ -35,7 +35,7 @@ import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
 import ca.uhn.fhir.model.api.IElement;
 
-public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>, IBaseHasExtensions, IElement, Externalizable {
+public abstract class PrimitiveType<T> extends DataType implements IPrimitiveType<T>, IBaseHasExtensions, IElement, Externalizable {
 
 	private static final long serialVersionUID = 3L;
 
@@ -46,7 +46,7 @@ public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>
 		return myStringValue;
 	}
 
-	public abstract Type copy();
+	public abstract DataType copy();
 
 	/**
 	 * Subclasses must override to convert a "coerced" value into an encoded one.
@@ -161,7 +161,7 @@ public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>
 		return getClass().getSimpleName() + "[" + asStringValue() + "]";
 	}
 
-	protected Type typedCopy() {
+	protected DataType typedCopy() {
 		return copy();
 	}
 

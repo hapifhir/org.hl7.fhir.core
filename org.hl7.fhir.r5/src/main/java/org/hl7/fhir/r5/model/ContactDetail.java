@@ -67,7 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Specifies contact information for a person or organization.
  */
 @DatatypeDef(name="ContactDetail")
-public class ContactDetail extends Type implements ICompositeType {
+public class ContactDetail extends DataType implements ICompositeType {
 
     /**
      * The name of an individual to contact.
@@ -224,10 +224,10 @@ public class ContactDetail extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -237,9 +237,9 @@ public class ContactDetail extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else
           return super.setProperty(name, value);
         return value;

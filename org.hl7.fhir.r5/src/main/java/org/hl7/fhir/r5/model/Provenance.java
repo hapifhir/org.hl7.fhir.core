@@ -421,16 +421,16 @@ public class Provenance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3506294: // role
-          this.getRole().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getRole().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 117694: // who
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
           return value;
         case -14402964: // onBehalfOf
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -440,13 +440,13 @@ public class Provenance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("role")) {
-          this.getRole().add(castToCodeableConcept(value));
+          this.getRole().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("who")) {
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onBehalfOf")) {
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -745,11 +745,11 @@ public class Provenance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          value = new ProvenanceEntityRoleEnumFactory().fromType(castToCode(value));
+          value = new ProvenanceEntityRoleEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.role = (Enumeration) value; // Enumeration<ProvenanceEntityRole>
           return value;
         case 3648196: // what
-          this.what = castToReference(value); // Reference
+          this.what = TypeConvertor.castToReference(value); // Reference
           return value;
         case 92750597: // agent
           this.getAgent().add((ProvenanceAgentComponent) value); // ProvenanceAgentComponent
@@ -762,10 +762,10 @@ public class Provenance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          value = new ProvenanceEntityRoleEnumFactory().fromType(castToCode(value));
+          value = new ProvenanceEntityRoleEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.role = (Enumeration) value; // Enumeration<ProvenanceEntityRole>
         } else if (name.equals("what")) {
-          this.what = castToReference(value); // Reference
+          this.what = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("agent")) {
           this.getAgent().add((ProvenanceAgentComponent) value);
         } else
@@ -872,7 +872,7 @@ public class Provenance extends DomainResource {
      */
     @Child(name = "occurred", type = {Period.class, DateTimeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the activity occurred", formalDefinition="The period during which the activity occurred." )
-    protected Type occurred;
+    protected DataType occurred;
 
     /**
      * The instant of time at which the activity was recorded.
@@ -1005,7 +1005,7 @@ public class Provenance extends DomainResource {
     /**
      * @return {@link #occurred} (The period during which the activity occurred.)
      */
-    public Type getOccurred() { 
+    public DataType getOccurred() { 
       return this.occurred;
     }
 
@@ -1046,7 +1046,7 @@ public class Provenance extends DomainResource {
     /**
      * @param value {@link #occurred} (The period during which the activity occurred.)
      */
-    public Provenance setOccurred(Type value) { 
+    public Provenance setOccurred(DataType value) { 
       if (value != null && !(value instanceof Period || value instanceof DateTimeType))
         throw new Error("Not the right type for Provenance.occurred[x]: "+value.fhirType());
       this.occurred = value;
@@ -1476,25 +1476,25 @@ public class Provenance extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -880905839: // target
-          this.getTarget().add(castToReference(value)); // Reference
+          this.getTarget().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 792816933: // occurred
-          this.occurred = castToType(value); // Type
+          this.occurred = TypeConvertor.castToType(value); // Type
           return value;
         case -799233872: // recorded
-          this.recorded = castToInstant(value); // InstantType
+          this.recorded = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -982670030: // policy
-          this.getPolicy().add(castToUri(value)); // UriType
+          this.getPolicy().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case -934964668: // reason
-          this.getReason().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1655966961: // activity
-          this.activity = castToCodeableConcept(value); // CodeableConcept
+          this.activity = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92750597: // agent
           this.getAgent().add((ProvenanceAgentComponent) value); // ProvenanceAgentComponent
@@ -1503,7 +1503,7 @@ public class Provenance extends DomainResource {
           this.getEntity().add((ProvenanceEntityComponent) value); // ProvenanceEntityComponent
           return value;
         case 1073584312: // signature
-          this.getSignature().add(castToSignature(value)); // Signature
+          this.getSignature().add(TypeConvertor.castToSignature(value)); // Signature
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1513,25 +1513,25 @@ public class Provenance extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("target")) {
-          this.getTarget().add(castToReference(value));
+          this.getTarget().add(TypeConvertor.castToReference(value));
         } else if (name.equals("occurred[x]")) {
-          this.occurred = castToType(value); // Type
+          this.occurred = TypeConvertor.castToType(value); // Type
         } else if (name.equals("recorded")) {
-          this.recorded = castToInstant(value); // InstantType
+          this.recorded = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("policy")) {
-          this.getPolicy().add(castToUri(value));
+          this.getPolicy().add(TypeConvertor.castToUri(value));
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reason")) {
-          this.getReason().add(castToCodeableConcept(value));
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("activity")) {
-          this.activity = castToCodeableConcept(value); // CodeableConcept
+          this.activity = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("agent")) {
           this.getAgent().add((ProvenanceAgentComponent) value);
         } else if (name.equals("entity")) {
           this.getEntity().add((ProvenanceEntityComponent) value);
         } else if (name.equals("signature")) {
-          this.getSignature().add(castToSignature(value));
+          this.getSignature().add(TypeConvertor.castToSignature(value));
         } else
           return super.setProperty(name, value);
         return value;

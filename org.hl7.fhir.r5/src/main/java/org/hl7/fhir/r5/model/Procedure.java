@@ -405,13 +405,13 @@ public class Procedure extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1380938712: // function
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         case -14402964: // onBehalfOf
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -421,11 +421,11 @@ public class Procedure extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("function")) {
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onBehalfOf")) {
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -629,10 +629,10 @@ public class Procedure extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1422950858: // action
-          this.action = castToCodeableConcept(value); // CodeableConcept
+          this.action = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 947372650: // manipulated
-          this.manipulated = castToReference(value); // Reference
+          this.manipulated = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -642,9 +642,9 @@ public class Procedure extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("action")) {
-          this.action = castToCodeableConcept(value); // CodeableConcept
+          this.action = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("manipulated")) {
-          this.manipulated = castToReference(value); // Reference
+          this.manipulated = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -813,7 +813,7 @@ public class Procedure extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, StringType.class, Age.class, Range.class, Timing.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the procedure occurred or is occurring", formalDefinition="Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * The date the occurrence of the procedure was first captured in the record - potentially significantly after the occurrence of the event.
@@ -834,7 +834,7 @@ public class Procedure extends DomainResource {
      */
     @Child(name = "reported", type = {BooleanType.class, Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Organization.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reported rather than primary record", formalDefinition="Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report." )
-    protected Type reported;
+    protected DataType reported;
 
     /**
      * Limited to "real" people rather than equipment.
@@ -1436,7 +1436,7 @@ public class Procedure extends DomainResource {
     /**
      * @return {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1537,7 +1537,7 @@ public class Procedure extends DomainResource {
     /**
      * @param value {@link #occurrence} (Estimated or actual date, date-time, period, or age when the procedure did occur or is occurring.  Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
      */
-    public Procedure setOccurrence(Type value) { 
+    public Procedure setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof StringType || value instanceof Age || value instanceof Range || value instanceof Timing))
         throw new Error("Not the right type for Procedure.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1620,7 +1620,7 @@ public class Procedure extends DomainResource {
     /**
      * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Type getReported() { 
+    public DataType getReported() { 
       return this.reported;
     }
 
@@ -1661,7 +1661,7 @@ public class Procedure extends DomainResource {
     /**
      * @param value {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Procedure setReported(Type value) { 
+    public Procedure setReported(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof Reference))
         throw new Error("Not the right type for Procedure.reported[x]: "+value.fhirType());
       this.reported = value;
@@ -2473,92 +2473,92 @@ public class Procedure extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new ProcedureStatusEnumFactory().fromType(castToCode(value));
+          value = new ProcedureStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ProcedureStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -799233872: // recorded
-          this.recorded = castToDateTime(value); // DateTimeType
+          this.recorded = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -799233858: // recorder
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
           return value;
         case -427039533: // reported
-          this.reported = castToType(value); // Type
+          this.reported = TypeConvertor.castToType(value); // Type
           return value;
         case 481140686: // performer
           this.getPerformer().add((ProcedurePerformerComponent) value); // ProcedurePerformerComponent
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.getBodySite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1106507950: // outcome
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -934521548: // report
-          this.getReport().add(castToReference(value)); // Reference
+          this.getReport().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1644401602: // complication
-          this.getComplication().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getComplication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1685272017: // complicationDetail
-          this.getComplicationDetail().add(castToReference(value)); // Reference
+          this.getComplicationDetail().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 301801004: // followUp
-          this.getFollowUp().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getFollowUp().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -1129235173: // focalDevice
           this.getFocalDevice().add((ProcedureFocalDeviceComponent) value); // ProcedureFocalDeviceComponent
           return value;
         case -504932338: // usedReference
-          this.getUsedReference().add(castToReference(value)); // Reference
+          this.getUsedReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -279910582: // usedCode
-          this.getUsedCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getUsedCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2568,64 +2568,64 @@ public class Procedure extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new ProcedureStatusEnumFactory().fromType(castToCode(value));
+          value = new ProcedureStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ProcedureStatus>
         } else if (name.equals("statusReason")) {
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("recorded")) {
-          this.recorded = castToDateTime(value); // DateTimeType
+          this.recorded = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("recorder")) {
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reported[x]")) {
-          this.reported = castToType(value); // Type
+          this.reported = TypeConvertor.castToType(value); // Type
         } else if (name.equals("performer")) {
           this.getPerformer().add((ProcedurePerformerComponent) value);
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add(castToCodeableConcept(value));
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("outcome")) {
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("report")) {
-          this.getReport().add(castToReference(value));
+          this.getReport().add(TypeConvertor.castToReference(value));
         } else if (name.equals("complication")) {
-          this.getComplication().add(castToCodeableConcept(value));
+          this.getComplication().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("complicationDetail")) {
-          this.getComplicationDetail().add(castToReference(value));
+          this.getComplicationDetail().add(TypeConvertor.castToReference(value));
         } else if (name.equals("followUp")) {
-          this.getFollowUp().add(castToCodeableConcept(value));
+          this.getFollowUp().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("focalDevice")) {
           this.getFocalDevice().add((ProcedureFocalDeviceComponent) value);
         } else if (name.equals("usedReference")) {
-          this.getUsedReference().add(castToReference(value));
+          this.getUsedReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("usedCode")) {
-          this.getUsedCode().add(castToCodeableConcept(value));
+          this.getUsedCode().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;

@@ -66,7 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A relationship of two Quantity values - expressed as a numerator and a denominator.
  */
 @DatatypeDef(name="Ratio")
-public class Ratio extends Type implements ICompositeType {
+public class Ratio extends DataType implements ICompositeType {
 
     /**
      * The value of the numerator.
@@ -169,10 +169,10 @@ public class Ratio extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1747334793: // numerator
-          this.numerator = castToQuantity(value); // Quantity
+          this.numerator = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1983274394: // denominator
-          this.denominator = castToQuantity(value); // Quantity
+          this.denominator = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -182,9 +182,9 @@ public class Ratio extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("numerator")) {
-          this.numerator = castToQuantity(value); // Quantity
+          this.numerator = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("denominator")) {
-          this.denominator = castToQuantity(value); // Quantity
+          this.denominator = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;

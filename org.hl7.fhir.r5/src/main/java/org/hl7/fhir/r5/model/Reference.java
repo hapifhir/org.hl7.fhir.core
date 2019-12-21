@@ -370,16 +370,16 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -925155509: // reference
-          this.reference = castToString(value); // StringType
+          this.reference = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToUri(value); // UriType
+          this.type = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -389,13 +389,13 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
-          this.reference = castToString(value); // StringType
+          this.reference = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToUri(value); // UriType
+          this.type = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;

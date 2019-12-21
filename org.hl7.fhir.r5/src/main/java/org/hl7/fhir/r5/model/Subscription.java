@@ -658,14 +658,14 @@ public class Subscription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 614036127: // matchType
-          value = new SubscriptionFilterByMatchTypeEnumFactory().fromType(castToCode(value));
+          value = new SubscriptionFilterByMatchTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.matchType = (Enumeration) value; // Enumeration<SubscriptionFilterByMatchType>
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -675,12 +675,12 @@ public class Subscription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("matchType")) {
-          value = new SubscriptionFilterByMatchTypeEnumFactory().fromType(castToCode(value));
+          value = new SubscriptionFilterByMatchTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.matchType = (Enumeration) value; // Enumeration<SubscriptionFilterByMatchType>
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1066,16 +1066,16 @@ public class Subscription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1741102485: // endpoint
-          this.endpoint = castToUrl(value); // UrlType
+          this.endpoint = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case -1221270899: // header
-          this.getHeader().add(castToString(value)); // StringType
+          this.getHeader().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -938465827: // heartbeatPeriod
-          this.heartbeatPeriod = castToUnsignedInt(value); // UnsignedIntType
+          this.heartbeatPeriod = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -786701938: // payload
           this.payload = (SubscriptionChannelPayloadComponent) value; // SubscriptionChannelPayloadComponent
@@ -1088,13 +1088,13 @@ public class Subscription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("endpoint")) {
-          this.endpoint = castToUrl(value); // UrlType
+          this.endpoint = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("header")) {
-          this.getHeader().add(castToString(value));
+          this.getHeader().add(TypeConvertor.castToString(value));
         } else if (name.equals("heartbeatPeriod")) {
-          this.heartbeatPeriod = castToUnsignedInt(value); // UnsignedIntType
+          this.heartbeatPeriod = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("payload")) {
           this.payload = (SubscriptionChannelPayloadComponent) value; // SubscriptionChannelPayloadComponent
         } else
@@ -1360,10 +1360,10 @@ public class Subscription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -389131437: // contentType
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 951530617: // content
-          value = new SubscriptionPayloadContentEnumFactory().fromType(castToCode(value));
+          value = new SubscriptionPayloadContentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.content = (Enumeration) value; // Enumeration<SubscriptionPayloadContent>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -1374,9 +1374,9 @@ public class Subscription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("contentType")) {
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("content")) {
-          value = new SubscriptionPayloadContentEnumFactory().fromType(castToCode(value));
+          value = new SubscriptionPayloadContentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.content = (Enumeration) value; // Enumeration<SubscriptionPayloadContent>
         } else
           return super.setProperty(name, value);
@@ -2107,35 +2107,35 @@ public class Subscription extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new SubscriptionStatusEnumFactory().fromType(castToCode(value));
+          value = new SubscriptionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SubscriptionStatus>
           return value;
         case 110546223: // topic
-          this.topic = castToReference(value); // Reference
+          this.topic = TypeConvertor.castToReference(value); // Reference
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactPoint(value)); // ContactPoint
+          this.getContact().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case 100571: // end
-          this.end = castToInstant(value); // InstantType
+          this.end = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -934964668: // reason
-          this.reason = castToString(value); // StringType
+          this.reason = TypeConvertor.castToString(value); // StringType
           return value;
         case -721168913: // filterBy
           this.getFilterBy().add((SubscriptionFilterByComponent) value); // SubscriptionFilterByComponent
           return value;
         case 96784904: // error
-          this.getError().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getError().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 958365333: // eventCount
-          this.eventCount = castToUnsignedInt(value); // UnsignedIntType
+          this.eventCount = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 738950403: // channel
           this.channel = (SubscriptionChannelComponent) value; // SubscriptionChannelComponent
@@ -2148,26 +2148,26 @@ public class Subscription extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new SubscriptionStatusEnumFactory().fromType(castToCode(value));
+          value = new SubscriptionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SubscriptionStatus>
         } else if (name.equals("topic")) {
-          this.topic = castToReference(value); // Reference
+          this.topic = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactPoint(value));
+          this.getContact().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("end")) {
-          this.end = castToInstant(value); // InstantType
+          this.end = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("reason")) {
-          this.reason = castToString(value); // StringType
+          this.reason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("filterBy")) {
           this.getFilterBy().add((SubscriptionFilterByComponent) value);
         } else if (name.equals("error")) {
-          this.getError().add(castToCodeableConcept(value));
+          this.getError().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("eventCount")) {
-          this.eventCount = castToUnsignedInt(value); // UnsignedIntType
+          this.eventCount = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("channel")) {
           this.channel = (SubscriptionChannelComponent) value; // SubscriptionChannelComponent
         } else

@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
  */
 @DatatypeDef(name="Address")
-public class Address extends Type implements ICompositeType {
+public class Address extends DataType implements ICompositeType {
 
     public enum AddressUse {
         /**
@@ -930,36 +930,36 @@ public class Address extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116103: // use
-          value = new AddressUseEnumFactory().fromType(castToCode(value));
+          value = new AddressUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<AddressUse>
           return value;
         case 3575610: // type
-          value = new AddressTypeEnumFactory().fromType(castToCode(value));
+          value = new AddressTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<AddressType>
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case 3321844: // line
-          this.getLine().add(castToString(value)); // StringType
+          this.getLine().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 3053931: // city
-          this.city = castToString(value); // StringType
+          this.city = TypeConvertor.castToString(value); // StringType
           return value;
         case 288961422: // district
-          this.district = castToString(value); // StringType
+          this.district = TypeConvertor.castToString(value); // StringType
           return value;
         case 109757585: // state
-          this.state = castToString(value); // StringType
+          this.state = TypeConvertor.castToString(value); // StringType
           return value;
         case 2011152728: // postalCode
-          this.postalCode = castToString(value); // StringType
+          this.postalCode = TypeConvertor.castToString(value); // StringType
           return value;
         case 957831062: // country
-          this.country = castToString(value); // StringType
+          this.country = TypeConvertor.castToString(value); // StringType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -969,27 +969,27 @@ public class Address extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("use")) {
-          value = new AddressUseEnumFactory().fromType(castToCode(value));
+          value = new AddressUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<AddressUse>
         } else if (name.equals("type")) {
-          value = new AddressTypeEnumFactory().fromType(castToCode(value));
+          value = new AddressTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<AddressType>
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("line")) {
-          this.getLine().add(castToString(value));
+          this.getLine().add(TypeConvertor.castToString(value));
         } else if (name.equals("city")) {
-          this.city = castToString(value); // StringType
+          this.city = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("district")) {
-          this.district = castToString(value); // StringType
+          this.district = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("state")) {
-          this.state = castToString(value); // StringType
+          this.state = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("postalCode")) {
-          this.postalCode = castToString(value); // StringType
+          this.postalCode = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("country")) {
-          this.country = castToString(value); // StringType
+          this.country = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;

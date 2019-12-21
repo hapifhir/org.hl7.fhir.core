@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ConditionDefinition", profile="http://hl7.org/fhir/StructureDefinition/ConditionDefinition")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "code", "severity", "bodySite", "stage", "hasSeverity", "hasBodySite", "hasStage", "definition", "observation", "medication", "precondition", "team", "questionnaire", "plan"})
-public class ConditionDefinition extends MetadataResource {
+public class ConditionDefinition extends CanonicalResource {
 
     public enum ConditionPreconditionType {
         /**
@@ -378,10 +378,10 @@ public class ConditionDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -391,9 +391,9 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -581,10 +581,10 @@ public class ConditionDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -594,9 +594,9 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -702,7 +702,7 @@ public class ConditionDefinition extends MetadataResource {
          */
         @Child(name = "value", type = {CodeableConcept.class, Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Value of Observation", formalDefinition="Value of Observation." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = -47421353L;
 
@@ -794,7 +794,7 @@ public class ConditionDefinition extends MetadataResource {
         /**
          * @return {@link #value} (Value of Observation.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -835,7 +835,7 @@ public class ConditionDefinition extends MetadataResource {
         /**
          * @param value {@link #value} (Value of Observation.)
          */
-        public ConditionDefinitionPreconditionComponent setValue(Type value) { 
+        public ConditionDefinitionPreconditionComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity))
             throw new Error("Not the right type for ConditionDefinition.precondition.value[x]: "+value.fhirType());
           this.value = value;
@@ -878,14 +878,14 @@ public class ConditionDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ConditionPreconditionTypeEnumFactory().fromType(castToCode(value));
+          value = new ConditionPreconditionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ConditionPreconditionType>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -895,12 +895,12 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ConditionPreconditionTypeEnumFactory().fromType(castToCode(value));
+          value = new ConditionPreconditionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ConditionPreconditionType>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1129,11 +1129,11 @@ public class ConditionDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -220463842: // purpose
-          value = new ConditionQuestionnairePurposeEnumFactory().fromType(castToCode(value));
+          value = new ConditionQuestionnairePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.purpose = (Enumeration) value; // Enumeration<ConditionQuestionnairePurpose>
           return value;
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1143,10 +1143,10 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("purpose")) {
-          value = new ConditionQuestionnairePurposeEnumFactory().fromType(castToCode(value));
+          value = new ConditionQuestionnairePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.purpose = (Enumeration) value; // Enumeration<ConditionQuestionnairePurpose>
         } else if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1339,10 +1339,10 @@ public class ConditionDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1352,9 +1352,9 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -2983,71 +2983,71 @@ public class ConditionDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -2060497896: // subtitle
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1478300413: // severity
-          this.severity = castToCodeableConcept(value); // CodeableConcept
+          this.severity = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 109757182: // stage
-          this.stage = castToCodeableConcept(value); // CodeableConcept
+          this.stage = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 57790391: // hasSeverity
-          this.hasSeverity = castToBoolean(value); // BooleanType
+          this.hasSeverity = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 282110147: // hasBodySite
-          this.hasBodySite = castToBoolean(value); // BooleanType
+          this.hasBodySite = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 129749124: // hasStage
-          this.hasStage = castToBoolean(value); // BooleanType
+          this.hasStage = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1014418093: // definition
-          this.getDefinition().add(castToUri(value)); // UriType
+          this.getDefinition().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case 122345516: // observation
           this.getObservation().add((ConditionDefinitionObservationComponent) value); // ConditionDefinitionObservationComponent
@@ -3059,7 +3059,7 @@ public class ConditionDefinition extends MetadataResource {
           this.getPrecondition().add((ConditionDefinitionPreconditionComponent) value); // ConditionDefinitionPreconditionComponent
           return value;
         case 3555933: // team
-          this.getTeam().add(castToReference(value)); // Reference
+          this.getTeam().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1017049693: // questionnaire
           this.getQuestionnaire().add((ConditionDefinitionQuestionnaireComponent) value); // ConditionDefinitionQuestionnaireComponent
@@ -3075,50 +3075,50 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subtitle")) {
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("severity")) {
-          this.severity = castToCodeableConcept(value); // CodeableConcept
+          this.severity = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("stage")) {
-          this.stage = castToCodeableConcept(value); // CodeableConcept
+          this.stage = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("hasSeverity")) {
-          this.hasSeverity = castToBoolean(value); // BooleanType
+          this.hasSeverity = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("hasBodySite")) {
-          this.hasBodySite = castToBoolean(value); // BooleanType
+          this.hasBodySite = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("hasStage")) {
-          this.hasStage = castToBoolean(value); // BooleanType
+          this.hasStage = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("definition")) {
-          this.getDefinition().add(castToUri(value));
+          this.getDefinition().add(TypeConvertor.castToUri(value));
         } else if (name.equals("observation")) {
           this.getObservation().add((ConditionDefinitionObservationComponent) value);
         } else if (name.equals("medication")) {
@@ -3126,7 +3126,7 @@ public class ConditionDefinition extends MetadataResource {
         } else if (name.equals("precondition")) {
           this.getPrecondition().add((ConditionDefinitionPreconditionComponent) value);
         } else if (name.equals("team")) {
-          this.getTeam().add(castToReference(value));
+          this.getTeam().add(TypeConvertor.castToReference(value));
         } else if (name.equals("questionnaire")) {
           this.getQuestionnaire().add((ConditionDefinitionQuestionnaireComponent) value);
         } else if (name.equals("plan")) {

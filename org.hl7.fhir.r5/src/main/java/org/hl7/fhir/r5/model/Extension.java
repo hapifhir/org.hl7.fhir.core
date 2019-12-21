@@ -70,7 +70,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Optional Extension Element - found in all resources.
  */
 @DatatypeDef(name="Extension")
-public class Extension extends BaseExtension implements IBaseExtension<Extension, Type>, IBaseHasExtensions {
+public class Extension extends BaseExtension implements IBaseExtension<Extension, DataType>, IBaseHasExtensions {
 
     /**
      * Source of the definition for the extension code - a logical name or a URL.
@@ -84,9 +84,9 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
      */
     @Child(name = "value", type = {}, order=1, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Value of extension", formalDefinition="Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list)." )
-    protected org.hl7.fhir.r5.model.Type value;
+    protected org.hl7.fhir.r5.model.DataType value;
 
-    private static final long serialVersionUID = 405953844L;
+    private static final long serialVersionUID = 1123157546L;
 
   /**
    * Constructor
@@ -166,7 +166,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
     /**
      * @return {@link #value} (Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).)
      */
-    public org.hl7.fhir.r5.model.Type getValue() { 
+    public org.hl7.fhir.r5.model.DataType getValue() { 
       return this.value;
     }
 
@@ -177,7 +177,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
     /**
      * @param value {@link #value} (Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).)
      */
-    public Extension setValue(org.hl7.fhir.r5.model.Type value) { 
+    public Extension setValue(org.hl7.fhir.r5.model.DataType value) { 
       this.value = value;
       return this;
     }
@@ -204,6 +204,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         case 231604844: /*valueId*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -1668687056: /*valueInstant*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -1668204915: /*valueInteger*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
+        case -1122120181: /*valueInteger64*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -497880704: /*valueMarkdown*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -1410178407: /*valueOid*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "*", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
@@ -239,7 +240,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // org.hl7.fhir.r5.model.Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // org.hl7.fhir.r5.model.DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -249,10 +250,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 111972721: // value
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -262,9 +263,9 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -334,6 +335,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         }
         else if (name.equals("valueInteger")) {
           this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger64")) {
+          this.value = new Integer64Type();
           return this.value;
         }
         else if (name.equals("valueMarkdown")) {

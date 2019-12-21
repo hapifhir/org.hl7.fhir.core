@@ -67,7 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Details for all kinds of technology mediated contact points for a person or organization, including telephone, email, etc.
  */
 @DatatypeDef(name="ContactPoint")
-public class ContactPoint extends Type implements ICompositeType {
+public class ContactPoint extends DataType implements ICompositeType {
 
     public enum ContactPointSystem {
         /**
@@ -682,21 +682,21 @@ public class ContactPoint extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -887328209: // system
-          value = new ContactPointSystemEnumFactory().fromType(castToCode(value));
+          value = new ContactPointSystemEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.system = (Enumeration) value; // Enumeration<ContactPointSystem>
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         case 116103: // use
-          value = new ContactPointUseEnumFactory().fromType(castToCode(value));
+          value = new ContactPointUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<ContactPointUse>
           return value;
         case 3492908: // rank
-          this.rank = castToPositiveInt(value); // PositiveIntType
+          this.rank = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -706,17 +706,17 @@ public class ContactPoint extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("system")) {
-          value = new ContactPointSystemEnumFactory().fromType(castToCode(value));
+          value = new ContactPointSystemEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.system = (Enumeration) value; // Enumeration<ContactPointSystem>
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("use")) {
-          value = new ContactPointUseEnumFactory().fromType(castToCode(value));
+          value = new ContactPointUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<ContactPointUse>
         } else if (name.equals("rank")) {
-          this.rank = castToPositiveInt(value); // PositiveIntType
+          this.rank = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;

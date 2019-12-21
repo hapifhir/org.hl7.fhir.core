@@ -209,7 +209,7 @@ public class Specimen extends DomainResource {
          */
         @Child(name = "collected", type = {DateTimeType.class, Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Collection time", formalDefinition="Time when specimen was collected from subject - the physiologically relevant time." )
-        protected Type collected;
+        protected DataType collected;
 
         /**
          * The span of time over which the collection of a specimen occurred.
@@ -247,7 +247,7 @@ public class Specimen extends DomainResource {
         @Child(name = "fastingStatus", type = {CodeableConcept.class, Duration.class}, order=7, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Whether or how long patient abstained from food and/or drink", formalDefinition="Abstinence or reduction from some or all food, drink, or both, for a period of time prior to sample collection." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0916")
-        protected Type fastingStatus;
+        protected DataType fastingStatus;
 
         private static final long serialVersionUID = -193148073L;
 
@@ -285,7 +285,7 @@ public class Specimen extends DomainResource {
         /**
          * @return {@link #collected} (Time when specimen was collected from subject - the physiologically relevant time.)
          */
-        public Type getCollected() { 
+        public DataType getCollected() { 
           return this.collected;
         }
 
@@ -326,7 +326,7 @@ public class Specimen extends DomainResource {
         /**
          * @param value {@link #collected} (Time when specimen was collected from subject - the physiologically relevant time.)
          */
-        public SpecimenCollectionComponent setCollected(Type value) { 
+        public SpecimenCollectionComponent setCollected(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
             throw new Error("Not the right type for Specimen.collection.collected[x]: "+value.fhirType());
           this.collected = value;
@@ -432,7 +432,7 @@ public class Specimen extends DomainResource {
         /**
          * @return {@link #fastingStatus} (Abstinence or reduction from some or all food, drink, or both, for a period of time prior to sample collection.)
          */
-        public Type getFastingStatus() { 
+        public DataType getFastingStatus() { 
           return this.fastingStatus;
         }
 
@@ -473,7 +473,7 @@ public class Specimen extends DomainResource {
         /**
          * @param value {@link #fastingStatus} (Abstinence or reduction from some or all food, drink, or both, for a period of time prior to sample collection.)
          */
-        public SpecimenCollectionComponent setFastingStatus(Type value) { 
+        public SpecimenCollectionComponent setFastingStatus(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Duration))
             throw new Error("Not the right type for Specimen.collection.fastingStatus[x]: "+value.fhirType());
           this.fastingStatus = value;
@@ -531,25 +531,25 @@ public class Specimen extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1883491469: // collector
-          this.collector = castToReference(value); // Reference
+          this.collector = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1883491145: // collected
-          this.collected = castToType(value); // Type
+          this.collected = TypeConvertor.castToType(value); // Type
           return value;
         case -1992012396: // duration
-          this.duration = castToDuration(value); // Duration
+          this.duration = TypeConvertor.castToDuration(value); // Duration
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -701550184: // fastingStatus
-          this.fastingStatus = castToType(value); // Type
+          this.fastingStatus = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -559,19 +559,19 @@ public class Specimen extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("collector")) {
-          this.collector = castToReference(value); // Reference
+          this.collector = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("collected[x]")) {
-          this.collected = castToType(value); // Type
+          this.collected = TypeConvertor.castToType(value); // Type
         } else if (name.equals("duration")) {
-          this.duration = castToDuration(value); // Duration
+          this.duration = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("fastingStatus[x]")) {
-          this.fastingStatus = castToType(value); // Type
+          this.fastingStatus = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -731,7 +731,7 @@ public class Specimen extends DomainResource {
          */
         @Child(name = "time", type = {DateTimeType.class, Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date and time of specimen processing", formalDefinition="A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin." )
-        protected Type time;
+        protected DataType time;
 
         private static final long serialVersionUID = 1180205613L;
 
@@ -871,7 +871,7 @@ public class Specimen extends DomainResource {
         /**
          * @return {@link #time} (A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin.)
          */
-        public Type getTime() { 
+        public DataType getTime() { 
           return this.time;
         }
 
@@ -912,7 +912,7 @@ public class Specimen extends DomainResource {
         /**
          * @param value {@link #time} (A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin.)
          */
-        public SpecimenProcessingComponent setTime(Type value) { 
+        public SpecimenProcessingComponent setTime(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
             throw new Error("Not the right type for Specimen.processing.time[x]: "+value.fhirType());
           this.time = value;
@@ -958,16 +958,16 @@ public class Specimen extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1095204141: // procedure
-          this.procedure = castToCodeableConcept(value); // CodeableConcept
+          this.procedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1226589236: // additive
-          this.getAdditive().add(castToReference(value)); // Reference
+          this.getAdditive().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3560141: // time
-          this.time = castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -977,13 +977,13 @@ public class Specimen extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("procedure")) {
-          this.procedure = castToCodeableConcept(value); // CodeableConcept
+          this.procedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("additive")) {
-          this.getAdditive().add(castToReference(value));
+          this.getAdditive().add(TypeConvertor.castToReference(value));
         } else if (name.equals("time[x]")) {
-          this.time = castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1133,7 +1133,7 @@ public class Specimen extends DomainResource {
         @Child(name = "additive", type = {CodeableConcept.class, Substance.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Additive associated with container", formalDefinition="Introduced substance to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0371")
-        protected Type additive;
+        protected DataType additive;
 
         private static final long serialVersionUID = -1608132325L;
 
@@ -1321,7 +1321,7 @@ public class Specimen extends DomainResource {
         /**
          * @return {@link #additive} (Introduced substance to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.)
          */
-        public Type getAdditive() { 
+        public DataType getAdditive() { 
           return this.additive;
         }
 
@@ -1362,7 +1362,7 @@ public class Specimen extends DomainResource {
         /**
          * @param value {@link #additive} (Introduced substance to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.)
          */
-        public SpecimenContainerComponent setAdditive(Type value) { 
+        public SpecimenContainerComponent setAdditive(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Specimen.container.additive[x]: "+value.fhirType());
           this.additive = value;
@@ -1414,22 +1414,22 @@ public class Specimen extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -67824454: // capacity
-          this.capacity = castToQuantity(value); // Quantity
+          this.capacity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 1485980595: // specimenQuantity
-          this.specimenQuantity = castToQuantity(value); // Quantity
+          this.specimenQuantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1226589236: // additive
-          this.additive = castToType(value); // Type
+          this.additive = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1439,17 +1439,17 @@ public class Specimen extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("capacity")) {
-          this.capacity = castToQuantity(value); // Quantity
+          this.capacity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("specimenQuantity")) {
-          this.specimenQuantity = castToQuantity(value); // Quantity
+          this.specimenQuantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("additive[x]")) {
-          this.additive = castToType(value); // Type
+          this.additive = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -2301,29 +2301,29 @@ public class Specimen extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 818734061: // accessionIdentifier
-          this.accessionIdentifier = castToIdentifier(value); // Identifier
+          this.accessionIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new SpecimenStatusEnumFactory().fromType(castToCode(value));
+          value = new SpecimenStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SpecimenStatus>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case -767961010: // receivedTime
-          this.receivedTime = castToDateTime(value); // DateTimeType
+          this.receivedTime = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -995424086: // parent
-          this.getParent().add(castToReference(value)); // Reference
+          this.getParent().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1095692943: // request
-          this.getRequest().add(castToReference(value)); // Reference
+          this.getRequest().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1741312354: // collection
           this.collection = (SpecimenCollectionComponent) value; // SpecimenCollectionComponent
@@ -2335,10 +2335,10 @@ public class Specimen extends DomainResource {
           this.getContainer().add((SpecimenContainerComponent) value); // SpecimenContainerComponent
           return value;
         case -861311717: // condition
-          this.getCondition().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCondition().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2348,22 +2348,22 @@ public class Specimen extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("accessionIdentifier")) {
-          this.accessionIdentifier = castToIdentifier(value); // Identifier
+          this.accessionIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new SpecimenStatusEnumFactory().fromType(castToCode(value));
+          value = new SpecimenStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SpecimenStatus>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("receivedTime")) {
-          this.receivedTime = castToDateTime(value); // DateTimeType
+          this.receivedTime = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("parent")) {
-          this.getParent().add(castToReference(value));
+          this.getParent().add(TypeConvertor.castToReference(value));
         } else if (name.equals("request")) {
-          this.getRequest().add(castToReference(value));
+          this.getRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("collection")) {
           this.collection = (SpecimenCollectionComponent) value; // SpecimenCollectionComponent
         } else if (name.equals("processing")) {
@@ -2371,9 +2371,9 @@ public class Specimen extends DomainResource {
         } else if (name.equals("container")) {
           this.getContainer().add((SpecimenContainerComponent) value);
         } else if (name.equals("condition")) {
-          this.getCondition().add(castToCodeableConcept(value));
+          this.getCondition().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

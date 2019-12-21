@@ -187,7 +187,7 @@ public class EnableWhenEvaluator {
     List<Element> answerItems = findQuestionAnswers(qstack, qitem, enableCondition);        
     QuestionnaireItemOperator operator = enableCondition.getOperator();
     if (operator == QuestionnaireItemOperator.EXISTS){
-      Type answer = enableCondition.getAnswer();
+      DataType answer = enableCondition.getAnswer();
       if (!(answer instanceof BooleanType)){
         throw new UnprocessableEntityException("Exists-operator requires answerBoolean");                
       }
@@ -199,11 +199,11 @@ public class EnableWhenEvaluator {
     return new EnableWhenResult(result, enableCondition);
   }
 
-  private Type convertToType(Element element) throws FHIRException {
+  private DataType convertToType(Element element) throws FHIRException {
     if (element.fhirType().equals("BackboneElement")) {
       return null;
     }
-    Type b = new Factory().create(element.fhirType());
+    DataType b = new Factory().create(element.fhirType());
     if (b instanceof PrimitiveType) {
       ((PrimitiveType<?>) b).setValueAsString(element.primitiveValue());
     } else {
@@ -221,8 +221,8 @@ public class EnableWhenEvaluator {
     return "Extension".equals(element.fhirType());
   }
 
-  protected boolean evaluateAnswer(Element answer, Type expectedAnswer, QuestionnaireItemOperator questionnaireItemOperator) {
-    Type actualAnswer;
+  protected boolean evaluateAnswer(Element answer, DataType expectedAnswer, QuestionnaireItemOperator questionnaireItemOperator) {
+    DataType actualAnswer;
     if (isExtension(answer)) {
       return false;
     }

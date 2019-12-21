@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="PlanDefinition", profile="http://hl7.org/fhir/StructureDefinition/PlanDefinition")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "type", "status", "experimental", "subject[x]", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "usage", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "library", "goal", "action"})
-public class PlanDefinition extends MetadataResource {
+public class PlanDefinition extends CanonicalResource {
 
     public enum RequestPriority {
         /**
@@ -1562,22 +1562,22 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToCodeableConcept(value); // CodeableConcept
+          this.description = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1165461084: // priority
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 109757538: // start
-          this.start = castToCodeableConcept(value); // CodeableConcept
+          this.start = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 874544034: // addresses
-          this.getAddresses().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAddresses().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1587405498: // documentation
-          this.getDocumentation().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getDocumentation().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -880905839: // target
           this.getTarget().add((PlanDefinitionGoalTargetComponent) value); // PlanDefinitionGoalTargetComponent
@@ -1590,17 +1590,17 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToCodeableConcept(value); // CodeableConcept
+          this.description = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("priority")) {
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("start")) {
-          this.start = castToCodeableConcept(value); // CodeableConcept
+          this.start = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("addresses")) {
-          this.getAddresses().add(castToCodeableConcept(value));
+          this.getAddresses().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("documentation")) {
-          this.getDocumentation().add(castToRelatedArtifact(value));
+          this.getDocumentation().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("target")) {
           this.getTarget().add((PlanDefinitionGoalTargetComponent) value);
         } else
@@ -1747,7 +1747,7 @@ public class PlanDefinition extends MetadataResource {
          */
         @Child(name = "detail", type = {Quantity.class, Range.class, CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The target value to be achieved", formalDefinition="The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value." )
-        protected Type detail;
+        protected DataType detail;
 
         /**
          * Indicates the timeframe after the start of the goal in which the goal should be met.
@@ -1792,7 +1792,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
-        public Type getDetail() { 
+        public DataType getDetail() { 
           return this.detail;
         }
 
@@ -1848,7 +1848,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @param value {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
-        public PlanDefinitionGoalTargetComponent setDetail(Type value) { 
+        public PlanDefinitionGoalTargetComponent setDetail(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept))
             throw new Error("Not the right type for PlanDefinition.goal.target.detail[x]: "+value.fhirType());
           this.detail = value;
@@ -1916,13 +1916,13 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 938321246: // measure
-          this.measure = castToCodeableConcept(value); // CodeableConcept
+          this.measure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1335224239: // detail
-          this.detail = castToType(value); // Type
+          this.detail = TypeConvertor.castToType(value); // Type
           return value;
         case 99828: // due
-          this.due = castToDuration(value); // Duration
+          this.due = TypeConvertor.castToDuration(value); // Duration
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1932,11 +1932,11 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("measure")) {
-          this.measure = castToCodeableConcept(value); // CodeableConcept
+          this.measure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("detail[x]")) {
-          this.detail = castToType(value); // Type
+          this.detail = TypeConvertor.castToType(value); // Type
         } else if (name.equals("due")) {
-          this.due = castToDuration(value); // Duration
+          this.due = TypeConvertor.castToDuration(value); // Duration
         } else
           return super.setProperty(name, value);
         return value;
@@ -2108,7 +2108,7 @@ public class PlanDefinition extends MetadataResource {
         @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Type of individual the action is focused on", formalDefinition="A code or group definition that describes the intended subject of the action and its children, if any." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
-        protected Type subject;
+        protected DataType subject;
 
         /**
          * A description of when the action should be triggered.
@@ -2150,7 +2150,7 @@ public class PlanDefinition extends MetadataResource {
          */
         @Child(name = "timing", type = {DateTimeType.class, Age.class, Period.class, Duration.class, Range.class, Timing.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When the action should take place", formalDefinition="An optional value describing when the action should be performed." )
-        protected Type timing;
+        protected DataType timing;
 
         /**
          * Indicates who should participate in performing the action described.
@@ -2212,7 +2212,7 @@ public class PlanDefinition extends MetadataResource {
          */
         @Child(name = "definition", type = {CanonicalType.class, UriType.class}, order=24, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Description of the activity to be performed", formalDefinition="A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken." )
-        protected Type definition;
+        protected DataType definition;
 
         /**
          * A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.
@@ -2712,7 +2712,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #subject} (A code or group definition that describes the intended subject of the action and its children, if any.)
          */
-        public Type getSubject() { 
+        public DataType getSubject() { 
           return this.subject;
         }
 
@@ -2753,7 +2753,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @param value {@link #subject} (A code or group definition that describes the intended subject of the action and its children, if any.)
          */
-        public PlanDefinitionActionComponent setSubject(Type value) { 
+        public PlanDefinitionActionComponent setSubject(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for PlanDefinition.action.subject[x]: "+value.fhirType());
           this.subject = value;
@@ -3028,7 +3028,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #timing} (An optional value describing when the action should be performed.)
          */
-        public Type getTiming() { 
+        public DataType getTiming() { 
           return this.timing;
         }
 
@@ -3129,7 +3129,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @param value {@link #timing} (An optional value describing when the action should be performed.)
          */
-        public PlanDefinitionActionComponent setTiming(Type value) { 
+        public PlanDefinitionActionComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Duration || value instanceof Range || value instanceof Timing))
             throw new Error("Not the right type for PlanDefinition.action.timing[x]: "+value.fhirType());
           this.timing = value;
@@ -3461,7 +3461,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.)
          */
-        public Type getDefinition() { 
+        public DataType getDefinition() { 
           return this.definition;
         }
 
@@ -3502,7 +3502,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @param value {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.)
          */
-        public PlanDefinitionActionComponent setDefinition(Type value) { 
+        public PlanDefinitionActionComponent setDefinition(DataType value) { 
           if (value != null && !(value instanceof CanonicalType || value instanceof UriType))
             throw new Error("Not the right type for PlanDefinition.action.definition[x]: "+value.fhirType());
           this.definition = value;
@@ -3782,85 +3782,85 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -980110702: // prefix
-          this.prefix = castToString(value); // StringType
+          this.prefix = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -900391049: // textEquivalent
-          this.textEquivalent = castToString(value); // StringType
+          this.textEquivalent = TypeConvertor.castToString(value); // StringType
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -934964668: // reason
-          this.getReason().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1587405498: // documentation
-          this.getDocumentation().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getDocumentation().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -1240658034: // goalId
-          this.getGoalId().add(castToId(value)); // IdType
+          this.getGoalId().add(TypeConvertor.castToId(value)); // IdType
           return value;
         case -1867885268: // subject
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
           return value;
         case -1059891784: // trigger
-          this.getTrigger().add(castToTriggerDefinition(value)); // TriggerDefinition
+          this.getTrigger().add(TypeConvertor.castToTriggerDefinition(value)); // TriggerDefinition
           return value;
         case -861311717: // condition
           this.getCondition().add((PlanDefinitionActionConditionComponent) value); // PlanDefinitionActionConditionComponent
           return value;
         case 100358090: // input
-          this.getInput().add(castToDataRequirement(value)); // DataRequirement
+          this.getInput().add(TypeConvertor.castToDataRequirement(value)); // DataRequirement
           return value;
         case -1005512447: // output
-          this.getOutput().add(castToDataRequirement(value)); // DataRequirement
+          this.getOutput().add(TypeConvertor.castToDataRequirement(value)); // DataRequirement
           return value;
         case -384107967: // relatedAction
           this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value); // PlanDefinitionActionRelatedActionComponent
           return value;
         case -873664438: // timing
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
           return value;
         case 767422259: // participant
           this.getParticipant().add((PlanDefinitionActionParticipantComponent) value); // PlanDefinitionActionParticipantComponent
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 586678389: // groupingBehavior
-          value = new ActionGroupingBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
           return value;
         case 168639486: // selectionBehavior
-          value = new ActionSelectionBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
           return value;
         case -1163906287: // requiredBehavior
-          value = new ActionRequiredBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
           return value;
         case -1174249033: // precheckBehavior
-          value = new ActionPrecheckBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
           return value;
         case -922577408: // cardinalityBehavior
-          value = new ActionCardinalityBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
           return value;
         case -1014418093: // definition
-          this.definition = castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // Type
           return value;
         case 1052666732: // transform
-          this.transform = castToCanonical(value); // CanonicalType
+          this.transform = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 572625010: // dynamicValue
           this.getDynamicValue().add((PlanDefinitionActionDynamicValueComponent) value); // PlanDefinitionActionDynamicValueComponent
@@ -3876,61 +3876,61 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("prefix")) {
-          this.prefix = castToString(value); // StringType
+          this.prefix = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("textEquivalent")) {
-          this.textEquivalent = castToString(value); // StringType
+          this.textEquivalent = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reason")) {
-          this.getReason().add(castToCodeableConcept(value));
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("documentation")) {
-          this.getDocumentation().add(castToRelatedArtifact(value));
+          this.getDocumentation().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("goalId")) {
-          this.getGoalId().add(castToId(value));
+          this.getGoalId().add(TypeConvertor.castToId(value));
         } else if (name.equals("subject[x]")) {
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
         } else if (name.equals("trigger")) {
-          this.getTrigger().add(castToTriggerDefinition(value));
+          this.getTrigger().add(TypeConvertor.castToTriggerDefinition(value));
         } else if (name.equals("condition")) {
           this.getCondition().add((PlanDefinitionActionConditionComponent) value);
         } else if (name.equals("input")) {
-          this.getInput().add(castToDataRequirement(value));
+          this.getInput().add(TypeConvertor.castToDataRequirement(value));
         } else if (name.equals("output")) {
-          this.getOutput().add(castToDataRequirement(value));
+          this.getOutput().add(TypeConvertor.castToDataRequirement(value));
         } else if (name.equals("relatedAction")) {
           this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
         } else if (name.equals("participant")) {
           this.getParticipant().add((PlanDefinitionActionParticipantComponent) value);
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("groupingBehavior")) {
-          value = new ActionGroupingBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
         } else if (name.equals("selectionBehavior")) {
-          value = new ActionSelectionBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
         } else if (name.equals("requiredBehavior")) {
-          value = new ActionRequiredBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
         } else if (name.equals("precheckBehavior")) {
-          value = new ActionPrecheckBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
         } else if (name.equals("cardinalityBehavior")) {
-          value = new ActionCardinalityBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
         } else if (name.equals("definition[x]")) {
-          this.definition = castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // Type
         } else if (name.equals("transform")) {
-          this.transform = castToCanonical(value); // CanonicalType
+          this.transform = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("dynamicValue")) {
           this.getDynamicValue().add((PlanDefinitionActionDynamicValueComponent) value);
         } else if (name.equals("action")) {
@@ -4398,11 +4398,11 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3292052: // kind
-          value = new ActionConditionKindEnumFactory().fromType(castToCode(value));
+          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
           return value;
         case -1795452264: // expression
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4412,10 +4412,10 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("kind")) {
-          value = new ActionConditionKindEnumFactory().fromType(castToCode(value));
+          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
         } else if (name.equals("expression")) {
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -4519,7 +4519,7 @@ public class PlanDefinition extends MetadataResource {
          */
         @Child(name = "offset", type = {Duration.class, Range.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
-        protected Type offset;
+        protected DataType offset;
 
         private static final long serialVersionUID = 1063306770L;
 
@@ -4632,7 +4632,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #offset} (A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.)
          */
-        public Type getOffset() { 
+        public DataType getOffset() { 
           return this.offset;
         }
 
@@ -4673,7 +4673,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @param value {@link #offset} (A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.)
          */
-        public PlanDefinitionActionRelatedActionComponent setOffset(Type value) { 
+        public PlanDefinitionActionRelatedActionComponent setOffset(DataType value) { 
           if (value != null && !(value instanceof Duration || value instanceof Range))
             throw new Error("Not the right type for PlanDefinition.action.relatedAction.offset[x]: "+value.fhirType());
           this.offset = value;
@@ -4716,14 +4716,14 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1656172047: // actionId
-          this.actionId = castToId(value); // IdType
+          this.actionId = TypeConvertor.castToId(value); // IdType
           return value;
         case -261851592: // relationship
-          value = new ActionRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
           return value;
         case -1019779949: // offset
-          this.offset = castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4733,12 +4733,12 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("actionId")) {
-          this.actionId = castToId(value); // IdType
+          this.actionId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("relationship")) {
-          value = new ActionRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
         } else if (name.equals("offset[x]")) {
-          this.offset = castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -4968,11 +4968,11 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ActionParticipantTypeEnumFactory().fromType(castToCode(value));
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4982,10 +4982,10 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ActionParticipantTypeEnumFactory().fromType(castToCode(value));
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -5195,10 +5195,10 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -1795452264: // expression
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5208,9 +5208,9 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expression")) {
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -5320,7 +5320,7 @@ public class PlanDefinition extends MetadataResource {
     @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=3, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Type of individual the plan definition is focused on", formalDefinition="A code or group definition that describes the intended subject of the plan definition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
-    protected Type subject;
+    protected DataType subject;
 
     /**
      * Explanation of why this plan definition is needed and why it has been designed as it has.
@@ -5860,7 +5860,7 @@ public class PlanDefinition extends MetadataResource {
     /**
      * @return {@link #subject} (A code or group definition that describes the intended subject of the plan definition.)
      */
-    public Type getSubject() { 
+    public DataType getSubject() { 
       return this.subject;
     }
 
@@ -5901,7 +5901,7 @@ public class PlanDefinition extends MetadataResource {
     /**
      * @param value {@link #subject} (A code or group definition that describes the intended subject of the plan definition.)
      */
-    public PlanDefinition setSubject(Type value) { 
+    public PlanDefinition setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for PlanDefinition.subject[x]: "+value.fhirType());
       this.subject = value;
@@ -7088,92 +7088,92 @@ public class PlanDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -2060497896: // subtitle
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1867885268: // subject
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 111574433: // usage
-          this.usage = castToString(value); // StringType
+          this.usage = TypeConvertor.castToString(value); // StringType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 110546223: // topic
-          this.getTopic().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToContactDetail(value)); // ContactDetail
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1307827859: // editor
-          this.getEditor().add(castToContactDetail(value)); // ContactDetail
+          this.getEditor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -261190139: // reviewer
-          this.getReviewer().add(castToContactDetail(value)); // ContactDetail
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 1740277666: // endorser
-          this.getEndorser().add(castToContactDetail(value)); // ContactDetail
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 666807069: // relatedArtifact
-          this.getRelatedArtifact().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case 166208699: // library
-          this.getLibrary().add(castToCanonical(value)); // CanonicalType
+          this.getLibrary().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 3178259: // goal
           this.getGoal().add((PlanDefinitionGoalComponent) value); // PlanDefinitionGoalComponent
@@ -7189,64 +7189,64 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subtitle")) {
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("usage")) {
-          this.usage = castToString(value); // StringType
+          this.usage = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("topic")) {
-          this.getTopic().add(castToCodeableConcept(value));
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToContactDetail(value));
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("editor")) {
-          this.getEditor().add(castToContactDetail(value));
+          this.getEditor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("reviewer")) {
-          this.getReviewer().add(castToContactDetail(value));
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("endorser")) {
-          this.getEndorser().add(castToContactDetail(value));
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
-          this.getRelatedArtifact().add(castToRelatedArtifact(value));
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("library")) {
-          this.getLibrary().add(castToCanonical(value));
+          this.getLibrary().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("goal")) {
           this.getGoal().add((PlanDefinitionGoalComponent) value);
         } else if (name.equals("action")) {

@@ -66,7 +66,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -290,7 +290,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       return true;
     }
     
-    private boolean ruleCompares(ElementDefinition ed, Type vLeft, Type vRight, String path, int nullStatus) throws IOException {
+    private boolean ruleCompares(ElementDefinition ed, DataType vLeft, DataType vRight, String path, int nullStatus) throws IOException {
       if (vLeft == null && vRight == null && nullStatus == BOTH_NULL)
         return true;
       if (vLeft == null && vRight == null) {
@@ -324,7 +324,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       return true;
     }
 
-    private String toString(Type val) throws IOException {
+    private String toString(DataType val) throws IOException {
       if (val instanceof PrimitiveType) 
         return "\"" + ((PrimitiveType) val).getValueAsString()+"\"";
       

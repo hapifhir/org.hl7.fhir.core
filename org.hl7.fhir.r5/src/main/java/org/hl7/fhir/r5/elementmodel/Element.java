@@ -39,7 +39,8 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.ICoding;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.TypeConvertor;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
@@ -318,12 +319,12 @@ public class Element extends Base {
   @Override
   public Base setProperty(int hash, String name, Base value) throws FHIRException {
     if ("xhtml".equals(getType()) && (hash == "value".hashCode())) {
-      this.xhtml = castToXhtml(value);
-      this.value =  castToXhtmlString(value);
+      this.xhtml = TypeConvertor.castToXhtml(value);
+      this.value =  TypeConvertor.castToXhtmlString(value);
       return this;
     }
     if (isPrimitive() && (hash == "value".hashCode())) {
-      this.value = castToString(value).asStringValue();
+      this.value = TypeConvertor.castToString(value).asStringValue();
       return this;
     }
     
@@ -402,11 +403,11 @@ public class Element extends Base {
   }
 
   private Base convertToElement(Property prop, Base v) throws FHIRException {
-    return new ObjectConverter(property.getContext()).convert(prop, (Type) v);
+    return new ObjectConverter(property.getContext()).convert(prop, (DataType) v);
   }
 
   private boolean isDataType(Base v) {
-    return v instanceof Type &&  property.getContext().getTypeNames().contains(v.fhirType());
+    return v instanceof DataType &&  property.getContext().getTypeNames().contains(v.fhirType());
   }
 
   @Override
@@ -677,7 +678,7 @@ public class Element extends Base {
     return true; //?
   }
 
-  public Type asType() throws FHIRException {
+  public DataType asType() throws FHIRException {
     return new ObjectConverter(property.getContext()).convertToType(this);
   }
 

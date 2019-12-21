@@ -126,7 +126,7 @@ public class ExtensionHelper {
    * @param value - the value of the extension. Delete if this is null
    * @throws Exception - if the modifier logic is incorrect
    */
-  public static void setExtension(Element element, boolean modifier, String uri, Type value) throws FHIRException {
+  public static void setExtension(Element element, boolean modifier, String uri, DataType value) throws FHIRException {
   	if (value == null) {
     	// deleting the extension
   		if (element instanceof BackboneElement)

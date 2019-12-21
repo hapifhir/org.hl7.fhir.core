@@ -479,10 +479,10 @@ public class Invoice extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -492,9 +492,9 @@ public class Invoice extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -591,7 +591,7 @@ public class Invoice extends DomainResource {
          */
         @Child(name = "chargeItem", type = {ChargeItem.class, CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Reference to ChargeItem containing details of this line item or an inline billing code", formalDefinition="The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference." )
-        protected Type chargeItem;
+        protected DataType chargeItem;
 
         /**
          * The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice as to how the prices have been calculated.
@@ -612,7 +612,7 @@ public class Invoice extends DomainResource {
     /**
      * Constructor
      */
-      public InvoiceLineItemComponent(Type chargeItem) {
+      public InvoiceLineItemComponent(DataType chargeItem) {
         super();
         this.chargeItem = chargeItem;
       }
@@ -665,7 +665,7 @@ public class Invoice extends DomainResource {
         /**
          * @return {@link #chargeItem} (The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.)
          */
-        public Type getChargeItem() { 
+        public DataType getChargeItem() { 
           return this.chargeItem;
         }
 
@@ -706,7 +706,7 @@ public class Invoice extends DomainResource {
         /**
          * @param value {@link #chargeItem} (The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.)
          */
-        public InvoiceLineItemComponent setChargeItem(Type value) { 
+        public InvoiceLineItemComponent setChargeItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
             throw new Error("Not the right type for Invoice.lineItem.chargeItem[x]: "+value.fhirType());
           this.chargeItem = value;
@@ -802,10 +802,10 @@ public class Invoice extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1417779175: // chargeItem
-          this.chargeItem = castToType(value); // Type
+          this.chargeItem = TypeConvertor.castToType(value); // Type
           return value;
         case 1219095988: // priceComponent
           this.getPriceComponent().add((InvoiceLineItemPriceComponentComponent) value); // InvoiceLineItemPriceComponentComponent
@@ -818,9 +818,9 @@ public class Invoice extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToPositiveInt(value); // PositiveIntType
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("chargeItem[x]")) {
-          this.chargeItem = castToType(value); // Type
+          this.chargeItem = TypeConvertor.castToType(value); // Type
         } else if (name.equals("priceComponent")) {
           this.getPriceComponent().add((InvoiceLineItemPriceComponentComponent) value);
         } else
@@ -1165,17 +1165,17 @@ public class Invoice extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new InvoicePriceComponentTypeEnumFactory().fromType(castToCode(value));
+          value = new InvoicePriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<InvoicePriceComponentType>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1185,14 +1185,14 @@ public class Invoice extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new InvoicePriceComponentTypeEnumFactory().fromType(castToCode(value));
+          value = new InvoicePriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<InvoicePriceComponentType>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else
           return super.setProperty(name, value);
         return value;
@@ -2116,35 +2116,35 @@ public class Invoice extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new InvoiceStatusEnumFactory().fromType(castToCode(value));
+          value = new InvoiceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<InvoiceStatus>
           return value;
         case 1550362357: // cancelledReason
-          this.cancelledReason = castToString(value); // StringType
+          this.cancelledReason = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 820081177: // recipient
-          this.recipient = castToReference(value); // Reference
+          this.recipient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 767422259: // participant
           this.getParticipant().add((InvoiceParticipantComponent) value); // InvoiceParticipantComponent
           return value;
         case -1179159879: // issuer
-          this.issuer = castToReference(value); // Reference
+          this.issuer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1177318867: // account
-          this.account = castToReference(value); // Reference
+          this.account = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1188332839: // lineItem
           this.getLineItem().add((InvoiceLineItemComponent) value); // InvoiceLineItemComponent
@@ -2153,16 +2153,16 @@ public class Invoice extends DomainResource {
           this.getTotalPriceComponent().add((InvoiceLineItemPriceComponentComponent) value); // InvoiceLineItemPriceComponentComponent
           return value;
         case -849911879: // totalNet
-          this.totalNet = castToMoney(value); // Money
+          this.totalNet = TypeConvertor.castToMoney(value); // Money
           return value;
         case -727607968: // totalGross
-          this.totalGross = castToMoney(value); // Money
+          this.totalGross = TypeConvertor.castToMoney(value); // Money
           return value;
         case -507544799: // paymentTerms
-          this.paymentTerms = castToMarkdown(value); // MarkdownType
+          this.paymentTerms = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2172,38 +2172,38 @@ public class Invoice extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new InvoiceStatusEnumFactory().fromType(castToCode(value));
+          value = new InvoiceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<InvoiceStatus>
         } else if (name.equals("cancelledReason")) {
-          this.cancelledReason = castToString(value); // StringType
+          this.cancelledReason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("recipient")) {
-          this.recipient = castToReference(value); // Reference
+          this.recipient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("participant")) {
           this.getParticipant().add((InvoiceParticipantComponent) value);
         } else if (name.equals("issuer")) {
-          this.issuer = castToReference(value); // Reference
+          this.issuer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("account")) {
-          this.account = castToReference(value); // Reference
+          this.account = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("lineItem")) {
           this.getLineItem().add((InvoiceLineItemComponent) value);
         } else if (name.equals("totalPriceComponent")) {
           this.getTotalPriceComponent().add((InvoiceLineItemPriceComponentComponent) value);
         } else if (name.equals("totalNet")) {
-          this.totalNet = castToMoney(value); // Money
+          this.totalNet = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("totalGross")) {
-          this.totalGross = castToMoney(value); // Money
+          this.totalGross = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("paymentTerms")) {
-          this.paymentTerms = castToMarkdown(value); // MarkdownType
+          this.paymentTerms = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

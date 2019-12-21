@@ -186,7 +186,7 @@ public class Medication extends DomainResource {
          */
         @Child(name = "item", type = {CodeableConcept.class, Substance.class, Medication.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The ingredient (substance or medication) that the ingredient.strength relates to", formalDefinition="The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication)." )
-        protected Type item;
+        protected DataType item;
 
         /**
          * Indication of whether this ingredient affects the therapeutic action of the drug.
@@ -201,7 +201,7 @@ public class Medication extends DomainResource {
         @Child(name = "strength", type = {Ratio.class, CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Quantity of ingredient present", formalDefinition="Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-ingredientstrength")
-        protected Type strength;
+        protected DataType strength;
 
         private static final long serialVersionUID = 1452876170L;
 
@@ -215,7 +215,7 @@ public class Medication extends DomainResource {
     /**
      * Constructor
      */
-      public MedicationIngredientComponent(Type item) {
+      public MedicationIngredientComponent(DataType item) {
         super();
         this.item = item;
       }
@@ -223,7 +223,7 @@ public class Medication extends DomainResource {
         /**
          * @return {@link #item} (The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).)
          */
-        public Type getItem() { 
+        public DataType getItem() { 
           return this.item;
         }
 
@@ -264,7 +264,7 @@ public class Medication extends DomainResource {
         /**
          * @param value {@link #item} (The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).)
          */
-        public MedicationIngredientComponent setItem(Type value) { 
+        public MedicationIngredientComponent setItem(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Medication.ingredient.item[x]: "+value.fhirType());
           this.item = value;
@@ -319,7 +319,7 @@ public class Medication extends DomainResource {
         /**
          * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.)
          */
-        public Type getStrength() { 
+        public DataType getStrength() { 
           return this.strength;
         }
 
@@ -360,7 +360,7 @@ public class Medication extends DomainResource {
         /**
          * @param value {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.)
          */
-        public MedicationIngredientComponent setStrength(Type value) { 
+        public MedicationIngredientComponent setStrength(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof CodeableConcept))
             throw new Error("Not the right type for Medication.ingredient.strength[x]: "+value.fhirType());
           this.strength = value;
@@ -406,13 +406,13 @@ public class Medication extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3242771: // item
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
           return value;
         case -748916528: // isActive
-          this.isActive = castToBoolean(value); // BooleanType
+          this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1791316033: // strength
-          this.strength = castToType(value); // Type
+          this.strength = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -422,11 +422,11 @@ public class Medication extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("item[x]")) {
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
         } else if (name.equals("isActive")) {
-          this.isActive = castToBoolean(value); // BooleanType
+          this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("strength[x]")) {
-          this.strength = castToType(value); // Type
+          this.strength = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -680,10 +680,10 @@ public class Medication extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 462547450: // lotNumber
-          this.lotNumber = castToString(value); // StringType
+          this.lotNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case -668811523: // expirationDate
-          this.expirationDate = castToDateTime(value); // DateTimeType
+          this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -693,9 +693,9 @@ public class Medication extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("lotNumber")) {
-          this.lotNumber = castToString(value); // StringType
+          this.lotNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expirationDate")) {
-          this.expirationDate = castToDateTime(value); // DateTimeType
+          this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1170,23 +1170,23 @@ public class Medication extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new MedicationStatusEnumFactory().fromType(castToCode(value));
+          value = new MedicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationStatus>
           return value;
         case -1969347631: // manufacturer
-          this.manufacturer = castToReference(value); // Reference
+          this.manufacturer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1303858817: // doseForm
-          this.doseForm = castToCodeableConcept(value); // CodeableConcept
+          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToRatio(value); // Ratio
+          this.amount = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case -206409263: // ingredient
           this.getIngredient().add((MedicationIngredientComponent) value); // MedicationIngredientComponent
@@ -1202,18 +1202,18 @@ public class Medication extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new MedicationStatusEnumFactory().fromType(castToCode(value));
+          value = new MedicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationStatus>
         } else if (name.equals("manufacturer")) {
-          this.manufacturer = castToReference(value); // Reference
+          this.manufacturer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("doseForm")) {
-          this.doseForm = castToCodeableConcept(value); // CodeableConcept
+          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToRatio(value); // Ratio
+          this.amount = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("ingredient")) {
           this.getIngredient().add((MedicationIngredientComponent) value);
         } else if (name.equals("batch")) {

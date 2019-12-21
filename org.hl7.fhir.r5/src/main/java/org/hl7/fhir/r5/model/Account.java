@@ -349,10 +349,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -351767064: // coverage
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1165461084: // priority
-          this.priority = castToPositiveInt(value); // PositiveIntType
+          this.priority = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -362,9 +362,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("coverage")) {
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("priority")) {
-          this.priority = castToPositiveInt(value); // PositiveIntType
+          this.priority = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -612,13 +612,13 @@ A coverage may only be responsible for specific types of charges, and the sequen
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 106437350: // party
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1013289154: // onHold
-          this.onHold = castToBoolean(value); // BooleanType
+          this.onHold = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -628,11 +628,11 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("party")) {
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onHold")) {
-          this.onHold = castToBoolean(value); // BooleanType
+          this.onHold = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -1326,38 +1326,38 @@ A coverage may only be responsible for specific types of charges, and the sequen
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new AccountStatusEnumFactory().fromType(castToCode(value));
+          value = new AccountStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AccountStatus>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1867885268: // subject
-          this.getSubject().add(castToReference(value)); // Reference
+          this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 2129104086: // servicePeriod
-          this.servicePeriod = castToPeriod(value); // Period
+          this.servicePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -351767064: // coverage
           this.getCoverage().add((CoverageComponent) value); // CoverageComponent
           return value;
         case 106164915: // owner
-          this.owner = castToReference(value); // Reference
+          this.owner = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -188629045: // guarantor
           this.getGuarantor().add((GuarantorComponent) value); // GuarantorComponent
           return value;
         case -995410646: // partOf
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1367,28 +1367,28 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new AccountStatusEnumFactory().fromType(castToCode(value));
+          value = new AccountStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AccountStatus>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subject")) {
-          this.getSubject().add(castToReference(value));
+          this.getSubject().add(TypeConvertor.castToReference(value));
         } else if (name.equals("servicePeriod")) {
-          this.servicePeriod = castToPeriod(value); // Period
+          this.servicePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("coverage")) {
           this.getCoverage().add((CoverageComponent) value);
         } else if (name.equals("owner")) {
-          this.owner = castToReference(value); // Reference
+          this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("guarantor")) {
           this.getGuarantor().add((GuarantorComponent) value);
         } else if (name.equals("partOf")) {
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

@@ -604,37 +604,37 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1221029593: // height
-          this.height = castToQuantity(value); // Quantity
+          this.height = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 113126854: // width
-          this.width = castToQuantity(value); // Quantity
+          this.width = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 95472323: // depth
-          this.depth = castToQuantity(value); // Quantity
+          this.depth = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -791592328: // weight
-          this.weight = castToQuantity(value); // Quantity
+          this.weight = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 1706919702: // nominalVolume
-          this.nominalVolume = castToQuantity(value); // Quantity
+          this.nominalVolume = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 161374584: // externalDiameter
-          this.externalDiameter = castToQuantity(value); // Quantity
+          this.externalDiameter = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 109399969: // shape
-          this.shape = castToString(value); // StringType
+          this.shape = TypeConvertor.castToString(value); // StringType
           return value;
         case 94842723: // color
-          this.getColor().add(castToString(value)); // StringType
+          this.getColor().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 1926118409: // imprint
-          this.getImprint().add(castToString(value)); // StringType
+          this.getImprint().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 100313435: // image
-          this.getImage().add(castToAttachment(value)); // Attachment
+          this.getImage().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
         case 1924005583: // scoring
-          this.scoring = castToCodeableConcept(value); // CodeableConcept
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -644,27 +644,27 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("height")) {
-          this.height = castToQuantity(value); // Quantity
+          this.height = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("width")) {
-          this.width = castToQuantity(value); // Quantity
+          this.width = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("depth")) {
-          this.depth = castToQuantity(value); // Quantity
+          this.depth = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("weight")) {
-          this.weight = castToQuantity(value); // Quantity
+          this.weight = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("nominalVolume")) {
-          this.nominalVolume = castToQuantity(value); // Quantity
+          this.nominalVolume = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("externalDiameter")) {
-          this.externalDiameter = castToQuantity(value); // Quantity
+          this.externalDiameter = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("shape")) {
-          this.shape = castToString(value); // StringType
+          this.shape = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("color")) {
-          this.getColor().add(castToString(value));
+          this.getColor().add(TypeConvertor.castToString(value));
         } else if (name.equals("imprint")) {
-          this.getImprint().add(castToString(value));
+          this.getImprint().add(TypeConvertor.castToString(value));
         } else if (name.equals("image")) {
-          this.getImage().add(castToAttachment(value));
+          this.getImage().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("scoring")) {
-          this.scoring = castToCodeableConcept(value); // CodeableConcept
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;

@@ -63,7 +63,7 @@ import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -92,12 +92,12 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   // -- in descendent generated code --------------------------------------
   
   abstract protected Resource parseResource(JsonObject json) throws IOException, FHIRFormatError;
-  abstract protected Type parseType(JsonObject json, String type) throws IOException, FHIRFormatError;
-  abstract protected Type parseAnyType(JsonObject json, String type) throws IOException, FHIRFormatError;
-  abstract protected Type parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError;
+  abstract protected DataType parseType(JsonObject json, String type) throws IOException, FHIRFormatError;
+  abstract protected DataType parseAnyType(JsonObject json, String type) throws IOException, FHIRFormatError;
+  abstract protected DataType parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError;
   abstract protected boolean hasTypeName(JsonObject json, String prefix);
   abstract protected void composeResource(Resource resource) throws IOException;
-  abstract protected void composeTypeInner(Type type) throws IOException;
+  abstract protected void composeTypeInner(DataType type) throws IOException;
 
   /* -- entry points --------------------------------------------------- */
 
@@ -123,13 +123,13 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   @Override
-  public Type parseType(InputStream input, String type) throws IOException, FHIRFormatError {
+  public DataType parseType(InputStream input, String type) throws IOException, FHIRFormatError {
     JsonObject json = loadJson(input);
     return parseType(json, type);
   }
 
   @Override
-  public Type parseAnyType(InputStream input, String type) throws IOException, FHIRFormatError {
+  public DataType parseAnyType(InputStream input, String type) throws IOException, FHIRFormatError {
     JsonObject json = loadJson(input);
     return parseAnyType(json, type);
   }
@@ -163,7 +163,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
   
   @Override
-  public void compose(OutputStream stream, Type type, String rootName) throws IOException {
+  public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL)
       json = new JsonCreatorCanonical(osw);
@@ -321,7 +321,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 	  
   }
 
-  protected abstract void composeType(String prefix, Type type) throws IOException;
+  protected abstract void composeType(String prefix, DataType type) throws IOException;
 
   
   abstract void composeStringCore(String name, StringType value, boolean inArray) throws IOException;

@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A series of measurements taken by a device, with upper and lower limits. There may be more than one dimension in the data.
  */
 @DatatypeDef(name="SampledData")
-public class SampledData extends Type implements ICompositeType {
+public class SampledData extends DataType implements ICompositeType {
 
     /**
      * The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.
@@ -565,25 +565,25 @@ public class SampledData extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1008619738: // origin
-          this.origin = castToQuantity(value); // Quantity
+          this.origin = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -991726143: // period
-          this.period = castToDecimal(value); // DecimalType
+          this.period = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 1209133370: // lowerLimit
-          this.lowerLimit = castToDecimal(value); // DecimalType
+          this.lowerLimit = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1681713095: // upperLimit
-          this.upperLimit = castToDecimal(value); // DecimalType
+          this.upperLimit = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 414334925: // dimensions
-          this.dimensions = castToPositiveInt(value); // PositiveIntType
+          this.dimensions = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 3076010: // data
-          this.data = castToString(value); // StringType
+          this.data = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -593,19 +593,19 @@ public class SampledData extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("origin")) {
-          this.origin = castToQuantity(value); // Quantity
+          this.origin = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("period")) {
-          this.period = castToDecimal(value); // DecimalType
+          this.period = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("lowerLimit")) {
-          this.lowerLimit = castToDecimal(value); // DecimalType
+          this.lowerLimit = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("upperLimit")) {
-          this.upperLimit = castToDecimal(value); // DecimalType
+          this.upperLimit = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("dimensions")) {
-          this.dimensions = castToPositiveInt(value); // PositiveIntType
+          this.dimensions = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("data")) {
-          this.data = castToString(value); // StringType
+          this.data = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;

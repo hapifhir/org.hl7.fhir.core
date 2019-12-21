@@ -137,7 +137,7 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationDefinition;
@@ -164,7 +164,7 @@ import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -1991,7 +1991,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private void renderUri(UriType uri, XhtmlNode x, String path, String id) {
     String url = uri.getValue();
     if (isCanonical(path)) {
-      MetadataResource mr = context.fetchResource(null, url);
+      CanonicalResource mr = context.fetchResource(null, url);
       if (mr != null) {
         if (path.startsWith(mr.fhirType()+".") && mr.getId().equals(id)) {
           url = null; // don't link to self whatever
@@ -2871,7 +2871,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private List<UsedConceptMap> findReleventMaps(ValueSet vs) throws FHIRException {
     List<UsedConceptMap> res = new ArrayList<UsedConceptMap>();
-    for (MetadataResource md : context.allConformanceResources()) {
+    for (CanonicalResource md : context.allConformanceResources()) {
       if (md instanceof ConceptMap) {
         ConceptMap cm = (ConceptMap) md;
         if (isSource(vs, cm.getSource())) {
@@ -2915,7 +2915,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 //    }
   }
 
-  private ConceptMapRenderInstructions findByTarget(Type source) {
+  private ConceptMapRenderInstructions findByTarget(DataType source) {
     String src = source.primitiveValue();
     if (src != null)
       for (ConceptMapRenderInstructions t : renderingMaps) {
@@ -2925,7 +2925,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return null;
   }
 
-  private boolean isSource(ValueSet vs, Type source) {
+  private boolean isSource(ValueSet vs, DataType source) {
     return vs.hasUrl() && source != null && vs.getUrl().equals(source.primitiveValue());
   }
 
@@ -3777,11 +3777,11 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   private void AddVsRef(ResourceContext rcontext, String value, XhtmlNode li) {
     Resource res = rcontext == null ? null : rcontext.resolve(value); 
-    if (res != null && !(res instanceof MetadataResource)) {
+    if (res != null && !(res instanceof CanonicalResource)) {
       li.addText(value);
       return;      
     }      
-    MetadataResource vs = (MetadataResource) res;
+    CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
     		vs = context.fetchResource(ValueSet.class, value);
     if (vs == null)
@@ -4164,7 +4164,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
 
-  public String genType(Type type) throws DefinitionException {
+  public String genType(DataType type) throws DefinitionException {
     if (type instanceof Coding)
       return gen((Coding) type);
     if (type instanceof CodeableConcept)

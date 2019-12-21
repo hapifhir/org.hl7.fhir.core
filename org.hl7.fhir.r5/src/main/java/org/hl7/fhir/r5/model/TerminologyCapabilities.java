@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="TerminologyCapabilities", profile="http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities")
 @ChildOrder(names={"url", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "kind", "software", "implementation", "lockedDate", "codeSystem", "expansion", "codeSearch", "validateCode", "translation", "closure"})
-public class TerminologyCapabilities extends MetadataResource {
+public class TerminologyCapabilities extends CanonicalResource {
 
     public enum CapabilityStatementKind {
         /**
@@ -430,10 +430,10 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -443,9 +443,9 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -683,10 +683,10 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 116079: // url
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -696,9 +696,9 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("url")) {
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
         } else
           return super.setProperty(name, value);
         return value;
@@ -991,13 +991,13 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116076: // uri
-          this.uri = castToCanonical(value); // CanonicalType
+          this.uri = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 351608024: // version
           this.getVersion().add((TerminologyCapabilitiesCodeSystemVersionComponent) value); // TerminologyCapabilitiesCodeSystemVersionComponent
           return value;
         case -499084711: // subsumption
-          this.subsumption = castToBoolean(value); // BooleanType
+          this.subsumption = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1007,11 +1007,11 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("uri")) {
-          this.uri = castToCanonical(value); // CanonicalType
+          this.uri = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("version")) {
           this.getVersion().add((TerminologyCapabilitiesCodeSystemVersionComponent) value);
         } else if (name.equals("subsumption")) {
-          this.subsumption = castToBoolean(value); // BooleanType
+          this.subsumption = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1513,22 +1513,22 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToString(value); // StringType
+          this.code = TypeConvertor.castToString(value); // StringType
           return value;
         case 965025207: // isDefault
-          this.isDefault = castToBoolean(value); // BooleanType
+          this.isDefault = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1248023381: // compositional
-          this.compositional = castToBoolean(value); // BooleanType
+          this.compositional = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1613589672: // language
-          this.getLanguage().add(castToCode(value)); // CodeType
+          this.getLanguage().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         case -1274492040: // filter
           this.getFilter().add((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value); // TerminologyCapabilitiesCodeSystemVersionFilterComponent
           return value;
         case -993141291: // property
-          this.getProperty().add(castToCode(value)); // CodeType
+          this.getProperty().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1538,17 +1538,17 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToString(value); // StringType
+          this.code = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("isDefault")) {
-          this.isDefault = castToBoolean(value); // BooleanType
+          this.isDefault = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("compositional")) {
-          this.compositional = castToBoolean(value); // BooleanType
+          this.compositional = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("language")) {
-          this.getLanguage().add(castToCode(value));
+          this.getLanguage().add(TypeConvertor.castToCode(value));
         } else if (name.equals("filter")) {
           this.getFilter().add((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add(castToCode(value));
+          this.getProperty().add(TypeConvertor.castToCode(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1838,10 +1838,10 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 3553: // op
-          this.getOp().add(castToCode(value)); // CodeType
+          this.getOp().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1851,9 +1851,9 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("op")) {
-          this.getOp().add(castToCode(value));
+          this.getOp().add(TypeConvertor.castToCode(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2260,19 +2260,19 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 857636745: // hierarchical
-          this.hierarchical = castToBoolean(value); // BooleanType
+          this.hierarchical = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -995747956: // paging
-          this.paging = castToBoolean(value); // BooleanType
+          this.paging = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1010022050: // incomplete
-          this.incomplete = castToBoolean(value); // BooleanType
+          this.incomplete = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1954460585: // parameter
           this.getParameter().add((TerminologyCapabilitiesExpansionParameterComponent) value); // TerminologyCapabilitiesExpansionParameterComponent
           return value;
         case 1469359877: // textFilter
-          this.textFilter = castToMarkdown(value); // MarkdownType
+          this.textFilter = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2282,15 +2282,15 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("hierarchical")) {
-          this.hierarchical = castToBoolean(value); // BooleanType
+          this.hierarchical = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("paging")) {
-          this.paging = castToBoolean(value); // BooleanType
+          this.paging = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("incomplete")) {
-          this.incomplete = castToBoolean(value); // BooleanType
+          this.incomplete = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("parameter")) {
           this.getParameter().add((TerminologyCapabilitiesExpansionParameterComponent) value);
         } else if (name.equals("textFilter")) {
-          this.textFilter = castToMarkdown(value); // MarkdownType
+          this.textFilter = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2553,10 +2553,10 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToCode(value); // CodeType
+          this.name = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 1587405498: // documentation
-          this.documentation = castToString(value); // StringType
+          this.documentation = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2566,9 +2566,9 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToCode(value); // CodeType
+          this.name = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("documentation")) {
-          this.documentation = castToString(value); // StringType
+          this.documentation = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2747,7 +2747,7 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1225497630: // translations
-          this.translations = castToBoolean(value); // BooleanType
+          this.translations = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2757,7 +2757,7 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("translations")) {
-          this.translations = castToBoolean(value); // BooleanType
+          this.translations = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2930,7 +2930,7 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 866566527: // needsMap
-          this.needsMap = castToBoolean(value); // BooleanType
+          this.needsMap = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2940,7 +2940,7 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("needsMap")) {
-          this.needsMap = castToBoolean(value); // BooleanType
+          this.needsMap = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3105,7 +3105,7 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1840647503: // translation
-          this.translation = castToBoolean(value); // BooleanType
+          this.translation = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3115,7 +3115,7 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("translation")) {
-          this.translation = castToBoolean(value); // BooleanType
+          this.translation = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4413,50 +4413,50 @@ public class TerminologyCapabilities extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3292052: // kind
-          value = new CapabilityStatementKindEnumFactory().fromType(castToCode(value));
+          value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CapabilityStatementKind>
           return value;
         case 1319330215: // software
@@ -4466,7 +4466,7 @@ public class TerminologyCapabilities extends MetadataResource {
           this.implementation = (TerminologyCapabilitiesImplementationComponent) value; // TerminologyCapabilitiesImplementationComponent
           return value;
         case 1391591896: // lockedDate
-          this.lockedDate = castToBoolean(value); // BooleanType
+          this.lockedDate = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -916511108: // codeSystem
           this.getCodeSystem().add((TerminologyCapabilitiesCodeSystemComponent) value); // TerminologyCapabilitiesCodeSystemComponent
@@ -4475,7 +4475,7 @@ public class TerminologyCapabilities extends MetadataResource {
           this.expansion = (TerminologyCapabilitiesExpansionComponent) value; // TerminologyCapabilitiesExpansionComponent
           return value;
         case -935519755: // codeSearch
-          value = new CodeSearchSupportEnumFactory().fromType(castToCode(value));
+          value = new CodeSearchSupportEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.codeSearch = (Enumeration) value; // Enumeration<CodeSearchSupport>
           return value;
         case 1080737827: // validateCode
@@ -4495,49 +4495,49 @@ public class TerminologyCapabilities extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("kind")) {
-          value = new CapabilityStatementKindEnumFactory().fromType(castToCode(value));
+          value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CapabilityStatementKind>
         } else if (name.equals("software")) {
           this.software = (TerminologyCapabilitiesSoftwareComponent) value; // TerminologyCapabilitiesSoftwareComponent
         } else if (name.equals("implementation")) {
           this.implementation = (TerminologyCapabilitiesImplementationComponent) value; // TerminologyCapabilitiesImplementationComponent
         } else if (name.equals("lockedDate")) {
-          this.lockedDate = castToBoolean(value); // BooleanType
+          this.lockedDate = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("codeSystem")) {
           this.getCodeSystem().add((TerminologyCapabilitiesCodeSystemComponent) value);
         } else if (name.equals("expansion")) {
           this.expansion = (TerminologyCapabilitiesExpansionComponent) value; // TerminologyCapabilitiesExpansionComponent
         } else if (name.equals("codeSearch")) {
-          value = new CodeSearchSupportEnumFactory().fromType(castToCode(value));
+          value = new CodeSearchSupportEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.codeSearch = (Enumeration) value; // Enumeration<CodeSearchSupport>
         } else if (name.equals("validateCode")) {
           this.validateCode = (TerminologyCapabilitiesValidateCodeComponent) value; // TerminologyCapabilitiesValidateCodeComponent

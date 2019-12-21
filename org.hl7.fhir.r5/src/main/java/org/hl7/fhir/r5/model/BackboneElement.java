@@ -169,7 +169,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -298878168: // modifierExtension
-          this.getModifierExtension().add(castToExtension(value)); // Extension
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value)); // Extension
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -179,7 +179,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("modifierExtension")) {
-          this.getModifierExtension().add(castToExtension(value));
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value));
         } else
           return super.setProperty(name, value);
         return value;

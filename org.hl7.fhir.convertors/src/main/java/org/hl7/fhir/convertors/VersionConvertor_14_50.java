@@ -82,7 +82,7 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -567,7 +567,7 @@ public class VersionConvertor_14_50 {
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasSize())
-      tgt.setSize(src.getSize());
+      tgt.setSize(Long.valueOf(src.getSize()));
     if (src.hasHash())
       tgt.setHash(src.getHash());
     if (src.hasTitle())
@@ -591,7 +591,7 @@ public class VersionConvertor_14_50 {
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasSize())
-      tgt.setSize(src.getSize());
+      tgt.setSize(Math.toIntExact(src.getSize()));
     if (src.hasHash())
       tgt.setHash(src.getHash());
     if (src.hasTitle())
@@ -1707,7 +1707,7 @@ public class VersionConvertor_14_50 {
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasValueSet()) {
-      org.hl7.fhir.r5.model.Type t = convertType(src.getValueSet());
+      org.hl7.fhir.r5.model.DataType t = convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
       else
@@ -2082,7 +2082,7 @@ public class VersionConvertor_14_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Type convertType(org.hl7.fhir.dstu2016may.model.Type src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.DataType convertType(org.hl7.fhir.dstu2016may.model.Type src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     if (src instanceof org.hl7.fhir.dstu2016may.model.Base64BinaryType)
@@ -2170,7 +2170,7 @@ public class VersionConvertor_14_50 {
     throw new FHIRException("Unknown type "+src.fhirType());
   }
 
-  public static org.hl7.fhir.dstu2016may.model.Type convertType(org.hl7.fhir.r5.model.Type src) throws FHIRException {
+  public static org.hl7.fhir.dstu2016may.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     if (src instanceof org.hl7.fhir.r5.model.Base64BinaryType)
@@ -3148,7 +3148,7 @@ public class VersionConvertor_14_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    org.hl7.fhir.r5.model.Type tt = convertType(src.getSource()); 
+    org.hl7.fhir.r5.model.DataType tt = convertType(src.getSource()); 
     tgt.setSource(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
     tt = convertType(src.getTarget()); 
     tgt.setTarget(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
@@ -4443,7 +4443,7 @@ public class VersionConvertor_14_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     copyElement(src, tgt);
     if (src.hasExampleFor()) {
-      Type t = convertType(src.getExampleFor());
+      DataType t = convertType(src.getExampleFor());
       tgt.setExample(t instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     } else if (src.hasExample())
       tgt.setExample(new org.hl7.fhir.r5.model.BooleanType(src.getExample()));
@@ -4905,7 +4905,7 @@ public class VersionConvertor_14_50 {
     org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
     copyElement(src, tgt);
     tgt.setStrength(convertBindingStrength(src.getStrength()));
-    Type t = convertType(src.getValueSet());
+    DataType t = convertType(src.getValueSet());
     if (t != null) {
       if (t instanceof org.hl7.fhir.r5.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());

@@ -73,7 +73,7 @@ public class Population extends BackboneType implements ICompositeType {
      */
     @Child(name = "age", type = {Range.class, CodeableConcept.class}, order=0, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The age of the specific population", formalDefinition="The age of the specific population." )
-    protected Type age;
+    protected DataType age;
 
     /**
      * The gender of the specific population.
@@ -108,7 +108,7 @@ public class Population extends BackboneType implements ICompositeType {
     /**
      * @return {@link #age} (The age of the specific population.)
      */
-    public Type getAge() { 
+    public DataType getAge() { 
       return this.age;
     }
 
@@ -149,7 +149,7 @@ public class Population extends BackboneType implements ICompositeType {
     /**
      * @param value {@link #age} (The age of the specific population.)
      */
-    public Population setAge(Type value) { 
+    public Population setAge(DataType value) { 
       if (value != null && !(value instanceof Range || value instanceof CodeableConcept))
         throw new Error("Not the right type for Population.age[x]: "+value.fhirType());
       this.age = value;
@@ -267,16 +267,16 @@ public class Population extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 96511: // age
-          this.age = castToType(value); // Type
+          this.age = TypeConvertor.castToType(value); // Type
           return value;
         case -1249512767: // gender
-          this.gender = castToCodeableConcept(value); // CodeableConcept
+          this.gender = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3492561: // race
-          this.race = castToCodeableConcept(value); // CodeableConcept
+          this.race = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -62715190: // physiologicalCondition
-          this.physiologicalCondition = castToCodeableConcept(value); // CodeableConcept
+          this.physiologicalCondition = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -286,13 +286,13 @@ public class Population extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("age[x]")) {
-          this.age = castToType(value); // Type
+          this.age = TypeConvertor.castToType(value); // Type
         } else if (name.equals("gender")) {
-          this.gender = castToCodeableConcept(value); // CodeableConcept
+          this.gender = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("race")) {
-          this.race = castToCodeableConcept(value); // CodeableConcept
+          this.race = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("physiologicalCondition")) {
-          this.physiologicalCondition = castToCodeableConcept(value); // CodeableConcept
+          this.physiologicalCondition = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;

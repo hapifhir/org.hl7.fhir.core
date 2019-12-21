@@ -199,10 +199,10 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1653751294: // fraction
-          this.fraction = castToString(value); // StringType
+          this.fraction = TypeConvertor.castToString(value); // StringType
           return value;
         case -2115601151: // materialType
-          this.materialType = castToCodeableConcept(value); // CodeableConcept
+          this.materialType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -212,9 +212,9 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("fraction")) {
-          this.fraction = castToString(value); // StringType
+          this.fraction = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("materialType")) {
-          this.materialType = castToCodeableConcept(value); // CodeableConcept
+          this.materialType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -658,19 +658,19 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1281860764: // family
-          this.family = castToCodeableConcept(value); // CodeableConcept
+          this.family = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 98241006: // genus
-          this.genus = castToCodeableConcept(value); // CodeableConcept
+          this.genus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2008465092: // species
-          this.species = castToCodeableConcept(value); // CodeableConcept
+          this.species = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1717161194: // intraspecificType
-          this.intraspecificType = castToCodeableConcept(value); // CodeableConcept
+          this.intraspecificType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1473085364: // intraspecificDescription
-          this.intraspecificDescription = castToString(value); // StringType
+          this.intraspecificDescription = TypeConvertor.castToString(value); // StringType
           return value;
         case -1406328437: // author
           this.getAuthor().add((SubstanceSourceMaterialOrganismAuthorComponent) value); // SubstanceSourceMaterialOrganismAuthorComponent
@@ -689,15 +689,15 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("family")) {
-          this.family = castToCodeableConcept(value); // CodeableConcept
+          this.family = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("genus")) {
-          this.genus = castToCodeableConcept(value); // CodeableConcept
+          this.genus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("species")) {
-          this.species = castToCodeableConcept(value); // CodeableConcept
+          this.species = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("intraspecificType")) {
-          this.intraspecificType = castToCodeableConcept(value); // CodeableConcept
+          this.intraspecificType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("intraspecificDescription")) {
-          this.intraspecificDescription = castToString(value); // StringType
+          this.intraspecificDescription = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("author")) {
           this.getAuthor().add((SubstanceSourceMaterialOrganismAuthorComponent) value);
         } else if (name.equals("hybrid")) {
@@ -962,10 +962,10 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1501337755: // authorType
-          this.authorType = castToCodeableConcept(value); // CodeableConcept
+          this.authorType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -166185615: // authorDescription
-          this.authorDescription = castToString(value); // StringType
+          this.authorDescription = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -975,9 +975,9 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("authorType")) {
-          this.authorType = castToCodeableConcept(value); // CodeableConcept
+          this.authorType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("authorDescription")) {
-          this.authorDescription = castToString(value); // StringType
+          this.authorDescription = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1366,19 +1366,19 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1179977063: // maternalOrganismId
-          this.maternalOrganismId = castToString(value); // StringType
+          this.maternalOrganismId = TypeConvertor.castToString(value); // StringType
           return value;
         case -86441847: // maternalOrganismName
-          this.maternalOrganismName = castToString(value); // StringType
+          this.maternalOrganismName = TypeConvertor.castToString(value); // StringType
           return value;
         case 123773174: // paternalOrganismId
-          this.paternalOrganismId = castToString(value); // StringType
+          this.paternalOrganismId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1312914522: // paternalOrganismName
-          this.paternalOrganismName = castToString(value); // StringType
+          this.paternalOrganismName = TypeConvertor.castToString(value); // StringType
           return value;
         case 1572734806: // hybridType
-          this.hybridType = castToCodeableConcept(value); // CodeableConcept
+          this.hybridType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1388,15 +1388,15 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("maternalOrganismId")) {
-          this.maternalOrganismId = castToString(value); // StringType
+          this.maternalOrganismId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("maternalOrganismName")) {
-          this.maternalOrganismName = castToString(value); // StringType
+          this.maternalOrganismName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("paternalOrganismId")) {
-          this.paternalOrganismId = castToString(value); // StringType
+          this.paternalOrganismId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("paternalOrganismName")) {
-          this.paternalOrganismName = castToString(value); // StringType
+          this.paternalOrganismName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("hybridType")) {
-          this.hybridType = castToCodeableConcept(value); // CodeableConcept
+          this.hybridType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1672,16 +1672,16 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -710537653: // kingdom
-          this.kingdom = castToCodeableConcept(value); // CodeableConcept
+          this.kingdom = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -988743965: // phylum
-          this.phylum = castToCodeableConcept(value); // CodeableConcept
+          this.phylum = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 94742904: // class
-          this.class_ = castToCodeableConcept(value); // CodeableConcept
+          this.class_ = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 106006350: // order
-          this.order = castToCodeableConcept(value); // CodeableConcept
+          this.order = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1691,13 +1691,13 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("kingdom")) {
-          this.kingdom = castToCodeableConcept(value); // CodeableConcept
+          this.kingdom = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("phylum")) {
-          this.phylum = castToCodeableConcept(value); // CodeableConcept
+          this.phylum = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("class")) {
-          this.class_ = castToCodeableConcept(value); // CodeableConcept
+          this.class_ = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("order")) {
-          this.order = castToCodeableConcept(value); // CodeableConcept
+          this.order = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1899,10 +1899,10 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433459: // part
-          this.part = castToCodeableConcept(value); // CodeableConcept
+          this.part = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 893437128: // partLocation
-          this.partLocation = castToCodeableConcept(value); // CodeableConcept
+          this.partLocation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1912,9 +1912,9 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("part")) {
-          this.part = castToCodeableConcept(value); // CodeableConcept
+          this.part = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("partLocation")) {
-          this.partLocation = castToCodeableConcept(value); // CodeableConcept
+          this.partLocation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -2687,34 +2687,34 @@ public class SubstanceSourceMaterial extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1253081034: // sourceMaterialClass
-          this.sourceMaterialClass = castToCodeableConcept(value); // CodeableConcept
+          this.sourceMaterialClass = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1622665404: // sourceMaterialType
-          this.sourceMaterialType = castToCodeableConcept(value); // CodeableConcept
+          this.sourceMaterialType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1238066353: // sourceMaterialState
-          this.sourceMaterialState = castToCodeableConcept(value); // CodeableConcept
+          this.sourceMaterialState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1965449843: // organismId
-          this.organismId = castToIdentifier(value); // Identifier
+          this.organismId = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 988460669: // organismName
-          this.organismName = castToString(value); // StringType
+          this.organismName = TypeConvertor.castToString(value); // StringType
           return value;
         case -675437663: // parentSubstanceId
-          this.getParentSubstanceId().add(castToIdentifier(value)); // Identifier
+          this.getParentSubstanceId().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -555382895: // parentSubstanceName
-          this.getParentSubstanceName().add(castToString(value)); // StringType
+          this.getParentSubstanceName().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 57176467: // countryOfOrigin
-          this.getCountryOfOrigin().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCountryOfOrigin().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1988836681: // geographicalLocation
-          this.getGeographicalLocation().add(castToString(value)); // StringType
+          this.getGeographicalLocation().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 391529091: // developmentStage
-          this.developmentStage = castToCodeableConcept(value); // CodeableConcept
+          this.developmentStage = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1472689306: // fractionDescription
           this.getFractionDescription().add((SubstanceSourceMaterialFractionDescriptionComponent) value); // SubstanceSourceMaterialFractionDescriptionComponent
@@ -2733,25 +2733,25 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sourceMaterialClass")) {
-          this.sourceMaterialClass = castToCodeableConcept(value); // CodeableConcept
+          this.sourceMaterialClass = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("sourceMaterialType")) {
-          this.sourceMaterialType = castToCodeableConcept(value); // CodeableConcept
+          this.sourceMaterialType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("sourceMaterialState")) {
-          this.sourceMaterialState = castToCodeableConcept(value); // CodeableConcept
+          this.sourceMaterialState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("organismId")) {
-          this.organismId = castToIdentifier(value); // Identifier
+          this.organismId = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("organismName")) {
-          this.organismName = castToString(value); // StringType
+          this.organismName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("parentSubstanceId")) {
-          this.getParentSubstanceId().add(castToIdentifier(value));
+          this.getParentSubstanceId().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("parentSubstanceName")) {
-          this.getParentSubstanceName().add(castToString(value));
+          this.getParentSubstanceName().add(TypeConvertor.castToString(value));
         } else if (name.equals("countryOfOrigin")) {
-          this.getCountryOfOrigin().add(castToCodeableConcept(value));
+          this.getCountryOfOrigin().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("geographicalLocation")) {
-          this.getGeographicalLocation().add(castToString(value));
+          this.getGeographicalLocation().add(TypeConvertor.castToString(value));
         } else if (name.equals("developmentStage")) {
-          this.developmentStage = castToCodeableConcept(value); // CodeableConcept
+          this.developmentStage = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("fractionDescription")) {
           this.getFractionDescription().add((SubstanceSourceMaterialFractionDescriptionComponent) value);
         } else if (name.equals("organism")) {

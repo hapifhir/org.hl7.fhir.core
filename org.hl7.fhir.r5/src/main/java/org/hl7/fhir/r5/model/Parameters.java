@@ -85,7 +85,7 @@ public class Parameters extends Resource implements IBaseParameters {
          */
         @Child(name = "value", type = {}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="If parameter is a data type", formalDefinition="If the parameter is a data type." )
-        protected org.hl7.fhir.r5.model.Type value;
+        protected org.hl7.fhir.r5.model.DataType value;
 
         /**
          * If the parameter is a whole resource.
@@ -166,7 +166,7 @@ public class Parameters extends Resource implements IBaseParameters {
         /**
          * @return {@link #value} (If the parameter is a data type.)
          */
-        public org.hl7.fhir.r5.model.Type getValue() { 
+        public org.hl7.fhir.r5.model.DataType getValue() { 
           return this.value;
         }
 
@@ -177,7 +177,7 @@ public class Parameters extends Resource implements IBaseParameters {
         /**
          * @param value {@link #value} (If the parameter is a data type.)
          */
-        public ParametersParameterComponent setValue(org.hl7.fhir.r5.model.Type value) { 
+        public ParametersParameterComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
           this.value = value;
           return this;
         }
@@ -327,13 +327,13 @@ public class Parameters extends Resource implements IBaseParameters {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 111972721: // value
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         case -341064690: // resource
-          this.resource = castToResource(value); // Resource
+          this.resource = TypeConvertor.castToResource(value); // Resource
           return value;
         case 3433459: // part
           this.getPart().add((ParametersParameterComponent) value); // ParametersParameterComponent
@@ -346,11 +346,11 @@ public class Parameters extends Resource implements IBaseParameters {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else if (name.equals("resource")) {
-          this.resource = castToResource(value); // Resource
+          this.resource = TypeConvertor.castToResource(value); // Resource
         } else if (name.equals("part")) {
           this.getPart().add((ParametersParameterComponent) value);
         } else
@@ -854,7 +854,7 @@ public class Parameters extends Resource implements IBaseParameters {
     return this;
   }
 
-  public Parameters addParameter(String name, Type v) {
+  public Parameters addParameter(String name, DataType v) {
     if (v != null)
       addParameter().setName(name).setValue(v);
     return this;
@@ -884,7 +884,7 @@ public class Parameters extends Resource implements IBaseParameters {
     return this;
   }
 
-  public Parameters setParameter(String name, Type v) {
+  public Parameters setParameter(String name, DataType v) {
     if (v != null) {
       for (ParametersParameterComponent p : getParameter()                                                                                     ) {
         if (p.getName().equals(name)) {
@@ -905,7 +905,7 @@ public class Parameters extends Resource implements IBaseParameters {
     return false;
   }
 
-  public Type getParameter(String name) {
+  public DataType getParameter(String name) {
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name))
         return p.getValue();
@@ -913,8 +913,8 @@ public class Parameters extends Resource implements IBaseParameters {
     return null;
   }
 
-  public List<Type> getParameters(String name) {
-    List<Type> res = new ArrayList<Type>();
+  public List<DataType> getParameters(String name) {
+    List<DataType> res = new ArrayList<DataType>();
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name))
         res.add(p.getValue());

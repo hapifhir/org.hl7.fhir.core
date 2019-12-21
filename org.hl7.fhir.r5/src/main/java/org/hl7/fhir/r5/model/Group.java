@@ -241,7 +241,7 @@ public class Group extends DomainResource {
          */
         @Child(name = "value", type = {CodeableConcept.class, BooleanType.class, Quantity.class, Range.class, Reference.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Value held by characteristic", formalDefinition="The value of the trait that holds (or does not hold - see 'exclude') for members of the group." )
-        protected Type value;
+        protected DataType value;
 
         /**
          * If true, indicates the characteristic is one that is NOT held by members of the group.
@@ -269,7 +269,7 @@ public class Group extends DomainResource {
     /**
      * Constructor
      */
-      public GroupCharacteristicComponent(CodeableConcept code, Type value, BooleanType exclude) {
+      public GroupCharacteristicComponent(CodeableConcept code, DataType value, BooleanType exclude) {
         super();
         this.code = code;
         this.value = value;
@@ -303,7 +303,7 @@ public class Group extends DomainResource {
         /**
          * @return {@link #value} (The value of the trait that holds (or does not hold - see 'exclude') for members of the group.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -389,7 +389,7 @@ public class Group extends DomainResource {
         /**
          * @param value {@link #value} (The value of the trait that holds (or does not hold - see 'exclude') for members of the group.)
          */
-        public GroupCharacteristicComponent setValue(Type value) { 
+        public GroupCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
             throw new Error("Not the right type for Group.characteristic.value[x]: "+value.fhirType());
           this.value = value;
@@ -507,16 +507,16 @@ public class Group extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         case -1321148966: // exclude
-          this.exclude = castToBoolean(value); // BooleanType
+          this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -526,13 +526,13 @@ public class Group extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else if (name.equals("exclude")) {
-          this.exclude = castToBoolean(value); // BooleanType
+          this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -813,13 +813,13 @@ public class Group extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1298275357: // entity
-          this.entity = castToReference(value); // Reference
+          this.entity = TypeConvertor.castToReference(value); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 24665195: // inactive
-          this.inactive = castToBoolean(value); // BooleanType
+          this.inactive = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -829,11 +829,11 @@ public class Group extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("entity")) {
-          this.entity = castToReference(value); // Reference
+          this.entity = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("inactive")) {
-          this.inactive = castToBoolean(value); // BooleanType
+          this.inactive = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1503,29 +1503,29 @@ public class Group extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3575610: // type
-          value = new GroupTypeEnumFactory().fromType(castToCode(value));
+          value = new GroupTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<GroupType>
           return value;
         case -1422939762: // actual
-          this.actual = castToBoolean(value); // BooleanType
+          this.actual = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1285004149: // quantity
-          this.quantity = castToUnsignedInt(value); // UnsignedIntType
+          this.quantity = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -988474523: // managingEntity
-          this.managingEntity = castToReference(value); // Reference
+          this.managingEntity = TypeConvertor.castToReference(value); // Reference
           return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((GroupCharacteristicComponent) value); // GroupCharacteristicComponent
@@ -1541,22 +1541,22 @@ public class Group extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("type")) {
-          value = new GroupTypeEnumFactory().fromType(castToCode(value));
+          value = new GroupTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<GroupType>
         } else if (name.equals("actual")) {
-          this.actual = castToBoolean(value); // BooleanType
+          this.actual = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("quantity")) {
-          this.quantity = castToUnsignedInt(value); // UnsignedIntType
+          this.quantity = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("managingEntity")) {
-          this.managingEntity = castToReference(value); // Reference
+          this.managingEntity = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((GroupCharacteristicComponent) value);
         } else if (name.equals("member")) {

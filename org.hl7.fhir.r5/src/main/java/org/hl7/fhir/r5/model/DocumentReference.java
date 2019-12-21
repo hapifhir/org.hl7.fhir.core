@@ -454,11 +454,11 @@ public class DocumentReference extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          value = new DocumentRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new DocumentRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<DocumentRelationshipType>
           return value;
         case -880905839: // target
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -468,10 +468,10 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          value = new DocumentRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new DocumentRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<DocumentRelationshipType>
         } else if (name.equals("target")) {
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -665,10 +665,10 @@ public class DocumentReference extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1963501277: // attachment
-          this.attachment = castToAttachment(value); // Attachment
+          this.attachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -1268779017: // format
-          this.format = castToCoding(value); // Coding
+          this.format = TypeConvertor.castToCoding(value); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -678,9 +678,9 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("attachment")) {
-          this.attachment = castToAttachment(value); // Attachment
+          this.attachment = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("format")) {
-          this.format = castToCoding(value); // Coding
+          this.format = TypeConvertor.castToCoding(value); // Coding
         } else
           return super.setProperty(name, value);
         return value;
@@ -1189,28 +1189,28 @@ public class DocumentReference extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1524132147: // encounter
-          this.getEncounter().add(castToReference(value)); // Reference
+          this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 96891546: // event
-          this.getEvent().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getEvent().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 370698365: // facilityType
-          this.facilityType = castToCodeableConcept(value); // CodeableConcept
+          this.facilityType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 331373717: // practiceSetting
-          this.practiceSetting = castToCodeableConcept(value); // CodeableConcept
+          this.practiceSetting = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 2031381048: // sourcePatientInfo
-          this.sourcePatientInfo = castToReference(value); // Reference
+          this.sourcePatientInfo = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1090493483: // related
-          this.getRelated().add(castToReference(value)); // Reference
+          this.getRelated().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1220,21 +1220,21 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("encounter")) {
-          this.getEncounter().add(castToReference(value));
+          this.getEncounter().add(TypeConvertor.castToReference(value));
         } else if (name.equals("event")) {
-          this.getEvent().add(castToCodeableConcept(value));
+          this.getEvent().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("facilityType")) {
-          this.facilityType = castToCodeableConcept(value); // CodeableConcept
+          this.facilityType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("practiceSetting")) {
-          this.practiceSetting = castToCodeableConcept(value); // CodeableConcept
+          this.practiceSetting = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("sourcePatientInfo")) {
-          this.sourcePatientInfo = castToReference(value); // Reference
+          this.sourcePatientInfo = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("related")) {
-          this.getRelated().add(castToReference(value));
+          this.getRelated().add(TypeConvertor.castToReference(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2235,48 +2235,48 @@ public class DocumentReference extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 243769515: // masterIdentifier
-          this.masterIdentifier = castToIdentifier(value); // Identifier
+          this.masterIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new DocumentReferenceStatusEnumFactory().fromType(castToCode(value));
+          value = new DocumentReferenceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DocumentReferenceStatus>
           return value;
         case -23496886: // docStatus
-          value = new ReferredDocumentStatusEnumFactory().fromType(castToCode(value));
+          value = new ReferredDocumentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.docStatus = (Enumeration) value; // Enumeration<ReferredDocumentStatus>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToInstant(value); // InstantType
+          this.date = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToReference(value)); // Reference
+          this.getAuthor().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1815000435: // authenticator
-          this.authenticator = castToReference(value); // Reference
+          this.authenticator = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1611297262: // custodian
-          this.custodian = castToReference(value); // Reference
+          this.custodian = TypeConvertor.castToReference(value); // Reference
           return value;
         case -7765931: // relatesTo
           this.getRelatesTo().add((DocumentReferenceRelatesToComponent) value); // DocumentReferenceRelatesToComponent
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -722296940: // securityLabel
-          this.getSecurityLabel().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSecurityLabel().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 951530617: // content
           this.getContent().add((DocumentReferenceContentComponent) value); // DocumentReferenceContentComponent
@@ -2292,35 +2292,35 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("masterIdentifier")) {
-          this.masterIdentifier = castToIdentifier(value); // Identifier
+          this.masterIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new DocumentReferenceStatusEnumFactory().fromType(castToCode(value));
+          value = new DocumentReferenceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DocumentReferenceStatus>
         } else if (name.equals("docStatus")) {
-          value = new ReferredDocumentStatusEnumFactory().fromType(castToCode(value));
+          value = new ReferredDocumentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.docStatus = (Enumeration) value; // Enumeration<ReferredDocumentStatus>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToInstant(value); // InstantType
+          this.date = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToReference(value));
+          this.getAuthor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("authenticator")) {
-          this.authenticator = castToReference(value); // Reference
+          this.authenticator = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("custodian")) {
-          this.custodian = castToReference(value); // Reference
+          this.custodian = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("relatesTo")) {
           this.getRelatesTo().add((DocumentReferenceRelatesToComponent) value);
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("securityLabel")) {
-          this.getSecurityLabel().add(castToCodeableConcept(value));
+          this.getSecurityLabel().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("content")) {
           this.getContent().add((DocumentReferenceContentComponent) value);
         } else if (name.equals("context")) {

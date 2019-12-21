@@ -306,19 +306,19 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 957831062: // country
-          this.country = castToCodeableConcept(value); // CodeableConcept
+          this.country = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -507075711: // jurisdiction
-          this.jurisdiction = castToCodeableConcept(value); // CodeableConcept
+          this.jurisdiction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -261425617: // dateRange
-          this.dateRange = castToPeriod(value); // Period
+          this.dateRange = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 329465692: // restoreDate
-          this.restoreDate = castToDateTime(value); // DateTimeType
+          this.restoreDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -328,15 +328,15 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("country")) {
-          this.country = castToCodeableConcept(value); // CodeableConcept
+          this.country = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("jurisdiction")) {
-          this.jurisdiction = castToCodeableConcept(value); // CodeableConcept
+          this.jurisdiction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("dateRange")) {
-          this.dateRange = castToPeriod(value); // Period
+          this.dateRange = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("restoreDate")) {
-          this.restoreDate = castToDateTime(value); // DateTimeType
+          this.restoreDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else
           return super.setProperty(name, value);
         return value;

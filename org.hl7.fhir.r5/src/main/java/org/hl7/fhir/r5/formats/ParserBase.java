@@ -63,7 +63,7 @@ import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.utilities.Utilities;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
@@ -79,20 +79,20 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   	return parse(bi);
   }
 
-  public Type parseType(String input, String typeName) throws FHIRFormatError, IOException {
+  public DataType parseType(String input, String typeName) throws FHIRFormatError, IOException {
     return parseType(input.getBytes("UTF-8"), typeName);
   }
   
-  public Type parseAnyType(String input, String typeName) throws FHIRFormatError, IOException {
+  public DataType parseAnyType(String input, String typeName) throws FHIRFormatError, IOException {
     return parseAnyType(input.getBytes("UTF-8"), typeName);
   }
   
-  public Type parseType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
+  public DataType parseType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
     ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
     return parseType(bi, typeName);
   }
 
-  public Type parseAnyType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
+  public DataType parseAnyType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
     ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
     return parseAnyType(bi, typeName);
   }
@@ -108,11 +108,11 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     return bytes.toByteArray();
   }
 
-  public String composeString(Type type, String typeName) throws IOException {
+  public String composeString(DataType type, String typeName) throws IOException {
     return new String(composeBytes(type, typeName));
   }
 
-  public byte[] composeBytes(Type type, String typeName) throws IOException {
+  public byte[] composeBytes(DataType type, String typeName) throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     compose(bytes, type, typeName);
     bytes.close();

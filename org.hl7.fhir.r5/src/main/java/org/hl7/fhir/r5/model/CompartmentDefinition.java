@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="CompartmentDefinition", profile="http://hl7.org/fhir/StructureDefinition/CompartmentDefinition")
 @ChildOrder(names={"url", "version", "name", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "purpose", "code", "search", "resource"})
-public class CompartmentDefinition extends MetadataResource {
+public class CompartmentDefinition extends CanonicalResource {
 
     public enum CompartmentType {
         /**
@@ -442,13 +442,13 @@ public class CompartmentDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 106436749: // param
-          this.getParam().add(castToString(value)); // StringType
+          this.getParam().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 1587405498: // documentation
-          this.documentation = castToString(value); // StringType
+          this.documentation = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -458,11 +458,11 @@ public class CompartmentDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("param")) {
-          this.getParam().add(castToString(value));
+          this.getParam().add(TypeConvertor.castToString(value));
         } else if (name.equals("documentation")) {
-          this.documentation = castToString(value); // StringType
+          this.documentation = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1346,45 +1346,45 @@ public class CompartmentDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3059181: // code
-          value = new CompartmentTypeEnumFactory().fromType(castToCode(value));
+          value = new CompartmentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<CompartmentType>
           return value;
         case -906336856: // search
-          this.search = castToBoolean(value); // BooleanType
+          this.search = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -341064690: // resource
           this.getResource().add((CompartmentDefinitionResourceComponent) value); // CompartmentDefinitionResourceComponent
@@ -1397,33 +1397,33 @@ public class CompartmentDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("code")) {
-          value = new CompartmentTypeEnumFactory().fromType(castToCode(value));
+          value = new CompartmentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<CompartmentType>
         } else if (name.equals("search")) {
-          this.search = castToBoolean(value); // BooleanType
+          this.search = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("resource")) {
           this.getResource().add((CompartmentDefinitionResourceComponent) value);
         } else

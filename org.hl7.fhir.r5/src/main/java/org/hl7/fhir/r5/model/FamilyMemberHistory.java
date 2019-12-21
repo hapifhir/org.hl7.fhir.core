@@ -225,7 +225,7 @@ public class FamilyMemberHistory extends DomainResource {
          */
         @Child(name = "onset", type = {Age.class, Range.class, Period.class, StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When condition first manifested", formalDefinition="Either the age of onset, range of approximate age or descriptive string can be recorded.  For conditions with multiple occurrences, this describes the first known occurrence." )
-        protected Type onset;
+        protected DataType onset;
 
         /**
          * An area where general notes can be placed about this specific condition.
@@ -347,7 +347,7 @@ public class FamilyMemberHistory extends DomainResource {
         /**
          * @return {@link #onset} (Either the age of onset, range of approximate age or descriptive string can be recorded.  For conditions with multiple occurrences, this describes the first known occurrence.)
          */
-        public Type getOnset() { 
+        public DataType getOnset() { 
           return this.onset;
         }
 
@@ -418,7 +418,7 @@ public class FamilyMemberHistory extends DomainResource {
         /**
          * @param value {@link #onset} (Either the age of onset, range of approximate age or descriptive string can be recorded.  For conditions with multiple occurrences, this describes the first known occurrence.)
          */
-        public FamilyMemberHistoryConditionComponent setOnset(Type value) { 
+        public FamilyMemberHistoryConditionComponent setOnset(DataType value) { 
           if (value != null && !(value instanceof Age || value instanceof Range || value instanceof Period || value instanceof StringType))
             throw new Error("Not the right type for FamilyMemberHistory.condition.onset[x]: "+value.fhirType());
           this.onset = value;
@@ -522,19 +522,19 @@ public class FamilyMemberHistory extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1106507950: // outcome
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -363644638: // contributedToDeath
-          this.contributedToDeath = castToBoolean(value); // BooleanType
+          this.contributedToDeath = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 105901603: // onset
-          this.onset = castToType(value); // Type
+          this.onset = TypeConvertor.castToType(value); // Type
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -544,15 +544,15 @@ public class FamilyMemberHistory extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("outcome")) {
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("contributedToDeath")) {
-          this.contributedToDeath = castToBoolean(value); // BooleanType
+          this.contributedToDeath = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("onset[x]")) {
-          this.onset = castToType(value); // Type
+          this.onset = TypeConvertor.castToType(value); // Type
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -703,7 +703,7 @@ public class FamilyMemberHistory extends DomainResource {
          */
         @Child(name = "performed", type = {Age.class, Range.class, Period.class, StringType.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When the procedure was performed", formalDefinition="Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured." )
-        protected Type performed;
+        protected DataType performed;
 
         /**
          * An area where general notes can be placed about this specific procedure.
@@ -825,7 +825,7 @@ public class FamilyMemberHistory extends DomainResource {
         /**
          * @return {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
          */
-        public Type getPerformed() { 
+        public DataType getPerformed() { 
           return this.performed;
         }
 
@@ -911,7 +911,7 @@ public class FamilyMemberHistory extends DomainResource {
         /**
          * @param value {@link #performed} (Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.)
          */
-        public FamilyMemberHistoryProcedureComponent setPerformed(Type value) { 
+        public FamilyMemberHistoryProcedureComponent setPerformed(DataType value) { 
           if (value != null && !(value instanceof Age || value instanceof Range || value instanceof Period || value instanceof StringType || value instanceof DateTimeType))
             throw new Error("Not the right type for FamilyMemberHistory.procedure.performed[x]: "+value.fhirType());
           this.performed = value;
@@ -1016,19 +1016,19 @@ public class FamilyMemberHistory extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1106507950: // outcome
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -363644638: // contributedToDeath
-          this.contributedToDeath = castToBoolean(value); // BooleanType
+          this.contributedToDeath = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 481140672: // performed
-          this.performed = castToType(value); // Type
+          this.performed = TypeConvertor.castToType(value); // Type
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1038,15 +1038,15 @@ public class FamilyMemberHistory extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("outcome")) {
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("contributedToDeath")) {
-          this.contributedToDeath = castToBoolean(value); // BooleanType
+          this.contributedToDeath = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("performed[x]")) {
-          this.performed = castToType(value); // Type
+          this.performed = TypeConvertor.castToType(value); // Type
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1250,14 +1250,14 @@ public class FamilyMemberHistory extends DomainResource {
      */
     @Child(name = "born", type = {Period.class, DateType.class, StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="(approximate) date of birth", formalDefinition="The actual or approximate date of birth of the relative." )
-    protected Type born;
+    protected DataType born;
 
     /**
      * The age of the relative at the time the family member history is recorded.
      */
     @Child(name = "age", type = {Age.class, Range.class, StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="(approximate) age", formalDefinition="The age of the relative at the time the family member history is recorded." )
-    protected Type age;
+    protected DataType age;
 
     /**
      * If true, indicates that the age value specified is an estimated value.
@@ -1271,7 +1271,7 @@ public class FamilyMemberHistory extends DomainResource {
      */
     @Child(name = "deceased", type = {BooleanType.class, Age.class, Range.class, DateType.class, StringType.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Dead? How old/when?", formalDefinition="Deceased flag or the actual or approximate age of the relative at the time of death for the family member history record." )
-    protected Type deceased;
+    protected DataType deceased;
 
     /**
      * Describes why the family member history occurred in coded or textual form.
@@ -1745,7 +1745,7 @@ public class FamilyMemberHistory extends DomainResource {
     /**
      * @return {@link #born} (The actual or approximate date of birth of the relative.)
      */
-    public Type getBorn() { 
+    public DataType getBorn() { 
       return this.born;
     }
 
@@ -1801,7 +1801,7 @@ public class FamilyMemberHistory extends DomainResource {
     /**
      * @param value {@link #born} (The actual or approximate date of birth of the relative.)
      */
-    public FamilyMemberHistory setBorn(Type value) { 
+    public FamilyMemberHistory setBorn(DataType value) { 
       if (value != null && !(value instanceof Period || value instanceof DateType || value instanceof StringType))
         throw new Error("Not the right type for FamilyMemberHistory.born[x]: "+value.fhirType());
       this.born = value;
@@ -1811,7 +1811,7 @@ public class FamilyMemberHistory extends DomainResource {
     /**
      * @return {@link #age} (The age of the relative at the time the family member history is recorded.)
      */
-    public Type getAge() { 
+    public DataType getAge() { 
       return this.age;
     }
 
@@ -1867,7 +1867,7 @@ public class FamilyMemberHistory extends DomainResource {
     /**
      * @param value {@link #age} (The age of the relative at the time the family member history is recorded.)
      */
-    public FamilyMemberHistory setAge(Type value) { 
+    public FamilyMemberHistory setAge(DataType value) { 
       if (value != null && !(value instanceof Age || value instanceof Range || value instanceof StringType))
         throw new Error("Not the right type for FamilyMemberHistory.age[x]: "+value.fhirType());
       this.age = value;
@@ -1922,7 +1922,7 @@ public class FamilyMemberHistory extends DomainResource {
     /**
      * @return {@link #deceased} (Deceased flag or the actual or approximate age of the relative at the time of death for the family member history record.)
      */
-    public Type getDeceased() { 
+    public DataType getDeceased() { 
       return this.deceased;
     }
 
@@ -2008,7 +2008,7 @@ public class FamilyMemberHistory extends DomainResource {
     /**
      * @param value {@link #deceased} (Deceased flag or the actual or approximate age of the relative at the time of death for the family member history record.)
      */
-    public FamilyMemberHistory setDeceased(Type value) { 
+    public FamilyMemberHistory setDeceased(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof Age || value instanceof Range || value instanceof DateType || value instanceof StringType))
         throw new Error("Not the right type for FamilyMemberHistory.deceased[x]: "+value.fhirType());
       this.deceased = value;
@@ -2375,56 +2375,56 @@ public class FamilyMemberHistory extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -892481550: // status
-          value = new FamilyHistoryStatusEnumFactory().fromType(castToCode(value));
+          value = new FamilyHistoryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FamilyHistoryStatus>
           return value;
         case 1034315687: // dataAbsentReason
-          this.dataAbsentReason = castToCodeableConcept(value); // CodeableConcept
+          this.dataAbsentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -261851592: // relationship
-          this.relationship = castToCodeableConcept(value); // CodeableConcept
+          this.relationship = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 113766: // sex
-          this.sex = castToCodeableConcept(value); // CodeableConcept
+          this.sex = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3029833: // born
-          this.born = castToType(value); // Type
+          this.born = TypeConvertor.castToType(value); // Type
           return value;
         case 96511: // age
-          this.age = castToType(value); // Type
+          this.age = TypeConvertor.castToType(value); // Type
           return value;
         case 2130167587: // estimatedAge
-          this.estimatedAge = castToBoolean(value); // BooleanType
+          this.estimatedAge = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 561497972: // deceased
-          this.deceased = castToType(value); // Type
+          this.deceased = TypeConvertor.castToType(value); // Type
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -861311717: // condition
           this.getCondition().add((FamilyMemberHistoryConditionComponent) value); // FamilyMemberHistoryConditionComponent
@@ -2440,40 +2440,40 @@ public class FamilyMemberHistory extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("status")) {
-          value = new FamilyHistoryStatusEnumFactory().fromType(castToCode(value));
+          value = new FamilyHistoryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FamilyHistoryStatus>
         } else if (name.equals("dataAbsentReason")) {
-          this.dataAbsentReason = castToCodeableConcept(value); // CodeableConcept
+          this.dataAbsentReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("relationship")) {
-          this.relationship = castToCodeableConcept(value); // CodeableConcept
+          this.relationship = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("sex")) {
-          this.sex = castToCodeableConcept(value); // CodeableConcept
+          this.sex = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("born[x]")) {
-          this.born = castToType(value); // Type
+          this.born = TypeConvertor.castToType(value); // Type
         } else if (name.equals("age[x]")) {
-          this.age = castToType(value); // Type
+          this.age = TypeConvertor.castToType(value); // Type
         } else if (name.equals("estimatedAge")) {
-          this.estimatedAge = castToBoolean(value); // BooleanType
+          this.estimatedAge = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("deceased[x]")) {
-          this.deceased = castToType(value); // Type
+          this.deceased = TypeConvertor.castToType(value); // Type
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("condition")) {
           this.getCondition().add((FamilyMemberHistoryConditionComponent) value);
         } else if (name.equals("procedure")) {

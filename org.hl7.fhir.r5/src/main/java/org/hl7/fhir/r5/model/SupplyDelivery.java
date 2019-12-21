@@ -210,7 +210,7 @@ public class SupplyDelivery extends DomainResource {
         @Child(name = "item", type = {CodeableConcept.class, Medication.class, Substance.class, Device.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Medication, Substance, or Device supplied", formalDefinition="Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supply-item")
-        protected Type item;
+        protected DataType item;
 
         private static final long serialVersionUID = 1628109307L;
 
@@ -248,7 +248,7 @@ public class SupplyDelivery extends DomainResource {
         /**
          * @return {@link #item} (Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
          */
-        public Type getItem() { 
+        public DataType getItem() { 
           return this.item;
         }
 
@@ -289,7 +289,7 @@ public class SupplyDelivery extends DomainResource {
         /**
          * @param value {@link #item} (Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
          */
-        public SupplyDeliverySuppliedItemComponent setItem(Type value) { 
+        public SupplyDeliverySuppliedItemComponent setItem(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for SupplyDelivery.suppliedItem.item[x]: "+value.fhirType());
           this.item = value;
@@ -329,10 +329,10 @@ public class SupplyDelivery extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 3242771: // item
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -342,9 +342,9 @@ public class SupplyDelivery extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("item[x]")) {
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -488,7 +488,7 @@ public class SupplyDelivery extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When event occurred", formalDefinition="The date or time(s) the activity occurred." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * The individual responsible for dispensing the medication, supplier or device.
@@ -803,7 +803,7 @@ public class SupplyDelivery extends DomainResource {
     /**
      * @return {@link #occurrence} (The date or time(s) the activity occurred.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -859,7 +859,7 @@ public class SupplyDelivery extends DomainResource {
     /**
      * @param value {@link #occurrence} (The date or time(s) the activity occurred.)
      */
-    public SupplyDelivery setOccurrence(Type value) { 
+    public SupplyDelivery setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
         throw new Error("Not the right type for SupplyDelivery.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1028,38 +1028,38 @@ public class SupplyDelivery extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new SupplyDeliveryStatusEnumFactory().fromType(castToCode(value));
+          value = new SupplyDeliveryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SupplyDeliveryStatus>
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1993333233: // suppliedItem
           this.suppliedItem = (SupplyDeliverySuppliedItemComponent) value; // SupplyDeliverySuppliedItemComponent
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -1663305268: // supplier
-          this.supplier = castToReference(value); // Reference
+          this.supplier = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1429847026: // destination
-          this.destination = castToReference(value); // Reference
+          this.destination = TypeConvertor.castToReference(value); // Reference
           return value;
         case -808719889: // receiver
-          this.getReceiver().add(castToReference(value)); // Reference
+          this.getReceiver().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1069,28 +1069,28 @@ public class SupplyDelivery extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new SupplyDeliveryStatusEnumFactory().fromType(castToCode(value));
+          value = new SupplyDeliveryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SupplyDeliveryStatus>
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("suppliedItem")) {
           this.suppliedItem = (SupplyDeliverySuppliedItemComponent) value; // SupplyDeliverySuppliedItemComponent
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("supplier")) {
-          this.supplier = castToReference(value); // Reference
+          this.supplier = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("destination")) {
-          this.destination = castToReference(value); // Reference
+          this.destination = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("receiver")) {
-          this.getReceiver().add(castToReference(value));
+          this.getReceiver().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

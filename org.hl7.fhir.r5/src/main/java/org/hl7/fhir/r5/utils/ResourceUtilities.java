@@ -38,7 +38,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceType;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -168,7 +168,7 @@ public class ResourceUtilities {
     return null;
   }
 
-  private static String renderDEUnits(Type units) {
+  private static String renderDEUnits(DataType units) {
     if (units == null || units.isEmpty())
       return "";
     if (units instanceof CodeableConcept)

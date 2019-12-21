@@ -500,13 +500,13 @@ or intervention but are still being followed according to the primary objective 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -516,11 +516,11 @@ or intervention but are still being followed according to the primary objective 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -739,10 +739,10 @@ or intervention but are still being followed according to the primary objective 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -752,9 +752,9 @@ or intervention but are still being followed according to the primary objective 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -2205,71 +2205,71 @@ or intervention but are still being followed according to the primary objective 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -989163880: // protocol
-          this.getProtocol().add(castToReference(value)); // Reference
+          this.getProtocol().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new ResearchStudyStatusEnumFactory().fromType(castToCode(value));
+          value = new ResearchStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ResearchStudyStatus>
           return value;
         case -2132842986: // primaryPurposeType
-          this.primaryPurposeType = castToCodeableConcept(value); // CodeableConcept
+          this.primaryPurposeType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 106629499: // phase
-          this.phase = castToCodeableConcept(value); // CodeableConcept
+          this.phase = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 97604824: // focus
-          this.getFocus().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getFocus().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -861311717: // condition
-          this.getCondition().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCondition().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 666807069: // relatedArtifact
-          this.getRelatedArtifact().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -814408215: // keyword
-          this.getKeyword().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getKeyword().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1901043637: // location
-          this.getLocation().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getLocation().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 116089604: // enrollment
-          this.getEnrollment().add(castToReference(value)); // Reference
+          this.getEnrollment().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -1998892262: // sponsor
-          this.sponsor = castToReference(value); // Reference
+          this.sponsor = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1437117175: // principalInvestigator
-          this.principalInvestigator = castToReference(value); // Reference
+          this.principalInvestigator = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3530567: // site
-          this.getSite().add(castToReference(value)); // Reference
+          this.getSite().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1181369065: // reasonStopped
-          this.reasonStopped = castToCodeableConcept(value); // CodeableConcept
+          this.reasonStopped = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 96860: // arm
           this.getArm().add((ResearchStudyArmComponent) value); // ResearchStudyArmComponent
@@ -2285,50 +2285,50 @@ or intervention but are still being followed according to the primary objective 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("protocol")) {
-          this.getProtocol().add(castToReference(value));
+          this.getProtocol().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new ResearchStudyStatusEnumFactory().fromType(castToCode(value));
+          value = new ResearchStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ResearchStudyStatus>
         } else if (name.equals("primaryPurposeType")) {
-          this.primaryPurposeType = castToCodeableConcept(value); // CodeableConcept
+          this.primaryPurposeType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("phase")) {
-          this.phase = castToCodeableConcept(value); // CodeableConcept
+          this.phase = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("focus")) {
-          this.getFocus().add(castToCodeableConcept(value));
+          this.getFocus().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("condition")) {
-          this.getCondition().add(castToCodeableConcept(value));
+          this.getCondition().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
-          this.getRelatedArtifact().add(castToRelatedArtifact(value));
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("keyword")) {
-          this.getKeyword().add(castToCodeableConcept(value));
+          this.getKeyword().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("location")) {
-          this.getLocation().add(castToCodeableConcept(value));
+          this.getLocation().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("enrollment")) {
-          this.getEnrollment().add(castToReference(value));
+          this.getEnrollment().add(TypeConvertor.castToReference(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("sponsor")) {
-          this.sponsor = castToReference(value); // Reference
+          this.sponsor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("principalInvestigator")) {
-          this.principalInvestigator = castToReference(value); // Reference
+          this.principalInvestigator = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("site")) {
-          this.getSite().add(castToReference(value));
+          this.getSite().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reasonStopped")) {
-          this.reasonStopped = castToCodeableConcept(value); // CodeableConcept
+          this.reasonStopped = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("arm")) {
           this.getArm().add((ResearchStudyArmComponent) value);
         } else if (name.equals("objective")) {

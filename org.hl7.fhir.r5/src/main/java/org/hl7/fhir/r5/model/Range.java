@@ -66,7 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A set of ordered Quantities defined by a low and high limit.
  */
 @DatatypeDef(name="Range")
-public class Range extends Type implements ICompositeType {
+public class Range extends DataType implements ICompositeType {
 
     /**
      * The low limit. The boundary is inclusive.
@@ -169,10 +169,10 @@ public class Range extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 107348: // low
-          this.low = castToQuantity(value); // Quantity
+          this.low = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 3202466: // high
-          this.high = castToQuantity(value); // Quantity
+          this.high = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -182,9 +182,9 @@ public class Range extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("low")) {
-          this.low = castToQuantity(value); // Quantity
+          this.low = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("high")) {
-          this.high = castToQuantity(value); // Quantity
+          this.high = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;

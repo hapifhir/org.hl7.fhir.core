@@ -238,13 +238,13 @@ public class Condition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1857640538: // summary
-          this.summary = castToCodeableConcept(value); // CodeableConcept
+          this.summary = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 2119382722: // assessment
-          this.getAssessment().add(castToReference(value)); // Reference
+          this.getAssessment().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -254,11 +254,11 @@ public class Condition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("summary")) {
-          this.summary = castToCodeableConcept(value); // CodeableConcept
+          this.summary = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("assessment")) {
-          this.getAssessment().add(castToReference(value));
+          this.getAssessment().add(TypeConvertor.castToReference(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -515,10 +515,10 @@ public class Condition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1335224239: // detail
-          this.getDetail().add(castToReference(value)); // Reference
+          this.getDetail().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -528,9 +528,9 @@ public class Condition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("detail")) {
-          this.getDetail().add(castToReference(value));
+          this.getDetail().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -693,14 +693,14 @@ public class Condition extends DomainResource {
      */
     @Child(name = "onset", type = {DateTimeType.class, Age.class, Period.class, Range.class, StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Estimated or actual date,  date-time, or age", formalDefinition="Estimated or actual date or date-time  the condition began, in the opinion of the clinician." )
-    protected Type onset;
+    protected DataType onset;
 
     /**
      * The date or estimated date that the condition resolved or went into remission. This is called "abatement" because of the many overloaded connotations associated with "remission" or "resolution" - Conditions are never really resolved, but they can abate.
      */
     @Child(name = "abatement", type = {DateTimeType.class, Age.class, Period.class, Range.class, StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When in resolution/remission", formalDefinition="The date or estimated date that the condition resolved or went into remission. This is called \"abatement\" because of the many overloaded connotations associated with \"remission\" or \"resolution\" - Conditions are never really resolved, but they can abate." )
-    protected Type abatement;
+    protected DataType abatement;
 
     /**
      * The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.
@@ -1067,7 +1067,7 @@ public class Condition extends DomainResource {
     /**
      * @return {@link #onset} (Estimated or actual date or date-time  the condition began, in the opinion of the clinician.)
      */
-    public Type getOnset() { 
+    public DataType getOnset() { 
       return this.onset;
     }
 
@@ -1153,7 +1153,7 @@ public class Condition extends DomainResource {
     /**
      * @param value {@link #onset} (Estimated or actual date or date-time  the condition began, in the opinion of the clinician.)
      */
-    public Condition setOnset(Type value) { 
+    public Condition setOnset(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof StringType))
         throw new Error("Not the right type for Condition.onset[x]: "+value.fhirType());
       this.onset = value;
@@ -1163,7 +1163,7 @@ public class Condition extends DomainResource {
     /**
      * @return {@link #abatement} (The date or estimated date that the condition resolved or went into remission. This is called "abatement" because of the many overloaded connotations associated with "remission" or "resolution" - Conditions are never really resolved, but they can abate.)
      */
-    public Type getAbatement() { 
+    public DataType getAbatement() { 
       return this.abatement;
     }
 
@@ -1249,7 +1249,7 @@ public class Condition extends DomainResource {
     /**
      * @param value {@link #abatement} (The date or estimated date that the condition resolved or went into remission. This is called "abatement" because of the many overloaded connotations associated with "remission" or "resolution" - Conditions are never really resolved, but they can abate.)
      */
-    public Condition setAbatement(Type value) { 
+    public Condition setAbatement(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof StringType))
         throw new Error("Not the right type for Condition.abatement[x]: "+value.fhirType());
       this.abatement = value;
@@ -1599,46 +1599,46 @@ public class Condition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -462853915: // clinicalStatus
-          this.clinicalStatus = castToCodeableConcept(value); // CodeableConcept
+          this.clinicalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -842509843: // verificationStatus
-          this.verificationStatus = castToCodeableConcept(value); // CodeableConcept
+          this.verificationStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1478300413: // severity
-          this.severity = castToCodeableConcept(value); // CodeableConcept
+          this.severity = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1702620169: // bodySite
-          this.getBodySite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 105901603: // onset
-          this.onset = castToType(value); // Type
+          this.onset = TypeConvertor.castToType(value); // Type
           return value;
         case -921554001: // abatement
-          this.abatement = castToType(value); // Type
+          this.abatement = TypeConvertor.castToType(value); // Type
           return value;
         case -1952893826: // recordedDate
-          this.recordedDate = castToDateTime(value); // DateTimeType
+          this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -799233858: // recorder
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
           return value;
         case -373242253: // asserter
-          this.asserter = castToReference(value); // Reference
+          this.asserter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 109757182: // stage
           this.getStage().add((ConditionStageComponent) value); // ConditionStageComponent
@@ -1647,7 +1647,7 @@ public class Condition extends DomainResource {
           this.getEvidence().add((ConditionEvidenceComponent) value); // ConditionEvidenceComponent
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1657,39 +1657,39 @@ public class Condition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("clinicalStatus")) {
-          this.clinicalStatus = castToCodeableConcept(value); // CodeableConcept
+          this.clinicalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("verificationStatus")) {
-          this.verificationStatus = castToCodeableConcept(value); // CodeableConcept
+          this.verificationStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("severity")) {
-          this.severity = castToCodeableConcept(value); // CodeableConcept
+          this.severity = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add(castToCodeableConcept(value));
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onset[x]")) {
-          this.onset = castToType(value); // Type
+          this.onset = TypeConvertor.castToType(value); // Type
         } else if (name.equals("abatement[x]")) {
-          this.abatement = castToType(value); // Type
+          this.abatement = TypeConvertor.castToType(value); // Type
         } else if (name.equals("recordedDate")) {
-          this.recordedDate = castToDateTime(value); // DateTimeType
+          this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("recorder")) {
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("asserter")) {
-          this.asserter = castToReference(value); // Reference
+          this.asserter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("stage")) {
           this.getStage().add((ConditionStageComponent) value);
         } else if (name.equals("evidence")) {
           this.getEvidence().add((ConditionEvidenceComponent) value);
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

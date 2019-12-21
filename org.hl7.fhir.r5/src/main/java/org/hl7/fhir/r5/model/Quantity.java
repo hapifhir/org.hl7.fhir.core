@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.
  */
 @DatatypeDef(name="Quantity")
-public class Quantity extends Type implements ICompositeType, ICoding {
+public class Quantity extends DataType implements ICompositeType, ICoding {
 
     public enum QuantityComparator {
         /**
@@ -592,20 +592,20 @@ public class Quantity extends Type implements ICompositeType, ICoding {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToDecimal(value); // DecimalType
+          this.value = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -844673834: // comparator
-          value = new QuantityComparatorEnumFactory().fromType(castToCode(value));
+          value = new QuantityComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.comparator = (Enumeration) value; // Enumeration<QuantityComparator>
           return value;
         case 3594628: // unit
-          this.unit = castToString(value); // StringType
+          this.unit = TypeConvertor.castToString(value); // StringType
           return value;
         case -887328209: // system
-          this.system = castToUri(value); // UriType
+          this.system = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -615,16 +615,16 @@ public class Quantity extends Type implements ICompositeType, ICoding {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value")) {
-          this.value = castToDecimal(value); // DecimalType
+          this.value = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("comparator")) {
-          value = new QuantityComparatorEnumFactory().fromType(castToCode(value));
+          value = new QuantityComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.comparator = (Enumeration) value; // Enumeration<QuantityComparator>
         } else if (name.equals("unit")) {
-          this.unit = castToString(value); // StringType
+          this.unit = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("system")) {
-          this.system = castToUri(value); // UriType
+          this.system = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else
           return super.setProperty(name, value);
         return value;

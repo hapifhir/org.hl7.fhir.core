@@ -53,7 +53,7 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
@@ -92,7 +92,7 @@ import com.google.gson.JsonObject;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
 
-  public class MetadataResourceVersionComparator<T extends MetadataResource> implements Comparator<T> {
+  public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
     private List<T> list;
 
@@ -126,18 +126,18 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
-  private MetadataResourceManager<CodeSystem> codeSystems = new MetadataResourceManager<CodeSystem>(false);
+  private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
   private Set<String> supportedCodeSystems = new HashSet<String>();
-  private MetadataResourceManager<ValueSet> valueSets = new MetadataResourceManager<ValueSet>(false);
-  private MetadataResourceManager<ConceptMap> maps = new MetadataResourceManager<ConceptMap>(false);
-  protected MetadataResourceManager<StructureMap> transforms = new MetadataResourceManager<StructureMap>(false);
-  private MetadataResourceManager<StructureDefinition> structures = new MetadataResourceManager<StructureDefinition>(false);
-  private MetadataResourceManager<ImplementationGuide> guides = new MetadataResourceManager<ImplementationGuide>(false);
-  private MetadataResourceManager<CapabilityStatement> capstmts = new MetadataResourceManager<CapabilityStatement>(false);
-  private MetadataResourceManager<SearchParameter> searchParameters = new MetadataResourceManager<SearchParameter>(false);
-  private MetadataResourceManager<Questionnaire> questionnaires = new MetadataResourceManager<Questionnaire>(false);
-  private MetadataResourceManager<OperationDefinition> operations = new MetadataResourceManager<OperationDefinition>(false);
-  private MetadataResourceManager<PlanDefinition> plans = new MetadataResourceManager<PlanDefinition>(false);
+  private CanonicalResourceManager<ValueSet> valueSets = new CanonicalResourceManager<ValueSet>(false);
+  private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false);
+  protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false);
+  private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<StructureDefinition>(false);
+  private CanonicalResourceManager<ImplementationGuide> guides = new CanonicalResourceManager<ImplementationGuide>(false);
+  private CanonicalResourceManager<CapabilityStatement> capstmts = new CanonicalResourceManager<CapabilityStatement>(false);
+  private CanonicalResourceManager<SearchParameter> searchParameters = new CanonicalResourceManager<SearchParameter>(false);
+  private CanonicalResourceManager<Questionnaire> questionnaires = new CanonicalResourceManager<Questionnaire>(false);
+  private CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
+  private CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
   private List<NamingSystem> systems = new ArrayList<NamingSystem>();
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
@@ -165,8 +165,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     txCache = new TerminologyCache(lock, null);
   }
 
-  public BaseWorkerContext(MetadataResourceManager<CodeSystem> codeSystems, MetadataResourceManager<ValueSet> valueSets, MetadataResourceManager<ConceptMap> maps, MetadataResourceManager<StructureDefinition> profiles, 
-      MetadataResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
+  public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles, 
+      CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
     super();
     this.codeSystems = codeSystems;
     this.valueSets = valueSets;
@@ -219,8 +219,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       }
       map.put(r.getId(), r);
 
-      if (r instanceof MetadataResource) {
-        MetadataResource m = (MetadataResource) r;
+      if (r instanceof CanonicalResource) {
+        CanonicalResource m = (CanonicalResource) r;
         String url = m.getUrl();
         if (!allowLoadingDuplicates && hasResource(r.getClass(), url)) {
           // spcial workaround for known problems with existing packages
@@ -304,7 +304,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     throw new Error("Delimited versions have exact match for delimiter '"+delimiter+"' : "+newParts+" vs "+oldParts);
   }
   
-  protected <T extends MetadataResource> void seeMetadataResource(T r, Map<String, T> map, List<T> list, boolean addId) throws FHIRException {
+  protected <T extends CanonicalResource> void seeMetadataResource(T r, Map<String, T> map, List<T> list, boolean addId) throws FHIRException {
 //    if (addId)
     //      map.put(r.getId(), r); // todo: why?
     list.add(r);
@@ -786,8 +786,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           return (T) questionnaires.get(uri);
         for (Map<String, Resource> rt : allResourcesById.values()) {
           for (Resource r : rt.values()) {
-            if (r instanceof MetadataResource) {
-              MetadataResource mr = (MetadataResource) r;
+            if (r instanceof CanonicalResource) {
+              CanonicalResource mr = (CanonicalResource) r;
               if (uri.equals(mr.getUrl()))
                 return (T) mr;
             }
@@ -1020,7 +1020,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     }
   }
 
-  private <T extends MetadataResource> void dropMetadataResource(Map<String, T> map, String id) {
+  private <T extends CanonicalResource> void dropMetadataResource(Map<String, T> map, String id) {
     T res = map.get(id);
     if (res != null) {
       map.remove(id);
@@ -1033,9 +1033,9 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
-  public List<MetadataResource> allConformanceResources() {
+  public List<CanonicalResource> allConformanceResources() {
     synchronized (lock) {
-      List<MetadataResource> result = new ArrayList<MetadataResource>();
+      List<CanonicalResource> result = new ArrayList<CanonicalResource>();
       structures.listAllM(result);
       guides.listAllM(result);
       capstmts.listAllM(result);

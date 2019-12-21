@@ -495,28 +495,28 @@ public class SubstanceProtein extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1867548732: // subunit
-          this.subunit = castToInteger(value); // IntegerType
+          this.subunit = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 1349547969: // sequence
-          this.sequence = castToString(value); // StringType
+          this.sequence = TypeConvertor.castToString(value); // StringType
           return value;
         case -1106363674: // length
-          this.length = castToInteger(value); // IntegerType
+          this.length = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 364621764: // sequenceAttachment
-          this.sequenceAttachment = castToAttachment(value); // Attachment
+          this.sequenceAttachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -182796415: // nTerminalModificationId
-          this.nTerminalModificationId = castToIdentifier(value); // Identifier
+          this.nTerminalModificationId = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1497395258: // nTerminalModification
-          this.nTerminalModification = castToString(value); // StringType
+          this.nTerminalModification = TypeConvertor.castToString(value); // StringType
           return value;
         case -990303818: // cTerminalModificationId
-          this.cTerminalModificationId = castToIdentifier(value); // Identifier
+          this.cTerminalModificationId = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 472711995: // cTerminalModification
-          this.cTerminalModification = castToString(value); // StringType
+          this.cTerminalModification = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -526,21 +526,21 @@ public class SubstanceProtein extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("subunit")) {
-          this.subunit = castToInteger(value); // IntegerType
+          this.subunit = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("sequence")) {
-          this.sequence = castToString(value); // StringType
+          this.sequence = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("length")) {
-          this.length = castToInteger(value); // IntegerType
+          this.length = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("sequenceAttachment")) {
-          this.sequenceAttachment = castToAttachment(value); // Attachment
+          this.sequenceAttachment = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("nTerminalModificationId")) {
-          this.nTerminalModificationId = castToIdentifier(value); // Identifier
+          this.nTerminalModificationId = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("nTerminalModification")) {
-          this.nTerminalModification = castToString(value); // StringType
+          this.nTerminalModification = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("cTerminalModificationId")) {
-          this.cTerminalModificationId = castToIdentifier(value); // Identifier
+          this.cTerminalModificationId = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("cTerminalModification")) {
-          this.cTerminalModification = castToString(value); // StringType
+          this.cTerminalModification = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -923,13 +923,13 @@ public class SubstanceProtein extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 807711387: // sequenceType
-          this.sequenceType = castToCodeableConcept(value); // CodeableConcept
+          this.sequenceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -847111089: // numberOfSubunits
-          this.numberOfSubunits = castToInteger(value); // IntegerType
+          this.numberOfSubunits = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -1996102436: // disulfideLinkage
-          this.getDisulfideLinkage().add(castToString(value)); // StringType
+          this.getDisulfideLinkage().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1867548732: // subunit
           this.getSubunit().add((SubstanceProteinSubunitComponent) value); // SubstanceProteinSubunitComponent
@@ -942,11 +942,11 @@ public class SubstanceProtein extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequenceType")) {
-          this.sequenceType = castToCodeableConcept(value); // CodeableConcept
+          this.sequenceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("numberOfSubunits")) {
-          this.numberOfSubunits = castToInteger(value); // IntegerType
+          this.numberOfSubunits = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("disulfideLinkage")) {
-          this.getDisulfideLinkage().add(castToString(value));
+          this.getDisulfideLinkage().add(TypeConvertor.castToString(value));
         } else if (name.equals("subunit")) {
           this.getSubunit().add((SubstanceProteinSubunitComponent) value);
         } else

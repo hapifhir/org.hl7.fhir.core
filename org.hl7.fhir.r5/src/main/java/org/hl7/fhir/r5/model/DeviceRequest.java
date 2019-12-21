@@ -585,7 +585,7 @@ public class DeviceRequest extends DomainResource {
          */
         @Child(name = "value", type = {CodeableConcept.class, Quantity.class, Range.class, BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Value of detail", formalDefinition="The value of the device detail." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = 884525025L;
 
@@ -623,7 +623,7 @@ public class DeviceRequest extends DomainResource {
         /**
          * @return {@link #value} (The value of the device detail.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -694,7 +694,7 @@ public class DeviceRequest extends DomainResource {
         /**
          * @param value {@link #value} (The value of the device detail.)
          */
-        public DeviceRequestParameterComponent setValue(Type value) { 
+        public DeviceRequestParameterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof BooleanType))
             throw new Error("Not the right type for DeviceRequest.parameter.value[x]: "+value.fhirType());
           this.value = value;
@@ -736,10 +736,10 @@ public class DeviceRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -749,9 +749,9 @@ public class DeviceRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -919,7 +919,7 @@ public class DeviceRequest extends DomainResource {
     @Child(name = "code", type = {Device.class, CodeableConcept.class}, order=9, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Device requested", formalDefinition="The details of the device to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-kind")
-    protected Type code;
+    protected DataType code;
 
     /**
      * Specific parameters for the ordered item.  For example, the prism value for lenses.
@@ -947,7 +947,7 @@ public class DeviceRequest extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Desired time or schedule for use", formalDefinition="The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\"." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * When the request transitioned to being actionable.
@@ -1033,7 +1033,7 @@ public class DeviceRequest extends DomainResource {
   /**
    * Constructor
    */
-    public DeviceRequest(Enumeration<RequestIntent> intent, Type code, Reference subject) {
+    public DeviceRequest(Enumeration<RequestIntent> intent, DataType code, Reference subject) {
       super();
       this.intent = intent;
       this.code = code;
@@ -1491,7 +1491,7 @@ public class DeviceRequest extends DomainResource {
     /**
      * @return {@link #code} (The details of the device to be used.)
      */
-    public Type getCode() { 
+    public DataType getCode() { 
       return this.code;
     }
 
@@ -1532,7 +1532,7 @@ public class DeviceRequest extends DomainResource {
     /**
      * @param value {@link #code} (The details of the device to be used.)
      */
-    public DeviceRequest setCode(Type value) { 
+    public DeviceRequest setCode(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
         throw new Error("Not the right type for DeviceRequest.code[x]: "+value.fhirType());
       this.code = value;
@@ -1643,7 +1643,7 @@ public class DeviceRequest extends DomainResource {
     /**
      * @return {@link #occurrence} (The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. "Every 8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:"; "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1699,7 +1699,7 @@ public class DeviceRequest extends DomainResource {
     /**
      * @param value {@link #occurrence} (The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. "Every 8 hours"; "Three times a day"; "1/2 an hour before breakfast for 10 days from 23-Dec 2011:"; "15 Oct 2013, 17 Oct 2013 and 1 Nov 2013".)
      */
-    public DeviceRequest setOccurrence(Type value) { 
+    public DeviceRequest setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
         throw new Error("Not the right type for DeviceRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -2248,79 +2248,79 @@ public class DeviceRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 237568101: // priorRequest
-          this.getPriorRequest().add(castToReference(value)); // Reference
+          this.getPriorRequest().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -445338488: // groupIdentifier
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new DeviceRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new DeviceRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DeviceRequestStatus>
           return value;
         case -1183762788: // intent
-          value = new RequestIntentEnumFactory().fromType(castToCode(value));
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
-          this.code = castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // Type
           return value;
         case 1954460585: // parameter
           this.getParameter().add((DeviceRequestParameterComponent) value); // DeviceRequestParameterComponent
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -1500852503: // authoredOn
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 693933948: // requester
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
           return value;
         case -901444568: // performerType
-          this.performerType = castToCodeableConcept(value); // CodeableConcept
+          this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 481140686: // performer
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 73049818: // insurance
-          this.getInsurance().add(castToReference(value)); // Reference
+          this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1922406657: // supportingInfo
-          this.getSupportingInfo().add(castToReference(value)); // Reference
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 1538891575: // relevantHistory
-          this.getRelevantHistory().add(castToReference(value)); // Reference
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2330,56 +2330,56 @@ public class DeviceRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("priorRequest")) {
-          this.getPriorRequest().add(castToReference(value));
+          this.getPriorRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("groupIdentifier")) {
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new DeviceRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new DeviceRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DeviceRequestStatus>
         } else if (name.equals("intent")) {
-          value = new RequestIntentEnumFactory().fromType(castToCode(value));
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code[x]")) {
-          this.code = castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // Type
         } else if (name.equals("parameter")) {
           this.getParameter().add((DeviceRequestParameterComponent) value);
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("authoredOn")) {
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performerType")) {
-          this.performerType = castToCodeableConcept(value); // CodeableConcept
+          this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("performer")) {
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("insurance")) {
-          this.getInsurance().add(castToReference(value));
+          this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add(castToReference(value));
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("relevantHistory")) {
-          this.getRelevantHistory().add(castToReference(value));
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

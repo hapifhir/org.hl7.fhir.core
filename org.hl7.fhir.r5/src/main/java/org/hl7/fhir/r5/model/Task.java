@@ -838,13 +838,13 @@ public class Task extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 984367650: // repetitions
-          this.repetitions = castToPositiveInt(value); // PositiveIntType
+          this.repetitions = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 820081177: // recipient
-          this.getRecipient().add(castToReference(value)); // Reference
+          this.getRecipient().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -854,11 +854,11 @@ public class Task extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("repetitions")) {
-          this.repetitions = castToPositiveInt(value); // PositiveIntType
+          this.repetitions = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("recipient")) {
-          this.getRecipient().add(castToReference(value));
+          this.getRecipient().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -966,7 +966,7 @@ public class Task extends DomainResource {
          */
         @Child(name = "value", type = {}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Content to use in performing the task", formalDefinition="The value of the input parameter as a basic type." )
-        protected org.hl7.fhir.r5.model.Type value;
+        protected org.hl7.fhir.r5.model.DataType value;
 
         private static final long serialVersionUID = -638916132L;
 
@@ -980,7 +980,7 @@ public class Task extends DomainResource {
     /**
      * Constructor
      */
-      public ParameterComponent(CodeableConcept type, org.hl7.fhir.r5.model.Type value) {
+      public ParameterComponent(CodeableConcept type, org.hl7.fhir.r5.model.DataType value) {
         super();
         this.type = type;
         this.value = value;
@@ -1013,7 +1013,7 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the input parameter as a basic type.)
          */
-        public org.hl7.fhir.r5.model.Type getValue() { 
+        public org.hl7.fhir.r5.model.DataType getValue() { 
           return this.value;
         }
 
@@ -1024,7 +1024,7 @@ public class Task extends DomainResource {
         /**
          * @param value {@link #value} (The value of the input parameter as a basic type.)
          */
-        public ParameterComponent setValue(org.hl7.fhir.r5.model.Type value) { 
+        public ParameterComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
           this.value = value;
           return this;
         }
@@ -1096,10 +1096,10 @@ public class Task extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1109,9 +1109,9 @@ public class Task extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1405,7 +1405,7 @@ public class Task extends DomainResource {
          */
         @Child(name = "value", type = {}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Result of output", formalDefinition="The value of the Output parameter as a basic type." )
-        protected org.hl7.fhir.r5.model.Type value;
+        protected org.hl7.fhir.r5.model.DataType value;
 
         private static final long serialVersionUID = -638916132L;
 
@@ -1419,7 +1419,7 @@ public class Task extends DomainResource {
     /**
      * Constructor
      */
-      public TaskOutputComponent(CodeableConcept type, org.hl7.fhir.r5.model.Type value) {
+      public TaskOutputComponent(CodeableConcept type, org.hl7.fhir.r5.model.DataType value) {
         super();
         this.type = type;
         this.value = value;
@@ -1452,7 +1452,7 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the Output parameter as a basic type.)
          */
-        public org.hl7.fhir.r5.model.Type getValue() { 
+        public org.hl7.fhir.r5.model.DataType getValue() { 
           return this.value;
         }
 
@@ -1463,7 +1463,7 @@ public class Task extends DomainResource {
         /**
          * @param value {@link #value} (The value of the Output parameter as a basic type.)
          */
-        public TaskOutputComponent setValue(org.hl7.fhir.r5.model.Type value) { 
+        public TaskOutputComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
           this.value = value;
           return this;
         }
@@ -1535,10 +1535,10 @@ public class Task extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1548,9 +1548,9 @@ public class Task extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -3384,91 +3384,91 @@ public class Task extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.instantiatesCanonical = castToCanonical(value); // CanonicalType
+          this.instantiatesCanonical = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.instantiatesUri = castToUri(value); // UriType
+          this.instantiatesUri = TypeConvertor.castToUri(value); // UriType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -445338488: // groupIdentifier
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new TaskStatusEnumFactory().fromType(castToCode(value));
+          value = new TaskStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<TaskStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 2008591314: // businessStatus
-          this.businessStatus = castToCodeableConcept(value); // CodeableConcept
+          this.businessStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1183762788: // intent
-          value = new TaskIntentEnumFactory().fromType(castToCode(value));
+          value = new TaskIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<TaskIntent>
           return value;
         case -1165461084: // priority
-          value = new TaskPriorityEnumFactory().fromType(castToCode(value));
+          value = new TaskPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<TaskPriority>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 97604824: // focus
-          this.focus = castToReference(value); // Reference
+          this.focus = TypeConvertor.castToReference(value); // Reference
           return value;
         case 101577: // for
-          this.for_ = castToReference(value); // Reference
+          this.for_ = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1218624249: // executionPeriod
-          this.executionPeriod = castToPeriod(value); // Period
+          this.executionPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -1500852503: // authoredOn
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1959003007: // lastModified
-          this.lastModified = castToDateTime(value); // DateTimeType
+          this.lastModified = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 693933948: // requester
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
           return value;
         case -901444568: // performerType
-          this.getPerformerType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getPerformerType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 106164915: // owner
-          this.owner = castToReference(value); // Reference
+          this.owner = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.reasonCode = castToCodeableConcept(value); // CodeableConcept
+          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.reasonReference = castToReference(value); // Reference
+          this.reasonReference = TypeConvertor.castToReference(value); // Reference
           return value;
         case 73049818: // insurance
-          this.getInsurance().add(castToReference(value)); // Reference
+          this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 1538891575: // relevantHistory
-          this.getRelevantHistory().add(castToReference(value)); // Reference
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1561062452: // restriction
           this.restriction = (TaskRestrictionComponent) value; // TaskRestrictionComponent
@@ -3487,64 +3487,64 @@ public class Task extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.instantiatesCanonical = castToCanonical(value); // CanonicalType
+          this.instantiatesCanonical = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("instantiatesUri")) {
-          this.instantiatesUri = castToUri(value); // UriType
+          this.instantiatesUri = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("groupIdentifier")) {
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new TaskStatusEnumFactory().fromType(castToCode(value));
+          value = new TaskStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<TaskStatus>
         } else if (name.equals("statusReason")) {
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("businessStatus")) {
-          this.businessStatus = castToCodeableConcept(value); // CodeableConcept
+          this.businessStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("intent")) {
-          value = new TaskIntentEnumFactory().fromType(castToCode(value));
+          value = new TaskIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<TaskIntent>
         } else if (name.equals("priority")) {
-          value = new TaskPriorityEnumFactory().fromType(castToCode(value));
+          value = new TaskPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<TaskPriority>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("focus")) {
-          this.focus = castToReference(value); // Reference
+          this.focus = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("for")) {
-          this.for_ = castToReference(value); // Reference
+          this.for_ = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("executionPeriod")) {
-          this.executionPeriod = castToPeriod(value); // Period
+          this.executionPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("authoredOn")) {
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("lastModified")) {
-          this.lastModified = castToDateTime(value); // DateTimeType
+          this.lastModified = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performerType")) {
-          this.getPerformerType().add(castToCodeableConcept(value));
+          this.getPerformerType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("owner")) {
-          this.owner = castToReference(value); // Reference
+          this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.reasonCode = castToCodeableConcept(value); // CodeableConcept
+          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reasonReference")) {
-          this.reasonReference = castToReference(value); // Reference
+          this.reasonReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("insurance")) {
-          this.getInsurance().add(castToReference(value));
+          this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("relevantHistory")) {
-          this.getRelevantHistory().add(castToReference(value));
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value));
         } else if (name.equals("restriction")) {
           this.restriction = (TaskRestrictionComponent) value; // TaskRestrictionComponent
         } else if (name.equals("input")) {

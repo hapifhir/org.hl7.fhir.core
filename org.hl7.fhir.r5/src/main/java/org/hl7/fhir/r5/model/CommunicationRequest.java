@@ -374,7 +374,7 @@ public class CommunicationRequest extends DomainResource {
          */
         @Child(name = "content", type = {Attachment.class, Reference.class, CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Message part content", formalDefinition="The communicated content (or for multi-part communications, one portion of the communication)." )
-        protected Type content;
+        protected DataType content;
 
         private static final long serialVersionUID = -1763459053L;
 
@@ -388,7 +388,7 @@ public class CommunicationRequest extends DomainResource {
     /**
      * Constructor
      */
-      public CommunicationRequestPayloadComponent(Type content) {
+      public CommunicationRequestPayloadComponent(DataType content) {
         super();
         this.content = content;
       }
@@ -396,7 +396,7 @@ public class CommunicationRequest extends DomainResource {
         /**
          * @return {@link #content} (The communicated content (or for multi-part communications, one portion of the communication).)
          */
-        public Type getContent() { 
+        public DataType getContent() { 
           return this.content;
         }
 
@@ -452,7 +452,7 @@ public class CommunicationRequest extends DomainResource {
         /**
          * @param value {@link #content} (The communicated content (or for multi-part communications, one portion of the communication).)
          */
-        public CommunicationRequestPayloadComponent setContent(Type value) { 
+        public CommunicationRequestPayloadComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference || value instanceof CodeableConcept))
             throw new Error("Not the right type for CommunicationRequest.payload.content[x]: "+value.fhirType());
           this.content = value;
@@ -490,7 +490,7 @@ public class CommunicationRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -500,7 +500,7 @@ public class CommunicationRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -693,7 +693,7 @@ public class CommunicationRequest extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When scheduled", formalDefinition="The time when this communication is to occur." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * For draft requests, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation.
@@ -1371,7 +1371,7 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @return {@link #occurrence} (The time when this communication is to occur.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1412,7 +1412,7 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @param value {@link #occurrence} (The time when this communication is to occur.)
      */
-    public CommunicationRequest setOccurrence(Type value) { 
+    public CommunicationRequest setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
         throw new Error("Not the right type for CommunicationRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1850,72 +1850,72 @@ public class CommunicationRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -430332865: // replaces
-          this.getReplaces().add(castToReference(value)); // Reference
+          this.getReplaces().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -445338488: // groupIdentifier
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new CommunicationRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new CommunicationRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CommunicationRequestStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1165461084: // priority
-          value = new CommunicationPriorityEnumFactory().fromType(castToCode(value));
+          value = new CommunicationPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<CommunicationPriority>
           return value;
         case -1788508167: // doNotPerform
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1078030475: // medium
-          this.getMedium().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getMedium().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 92611469: // about
-          this.getAbout().add(castToReference(value)); // Reference
+          this.getAbout().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -786701938: // payload
           this.getPayload().add((CommunicationRequestPayloadComponent) value); // CommunicationRequestPayloadComponent
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -1500852503: // authoredOn
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 693933948: // requester
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
           return value;
         case 820081177: // recipient
-          this.getRecipient().add(castToReference(value)); // Reference
+          this.getRecipient().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1255338813: // informationProvider
-          this.getInformationProvider().add(castToReference(value)); // Reference
+          this.getInformationProvider().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1925,51 +1925,51 @@ public class CommunicationRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("replaces")) {
-          this.getReplaces().add(castToReference(value));
+          this.getReplaces().add(TypeConvertor.castToReference(value));
         } else if (name.equals("groupIdentifier")) {
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new CommunicationRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new CommunicationRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CommunicationRequestStatus>
         } else if (name.equals("statusReason")) {
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("priority")) {
-          value = new CommunicationPriorityEnumFactory().fromType(castToCode(value));
+          value = new CommunicationPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<CommunicationPriority>
         } else if (name.equals("doNotPerform")) {
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("medium")) {
-          this.getMedium().add(castToCodeableConcept(value));
+          this.getMedium().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("about")) {
-          this.getAbout().add(castToReference(value));
+          this.getAbout().add(TypeConvertor.castToReference(value));
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("payload")) {
           this.getPayload().add((CommunicationRequestPayloadComponent) value);
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("authoredOn")) {
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
-          this.requester = castToReference(value); // Reference
+          this.requester = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("recipient")) {
-          this.getRecipient().add(castToReference(value));
+          this.getRecipient().add(TypeConvertor.castToReference(value));
         } else if (name.equals("informationProvider")) {
-          this.getInformationProvider().add(castToReference(value));
+          this.getInformationProvider().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

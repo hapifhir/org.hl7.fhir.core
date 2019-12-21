@@ -570,28 +570,28 @@ public class Schedule extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1281188563: // serviceCategory
-          this.getServiceCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1928370289: // serviceType
-          this.getServiceType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getServiceType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1694759682: // specialty
-          this.getSpecialty().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.getActor().add(castToReference(value)); // Reference
+          this.getActor().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1718507650: // planningHorizon
-          this.planningHorizon = castToPeriod(value); // Period
+          this.planningHorizon = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -601,21 +601,21 @@ public class Schedule extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("serviceCategory")) {
-          this.getServiceCategory().add(castToCodeableConcept(value));
+          this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviceType")) {
-          this.getServiceType().add(castToCodeableConcept(value));
+          this.getServiceType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specialty")) {
-          this.getSpecialty().add(castToCodeableConcept(value));
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("actor")) {
-          this.getActor().add(castToReference(value));
+          this.getActor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("planningHorizon")) {
-          this.planningHorizon = castToPeriod(value); // Period
+          this.planningHorizon = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;

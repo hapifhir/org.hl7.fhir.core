@@ -42,7 +42,7 @@ import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationSt
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -498,7 +498,7 @@ public class VersionConvertor_30_50 {
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasSize())
-      tgt.setSize(src.getSize());
+      tgt.setSize(Long.valueOf(src.getSize()));
     if (src.hasHash())
       tgt.setHash(src.getHash());
     if (src.hasTitle())
@@ -522,7 +522,7 @@ public class VersionConvertor_30_50 {
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasSize())
-      tgt.setSize(src.getSize());
+      tgt.setSize(Math.toIntExact(src.getSize()));
     if (src.hasHash())
       tgt.setHash(src.getHash());
     if (src.hasTitle())
@@ -1944,7 +1944,7 @@ public class VersionConvertor_30_50 {
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasValueSet()) {
-      Type t = convertType(src.getValueSet());
+      DataType t = convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference) {
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
         tgt.getValueSetElement().addExtension(EXT_SRC_TYPE, new UriType("Reference"));
@@ -2381,7 +2381,7 @@ public class VersionConvertor_30_50 {
       tgt.setPeriodMax(src.getPeriodMax());
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
-    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DayOfWeek> t : src.getDayOfWeek())
+    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DaysOfWeek> t : src.getDayOfWeek())
       copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.r5.model.TimeType t : src.getTimeOfDay())
       tgt.addTimeOfDay(t.getValue());
@@ -2422,22 +2422,22 @@ public class VersionConvertor_30_50 {
   }
 }
 
-  private static org.hl7.fhir.r5.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.dstu3.model.Timing.DayOfWeek src) throws FHIRException {
+  private static org.hl7.fhir.r5.model.Timing.DaysOfWeek convertDayOfWeek(org.hl7.fhir.dstu3.model.Timing.DayOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case MON: return org.hl7.fhir.r5.model.Timing.DayOfWeek.MON;
-    case TUE: return org.hl7.fhir.r5.model.Timing.DayOfWeek.TUE;
-    case WED: return org.hl7.fhir.r5.model.Timing.DayOfWeek.WED;
-    case THU: return org.hl7.fhir.r5.model.Timing.DayOfWeek.THU;
-    case FRI: return org.hl7.fhir.r5.model.Timing.DayOfWeek.FRI;
-    case SAT: return org.hl7.fhir.r5.model.Timing.DayOfWeek.SAT;
-    case SUN: return org.hl7.fhir.r5.model.Timing.DayOfWeek.SUN;
-    default: return org.hl7.fhir.r5.model.Timing.DayOfWeek.NULL;
+    case MON: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.MON;
+    case TUE: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.TUE;
+    case WED: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.WED;
+    case THU: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.THU;
+    case FRI: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.FRI;
+    case SAT: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.SAT;
+    case SUN: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.SUN;
+    default: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.NULL;
   }
 }
 
-  private static org.hl7.fhir.dstu3.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r5.model.Timing.DayOfWeek src) throws FHIRException {
+  private static org.hl7.fhir.dstu3.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r5.model.Timing.DaysOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -2642,7 +2642,7 @@ public class VersionConvertor_30_50 {
     if (src.hasPath())
       tgt.setPath(src.getPath());
     if (src.hasValueSet()) {
-      Type t = convertType(src.getValueSet());
+      DataType t = convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
       else
@@ -2734,7 +2734,7 @@ public class VersionConvertor_30_50 {
 }
 
 
-  public static org.hl7.fhir.r5.model.Type convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.DataType convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
     if (src == null)
       return null;
     if (src instanceof org.hl7.fhir.dstu3.model.Base64BinaryType)
@@ -2840,7 +2840,7 @@ public class VersionConvertor_30_50 {
     throw new FHIRException("Unknown type "+src.fhirType());
   }
 
-  public static org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.r5.model.Type src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
     if (src == null)
       return null;
     if (src instanceof org.hl7.fhir.r5.model.Base64BinaryType)
@@ -5764,7 +5764,7 @@ public class VersionConvertor_30_50 {
     if (src.hasExtension()) {
       org.hl7.fhir.r5.model.Extension extension = src.getExtensionByUrl(CarePlanActivityDetailComponentExtension);
       if (extension != null) {
-        org.hl7.fhir.r5.model.Type value = extension.getValue();
+        org.hl7.fhir.r5.model.DataType value = extension.getValue();
         if (value instanceof org.hl7.fhir.r5.model.CodeableConcept) {
           tgt.setCategory(convertCodeableConcept((org.hl7.fhir.r5.model.CodeableConcept) value));
         }
@@ -7883,11 +7883,11 @@ public class VersionConvertor_30_50 {
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
     if (src.hasSource()) {
-      org.hl7.fhir.r5.model.Type t = convertType(src.getSource());
+      org.hl7.fhir.r5.model.DataType t = convertType(src.getSource());
       tgt.setSource(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     }
     if (src.hasTarget()) {
-      org.hl7.fhir.r5.model.Type t = convertType(src.getTarget());
+      org.hl7.fhir.r5.model.DataType t = convertType(src.getTarget());
       tgt.setTarget(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     }
     for (org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
@@ -11360,25 +11360,25 @@ public class VersionConvertor_30_50 {
     if (src.hasParameter("profile-status"))
       tgt.setStatus(PublicationStatus.fromCode(src.getParameter("profile-status").primitiveValue()));
 
-    for (Type t : src.getParameters("system-version")) {
+    for (DataType t : src.getParameters("system-version")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.DEFAULT);
     }
-    for (Type t : src.getParameters("force-system-version")) {
+    for (DataType t : src.getParameters("force-system-version")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.OVERRIDE);
     }
-    for (Type t : src.getParameters("check-system-version")) {
+    for (DataType t : src.getParameters("check-system-version")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.CHECK);
     }
-    for (Type t : src.getParameters("exclude-system")) {
+    for (DataType t : src.getParameters("exclude-system")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.getExcludedSystem().setSystem(v[0]).setVersion(v[1]);
     }
     if (src.hasParameter("includeDesignations"))
       tgt.setIncludeDesignations(src.getParameterBool(""));
-    for (Type t : src.getParameters("designation")) {
+    for (DataType t : src.getParameters("designation")) {
       String[] v = t.primitiveValue().split("\\|");
       if ("urn:ietf:bcp:47".equals(v[0]))
         tgt.getDesignation().getInclude().addDesignation().setLanguage(v[1]);
@@ -12970,7 +12970,7 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     copyElement(src, tgt);
     if (src.hasExampleFor()) {
-      org.hl7.fhir.r5.model.Type t = convertType(src.getExampleFor());
+      org.hl7.fhir.r5.model.DataType t = convertType(src.getExampleFor());
       tgt.setExample(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     } else if (src.hasExample())
       tgt.setExample(new org.hl7.fhir.r5.model.BooleanType(src.getExample()));
@@ -15748,7 +15748,7 @@ public class VersionConvertor_30_50 {
     if (src.hasStrength())
       tgt.setStrength(convertBindingStrength(src.getStrength()));
     if (src.hasValueSet()) {
-      Type t = convertType(src.getValueSet());
+      DataType t = convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
       else
@@ -16770,14 +16770,14 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRole())
       tgt.addRole(convertCodeableConcept(t));
     if (src.hasWho()) {
-      Type t = convertType(src.getWho());
+      DataType t = convertType(src.getWho());
       if (t instanceof Reference)
         tgt.setWho((Reference) t);
       if (t instanceof UriType)
         tgt.getWho().setReference(t.primitiveValue());
     }
     if (src.hasOnBehalfOf()) {
-      Type t = convertType(src.getOnBehalfOf());
+      DataType t = convertType(src.getOnBehalfOf());
       if (t instanceof Reference)
         tgt.setOnBehalfOf((Reference) t);
       if (t instanceof UriType)
@@ -16808,7 +16808,7 @@ public class VersionConvertor_30_50 {
     if (src.hasRole())
       tgt.setRole(convertProvenanceEntityRole(src.getRole()));
     if (src.hasWhat()) {
-      Type t = convertType(src.getWhat());
+      DataType t = convertType(src.getWhat());
       if (t instanceof Reference)
         tgt.setWhat((Reference) t);
       else if (t instanceof Identifier)
@@ -17412,7 +17412,7 @@ public class VersionConvertor_30_50 {
     if (src.hasPerformer())
       tgt.setPerformer(convertReference(src.getPerformer()));
     if (src.hasReason()) {
-      org.hl7.fhir.r5.model.Type t = convertType(src.getReason());
+      org.hl7.fhir.r5.model.DataType t = convertType(src.getReason());
       if (t instanceof org.hl7.fhir.r5.model.CodeableConcept)
         tgt.addReasonCode((org.hl7.fhir.r5.model.CodeableConcept) t);
       else

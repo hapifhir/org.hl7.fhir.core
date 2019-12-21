@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="GraphDefinition", profile="http://hl7.org/fhir/StructureDefinition/GraphDefinition")
 @ChildOrder(names={"url", "version", "name", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "start", "profile", "link"})
-public class GraphDefinition extends MetadataResource {
+public class GraphDefinition extends CanonicalResource {
 
     public enum GraphCompartmentUse {
         /**
@@ -818,19 +818,19 @@ public class GraphDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -825289923: // sliceName
-          this.sliceName = castToString(value); // StringType
+          this.sliceName = TypeConvertor.castToString(value); // StringType
           return value;
         case 108114: // min
-          this.min = castToInteger(value); // IntegerType
+          this.min = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 107876: // max
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -880905839: // target
           this.getTarget().add((GraphDefinitionLinkTargetComponent) value); // GraphDefinitionLinkTargetComponent
@@ -843,15 +843,15 @@ public class GraphDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("sliceName")) {
-          this.sliceName = castToString(value); // StringType
+          this.sliceName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("min")) {
-          this.min = castToInteger(value); // IntegerType
+          this.min = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("max")) {
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("target")) {
           this.getTarget().add((GraphDefinitionLinkTargetComponent) value);
         } else
@@ -1309,13 +1309,13 @@ public class GraphDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -995427962: // params
-          this.params = castToString(value); // StringType
+          this.params = TypeConvertor.castToString(value); // StringType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -397756334: // compartment
           this.getCompartment().add((GraphDefinitionLinkTargetCompartmentComponent) value); // GraphDefinitionLinkTargetCompartmentComponent
@@ -1331,11 +1331,11 @@ public class GraphDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("params")) {
-          this.params = castToString(value); // StringType
+          this.params = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("compartment")) {
           this.getCompartment().add((GraphDefinitionLinkTargetCompartmentComponent) value);
         } else if (name.equals("link")) {
@@ -1779,22 +1779,22 @@ public class GraphDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116103: // use
-          value = new GraphCompartmentUseEnumFactory().fromType(castToCode(value));
+          value = new GraphCompartmentUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<GraphCompartmentUse>
           return value;
         case 3059181: // code
-          value = new CompartmentCodeEnumFactory().fromType(castToCode(value));
+          value = new CompartmentCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<CompartmentCode>
           return value;
         case 3512060: // rule
-          value = new GraphCompartmentRuleEnumFactory().fromType(castToCode(value));
+          value = new GraphCompartmentRuleEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.rule = (Enumeration) value; // Enumeration<GraphCompartmentRule>
           return value;
         case -1795452264: // expression
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1804,18 +1804,18 @@ public class GraphDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("use")) {
-          value = new GraphCompartmentUseEnumFactory().fromType(castToCode(value));
+          value = new GraphCompartmentUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<GraphCompartmentUse>
         } else if (name.equals("code")) {
-          value = new CompartmentCodeEnumFactory().fromType(castToCode(value));
+          value = new CompartmentCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<CompartmentCode>
         } else if (name.equals("rule")) {
-          value = new GraphCompartmentRuleEnumFactory().fromType(castToCode(value));
+          value = new GraphCompartmentRuleEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.rule = (Enumeration) value; // Enumeration<GraphCompartmentRule>
         } else if (name.equals("expression")) {
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2771,47 +2771,47 @@ public class GraphDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 109757538: // start
-          this.start = castToCode(value); // CodeType
+          this.start = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 3321850: // link
           this.getLink().add((GraphDefinitionLinkComponent) value); // GraphDefinitionLinkComponent
@@ -2824,34 +2824,34 @@ public class GraphDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("start")) {
-          this.start = castToCode(value); // CodeType
+          this.start = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("link")) {
           this.getLink().add((GraphDefinitionLinkComponent) value);
         } else

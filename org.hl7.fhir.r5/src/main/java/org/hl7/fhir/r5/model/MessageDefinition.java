@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="MessageDefinition", profile="http://hl7.org/fhir/StructureDefinition/MessageDefinition")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "replaces", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "base", "parent", "event[x]", "category", "focus", "responseRequired", "allowedResponse", "graph"})
-public class MessageDefinition extends MetadataResource {
+public class MessageDefinition extends CanonicalResource {
 
     public enum MessageSignificanceCategory {
         /**
@@ -578,16 +578,16 @@ public class MessageDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 108114: // min
-          this.min = castToUnsignedInt(value); // UnsignedIntType
+          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 107876: // max
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -597,13 +597,13 @@ public class MessageDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("min")) {
-          this.min = castToUnsignedInt(value); // UnsignedIntType
+          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("max")) {
-          this.max = castToString(value); // StringType
+          this.max = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -856,10 +856,10 @@ public class MessageDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 954925063: // message
-          this.message = castToCanonical(value); // CanonicalType
+          this.message = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -73377282: // situation
-          this.situation = castToMarkdown(value); // MarkdownType
+          this.situation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -869,9 +869,9 @@ public class MessageDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("message")) {
-          this.message = castToCanonical(value); // CanonicalType
+          this.message = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("situation")) {
-          this.situation = castToMarkdown(value); // MarkdownType
+          this.situation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1000,7 +1000,7 @@ public class MessageDefinition extends MetadataResource {
     @Child(name = "event", type = {Coding.class, UriType.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Event code  or link to the EventDefinition", formalDefinition="Event code or link to the EventDefinition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/message-events")
-    protected Type event;
+    protected DataType event;
 
     /**
      * The impact of the content of the message.
@@ -1051,7 +1051,7 @@ public class MessageDefinition extends MetadataResource {
   /**
    * Constructor
    */
-    public MessageDefinition(Enumeration<PublicationStatus> status, DateTimeType date, Type event) {
+    public MessageDefinition(Enumeration<PublicationStatus> status, DateTimeType date, DataType event) {
       super();
       this.status = status;
       this.date = date;
@@ -1971,7 +1971,7 @@ public class MessageDefinition extends MetadataResource {
     /**
      * @return {@link #event} (Event code or link to the EventDefinition.)
      */
-    public Type getEvent() { 
+    public DataType getEvent() { 
       return this.event;
     }
 
@@ -2012,7 +2012,7 @@ public class MessageDefinition extends MetadataResource {
     /**
      * @param value {@link #event} (Event code or link to the EventDefinition.)
      */
-    public MessageDefinition setEvent(Type value) { 
+    public MessageDefinition setEvent(DataType value) { 
       if (value != null && !(value instanceof Coding || value instanceof UriType))
         throw new Error("Not the right type for MessageDefinition.event[x]: "+value.fhirType());
       this.event = value;
@@ -2383,79 +2383,79 @@ public class MessageDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -430332865: // replaces
-          this.getReplaces().add(castToCanonical(value)); // CanonicalType
+          this.getReplaces().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3016401: // base
-          this.base = castToCanonical(value); // CanonicalType
+          this.base = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -995424086: // parent
-          this.getParent().add(castToCanonical(value)); // CanonicalType
+          this.getParent().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 96891546: // event
-          this.event = castToType(value); // Type
+          this.event = TypeConvertor.castToType(value); // Type
           return value;
         case 50511102: // category
-          value = new MessageSignificanceCategoryEnumFactory().fromType(castToCode(value));
+          value = new MessageSignificanceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.category = (Enumeration) value; // Enumeration<MessageSignificanceCategory>
           return value;
         case 97604824: // focus
           this.getFocus().add((MessageDefinitionFocusComponent) value); // MessageDefinitionFocusComponent
           return value;
         case 791597824: // responseRequired
-          value = new MessageheaderResponseRequestEnumFactory().fromType(castToCode(value));
+          value = new MessageheaderResponseRequestEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.responseRequired = (Enumeration) value; // Enumeration<MessageheaderResponseRequest>
           return value;
         case -1130933751: // allowedResponse
           this.getAllowedResponse().add((MessageDefinitionAllowedResponseComponent) value); // MessageDefinitionAllowedResponseComponent
           return value;
         case 98615630: // graph
-          this.getGraph().add(castToCanonical(value)); // CanonicalType
+          this.getGraph().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2465,56 +2465,56 @@ public class MessageDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("replaces")) {
-          this.getReplaces().add(castToCanonical(value));
+          this.getReplaces().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("base")) {
-          this.base = castToCanonical(value); // CanonicalType
+          this.base = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("parent")) {
-          this.getParent().add(castToCanonical(value));
+          this.getParent().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("event[x]")) {
-          this.event = castToType(value); // Type
+          this.event = TypeConvertor.castToType(value); // Type
         } else if (name.equals("category")) {
-          value = new MessageSignificanceCategoryEnumFactory().fromType(castToCode(value));
+          value = new MessageSignificanceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.category = (Enumeration) value; // Enumeration<MessageSignificanceCategory>
         } else if (name.equals("focus")) {
           this.getFocus().add((MessageDefinitionFocusComponent) value);
         } else if (name.equals("responseRequired")) {
-          value = new MessageheaderResponseRequestEnumFactory().fromType(castToCode(value));
+          value = new MessageheaderResponseRequestEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.responseRequired = (Enumeration) value; // Enumeration<MessageheaderResponseRequest>
         } else if (name.equals("allowedResponse")) {
           this.getAllowedResponse().add((MessageDefinitionAllowedResponseComponent) value);
         } else if (name.equals("graph")) {
-          this.getGraph().add(castToCanonical(value));
+          this.getGraph().add(TypeConvertor.castToCanonical(value));
         } else
           return super.setProperty(name, value);
         return value;

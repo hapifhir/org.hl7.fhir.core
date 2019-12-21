@@ -1890,13 +1890,13 @@ public class FHIRPathEngine {
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (l.fhirType().equals("code")) {
-          if (worker.validateCode(terminologyServiceOptions , l.castToCoding(l), vs).isOk())
+          if (worker.validateCode(terminologyServiceOptions , TypeConvertor.castToCoding(l), vs).isOk())
             ans = true;
 	      } else if (l.fhirType().equals("Coding")) {
-	        if (worker.validateCode(terminologyServiceOptions, l.castToCoding(l), vs).isOk())
+	        if (worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk())
 	          ans = true;
 	      } else if (l.fhirType().equals("CodeableConcept")) {
-	        if (worker.validateCode(terminologyServiceOptions, l.castToCodeableConcept(l), vs).isOk())
+	        if (worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk())
 	          ans = true;
 	      }
 	    }

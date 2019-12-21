@@ -53,6 +53,7 @@ package org.hl7.fhir.r5.patterns;
 // Generated on Wed, May 8, 2019 10:40+1000 for FHIR v4.1.0
 
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
 import java.util.*;
 
@@ -411,7 +412,7 @@ public interface Definition extends PatternBase {
     /**
      * @return {@link #subject} (A code or group definition that describes the intended subject of instantiations of this definition.)
      */
-    public Type getSubject() throws FHIRException ;
+    public DataType getSubject() throws FHIRException ;
 
     /**
      * @return {@link #subject} (A code or group definition that describes the intended subject of instantiations of this definition.)
@@ -442,7 +443,7 @@ public interface Definition extends PatternBase {
     /**
      * @param value {@link #subject} (A code or group definition that describes the intended subject of instantiations of this definition.)
      */
-    public Definition setSubject(Type value) throws FHIRException;
+    public Definition setSubject(DataType value) throws FHIRException;
 
     /**
      * @return {@link #date} (For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value

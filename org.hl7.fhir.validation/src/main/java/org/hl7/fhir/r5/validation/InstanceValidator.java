@@ -118,7 +118,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComp
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.Timing;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -1566,13 +1566,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xverManager.matchingUrl(url)) {
         switch (xverManager.status(url)) {
         case BadVersion:
-          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state is not valid (invalidVersion \""+xverManager.getVersion(url)+"\")");
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalidVersion \""+xverManager.getVersion(url)+"\")");
           break;
         case Unknown:
-          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state is not valid (unknown Element id \""+xverManager.getElementId(url)+"\")");
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (unknown Element id \""+xverManager.getElementId(url)+"\")");
           break;
         case Invalid:
-          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' evaluation state is not valid (Element id \""+xverManager.getElementId(url)+"\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (Element id \""+xverManager.getElementId(url)+"\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
           break;
         case Valid:
           ex = xverManager.makeDefinition(url);
@@ -3138,7 +3138,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void buildPattternExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
-    Type pattern = criteriaElement.getPattern();
+    DataType pattern = criteriaElement.getPattern();
     if (pattern instanceof CodeableConcept) {
       CodeableConcept cc = (CodeableConcept) pattern;
       expression.append(" and ");
@@ -3221,7 +3221,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void buildFixedExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
-    Type fixed = criteriaElement.getFixed();
+    DataType fixed = criteriaElement.getFixed();
     if (fixed instanceof CodeableConcept) {
       CodeableConcept cc = (CodeableConcept) fixed;
       expression.append(" and ");

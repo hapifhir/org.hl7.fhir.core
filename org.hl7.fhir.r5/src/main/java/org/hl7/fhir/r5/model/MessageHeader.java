@@ -405,16 +405,16 @@ public class MessageHeader extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -880905839: // target
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1741102485: // endpoint
-          this.endpoint = castToUrl(value); // UrlType
+          this.endpoint = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case -808719889: // receiver
-          this.receiver = castToReference(value); // Reference
+          this.receiver = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -424,13 +424,13 @@ public class MessageHeader extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("target")) {
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("endpoint")) {
-          this.endpoint = castToUrl(value); // UrlType
+          this.endpoint = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("receiver")) {
-          this.receiver = castToReference(value); // Reference
+          this.receiver = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -836,19 +836,19 @@ public class MessageHeader extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 1319330215: // software
-          this.software = castToString(value); // StringType
+          this.software = TypeConvertor.castToString(value); // StringType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.contact = castToContactPoint(value); // ContactPoint
+          this.contact = TypeConvertor.castToContactPoint(value); // ContactPoint
           return value;
         case 1741102485: // endpoint
-          this.endpoint = castToUrl(value); // UrlType
+          this.endpoint = TypeConvertor.castToUrl(value); // UrlType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -858,15 +858,15 @@ public class MessageHeader extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("software")) {
-          this.software = castToString(value); // StringType
+          this.software = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.contact = castToContactPoint(value); // ContactPoint
+          this.contact = TypeConvertor.castToContactPoint(value); // ContactPoint
         } else if (name.equals("endpoint")) {
-          this.endpoint = castToUrl(value); // UrlType
+          this.endpoint = TypeConvertor.castToUrl(value); // UrlType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1158,14 +1158,14 @@ public class MessageHeader extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToId(value); // IdType
+          this.identifier = TypeConvertor.castToId(value); // IdType
           return value;
         case 3059181: // code
-          value = new ResponseTypeEnumFactory().fromType(castToCode(value));
+          value = new ResponseTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<ResponseType>
           return value;
         case 1557721666: // details
-          this.details = castToReference(value); // Reference
+          this.details = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1175,12 +1175,12 @@ public class MessageHeader extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToId(value); // IdType
+          this.identifier = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("code")) {
-          value = new ResponseTypeEnumFactory().fromType(castToCode(value));
+          value = new ResponseTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<ResponseType>
         } else if (name.equals("details")) {
-          this.details = castToReference(value); // Reference
+          this.details = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1276,7 +1276,7 @@ public class MessageHeader extends DomainResource {
     @Child(name = "event", type = {Coding.class, UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Code for the event this message represents or link to event definition", formalDefinition="Code that identifies the event this message represents and connects it with its definition. Events defined as part of the FHIR specification have the system value \"http://terminology.hl7.org/CodeSystem/message-events\".  Alternatively uri to the EventDefinition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/message-events")
-    protected Type event;
+    protected DataType event;
 
     /**
      * The destination application which the message is intended for.
@@ -1361,7 +1361,7 @@ public class MessageHeader extends DomainResource {
   /**
    * Constructor
    */
-    public MessageHeader(Type event, MessageSourceComponent source) {
+    public MessageHeader(DataType event, MessageSourceComponent source) {
       super();
       this.event = event;
       this.source = source;
@@ -1370,7 +1370,7 @@ public class MessageHeader extends DomainResource {
     /**
      * @return {@link #event} (Code that identifies the event this message represents and connects it with its definition. Events defined as part of the FHIR specification have the system value "http://terminology.hl7.org/CodeSystem/message-events".  Alternatively uri to the EventDefinition.)
      */
-    public Type getEvent() { 
+    public DataType getEvent() { 
       return this.event;
     }
 
@@ -1411,7 +1411,7 @@ public class MessageHeader extends DomainResource {
     /**
      * @param value {@link #event} (Code that identifies the event this message represents and connects it with its definition. Events defined as part of the FHIR specification have the system value "http://terminology.hl7.org/CodeSystem/message-events".  Alternatively uri to the EventDefinition.)
      */
-    public MessageHeader setEvent(Type value) { 
+    public MessageHeader setEvent(DataType value) { 
       if (value != null && !(value instanceof Coding || value instanceof UriType))
         throw new Error("Not the right type for MessageHeader.event[x]: "+value.fhirType());
       this.event = value;
@@ -1801,37 +1801,37 @@ public class MessageHeader extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 96891546: // event
-          this.event = castToType(value); // Type
+          this.event = TypeConvertor.castToType(value); // Type
           return value;
         case -1429847026: // destination
           this.getDestination().add((MessageDestinationComponent) value); // MessageDestinationComponent
           return value;
         case -905962955: // sender
-          this.sender = castToReference(value); // Reference
+          this.sender = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1591951995: // enterer
-          this.enterer = castToReference(value); // Reference
+          this.enterer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case -896505829: // source
           this.source = (MessageSourceComponent) value; // MessageSourceComponent
           return value;
         case 1847674614: // responsible
-          this.responsible = castToReference(value); // Reference
+          this.responsible = TypeConvertor.castToReference(value); // Reference
           return value;
         case -934964668: // reason
-          this.reason = castToCodeableConcept(value); // CodeableConcept
+          this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -340323263: // response
           this.response = (MessageHeaderResponseComponent) value; // MessageHeaderResponseComponent
           return value;
         case 97604824: // focus
-          this.getFocus().add(castToReference(value)); // Reference
+          this.getFocus().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1014418093: // definition
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1841,27 +1841,27 @@ public class MessageHeader extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("event[x]")) {
-          this.event = castToType(value); // Type
+          this.event = TypeConvertor.castToType(value); // Type
         } else if (name.equals("destination")) {
           this.getDestination().add((MessageDestinationComponent) value);
         } else if (name.equals("sender")) {
-          this.sender = castToReference(value); // Reference
+          this.sender = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("enterer")) {
-          this.enterer = castToReference(value); // Reference
+          this.enterer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("source")) {
           this.source = (MessageSourceComponent) value; // MessageSourceComponent
         } else if (name.equals("responsible")) {
-          this.responsible = castToReference(value); // Reference
+          this.responsible = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reason")) {
-          this.reason = castToCodeableConcept(value); // CodeableConcept
+          this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("response")) {
           this.response = (MessageHeaderResponseComponent) value; // MessageHeaderResponseComponent
         } else if (name.equals("focus")) {
-          this.getFocus().add(castToReference(value));
+          this.getFocus().add(TypeConvertor.castToReference(value));
         } else if (name.equals("definition")) {
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;

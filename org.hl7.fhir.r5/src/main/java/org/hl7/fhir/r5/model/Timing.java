@@ -242,7 +242,7 @@ public class Timing extends BackboneType implements ICompositeType {
       }
     }
 
-    public enum DayOfWeek {
+    public enum DaysOfWeek {
         /**
          * Monday.
          */
@@ -275,7 +275,7 @@ public class Timing extends BackboneType implements ICompositeType {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static DayOfWeek fromCode(String codeString) throws FHIRException {
+        public static DaysOfWeek fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("mon".equals(codeString))
@@ -295,7 +295,7 @@ public class Timing extends BackboneType implements ICompositeType {
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown DayOfWeek code '"+codeString+"'");
+          throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -347,69 +347,69 @@ public class Timing extends BackboneType implements ICompositeType {
         }
     }
 
-  public static class DayOfWeekEnumFactory implements EnumFactory<DayOfWeek> {
-    public DayOfWeek fromCode(String codeString) throws IllegalArgumentException {
+  public static class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
+    public DaysOfWeek fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("mon".equals(codeString))
-          return DayOfWeek.MON;
+          return DaysOfWeek.MON;
         if ("tue".equals(codeString))
-          return DayOfWeek.TUE;
+          return DaysOfWeek.TUE;
         if ("wed".equals(codeString))
-          return DayOfWeek.WED;
+          return DaysOfWeek.WED;
         if ("thu".equals(codeString))
-          return DayOfWeek.THU;
+          return DaysOfWeek.THU;
         if ("fri".equals(codeString))
-          return DayOfWeek.FRI;
+          return DaysOfWeek.FRI;
         if ("sat".equals(codeString))
-          return DayOfWeek.SAT;
+          return DaysOfWeek.SAT;
         if ("sun".equals(codeString))
-          return DayOfWeek.SUN;
-        throw new IllegalArgumentException("Unknown DayOfWeek code '"+codeString+"'");
+          return DaysOfWeek.SUN;
+        throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
         }
-        public Enumeration<DayOfWeek> fromType(Base code) throws FHIRException {
+        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DayOfWeek>(this);
+            return new Enumeration<DaysOfWeek>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("mon".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.MON);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
         if ("tue".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.TUE);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
         if ("wed".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.WED);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
         if ("thu".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.THU);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
         if ("fri".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.FRI);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
         if ("sat".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.SAT);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
         if ("sun".equals(codeString))
-          return new Enumeration<DayOfWeek>(this, DayOfWeek.SUN);
-        throw new FHIRException("Unknown DayOfWeek code '"+codeString+"'");
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
+        throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
         }
-    public String toCode(DayOfWeek code) {
-      if (code == DayOfWeek.MON)
+    public String toCode(DaysOfWeek code) {
+      if (code == DaysOfWeek.MON)
         return "mon";
-      if (code == DayOfWeek.TUE)
+      if (code == DaysOfWeek.TUE)
         return "tue";
-      if (code == DayOfWeek.WED)
+      if (code == DaysOfWeek.WED)
         return "wed";
-      if (code == DayOfWeek.THU)
+      if (code == DaysOfWeek.THU)
         return "thu";
-      if (code == DayOfWeek.FRI)
+      if (code == DaysOfWeek.FRI)
         return "fri";
-      if (code == DayOfWeek.SAT)
+      if (code == DaysOfWeek.SAT)
         return "sat";
-      if (code == DayOfWeek.SUN)
+      if (code == DaysOfWeek.SUN)
         return "sun";
       return "?";
       }
-    public String toSystem(DayOfWeek code) {
+    public String toSystem(DaysOfWeek code) {
       return code.getSystem();
       }
     }
@@ -897,7 +897,7 @@ public class Timing extends BackboneType implements ICompositeType {
          */
         @Child(name = "bounds", type = {Duration.class, Range.class, Period.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Length/Range of lengths, or (Start and/or end) limits", formalDefinition="Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule." )
-        protected Type bounds;
+        protected DataType bounds;
 
         /**
          * A total count of the desired number of repetitions across the duration of the entire timing specification. If countMax is present, this element indicates the lower bound of the allowed range of count values.
@@ -977,7 +977,7 @@ public class Timing extends BackboneType implements ICompositeType {
         @Child(name = "dayOfWeek", type = {CodeType.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="mon | tue | wed | thu | fri | sat | sun", formalDefinition="If one or more days of week is provided, then the action happens only on the specified day(s)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/days-of-week")
-        protected List<Enumeration<DayOfWeek>> dayOfWeek;
+        protected List<Enumeration<DaysOfWeek>> dayOfWeek;
 
         /**
          * Specified time of day for action to take place.
@@ -1001,7 +1001,7 @@ public class Timing extends BackboneType implements ICompositeType {
         @Description(shortDefinition="Minutes from event (before or after)", formalDefinition="The number of minutes from the event. If the event code does not indicate whether the minutes is before or after the event, then the offset is assumed to be after the event." )
         protected UnsignedIntType offset;
 
-        private static final long serialVersionUID = -900253756L;
+        private static final long serialVersionUID = -122116223L;
 
     /**
      * Constructor
@@ -1013,7 +1013,7 @@ public class Timing extends BackboneType implements ICompositeType {
         /**
          * @return {@link #bounds} (Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.)
          */
-        public Type getBounds() { 
+        public DataType getBounds() { 
           return this.bounds;
         }
 
@@ -1069,7 +1069,7 @@ public class Timing extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #bounds} (Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.)
          */
-        public TimingRepeatComponent setBounds(Type value) { 
+        public TimingRepeatComponent setBounds(DataType value) { 
           if (value != null && !(value instanceof Duration || value instanceof Range || value instanceof Period))
             throw new Error("Not the right type for Timing.repeat.bounds[x]: "+value.fhirType());
           this.bounds = value;
@@ -1625,16 +1625,16 @@ public class Timing extends BackboneType implements ICompositeType {
         /**
          * @return {@link #dayOfWeek} (If one or more days of week is provided, then the action happens only on the specified day(s).)
          */
-        public List<Enumeration<DayOfWeek>> getDayOfWeek() { 
+        public List<Enumeration<DaysOfWeek>> getDayOfWeek() { 
           if (this.dayOfWeek == null)
-            this.dayOfWeek = new ArrayList<Enumeration<DayOfWeek>>();
+            this.dayOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
           return this.dayOfWeek;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TimingRepeatComponent setDayOfWeek(List<Enumeration<DayOfWeek>> theDayOfWeek) { 
+        public TimingRepeatComponent setDayOfWeek(List<Enumeration<DaysOfWeek>> theDayOfWeek) { 
           this.dayOfWeek = theDayOfWeek;
           return this;
         }
@@ -1642,7 +1642,7 @@ public class Timing extends BackboneType implements ICompositeType {
         public boolean hasDayOfWeek() { 
           if (this.dayOfWeek == null)
             return false;
-          for (Enumeration<DayOfWeek> item : this.dayOfWeek)
+          for (Enumeration<DaysOfWeek> item : this.dayOfWeek)
             if (!item.isEmpty())
               return true;
           return false;
@@ -1651,10 +1651,10 @@ public class Timing extends BackboneType implements ICompositeType {
         /**
          * @return {@link #dayOfWeek} (If one or more days of week is provided, then the action happens only on the specified day(s).)
          */
-        public Enumeration<DayOfWeek> addDayOfWeekElement() {//2 
-          Enumeration<DayOfWeek> t = new Enumeration<DayOfWeek>(new DayOfWeekEnumFactory());
+        public Enumeration<DaysOfWeek> addDayOfWeekElement() {//2 
+          Enumeration<DaysOfWeek> t = new Enumeration<DaysOfWeek>(new DaysOfWeekEnumFactory());
           if (this.dayOfWeek == null)
-            this.dayOfWeek = new ArrayList<Enumeration<DayOfWeek>>();
+            this.dayOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
           this.dayOfWeek.add(t);
           return t;
         }
@@ -1662,11 +1662,11 @@ public class Timing extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #dayOfWeek} (If one or more days of week is provided, then the action happens only on the specified day(s).)
          */
-        public TimingRepeatComponent addDayOfWeek(DayOfWeek value) { //1
-          Enumeration<DayOfWeek> t = new Enumeration<DayOfWeek>(new DayOfWeekEnumFactory());
+        public TimingRepeatComponent addDayOfWeek(DaysOfWeek value) { //1
+          Enumeration<DaysOfWeek> t = new Enumeration<DaysOfWeek>(new DaysOfWeekEnumFactory());
           t.setValue(value);
           if (this.dayOfWeek == null)
-            this.dayOfWeek = new ArrayList<Enumeration<DayOfWeek>>();
+            this.dayOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
           this.dayOfWeek.add(t);
           return this;
         }
@@ -1674,10 +1674,10 @@ public class Timing extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #dayOfWeek} (If one or more days of week is provided, then the action happens only on the specified day(s).)
          */
-        public boolean hasDayOfWeek(DayOfWeek value) { 
+        public boolean hasDayOfWeek(DaysOfWeek value) { 
           if (this.dayOfWeek == null)
             return false;
-          for (Enumeration<DayOfWeek> v : this.dayOfWeek)
+          for (Enumeration<DaysOfWeek> v : this.dayOfWeek)
             if (v.getValue().equals(value)) // code
               return true;
           return false;
@@ -1899,7 +1899,7 @@ public class Timing extends BackboneType implements ICompositeType {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1383205195: /*bounds*/ return this.bounds == null ? new Base[0] : new Base[] {this.bounds}; // Type
+        case -1383205195: /*bounds*/ return this.bounds == null ? new Base[0] : new Base[] {this.bounds}; // DataType
         case 94851343: /*count*/ return this.count == null ? new Base[0] : new Base[] {this.count}; // PositiveIntType
         case -372044331: /*countMax*/ return this.countMax == null ? new Base[0] : new Base[] {this.countMax}; // PositiveIntType
         case -1992012396: /*duration*/ return this.duration == null ? new Base[0] : new Base[] {this.duration}; // DecimalType
@@ -1910,7 +1910,7 @@ public class Timing extends BackboneType implements ICompositeType {
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // DecimalType
         case 566580195: /*periodMax*/ return this.periodMax == null ? new Base[0] : new Base[] {this.periodMax}; // DecimalType
         case 384367333: /*periodUnit*/ return this.periodUnit == null ? new Base[0] : new Base[] {this.periodUnit}; // Enumeration<UnitsOfTime>
-        case -730552025: /*dayOfWeek*/ return this.dayOfWeek == null ? new Base[0] : this.dayOfWeek.toArray(new Base[this.dayOfWeek.size()]); // Enumeration<DayOfWeek>
+        case -730552025: /*dayOfWeek*/ return this.dayOfWeek == null ? new Base[0] : this.dayOfWeek.toArray(new Base[this.dayOfWeek.size()]); // Enumeration<DaysOfWeek>
         case 21434232: /*timeOfDay*/ return this.timeOfDay == null ? new Base[0] : this.timeOfDay.toArray(new Base[this.timeOfDay.size()]); // TimeType
         case 3648314: /*when*/ return this.when == null ? new Base[0] : this.when.toArray(new Base[this.when.size()]); // Enumeration<EventTiming>
         case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // UnsignedIntType
@@ -1923,53 +1923,53 @@ public class Timing extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1383205195: // bounds
-          this.bounds = castToType(value); // Type
+          this.bounds = TypeConvertor.castToType(value); // DataType
           return value;
         case 94851343: // count
-          this.count = castToPositiveInt(value); // PositiveIntType
+          this.count = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -372044331: // countMax
-          this.countMax = castToPositiveInt(value); // PositiveIntType
+          this.countMax = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -1992012396: // duration
-          this.duration = castToDecimal(value); // DecimalType
+          this.duration = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -478083280: // durationMax
-          this.durationMax = castToDecimal(value); // DecimalType
+          this.durationMax = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1935429320: // durationUnit
-          value = new UnitsOfTimeEnumFactory().fromType(castToCode(value));
+          value = new UnitsOfTimeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.durationUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
           return value;
         case -70023844: // frequency
-          this.frequency = castToPositiveInt(value); // PositiveIntType
+          this.frequency = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1273846376: // frequencyMax
-          this.frequencyMax = castToPositiveInt(value); // PositiveIntType
+          this.frequencyMax = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case -991726143: // period
-          this.period = castToDecimal(value); // DecimalType
+          this.period = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 566580195: // periodMax
-          this.periodMax = castToDecimal(value); // DecimalType
+          this.periodMax = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 384367333: // periodUnit
-          value = new UnitsOfTimeEnumFactory().fromType(castToCode(value));
+          value = new UnitsOfTimeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.periodUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
           return value;
         case -730552025: // dayOfWeek
-          value = new DayOfWeekEnumFactory().fromType(castToCode(value));
-          this.getDayOfWeek().add((Enumeration) value); // Enumeration<DayOfWeek>
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getDayOfWeek().add((Enumeration) value); // Enumeration<DaysOfWeek>
           return value;
         case 21434232: // timeOfDay
-          this.getTimeOfDay().add(castToTime(value)); // TimeType
+          this.getTimeOfDay().add(TypeConvertor.castToTime(value)); // TimeType
           return value;
         case 3648314: // when
-          value = new EventTimingEnumFactory().fromType(castToCode(value));
+          value = new EventTimingEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getWhen().add((Enumeration) value); // Enumeration<EventTiming>
           return value;
         case -1019779949: // offset
-          this.offset = castToUnsignedInt(value); // UnsignedIntType
+          this.offset = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1979,39 +1979,39 @@ public class Timing extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("bounds[x]")) {
-          this.bounds = castToType(value); // Type
+          this.bounds = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("count")) {
-          this.count = castToPositiveInt(value); // PositiveIntType
+          this.count = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("countMax")) {
-          this.countMax = castToPositiveInt(value); // PositiveIntType
+          this.countMax = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("duration")) {
-          this.duration = castToDecimal(value); // DecimalType
+          this.duration = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("durationMax")) {
-          this.durationMax = castToDecimal(value); // DecimalType
+          this.durationMax = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("durationUnit")) {
-          value = new UnitsOfTimeEnumFactory().fromType(castToCode(value));
+          value = new UnitsOfTimeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.durationUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
         } else if (name.equals("frequency")) {
-          this.frequency = castToPositiveInt(value); // PositiveIntType
+          this.frequency = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("frequencyMax")) {
-          this.frequencyMax = castToPositiveInt(value); // PositiveIntType
+          this.frequencyMax = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("period")) {
-          this.period = castToDecimal(value); // DecimalType
+          this.period = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("periodMax")) {
-          this.periodMax = castToDecimal(value); // DecimalType
+          this.periodMax = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("periodUnit")) {
-          value = new UnitsOfTimeEnumFactory().fromType(castToCode(value));
+          value = new UnitsOfTimeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.periodUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
         } else if (name.equals("dayOfWeek")) {
-          value = new DayOfWeekEnumFactory().fromType(castToCode(value));
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getDayOfWeek().add((Enumeration) value);
         } else if (name.equals("timeOfDay")) {
-          this.getTimeOfDay().add(castToTime(value));
+          this.getTimeOfDay().add(TypeConvertor.castToTime(value));
         } else if (name.equals("when")) {
-          value = new EventTimingEnumFactory().fromType(castToCode(value));
+          value = new EventTimingEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getWhen().add((Enumeration) value);
         } else if (name.equals("offset")) {
-          this.offset = castToUnsignedInt(value); // UnsignedIntType
+          this.offset = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2144,8 +2144,8 @@ public class Timing extends BackboneType implements ICompositeType {
         dst.periodMax = periodMax == null ? null : periodMax.copy();
         dst.periodUnit = periodUnit == null ? null : periodUnit.copy();
         if (dayOfWeek != null) {
-          dst.dayOfWeek = new ArrayList<Enumeration<DayOfWeek>>();
-          for (Enumeration<DayOfWeek> i : dayOfWeek)
+          dst.dayOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
+          for (Enumeration<DaysOfWeek> i : dayOfWeek)
             dst.dayOfWeek.add(i.copy());
         };
         if (timeOfDay != null) {
@@ -2377,13 +2377,13 @@ public class Timing extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 96891546: // event
-          this.getEvent().add(castToDateTime(value)); // DateTimeType
+          this.getEvent().add(TypeConvertor.castToDateTime(value)); // DateTimeType
           return value;
         case -934531685: // repeat
           this.repeat = (TimingRepeatComponent) value; // TimingRepeatComponent
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2393,11 +2393,11 @@ public class Timing extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("event")) {
-          this.getEvent().add(castToDateTime(value));
+          this.getEvent().add(TypeConvertor.castToDateTime(value));
         } else if (name.equals("repeat")) {
           this.repeat = (TimingRepeatComponent) value; // TimingRepeatComponent
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;

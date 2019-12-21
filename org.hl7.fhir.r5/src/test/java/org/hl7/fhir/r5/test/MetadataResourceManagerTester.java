@@ -2,7 +2,7 @@ package org.hl7.fhir.r5.test;
 
 import static org.junit.Assert.*;
 
-import org.hl7.fhir.r5.context.MetadataResourceManager;
+import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.Assert;
@@ -13,7 +13,7 @@ public class MetadataResourceManagerTester {
   
   @Test
   public void testSingleNoVersion() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -47,7 +47,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersion() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -67,7 +67,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersionNotSemVer() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -85,7 +85,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithDuplicateIds1() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(false);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -166,7 +166,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithDuplicateIds2() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -229,7 +229,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersions1() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -301,7 +301,7 @@ public class MetadataResourceManagerTester {
 
   @Test
   public void testSingleWithVersions2() {
-    MetadataResourceManager<ValueSet> mrm = new MetadataResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");

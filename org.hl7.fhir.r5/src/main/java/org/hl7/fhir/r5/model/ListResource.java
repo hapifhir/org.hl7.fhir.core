@@ -513,16 +513,16 @@ public class ListResource extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3145580: // flag
-          this.flag = castToCodeableConcept(value); // CodeableConcept
+          this.flag = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1550463001: // deleted
-          this.deleted = castToBoolean(value); // BooleanType
+          this.deleted = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 3242771: // item
-          this.item = castToReference(value); // Reference
+          this.item = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -532,13 +532,13 @@ public class ListResource extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("flag")) {
-          this.flag = castToCodeableConcept(value); // CodeableConcept
+          this.flag = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("deleted")) {
-          this.deleted = castToBoolean(value); // BooleanType
+          this.deleted = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("item")) {
-          this.item = castToReference(value); // Reference
+          this.item = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1303,45 +1303,45 @@ public class ListResource extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ListStatusEnumFactory().fromType(castToCode(value));
+          value = new ListStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ListStatus>
           return value;
         case 3357091: // mode
-          value = new ListModeEnumFactory().fromType(castToCode(value));
+          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<ListMode>
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -896505829: // source
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         case -391079516: // orderedBy
-          this.orderedBy = castToCodeableConcept(value); // CodeableConcept
+          this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 96667762: // entry
           this.getEntry().add((ListEntryComponent) value); // ListEntryComponent
           return value;
         case 1140135409: // emptyReason
-          this.emptyReason = castToCodeableConcept(value); // CodeableConcept
+          this.emptyReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1351,33 +1351,33 @@ public class ListResource extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ListStatusEnumFactory().fromType(castToCode(value));
+          value = new ListStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ListStatus>
         } else if (name.equals("mode")) {
-          value = new ListModeEnumFactory().fromType(castToCode(value));
+          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<ListMode>
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("source")) {
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("orderedBy")) {
-          this.orderedBy = castToCodeableConcept(value); // CodeableConcept
+          this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("entry")) {
           this.getEntry().add((ListEntryComponent) value);
         } else if (name.equals("emptyReason")) {
-          this.emptyReason = castToCodeableConcept(value); // CodeableConcept
+          this.emptyReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;

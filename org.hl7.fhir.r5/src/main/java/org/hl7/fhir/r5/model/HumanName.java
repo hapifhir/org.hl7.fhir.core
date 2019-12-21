@@ -73,7 +73,7 @@ import org.hl7.fhir.instance.model.api.IPrimitiveType;
  * A human's name with the ability to identify parts and usage.
  */
 @DatatypeDef(name="HumanName")
-public class HumanName extends Type implements ICompositeType {
+public class HumanName extends DataType implements ICompositeType {
 
     public enum NameUse {
         /**
@@ -771,26 +771,26 @@ public class HumanName extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116103: // use
-          value = new NameUseEnumFactory().fromType(castToCode(value));
+          value = new NameUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<NameUse>
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case -1281860764: // family
-          this.family = castToString(value); // StringType
+          this.family = TypeConvertor.castToString(value); // StringType
           return value;
         case 98367357: // given
-          this.getGiven().add(castToString(value)); // StringType
+          this.getGiven().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -980110702: // prefix
-          this.getPrefix().add(castToString(value)); // StringType
+          this.getPrefix().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -891422895: // suffix
-          this.getSuffix().add(castToString(value)); // StringType
+          this.getSuffix().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -800,20 +800,20 @@ public class HumanName extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("use")) {
-          value = new NameUseEnumFactory().fromType(castToCode(value));
+          value = new NameUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<NameUse>
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("family")) {
-          this.family = castToString(value); // StringType
+          this.family = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("given")) {
-          this.getGiven().add(castToString(value));
+          this.getGiven().add(TypeConvertor.castToString(value));
         } else if (name.equals("prefix")) {
-          this.getPrefix().add(castToString(value));
+          this.getPrefix().add(TypeConvertor.castToString(value));
         } else if (name.equals("suffix")) {
-          this.getSuffix().add(castToString(value));
+          this.getSuffix().add(TypeConvertor.castToString(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;

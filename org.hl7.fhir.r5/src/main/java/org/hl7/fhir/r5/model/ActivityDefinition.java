@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ActivityDefinition", profile="http://hl7.org/fhir/StructureDefinition/ActivityDefinition")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "status", "experimental", "subject[x]", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "usage", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "library", "kind", "profile", "code", "intent", "priority", "doNotPerform", "timing[x]", "location", "participant", "product[x]", "quantity", "dosage", "bodySite", "specimenRequirement", "observationRequirement", "observationResultRequirement", "transform", "dynamicValue"})
-public class ActivityDefinition extends MetadataResource {
+public class ActivityDefinition extends CanonicalResource {
 
     public enum ActivityDefinitionKind {
         /**
@@ -959,11 +959,11 @@ public class ActivityDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ActivityParticipantTypeEnumFactory().fromType(castToCode(value));
+          value = new ActivityParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActivityParticipantType>
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -973,10 +973,10 @@ public class ActivityDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ActivityParticipantTypeEnumFactory().fromType(castToCode(value));
+          value = new ActivityParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActivityParticipantType>
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1191,10 +1191,10 @@ public class ActivityDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -1795452264: // expression
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1204,9 +1204,9 @@ public class ActivityDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expression")) {
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -1308,7 +1308,7 @@ public class ActivityDefinition extends MetadataResource {
     @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=2, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Type of individual the activity definition is intended for", formalDefinition="A code or group definition that describes the intended subject of the activity being defined." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
-    protected Type subject;
+    protected DataType subject;
 
     /**
      * Explanation of why this activity definition is needed and why it has been designed as it has.
@@ -1453,7 +1453,7 @@ public class ActivityDefinition extends MetadataResource {
      */
     @Child(name = "timing", type = {Timing.class, DateTimeType.class, Age.class, Period.class, Range.class, Duration.class}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When activity is to occur", formalDefinition="The period, timing or frequency upon which the described activity is to occur." )
-    protected Type timing;
+    protected DataType timing;
 
     /**
      * Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.
@@ -1475,7 +1475,7 @@ public class ActivityDefinition extends MetadataResource {
     @Child(name = "product", type = {Medication.class, Substance.class, CodeableConcept.class}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="What's administered/supplied", formalDefinition="Identifies the food, drug or other product being consumed or supplied in the activity." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-codes")
-    protected Type product;
+    protected DataType product;
 
     /**
      * Identifies the quantity expected to be consumed at once (per dose, per meal, etc.).
@@ -1942,7 +1942,7 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @return {@link #subject} (A code or group definition that describes the intended subject of the activity being defined.)
      */
-    public Type getSubject() { 
+    public DataType getSubject() { 
       return this.subject;
     }
 
@@ -1983,7 +1983,7 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @param value {@link #subject} (A code or group definition that describes the intended subject of the activity being defined.)
      */
-    public ActivityDefinition setSubject(Type value) { 
+    public ActivityDefinition setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for ActivityDefinition.subject[x]: "+value.fhirType());
       this.subject = value;
@@ -3212,7 +3212,7 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @return {@link #timing} (The period, timing or frequency upon which the described activity is to occur.)
      */
-    public Type getTiming() { 
+    public DataType getTiming() { 
       return this.timing;
     }
 
@@ -3313,7 +3313,7 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @param value {@link #timing} (The period, timing or frequency upon which the described activity is to occur.)
      */
-    public ActivityDefinition setTiming(Type value) { 
+    public ActivityDefinition setTiming(DataType value) { 
       if (value != null && !(value instanceof Timing || value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof Duration))
         throw new Error("Not the right type for ActivityDefinition.timing[x]: "+value.fhirType());
       this.timing = value;
@@ -3400,7 +3400,7 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @return {@link #product} (Identifies the food, drug or other product being consumed or supplied in the activity.)
      */
-    public Type getProduct() { 
+    public DataType getProduct() { 
       return this.product;
     }
 
@@ -3441,7 +3441,7 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @param value {@link #product} (Identifies the food, drug or other product being consumed or supplied in the activity.)
      */
-    public ActivityDefinition setProduct(Type value) { 
+    public ActivityDefinition setProduct(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
         throw new Error("Not the right type for ActivityDefinition.product[x]: "+value.fhirType());
       this.product = value;
@@ -4014,143 +4014,143 @@ public class ActivityDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -2060497896: // subtitle
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1867885268: // subject
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 111574433: // usage
-          this.usage = castToString(value); // StringType
+          this.usage = TypeConvertor.castToString(value); // StringType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 110546223: // topic
-          this.getTopic().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToContactDetail(value)); // ContactDetail
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1307827859: // editor
-          this.getEditor().add(castToContactDetail(value)); // ContactDetail
+          this.getEditor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -261190139: // reviewer
-          this.getReviewer().add(castToContactDetail(value)); // ContactDetail
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 1740277666: // endorser
-          this.getEndorser().add(castToContactDetail(value)); // ContactDetail
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 666807069: // relatedArtifact
-          this.getRelatedArtifact().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case 166208699: // library
-          this.getLibrary().add(castToCanonical(value)); // CanonicalType
+          this.getLibrary().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 3292052: // kind
-          value = new ActivityDefinitionKindEnumFactory().fromType(castToCode(value));
+          value = new ActivityDefinitionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<ActivityDefinitionKind>
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1183762788: // intent
-          value = new RequestIntentEnumFactory().fromType(castToCode(value));
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case -1788508167: // doNotPerform
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -873664438: // timing
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case 767422259: // participant
           this.getParticipant().add((ActivityDefinitionParticipantComponent) value); // ActivityDefinitionParticipantComponent
           return value;
         case -309474065: // product
-          this.product = castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // Type
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1326018889: // dosage
-          this.getDosage().add(castToDosage(value)); // Dosage
+          this.getDosage().add(TypeConvertor.castToDosage(value)); // Dosage
           return value;
         case 1702620169: // bodySite
-          this.getBodySite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1498467355: // specimenRequirement
-          this.getSpecimenRequirement().add(castToReference(value)); // Reference
+          this.getSpecimenRequirement().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 362354807: // observationRequirement
-          this.getObservationRequirement().add(castToReference(value)); // Reference
+          this.getObservationRequirement().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 395230490: // observationResultRequirement
-          this.getObservationResultRequirement().add(castToReference(value)); // Reference
+          this.getObservationResultRequirement().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1052666732: // transform
-          this.transform = castToCanonical(value); // CanonicalType
+          this.transform = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 572625010: // dynamicValue
           this.getDynamicValue().add((ActivityDefinitionDynamicValueComponent) value); // ActivityDefinitionDynamicValueComponent
@@ -4163,99 +4163,99 @@ public class ActivityDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subtitle")) {
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("usage")) {
-          this.usage = castToString(value); // StringType
+          this.usage = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("topic")) {
-          this.getTopic().add(castToCodeableConcept(value));
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToContactDetail(value));
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("editor")) {
-          this.getEditor().add(castToContactDetail(value));
+          this.getEditor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("reviewer")) {
-          this.getReviewer().add(castToContactDetail(value));
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("endorser")) {
-          this.getEndorser().add(castToContactDetail(value));
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
-          this.getRelatedArtifact().add(castToRelatedArtifact(value));
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("library")) {
-          this.getLibrary().add(castToCanonical(value));
+          this.getLibrary().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("kind")) {
-          value = new ActivityDefinitionKindEnumFactory().fromType(castToCode(value));
+          value = new ActivityDefinitionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<ActivityDefinitionKind>
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("intent")) {
-          value = new RequestIntentEnumFactory().fromType(castToCode(value));
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("doNotPerform")) {
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("timing[x]")) {
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participant")) {
           this.getParticipant().add((ActivityDefinitionParticipantComponent) value);
         } else if (name.equals("product[x]")) {
-          this.product = castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // Type
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("dosage")) {
-          this.getDosage().add(castToDosage(value));
+          this.getDosage().add(TypeConvertor.castToDosage(value));
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add(castToCodeableConcept(value));
+          this.getBodySite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specimenRequirement")) {
-          this.getSpecimenRequirement().add(castToReference(value));
+          this.getSpecimenRequirement().add(TypeConvertor.castToReference(value));
         } else if (name.equals("observationRequirement")) {
-          this.getObservationRequirement().add(castToReference(value));
+          this.getObservationRequirement().add(TypeConvertor.castToReference(value));
         } else if (name.equals("observationResultRequirement")) {
-          this.getObservationResultRequirement().add(castToReference(value));
+          this.getObservationResultRequirement().add(TypeConvertor.castToReference(value));
         } else if (name.equals("transform")) {
-          this.transform = castToCanonical(value); // CanonicalType
+          this.transform = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("dynamicValue")) {
           this.getDynamicValue().add((ActivityDefinitionDynamicValueComponent) value);
         } else
