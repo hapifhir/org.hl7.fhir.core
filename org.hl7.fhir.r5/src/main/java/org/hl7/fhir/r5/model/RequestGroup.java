@@ -1510,7 +1510,7 @@ public class RequestGroup extends DomainResource {
          */
         @Child(name = "timing", type = {DateTimeType.class, Age.class, Period.class, Duration.class, Range.class, Timing.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When the action should take place", formalDefinition="An optional value describing when the action should be performed." )
-        protected Type timing;
+        protected DataType timing;
 
         /**
          * The participant that should perform or be responsible for this action.
@@ -2050,7 +2050,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #timing} (An optional value describing when the action should be performed.)
          */
-        public Type getTiming() { 
+        public DataType getTiming() { 
           return this.timing;
         }
 
@@ -2151,7 +2151,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #timing} (An optional value describing when the action should be performed.)
          */
-        public RequestGroupActionComponent setTiming(Type value) { 
+        public RequestGroupActionComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Duration || value instanceof Range || value instanceof Timing))
             throw new Error("Not the right type for RequestGroup.action.timing[x]: "+value.fhirType());
           this.timing = value;
@@ -2645,26 +2645,26 @@ public class RequestGroup extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -980110702: // prefix
-          this.prefix = castToString(value); // StringType
+          this.prefix = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -900391049: // textEquivalent
-          this.textEquivalent = castToString(value); // StringType
+          this.textEquivalent = TypeConvertor.castToString(value); // StringType
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1587405498: // documentation
-          this.getDocumentation().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getDocumentation().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -861311717: // condition
           this.getCondition().add((RequestGroupActionConditionComponent) value); // RequestGroupActionConditionComponent
@@ -2673,36 +2673,36 @@ public class RequestGroup extends DomainResource {
           this.getRelatedAction().add((RequestGroupActionRelatedActionComponent) value); // RequestGroupActionRelatedActionComponent
           return value;
         case -873664438: // timing
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
           return value;
         case 767422259: // participant
-          this.getParticipant().add(castToReference(value)); // Reference
+          this.getParticipant().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 586678389: // groupingBehavior
-          value = new ActionGroupingBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
           return value;
         case 168639486: // selectionBehavior
-          value = new ActionSelectionBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
           return value;
         case -1163906287: // requiredBehavior
-          value = new ActionRequiredBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
           return value;
         case -1174249033: // precheckBehavior
-          value = new ActionPrecheckBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
           return value;
         case -922577408: // cardinalityBehavior
-          value = new ActionCardinalityBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
           return value;
         case -341064690: // resource
-          this.resource = castToReference(value); // Reference
+          this.resource = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1422950858: // action
           this.getAction().add((RequestGroupActionComponent) value); // RequestGroupActionComponent
@@ -2715,47 +2715,47 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("prefix")) {
-          this.prefix = castToString(value); // StringType
+          this.prefix = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("textEquivalent")) {
-          this.textEquivalent = castToString(value); // StringType
+          this.textEquivalent = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("documentation")) {
-          this.getDocumentation().add(castToRelatedArtifact(value));
+          this.getDocumentation().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("condition")) {
           this.getCondition().add((RequestGroupActionConditionComponent) value);
         } else if (name.equals("relatedAction")) {
           this.getRelatedAction().add((RequestGroupActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
         } else if (name.equals("participant")) {
-          this.getParticipant().add(castToReference(value));
+          this.getParticipant().add(TypeConvertor.castToReference(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("groupingBehavior")) {
-          value = new ActionGroupingBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
         } else if (name.equals("selectionBehavior")) {
-          value = new ActionSelectionBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
         } else if (name.equals("requiredBehavior")) {
-          value = new ActionRequiredBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
         } else if (name.equals("precheckBehavior")) {
-          value = new ActionPrecheckBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
         } else if (name.equals("cardinalityBehavior")) {
-          value = new ActionCardinalityBehaviorEnumFactory().fromType(castToCode(value));
+          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
         } else if (name.equals("resource")) {
-          this.resource = castToReference(value); // Reference
+          this.resource = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("action")) {
           this.getAction().add((RequestGroupActionComponent) value);
         } else
@@ -3135,11 +3135,11 @@ public class RequestGroup extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3292052: // kind
-          value = new ActionConditionKindEnumFactory().fromType(castToCode(value));
+          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
           return value;
         case -1795452264: // expression
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3149,10 +3149,10 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("kind")) {
-          value = new ActionConditionKindEnumFactory().fromType(castToCode(value));
+          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
         } else if (name.equals("expression")) {
-          this.expression = castToExpression(value); // Expression
+          this.expression = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -3256,7 +3256,7 @@ public class RequestGroup extends DomainResource {
          */
         @Child(name = "offset", type = {Duration.class, Range.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
-        protected Type offset;
+        protected DataType offset;
 
         private static final long serialVersionUID = 1063306770L;
 
@@ -3369,7 +3369,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #offset} (A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.)
          */
-        public Type getOffset() { 
+        public DataType getOffset() { 
           return this.offset;
         }
 
@@ -3410,7 +3410,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #offset} (A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.)
          */
-        public RequestGroupActionRelatedActionComponent setOffset(Type value) { 
+        public RequestGroupActionRelatedActionComponent setOffset(DataType value) { 
           if (value != null && !(value instanceof Duration || value instanceof Range))
             throw new Error("Not the right type for RequestGroup.action.relatedAction.offset[x]: "+value.fhirType());
           this.offset = value;
@@ -3453,14 +3453,14 @@ public class RequestGroup extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1656172047: // actionId
-          this.actionId = castToId(value); // IdType
+          this.actionId = TypeConvertor.castToId(value); // IdType
           return value;
         case -261851592: // relationship
-          value = new ActionRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
           return value;
         case -1019779949: // offset
-          this.offset = castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3470,12 +3470,12 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("actionId")) {
-          this.actionId = castToId(value); // IdType
+          this.actionId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("relationship")) {
-          value = new ActionRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
         } else if (name.equals("offset[x]")) {
-          this.offset = castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -4597,58 +4597,58 @@ public class RequestGroup extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -430332865: // replaces
-          this.getReplaces().add(castToReference(value)); // Reference
+          this.getReplaces().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -445338488: // groupIdentifier
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new RequestStatusEnumFactory().fromType(castToCode(value));
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<RequestStatus>
           return value;
         case -1183762788: // intent
-          value = new RequestIntentEnumFactory().fromType(castToCode(value));
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1500852503: // authoredOn
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -1422950858: // action
           this.getAction().add((RequestGroupActionComponent) value); // RequestGroupActionComponent
@@ -4661,42 +4661,42 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("replaces")) {
-          this.getReplaces().add(castToReference(value));
+          this.getReplaces().add(TypeConvertor.castToReference(value));
         } else if (name.equals("groupIdentifier")) {
-          this.groupIdentifier = castToIdentifier(value); // Identifier
+          this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new RequestStatusEnumFactory().fromType(castToCode(value));
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<RequestStatus>
         } else if (name.equals("intent")) {
-          value = new RequestIntentEnumFactory().fromType(castToCode(value));
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(castToCode(value));
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("authoredOn")) {
-          this.authoredOn = castToDateTime(value); // DateTimeType
+          this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("action")) {
           this.getAction().add((RequestGroupActionComponent) value);
         } else

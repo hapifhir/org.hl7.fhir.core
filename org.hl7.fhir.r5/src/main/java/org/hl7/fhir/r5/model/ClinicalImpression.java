@@ -422,13 +422,13 @@ public class ClinicalImpression extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 106644494: // itemCodeableConcept
-          this.itemCodeableConcept = castToCodeableConcept(value); // CodeableConcept
+          this.itemCodeableConcept = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1376364920: // itemReference
-          this.itemReference = castToReference(value); // Reference
+          this.itemReference = TypeConvertor.castToReference(value); // Reference
           return value;
         case 93508670: // basis
-          this.basis = castToString(value); // StringType
+          this.basis = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -438,11 +438,11 @@ public class ClinicalImpression extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("itemCodeableConcept")) {
-          this.itemCodeableConcept = castToCodeableConcept(value); // CodeableConcept
+          this.itemCodeableConcept = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("itemReference")) {
-          this.itemReference = castToReference(value); // Reference
+          this.itemReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("basis")) {
-          this.basis = castToString(value); // StringType
+          this.basis = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -589,7 +589,7 @@ public class ClinicalImpression extends DomainResource {
      */
     @Child(name = "effective", type = {DateTimeType.class, Period.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Time of assessment", formalDefinition="The point in time or period over which the subject was assessed." )
-    protected Type effective;
+    protected DataType effective;
 
     /**
      * Indicates when the documentation of the assessment was complete.
@@ -933,7 +933,7 @@ public class ClinicalImpression extends DomainResource {
     /**
      * @return {@link #effective} (The point in time or period over which the subject was assessed.)
      */
-    public Type getEffective() { 
+    public DataType getEffective() { 
       return this.effective;
     }
 
@@ -974,7 +974,7 @@ public class ClinicalImpression extends DomainResource {
     /**
      * @param value {@link #effective} (The point in time or period over which the subject was assessed.)
      */
-    public ClinicalImpression setEffective(Type value) { 
+    public ClinicalImpression setEffective(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
         throw new Error("Not the right type for ClinicalImpression.effective[x]: "+value.fhirType());
       this.effective = value;
@@ -1590,62 +1590,62 @@ public class ClinicalImpression extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ClinicalImpressionStatusEnumFactory().fromType(castToCode(value));
+          value = new ClinicalImpressionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ClinicalImpressionStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1468651097: // effective
-          this.effective = castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // Type
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 481140686: // performer
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1273775369: // previous
-          this.previous = castToReference(value); // Reference
+          this.previous = TypeConvertor.castToReference(value); // Reference
           return value;
         case -309542241: // problem
-          this.getProblem().add(castToReference(value)); // Reference
+          this.getProblem().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -989163880: // protocol
-          this.getProtocol().add(castToUri(value)); // UriType
+          this.getProtocol().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -1857640538: // summary
-          this.summary = castToString(value); // StringType
+          this.summary = TypeConvertor.castToString(value); // StringType
           return value;
         case -853173367: // finding
           this.getFinding().add((ClinicalImpressionFindingComponent) value); // ClinicalImpressionFindingComponent
           return value;
         case -676337953: // prognosisCodeableConcept
-          this.getPrognosisCodeableConcept().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getPrognosisCodeableConcept().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -587137783: // prognosisReference
-          this.getPrognosisReference().add(castToReference(value)); // Reference
+          this.getPrognosisReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1922406657: // supportingInfo
-          this.getSupportingInfo().add(castToReference(value)); // Reference
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1655,44 +1655,44 @@ public class ClinicalImpression extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ClinicalImpressionStatusEnumFactory().fromType(castToCode(value));
+          value = new ClinicalImpressionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ClinicalImpressionStatus>
         } else if (name.equals("statusReason")) {
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("effective[x]")) {
-          this.effective = castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // Type
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("previous")) {
-          this.previous = castToReference(value); // Reference
+          this.previous = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("problem")) {
-          this.getProblem().add(castToReference(value));
+          this.getProblem().add(TypeConvertor.castToReference(value));
         } else if (name.equals("protocol")) {
-          this.getProtocol().add(castToUri(value));
+          this.getProtocol().add(TypeConvertor.castToUri(value));
         } else if (name.equals("summary")) {
-          this.summary = castToString(value); // StringType
+          this.summary = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("finding")) {
           this.getFinding().add((ClinicalImpressionFindingComponent) value);
         } else if (name.equals("prognosisCodeableConcept")) {
-          this.getPrognosisCodeableConcept().add(castToCodeableConcept(value));
+          this.getPrognosisCodeableConcept().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("prognosisReference")) {
-          this.getPrognosisReference().add(castToReference(value));
+          this.getPrognosisReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add(castToReference(value));
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

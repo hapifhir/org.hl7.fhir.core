@@ -316,16 +316,16 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3355: // id
-          this.id = castToId(value); // IdType
+          this.id = TypeConvertor.castToId(value); // IdType
           return value;
         case 3347973: // meta
-          this.meta = castToMeta(value); // Meta
+          this.meta = TypeConvertor.castToMeta(value); // Meta
           return value;
         case -961826286: // implicitRules
-          this.implicitRules = castToUri(value); // UriType
+          this.implicitRules = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1613589672: // language
-          this.language = castToCode(value); // CodeType
+          this.language = TypeConvertor.castToCode(value); // CodeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -335,13 +335,13 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("id")) {
-          this.id = castToId(value); // IdType
+          this.id = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("meta")) {
-          this.meta = castToMeta(value); // Meta
+          this.meta = TypeConvertor.castToMeta(value); // Meta
         } else if (name.equals("implicitRules")) {
-          this.implicitRules = castToUri(value); // UriType
+          this.implicitRules = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("language")) {
-          this.language = castToCode(value); // CodeType
+          this.language = TypeConvertor.castToCode(value); // CodeType
         } else
           return super.setProperty(name, value);
         return value;

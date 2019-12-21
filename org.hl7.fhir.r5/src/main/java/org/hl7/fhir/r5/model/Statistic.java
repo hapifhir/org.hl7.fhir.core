@@ -447,22 +447,22 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -177467129: // numberOfStudies
-          this.numberOfStudies = castToInteger(value); // IntegerType
+          this.numberOfStudies = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 1799357120: // numberOfParticipants
-          this.numberOfParticipants = castToInteger(value); // IntegerType
+          this.numberOfParticipants = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -937344126: // knownDataCount
-          this.knownDataCount = castToInteger(value); // IntegerType
+          this.knownDataCount = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -755509242: // numeratorCount
-          this.numeratorCount = castToInteger(value); // IntegerType
+          this.numeratorCount = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -472,17 +472,17 @@ public class Statistic extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("numberOfStudies")) {
-          this.numberOfStudies = castToInteger(value); // IntegerType
+          this.numberOfStudies = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("numberOfParticipants")) {
-          this.numberOfParticipants = castToInteger(value); // IntegerType
+          this.numberOfParticipants = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("knownDataCount")) {
-          this.knownDataCount = castToInteger(value); // IntegerType
+          this.knownDataCount = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("numeratorCount")) {
-          this.numeratorCount = castToInteger(value); // IntegerType
+          this.numeratorCount = TypeConvertor.castToInteger(value); // IntegerType
         } else
           return super.setProperty(name, value);
         return value;
@@ -996,22 +996,22 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 102865796: // level
-          this.level = castToDecimal(value); // DecimalType
+          this.level = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108280125: // range
-          this.range = castToRange(value); // Range
+          this.range = TypeConvertor.castToRange(value); // Range
           return value;
         case 11745378: // estimateQualifier
           this.getEstimateQualifier().add((StatisticAttributeEstimateEstimateQualifierComponent) value); // StatisticAttributeEstimateEstimateQualifierComponent
@@ -1024,17 +1024,17 @@ public class Statistic extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("level")) {
-          this.level = castToDecimal(value); // DecimalType
+          this.level = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("range")) {
-          this.range = castToRange(value); // Range
+          this.range = TypeConvertor.castToRange(value); // Range
         } else if (name.equals("estimateQualifier")) {
           this.getEstimateQualifier().add((StatisticAttributeEstimateEstimateQualifierComponent) value);
         } else
@@ -1498,22 +1498,22 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 102865796: // level
-          this.level = castToDecimal(value); // DecimalType
+          this.level = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108280125: // range
-          this.range = castToRange(value); // Range
+          this.range = TypeConvertor.castToRange(value); // Range
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1523,17 +1523,17 @@ public class Statistic extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("level")) {
-          this.level = castToDecimal(value); // DecimalType
+          this.level = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("range")) {
-          this.range = castToRange(value); // Range
+          this.range = TypeConvertor.castToRange(value); // Range
         } else
           return super.setProperty(name, value);
         return value;
@@ -1969,16 +1969,16 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -392342358: // statisticType
-          this.statisticType = castToCodeableConcept(value); // CodeableConcept
+          this.statisticType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 143123659: // sampleSize
           this.sampleSize = (StatisticSampleSizeComponent) value; // StatisticSampleSizeComponent
@@ -1994,13 +1994,13 @@ public class Statistic extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("statisticType")) {
-          this.statisticType = castToCodeableConcept(value); // CodeableConcept
+          this.statisticType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("sampleSize")) {
           this.sampleSize = (StatisticSampleSizeComponent) value; // StatisticSampleSizeComponent
         } else if (name.equals("attributeEstimate")) {

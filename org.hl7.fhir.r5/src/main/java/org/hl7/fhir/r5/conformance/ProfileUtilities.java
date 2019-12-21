@@ -83,7 +83,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
@@ -3638,7 +3638,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return c;
   }
 
-  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, Type value, boolean snapshot, boolean pattern, String corePath) {
+  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath) {
     String ref = pkp.getLinkFor(corePath, value.fhirType());
     if (ref != null) {
       ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#";
@@ -3748,7 +3748,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.addPiece(gen.new Piece("br"));
               c.getPieces().add(gen.new Piece(null, "Fixed Value: ", null).addStyle("font-weight: bold"));
               c.getPieces().add(gen.new Piece(null, "(complex)", null).addStyle("color: darkgreen"));
-              genFixedValue(gen, row, (Type) b, snapshot, pattern, corePath);
+              genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath);
             }
           }
         }
@@ -3778,7 +3778,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private Piece describeCoded(HierarchicalTableGenerator gen, Type fixed) {
+  private Piece describeCoded(HierarchicalTableGenerator gen, DataType fixed) {
     if (fixed instanceof Coding) {
       Coding c = (Coding) fixed;
       ValidationResult vr = context.validateCode(terminologyServiceOptions , c.getSystem(), c.getCode(), c.getDisplay());
@@ -3796,7 +3796,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean hasDescription(Type fixed) {
+  private boolean hasDescription(DataType fixed) {
     if (fixed instanceof Coding) {
       return ((Coding) fixed).hasDisplay();
     } else if (fixed instanceof CodeableConcept) {
@@ -3811,7 +3811,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isCoded(Type fixed) {
+  private boolean isCoded(DataType fixed) {
     return (fixed instanceof Coding) || (fixed instanceof CodeableConcept) || (fixed instanceof CodeType) || (fixed instanceof Quantity);
   }
 
@@ -3936,7 +3936,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
 
-  private String buildJson(Type value) throws IOException {
+  private String buildJson(DataType value) throws IOException {
     if (value instanceof PrimitiveType)
       return ((PrimitiveType) value).asStringValue();
 
@@ -4700,13 +4700,13 @@ public class ProfileUtilities extends TranslatingUtilities {
 //}
 
   private interface ExampleValueAccessor {
-    Type getExampleValue(ElementDefinition ed);
+    DataType getExampleValue(ElementDefinition ed);
     String getId();
   }
 
   private class BaseExampleValueAccessor implements ExampleValueAccessor {
     @Override
-    public Type getExampleValue(ElementDefinition ed) {
+    public DataType getExampleValue(ElementDefinition ed) {
       if (ed.hasFixed())
         return ed.getFixed();
       if (ed.hasExample())
@@ -4728,12 +4728,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       this.index = index;
     }
     @Override
-    public Type getExampleValue(ElementDefinition ed) {
+    public DataType getExampleValue(ElementDefinition ed) {
       if (ed.hasFixed())
         return ed.getFixed();
       for (Extension ex : ed.getExtension()) {
        String ndx = ToolingExtensions.readStringExtension(ex, "index");
-       Type value = ToolingExtensions.getExtension(ex, "exValue").getValue();
+       DataType value = ToolingExtensions.getExtension(ex, "exValue").getValue();
        if (index.equals(ndx) && value != null)
          return value;
       }
@@ -4777,7 +4777,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   private org.hl7.fhir.r5.elementmodel.Element createExampleElement(StructureDefinition profile, ElementDefinition ed, ExampleValueAccessor accessor) throws FHIRException {
-    Type v = accessor.getExampleValue(ed);
+    DataType v = accessor.getExampleValue(ed);
     if (v != null) {
       return new ObjectConverter(context).convert(new Property(context, ed, profile), v);
     } else {
@@ -4806,7 +4806,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         String ndx = ToolingExtensions.readStringExtension(ex, "index");
         Extension exv = ToolingExtensions.getExtension(ex, "exValue");
         if (exv != null) {
-          Type value = exv.getValue();
+          DataType value = exv.getValue();
         if (index.equals(ndx) && value != null)
           return true;
         }
@@ -5118,7 +5118,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String summarize(Type value) throws IOException {
+  private String summarize(DataType value) throws IOException {
     if (value instanceof Coding)
       return summarizeCoding((Coding) value);
     else if (value instanceof CodeableConcept)

@@ -175,10 +175,10 @@ public class DocumentManifest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 112787: // ref
-          this.ref = castToReference(value); // Reference
+          this.ref = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -188,9 +188,9 @@ public class DocumentManifest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("ref")) {
-          this.ref = castToReference(value); // Reference
+          this.ref = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -965,38 +965,38 @@ public class DocumentManifest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 243769515: // masterIdentifier
-          this.masterIdentifier = castToIdentifier(value); // Identifier
+          this.masterIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new DocumentReferenceStatusEnumFactory().fromType(castToCode(value));
+          value = new DocumentReferenceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DocumentReferenceStatus>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToReference(value)); // Reference
+          this.getAuthor().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 820081177: // recipient
-          this.getRecipient().add(castToReference(value)); // Reference
+          this.getRecipient().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -896505829: // source
-          this.source = castToUri(value); // UriType
+          this.source = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 951530617: // content
-          this.getContent().add(castToReference(value)); // Reference
+          this.getContent().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1090493483: // related
           this.getRelated().add((DocumentManifestRelatedComponent) value); // DocumentManifestRelatedComponent
@@ -1009,28 +1009,28 @@ public class DocumentManifest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("masterIdentifier")) {
-          this.masterIdentifier = castToIdentifier(value); // Identifier
+          this.masterIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new DocumentReferenceStatusEnumFactory().fromType(castToCode(value));
+          value = new DocumentReferenceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DocumentReferenceStatus>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToReference(value));
+          this.getAuthor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("recipient")) {
-          this.getRecipient().add(castToReference(value));
+          this.getRecipient().add(TypeConvertor.castToReference(value));
         } else if (name.equals("source")) {
-          this.source = castToUri(value); // UriType
+          this.source = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("content")) {
-          this.getContent().add(castToReference(value));
+          this.getContent().add(TypeConvertor.castToReference(value));
         } else if (name.equals("related")) {
           this.getRelated().add((DocumentManifestRelatedComponent) value);
         } else

@@ -93,7 +93,7 @@ public class CarePlan extends DomainResource {
          */
         COMPLETED, 
         /**
-         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
+         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "revoked" rather than "entered-in-error".).
          */
         ENTEREDINERROR, 
         /**
@@ -157,7 +157,7 @@ public class CarePlan extends DomainResource {
             case ONHOLD: return "The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.";
             case REVOKED: return "The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.";
             case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
-            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"revoked\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
             default: return "?";
           }
@@ -1068,16 +1068,16 @@ public class CarePlan extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -511913489: // outcomeCodeableConcept
-          this.getOutcomeCodeableConcept().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getOutcomeCodeableConcept().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -782273511: // outcomeReference
-          this.getOutcomeReference().add(castToReference(value)); // Reference
+          this.getOutcomeReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1001078227: // progress
-          this.getProgress().add(castToAnnotation(value)); // Annotation
+          this.getProgress().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1335224239: // detail
           this.detail = (CarePlanActivityDetailComponent) value; // CarePlanActivityDetailComponent
@@ -1090,13 +1090,13 @@ public class CarePlan extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("outcomeCodeableConcept")) {
-          this.getOutcomeCodeableConcept().add(castToCodeableConcept(value));
+          this.getOutcomeCodeableConcept().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("outcomeReference")) {
-          this.getOutcomeReference().add(castToReference(value));
+          this.getOutcomeReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("progress")) {
-          this.getProgress().add(castToAnnotation(value));
+          this.getProgress().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("detail")) {
           this.detail = (CarePlanActivityDetailComponent) value; // CarePlanActivityDetailComponent
         } else
@@ -1296,7 +1296,7 @@ public class CarePlan extends DomainResource {
          */
         @Child(name = "scheduled", type = {Timing.class, Period.class, StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When activity is to occur", formalDefinition="The period, timing or frequency upon which the described activity is to occur." )
-        protected Type scheduled;
+        protected DataType scheduled;
 
         /**
          * Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.
@@ -1310,7 +1310,7 @@ public class CarePlan extends DomainResource {
          */
         @Child(name = "reported", type = {BooleanType.class, Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Organization.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Reported rather than primary record", formalDefinition="Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report." )
-        protected Type reported;
+        protected DataType reported;
 
         /**
          * Identifies who's expected to be involved in the activity.
@@ -1325,7 +1325,7 @@ public class CarePlan extends DomainResource {
         @Child(name = "product", type = {CodeableConcept.class, Medication.class, Substance.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="What is to be administered/supplied", formalDefinition="Identifies the food, drug or other product to be consumed or supplied in the activity." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-codes")
-        protected Type product;
+        protected DataType product;
 
         /**
          * Identifies the quantity expected to be consumed in a given day.
@@ -1348,7 +1348,7 @@ public class CarePlan extends DomainResource {
         @Description(shortDefinition="Extra info describing activity to perform", formalDefinition="This provides a textual description of constraints on the intended activity occurrence, including relation to other activities.  It may also include objectives, pre-conditions and end-conditions.  Finally, it may convey specifics about the activity such as body site, method, route, etc." )
         protected StringType description;
 
-        private static final long serialVersionUID = -177703989L;
+        private static final long serialVersionUID = -1305560659L;
 
     /**
      * Constructor
@@ -1836,7 +1836,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return {@link #scheduled} (The period, timing or frequency upon which the described activity is to occur.)
          */
-        public Type getScheduled() { 
+        public DataType getScheduled() { 
           return this.scheduled;
         }
 
@@ -1892,7 +1892,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #scheduled} (The period, timing or frequency upon which the described activity is to occur.)
          */
-        public CarePlanActivityDetailComponent setScheduled(Type value) { 
+        public CarePlanActivityDetailComponent setScheduled(DataType value) { 
           if (value != null && !(value instanceof Timing || value instanceof Period || value instanceof StringType))
             throw new Error("Not the right type for CarePlan.activity.detail.scheduled[x]: "+value.fhirType());
           this.scheduled = value;
@@ -1926,7 +1926,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
          */
-        public Type getReported() { 
+        public DataType getReported() { 
           return this.reported;
         }
 
@@ -1967,7 +1967,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
          */
-        public CarePlanActivityDetailComponent setReported(Type value) { 
+        public CarePlanActivityDetailComponent setReported(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof Reference))
             throw new Error("Not the right type for CarePlan.activity.detail.reported[x]: "+value.fhirType());
           this.reported = value;
@@ -2030,7 +2030,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return {@link #product} (Identifies the food, drug or other product to be consumed or supplied in the activity.)
          */
-        public Type getProduct() { 
+        public DataType getProduct() { 
           return this.product;
         }
 
@@ -2071,7 +2071,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #product} (Identifies the food, drug or other product to be consumed or supplied in the activity.)
          */
-        public CarePlanActivityDetailComponent setProduct(Type value) { 
+        public CarePlanActivityDetailComponent setProduct(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for CarePlan.activity.detail.product[x]: "+value.fhirType());
           this.product = value;
@@ -2246,11 +2246,11 @@ public class CarePlan extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<CarePlanActivityStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
         case -1788508167: /*doNotPerform*/ return this.doNotPerform == null ? new Base[0] : new Base[] {this.doNotPerform}; // BooleanType
-        case -160710483: /*scheduled*/ return this.scheduled == null ? new Base[0] : new Base[] {this.scheduled}; // Type
+        case -160710483: /*scheduled*/ return this.scheduled == null ? new Base[0] : new Base[] {this.scheduled}; // DataType
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
-        case -427039533: /*reported*/ return this.reported == null ? new Base[0] : new Base[] {this.reported}; // Type
+        case -427039533: /*reported*/ return this.reported == null ? new Base[0] : new Base[] {this.reported}; // DataType
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // Reference
-        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // Type
+        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // DataType
         case -768908335: /*dailyAmount*/ return this.dailyAmount == null ? new Base[0] : new Base[] {this.dailyAmount}; // Quantity
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
@@ -2263,60 +2263,60 @@ public class CarePlan extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3292052: // kind
-          value = new CarePlanActivityKindEnumFactory().fromType(castToCode(value));
+          value = new CarePlanActivityKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CarePlanActivityKind>
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3178259: // goal
-          this.getGoal().add(castToReference(value)); // Reference
+          this.getGoal().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new CarePlanActivityStatusEnumFactory().fromType(castToCode(value));
+          value = new CarePlanActivityStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CarePlanActivityStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1788508167: // doNotPerform
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -160710483: // scheduled
-          this.scheduled = castToType(value); // Type
+          this.scheduled = TypeConvertor.castToType(value); // DataType
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case -427039533: // reported
-          this.reported = castToType(value); // Type
+          this.reported = TypeConvertor.castToType(value); // DataType
           return value;
         case 481140686: // performer
-          this.getPerformer().add(castToReference(value)); // Reference
+          this.getPerformer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -309474065: // product
-          this.product = castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // DataType
           return value;
         case -768908335: // dailyAmount
-          this.dailyAmount = castToQuantity(value); // Quantity
+          this.dailyAmount = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2326,43 +2326,43 @@ public class CarePlan extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("kind")) {
-          value = new CarePlanActivityKindEnumFactory().fromType(castToCode(value));
+          value = new CarePlanActivityKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CarePlanActivityKind>
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("goal")) {
-          this.getGoal().add(castToReference(value));
+          this.getGoal().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new CarePlanActivityStatusEnumFactory().fromType(castToCode(value));
+          value = new CarePlanActivityStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CarePlanActivityStatus>
         } else if (name.equals("statusReason")) {
-          this.statusReason = castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("doNotPerform")) {
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("scheduled[x]")) {
-          this.scheduled = castToType(value); // Type
+          this.scheduled = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reported[x]")) {
-          this.reported = castToType(value); // Type
+          this.reported = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("performer")) {
-          this.getPerformer().add(castToReference(value));
+          this.getPerformer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("product[x]")) {
-          this.product = castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("dailyAmount")) {
-          this.dailyAmount = castToQuantity(value); // Quantity
+          this.dailyAmount = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4032,78 +4032,78 @@ public class CarePlan extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 8911915: // instantiatesCanonical
-          this.getInstantiatesCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1926393373: // instantiatesUri
-          this.getInstantiatesUri().add(castToUri(value)); // UriType
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -430332865: // replaces
-          this.getReplaces().add(castToReference(value)); // Reference
+          this.getReplaces().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new CarePlanStatusEnumFactory().fromType(castToCode(value));
+          value = new CarePlanStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CarePlanStatus>
           return value;
         case -1183762788: // intent
-          value = new CarePlanIntentEnumFactory().fromType(castToCode(value));
+          value = new CarePlanIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<CarePlanIntent>
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1895276325: // contributor
-          this.getContributor().add(castToReference(value)); // Reference
+          this.getContributor().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -7323378: // careTeam
-          this.getCareTeam().add(castToReference(value)); // Reference
+          this.getCareTeam().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -227148625: // addressesCode
-          this.getAddressesCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAddressesCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1878992439: // addressesReference
-          this.getAddressesReference().add(castToReference(value)); // Reference
+          this.getAddressesReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1922406657: // supportingInfo
-          this.getSupportingInfo().add(castToReference(value)); // Reference
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3178259: // goal
-          this.getGoal().add(castToReference(value)); // Reference
+          this.getGoal().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1655966961: // activity
           this.getActivity().add((CarePlanActivityComponent) value); // CarePlanActivityComponent
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4113,55 +4113,55 @@ public class CarePlan extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("instantiatesCanonical")) {
-          this.getInstantiatesCanonical().add(castToCanonical(value));
+          this.getInstantiatesCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("instantiatesUri")) {
-          this.getInstantiatesUri().add(castToUri(value));
+          this.getInstantiatesUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("replaces")) {
-          this.getReplaces().add(castToReference(value));
+          this.getReplaces().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new CarePlanStatusEnumFactory().fromType(castToCode(value));
+          value = new CarePlanStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CarePlanStatus>
         } else if (name.equals("intent")) {
-          value = new CarePlanIntentEnumFactory().fromType(castToCode(value));
+          value = new CarePlanIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<CarePlanIntent>
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contributor")) {
-          this.getContributor().add(castToReference(value));
+          this.getContributor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("careTeam")) {
-          this.getCareTeam().add(castToReference(value));
+          this.getCareTeam().add(TypeConvertor.castToReference(value));
         } else if (name.equals("addressesCode")) {
-          this.getAddressesCode().add(castToCodeableConcept(value));
+          this.getAddressesCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("addressesReference")) {
-          this.getAddressesReference().add(castToReference(value));
+          this.getAddressesReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add(castToReference(value));
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value));
         } else if (name.equals("goal")) {
-          this.getGoal().add(castToReference(value));
+          this.getGoal().add(TypeConvertor.castToReference(value));
         } else if (name.equals("activity")) {
           this.getActivity().add((CarePlanActivityComponent) value);
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

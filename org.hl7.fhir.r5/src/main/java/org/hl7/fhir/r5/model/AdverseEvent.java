@@ -399,10 +399,10 @@ public class AdverseEvent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1380938712: // function
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -412,9 +412,9 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("function")) {
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -504,7 +504,7 @@ public class AdverseEvent extends DomainResource {
          */
         @Child(name = "instance", type = {CodeableConcept.class, Immunization.class, Procedure.class, Substance.class, Medication.class, MedicationAdministration.class, MedicationUsage.class, Device.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Refers to the specific entity that caused the adverse event", formalDefinition="Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device." )
-        protected Type instance;
+        protected DataType instance;
 
         /**
          * Information on the possible cause of the event.
@@ -525,7 +525,7 @@ public class AdverseEvent extends DomainResource {
     /**
      * Constructor
      */
-      public AdverseEventSuspectEntityComponent(Type instance) {
+      public AdverseEventSuspectEntityComponent(DataType instance) {
         super();
         this.instance = instance;
       }
@@ -533,7 +533,7 @@ public class AdverseEvent extends DomainResource {
         /**
          * @return {@link #instance} (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
          */
-        public Type getInstance() { 
+        public DataType getInstance() { 
           return this.instance;
         }
 
@@ -574,7 +574,7 @@ public class AdverseEvent extends DomainResource {
         /**
          * @param value {@link #instance} (Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.)
          */
-        public AdverseEventSuspectEntityComponent setInstance(Type value) { 
+        public AdverseEventSuspectEntityComponent setInstance(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for AdverseEvent.suspectEntity.instance[x]: "+value.fhirType());
           this.instance = value;
@@ -638,7 +638,7 @@ public class AdverseEvent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 555127957: // instance
-          this.instance = castToType(value); // Type
+          this.instance = TypeConvertor.castToType(value); // Type
           return value;
         case -1446450521: // causality
           this.causality = (AdverseEventSuspectEntityCausalityComponent) value; // AdverseEventSuspectEntityCausalityComponent
@@ -651,7 +651,7 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("instance[x]")) {
-          this.instance = castToType(value); // Type
+          this.instance = TypeConvertor.castToType(value); // Type
         } else if (name.equals("causality")) {
           this.causality = (AdverseEventSuspectEntityCausalityComponent) value; // AdverseEventSuspectEntityCausalityComponent
         } else
@@ -880,13 +880,13 @@ public class AdverseEvent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1681283651: // assessmentMethod
-          this.assessmentMethod = castToCodeableConcept(value); // CodeableConcept
+          this.assessmentMethod = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 2000199967: // entityRelatedness
-          this.entityRelatedness = castToCodeableConcept(value); // CodeableConcept
+          this.entityRelatedness = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -896,11 +896,11 @@ public class AdverseEvent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("assessmentMethod")) {
-          this.assessmentMethod = castToCodeableConcept(value); // CodeableConcept
+          this.assessmentMethod = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("entityRelatedness")) {
-          this.entityRelatedness = castToCodeableConcept(value); // CodeableConcept
+          this.entityRelatedness = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1127,10 +1127,10 @@ Additionally, the supporting item can be a document that is relevant to this ins
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3242771: // item
-          this.item = castToReference(value); // Reference
+          this.item = TypeConvertor.castToReference(value); // Reference
           return value;
         case -219647527: // contributingFactor
-          this.contributingFactor = castToBoolean(value); // BooleanType
+          this.contributingFactor = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1140,9 +1140,9 @@ Additionally, the supporting item can be a document that is relevant to this ins
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("item")) {
-          this.item = castToReference(value); // Reference
+          this.item = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contributingFactor")) {
-          this.contributingFactor = castToBoolean(value); // BooleanType
+          this.contributingFactor = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1283,7 +1283,7 @@ Additionally, the supporting item can be a document that is relevant to this ins
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the event occurred", formalDefinition="The date (and perhaps time) when the adverse event occurred." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * Estimated or actual date the AdverseEvent began, in the opinion of the reporter.
@@ -1654,7 +1654,7 @@ Additionally, the supporting item can be a document that is relevant to this ins
     /**
      * @return {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1710,7 +1710,7 @@ Additionally, the supporting item can be a document that is relevant to this ins
     /**
      * @param value {@link #occurrence} (The date (and perhaps time) when the adverse event occurred.)
      */
-    public AdverseEvent setOccurrence(Type value) { 
+    public AdverseEvent setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
         throw new Error("Not the right type for AdverseEvent.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -2261,51 +2261,51 @@ Additionally, the supporting item can be a document that is relevant to this ins
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new AdverseEventStatusEnumFactory().fromType(castToCode(value));
+          value = new AdverseEventStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AdverseEventStatus>
           return value;
         case 528866400: // actuality
-          value = new AdverseEventActualityEnumFactory().fromType(castToCode(value));
+          value = new AdverseEventActualityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.actuality = (Enumeration) value; // Enumeration<AdverseEventActuality>
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case 1048254082: // detected
-          this.detected = castToDateTime(value); // DateTimeType
+          this.detected = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1952893826: // recordedDate
-          this.recordedDate = castToDateTime(value); // DateTimeType
+          this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -830261258: // resultingCondition
-          this.getResultingCondition().add(castToReference(value)); // Reference
+          this.getResultingCondition().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1551003909: // seriousness
-          this.seriousness = castToCodeableConcept(value); // CodeableConcept
+          this.seriousness = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1106507950: // outcome
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -799233858: // recorder
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
           return value;
         case 767422259: // participant
           this.getParticipant().add((AdverseEventParticipantComponent) value); // AdverseEventParticipantComponent
@@ -2317,7 +2317,7 @@ Additionally, the supporting item can be a document that is relevant to this ins
           this.getSupportingInfo().add((AdverseEventSupportingInfoComponent) value); // AdverseEventSupportingInfoComponent
           return value;
         case 109776329: // study
-          this.getStudy().add(castToReference(value)); // Reference
+          this.getStudy().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2327,37 +2327,37 @@ Additionally, the supporting item can be a document that is relevant to this ins
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new AdverseEventStatusEnumFactory().fromType(castToCode(value));
+          value = new AdverseEventStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AdverseEventStatus>
         } else if (name.equals("actuality")) {
-          value = new AdverseEventActualityEnumFactory().fromType(castToCode(value));
+          value = new AdverseEventActualityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.actuality = (Enumeration) value; // Enumeration<AdverseEventActuality>
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("detected")) {
-          this.detected = castToDateTime(value); // DateTimeType
+          this.detected = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("recordedDate")) {
-          this.recordedDate = castToDateTime(value); // DateTimeType
+          this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("resultingCondition")) {
-          this.getResultingCondition().add(castToReference(value));
+          this.getResultingCondition().add(TypeConvertor.castToReference(value));
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("seriousness")) {
-          this.seriousness = castToCodeableConcept(value); // CodeableConcept
+          this.seriousness = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("outcome")) {
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("recorder")) {
-          this.recorder = castToReference(value); // Reference
+          this.recorder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participant")) {
           this.getParticipant().add((AdverseEventParticipantComponent) value);
         } else if (name.equals("suspectEntity")) {
@@ -2365,7 +2365,7 @@ Additionally, the supporting item can be a document that is relevant to this ins
         } else if (name.equals("supportingInfo")) {
           this.getSupportingInfo().add((AdverseEventSupportingInfoComponent) value);
         } else if (name.equals("study")) {
-          this.getStudy().add(castToReference(value));
+          this.getStudy().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

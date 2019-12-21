@@ -325,11 +325,11 @@ public class Narrative extends BaseNarrative implements INarrative {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -892481550: // status
-          value = new NarrativeStatusEnumFactory().fromType(castToCode(value));
+          value = new NarrativeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NarrativeStatus>
           return value;
         case 99473: // div
-          this.div = castToXhtml(value); // XhtmlNode
+          this.div = TypeConvertor.castToXhtml(value); // XhtmlNode
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -339,10 +339,10 @@ public class Narrative extends BaseNarrative implements INarrative {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("status")) {
-          value = new NarrativeStatusEnumFactory().fromType(castToCode(value));
+          value = new NarrativeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NarrativeStatus>
         } else if (name.equals("div")) {
-          this.div = castToXhtml(value); // XhtmlNode
+          this.div = TypeConvertor.castToXhtml(value); // XhtmlNode
         } else
           return super.setProperty(name, value);
         return value;

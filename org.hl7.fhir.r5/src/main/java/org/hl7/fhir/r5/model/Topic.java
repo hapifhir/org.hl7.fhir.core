@@ -3018,21 +3018,21 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -384364440: // resourceType
-          value = new FHIRTypeEnumFactory().fromType(castToCode(value));
+          value = new FHIRTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getResourceType().add((Enumeration) value); // Enumeration<FHIRType>
           return value;
         case -1924160672: // methodCriteria
-          value = new MethodCodeEnumFactory().fromType(castToCode(value));
+          value = new MethodCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getMethodCriteria().add((Enumeration) value); // Enumeration<MethodCode>
           return value;
         case -545123257: // queryCriteria
           this.queryCriteria = (TopicResourceTriggerQueryCriteriaComponent) value; // TopicResourceTriggerQueryCriteriaComponent
           return value;
         case 1929785263: // fhirPathCriteria
-          this.fhirPathCriteria = castToString(value); // StringType
+          this.fhirPathCriteria = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3042,17 +3042,17 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("resourceType")) {
-          value = new FHIRTypeEnumFactory().fromType(castToCode(value));
+          value = new FHIRTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getResourceType().add((Enumeration) value);
         } else if (name.equals("methodCriteria")) {
-          value = new MethodCodeEnumFactory().fromType(castToCode(value));
+          value = new MethodCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getMethodCriteria().add((Enumeration) value);
         } else if (name.equals("queryCriteria")) {
           this.queryCriteria = (TopicResourceTriggerQueryCriteriaComponent) value; // TopicResourceTriggerQueryCriteriaComponent
         } else if (name.equals("fhirPathCriteria")) {
-          this.fhirPathCriteria = castToString(value); // StringType
+          this.fhirPathCriteria = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3373,13 +3373,13 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1273775369: // previous
-          this.previous = castToString(value); // StringType
+          this.previous = TypeConvertor.castToString(value); // StringType
           return value;
         case 1126940025: // current
-          this.current = castToString(value); // StringType
+          this.current = TypeConvertor.castToString(value); // StringType
           return value;
         case 362116742: // requireBoth
-          this.requireBoth = castToBoolean(value); // BooleanType
+          this.requireBoth = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3389,11 +3389,11 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("previous")) {
-          this.previous = castToString(value); // StringType
+          this.previous = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("current")) {
-          this.current = castToString(value); // StringType
+          this.current = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("requireBoth")) {
-          this.requireBoth = castToBoolean(value); // BooleanType
+          this.requireBoth = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3708,14 +3708,14 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 614036127: // matchType
-          value = new TopicFilterByMatchTypeEnumFactory().fromType(castToCode(value));
+          value = new TopicFilterByMatchTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getMatchType().add((Enumeration) value); // Enumeration<TopicFilterByMatchType>
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3725,12 +3725,12 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("matchType")) {
-          value = new TopicFilterByMatchTypeEnumFactory().fromType(castToCode(value));
+          value = new TopicFilterByMatchTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getMatchType().add((Enumeration) value);
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5067,62 +5067,62 @@ The primary difference between a medicationusage and a medicationadministration 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -978133683: // derivedFromCanonical
-          this.getDerivedFromCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1076333435: // derivedFromUri
-          this.getDerivedFromUri().add(castToUri(value)); // UriType
+          this.getDerivedFromUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToReference(value); // Reference
+          this.publisher = TypeConvertor.castToReference(value); // Reference
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -424927798: // resourceTrigger
           this.resourceTrigger = (TopicResourceTriggerComponent) value; // TopicResourceTriggerComponent
@@ -5138,44 +5138,44 @@ The primary difference between a medicationusage and a medicationadministration 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("derivedFromCanonical")) {
-          this.getDerivedFromCanonical().add(castToCanonical(value));
+          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("derivedFromUri")) {
-          this.getDerivedFromUri().add(castToUri(value));
+          this.getDerivedFromUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToReference(value); // Reference
+          this.publisher = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("resourceTrigger")) {
           this.resourceTrigger = (TopicResourceTriggerComponent) value; // TopicResourceTriggerComponent
         } else if (name.equals("canFilterBy")) {

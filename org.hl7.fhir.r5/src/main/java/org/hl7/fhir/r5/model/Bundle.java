@@ -694,10 +694,10 @@ public class Bundle extends Resource implements IBaseBundle {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -554436100: // relation
-          this.relation = castToString(value); // StringType
+          this.relation = TypeConvertor.castToString(value); // StringType
           return value;
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -707,9 +707,9 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("relation")) {
-          this.relation = castToString(value); // StringType
+          this.relation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1138,10 +1138,10 @@ public class Bundle extends Resource implements IBaseBundle {
           this.getLink().add((BundleLinkComponent) value); // BundleLinkComponent
           return value;
         case -511251360: // fullUrl
-          this.fullUrl = castToUri(value); // UriType
+          this.fullUrl = TypeConvertor.castToUri(value); // UriType
           return value;
         case -341064690: // resource
-          this.resource = castToResource(value); // Resource
+          this.resource = TypeConvertor.castToResource(value); // Resource
           return value;
         case -906336856: // search
           this.search = (BundleEntrySearchComponent) value; // BundleEntrySearchComponent
@@ -1162,9 +1162,9 @@ public class Bundle extends Resource implements IBaseBundle {
         if (name.equals("link")) {
           this.getLink().add((BundleLinkComponent) value);
         } else if (name.equals("fullUrl")) {
-          this.fullUrl = castToUri(value); // UriType
+          this.fullUrl = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("resource")) {
-          this.resource = castToResource(value); // Resource
+          this.resource = TypeConvertor.castToResource(value); // Resource
         } else if (name.equals("search")) {
           this.search = (BundleEntrySearchComponent) value; // BundleEntrySearchComponent
         } else if (name.equals("request")) {
@@ -1457,11 +1457,11 @@ public class Bundle extends Resource implements IBaseBundle {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new SearchEntryModeEnumFactory().fromType(castToCode(value));
+          value = new SearchEntryModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<SearchEntryMode>
           return value;
         case 109264530: // score
-          this.score = castToDecimal(value); // DecimalType
+          this.score = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1471,10 +1471,10 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new SearchEntryModeEnumFactory().fromType(castToCode(value));
+          value = new SearchEntryModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<SearchEntryMode>
         } else if (name.equals("score")) {
-          this.score = castToDecimal(value); // DecimalType
+          this.score = TypeConvertor.castToDecimal(value); // DecimalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1946,23 +1946,23 @@ public class Bundle extends Resource implements IBaseBundle {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1077554975: // method
-          value = new HTTPVerbEnumFactory().fromType(castToCode(value));
+          value = new HTTPVerbEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.method = (Enumeration) value; // Enumeration<HTTPVerb>
           return value;
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 171868368: // ifNoneMatch
-          this.ifNoneMatch = castToString(value); // StringType
+          this.ifNoneMatch = TypeConvertor.castToString(value); // StringType
           return value;
         case -2061602860: // ifModifiedSince
-          this.ifModifiedSince = castToInstant(value); // InstantType
+          this.ifModifiedSince = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 1692894888: // ifMatch
-          this.ifMatch = castToString(value); // StringType
+          this.ifMatch = TypeConvertor.castToString(value); // StringType
           return value;
         case 165155330: // ifNoneExist
-          this.ifNoneExist = castToString(value); // StringType
+          this.ifNoneExist = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1972,18 +1972,18 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("method")) {
-          value = new HTTPVerbEnumFactory().fromType(castToCode(value));
+          value = new HTTPVerbEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.method = (Enumeration) value; // Enumeration<HTTPVerb>
         } else if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("ifNoneMatch")) {
-          this.ifNoneMatch = castToString(value); // StringType
+          this.ifNoneMatch = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("ifModifiedSince")) {
-          this.ifModifiedSince = castToInstant(value); // InstantType
+          this.ifModifiedSince = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("ifMatch")) {
-          this.ifMatch = castToString(value); // StringType
+          this.ifMatch = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("ifNoneExist")) {
-          this.ifNoneExist = castToString(value); // StringType
+          this.ifNoneExist = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2397,19 +2397,19 @@ public class Bundle extends Resource implements IBaseBundle {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -892481550: // status
-          this.status = castToString(value); // StringType
+          this.status = TypeConvertor.castToString(value); // StringType
           return value;
         case 1901043637: // location
-          this.location = castToUri(value); // UriType
+          this.location = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3123477: // etag
-          this.etag = castToString(value); // StringType
+          this.etag = TypeConvertor.castToString(value); // StringType
           return value;
         case 1959003007: // lastModified
-          this.lastModified = castToInstant(value); // InstantType
+          this.lastModified = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -1106507950: // outcome
-          this.outcome = castToResource(value); // Resource
+          this.outcome = TypeConvertor.castToResource(value); // Resource
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2419,15 +2419,15 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("status")) {
-          this.status = castToString(value); // StringType
+          this.status = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("location")) {
-          this.location = castToUri(value); // UriType
+          this.location = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("etag")) {
-          this.etag = castToString(value); // StringType
+          this.etag = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("lastModified")) {
-          this.lastModified = castToInstant(value); // InstantType
+          this.lastModified = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("outcome")) {
-          this.outcome = castToResource(value); // Resource
+          this.outcome = TypeConvertor.castToResource(value); // Resource
         } else
           return super.setProperty(name, value);
         return value;
@@ -2981,17 +2981,17 @@ public class Bundle extends Resource implements IBaseBundle {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3575610: // type
-          value = new BundleTypeEnumFactory().fromType(castToCode(value));
+          value = new BundleTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<BundleType>
           return value;
         case 55126294: // timestamp
-          this.timestamp = castToInstant(value); // InstantType
+          this.timestamp = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 110549828: // total
-          this.total = castToUnsignedInt(value); // UnsignedIntType
+          this.total = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 3321850: // link
           this.getLink().add((BundleLinkComponent) value); // BundleLinkComponent
@@ -3000,7 +3000,7 @@ public class Bundle extends Resource implements IBaseBundle {
           this.getEntry().add((BundleEntryComponent) value); // BundleEntryComponent
           return value;
         case 1073584312: // signature
-          this.signature = castToSignature(value); // Signature
+          this.signature = TypeConvertor.castToSignature(value); // Signature
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3010,20 +3010,20 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("type")) {
-          value = new BundleTypeEnumFactory().fromType(castToCode(value));
+          value = new BundleTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<BundleType>
         } else if (name.equals("timestamp")) {
-          this.timestamp = castToInstant(value); // InstantType
+          this.timestamp = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("total")) {
-          this.total = castToUnsignedInt(value); // UnsignedIntType
+          this.total = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("link")) {
           this.getLink().add((BundleLinkComponent) value);
         } else if (name.equals("entry")) {
           this.getEntry().add((BundleEntryComponent) value);
         } else if (name.equals("signature")) {
-          this.signature = castToSignature(value); // Signature
+          this.signature = TypeConvertor.castToSignature(value); // Signature
         } else
           return super.setProperty(name, value);
         return value;

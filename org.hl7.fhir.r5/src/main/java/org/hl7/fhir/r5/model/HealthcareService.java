@@ -372,10 +372,10 @@ public class HealthcareService extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 950398559: // comment
-          this.comment = castToMarkdown(value); // MarkdownType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -385,9 +385,9 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("comment")) {
-          this.comment = castToMarkdown(value); // MarkdownType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -749,17 +749,17 @@ public class HealthcareService extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 68050338: // daysOfWeek
-          value = new DaysOfWeekEnumFactory().fromType(castToCode(value));
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getDaysOfWeek().add((Enumeration) value); // Enumeration<DaysOfWeek>
           return value;
         case -1414913477: // allDay
-          this.allDay = castToBoolean(value); // BooleanType
+          this.allDay = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1039453818: // availableStartTime
-          this.availableStartTime = castToTime(value); // TimeType
+          this.availableStartTime = TypeConvertor.castToTime(value); // TimeType
           return value;
         case 101151551: // availableEndTime
-          this.availableEndTime = castToTime(value); // TimeType
+          this.availableEndTime = TypeConvertor.castToTime(value); // TimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -769,14 +769,14 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("daysOfWeek")) {
-          value = new DaysOfWeekEnumFactory().fromType(castToCode(value));
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getDaysOfWeek().add((Enumeration) value);
         } else if (name.equals("allDay")) {
-          this.allDay = castToBoolean(value); // BooleanType
+          this.allDay = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("availableStartTime")) {
-          this.availableStartTime = castToTime(value); // TimeType
+          this.availableStartTime = TypeConvertor.castToTime(value); // TimeType
         } else if (name.equals("availableEndTime")) {
-          this.availableEndTime = castToTime(value); // TimeType
+          this.availableEndTime = TypeConvertor.castToTime(value); // TimeType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1008,10 +1008,10 @@ public class HealthcareService extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1320499647: // during
-          this.during = castToPeriod(value); // Period
+          this.during = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1021,9 +1021,9 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("during")) {
-          this.during = castToPeriod(value); // Period
+          this.during = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -2567,64 +2567,64 @@ public class HealthcareService extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 205136282: // providedBy
-          this.providedBy = castToReference(value); // Reference
+          this.providedBy = TypeConvertor.castToReference(value); // Reference
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1694759682: // specialty
-          this.getSpecialty().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1901043637: // location
-          this.getLocation().add(castToReference(value)); // Reference
+          this.getLocation().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         case -1469168622: // extraDetails
-          this.extraDetails = castToMarkdown(value); // MarkdownType
+          this.extraDetails = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 106642994: // photo
-          this.photo = castToAttachment(value); // Attachment
+          this.photo = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1532328299: // coverageArea
-          this.getCoverageArea().add(castToReference(value)); // Reference
+          this.getCoverageArea().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1504575405: // serviceProvisionCode
-          this.getServiceProvisionCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getServiceProvisionCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -930847859: // eligibility
           this.getEligibility().add((HealthcareServiceEligibilityComponent) value); // HealthcareServiceEligibilityComponent
           return value;
         case -309387644: // program
-          this.getProgram().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProgram().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 366313883: // characteristic
-          this.getCharacteristic().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCharacteristic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1035284522: // communication
-          this.getCommunication().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -2092740898: // referralMethod
-          this.getReferralMethod().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReferralMethod().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 427220062: // appointmentRequired
-          this.appointmentRequired = castToBoolean(value); // BooleanType
+          this.appointmentRequired = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1873069366: // availableTime
           this.getAvailableTime().add((HealthcareServiceAvailableTimeComponent) value); // HealthcareServiceAvailableTimeComponent
@@ -2633,10 +2633,10 @@ public class HealthcareService extends DomainResource {
           this.getNotAvailable().add((HealthcareServiceNotAvailableComponent) value); // HealthcareServiceNotAvailableComponent
           return value;
         case -1149143617: // availabilityExceptions
-          this.availabilityExceptions = castToString(value); // StringType
+          this.availabilityExceptions = TypeConvertor.castToString(value); // StringType
           return value;
         case 1741102485: // endpoint
-          this.getEndpoint().add(castToReference(value)); // Reference
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2646,53 +2646,53 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("providedBy")) {
-          this.providedBy = castToReference(value); // Reference
+          this.providedBy = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specialty")) {
-          this.getSpecialty().add(castToCodeableConcept(value));
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("location")) {
-          this.getLocation().add(castToReference(value));
+          this.getLocation().add(TypeConvertor.castToReference(value));
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("extraDetails")) {
-          this.extraDetails = castToMarkdown(value); // MarkdownType
+          this.extraDetails = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("photo")) {
-          this.photo = castToAttachment(value); // Attachment
+          this.photo = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("coverageArea")) {
-          this.getCoverageArea().add(castToReference(value));
+          this.getCoverageArea().add(TypeConvertor.castToReference(value));
         } else if (name.equals("serviceProvisionCode")) {
-          this.getServiceProvisionCode().add(castToCodeableConcept(value));
+          this.getServiceProvisionCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("eligibility")) {
           this.getEligibility().add((HealthcareServiceEligibilityComponent) value);
         } else if (name.equals("program")) {
-          this.getProgram().add(castToCodeableConcept(value));
+          this.getProgram().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add(castToCodeableConcept(value));
+          this.getCharacteristic().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("communication")) {
-          this.getCommunication().add(castToCodeableConcept(value));
+          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("referralMethod")) {
-          this.getReferralMethod().add(castToCodeableConcept(value));
+          this.getReferralMethod().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("appointmentRequired")) {
-          this.appointmentRequired = castToBoolean(value); // BooleanType
+          this.appointmentRequired = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("availableTime")) {
           this.getAvailableTime().add((HealthcareServiceAvailableTimeComponent) value);
         } else if (name.equals("notAvailable")) {
           this.getNotAvailable().add((HealthcareServiceNotAvailableComponent) value);
         } else if (name.equals("availabilityExceptions")) {
-          this.availabilityExceptions = castToString(value); // StringType
+          this.availabilityExceptions = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("endpoint")) {
-          this.getEndpoint().add(castToReference(value));
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

@@ -532,13 +532,13 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2023558323: // population
           this.getPopulation().add((MeasureReportGroupPopulationComponent) value); // MeasureReportGroupPopulationComponent
           return value;
         case -386313260: // measureScore
-          this.measureScore = castToQuantity(value); // Quantity
+          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 90983669: // stratifier
           this.getStratifier().add((MeasureReportGroupStratifierComponent) value); // MeasureReportGroupStratifierComponent
@@ -551,11 +551,11 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("population")) {
           this.getPopulation().add((MeasureReportGroupPopulationComponent) value);
         } else if (name.equals("measureScore")) {
-          this.measureScore = castToQuantity(value); // Quantity
+          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("stratifier")) {
           this.getStratifier().add((MeasureReportGroupStratifierComponent) value);
         } else
@@ -821,13 +821,13 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 94851343: // count
-          this.count = castToInteger(value); // IntegerType
+          this.count = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 2136184106: // subjectResults
-          this.subjectResults = castToReference(value); // Reference
+          this.subjectResults = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -837,11 +837,11 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("count")) {
-          this.count = castToInteger(value); // IntegerType
+          this.count = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("subjectResults")) {
-          this.subjectResults = castToReference(value); // Reference
+          this.subjectResults = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1093,7 +1093,7 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1881991236: // stratum
           this.getStratum().add((StratifierGroupComponent) value); // StratifierGroupComponent
@@ -1106,7 +1106,7 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("stratum")) {
           this.getStratum().add((StratifierGroupComponent) value);
         } else
@@ -1426,7 +1426,7 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToCodeableConcept(value); // CodeableConcept
+          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1399907075: // component
           this.getComponent().add((StratifierGroupComponentComponent) value); // StratifierGroupComponentComponent
@@ -1435,7 +1435,7 @@ public class MeasureReport extends DomainResource {
           this.getPopulation().add((StratifierGroupPopulationComponent) value); // StratifierGroupPopulationComponent
           return value;
         case -386313260: // measureScore
-          this.measureScore = castToQuantity(value); // Quantity
+          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1445,13 +1445,13 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value")) {
-          this.value = castToCodeableConcept(value); // CodeableConcept
+          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("component")) {
           this.getComponent().add((StratifierGroupComponentComponent) value);
         } else if (name.equals("population")) {
           this.getPopulation().add((StratifierGroupPopulationComponent) value);
         } else if (name.equals("measureScore")) {
-          this.measureScore = castToQuantity(value); // Quantity
+          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;
@@ -1668,10 +1668,10 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToCodeableConcept(value); // CodeableConcept
+          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1681,9 +1681,9 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value")) {
-          this.value = castToCodeableConcept(value); // CodeableConcept
+          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1925,13 +1925,13 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 94851343: // count
-          this.count = castToInteger(value); // IntegerType
+          this.count = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 2136184106: // subjectResults
-          this.subjectResults = castToReference(value); // Reference
+          this.subjectResults = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1941,11 +1941,11 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("count")) {
-          this.count = castToInteger(value); // IntegerType
+          this.count = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("subjectResults")) {
-          this.subjectResults = castToReference(value); // Reference
+          this.subjectResults = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -2632,39 +2632,39 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new MeasureReportStatusEnumFactory().fromType(castToCode(value));
+          value = new MeasureReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MeasureReportStatus>
           return value;
         case 3575610: // type
-          value = new MeasureReportTypeEnumFactory().fromType(castToCode(value));
+          value = new MeasureReportTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<MeasureReportType>
           return value;
         case 938321246: // measure
-          this.measure = castToCanonical(value); // CanonicalType
+          this.measure = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -427039519: // reporter
-          this.reporter = castToReference(value); // Reference
+          this.reporter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -2085456136: // improvementNotation
-          this.improvementNotation = castToCodeableConcept(value); // CodeableConcept
+          this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 98629247: // group
           this.getGroup().add((MeasureReportGroupComponent) value); // MeasureReportGroupComponent
           return value;
         case -1056771047: // evaluatedResource
-          this.getEvaluatedResource().add(castToReference(value)); // Reference
+          this.getEvaluatedResource().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2674,29 +2674,29 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new MeasureReportStatusEnumFactory().fromType(castToCode(value));
+          value = new MeasureReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MeasureReportStatus>
         } else if (name.equals("type")) {
-          value = new MeasureReportTypeEnumFactory().fromType(castToCode(value));
+          value = new MeasureReportTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<MeasureReportType>
         } else if (name.equals("measure")) {
-          this.measure = castToCanonical(value); // CanonicalType
+          this.measure = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("reporter")) {
-          this.reporter = castToReference(value); // Reference
+          this.reporter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("improvementNotation")) {
-          this.improvementNotation = castToCodeableConcept(value); // CodeableConcept
+          this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("group")) {
           this.getGroup().add((MeasureReportGroupComponent) value);
         } else if (name.equals("evaluatedResource")) {
-          this.getEvaluatedResource().add(castToReference(value));
+          this.getEvaluatedResource().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

@@ -182,10 +182,10 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -195,9 +195,9 @@ public class AdministrableProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -590,22 +590,22 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 132551405: // firstDose
-          this.firstDose = castToQuantity(value); // Quantity
+          this.firstDose = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -259207927: // maxSingleDose
-          this.maxSingleDose = castToQuantity(value); // Quantity
+          this.maxSingleDose = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -2017475520: // maxDosePerDay
-          this.maxDosePerDay = castToQuantity(value); // Quantity
+          this.maxDosePerDay = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -608040195: // maxDosePerTreatmentPeriod
-          this.maxDosePerTreatmentPeriod = castToRatio(value); // Ratio
+          this.maxDosePerTreatmentPeriod = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 920698453: // maxTreatmentPeriod
-          this.maxTreatmentPeriod = castToDuration(value); // Duration
+          this.maxTreatmentPeriod = TypeConvertor.castToDuration(value); // Duration
           return value;
         case 295481963: // targetSpecies
           this.getTargetSpecies().add((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) value); // AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent
@@ -618,17 +618,17 @@ public class AdministrableProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("firstDose")) {
-          this.firstDose = castToQuantity(value); // Quantity
+          this.firstDose = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("maxSingleDose")) {
-          this.maxSingleDose = castToQuantity(value); // Quantity
+          this.maxSingleDose = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("maxDosePerDay")) {
-          this.maxDosePerDay = castToQuantity(value); // Quantity
+          this.maxDosePerDay = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("maxDosePerTreatmentPeriod")) {
-          this.maxDosePerTreatmentPeriod = castToRatio(value); // Ratio
+          this.maxDosePerTreatmentPeriod = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("maxTreatmentPeriod")) {
-          this.maxTreatmentPeriod = castToDuration(value); // Duration
+          this.maxTreatmentPeriod = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("targetSpecies")) {
           this.getTargetSpecies().add((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) value);
         } else
@@ -895,7 +895,7 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -98450730: // withdrawalPeriod
           this.getWithdrawalPeriod().add((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) value); // AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent
@@ -908,7 +908,7 @@ public class AdministrableProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("withdrawalPeriod")) {
           this.getWithdrawalPeriod().add((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) value);
         } else
@@ -1168,13 +1168,13 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -873475867: // tissue
-          this.tissue = castToCodeableConcept(value); // CodeableConcept
+          this.tissue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToQuantity(value); // Quantity
+          this.value = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1248768647: // supportingInformation
-          this.supportingInformation = castToString(value); // StringType
+          this.supportingInformation = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1184,11 +1184,11 @@ public class AdministrableProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("tissue")) {
-          this.tissue = castToCodeableConcept(value); // CodeableConcept
+          this.tissue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value")) {
-          this.value = castToQuantity(value); // Quantity
+          this.value = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("supportingInformation")) {
-          this.supportingInformation = castToString(value); // StringType
+          this.supportingInformation = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1766,22 +1766,22 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1867885268: // subject
-          this.getSubject().add(castToReference(value)); // Reference
+          this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1446105202: // administrableDoseForm
-          this.administrableDoseForm = castToCodeableConcept(value); // CodeableConcept
+          this.administrableDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1427765963: // unitOfPresentation
-          this.unitOfPresentation = castToCodeableConcept(value); // CodeableConcept
+          this.unitOfPresentation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -206409263: // ingredient
-          this.getIngredient().add(castToReference(value)); // Reference
+          this.getIngredient().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1335157162: // device
-          this.getDevice().add(castToReference(value)); // Reference
+          this.getDevice().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((AdministrableProductDefinitionCharacteristicComponent) value); // AdministrableProductDefinitionCharacteristicComponent
@@ -1797,17 +1797,17 @@ public class AdministrableProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("subject")) {
-          this.getSubject().add(castToReference(value));
+          this.getSubject().add(TypeConvertor.castToReference(value));
         } else if (name.equals("administrableDoseForm")) {
-          this.administrableDoseForm = castToCodeableConcept(value); // CodeableConcept
+          this.administrableDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unitOfPresentation")) {
-          this.unitOfPresentation = castToCodeableConcept(value); // CodeableConcept
+          this.unitOfPresentation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add(castToReference(value));
+          this.getIngredient().add(TypeConvertor.castToReference(value));
         } else if (name.equals("device")) {
-          this.getDevice().add(castToReference(value));
+          this.getDevice().add(TypeConvertor.castToReference(value));
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((AdministrableProductDefinitionCharacteristicComponent) value);
         } else if (name.equals("routeOfAdministration")) {

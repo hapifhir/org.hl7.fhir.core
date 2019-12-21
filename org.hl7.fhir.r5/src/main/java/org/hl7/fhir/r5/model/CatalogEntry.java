@@ -705,11 +705,11 @@ public class CatalogEntry extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -261851592: // relationship
-          value = new CatalogEntryRelationTypeEnumFactory().fromType(castToCode(value));
+          value = new CatalogEntryRelationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<CatalogEntryRelationType>
           return value;
         case -880905839: // target
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -719,10 +719,10 @@ public class CatalogEntry extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("relationship")) {
-          value = new CatalogEntryRelationTypeEnumFactory().fromType(castToCode(value));
+          value = new CatalogEntryRelationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<CatalogEntryRelationType>
         } else if (name.equals("target")) {
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1705,54 +1705,54 @@ public class CatalogEntry extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          value = new CatalogEntryTypeEnumFactory().fromType(castToCode(value));
+          value = new CatalogEntryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<CatalogEntryType>
           return value;
         case -892481550: // status
-          value = new CatalogEntryStatusEnumFactory().fromType(castToCode(value));
+          value = new CatalogEntryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CatalogEntryStatus>
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -391199320: // orderable
-          this.orderable = castToBoolean(value); // BooleanType
+          this.orderable = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1896630996: // referencedItem
-          this.referencedItem = castToReference(value); // Reference
+          this.referencedItem = TypeConvertor.castToReference(value); // Reference
           return value;
         case 130178823: // relatedEntry
           this.getRelatedEntry().add((CatalogEntryRelatedEntryComponent) value); // CatalogEntryRelatedEntryComponent
           return value;
         case -1949194638: // updatedBy
-          this.updatedBy = castToReference(value); // Reference
+          this.updatedBy = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 1266497008: // estimatedDuration
-          this.estimatedDuration = castToDuration(value); // Duration
+          this.estimatedDuration = TypeConvertor.castToDuration(value); // Duration
           return value;
         case 91787016: // billingCode
-          this.getBillingCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBillingCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 28404907: // billingSummary
-          this.billingSummary = castToString(value); // StringType
+          this.billingSummary = TypeConvertor.castToString(value); // StringType
           return value;
         case -255728369: // scheduleSummary
-          this.scheduleSummary = castToString(value); // StringType
+          this.scheduleSummary = TypeConvertor.castToString(value); // StringType
           return value;
         case -79871444: // limitationSummary
-          this.limitationSummary = castToString(value); // StringType
+          this.limitationSummary = TypeConvertor.castToString(value); // StringType
           return value;
         case 1296867822: // regulatorySummary
-          this.regulatorySummary = castToString(value); // StringType
+          this.regulatorySummary = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1762,39 +1762,39 @@ public class CatalogEntry extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          value = new CatalogEntryTypeEnumFactory().fromType(castToCode(value));
+          value = new CatalogEntryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<CatalogEntryType>
         } else if (name.equals("status")) {
-          value = new CatalogEntryStatusEnumFactory().fromType(castToCode(value));
+          value = new CatalogEntryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CatalogEntryStatus>
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("orderable")) {
-          this.orderable = castToBoolean(value); // BooleanType
+          this.orderable = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("referencedItem")) {
-          this.referencedItem = castToReference(value); // Reference
+          this.referencedItem = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("relatedEntry")) {
           this.getRelatedEntry().add((CatalogEntryRelatedEntryComponent) value);
         } else if (name.equals("updatedBy")) {
-          this.updatedBy = castToReference(value); // Reference
+          this.updatedBy = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("estimatedDuration")) {
-          this.estimatedDuration = castToDuration(value); // Duration
+          this.estimatedDuration = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("billingCode")) {
-          this.getBillingCode().add(castToCodeableConcept(value));
+          this.getBillingCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("billingSummary")) {
-          this.billingSummary = castToString(value); // StringType
+          this.billingSummary = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("scheduleSummary")) {
-          this.scheduleSummary = castToString(value); // StringType
+          this.scheduleSummary = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("limitationSummary")) {
-          this.limitationSummary = castToString(value); // StringType
+          this.limitationSummary = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("regulatorySummary")) {
-          this.regulatorySummary = castToString(value); // StringType
+          this.regulatorySummary = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;

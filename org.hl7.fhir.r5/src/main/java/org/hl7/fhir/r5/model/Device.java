@@ -937,22 +937,22 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1322005407: // deviceIdentifier
-          this.deviceIdentifier = castToString(value); // StringType
+          this.deviceIdentifier = TypeConvertor.castToString(value); // StringType
           return value;
         case -1179159879: // issuer
-          this.issuer = castToUri(value); // UriType
+          this.issuer = TypeConvertor.castToUri(value); // UriType
           return value;
         case -507075711: // jurisdiction
-          this.jurisdiction = castToUri(value); // UriType
+          this.jurisdiction = TypeConvertor.castToUri(value); // UriType
           return value;
         case -768521825: // carrierAIDC
-          this.carrierAIDC = castToBase64Binary(value); // Base64BinaryType
+          this.carrierAIDC = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
           return value;
         case 806499972: // carrierHRF
-          this.carrierHRF = castToString(value); // StringType
+          this.carrierHRF = TypeConvertor.castToString(value); // StringType
           return value;
         case -479362356: // entryType
-          value = new UDIEntryTypeEnumFactory().fromType(castToCode(value));
+          value = new UDIEntryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.entryType = (Enumeration) value; // Enumeration<UDIEntryType>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -963,17 +963,17 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("deviceIdentifier")) {
-          this.deviceIdentifier = castToString(value); // StringType
+          this.deviceIdentifier = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("issuer")) {
-          this.issuer = castToUri(value); // UriType
+          this.issuer = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("jurisdiction")) {
-          this.jurisdiction = castToUri(value); // UriType
+          this.jurisdiction = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("carrierAIDC")) {
-          this.carrierAIDC = castToBase64Binary(value); // Base64BinaryType
+          this.carrierAIDC = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
         } else if (name.equals("carrierHRF")) {
-          this.carrierHRF = castToString(value); // StringType
+          this.carrierHRF = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("entryType")) {
-          value = new UDIEntryTypeEnumFactory().fromType(castToCode(value));
+          value = new UDIEntryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.entryType = (Enumeration) value; // Enumeration<UDIEntryType>
         } else
           return super.setProperty(name, value);
@@ -1244,10 +1244,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          value = new DeviceNameTypeEnumFactory().fromType(castToCode(value));
+          value = new DeviceNameTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<DeviceNameType>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -1258,9 +1258,9 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          value = new DeviceNameTypeEnumFactory().fromType(castToCode(value));
+          value = new DeviceNameTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<DeviceNameType>
         } else
           return super.setProperty(name, value);
@@ -1478,10 +1478,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 642893321: // systemType
-          this.systemType = castToCodeableConcept(value); // CodeableConcept
+          this.systemType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1491,9 +1491,9 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("systemType")) {
-          this.systemType = castToCodeableConcept(value); // CodeableConcept
+          this.systemType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1741,13 +1741,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1399907075: // component
-          this.component = castToIdentifier(value); // Identifier
+          this.component = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1757,11 +1757,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("component")) {
-          this.component = castToIdentifier(value); // Identifier
+          this.component = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2054,13 +2054,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2029823716: // valueQuantity
-          this.getValueQuantity().add(castToQuantity(value)); // Quantity
+          this.getValueQuantity().add(TypeConvertor.castToQuantity(value)); // Quantity
           return value;
         case -766209282: // valueCode
-          this.getValueCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getValueCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2070,11 +2070,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("valueQuantity")) {
-          this.getValueQuantity().add(castToQuantity(value));
+          this.getValueQuantity().add(TypeConvertor.castToQuantity(value));
         } else if (name.equals("valueCode")) {
-          this.getValueCode().add(castToCodeableConcept(value));
+          this.getValueCode().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -3632,50 +3632,50 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1014418093: // definition
-          this.definition = castToReference(value); // Reference
+          this.definition = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1343558178: // udiCarrier
           this.getUdiCarrier().add((DeviceUdiCarrierComponent) value); // DeviceUdiCarrierComponent
           return value;
         case -892481550: // status
-          value = new FHIRDeviceStatusEnumFactory().fromType(castToCode(value));
+          value = new FHIRDeviceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRDeviceStatus>
           return value;
         case 2051346646: // statusReason
-          this.getStatusReason().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1836176187: // distinctIdentifier
-          this.distinctIdentifier = castToString(value); // StringType
+          this.distinctIdentifier = TypeConvertor.castToString(value); // StringType
           return value;
         case -1969347631: // manufacturer
-          this.manufacturer = castToString(value); // StringType
+          this.manufacturer = TypeConvertor.castToString(value); // StringType
           return value;
         case 416714767: // manufactureDate
-          this.manufactureDate = castToDateTime(value); // DateTimeType
+          this.manufactureDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -668811523: // expirationDate
-          this.expirationDate = castToDateTime(value); // DateTimeType
+          this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 462547450: // lotNumber
-          this.lotNumber = castToString(value); // StringType
+          this.lotNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case 83787357: // serialNumber
-          this.serialNumber = castToString(value); // StringType
+          this.serialNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case 780988929: // deviceName
           this.getDeviceName().add((DeviceDeviceNameComponent) value); // DeviceDeviceNameComponent
           return value;
         case 346619858: // modelNumber
-          this.modelNumber = castToString(value); // StringType
+          this.modelNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case -731502308: // partNumber
-          this.partNumber = castToString(value); // StringType
+          this.partNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 682815883: // specialization
           this.getSpecialization().add((DeviceSpecializationComponent) value); // DeviceSpecializationComponent
@@ -3687,28 +3687,28 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           this.getProperty().add((DevicePropertyComponent) value); // DevicePropertyComponent
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 106164915: // owner
-          this.owner = castToReference(value); // Reference
+          this.owner = TypeConvertor.castToReference(value); // Reference
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactPoint(value)); // ContactPoint
+          this.getContact().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -909893934: // safety
-          this.getSafety().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSafety().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -995424086: // parent
-          this.parent = castToReference(value); // Reference
+          this.parent = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3718,36 +3718,36 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("definition")) {
-          this.definition = castToReference(value); // Reference
+          this.definition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("udiCarrier")) {
           this.getUdiCarrier().add((DeviceUdiCarrierComponent) value);
         } else if (name.equals("status")) {
-          value = new FHIRDeviceStatusEnumFactory().fromType(castToCode(value));
+          value = new FHIRDeviceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRDeviceStatus>
         } else if (name.equals("statusReason")) {
-          this.getStatusReason().add(castToCodeableConcept(value));
+          this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("distinctIdentifier")) {
-          this.distinctIdentifier = castToString(value); // StringType
+          this.distinctIdentifier = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("manufacturer")) {
-          this.manufacturer = castToString(value); // StringType
+          this.manufacturer = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("manufactureDate")) {
-          this.manufactureDate = castToDateTime(value); // DateTimeType
+          this.manufactureDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("expirationDate")) {
-          this.expirationDate = castToDateTime(value); // DateTimeType
+          this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("lotNumber")) {
-          this.lotNumber = castToString(value); // StringType
+          this.lotNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("serialNumber")) {
-          this.serialNumber = castToString(value); // StringType
+          this.serialNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("deviceName")) {
           this.getDeviceName().add((DeviceDeviceNameComponent) value);
         } else if (name.equals("modelNumber")) {
-          this.modelNumber = castToString(value); // StringType
+          this.modelNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("partNumber")) {
-          this.partNumber = castToString(value); // StringType
+          this.partNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("specialization")) {
           this.getSpecialization().add((DeviceSpecializationComponent) value);
         } else if (name.equals("version")) {
@@ -3755,21 +3755,21 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         } else if (name.equals("property")) {
           this.getProperty().add((DevicePropertyComponent) value);
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("owner")) {
-          this.owner = castToReference(value); // Reference
+          this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactPoint(value));
+          this.getContact().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("safety")) {
-          this.getSafety().add(castToCodeableConcept(value));
+          this.getSafety().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("parent")) {
-          this.parent = castToReference(value); // Reference
+          this.parent = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

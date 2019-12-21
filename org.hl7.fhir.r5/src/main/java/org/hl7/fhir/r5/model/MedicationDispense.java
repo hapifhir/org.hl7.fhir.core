@@ -387,10 +387,10 @@ public class MedicationDispense extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1380938712: // function
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -400,9 +400,9 @@ public class MedicationDispense extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("function")) {
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -716,16 +716,16 @@ public class MedicationDispense extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -592113567: // wasSubstituted
-          this.wasSubstituted = castToBoolean(value); // BooleanType
+          this.wasSubstituted = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -934964668: // reason
-          this.getReason().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1511509392: // responsibleParty
-          this.responsibleParty = castToReference(value); // Reference
+          this.responsibleParty = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -735,13 +735,13 @@ public class MedicationDispense extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("wasSubstituted")) {
-          this.wasSubstituted = castToBoolean(value); // BooleanType
+          this.wasSubstituted = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reason")) {
-          this.getReason().add(castToCodeableConcept(value));
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("responsibleParty")) {
-          this.responsibleParty = castToReference(value); // Reference
+          this.responsibleParty = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -877,7 +877,7 @@ public class MedicationDispense extends DomainResource {
     @Child(name = "statusReason", type = {CodeableConcept.class, DetectedIssue.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why a dispense was not performed", formalDefinition="Indicates the reason why a dispense was not performed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationdispense-status-reason")
-    protected Type statusReason;
+    protected DataType statusReason;
 
     /**
      * Indicates the type of medication dispense (for example, where the medication is expected to be consumed or administered (i.e. inpatient or outpatient)).
@@ -893,7 +893,7 @@ public class MedicationDispense extends DomainResource {
     @Child(name = "medication", type = {CodeableConcept.class, Medication.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What medication was supplied", formalDefinition="Identifies the medication being administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-codes")
-    protected Type medication;
+    protected DataType medication;
 
     /**
      * A link to a resource representing the person or the group to whom the medication will be given.
@@ -1034,7 +1034,7 @@ public class MedicationDispense extends DomainResource {
   /**
    * Constructor
    */
-    public MedicationDispense(Enumeration<MedicationDispenseStatus> status, Type medication) {
+    public MedicationDispense(Enumeration<MedicationDispenseStatus> status, DataType medication) {
       super();
       this.status = status;
       this.medication = medication;
@@ -1247,7 +1247,7 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return {@link #statusReason} (Indicates the reason why a dispense was not performed.)
      */
-    public Type getStatusReason() { 
+    public DataType getStatusReason() { 
       return this.statusReason;
     }
 
@@ -1288,7 +1288,7 @@ public class MedicationDispense extends DomainResource {
     /**
      * @param value {@link #statusReason} (Indicates the reason why a dispense was not performed.)
      */
-    public MedicationDispense setStatusReason(Type value) { 
+    public MedicationDispense setStatusReason(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for MedicationDispense.statusReason[x]: "+value.fhirType());
       this.statusReason = value;
@@ -1351,7 +1351,7 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return {@link #medication} (Identifies the medication being administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
      */
-    public Type getMedication() { 
+    public DataType getMedication() { 
       return this.medication;
     }
 
@@ -1392,7 +1392,7 @@ public class MedicationDispense extends DomainResource {
     /**
      * @param value {@link #medication} (Identifies the medication being administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.)
      */
-    public MedicationDispense setMedication(Type value) { 
+    public MedicationDispense setMedication(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for MedicationDispense.medication[x]: "+value.fhirType());
       this.medication = value;
@@ -2218,80 +2218,80 @@ public class MedicationDispense extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new MedicationDispenseStatusEnumFactory().fromType(castToCode(value));
+          value = new MedicationDispenseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationDispenseStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToType(value); // Type
+          this.statusReason = TypeConvertor.castToType(value); // Type
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1998965455: // medication
-          this.medication = castToType(value); // Type
+          this.medication = TypeConvertor.castToType(value); // Type
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1248768647: // supportingInformation
-          this.getSupportingInformation().add(castToReference(value)); // Reference
+          this.getSupportingInformation().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 481140686: // performer
           this.getPerformer().add((MedicationDispensePerformerComponent) value); // MedicationDispensePerformerComponent
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1237557856: // authorizingPrescription
-          this.getAuthorizingPrescription().add(castToReference(value)); // Reference
+          this.getAuthorizingPrescription().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 197175334: // daysSupply
-          this.daysSupply = castToQuantity(value); // Quantity
+          this.daysSupply = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -562837097: // whenPrepared
-          this.whenPrepared = castToDateTime(value); // DateTimeType
+          this.whenPrepared = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -940241380: // whenHandedOver
-          this.whenHandedOver = castToDateTime(value); // DateTimeType
+          this.whenHandedOver = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1429847026: // destination
-          this.destination = castToReference(value); // Reference
+          this.destination = TypeConvertor.castToReference(value); // Reference
           return value;
         case -808719889: // receiver
-          this.getReceiver().add(castToReference(value)); // Reference
+          this.getReceiver().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -1201373865: // dosageInstruction
-          this.getDosageInstruction().add(castToDosage(value)); // Dosage
+          this.getDosageInstruction().add(TypeConvertor.castToDosage(value)); // Dosage
           return value;
         case 826147581: // substitution
           this.substitution = (MedicationDispenseSubstitutionComponent) value; // MedicationDispenseSubstitutionComponent
           return value;
         case 51602295: // detectedIssue
-          this.getDetectedIssue().add(castToReference(value)); // Reference
+          this.getDetectedIssue().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1835190426: // eventHistory
-          this.getEventHistory().add(castToReference(value)); // Reference
+          this.getEventHistory().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2301,56 +2301,56 @@ public class MedicationDispense extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new MedicationDispenseStatusEnumFactory().fromType(castToCode(value));
+          value = new MedicationDispenseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationDispenseStatus>
         } else if (name.equals("statusReason[x]")) {
-          this.statusReason = castToType(value); // Type
+          this.statusReason = TypeConvertor.castToType(value); // Type
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("medication[x]")) {
-          this.medication = castToType(value); // Type
+          this.medication = TypeConvertor.castToType(value); // Type
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("supportingInformation")) {
-          this.getSupportingInformation().add(castToReference(value));
+          this.getSupportingInformation().add(TypeConvertor.castToReference(value));
         } else if (name.equals("performer")) {
           this.getPerformer().add((MedicationDispensePerformerComponent) value);
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("authorizingPrescription")) {
-          this.getAuthorizingPrescription().add(castToReference(value));
+          this.getAuthorizingPrescription().add(TypeConvertor.castToReference(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("daysSupply")) {
-          this.daysSupply = castToQuantity(value); // Quantity
+          this.daysSupply = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("whenPrepared")) {
-          this.whenPrepared = castToDateTime(value); // DateTimeType
+          this.whenPrepared = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("whenHandedOver")) {
-          this.whenHandedOver = castToDateTime(value); // DateTimeType
+          this.whenHandedOver = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("destination")) {
-          this.destination = castToReference(value); // Reference
+          this.destination = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("receiver")) {
-          this.getReceiver().add(castToReference(value));
+          this.getReceiver().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("dosageInstruction")) {
-          this.getDosageInstruction().add(castToDosage(value));
+          this.getDosageInstruction().add(TypeConvertor.castToDosage(value));
         } else if (name.equals("substitution")) {
           this.substitution = (MedicationDispenseSubstitutionComponent) value; // MedicationDispenseSubstitutionComponent
         } else if (name.equals("detectedIssue")) {
-          this.getDetectedIssue().add(castToReference(value));
+          this.getDetectedIssue().add(TypeConvertor.castToReference(value));
         } else if (name.equals("eventHistory")) {
-          this.getEventHistory().add(castToReference(value));
+          this.getEventHistory().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

@@ -67,7 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Related artifacts such as additional documentation, justification, or bibliographic references.
  */
 @DatatypeDef(name="RelatedArtifact")
-public class RelatedArtifact extends Type implements ICompositeType {
+public class RelatedArtifact extends DataType implements ICompositeType {
 
     public enum RelatedArtifactType {
         /**
@@ -683,26 +683,26 @@ public class RelatedArtifact extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new RelatedArtifactTypeEnumFactory().fromType(castToCode(value));
+          value = new RelatedArtifactTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<RelatedArtifactType>
           return value;
         case 102727412: // label
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         case -1442706713: // citation
-          this.citation = castToMarkdown(value); // MarkdownType
+          this.citation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 116079: // url
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case 861720859: // document
-          this.document = castToAttachment(value); // Attachment
+          this.document = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -341064690: // resource
-          this.resource = castToCanonical(value); // CanonicalType
+          this.resource = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -712,20 +712,20 @@ public class RelatedArtifact extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new RelatedArtifactTypeEnumFactory().fromType(castToCode(value));
+          value = new RelatedArtifactTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<RelatedArtifactType>
         } else if (name.equals("label")) {
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("citation")) {
-          this.citation = castToMarkdown(value); // MarkdownType
+          this.citation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("url")) {
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("document")) {
-          this.document = castToAttachment(value); // Attachment
+          this.document = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("resource")) {
-          this.resource = castToCanonical(value); // CanonicalType
+          this.resource = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;

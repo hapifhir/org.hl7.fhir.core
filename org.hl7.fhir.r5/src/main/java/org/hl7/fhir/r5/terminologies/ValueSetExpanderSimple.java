@@ -78,7 +78,7 @@ import org.hl7.fhir.r5.model.Factory;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -278,7 +278,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     }
   }
 
-  private boolean existsInParams(List<ValueSetExpansionParameterComponent> params, String name, Type value) {
+  private boolean existsInParams(List<ValueSetExpansionParameterComponent> params, String name, DataType value) {
     for (ValueSetExpansionParameterComponent p : params) {
       if (p.getName().equals(name) && PrimitiveType.compareDeep(p.getValue(), value, false))
         return true;

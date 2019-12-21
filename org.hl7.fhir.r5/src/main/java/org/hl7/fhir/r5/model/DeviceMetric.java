@@ -969,15 +969,15 @@ public class DeviceMetric extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new DeviceMetricCalibrationTypeEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricCalibrationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<DeviceMetricCalibrationType>
           return value;
         case 109757585: // state
-          value = new DeviceMetricCalibrationStateEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricCalibrationStateEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.state = (Enumeration) value; // Enumeration<DeviceMetricCalibrationState>
           return value;
         case 3560141: // time
-          this.time = castToInstant(value); // InstantType
+          this.time = TypeConvertor.castToInstant(value); // InstantType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -987,13 +987,13 @@ public class DeviceMetric extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new DeviceMetricCalibrationTypeEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricCalibrationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<DeviceMetricCalibrationType>
         } else if (name.equals("state")) {
-          value = new DeviceMetricCalibrationStateEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricCalibrationStateEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.state = (Enumeration) value; // Enumeration<DeviceMetricCalibrationState>
         } else if (name.equals("time")) {
-          this.time = castToInstant(value); // InstantType
+          this.time = TypeConvertor.castToInstant(value); // InstantType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1598,34 +1598,34 @@ public class DeviceMetric extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3594628: // unit
-          this.unit = castToCodeableConcept(value); // CodeableConcept
+          this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -896505829: // source
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         case -995424086: // parent
-          this.parent = castToReference(value); // Reference
+          this.parent = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2103166364: // operationalStatus
-          value = new DeviceMetricOperationalStatusEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricOperationalStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operationalStatus = (Enumeration) value; // Enumeration<DeviceMetricOperationalStatus>
           return value;
         case 94842723: // color
-          value = new DeviceMetricColorEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricColorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.color = (Enumeration) value; // Enumeration<DeviceMetricColor>
           return value;
         case 50511102: // category
-          value = new DeviceMetricCategoryEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.category = (Enumeration) value; // Enumeration<DeviceMetricCategory>
           return value;
         case -1300332387: // measurementPeriod
-          this.measurementPeriod = castToTiming(value); // Timing
+          this.measurementPeriod = TypeConvertor.castToTiming(value); // Timing
           return value;
         case 1421318634: // calibration
           this.getCalibration().add((DeviceMetricCalibrationComponent) value); // DeviceMetricCalibrationComponent
@@ -1638,26 +1638,26 @@ public class DeviceMetric extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unit")) {
-          this.unit = castToCodeableConcept(value); // CodeableConcept
+          this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("source")) {
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("parent")) {
-          this.parent = castToReference(value); // Reference
+          this.parent = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("operationalStatus")) {
-          value = new DeviceMetricOperationalStatusEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricOperationalStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operationalStatus = (Enumeration) value; // Enumeration<DeviceMetricOperationalStatus>
         } else if (name.equals("color")) {
-          value = new DeviceMetricColorEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricColorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.color = (Enumeration) value; // Enumeration<DeviceMetricColor>
         } else if (name.equals("category")) {
-          value = new DeviceMetricCategoryEnumFactory().fromType(castToCode(value));
+          value = new DeviceMetricCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.category = (Enumeration) value; // Enumeration<DeviceMetricCategory>
         } else if (name.equals("measurementPeriod")) {
-          this.measurementPeriod = castToTiming(value); // Timing
+          this.measurementPeriod = TypeConvertor.castToTiming(value); // Timing
         } else if (name.equals("calibration")) {
           this.getCalibration().add((DeviceMetricCalibrationComponent) value);
         } else

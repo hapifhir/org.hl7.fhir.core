@@ -77,7 +77,7 @@ public class XhtmlType extends Element {
         // div is already generated with getValue, we cannot just overwrite it
         place.getDiv().setValueAsString(((StringType) value).asStringValue());
       } else {
-        place.setDiv(castToXhtml(value));
+        place.setDiv(TypeConvertor.castToXhtml(value));
       }
       return value;
     } else

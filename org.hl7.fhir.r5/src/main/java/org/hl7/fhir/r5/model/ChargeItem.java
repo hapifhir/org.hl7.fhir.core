@@ -356,10 +356,10 @@ public class ChargeItem extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1380938712: // function
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -369,9 +369,9 @@ public class ChargeItem extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("function")) {
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -517,7 +517,7 @@ public class ChargeItem extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the charged service was applied", formalDefinition="Date/time(s) or duration when the charged service was applied." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * Indicates who or what performed or participated in the charged service.
@@ -618,7 +618,7 @@ public class ChargeItem extends DomainResource {
     @Child(name = "product", type = {Device.class, Medication.class, Substance.class, CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Product charged", formalDefinition="Identifies the device, food, drug or other product being charged either by type code or reference to an instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-kind")
-    protected Type product;
+    protected DataType product;
 
     /**
      * Account into which this ChargeItems belongs.
@@ -1008,7 +1008,7 @@ public class ChargeItem extends DomainResource {
     /**
      * @return {@link #occurrence} (Date/time(s) or duration when the charged service was applied.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1064,7 +1064,7 @@ public class ChargeItem extends DomainResource {
     /**
      * @param value {@link #occurrence} (Date/time(s) or duration when the charged service was applied.)
      */
-    public ChargeItem setOccurrence(Type value) { 
+    public ChargeItem setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
         throw new Error("Not the right type for ChargeItem.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1595,7 +1595,7 @@ public class ChargeItem extends DomainResource {
     /**
      * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
      */
-    public Type getProduct() { 
+    public DataType getProduct() { 
       return this.product;
     }
 
@@ -1636,7 +1636,7 @@ public class ChargeItem extends DomainResource {
     /**
      * @param value {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
      */
-    public ChargeItem setProduct(Type value) { 
+    public ChargeItem setProduct(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
         throw new Error("Not the right type for ChargeItem.product[x]: "+value.fhirType());
       this.product = value;
@@ -1911,83 +1911,83 @@ public class ChargeItem extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1139428583: // definitionUri
-          this.getDefinitionUri().add(castToUri(value)); // UriType
+          this.getDefinitionUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case 933485793: // definitionCanonical
-          this.getDefinitionCanonical().add(castToCanonical(value)); // CanonicalType
+          this.getDefinitionCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -892481550: // status
-          value = new ChargeItemStatusEnumFactory().fromType(castToCode(value));
+          value = new ChargeItemStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ChargeItemStatus>
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 951530927: // context
-          this.context = castToReference(value); // Reference
+          this.context = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case 481140686: // performer
           this.getPerformer().add((ChargeItemPerformerComponent) value); // ChargeItemPerformerComponent
           return value;
         case 1273192628: // performingOrganization
-          this.performingOrganization = castToReference(value); // Reference
+          this.performingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1279054790: // requestingOrganization
-          this.requestingOrganization = castToReference(value); // Reference
+          this.requestingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -593192318: // costCenter
-          this.costCenter = castToReference(value); // Reference
+          this.costCenter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 1703573481: // bodysite
-          this.getBodysite().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getBodysite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -451233221: // factorOverride
-          this.factorOverride = castToDecimal(value); // DecimalType
+          this.factorOverride = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -216803275: // priceOverride
-          this.priceOverride = castToMoney(value); // Money
+          this.priceOverride = TypeConvertor.castToMoney(value); // Money
           return value;
         case -742878928: // overrideReason
-          this.overrideReason = castToString(value); // StringType
+          this.overrideReason = TypeConvertor.castToString(value); // StringType
           return value;
         case -1591951995: // enterer
-          this.enterer = castToReference(value); // Reference
+          this.enterer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 555978181: // enteredDate
-          this.enteredDate = castToDateTime(value); // DateTimeType
+          this.enteredDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -934964668: // reason
-          this.getReason().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1984153269: // service
-          this.getService().add(castToReference(value)); // Reference
+          this.getService().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -309474065: // product
-          this.product = castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // Type
           return value;
         case -1177318867: // account
-          this.getAccount().add(castToReference(value)); // Reference
+          this.getAccount().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -1248768647: // supportingInformation
-          this.getSupportingInformation().add(castToReference(value)); // Reference
+          this.getSupportingInformation().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1997,58 +1997,58 @@ public class ChargeItem extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("definitionUri")) {
-          this.getDefinitionUri().add(castToUri(value));
+          this.getDefinitionUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("definitionCanonical")) {
-          this.getDefinitionCanonical().add(castToCanonical(value));
+          this.getDefinitionCanonical().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("status")) {
-          value = new ChargeItemStatusEnumFactory().fromType(castToCode(value));
+          value = new ChargeItemStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ChargeItemStatus>
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("context")) {
-          this.context = castToReference(value); // Reference
+          this.context = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("performer")) {
           this.getPerformer().add((ChargeItemPerformerComponent) value);
         } else if (name.equals("performingOrganization")) {
-          this.performingOrganization = castToReference(value); // Reference
+          this.performingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("requestingOrganization")) {
-          this.requestingOrganization = castToReference(value); // Reference
+          this.requestingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("costCenter")) {
-          this.costCenter = castToReference(value); // Reference
+          this.costCenter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("bodysite")) {
-          this.getBodysite().add(castToCodeableConcept(value));
+          this.getBodysite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("factorOverride")) {
-          this.factorOverride = castToDecimal(value); // DecimalType
+          this.factorOverride = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("priceOverride")) {
-          this.priceOverride = castToMoney(value); // Money
+          this.priceOverride = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("overrideReason")) {
-          this.overrideReason = castToString(value); // StringType
+          this.overrideReason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("enterer")) {
-          this.enterer = castToReference(value); // Reference
+          this.enterer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("enteredDate")) {
-          this.enteredDate = castToDateTime(value); // DateTimeType
+          this.enteredDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("reason")) {
-          this.getReason().add(castToCodeableConcept(value));
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("service")) {
-          this.getService().add(castToReference(value));
+          this.getService().add(TypeConvertor.castToReference(value));
         } else if (name.equals("product[x]")) {
-          this.product = castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // Type
         } else if (name.equals("account")) {
-          this.getAccount().add(castToReference(value));
+          this.getAccount().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("supportingInformation")) {
-          this.getSupportingInformation().add(castToReference(value));
+          this.getSupportingInformation().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

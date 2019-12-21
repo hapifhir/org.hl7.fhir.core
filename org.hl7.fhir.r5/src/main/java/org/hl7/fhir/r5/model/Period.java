@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
  * A time period defined by a start and end date and optionally time.
  */
 @DatatypeDef(name="Period")
-public class Period extends Type implements ICompositeType {
+public class Period extends DataType implements ICompositeType {
 
     /**
      * The start of the period. The boundary is inclusive.
@@ -250,10 +250,10 @@ public class Period extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 109757538: // start
-          this.start = castToDateTime(value); // DateTimeType
+          this.start = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 100571: // end
-          this.end = castToDateTime(value); // DateTimeType
+          this.end = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -263,9 +263,9 @@ public class Period extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("start")) {
-          this.start = castToDateTime(value); // DateTimeType
+          this.start = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("end")) {
-          this.end = castToDateTime(value); // DateTimeType
+          this.end = TypeConvertor.castToDateTime(value); // DateTimeType
         } else
           return super.setProperty(name, value);
         return value;

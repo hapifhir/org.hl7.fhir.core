@@ -899,14 +899,14 @@ public class Composition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new CompositionAttestationModeEnumFactory().fromType(castToCode(value));
+          value = new CompositionAttestationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<CompositionAttestationMode>
           return value;
         case 3560141: // time
-          this.time = castToDateTime(value); // DateTimeType
+          this.time = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 106437350: // party
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -916,12 +916,12 @@ public class Composition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new CompositionAttestationModeEnumFactory().fromType(castToCode(value));
+          value = new CompositionAttestationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<CompositionAttestationMode>
         } else if (name.equals("time")) {
-          this.time = castToDateTime(value); // DateTimeType
+          this.time = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("party")) {
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1025,7 +1025,7 @@ public class Composition extends DomainResource {
          */
         @Child(name = "target", type = {Identifier.class, Composition.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Target of the relationship", formalDefinition="The target composition/document of this relationship." )
-        protected Type target;
+        protected DataType target;
 
         private static final long serialVersionUID = 1536930280L;
 
@@ -1039,7 +1039,7 @@ public class Composition extends DomainResource {
     /**
      * Constructor
      */
-      public CompositionRelatesToComponent(Enumeration<DocumentRelationshipType> code, Type target) {
+      public CompositionRelatesToComponent(Enumeration<DocumentRelationshipType> code, DataType target) {
         super();
         this.code = code;
         this.target = target;
@@ -1093,7 +1093,7 @@ public class Composition extends DomainResource {
         /**
          * @return {@link #target} (The target composition/document of this relationship.)
          */
-        public Type getTarget() { 
+        public DataType getTarget() { 
           return this.target;
         }
 
@@ -1134,7 +1134,7 @@ public class Composition extends DomainResource {
         /**
          * @param value {@link #target} (The target composition/document of this relationship.)
          */
-        public CompositionRelatesToComponent setTarget(Type value) { 
+        public CompositionRelatesToComponent setTarget(DataType value) { 
           if (value != null && !(value instanceof Identifier || value instanceof Reference))
             throw new Error("Not the right type for Composition.relatesTo.target[x]: "+value.fhirType());
           this.target = value;
@@ -1174,11 +1174,11 @@ public class Composition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          value = new DocumentRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new DocumentRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<DocumentRelationshipType>
           return value;
         case -880905839: // target
-          this.target = castToType(value); // Type
+          this.target = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1188,10 +1188,10 @@ public class Composition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          value = new DocumentRelationshipTypeEnumFactory().fromType(castToCode(value));
+          value = new DocumentRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<DocumentRelationshipType>
         } else if (name.equals("target[x]")) {
-          this.target = castToType(value); // Type
+          this.target = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1474,13 +1474,13 @@ public class Composition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -1335224239: // detail
-          this.getDetail().add(castToReference(value)); // Reference
+          this.getDetail().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1490,11 +1490,11 @@ public class Composition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("detail")) {
-          this.getDetail().add(castToReference(value));
+          this.getDetail().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2107,32 +2107,32 @@ public class Composition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToReference(value)); // Reference
+          this.getAuthor().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 97604824: // focus
-          this.focus = castToReference(value); // Reference
+          this.focus = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3556653: // text
-          this.text = castToNarrative(value); // Narrative
+          this.text = TypeConvertor.castToNarrative(value); // Narrative
           return value;
         case 3357091: // mode
-          value = new SectionModeEnumFactory().fromType(castToCode(value));
+          value = new SectionModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<SectionMode>
           return value;
         case -391079516: // orderedBy
-          this.orderedBy = castToCodeableConcept(value); // CodeableConcept
+          this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 96667762: // entry
-          this.getEntry().add(castToReference(value)); // Reference
+          this.getEntry().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1140135409: // emptyReason
-          this.emptyReason = castToCodeableConcept(value); // CodeableConcept
+          this.emptyReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1970241253: // section
           this.getSection().add((SectionComponent) value); // SectionComponent
@@ -2145,24 +2145,24 @@ public class Composition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToReference(value));
+          this.getAuthor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("focus")) {
-          this.focus = castToReference(value); // Reference
+          this.focus = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("text")) {
-          this.text = castToNarrative(value); // Narrative
+          this.text = TypeConvertor.castToNarrative(value); // Narrative
         } else if (name.equals("mode")) {
-          value = new SectionModeEnumFactory().fromType(castToCode(value));
+          value = new SectionModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<SectionMode>
         } else if (name.equals("orderedBy")) {
-          this.orderedBy = castToCodeableConcept(value); // CodeableConcept
+          this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("entry")) {
-          this.getEntry().add(castToReference(value));
+          this.getEntry().add(TypeConvertor.castToReference(value));
         } else if (name.equals("emptyReason")) {
-          this.emptyReason = castToCodeableConcept(value); // CodeableConcept
+          this.emptyReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("section")) {
           this.getSection().add((SectionComponent) value);
         } else
@@ -3134,42 +3134,42 @@ public class Composition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new CompositionStatusEnumFactory().fromType(castToCode(value));
+          value = new CompositionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CompositionStatus>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToReference(value)); // Reference
+          this.getAuthor().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1923018202: // confidentiality
-          value = new DocumentConfidentialityEnumFactory().fromType(castToCode(value));
+          value = new DocumentConfidentialityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.confidentiality = (Enumeration) value; // Enumeration<DocumentConfidentiality>
           return value;
         case 542920370: // attester
           this.getAttester().add((CompositionAttesterComponent) value); // CompositionAttesterComponent
           return value;
         case 1611297262: // custodian
-          this.custodian = castToReference(value); // Reference
+          this.custodian = TypeConvertor.castToReference(value); // Reference
           return value;
         case -7765931: // relatesTo
           this.getRelatesTo().add((CompositionRelatesToComponent) value); // CompositionRelatesToComponent
@@ -3188,31 +3188,31 @@ public class Composition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new CompositionStatusEnumFactory().fromType(castToCode(value));
+          value = new CompositionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CompositionStatus>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToReference(value));
+          this.getAuthor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("confidentiality")) {
-          value = new DocumentConfidentialityEnumFactory().fromType(castToCode(value));
+          value = new DocumentConfidentialityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.confidentiality = (Enumeration) value; // Enumeration<DocumentConfidentiality>
         } else if (name.equals("attester")) {
           this.getAttester().add((CompositionAttesterComponent) value);
         } else if (name.equals("custodian")) {
-          this.custodian = castToReference(value); // Reference
+          this.custodian = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("relatesTo")) {
           this.getRelatesTo().add((CompositionRelatesToComponent) value);
         } else if (name.equals("event")) {

@@ -994,23 +994,23 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1868521062: // subType
-          this.subType = castToCodeableConcept(value); // CodeableConcept
+          this.subType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1447404028: // publisher
-          this.publisher = castToReference(value); // Reference
+          this.publisher = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1470566394: // publicationDate
-          this.publicationDate = castToDateTime(value); // DateTimeType
+          this.publicationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 616500542: // publicationStatus
-          value = new ContractPublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new ContractPublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.publicationStatus = (Enumeration) value; // Enumeration<ContractPublicationStatus>
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1020,18 +1020,18 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subType")) {
-          this.subType = castToCodeableConcept(value); // CodeableConcept
+          this.subType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("publisher")) {
-          this.publisher = castToReference(value); // Reference
+          this.publisher = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("publicationDate")) {
-          this.publicationDate = castToDateTime(value); // DateTimeType
+          this.publicationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publicationStatus")) {
-          value = new ContractPublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new ContractPublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.publicationStatus = (Enumeration) value; // Enumeration<ContractPublicationStatus>
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1171,7 +1171,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "topic", type = {CodeableConcept.class, Reference.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Term Concern", formalDefinition="The entity that the term applies to." )
-        protected Type topic;
+        protected DataType topic;
 
         /**
          * A legal clause or condition contained within a contract that requires one or both parties to perform a particular requirement by some specified time or prevents one or both parties from performing a particular requirement by some specified time.
@@ -1348,7 +1348,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #topic} (The entity that the term applies to.)
          */
-        public Type getTopic() { 
+        public DataType getTopic() { 
           return this.topic;
         }
 
@@ -1389,7 +1389,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #topic} (The entity that the term applies to.)
          */
-        public TermComponent setTopic(Type value) { 
+        public TermComponent setTopic(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Contract.term.topic[x]: "+value.fhirType());
           this.topic = value;
@@ -1792,25 +1792,25 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1179159893: // issued
-          this.issued = castToDateTime(value); // DateTimeType
+          this.issued = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -793235316: // applies
-          this.applies = castToPeriod(value); // Period
+          this.applies = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 110546223: // topic
-          this.topic = castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // Type
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1868521062: // subType
-          this.subType = castToCodeableConcept(value); // CodeableConcept
+          this.subType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case -722296940: // securityLabel
           this.getSecurityLabel().add((SecurityLabelComponent) value); // SecurityLabelComponent
@@ -1835,19 +1835,19 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("issued")) {
-          this.issued = castToDateTime(value); // DateTimeType
+          this.issued = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("applies")) {
-          this.applies = castToPeriod(value); // Period
+          this.applies = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("topic[x]")) {
-          this.topic = castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // Type
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subType")) {
-          this.subType = castToCodeableConcept(value); // CodeableConcept
+          this.subType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("securityLabel")) {
           this.getSecurityLabel().add((SecurityLabelComponent) value);
         } else if (name.equals("offer")) {
@@ -2307,16 +2307,16 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1034364087: // number
-          this.getNumber().add(castToUnsignedInt(value)); // UnsignedIntType
+          this.getNumber().add(TypeConvertor.castToUnsignedInt(value)); // UnsignedIntType
           return value;
         case 382350310: // classification
-          this.classification = castToCoding(value); // Coding
+          this.classification = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCoding(value)); // Coding
+          this.getCategory().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 951543133: // control
-          this.getControl().add(castToCoding(value)); // Coding
+          this.getControl().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2326,13 +2326,13 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("number")) {
-          this.getNumber().add(castToUnsignedInt(value));
+          this.getNumber().add(TypeConvertor.castToUnsignedInt(value));
         } else if (name.equals("classification")) {
-          this.classification = castToCoding(value); // Coding
+          this.classification = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCoding(value));
+          this.getCategory().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("control")) {
-          this.getControl().add(castToCoding(value));
+          this.getControl().add(TypeConvertor.castToCoding(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -3033,34 +3033,34 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 106437350: // party
           this.getParty().add((ContractPartyComponent) value); // ContractPartyComponent
           return value;
         case 110546223: // topic
-          this.topic = castToReference(value); // Reference
+          this.topic = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 565719004: // decision
-          this.decision = castToCodeableConcept(value); // CodeableConcept
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 675909535: // decisionMode
-          this.getDecisionMode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getDecisionMode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1412808770: // answer
           this.getAnswer().add((AnswerComponent) value); // AnswerComponent
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case -1102667083: // linkId
-          this.getLinkId().add(castToString(value)); // StringType
+          this.getLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -149460995: // securityLabelNumber
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value)); // UnsignedIntType
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value)); // UnsignedIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3070,25 +3070,25 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("party")) {
           this.getParty().add((ContractPartyComponent) value);
         } else if (name.equals("topic")) {
-          this.topic = castToReference(value); // Reference
+          this.topic = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("decision")) {
-          this.decision = castToCodeableConcept(value); // CodeableConcept
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("decisionMode")) {
-          this.getDecisionMode().add(castToCodeableConcept(value));
+          this.getDecisionMode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("answer")) {
           this.getAnswer().add((AnswerComponent) value);
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("linkId")) {
-          this.getLinkId().add(castToString(value));
+          this.getLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("securityLabelNumber")) {
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value));
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -3390,10 +3390,10 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -925155509: // reference
-          this.getReference().add(castToReference(value)); // Reference
+          this.getReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3403,9 +3403,9 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
-          this.getReference().add(castToReference(value));
+          this.getReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -3498,7 +3498,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The actual answer response", formalDefinition="Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = -732981989L;
 
@@ -3512,7 +3512,7 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public AnswerComponent(Type value) {
+      public AnswerComponent(DataType value) {
         super();
         this.value = value;
       }
@@ -3520,7 +3520,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -3711,7 +3711,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
          */
-        public AnswerComponent setValue(Type value) { 
+        public AnswerComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
             throw new Error("Not the right type for Contract.term.offer.answer.value[x]: "+value.fhirType());
           this.value = value;
@@ -3758,7 +3758,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3768,7 +3768,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -4824,46 +4824,46 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 109264468: // scope
-          this.scope = castToCodeableConcept(value); // CodeableConcept
+          this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 2074825009: // typeReference
-          this.getTypeReference().add(castToReference(value)); // Reference
+          this.getTypeReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1867567750: // subtype
-          this.getSubtype().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSubtype().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -261851592: // relationship
-          this.relationship = castToCoding(value); // Coding
+          this.relationship = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 951530927: // context
           this.getContext().add((AssetContextComponent) value); // AssetContextComponent
           return value;
         case -861311717: // condition
-          this.condition = castToString(value); // StringType
+          this.condition = TypeConvertor.castToString(value); // StringType
           return value;
         case 384348315: // periodType
-          this.getPeriodType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getPeriodType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -991726143: // period
-          this.getPeriod().add(castToPeriod(value)); // Period
+          this.getPeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
         case -628382168: // usePeriod
-          this.getUsePeriod().add(castToPeriod(value)); // Period
+          this.getUsePeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case -1102667083: // linkId
-          this.getLinkId().add(castToString(value)); // StringType
+          this.getLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1412808770: // answer
           this.getAnswer().add((AnswerComponent) value); // AnswerComponent
           return value;
         case -149460995: // securityLabelNumber
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value)); // UnsignedIntType
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value)); // UnsignedIntType
           return value;
         case 2046675654: // valuedItem
           this.getValuedItem().add((ValuedItemComponent) value); // ValuedItemComponent
@@ -4876,33 +4876,33 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("scope")) {
-          this.scope = castToCodeableConcept(value); // CodeableConcept
+          this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("typeReference")) {
-          this.getTypeReference().add(castToReference(value));
+          this.getTypeReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("subtype")) {
-          this.getSubtype().add(castToCodeableConcept(value));
+          this.getSubtype().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("relationship")) {
-          this.relationship = castToCoding(value); // Coding
+          this.relationship = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("context")) {
           this.getContext().add((AssetContextComponent) value);
         } else if (name.equals("condition")) {
-          this.condition = castToString(value); // StringType
+          this.condition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("periodType")) {
-          this.getPeriodType().add(castToCodeableConcept(value));
+          this.getPeriodType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("period")) {
-          this.getPeriod().add(castToPeriod(value));
+          this.getPeriod().add(TypeConvertor.castToPeriod(value));
         } else if (name.equals("usePeriod")) {
-          this.getUsePeriod().add(castToPeriod(value));
+          this.getUsePeriod().add(TypeConvertor.castToPeriod(value));
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("linkId")) {
-          this.getLinkId().add(castToString(value));
+          this.getLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("answer")) {
           this.getAnswer().add((AnswerComponent) value);
         } else if (name.equals("securityLabelNumber")) {
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value));
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value));
         } else if (name.equals("valuedItem")) {
           this.getValuedItem().add((ValuedItemComponent) value);
         } else
@@ -5309,13 +5309,13 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5325,11 +5325,11 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5429,7 +5429,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "entity", type = {CodeableConcept.class, Reference.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Contract Valued Item Type", formalDefinition="Specific type of Contract Valued Item that may be priced." )
-        protected Type entity;
+        protected DataType entity;
 
         /**
          * Identifies a Contract Valued Item instance.
@@ -5534,7 +5534,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #entity} (Specific type of Contract Valued Item that may be priced.)
          */
-        public Type getEntity() { 
+        public DataType getEntity() { 
           return this.entity;
         }
 
@@ -5575,7 +5575,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #entity} (Specific type of Contract Valued Item that may be priced.)
          */
-        public ValuedItemComponent setEntity(Type value) { 
+        public ValuedItemComponent setEntity(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Contract.term.asset.valuedItem.entity[x]: "+value.fhirType());
           this.entity = value;
@@ -6198,46 +6198,46 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1298275357: // entity
-          this.entity = castToType(value); // Type
+          this.entity = TypeConvertor.castToType(value); // Type
           return value;
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -929905388: // effectiveTime
-          this.effectiveTime = castToDateTime(value); // DateTimeType
+          this.effectiveTime = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -486196699: // unitPrice
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -982754077: // points
-          this.points = castToDecimal(value); // DecimalType
+          this.points = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 108957: // net
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -786681338: // payment
-          this.payment = castToString(value); // StringType
+          this.payment = TypeConvertor.castToString(value); // StringType
           return value;
         case -1540873516: // paymentDate
-          this.paymentDate = castToDateTime(value); // DateTimeType
+          this.paymentDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1847674614: // responsible
-          this.responsible = castToReference(value); // Reference
+          this.responsible = TypeConvertor.castToReference(value); // Reference
           return value;
         case 820081177: // recipient
-          this.recipient = castToReference(value); // Reference
+          this.recipient = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1102667083: // linkId
-          this.getLinkId().add(castToString(value)); // StringType
+          this.getLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -149460995: // securityLabelNumber
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value)); // UnsignedIntType
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value)); // UnsignedIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6247,33 +6247,33 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("entity[x]")) {
-          this.entity = castToType(value); // Type
+          this.entity = TypeConvertor.castToType(value); // Type
         } else if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("effectiveTime")) {
-          this.effectiveTime = castToDateTime(value); // DateTimeType
+          this.effectiveTime = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
-          this.unitPrice = castToMoney(value); // Money
+          this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("points")) {
-          this.points = castToDecimal(value); // DecimalType
+          this.points = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("net")) {
-          this.net = castToMoney(value); // Money
+          this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("payment")) {
-          this.payment = castToString(value); // StringType
+          this.payment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("paymentDate")) {
-          this.paymentDate = castToDateTime(value); // DateTimeType
+          this.paymentDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("responsible")) {
-          this.responsible = castToReference(value); // Reference
+          this.responsible = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("recipient")) {
-          this.recipient = castToReference(value); // Reference
+          this.recipient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("linkId")) {
-          this.getLinkId().add(castToString(value));
+          this.getLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("securityLabelNumber")) {
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value));
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -6522,7 +6522,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "occurrence", type = {DateTimeType.class, Period.class, Timing.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When action happens", formalDefinition="When action happens." )
-        protected Type occurrence;
+        protected DataType occurrence;
 
         /**
          * Who or what initiated the action and has responsibility for its activation.
@@ -6949,7 +6949,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #occurrence} (When action happens.)
          */
-        public Type getOccurrence() { 
+        public DataType getOccurrence() { 
           return this.occurrence;
         }
 
@@ -7005,7 +7005,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #occurrence} (When action happens.)
          */
-        public ActionComponent setOccurrence(Type value) { 
+        public ActionComponent setOccurrence(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
             throw new Error("Not the right type for Contract.term.action.occurrence[x]: "+value.fhirType());
           this.occurrence = value;
@@ -7721,67 +7721,67 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1788508167: // doNotPerform
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
           this.getSubject().add((ActionSubjectComponent) value); // ActionSubjectComponent
           return value;
         case -1183762788: // intent
-          this.intent = castToCodeableConcept(value); // CodeableConcept
+          this.intent = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1102667083: // linkId
-          this.getLinkId().add(castToString(value)); // StringType
+          this.getLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -892481550: // status
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 951530927: // context
-          this.context = castToReference(value); // Reference
+          this.context = TypeConvertor.castToReference(value); // Reference
           return value;
         case -288783036: // contextLinkId
-          this.getContextLinkId().add(castToString(value)); // StringType
+          this.getContextLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case 693933948: // requester
-          this.getRequester().add(castToReference(value)); // Reference
+          this.getRequester().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1468032687: // requesterLinkId
-          this.getRequesterLinkId().add(castToString(value)); // StringType
+          this.getRequesterLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -901444568: // performerType
-          this.getPerformerType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getPerformerType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -901513884: // performerRole
-          this.performerRole = castToCodeableConcept(value); // CodeableConcept
+          this.performerRole = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 481140686: // performer
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1051302947: // performerLinkId
-          this.getPerformerLinkId().add(castToString(value)); // StringType
+          this.getPerformerLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -934964668: // reason
-          this.getReason().add(castToString(value)); // StringType
+          this.getReason().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1557963239: // reasonLinkId
-          this.getReasonLinkId().add(castToString(value)); // StringType
+          this.getReasonLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -149460995: // securityLabelNumber
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value)); // UnsignedIntType
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value)); // UnsignedIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -7791,47 +7791,47 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("doNotPerform")) {
-          this.doNotPerform = castToBoolean(value); // BooleanType
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
           this.getSubject().add((ActionSubjectComponent) value);
         } else if (name.equals("intent")) {
-          this.intent = castToCodeableConcept(value); // CodeableConcept
+          this.intent = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("linkId")) {
-          this.getLinkId().add(castToString(value));
+          this.getLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("status")) {
-          this.status = castToCodeableConcept(value); // CodeableConcept
+          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("context")) {
-          this.context = castToReference(value); // Reference
+          this.context = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contextLinkId")) {
-          this.getContextLinkId().add(castToString(value));
+          this.getContextLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("requester")) {
-          this.getRequester().add(castToReference(value));
+          this.getRequester().add(TypeConvertor.castToReference(value));
         } else if (name.equals("requesterLinkId")) {
-          this.getRequesterLinkId().add(castToString(value));
+          this.getRequesterLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("performerType")) {
-          this.getPerformerType().add(castToCodeableConcept(value));
+          this.getPerformerType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("performerRole")) {
-          this.performerRole = castToCodeableConcept(value); // CodeableConcept
+          this.performerRole = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("performer")) {
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performerLinkId")) {
-          this.getPerformerLinkId().add(castToString(value));
+          this.getPerformerLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reason")) {
-          this.getReason().add(castToString(value));
+          this.getReason().add(TypeConvertor.castToString(value));
         } else if (name.equals("reasonLinkId")) {
-          this.getReasonLinkId().add(castToString(value));
+          this.getReasonLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("securityLabelNumber")) {
-          this.getSecurityLabelNumber().add(castToUnsignedInt(value));
+          this.getSecurityLabelNumber().add(TypeConvertor.castToUnsignedInt(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -8241,10 +8241,10 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -925155509: // reference
-          this.getReference().add(castToReference(value)); // Reference
+          this.getReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8254,9 +8254,9 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
-          this.getReference().add(castToReference(value));
+          this.getReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -8518,13 +8518,13 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCoding(value); // Coding
+          this.type = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 106437350: // party
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1073584312: // signature
-          this.getSignature().add(castToSignature(value)); // Signature
+          this.getSignature().add(TypeConvertor.castToSignature(value)); // Signature
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8534,11 +8534,11 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCoding(value); // Coding
+          this.type = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("party")) {
-          this.party = castToReference(value); // Reference
+          this.party = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("signature")) {
-          this.getSignature().add(castToSignature(value));
+          this.getSignature().add(TypeConvertor.castToSignature(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -8639,7 +8639,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "content", type = {Attachment.class, Composition.class, DocumentReference.class, QuestionnaireResponse.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Easily comprehended representation of this Contract", formalDefinition="Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability." )
-        protected Type content;
+        protected DataType content;
 
         private static final long serialVersionUID = -1763459053L;
 
@@ -8653,7 +8653,7 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public FriendlyLanguageComponent(Type content) {
+      public FriendlyLanguageComponent(DataType content) {
         super();
         this.content = content;
       }
@@ -8661,7 +8661,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #content} (Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.)
          */
-        public Type getContent() { 
+        public DataType getContent() { 
           return this.content;
         }
 
@@ -8702,7 +8702,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #content} (Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.)
          */
-        public FriendlyLanguageComponent setContent(Type value) { 
+        public FriendlyLanguageComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference))
             throw new Error("Not the right type for Contract.friendly.content[x]: "+value.fhirType());
           this.content = value;
@@ -8739,7 +8739,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8749,7 +8749,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -8837,7 +8837,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "content", type = {Attachment.class, Composition.class, DocumentReference.class, QuestionnaireResponse.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Contract Legal Text", formalDefinition="Contract legal text in human renderable form." )
-        protected Type content;
+        protected DataType content;
 
         private static final long serialVersionUID = -1763459053L;
 
@@ -8851,7 +8851,7 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public LegalLanguageComponent(Type content) {
+      public LegalLanguageComponent(DataType content) {
         super();
         this.content = content;
       }
@@ -8859,7 +8859,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #content} (Contract legal text in human renderable form.)
          */
-        public Type getContent() { 
+        public DataType getContent() { 
           return this.content;
         }
 
@@ -8900,7 +8900,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #content} (Contract legal text in human renderable form.)
          */
-        public LegalLanguageComponent setContent(Type value) { 
+        public LegalLanguageComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference))
             throw new Error("Not the right type for Contract.legal.content[x]: "+value.fhirType());
           this.content = value;
@@ -8937,7 +8937,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8947,7 +8947,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -9035,7 +9035,7 @@ public class Contract extends DomainResource {
          */
         @Child(name = "content", type = {Attachment.class, DocumentReference.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Computable Contract Rules", formalDefinition="Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal)." )
-        protected Type content;
+        protected DataType content;
 
         private static final long serialVersionUID = -1763459053L;
 
@@ -9049,7 +9049,7 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public ComputableLanguageComponent(Type content) {
+      public ComputableLanguageComponent(DataType content) {
         super();
         this.content = content;
       }
@@ -9057,7 +9057,7 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #content} (Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).)
          */
-        public Type getContent() { 
+        public DataType getContent() { 
           return this.content;
         }
 
@@ -9098,7 +9098,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #content} (Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).)
          */
-        public ComputableLanguageComponent setContent(Type value) { 
+        public ComputableLanguageComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference))
             throw new Error("Not the right type for Contract.rule.content[x]: "+value.fhirType());
           this.content = value;
@@ -9135,7 +9135,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -9145,7 +9145,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -9383,7 +9383,7 @@ public class Contract extends DomainResource {
      */
     @Child(name = "topic", type = {CodeableConcept.class, Reference.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Focus of contract interest", formalDefinition="Narrows the range of legal concerns to focus on the achievement of specific contractual objectives." )
-    protected Type topic;
+    protected DataType topic;
 
     /**
      * A high-level category for the legal instrument, whether constructed as a Contract definition, derivative, or instance in any legal state.  Provides additional information about its content within the context of the Contract's scope to distinguish the kinds of systems that would be interested in the contract.
@@ -9462,7 +9462,7 @@ public class Contract extends DomainResource {
      */
     @Child(name = "legallyBinding", type = {Attachment.class, Composition.class, DocumentReference.class, QuestionnaireResponse.class, Contract.class}, order=32, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Binding Contract", formalDefinition="Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract." )
-    protected Type legallyBinding;
+    protected DataType legallyBinding;
 
     private static final long serialVersionUID = 1448103871L;
 
@@ -10362,7 +10362,7 @@ public class Contract extends DomainResource {
     /**
      * @return {@link #topic} (Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.)
      */
-    public Type getTopic() { 
+    public DataType getTopic() { 
       return this.topic;
     }
 
@@ -10403,7 +10403,7 @@ public class Contract extends DomainResource {
     /**
      * @param value {@link #topic} (Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.)
      */
-    public Contract setTopic(Type value) { 
+    public Contract setTopic(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for Contract.topic[x]: "+value.fhirType());
       this.topic = value;
@@ -10885,7 +10885,7 @@ public class Contract extends DomainResource {
     /**
      * @return {@link #legallyBinding} (Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the "source of truth" and which would be the basis for legal action related to enforcement of this Contract.)
      */
-    public Type getLegallyBinding() { 
+    public DataType getLegallyBinding() { 
       return this.legallyBinding;
     }
 
@@ -10926,7 +10926,7 @@ public class Contract extends DomainResource {
     /**
      * @param value {@link #legallyBinding} (Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the "source of truth" and which would be the basis for legal action related to enforcement of this Contract.)
      */
-    public Contract setLegallyBinding(Type value) { 
+    public Contract setLegallyBinding(DataType value) { 
       if (value != null && !(value instanceof Attachment || value instanceof Reference))
         throw new Error("Not the right type for Contract.legallyBinding[x]: "+value.fhirType());
       this.legallyBinding = value;
@@ -11062,77 +11062,77 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new ContractStatusEnumFactory().fromType(castToCode(value));
+          value = new ContractStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ContractStatus>
           return value;
         case 568606040: // legalState
-          this.legalState = castToCodeableConcept(value); // CodeableConcept
+          this.legalState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 8911915: // instantiatesCanonical
-          this.instantiatesCanonical = castToReference(value); // Reference
+          this.instantiatesCanonical = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1926393373: // instantiatesUri
-          this.instantiatesUri = castToUri(value); // UriType
+          this.instantiatesUri = TypeConvertor.castToUri(value); // UriType
           return value;
         case -92412192: // contentDerivative
-          this.contentDerivative = castToCodeableConcept(value); // CodeableConcept
+          this.contentDerivative = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1179159893: // issued
-          this.issued = castToDateTime(value); // DateTimeType
+          this.issued = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -793235316: // applies
-          this.applies = castToPeriod(value); // Period
+          this.applies = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -668311927: // expirationType
-          this.expirationType = castToCodeableConcept(value); // CodeableConcept
+          this.expirationType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.getSubject().add(castToReference(value)); // Reference
+          this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1475610435: // authority
-          this.getAuthority().add(castToReference(value)); // Reference
+          this.getAuthority().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1326197564: // domain
-          this.getDomain().add(castToReference(value)); // Reference
+          this.getDomain().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3530567: // site
-          this.getSite().add(castToReference(value)); // Reference
+          this.getSite().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -2060497896: // subtitle
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
           return value;
         case 92902992: // alias
-          this.getAlias().add(castToString(value)); // StringType
+          this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case 109264468: // scope
-          this.scope = castToCodeableConcept(value); // CodeableConcept
+          this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 110546223: // topic
-          this.topic = castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // Type
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1868521062: // subType
-          this.getSubType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSubType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 247055020: // contentDefinition
           this.contentDefinition = (ContentDefinitionComponent) value; // ContentDefinitionComponent
@@ -11141,10 +11141,10 @@ public class Contract extends DomainResource {
           this.getTerm().add((TermComponent) value); // TermComponent
           return value;
         case 1922406657: // supportingInfo
-          this.getSupportingInfo().add(castToReference(value)); // Reference
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1538891575: // relevantHistory
-          this.getRelevantHistory().add(castToReference(value)); // Reference
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -902467798: // signer
           this.getSigner().add((SignatoryComponent) value); // SignatoryComponent
@@ -11159,7 +11159,7 @@ public class Contract extends DomainResource {
           this.getRule().add((ComputableLanguageComponent) value); // ComputableLanguageComponent
           return value;
         case -126751329: // legallyBinding
-          this.legallyBinding = castToType(value); // Type
+          this.legallyBinding = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -11169,62 +11169,62 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new ContractStatusEnumFactory().fromType(castToCode(value));
+          value = new ContractStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ContractStatus>
         } else if (name.equals("legalState")) {
-          this.legalState = castToCodeableConcept(value); // CodeableConcept
+          this.legalState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("instantiatesCanonical")) {
-          this.instantiatesCanonical = castToReference(value); // Reference
+          this.instantiatesCanonical = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("instantiatesUri")) {
-          this.instantiatesUri = castToUri(value); // UriType
+          this.instantiatesUri = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("contentDerivative")) {
-          this.contentDerivative = castToCodeableConcept(value); // CodeableConcept
+          this.contentDerivative = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("issued")) {
-          this.issued = castToDateTime(value); // DateTimeType
+          this.issued = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("applies")) {
-          this.applies = castToPeriod(value); // Period
+          this.applies = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("expirationType")) {
-          this.expirationType = castToCodeableConcept(value); // CodeableConcept
+          this.expirationType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.getSubject().add(castToReference(value));
+          this.getSubject().add(TypeConvertor.castToReference(value));
         } else if (name.equals("authority")) {
-          this.getAuthority().add(castToReference(value));
+          this.getAuthority().add(TypeConvertor.castToReference(value));
         } else if (name.equals("domain")) {
-          this.getDomain().add(castToReference(value));
+          this.getDomain().add(TypeConvertor.castToReference(value));
         } else if (name.equals("site")) {
-          this.getSite().add(castToReference(value));
+          this.getSite().add(TypeConvertor.castToReference(value));
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subtitle")) {
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("alias")) {
-          this.getAlias().add(castToString(value));
+          this.getAlias().add(TypeConvertor.castToString(value));
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("scope")) {
-          this.scope = castToCodeableConcept(value); // CodeableConcept
+          this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("topic[x]")) {
-          this.topic = castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // Type
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subType")) {
-          this.getSubType().add(castToCodeableConcept(value));
+          this.getSubType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("contentDefinition")) {
           this.contentDefinition = (ContentDefinitionComponent) value; // ContentDefinitionComponent
         } else if (name.equals("term")) {
           this.getTerm().add((TermComponent) value);
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add(castToReference(value));
+          this.getSupportingInfo().add(TypeConvertor.castToReference(value));
         } else if (name.equals("relevantHistory")) {
-          this.getRelevantHistory().add(castToReference(value));
+          this.getRelevantHistory().add(TypeConvertor.castToReference(value));
         } else if (name.equals("signer")) {
           this.getSigner().add((SignatoryComponent) value);
         } else if (name.equals("friendly")) {
@@ -11234,7 +11234,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("rule")) {
           this.getRule().add((ComputableLanguageComponent) value);
         } else if (name.equals("legallyBinding[x]")) {
-          this.legallyBinding = castToType(value); // Type
+          this.legallyBinding = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;

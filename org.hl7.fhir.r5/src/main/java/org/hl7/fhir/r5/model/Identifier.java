@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * An identifier - identifies some entity uniquely and unambiguously. Typically this is used for business identifiers.
  */
 @DatatypeDef(name="Identifier")
-public class Identifier extends Type implements ICompositeType {
+public class Identifier extends DataType implements ICompositeType {
 
     public enum IdentifierUse {
         /**
@@ -524,23 +524,23 @@ public class Identifier extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116103: // use
-          value = new IdentifierUseEnumFactory().fromType(castToCode(value));
+          value = new IdentifierUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<IdentifierUse>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -887328209: // system
-          this.system = castToUri(value); // UriType
+          this.system = TypeConvertor.castToUri(value); // UriType
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -369881636: // assigner
-          this.assigner = castToReference(value); // Reference
+          this.assigner = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -550,18 +550,18 @@ public class Identifier extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("use")) {
-          value = new IdentifierUseEnumFactory().fromType(castToCode(value));
+          value = new IdentifierUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<IdentifierUse>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("system")) {
-          this.system = castToUri(value); // UriType
+          this.system = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("assigner")) {
-          this.assigner = castToReference(value); // Reference
+          this.assigner = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

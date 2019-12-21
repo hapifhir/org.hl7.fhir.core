@@ -665,29 +665,29 @@ public class AppointmentResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1474995297: // appointment
-          this.appointment = castToReference(value); // Reference
+          this.appointment = TypeConvertor.castToReference(value); // Reference
           return value;
         case 109757538: // start
-          this.start = castToInstant(value); // InstantType
+          this.start = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 100571: // end
-          this.end = castToInstant(value); // InstantType
+          this.end = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 841294093: // participantType
-          this.getParticipantType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getParticipantType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         case 996096261: // participantStatus
-          value = new ParticipantStatusEnumFactory().fromType(castToCode(value));
+          value = new ParticipantStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.participantStatus = (Enumeration) value; // Enumeration<ParticipantStatus>
           return value;
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -697,22 +697,22 @@ public class AppointmentResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("appointment")) {
-          this.appointment = castToReference(value); // Reference
+          this.appointment = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("start")) {
-          this.start = castToInstant(value); // InstantType
+          this.start = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("end")) {
-          this.end = castToInstant(value); // InstantType
+          this.end = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("participantType")) {
-          this.getParticipantType().add(castToCodeableConcept(value));
+          this.getParticipantType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participantStatus")) {
-          value = new ParticipantStatusEnumFactory().fromType(castToCode(value));
+          value = new ParticipantStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.participantStatus = (Enumeration) value; // Enumeration<ParticipantStatus>
         } else if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;

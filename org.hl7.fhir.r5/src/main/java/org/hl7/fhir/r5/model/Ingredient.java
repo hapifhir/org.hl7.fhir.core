@@ -78,7 +78,7 @@ public class Ingredient extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class, SubstanceDefinition.class, Substance.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Substance as a 'specified substance', implying extra substance related characteristics", formalDefinition="Substance as a 'specified substance', implying extra substance related characteristics." )
-        protected Type code;
+        protected DataType code;
 
         /**
          * The group of specified substance, e.g. group 1 to 4.
@@ -113,7 +113,7 @@ public class Ingredient extends DomainResource {
     /**
      * Constructor
      */
-      public IngredientSpecifiedSubstanceComponent(Type code, CodeableConcept group) {
+      public IngredientSpecifiedSubstanceComponent(DataType code, CodeableConcept group) {
         super();
         this.code = code;
         this.group = group;
@@ -122,7 +122,7 @@ public class Ingredient extends DomainResource {
         /**
          * @return {@link #code} (Substance as a 'specified substance', implying extra substance related characteristics.)
          */
-        public Type getCode() { 
+        public DataType getCode() { 
           return this.code;
         }
 
@@ -163,7 +163,7 @@ public class Ingredient extends DomainResource {
         /**
          * @param value {@link #code} (Substance as a 'specified substance', implying extra substance related characteristics.)
          */
-        public IngredientSpecifiedSubstanceComponent setCode(Type value) { 
+        public IngredientSpecifiedSubstanceComponent setCode(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Ingredient.specifiedSubstance.code[x]: "+value.fhirType());
           this.code = value;
@@ -310,13 +310,13 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // Type
           return value;
         case 98629247: // group
-          this.group = castToCodeableConcept(value); // CodeableConcept
+          this.group = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1923018202: // confidentiality
-          this.confidentiality = castToCodeableConcept(value); // CodeableConcept
+          this.confidentiality = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1791316033: // strength
           this.getStrength().add((IngredientSpecifiedSubstanceStrengthComponent) value); // IngredientSpecifiedSubstanceStrengthComponent
@@ -329,11 +329,11 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code[x]")) {
-          this.code = castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // Type
         } else if (name.equals("group")) {
-          this.group = castToCodeableConcept(value); // CodeableConcept
+          this.group = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("confidentiality")) {
-          this.confidentiality = castToCodeableConcept(value); // CodeableConcept
+          this.confidentiality = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("strength")) {
           this.getStrength().add((IngredientSpecifiedSubstanceStrengthComponent) value);
         } else
@@ -806,22 +806,22 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 696975130: // presentation
-          this.presentation = castToRatio(value); // Ratio
+          this.presentation = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 904802623: // presentationHighLimit
-          this.presentationHighLimit = castToRatio(value); // Ratio
+          this.presentationHighLimit = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case -410557331: // concentration
-          this.concentration = castToRatio(value); // Ratio
+          this.concentration = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case -1595729588: // concentrationHighLimit
-          this.concentrationHighLimit = castToRatio(value); // Ratio
+          this.concentrationHighLimit = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 235437876: // measurementPoint
-          this.measurementPoint = castToString(value); // StringType
+          this.measurementPoint = TypeConvertor.castToString(value); // StringType
           return value;
         case 957831062: // country
-          this.getCountry().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCountry().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1943566508: // referenceStrength
           this.getReferenceStrength().add((IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent) value); // IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent
@@ -834,17 +834,17 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("presentation")) {
-          this.presentation = castToRatio(value); // Ratio
+          this.presentation = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("presentationHighLimit")) {
-          this.presentationHighLimit = castToRatio(value); // Ratio
+          this.presentationHighLimit = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("concentration")) {
-          this.concentration = castToRatio(value); // Ratio
+          this.concentration = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("concentrationHighLimit")) {
-          this.concentrationHighLimit = castToRatio(value); // Ratio
+          this.concentrationHighLimit = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("measurementPoint")) {
-          this.measurementPoint = castToString(value); // StringType
+          this.measurementPoint = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("country")) {
-          this.getCountry().add(castToCodeableConcept(value));
+          this.getCountry().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("referenceStrength")) {
           this.getReferenceStrength().add((IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent) value);
         } else
@@ -981,7 +981,7 @@ public class Ingredient extends DomainResource {
          */
         @Child(name = "substance", type = {CodeableConcept.class, SubstanceDefinition.class, Substance.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Relevant reference substance", formalDefinition="Relevant reference substance." )
-        protected Type substance;
+        protected DataType substance;
 
         /**
          * Strength expressed in terms of a reference substance.
@@ -1031,7 +1031,7 @@ public class Ingredient extends DomainResource {
         /**
          * @return {@link #substance} (Relevant reference substance.)
          */
-        public Type getSubstance() { 
+        public DataType getSubstance() { 
           return this.substance;
         }
 
@@ -1072,7 +1072,7 @@ public class Ingredient extends DomainResource {
         /**
          * @param value {@link #substance} (Relevant reference substance.)
          */
-        public IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent setSubstance(Type value) { 
+        public IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent setSubstance(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Ingredient.specifiedSubstance.strength.referenceStrength.substance[x]: "+value.fhirType());
           this.substance = value;
@@ -1271,19 +1271,19 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 530040176: // substance
-          this.substance = castToType(value); // Type
+          this.substance = TypeConvertor.castToType(value); // Type
           return value;
         case 1791316033: // strength
-          this.strength = castToRatio(value); // Ratio
+          this.strength = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 703544312: // strengthHighLimit
-          this.strengthHighLimit = castToRatio(value); // Ratio
+          this.strengthHighLimit = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 235437876: // measurementPoint
-          this.measurementPoint = castToString(value); // StringType
+          this.measurementPoint = TypeConvertor.castToString(value); // StringType
           return value;
         case 957831062: // country
-          this.getCountry().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCountry().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1293,15 +1293,15 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("substance[x]")) {
-          this.substance = castToType(value); // Type
+          this.substance = TypeConvertor.castToType(value); // Type
         } else if (name.equals("strength")) {
-          this.strength = castToRatio(value); // Ratio
+          this.strength = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("strengthHighLimit")) {
-          this.strengthHighLimit = castToRatio(value); // Ratio
+          this.strengthHighLimit = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("measurementPoint")) {
-          this.measurementPoint = castToString(value); // StringType
+          this.measurementPoint = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("country")) {
-          this.getCountry().add(castToCodeableConcept(value));
+          this.getCountry().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1422,7 +1422,7 @@ public class Ingredient extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class, SubstanceDefinition.class, Substance.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A code that represents the ingredient substance", formalDefinition="A code that represents the ingredient substance." )
-        protected Type code;
+        protected DataType code;
 
         /**
          * Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product.
@@ -1443,7 +1443,7 @@ public class Ingredient extends DomainResource {
     /**
      * Constructor
      */
-      public IngredientSubstanceComponent(Type code) {
+      public IngredientSubstanceComponent(DataType code) {
         super();
         this.code = code;
       }
@@ -1451,7 +1451,7 @@ public class Ingredient extends DomainResource {
         /**
          * @return {@link #code} (A code that represents the ingredient substance.)
          */
-        public Type getCode() { 
+        public DataType getCode() { 
           return this.code;
         }
 
@@ -1492,7 +1492,7 @@ public class Ingredient extends DomainResource {
         /**
          * @param value {@link #code} (A code that represents the ingredient substance.)
          */
-        public IngredientSubstanceComponent setCode(Type value) { 
+        public IngredientSubstanceComponent setCode(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for Ingredient.substance.code[x]: "+value.fhirType());
           this.code = value;
@@ -1585,7 +1585,7 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // Type
           return value;
         case 1791316033: // strength
           this.getStrength().add((IngredientSpecifiedSubstanceStrengthComponent) value); // IngredientSpecifiedSubstanceStrengthComponent
@@ -1598,7 +1598,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code[x]")) {
-          this.code = castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // Type
         } else if (name.equals("strength")) {
           this.getStrength().add((IngredientSpecifiedSubstanceStrengthComponent) value);
         } else
@@ -2015,16 +2015,16 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 75406931: // allergenicIndicator
-          this.allergenicIndicator = castToBoolean(value); // BooleanType
+          this.allergenicIndicator = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1969347631: // manufacturer
-          this.getManufacturer().add(castToReference(value)); // Reference
+          this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -331477600: // specifiedSubstance
           this.getSpecifiedSubstance().add((IngredientSpecifiedSubstanceComponent) value); // IngredientSpecifiedSubstanceComponent
@@ -2040,13 +2040,13 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("allergenicIndicator")) {
-          this.allergenicIndicator = castToBoolean(value); // BooleanType
+          this.allergenicIndicator = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("manufacturer")) {
-          this.getManufacturer().add(castToReference(value));
+          this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("specifiedSubstance")) {
           this.getSpecifiedSubstance().add((IngredientSpecifiedSubstanceComponent) value);
         } else if (name.equals("substance")) {

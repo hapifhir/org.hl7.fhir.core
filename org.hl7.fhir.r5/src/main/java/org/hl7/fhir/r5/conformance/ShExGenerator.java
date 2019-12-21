@@ -39,7 +39,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -590,11 +590,11 @@ public class ShExGenerator {
               xt.replace("xsd:token", "xsd:string").replace("xsd:int", "xsd:integer"));
       StringBuilder facets =  new StringBuilder();
       if(ed.hasMinValue()) {
-        Type mv = ed.getMinValue();
+        DataType mv = ed.getMinValue();
         facets.append(tmplt(MINVALUE_TEMPLATE).add("val", mv.primitiveValue()).render());
       }
       if(ed.hasMaxValue()) {
-        Type mv = ed.getMaxValue();
+        DataType mv = ed.getMaxValue();
         facets.append(tmplt(MAXVALUE_TEMPLATE).add("val", mv.primitiveValue()).render());
       }
       if(ed.hasMaxLength()) {
@@ -602,7 +602,7 @@ public class ShExGenerator {
         facets.append(tmplt(MAXLENGTH_TEMPLATE).add("val", ml).render());
       }
       if(ed.hasPattern()) {
-        Type pat = ed.getPattern();
+        DataType pat = ed.getPattern();
         facets.append(tmplt(PATTERN_TEMPLATE).add("val",pat.primitiveValue()).render());
       }
       td_entry.add("facets", facets.toString());

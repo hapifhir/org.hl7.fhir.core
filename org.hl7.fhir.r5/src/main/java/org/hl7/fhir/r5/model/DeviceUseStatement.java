@@ -268,7 +268,7 @@ public class DeviceUseStatement extends DomainResource {
      */
     @Child(name = "timing", type = {Timing.class, Period.class, DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="How often  the device was used", formalDefinition="How often the device was used." )
-    protected Type timing;
+    protected DataType timing;
 
     /**
      * The time at which the statement was made/recorded.
@@ -570,7 +570,7 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * @return {@link #timing} (How often the device was used.)
      */
-    public Type getTiming() { 
+    public DataType getTiming() { 
       return this.timing;
     }
 
@@ -626,7 +626,7 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * @param value {@link #timing} (How often the device was used.)
      */
-    public DeviceUseStatement setTiming(Type value) { 
+    public DeviceUseStatement setTiming(DataType value) { 
       if (value != null && !(value instanceof Timing || value instanceof Period || value instanceof DateTimeType))
         throw new Error("Not the right type for DeviceUseStatement.timing[x]: "+value.fhirType());
       this.timing = value;
@@ -980,44 +980,44 @@ public class DeviceUseStatement extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new DeviceUseStatementStatusEnumFactory().fromType(castToCode(value));
+          value = new DeviceUseStatementStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DeviceUseStatementStatus>
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1077922663: // derivedFrom
-          this.getDerivedFrom().add(castToReference(value)); // Reference
+          this.getDerivedFrom().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -873664438: // timing
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
           return value;
         case 735397551: // recordedOn
-          this.recordedOn = castToDateTime(value); // DateTimeType
+          this.recordedOn = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -896505829: // source
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1335157162: // device
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1027,32 +1027,32 @@ public class DeviceUseStatement extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new DeviceUseStatementStatusEnumFactory().fromType(castToCode(value));
+          value = new DeviceUseStatementStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DeviceUseStatementStatus>
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("derivedFrom")) {
-          this.getDerivedFrom().add(castToReference(value));
+          this.getDerivedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("timing[x]")) {
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // Type
         } else if (name.equals("recordedOn")) {
-          this.recordedOn = castToDateTime(value); // DateTimeType
+          this.recordedOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("source")) {
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("device")) {
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCodeableConcept(value); // CodeableConcept
+          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

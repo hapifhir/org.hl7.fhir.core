@@ -152,7 +152,7 @@ public class Factory {
 	return res;
   }
 
-	public static Extension newExtension(String uri, Type value, boolean evenIfNull) {
+	public static Extension newExtension(String uri, DataType value, boolean evenIfNull) {
 		if (!evenIfNull && (value == null || value.isEmpty()))
 			return null;
 		Extension e = new Extension();
@@ -215,7 +215,7 @@ public class Factory {
     return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
   }
 
-  public Type create(String name) throws FHIRException {
+  public DataType create(String name) throws FHIRException {
     if (name.equals("boolean"))
       return new BooleanType();
     else if (name.equals("integer"))

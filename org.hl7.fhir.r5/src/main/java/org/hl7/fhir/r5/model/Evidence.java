@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="Evidence", profile="http://hl7.org/fhir/StructureDefinition/Evidence")
 @ChildOrder(names={"url", "identifier", "version", "title", "status", "useContext", "date", "approvalDate", "lastReviewDate", "contributor", "relatedArtifact", "description", "assertion", "note", "referentGroup", "variableDefinition", "synthesisType", "studyType", "statistic", "distribution", "certainty"})
-public class Evidence extends MetadataResource {
+public class Evidence extends CanonicalResource {
 
     @Block()
     public static class EvidenceReferentGroupComponent extends BackboneElement implements IBaseBackboneElement {
@@ -333,19 +333,19 @@ public class Evidence extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 324572498: // evidenceSource
-          this.evidenceSource = castToReference(value); // Reference
+          this.evidenceSource = TypeConvertor.castToReference(value); // Reference
           return value;
         case -777873132: // intendedGroup
-          this.intendedGroup = castToReference(value); // Reference
+          this.intendedGroup = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2144864283: // directnessMatch
-          this.directnessMatch = castToCodeableConcept(value); // CodeableConcept
+          this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -355,15 +355,15 @@ public class Evidence extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("evidenceSource")) {
-          this.evidenceSource = castToReference(value); // Reference
+          this.evidenceSource = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("intendedGroup")) {
-          this.intendedGroup = castToReference(value); // Reference
+          this.intendedGroup = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("directnessMatch")) {
-          this.directnessMatch = castToCodeableConcept(value); // CodeableConcept
+          this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -767,22 +767,22 @@ public class Evidence extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -372889326: // variableRole
-          this.variableRole = castToCodeableConcept(value); // CodeableConcept
+          this.variableRole = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2019122815: // actualDefinition
-          this.actualDefinition = castToReference(value); // Reference
+          this.actualDefinition = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1749096482: // intendedDefinition
-          this.intendedDefinition = castToReference(value); // Reference
+          this.intendedDefinition = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2144864283: // directnessMatch
-          this.directnessMatch = castToCodeableConcept(value); // CodeableConcept
+          this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -792,17 +792,17 @@ public class Evidence extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("variableRole")) {
-          this.variableRole = castToCodeableConcept(value); // CodeableConcept
+          this.variableRole = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actualDefinition")) {
-          this.actualDefinition = castToReference(value); // Reference
+          this.actualDefinition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("intendedDefinition")) {
-          this.intendedDefinition = castToReference(value); // Reference
+          this.intendedDefinition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("directnessMatch")) {
-          this.directnessMatch = castToCodeableConcept(value); // CodeableConcept
+          this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1173,13 +1173,13 @@ public class Evidence extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.note = castToAnnotation(value); // Annotation
+          this.note = TypeConvertor.castToAnnotation(value); // Annotation
           return value;
         case -938102371: // rating
-          this.getRating().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getRating().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1806398212: // certaintySubcomponent
           this.getCertaintySubcomponent().add((EvidenceCertaintyCertaintySubcomponentComponent) value); // EvidenceCertaintyCertaintySubcomponentComponent
@@ -1192,11 +1192,11 @@ public class Evidence extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.note = castToAnnotation(value); // Annotation
+          this.note = TypeConvertor.castToAnnotation(value); // Annotation
         } else if (name.equals("rating")) {
-          this.getRating().add(castToCodeableConcept(value));
+          this.getRating().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("certaintySubcomponent")) {
           this.getCertaintySubcomponent().add((EvidenceCertaintyCertaintySubcomponentComponent) value);
         } else
@@ -1558,16 +1558,16 @@ public class Evidence extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.note = castToAnnotation(value); // Annotation
+          this.note = TypeConvertor.castToAnnotation(value); // Annotation
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -938102371: // rating
-          this.getRating().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getRating().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1577,13 +1577,13 @@ public class Evidence extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.note = castToAnnotation(value); // Annotation
+          this.note = TypeConvertor.castToAnnotation(value); // Annotation
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("rating")) {
-          this.getRating().add(castToCodeableConcept(value));
+          this.getRating().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2878,47 +2878,47 @@ public class Evidence extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1895276325: // contributor
-          this.getContributor().add(castToContributor(value)); // Contributor
+          this.getContributor().add(TypeConvertor.castToContributor(value)); // Contributor
           return value;
         case 666807069: // relatedArtifact
-          this.getRelatedArtifact().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1314395906: // assertion
-          this.assertion = castToMarkdown(value); // MarkdownType
+          this.assertion = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 2060829908: // referentGroup
           this.referentGroup = (EvidenceReferentGroupComponent) value; // EvidenceReferentGroupComponent
@@ -2927,16 +2927,16 @@ public class Evidence extends MetadataResource {
           this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value); // EvidenceVariableDefinitionComponent
           return value;
         case 672726254: // synthesisType
-          this.synthesisType = castToCodeableConcept(value); // CodeableConcept
+          this.synthesisType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1955265373: // studyType
-          this.studyType = castToCodeableConcept(value); // CodeableConcept
+          this.studyType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2081261232: // statistic
-          this.getStatistic().add(castToStatistic(value)); // Statistic
+          this.getStatistic().add(TypeConvertor.castToStatistic(value)); // Statistic
           return value;
         case -1580708220: // distribution
-          this.getDistribution().add(castToOrderedDistribution(value)); // OrderedDistribution
+          this.getDistribution().add(TypeConvertor.castToOrderedDistribution(value)); // OrderedDistribution
           return value;
         case -1404142937: // certainty
           this.getCertainty().add((EvidenceCertaintyComponent) value); // EvidenceCertaintyComponent
@@ -2949,46 +2949,46 @@ public class Evidence extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("contributor")) {
-          this.getContributor().add(castToContributor(value));
+          this.getContributor().add(TypeConvertor.castToContributor(value));
         } else if (name.equals("relatedArtifact")) {
-          this.getRelatedArtifact().add(castToRelatedArtifact(value));
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("assertion")) {
-          this.assertion = castToMarkdown(value); // MarkdownType
+          this.assertion = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("referentGroup")) {
           this.referentGroup = (EvidenceReferentGroupComponent) value; // EvidenceReferentGroupComponent
         } else if (name.equals("variableDefinition")) {
           this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value);
         } else if (name.equals("synthesisType")) {
-          this.synthesisType = castToCodeableConcept(value); // CodeableConcept
+          this.synthesisType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("studyType")) {
-          this.studyType = castToCodeableConcept(value); // CodeableConcept
+          this.studyType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("statistic")) {
-          this.getStatistic().add(castToStatistic(value));
+          this.getStatistic().add(TypeConvertor.castToStatistic(value));
         } else if (name.equals("distribution")) {
-          this.getDistribution().add(castToOrderedDistribution(value));
+          this.getDistribution().add(TypeConvertor.castToOrderedDistribution(value));
         } else if (name.equals("certainty")) {
           this.getCertainty().add((EvidenceCertaintyComponent) value);
         } else

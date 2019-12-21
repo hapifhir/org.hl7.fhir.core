@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
  */
 @DatatypeDef(name="DataRequirement")
-public class DataRequirement extends Type implements ICompositeType {
+public class DataRequirement extends DataType implements ICompositeType {
 
     public enum SortDirection {
         /**
@@ -437,16 +437,16 @@ public class DataRequirement extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -553645115: // searchParam
-          this.searchParam = castToString(value); // StringType
+          this.searchParam = TypeConvertor.castToString(value); // StringType
           return value;
         case -1410174671: // valueSet
-          this.valueSet = castToCanonical(value); // CanonicalType
+          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 3059181: // code
-          this.getCode().add(castToCoding(value)); // Coding
+          this.getCode().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -456,13 +456,13 @@ public class DataRequirement extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("searchParam")) {
-          this.searchParam = castToString(value); // StringType
+          this.searchParam = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("valueSet")) {
-          this.valueSet = castToCanonical(value); // CanonicalType
+          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("code")) {
-          this.getCode().add(castToCoding(value));
+          this.getCode().add(TypeConvertor.castToCoding(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -582,9 +582,9 @@ public class DataRequirement extends Type implements ICompositeType {
          */
         @Child(name = "value", type = {DateTimeType.class, Period.class, Duration.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The value of the filter, as a Period, DateTime, or Duration value", formalDefinition="The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now." )
-        protected Type value;
+        protected DataType value;
 
-        private static final long serialVersionUID = 1151620053L;
+        private static final long serialVersionUID = 1649787979L;
 
     /**
      * Constructor
@@ -694,7 +694,7 @@ public class DataRequirement extends Type implements ICompositeType {
         /**
          * @return {@link #value} (The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -750,7 +750,7 @@ public class DataRequirement extends Type implements ICompositeType {
         /**
          * @param value {@link #value} (The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.)
          */
-        public DataRequirementDateFilterComponent setValue(Type value) { 
+        public DataRequirementDateFilterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Duration))
             throw new Error("Not the right type for DataRequirement.dateFilter.value[x]: "+value.fhirType());
           this.value = value;
@@ -784,7 +784,7 @@ public class DataRequirement extends Type implements ICompositeType {
         switch (hash) {
         case 3433509: /*path*/ return this.path == null ? new Base[0] : new Base[] {this.path}; // StringType
         case -553645115: /*searchParam*/ return this.searchParam == null ? new Base[0] : new Base[] {this.searchParam}; // StringType
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -794,13 +794,13 @@ public class DataRequirement extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -553645115: // searchParam
-          this.searchParam = castToString(value); // StringType
+          this.searchParam = TypeConvertor.castToString(value); // StringType
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -810,11 +810,11 @@ public class DataRequirement extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("searchParam")) {
-          this.searchParam = castToString(value); // StringType
+          this.searchParam = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1068,10 +1068,10 @@ public class DataRequirement extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case -962590849: // direction
-          value = new SortDirectionEnumFactory().fromType(castToCode(value));
+          value = new SortDirectionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.direction = (Enumeration) value; // Enumeration<SortDirection>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -1082,9 +1082,9 @@ public class DataRequirement extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("direction")) {
-          value = new SortDirectionEnumFactory().fromType(castToCode(value));
+          value = new SortDirectionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.direction = (Enumeration) value; // Enumeration<SortDirection>
         } else
           return super.setProperty(name, value);
@@ -1187,7 +1187,7 @@ public class DataRequirement extends Type implements ICompositeType {
     @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="E.g. Patient, Practitioner, RelatedPerson, Organization, Location, Device", formalDefinition="The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
-    protected Type subject;
+    protected DataType subject;
 
     /**
      * Indicates that specific elements of the type are referenced by the knowledge module and must be supported by the consumer in order to obtain an effective evaluation. This does not mean that a value is required for this element, only that the consuming system must understand the element and be able to provide values for it if they are available. 
@@ -1226,7 +1226,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     @Description(shortDefinition="Order of the results", formalDefinition="Specifies the order of the results to be returned." )
     protected List<DataRequirementSortComponent> sort;
 
-    private static final long serialVersionUID = 74042278L;
+    private static final long serialVersionUID = 565612272L;
 
   /**
    * Constructor
@@ -1352,7 +1352,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @return {@link #subject} (The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.)
      */
-    public Type getSubject() { 
+    public DataType getSubject() { 
       return this.subject;
     }
 
@@ -1393,7 +1393,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @param value {@link #subject} (The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.)
      */
-    public DataRequirement setSubject(Type value) { 
+    public DataRequirement setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for DataRequirement.subject[x]: "+value.fhirType());
       this.subject = value;
@@ -1709,7 +1709,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeType
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : this.profile.toArray(new Base[this.profile.size()]); // CanonicalType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Type
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case -1402857082: /*mustSupport*/ return this.mustSupport == null ? new Base[0] : this.mustSupport.toArray(new Base[this.mustSupport.size()]); // StringType
         case -1303674939: /*codeFilter*/ return this.codeFilter == null ? new Base[0] : this.codeFilter.toArray(new Base[this.codeFilter.size()]); // DataRequirementCodeFilterComponent
         case 149531846: /*dateFilter*/ return this.dateFilter == null ? new Base[0] : this.dateFilter.toArray(new Base[this.dateFilter.size()]); // DataRequirementDateFilterComponent
@@ -1724,16 +1724,16 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -309425751: // profile
-          this.getProfile().add(castToCanonical(value)); // CanonicalType
+          this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -1867885268: // subject
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
           return value;
         case -1402857082: // mustSupport
-          this.getMustSupport().add(castToString(value)); // StringType
+          this.getMustSupport().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1303674939: // codeFilter
           this.getCodeFilter().add((DataRequirementCodeFilterComponent) value); // DataRequirementCodeFilterComponent
@@ -1742,7 +1742,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
           this.getDateFilter().add((DataRequirementDateFilterComponent) value); // DataRequirementDateFilterComponent
           return value;
         case 102976443: // limit
-          this.limit = castToPositiveInt(value); // PositiveIntType
+          this.limit = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 3536286: // sort
           this.getSort().add((DataRequirementSortComponent) value); // DataRequirementSortComponent
@@ -1755,19 +1755,19 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("profile")) {
-          this.getProfile().add(castToCanonical(value));
+          this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("subject[x]")) {
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("mustSupport")) {
-          this.getMustSupport().add(castToString(value));
+          this.getMustSupport().add(TypeConvertor.castToString(value));
         } else if (name.equals("codeFilter")) {
           this.getCodeFilter().add((DataRequirementCodeFilterComponent) value);
         } else if (name.equals("dateFilter")) {
           this.getDateFilter().add((DataRequirementDateFilterComponent) value);
         } else if (name.equals("limit")) {
-          this.limit = castToPositiveInt(value); // PositiveIntType
+          this.limit = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("sort")) {
           this.getSort().add((DataRequirementSortComponent) value);
         } else

@@ -78,7 +78,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
@@ -351,8 +351,8 @@ public class Validator {
             Desktop.getDesktop().browse(htmlFile.toURI());
             System.out.println("Done");
           } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
-            String nameLeft = chooseName(args, "leftName", (MetadataResource) resLeft);
-            String nameRight = chooseName(args, "rightName", (MetadataResource) resRight);
+            String nameLeft = chooseName(args, "leftName", (CanonicalResource) resLeft);
+            String nameRight = chooseName(args, "rightName", (CanonicalResource) resRight);
             System.out.println("Comparing CapabilityStatements "+left+" to "+right);
             CapabilityStatementUtilities pc = new CapabilityStatementUtilities(validator.getContext(), dest, new KeyGenerator("http://fhir.org/temp/"+UUID.randomUUID().toString().toLowerCase()));
             CapabilityStatement capL = (CapabilityStatement) resLeft;
@@ -669,7 +669,7 @@ public class Validator {
     }
   }
 
-  private static String chooseName(String[] args, String name, MetadataResource mr) {
+  private static String chooseName(String[] args, String name, CanonicalResource mr) {
     String s = getParam(args, "-"+name);
     if (Utilities.noString(s))
       s = mr.present();

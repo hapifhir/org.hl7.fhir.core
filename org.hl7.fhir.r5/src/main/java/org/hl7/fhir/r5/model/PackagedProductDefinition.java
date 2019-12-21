@@ -182,10 +182,10 @@ public class PackagedProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -682249912: // outerPackaging
-          this.outerPackaging = castToIdentifier(value); // Identifier
+          this.outerPackaging = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 721147602: // immediatePackaging
-          this.immediatePackaging = castToIdentifier(value); // Identifier
+          this.immediatePackaging = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -195,9 +195,9 @@ public class PackagedProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("outerPackaging")) {
-          this.outerPackaging = castToIdentifier(value); // Identifier
+          this.outerPackaging = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("immediatePackaging")) {
-          this.immediatePackaging = castToIdentifier(value); // Identifier
+          this.immediatePackaging = TypeConvertor.castToIdentifier(value); // Identifier
         } else
           return super.setProperty(name, value);
         return value;
@@ -889,25 +889,25 @@ public class PackagedProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 299066663: // material
-          this.getMaterial().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getMaterial().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1021448255: // alternateMaterial
-          this.getAlternateMaterial().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAlternateMaterial().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 172049237: // shelfLifeStorage
-          this.getShelfLifeStorage().add(castToProductShelfLife(value)); // ProductShelfLife
+          this.getShelfLifeStorage().add(TypeConvertor.castToProductShelfLife(value)); // ProductShelfLife
           return value;
         case -1969347631: // manufacturer
-          this.getManufacturer().add(castToReference(value)); // Reference
+          this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((PackagedProductDefinitionPackageCharacteristicComponent) value); // PackagedProductDefinitionPackageCharacteristicComponent
@@ -926,19 +926,19 @@ public class PackagedProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("material")) {
-          this.getMaterial().add(castToCodeableConcept(value));
+          this.getMaterial().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("alternateMaterial")) {
-          this.getAlternateMaterial().add(castToCodeableConcept(value));
+          this.getAlternateMaterial().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("shelfLifeStorage")) {
-          this.getShelfLifeStorage().add(castToProductShelfLife(value));
+          this.getShelfLifeStorage().add(TypeConvertor.castToProductShelfLife(value));
         } else if (name.equals("manufacturer")) {
-          this.getManufacturer().add(castToReference(value));
+          this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((PackagedProductDefinitionPackageCharacteristicComponent) value);
         } else if (name.equals("containedItem")) {
@@ -1127,7 +1127,7 @@ public class PackagedProductDefinition extends DomainResource {
          */
         @Child(name = "value", type = {Coding.class, Quantity.class, StringType.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = 884525025L;
 
@@ -1173,7 +1173,7 @@ public class PackagedProductDefinition extends DomainResource {
         /**
          * @return {@link #value} (A value for the characteristic.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -1274,7 +1274,7 @@ public class PackagedProductDefinition extends DomainResource {
         /**
          * @param value {@link #value} (A value for the characteristic.)
          */
-        public PackagedProductDefinitionPackageCharacteristicComponent setValue(Type value) { 
+        public PackagedProductDefinitionPackageCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Coding || value instanceof Quantity || value instanceof StringType || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
             throw new Error("Not the right type for PackagedProductDefinition.package.characteristic.value[x]: "+value.fhirType());
           this.value = value;
@@ -1318,10 +1318,10 @@ public class PackagedProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1331,9 +1331,9 @@ public class PackagedProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1451,7 +1451,7 @@ public class PackagedProductDefinition extends DomainResource {
          */
         @Child(name = "amount", type = {Quantity.class, IntegerType.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The number of this type of item within this packaging", formalDefinition="The number of this type of item within this packaging." )
-        protected Type amount;
+        protected DataType amount;
 
         private static final long serialVersionUID = 656616688L;
 
@@ -1518,7 +1518,7 @@ public class PackagedProductDefinition extends DomainResource {
         /**
          * @return {@link #amount} (The number of this type of item within this packaging.)
          */
-        public Type getAmount() { 
+        public DataType getAmount() { 
           return this.amount;
         }
 
@@ -1559,7 +1559,7 @@ public class PackagedProductDefinition extends DomainResource {
         /**
          * @param value {@link #amount} (The number of this type of item within this packaging.)
          */
-        public PackagedProductDefinitionPackageContainedItemComponent setAmount(Type value) { 
+        public PackagedProductDefinitionPackageContainedItemComponent setAmount(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof IntegerType))
             throw new Error("Not the right type for PackagedProductDefinition.package.containedItem.amount[x]: "+value.fhirType());
           this.amount = value;
@@ -1599,10 +1599,10 @@ public class PackagedProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3242771: // item
-          this.getItem().add(castToReference(value)); // Reference
+          this.getItem().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1413853096: // amount
-          this.amount = castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1612,9 +1612,9 @@ public class PackagedProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("item")) {
-          this.getItem().add(castToReference(value));
+          this.getItem().add(TypeConvertor.castToReference(value));
         } else if (name.equals("amount[x]")) {
-          this.amount = castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -2243,25 +2243,25 @@ public class PackagedProductDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1867885268: // subject
-          this.getSubject().add(castToReference(value)); // Reference
+          this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -844874031: // legalStatusOfSupply
-          this.legalStatusOfSupply = castToCodeableConcept(value); // CodeableConcept
+          this.legalStatusOfSupply = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 70767032: // marketingStatus
-          this.getMarketingStatus().add(castToMarketingStatus(value)); // MarketingStatus
+          this.getMarketingStatus().add(TypeConvertor.castToMarketingStatus(value)); // MarketingStatus
           return value;
         case 571831283: // marketingAuthorization
-          this.marketingAuthorization = castToReference(value); // Reference
+          this.marketingAuthorization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1969347631: // manufacturer
-          this.getManufacturer().add(castToReference(value)); // Reference
+          this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1688395901: // batchIdentifier
           this.getBatchIdentifier().add((PackagedProductDefinitionBatchIdentifierComponent) value); // PackagedProductDefinitionBatchIdentifierComponent
@@ -2277,19 +2277,19 @@ public class PackagedProductDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("subject")) {
-          this.getSubject().add(castToReference(value));
+          this.getSubject().add(TypeConvertor.castToReference(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("legalStatusOfSupply")) {
-          this.legalStatusOfSupply = castToCodeableConcept(value); // CodeableConcept
+          this.legalStatusOfSupply = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("marketingStatus")) {
-          this.getMarketingStatus().add(castToMarketingStatus(value));
+          this.getMarketingStatus().add(TypeConvertor.castToMarketingStatus(value));
         } else if (name.equals("marketingAuthorization")) {
-          this.marketingAuthorization = castToReference(value); // Reference
+          this.marketingAuthorization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("manufacturer")) {
-          this.getManufacturer().add(castToReference(value));
+          this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("batchIdentifier")) {
           this.getBatchIdentifier().add((PackagedProductDefinitionBatchIdentifierComponent) value);
         } else if (name.equals("package")) {

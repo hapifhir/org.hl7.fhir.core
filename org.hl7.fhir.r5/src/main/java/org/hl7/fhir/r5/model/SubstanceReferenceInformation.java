@@ -237,13 +237,13 @@ public class SubstanceReferenceInformation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1089463108: // geneSequenceOrigin
-          this.geneSequenceOrigin = castToCodeableConcept(value); // CodeableConcept
+          this.geneSequenceOrigin = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3169045: // gene
-          this.gene = castToCodeableConcept(value); // CodeableConcept
+          this.gene = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -896505829: // source
-          this.getSource().add(castToReference(value)); // Reference
+          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -253,11 +253,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("geneSequenceOrigin")) {
-          this.geneSequenceOrigin = castToCodeableConcept(value); // CodeableConcept
+          this.geneSequenceOrigin = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("gene")) {
-          this.gene = castToCodeableConcept(value); // CodeableConcept
+          this.gene = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("source")) {
-          this.getSource().add(castToReference(value));
+          this.getSource().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -518,13 +518,13 @@ public class SubstanceReferenceInformation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1662836996: // element
-          this.element = castToIdentifier(value); // Identifier
+          this.element = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -896505829: // source
-          this.getSource().add(castToReference(value)); // Reference
+          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -534,11 +534,11 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("element")) {
-          this.element = castToIdentifier(value); // Identifier
+          this.element = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("source")) {
-          this.getSource().add(castToReference(value));
+          this.getSource().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -861,16 +861,16 @@ public class SubstanceReferenceInformation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1326197564: // domain
-          this.domain = castToCodeableConcept(value); // CodeableConcept
+          this.domain = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 382350310: // classification
-          this.classification = castToCodeableConcept(value); // CodeableConcept
+          this.classification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867567750: // subtype
-          this.getSubtype().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSubtype().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -896505829: // source
-          this.getSource().add(castToReference(value)); // Reference
+          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -880,13 +880,13 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("domain")) {
-          this.domain = castToCodeableConcept(value); // CodeableConcept
+          this.domain = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("classification")) {
-          this.classification = castToCodeableConcept(value); // CodeableConcept
+          this.classification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subtype")) {
-          this.getSubtype().add(castToCodeableConcept(value));
+          this.getSubtype().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("source")) {
-          this.getSource().add(castToReference(value));
+          this.getSource().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1033,7 +1033,7 @@ public class SubstanceReferenceInformation extends DomainResource {
          */
         @Child(name = "amount", type = {Quantity.class, Range.class, StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected Type amount;
+        protected DataType amount;
 
         /**
          * Todo.
@@ -1181,7 +1181,7 @@ public class SubstanceReferenceInformation extends DomainResource {
         /**
          * @return {@link #amount} (Todo.)
          */
-        public Type getAmount() { 
+        public DataType getAmount() { 
           return this.amount;
         }
 
@@ -1237,7 +1237,7 @@ public class SubstanceReferenceInformation extends DomainResource {
         /**
          * @param value {@link #amount} (Todo.)
          */
-        public SubstanceReferenceInformationTargetComponent setAmount(Type value) { 
+        public SubstanceReferenceInformationTargetComponent setAmount(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof StringType))
             throw new Error("Not the right type for SubstanceReferenceInformation.target.amount[x]: "+value.fhirType());
           this.amount = value;
@@ -1373,28 +1373,28 @@ public class SubstanceReferenceInformation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -880905839: // target
-          this.target = castToIdentifier(value); // Identifier
+          this.target = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1844104722: // interaction
-          this.interaction = castToCodeableConcept(value); // CodeableConcept
+          this.interaction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1316389074: // organism
-          this.organism = castToCodeableConcept(value); // CodeableConcept
+          this.organism = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 988662572: // organismType
-          this.organismType = castToCodeableConcept(value); // CodeableConcept
+          this.organismType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // Type
           return value;
         case -1424857166: // amountType
-          this.amountType = castToCodeableConcept(value); // CodeableConcept
+          this.amountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -896505829: // source
-          this.getSource().add(castToReference(value)); // Reference
+          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1404,21 +1404,21 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("target")) {
-          this.target = castToIdentifier(value); // Identifier
+          this.target = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("interaction")) {
-          this.interaction = castToCodeableConcept(value); // CodeableConcept
+          this.interaction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("organism")) {
-          this.organism = castToCodeableConcept(value); // CodeableConcept
+          this.organism = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("organismType")) {
-          this.organismType = castToCodeableConcept(value); // CodeableConcept
+          this.organismType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount[x]")) {
-          this.amount = castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // Type
         } else if (name.equals("amountType")) {
-          this.amountType = castToCodeableConcept(value); // CodeableConcept
+          this.amountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("source")) {
-          this.getSource().add(castToReference(value));
+          this.getSource().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1902,7 +1902,7 @@ public class SubstanceReferenceInformation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         case 3169045: // gene
           this.getGene().add((SubstanceReferenceInformationGeneComponent) value); // SubstanceReferenceInformationGeneComponent
@@ -1924,7 +1924,7 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("gene")) {
           this.getGene().add((SubstanceReferenceInformationGeneComponent) value);
         } else if (name.equals("geneElement")) {

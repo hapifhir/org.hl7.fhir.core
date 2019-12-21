@@ -632,30 +632,30 @@ public class EnrollmentResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EnrollmentResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new EnrollmentResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EnrollmentResponseStatus>
           return value;
         case 1095692943: // request
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
           return value;
         case 583380919: // disposition
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1178922291: // organization
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1601527200: // requestProvider
-          this.requestProvider = castToReference(value); // Reference
+          this.requestProvider = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -665,23 +665,23 @@ public class EnrollmentResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EnrollmentResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new EnrollmentResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EnrollmentResponseStatus>
         } else if (name.equals("request")) {
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
         } else if (name.equals("disposition")) {
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("organization")) {
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("requestProvider")) {
-          this.requestProvider = castToReference(value); // Reference
+          this.requestProvider = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

@@ -562,25 +562,25 @@ public class NutritionIntake extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1684132297: // nutritionProduct
-          this.nutritionProduct = castToCodeableConcept(value); // CodeableConcept
+          this.nutritionProduct = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -697920873: // schedule
-          this.schedule = castToTiming(value); // Timing
+          this.schedule = TypeConvertor.castToTiming(value); // Timing
           return value;
         case -1413853096: // amount
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 3493088: // rate
-          this.rate = castToQuantity(value); // Quantity
+          this.rate = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -148762661: // notConsumed
-          this.notConsumed = castToBoolean(value); // BooleanType
+          this.notConsumed = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -440795649: // notConsumedReason
-          this.notConsumedReason = castToCodeableConcept(value); // CodeableConcept
+          this.notConsumedReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -590,19 +590,19 @@ public class NutritionIntake extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("nutritionProduct")) {
-          this.nutritionProduct = castToCodeableConcept(value); // CodeableConcept
+          this.nutritionProduct = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("schedule")) {
-          this.schedule = castToTiming(value); // Timing
+          this.schedule = TypeConvertor.castToTiming(value); // Timing
         } else if (name.equals("amount")) {
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("rate")) {
-          this.rate = castToQuantity(value); // Quantity
+          this.rate = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("notConsumed")) {
-          this.notConsumed = castToBoolean(value); // BooleanType
+          this.notConsumed = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("notConsumedReason")) {
-          this.notConsumedReason = castToCodeableConcept(value); // CodeableConcept
+          this.notConsumedReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -835,10 +835,10 @@ public class NutritionIntake extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1671151641: // nutrient
-          this.nutrient = castToCodeableConcept(value); // CodeableConcept
+          this.nutrient = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -848,9 +848,9 @@ public class NutritionIntake extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("nutrient")) {
-          this.nutrient = castToCodeableConcept(value); // CodeableConcept
+          this.nutrient = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;
@@ -1011,7 +1011,7 @@ public class NutritionIntake extends DomainResource {
      */
     @Child(name = "effective", type = {DateTimeType.class, Period.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The date/time or interval when the food or fluid is/was consumed", formalDefinition="The interval of time during which it is being asserted that the patient is/was consuming the food or fluid." )
-    protected Type effective;
+    protected DataType effective;
 
     /**
      * The date when the Nutrition Intake was asserted by the information source.
@@ -1540,7 +1540,7 @@ public class NutritionIntake extends DomainResource {
     /**
      * @return {@link #effective} (The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.)
      */
-    public Type getEffective() { 
+    public DataType getEffective() { 
       return this.effective;
     }
 
@@ -1581,7 +1581,7 @@ public class NutritionIntake extends DomainResource {
     /**
      * @param value {@link #effective} (The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.)
      */
-    public NutritionIntake setEffective(Type value) { 
+    public NutritionIntake setEffective(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
         throw new Error("Not the right type for NutritionIntake.effective[x]: "+value.fhirType());
       this.effective = value;
@@ -1951,23 +1951,23 @@ public class NutritionIntake extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToReference(value)); // Reference
+          this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new NutritionIntakeStatusEnumFactory().fromType(castToCode(value));
+          value = new NutritionIntakeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NutritionIntakeStatus>
           return value;
         case 2051346646: // statusReason
-          this.getStatusReason().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -854114533: // consumedItem
           this.getConsumedItem().add((NutritionIntakeConsumedItemComponent) value); // NutritionIntakeConsumedItemComponent
@@ -1976,31 +1976,31 @@ public class NutritionIntake extends DomainResource {
           this.getIngredientLabel().add((NutritionIntakeIngredientLabelComponent) value); // NutritionIntakeIngredientLabelComponent
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1468651097: // effective
-          this.effective = castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // Type
           return value;
         case -1980855245: // dateAsserted
-          this.dateAsserted = castToDateTime(value); // DateTimeType
+          this.dateAsserted = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -2123220889: // informationSource
-          this.informationSource = castToReference(value); // Reference
+          this.informationSource = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1077922663: // derivedFrom
-          this.getDerivedFrom().add(castToReference(value)); // Reference
+          this.getDerivedFrom().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2010,40 +2010,40 @@ public class NutritionIntake extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToReference(value));
+          this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new NutritionIntakeStatusEnumFactory().fromType(castToCode(value));
+          value = new NutritionIntakeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NutritionIntakeStatus>
         } else if (name.equals("statusReason")) {
-          this.getStatusReason().add(castToCodeableConcept(value));
+          this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("consumedItem")) {
           this.getConsumedItem().add((NutritionIntakeConsumedItemComponent) value);
         } else if (name.equals("ingredientLabel")) {
           this.getIngredientLabel().add((NutritionIntakeIngredientLabelComponent) value);
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("effective[x]")) {
-          this.effective = castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // Type
         } else if (name.equals("dateAsserted")) {
-          this.dateAsserted = castToDateTime(value); // DateTimeType
+          this.dateAsserted = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("informationSource")) {
-          this.informationSource = castToReference(value); // Reference
+          this.informationSource = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("derivedFrom")) {
-          this.getDerivedFrom().add(castToReference(value));
+          this.getDerivedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

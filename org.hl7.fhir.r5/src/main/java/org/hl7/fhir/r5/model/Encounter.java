@@ -502,11 +502,11 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -892481550: // status
-          value = new EncounterStatusEnumFactory().fromType(castToCode(value));
+          value = new EncounterStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EncounterStatus>
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -516,10 +516,10 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("status")) {
-          value = new EncounterStatusEnumFactory().fromType(castToCode(value));
+          value = new EncounterStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EncounterStatus>
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -714,10 +714,10 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 94742904: // class
-          this.class_ = castToCoding(value); // Coding
+          this.class_ = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -727,9 +727,9 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("class")) {
-          this.class_ = castToCoding(value); // Coding
+          this.class_ = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -979,13 +979,13 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -46292327: // individual
-          this.individual = castToReference(value); // Reference
+          this.individual = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -995,11 +995,11 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("individual")) {
-          this.individual = castToReference(value); // Reference
+          this.individual = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1261,13 +1261,13 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -861311717: // condition
-          this.condition = castToReference(value); // Reference
+          this.condition = TypeConvertor.castToReference(value); // Reference
           return value;
         case 116103: // use
-          this.use = castToCodeableConcept(value); // CodeableConcept
+          this.use = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3492908: // rank
-          this.rank = castToPositiveInt(value); // PositiveIntType
+          this.rank = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1277,11 +1277,11 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("condition")) {
-          this.condition = castToReference(value); // Reference
+          this.condition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("use")) {
-          this.use = castToCodeableConcept(value); // CodeableConcept
+          this.use = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("rank")) {
-          this.rank = castToPositiveInt(value); // PositiveIntType
+          this.rank = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1805,31 +1805,31 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -965394961: // preAdmissionIdentifier
-          this.preAdmissionIdentifier = castToIdentifier(value); // Identifier
+          this.preAdmissionIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1008619738: // origin
-          this.origin = castToReference(value); // Reference
+          this.origin = TypeConvertor.castToReference(value); // Reference
           return value;
         case 538887120: // admitSource
-          this.admitSource = castToCodeableConcept(value); // CodeableConcept
+          this.admitSource = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 669348630: // reAdmission
-          this.reAdmission = castToCodeableConcept(value); // CodeableConcept
+          this.reAdmission = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1360641041: // dietPreference
-          this.getDietPreference().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getDietPreference().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1583588345: // specialCourtesy
-          this.getSpecialCourtesy().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialCourtesy().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 47410321: // specialArrangement
-          this.getSpecialArrangement().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialArrangement().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1429847026: // destination
-          this.destination = castToReference(value); // Reference
+          this.destination = TypeConvertor.castToReference(value); // Reference
           return value;
         case 528065941: // dischargeDisposition
-          this.dischargeDisposition = castToCodeableConcept(value); // CodeableConcept
+          this.dischargeDisposition = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1839,23 +1839,23 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("preAdmissionIdentifier")) {
-          this.preAdmissionIdentifier = castToIdentifier(value); // Identifier
+          this.preAdmissionIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("origin")) {
-          this.origin = castToReference(value); // Reference
+          this.origin = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("admitSource")) {
-          this.admitSource = castToCodeableConcept(value); // CodeableConcept
+          this.admitSource = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reAdmission")) {
-          this.reAdmission = castToCodeableConcept(value); // CodeableConcept
+          this.reAdmission = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("dietPreference")) {
-          this.getDietPreference().add(castToCodeableConcept(value));
+          this.getDietPreference().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specialCourtesy")) {
-          this.getSpecialCourtesy().add(castToCodeableConcept(value));
+          this.getSpecialCourtesy().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specialArrangement")) {
-          this.getSpecialArrangement().add(castToCodeableConcept(value));
+          this.getSpecialArrangement().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("destination")) {
-          this.destination = castToReference(value); // Reference
+          this.destination = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("dischargeDisposition")) {
-          this.dischargeDisposition = castToCodeableConcept(value); // CodeableConcept
+          this.dischargeDisposition = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -2208,17 +2208,17 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case -892481550: // status
-          value = new EncounterLocationStatusEnumFactory().fromType(castToCode(value));
+          value = new EncounterLocationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EncounterLocationStatus>
           return value;
         case -1474715471: // physicalType
-          this.physicalType = castToCodeableConcept(value); // CodeableConcept
+          this.physicalType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2228,14 +2228,14 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("status")) {
-          value = new EncounterLocationStatusEnumFactory().fromType(castToCode(value));
+          value = new EncounterLocationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EncounterLocationStatus>
         } else if (name.equals("physicalType")) {
-          this.physicalType = castToCodeableConcept(value); // CodeableConcept
+          this.physicalType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -3596,65 +3596,65 @@ public class Encounter extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EncounterStatusEnumFactory().fromType(castToCode(value));
+          value = new EncounterStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EncounterStatus>
           return value;
         case -986695614: // statusHistory
           this.getStatusHistory().add((StatusHistoryComponent) value); // StatusHistoryComponent
           return value;
         case 94742904: // class
-          this.class_ = castToCoding(value); // Coding
+          this.class_ = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 962575356: // classHistory
           this.getClassHistory().add((ClassHistoryComponent) value); // ClassHistoryComponent
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1928370289: // serviceType
-          this.serviceType = castToCodeableConcept(value); // CodeableConcept
+          this.serviceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1165461084: // priority
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 110854206: // subjectStatus
-          this.subjectStatus = castToCodeableConcept(value); // CodeableConcept
+          this.subjectStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1892140189: // episodeOfCare
-          this.getEpisodeOfCare().add(castToReference(value)); // Reference
+          this.getEpisodeOfCare().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 767422259: // participant
           this.getParticipant().add((EncounterParticipantComponent) value); // EncounterParticipantComponent
           return value;
         case -1474995297: // appointment
-          this.getAppointment().add(castToReference(value)); // Reference
+          this.getAppointment().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -1106363674: // length
-          this.length = castToDuration(value); // Duration
+          this.length = TypeConvertor.castToDuration(value); // Duration
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1196993265: // diagnosis
           this.getDiagnosis().add((DiagnosisComponent) value); // DiagnosisComponent
           return value;
         case -1177318867: // account
-          this.getAccount().add(castToReference(value)); // Reference
+          this.getAccount().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1057894634: // hospitalization
           this.hospitalization = (EncounterHospitalizationComponent) value; // EncounterHospitalizationComponent
@@ -3663,10 +3663,10 @@ public class Encounter extends DomainResource {
           this.getLocation().add((EncounterLocationComponent) value); // EncounterLocationComponent
           return value;
         case 243182534: // serviceProvider
-          this.serviceProvider = castToReference(value); // Reference
+          this.serviceProvider = TypeConvertor.castToReference(value); // Reference
           return value;
         case -995410646: // partOf
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3676,54 +3676,54 @@ public class Encounter extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EncounterStatusEnumFactory().fromType(castToCode(value));
+          value = new EncounterStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EncounterStatus>
         } else if (name.equals("statusHistory")) {
           this.getStatusHistory().add((StatusHistoryComponent) value);
         } else if (name.equals("class")) {
-          this.class_ = castToCoding(value); // Coding
+          this.class_ = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("classHistory")) {
           this.getClassHistory().add((ClassHistoryComponent) value);
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviceType")) {
-          this.serviceType = castToCodeableConcept(value); // CodeableConcept
+          this.serviceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("priority")) {
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("subjectStatus")) {
-          this.subjectStatus = castToCodeableConcept(value); // CodeableConcept
+          this.subjectStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("episodeOfCare")) {
-          this.getEpisodeOfCare().add(castToReference(value));
+          this.getEpisodeOfCare().add(TypeConvertor.castToReference(value));
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("participant")) {
           this.getParticipant().add((EncounterParticipantComponent) value);
         } else if (name.equals("appointment")) {
-          this.getAppointment().add(castToReference(value));
+          this.getAppointment().add(TypeConvertor.castToReference(value));
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("length")) {
-          this.length = castToDuration(value); // Duration
+          this.length = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("diagnosis")) {
           this.getDiagnosis().add((DiagnosisComponent) value);
         } else if (name.equals("account")) {
-          this.getAccount().add(castToReference(value));
+          this.getAccount().add(TypeConvertor.castToReference(value));
         } else if (name.equals("hospitalization")) {
           this.hospitalization = (EncounterHospitalizationComponent) value; // EncounterHospitalizationComponent
         } else if (name.equals("location")) {
           this.getLocation().add((EncounterLocationComponent) value);
         } else if (name.equals("serviceProvider")) {
-          this.serviceProvider = castToReference(value); // Reference
+          this.serviceProvider = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("partOf")) {
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

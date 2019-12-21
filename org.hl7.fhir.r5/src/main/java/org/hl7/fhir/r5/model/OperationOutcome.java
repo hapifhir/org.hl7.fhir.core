@@ -1153,24 +1153,24 @@ For resource issues, this will be a simple XPath limited to element names, repet
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1478300413: // severity
-          value = new IssueSeverityEnumFactory().fromType(castToCode(value));
+          value = new IssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<IssueSeverity>
           return value;
         case 3059181: // code
-          value = new IssueTypeEnumFactory().fromType(castToCode(value));
+          value = new IssueTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<IssueType>
           return value;
         case 1557721666: // details
-          this.details = castToCodeableConcept(value); // CodeableConcept
+          this.details = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -740386388: // diagnostics
-          this.diagnostics = castToString(value); // StringType
+          this.diagnostics = TypeConvertor.castToString(value); // StringType
           return value;
         case 1901043637: // location
-          this.getLocation().add(castToString(value)); // StringType
+          this.getLocation().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1795452264: // expression
-          this.getExpression().add(castToString(value)); // StringType
+          this.getExpression().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1180,19 +1180,19 @@ For resource issues, this will be a simple XPath limited to element names, repet
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("severity")) {
-          value = new IssueSeverityEnumFactory().fromType(castToCode(value));
+          value = new IssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<IssueSeverity>
         } else if (name.equals("code")) {
-          value = new IssueTypeEnumFactory().fromType(castToCode(value));
+          value = new IssueTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<IssueType>
         } else if (name.equals("details")) {
-          this.details = castToCodeableConcept(value); // CodeableConcept
+          this.details = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("diagnostics")) {
-          this.diagnostics = castToString(value); // StringType
+          this.diagnostics = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("location")) {
-          this.getLocation().add(castToString(value));
+          this.getLocation().add(TypeConvertor.castToString(value));
         } else if (name.equals("expression")) {
-          this.getExpression().add(castToString(value));
+          this.getExpression().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;

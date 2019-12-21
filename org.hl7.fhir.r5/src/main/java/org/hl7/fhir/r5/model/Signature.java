@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A signature along with supporting context. The signature may be a digital signature that is cryptographic in nature, or some other signature acceptable to the domain. This other signature may be as simple as a graphical image representing a hand-written signature, or a signature ceremony Different signature approaches have different utilities.
  */
 @DatatypeDef(name="Signature")
-public class Signature extends Type implements ICompositeType {
+public class Signature extends DataType implements ICompositeType {
 
     /**
      * An indication of the reason that the entity signed this document. This may be explicitly included as part of the signature information and can be used when determining accountability for various actions concerning the document.
@@ -478,25 +478,25 @@ public class Signature extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.getType().add(castToCoding(value)); // Coding
+          this.getType().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 3648314: // when
-          this.when = castToInstant(value); // InstantType
+          this.when = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case 117694: // who
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
           return value;
         case -14402964: // onBehalfOf
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
           return value;
         case -917363480: // targetFormat
-          this.targetFormat = castToCode(value); // CodeType
+          this.targetFormat = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -58720216: // sigFormat
-          this.sigFormat = castToCode(value); // CodeType
+          this.sigFormat = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 3076010: // data
-          this.data = castToBase64Binary(value); // Base64BinaryType
+          this.data = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -506,19 +506,19 @@ public class Signature extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.getType().add(castToCoding(value));
+          this.getType().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("when")) {
-          this.when = castToInstant(value); // InstantType
+          this.when = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("who")) {
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onBehalfOf")) {
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("targetFormat")) {
-          this.targetFormat = castToCode(value); // CodeType
+          this.targetFormat = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("sigFormat")) {
-          this.sigFormat = castToCode(value); // CodeType
+          this.sigFormat = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("data")) {
-          this.data = castToBase64Binary(value); // Base64BinaryType
+          this.data = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
         } else
           return super.setProperty(name, value);
         return value;

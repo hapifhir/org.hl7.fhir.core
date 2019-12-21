@@ -503,22 +503,22 @@ public class SubstanceNucleicAcid extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1867548732: // subunit
-          this.subunit = castToInteger(value); // IntegerType
+          this.subunit = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 1349547969: // sequence
-          this.sequence = castToString(value); // StringType
+          this.sequence = TypeConvertor.castToString(value); // StringType
           return value;
         case -1106363674: // length
-          this.length = castToInteger(value); // IntegerType
+          this.length = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 364621764: // sequenceAttachment
-          this.sequenceAttachment = castToAttachment(value); // Attachment
+          this.sequenceAttachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -1045091603: // fivePrime
-          this.fivePrime = castToCodeableConcept(value); // CodeableConcept
+          this.fivePrime = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1088032895: // threePrime
-          this.threePrime = castToCodeableConcept(value); // CodeableConcept
+          this.threePrime = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 177082053: // linkage
           this.getLinkage().add((SubstanceNucleicAcidSubunitLinkageComponent) value); // SubstanceNucleicAcidSubunitLinkageComponent
@@ -534,17 +534,17 @@ public class SubstanceNucleicAcid extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("subunit")) {
-          this.subunit = castToInteger(value); // IntegerType
+          this.subunit = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("sequence")) {
-          this.sequence = castToString(value); // StringType
+          this.sequence = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("length")) {
-          this.length = castToInteger(value); // IntegerType
+          this.length = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("sequenceAttachment")) {
-          this.sequenceAttachment = castToAttachment(value); // Attachment
+          this.sequenceAttachment = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("fivePrime")) {
-          this.fivePrime = castToCodeableConcept(value); // CodeableConcept
+          this.fivePrime = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("threePrime")) {
-          this.threePrime = castToCodeableConcept(value); // CodeableConcept
+          this.threePrime = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("linkage")) {
           this.getLinkage().add((SubstanceNucleicAcidSubunitLinkageComponent) value);
         } else if (name.equals("sugar")) {
@@ -927,16 +927,16 @@ public class SubstanceNucleicAcid extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1923312055: // connectivity
-          this.connectivity = castToString(value); // StringType
+          this.connectivity = TypeConvertor.castToString(value); // StringType
           return value;
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 1547124594: // residueSite
-          this.residueSite = castToString(value); // StringType
+          this.residueSite = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -946,13 +946,13 @@ public class SubstanceNucleicAcid extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("connectivity")) {
-          this.connectivity = castToString(value); // StringType
+          this.connectivity = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("residueSite")) {
-          this.residueSite = castToString(value); // StringType
+          this.residueSite = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1236,13 +1236,13 @@ public class SubstanceNucleicAcid extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 1547124594: // residueSite
-          this.residueSite = castToString(value); // StringType
+          this.residueSite = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1252,11 +1252,11 @@ public class SubstanceNucleicAcid extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("residueSite")) {
-          this.residueSite = castToString(value); // StringType
+          this.residueSite = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1624,16 +1624,16 @@ public class SubstanceNucleicAcid extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 807711387: // sequenceType
-          this.sequenceType = castToCodeableConcept(value); // CodeableConcept
+          this.sequenceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -847111089: // numberOfSubunits
-          this.numberOfSubunits = castToInteger(value); // IntegerType
+          this.numberOfSubunits = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -617269845: // areaOfHybridisation
-          this.areaOfHybridisation = castToString(value); // StringType
+          this.areaOfHybridisation = TypeConvertor.castToString(value); // StringType
           return value;
         case -1526251938: // oligoNucleotideType
-          this.oligoNucleotideType = castToCodeableConcept(value); // CodeableConcept
+          this.oligoNucleotideType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867548732: // subunit
           this.getSubunit().add((SubstanceNucleicAcidSubunitComponent) value); // SubstanceNucleicAcidSubunitComponent
@@ -1646,13 +1646,13 @@ public class SubstanceNucleicAcid extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequenceType")) {
-          this.sequenceType = castToCodeableConcept(value); // CodeableConcept
+          this.sequenceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("numberOfSubunits")) {
-          this.numberOfSubunits = castToInteger(value); // IntegerType
+          this.numberOfSubunits = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("areaOfHybridisation")) {
-          this.areaOfHybridisation = castToString(value); // StringType
+          this.areaOfHybridisation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("oligoNucleotideType")) {
-          this.oligoNucleotideType = castToCodeableConcept(value); // CodeableConcept
+          this.oligoNucleotideType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subunit")) {
           this.getSubunit().add((SubstanceNucleicAcidSubunitComponent) value);
         } else

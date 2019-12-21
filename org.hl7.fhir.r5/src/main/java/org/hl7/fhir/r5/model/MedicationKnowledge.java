@@ -319,10 +319,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -925155509: // reference
-          this.getReference().add(castToReference(value)); // Reference
+          this.getReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -332,9 +332,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reference")) {
-          this.getReference().add(castToReference(value));
+          this.getReference().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -523,10 +523,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -896505829: // source
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -536,9 +536,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("source")) {
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -628,7 +628,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         @Child(name = "item", type = {CodeableConcept.class, Ingredient.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Medication(s) or MedicinalProductIngredient(s) contained in the medication", formalDefinition="The actual ingredient - either a substance (simple ingredient) or another medication." )
-        protected Type item;
+        protected DataType item;
 
         /**
          * Indication of whether this ingredient affects the therapeutic action of the drug.
@@ -656,7 +656,7 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * Constructor
      */
-      public MedicationKnowledgeIngredientComponent(Type item) {
+      public MedicationKnowledgeIngredientComponent(DataType item) {
         super();
         this.item = item;
       }
@@ -664,7 +664,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication.)
          */
-        public Type getItem() { 
+        public DataType getItem() { 
           return this.item;
         }
 
@@ -705,7 +705,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication.)
          */
-        public MedicationKnowledgeIngredientComponent setItem(Type value) { 
+        public MedicationKnowledgeIngredientComponent setItem(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for MedicationKnowledge.ingredient.item[x]: "+value.fhirType());
           this.item = value;
@@ -817,13 +817,13 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3242771: // item
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
           return value;
         case -748916528: // isActive
-          this.isActive = castToBoolean(value); // BooleanType
+          this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1791316033: // strength
-          this.strength = castToRatio(value); // Ratio
+          this.strength = TypeConvertor.castToRatio(value); // Ratio
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -833,11 +833,11 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("item[x]")) {
-          this.item = castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // Type
         } else if (name.equals("isActive")) {
-          this.isActive = castToBoolean(value); // BooleanType
+          this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("strength")) {
-          this.strength = castToRatio(value); // Ratio
+          this.strength = TypeConvertor.castToRatio(value); // Ratio
         } else
           return super.setProperty(name, value);
         return value;
@@ -1104,13 +1104,13 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -896505829: // source
-          this.source = castToString(value); // StringType
+          this.source = TypeConvertor.castToString(value); // StringType
           return value;
         case 3059661: // cost
-          this.cost = castToMoney(value); // Money
+          this.cost = TypeConvertor.castToMoney(value); // Money
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1120,11 +1120,11 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("source")) {
-          this.source = castToString(value); // StringType
+          this.source = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("cost")) {
-          this.cost = castToMoney(value); // Money
+          this.cost = TypeConvertor.castToMoney(value); // Money
         } else
           return super.setProperty(name, value);
         return value;
@@ -1342,10 +1342,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1355,9 +1355,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1453,7 +1453,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         @Child(name = "indication", type = {CodeableConcept.class, ClinicalUseIssue.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Indication for use that apply to the specific administration guidelines", formalDefinition="Indication or reason for use of the medication that applies to the specific administration guidelines." )
-        protected Type indication;
+        protected DataType indication;
 
         /**
          * Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.).
@@ -1527,7 +1527,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return {@link #indication} (Indication or reason for use of the medication that applies to the specific administration guidelines.)
          */
-        public Type getIndication() { 
+        public DataType getIndication() { 
           return this.indication;
         }
 
@@ -1568,7 +1568,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #indication} (Indication or reason for use of the medication that applies to the specific administration guidelines.)
          */
-        public MedicationKnowledgeAdministrationGuidelineComponent setIndication(Type value) { 
+        public MedicationKnowledgeAdministrationGuidelineComponent setIndication(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
             throw new Error("Not the right type for MedicationKnowledge.administrationGuideline.indication[x]: "+value.fhirType());
           this.indication = value;
@@ -1667,7 +1667,7 @@ public class MedicationKnowledge extends DomainResource {
           this.getDosage().add((MedicationKnowledgeAdministrationGuidelineDosageComponent) value); // MedicationKnowledgeAdministrationGuidelineDosageComponent
           return value;
         case -597168804: // indication
-          this.indication = castToType(value); // Type
+          this.indication = TypeConvertor.castToType(value); // Type
           return value;
         case 1770130432: // patientCharacteristic
           this.getPatientCharacteristic().add((MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent) value); // MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent
@@ -1682,7 +1682,7 @@ public class MedicationKnowledge extends DomainResource {
         if (name.equals("dosage")) {
           this.getDosage().add((MedicationKnowledgeAdministrationGuidelineDosageComponent) value);
         } else if (name.equals("indication[x]")) {
-          this.indication = castToType(value); // Type
+          this.indication = TypeConvertor.castToType(value); // Type
         } else if (name.equals("patientCharacteristic")) {
           this.getPatientCharacteristic().add((MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent) value);
         } else
@@ -1927,10 +1927,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1326018889: // dosage
-          this.getDosage().add(castToDosage(value)); // Dosage
+          this.getDosage().add(TypeConvertor.castToDosage(value)); // Dosage
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1940,9 +1940,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("dosage")) {
-          this.getDosage().add(castToDosage(value));
+          this.getDosage().add(TypeConvertor.castToDosage(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2035,7 +2035,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         @Child(name = "characteristic", type = {CodeableConcept.class, Quantity.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Specific characteristic that is relevant to the administration guideline", formalDefinition="Specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender)." )
-        protected Type characteristic;
+        protected DataType characteristic;
 
         /**
          * The specific characteristic (e.g. height, weight, gender, etc.).
@@ -2056,7 +2056,7 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * Constructor
      */
-      public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent(Type characteristic) {
+      public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent(DataType characteristic) {
         super();
         this.characteristic = characteristic;
       }
@@ -2064,7 +2064,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return {@link #characteristic} (Specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender).)
          */
-        public Type getCharacteristic() { 
+        public DataType getCharacteristic() { 
           return this.characteristic;
         }
 
@@ -2105,7 +2105,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #characteristic} (Specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender).)
          */
-        public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent setCharacteristic(Type value) { 
+        public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent setCharacteristic(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity))
             throw new Error("Not the right type for MedicationKnowledge.administrationGuideline.patientCharacteristic.characteristic[x]: "+value.fhirType());
           this.characteristic = value;
@@ -2206,10 +2206,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 366313883: // characteristic
-          this.characteristic = castToType(value); // Type
+          this.characteristic = TypeConvertor.castToType(value); // Type
           return value;
         case 111972721: // value
-          this.getValue().add(castToString(value)); // StringType
+          this.getValue().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2219,9 +2219,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("characteristic[x]")) {
-          this.characteristic = castToType(value); // Type
+          this.characteristic = TypeConvertor.castToType(value); // Type
         } else if (name.equals("value")) {
-          this.getValue().add(castToString(value));
+          this.getValue().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2453,10 +2453,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 382350310: // classification
-          this.getClassification().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getClassification().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2466,9 +2466,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("classification")) {
-          this.getClassification().add(castToCodeableConcept(value));
+          this.getClassification().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2789,16 +2789,16 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1335157162: // device
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
           return value;
         case 299066663: // material
-          this.material = castToCodeableConcept(value); // CodeableConcept
+          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1802065795: // packaging
           this.getPackaging().add((MedicationKnowledgePackagingComponent) value); // MedicationKnowledgePackagingComponent
@@ -2811,13 +2811,13 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("device")) {
-          this.device = castToReference(value); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("material")) {
-          this.material = castToCodeableConcept(value); // CodeableConcept
+          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("packaging")) {
           this.getPackaging().add((MedicationKnowledgePackagingComponent) value);
         } else
@@ -2943,7 +2943,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         @Child(name = "value", type = {CodeableConcept.class, StringType.class, Quantity.class, Base64BinaryType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Description of the characteristic", formalDefinition="Description of the characteristic." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = -491121170L;
 
@@ -2981,7 +2981,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return {@link #value} (Description of the characteristic.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -3067,7 +3067,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #value} (Description of the characteristic.)
          */
-        public MedicationKnowledgeDrugCharacteristicComponent setValue(Type value) { 
+        public MedicationKnowledgeDrugCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof Base64BinaryType || value instanceof Attachment))
             throw new Error("Not the right type for MedicationKnowledge.drugCharacteristic.value[x]: "+value.fhirType());
           this.value = value;
@@ -3110,10 +3110,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3123,9 +3123,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -3462,13 +3462,13 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 711233419: // regulatoryAuthority
-          this.regulatoryAuthority = castToReference(value); // Reference
+          this.regulatoryAuthority = TypeConvertor.castToReference(value); // Reference
           return value;
         case 826147581: // substitution
           this.getSubstitution().add((MedicationKnowledgeRegulatorySubstitutionComponent) value); // MedicationKnowledgeRegulatorySubstitutionComponent
           return value;
         case -697920873: // schedule
-          this.getSchedule().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSchedule().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1977784607: // maxDispense
           this.maxDispense = (MedicationKnowledgeRegulatoryMaxDispenseComponent) value; // MedicationKnowledgeRegulatoryMaxDispenseComponent
@@ -3481,11 +3481,11 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("regulatoryAuthority")) {
-          this.regulatoryAuthority = castToReference(value); // Reference
+          this.regulatoryAuthority = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("substitution")) {
           this.getSubstitution().add((MedicationKnowledgeRegulatorySubstitutionComponent) value);
         } else if (name.equals("schedule")) {
-          this.getSchedule().add(castToCodeableConcept(value));
+          this.getSchedule().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("maxDispense")) {
           this.maxDispense = (MedicationKnowledgeRegulatoryMaxDispenseComponent) value; // MedicationKnowledgeRegulatoryMaxDispenseComponent
         } else
@@ -3725,10 +3725,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -911343192: // allowed
-          this.allowed = castToBoolean(value); // BooleanType
+          this.allowed = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3738,9 +3738,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("allowed")) {
-          this.allowed = castToBoolean(value); // BooleanType
+          this.allowed = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3933,10 +3933,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1285004149: // quantity
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -991726143: // period
-          this.period = castToDuration(value); // Duration
+          this.period = TypeConvertor.castToDuration(value); // Duration
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3946,9 +3946,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("quantity")) {
-          this.quantity = castToQuantity(value); // Quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("period")) {
-          this.period = castToDuration(value); // Duration
+          this.period = TypeConvertor.castToDuration(value); // Duration
         } else
           return super.setProperty(name, value);
         return value;
@@ -4045,7 +4045,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         @Child(name = "value", type = {Quantity.class, Duration.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Description of the characteristic", formalDefinition="Description of the characteristic." )
-        protected Type value;
+        protected DataType value;
 
         private static final long serialVersionUID = -491121170L;
 
@@ -4083,7 +4083,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return {@link #value} (Description of the characteristic.)
          */
-        public Type getValue() { 
+        public DataType getValue() { 
           return this.value;
         }
 
@@ -4124,7 +4124,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #value} (Description of the characteristic.)
          */
-        public MedicationKnowledgeKineticCharacteristicComponent setValue(Type value) { 
+        public MedicationKnowledgeKineticCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Duration))
             throw new Error("Not the right type for MedicationKnowledge.kineticCharacteristic.value[x]: "+value.fhirType());
           this.value = value;
@@ -4164,10 +4164,10 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4177,9 +4177,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -5671,35 +5671,35 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new MedicationKnowledgeStatusEnumFactory().fromType(castToCode(value));
+          value = new MedicationKnowledgeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationKnowledgeStatus>
           return value;
         case -1969347631: // manufacturer
-          this.manufacturer = castToReference(value); // Reference
+          this.manufacturer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1303858817: // doseForm
-          this.doseForm = castToCodeableConcept(value); // CodeableConcept
+          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1742128133: // synonym
-          this.getSynonym().add(castToString(value)); // StringType
+          this.getSynonym().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 723067972: // relatedMedicationKnowledge
           this.getRelatedMedicationKnowledge().add((MedicationKnowledgeRelatedMedicationKnowledgeComponent) value); // MedicationKnowledgeRelatedMedicationKnowledgeComponent
           return value;
         case 1312779381: // associatedMedication
-          this.getAssociatedMedication().add(castToReference(value)); // Reference
+          this.getAssociatedMedication().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1491615543: // productType
-          this.getProductType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProductType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1442980789: // monograph
           this.getMonograph().add((MedicationKnowledgeMonographComponent) value); // MedicationKnowledgeMonographComponent
@@ -5708,13 +5708,13 @@ public class MedicationKnowledge extends DomainResource {
           this.getIngredient().add((MedicationKnowledgeIngredientComponent) value); // MedicationKnowledgeIngredientComponent
           return value;
         case -1335157162: // device
-          this.getDevice().add(castToReference(value)); // Reference
+          this.getDevice().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1025456503: // preparationInstruction
-          this.preparationInstruction = castToMarkdown(value); // MarkdownType
+          this.preparationInstruction = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -767798050: // intendedRoute
-          this.getIntendedRoute().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getIntendedRoute().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059661: // cost
           this.getCost().add((MedicationKnowledgeCostComponent) value); // MedicationKnowledgeCostComponent
@@ -5735,7 +5735,7 @@ public class MedicationKnowledge extends DomainResource {
           this.getDrugCharacteristic().add((MedicationKnowledgeDrugCharacteristicComponent) value); // MedicationKnowledgeDrugCharacteristicComponent
           return value;
         case 251885509: // clinicalUseIssue
-          this.getClinicalUseIssue().add(castToReference(value)); // Reference
+          this.getClinicalUseIssue().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -27327848: // regulatory
           this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value); // MedicationKnowledgeRegulatoryComponent
@@ -5751,36 +5751,36 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new MedicationKnowledgeStatusEnumFactory().fromType(castToCode(value));
+          value = new MedicationKnowledgeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationKnowledgeStatus>
         } else if (name.equals("manufacturer")) {
-          this.manufacturer = castToReference(value); // Reference
+          this.manufacturer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("doseForm")) {
-          this.doseForm = castToCodeableConcept(value); // CodeableConcept
+          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = castToQuantity(value); // Quantity
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("synonym")) {
-          this.getSynonym().add(castToString(value));
+          this.getSynonym().add(TypeConvertor.castToString(value));
         } else if (name.equals("relatedMedicationKnowledge")) {
           this.getRelatedMedicationKnowledge().add((MedicationKnowledgeRelatedMedicationKnowledgeComponent) value);
         } else if (name.equals("associatedMedication")) {
-          this.getAssociatedMedication().add(castToReference(value));
+          this.getAssociatedMedication().add(TypeConvertor.castToReference(value));
         } else if (name.equals("productType")) {
-          this.getProductType().add(castToCodeableConcept(value));
+          this.getProductType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("monograph")) {
           this.getMonograph().add((MedicationKnowledgeMonographComponent) value);
         } else if (name.equals("ingredient")) {
           this.getIngredient().add((MedicationKnowledgeIngredientComponent) value);
         } else if (name.equals("device")) {
-          this.getDevice().add(castToReference(value));
+          this.getDevice().add(TypeConvertor.castToReference(value));
         } else if (name.equals("preparationInstruction")) {
-          this.preparationInstruction = castToMarkdown(value); // MarkdownType
+          this.preparationInstruction = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("intendedRoute")) {
-          this.getIntendedRoute().add(castToCodeableConcept(value));
+          this.getIntendedRoute().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("cost")) {
           this.getCost().add((MedicationKnowledgeCostComponent) value);
         } else if (name.equals("monitoringProgram")) {
@@ -5794,7 +5794,7 @@ public class MedicationKnowledge extends DomainResource {
         } else if (name.equals("drugCharacteristic")) {
           this.getDrugCharacteristic().add((MedicationKnowledgeDrugCharacteristicComponent) value);
         } else if (name.equals("clinicalUseIssue")) {
-          this.getClinicalUseIssue().add(castToReference(value));
+          this.getClinicalUseIssue().add(TypeConvertor.castToReference(value));
         } else if (name.equals("regulatory")) {
           this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value);
         } else if (name.equals("kineticCharacteristic")) {

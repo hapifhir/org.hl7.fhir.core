@@ -240,7 +240,7 @@ public class CareTeam extends DomainResource {
          */
         @Child(name = "coverage", type = {Period.class, Timing.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When the member is generally available within this care team", formalDefinition="When the member is generally available within this care team." )
-        protected Type coverage;
+        protected DataType coverage;
 
         private static final long serialVersionUID = 1513990203L;
 
@@ -326,7 +326,7 @@ public class CareTeam extends DomainResource {
         /**
          * @return {@link #coverage} (When the member is generally available within this care team.)
          */
-        public Type getCoverage() { 
+        public DataType getCoverage() { 
           return this.coverage;
         }
 
@@ -367,7 +367,7 @@ public class CareTeam extends DomainResource {
         /**
          * @param value {@link #coverage} (When the member is generally available within this care team.)
          */
-        public CareTeamParticipantComponent setCoverage(Type value) { 
+        public CareTeamParticipantComponent setCoverage(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof Timing))
             throw new Error("Not the right type for CareTeam.participant.coverage[x]: "+value.fhirType());
           this.coverage = value;
@@ -413,16 +413,16 @@ public class CareTeam extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1077769574: // member
-          this.member = castToReference(value); // Reference
+          this.member = TypeConvertor.castToReference(value); // Reference
           return value;
         case -14402964: // onBehalfOf
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
           return value;
         case -351767064: // coverage
-          this.coverage = castToType(value); // Type
+          this.coverage = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -432,13 +432,13 @@ public class CareTeam extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("member")) {
-          this.member = castToReference(value); // Reference
+          this.member = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onBehalfOf")) {
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("coverage[x]")) {
-          this.coverage = castToType(value); // Type
+          this.coverage = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1268,41 +1268,41 @@ public class CareTeam extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new CareTeamStatusEnumFactory().fromType(castToCode(value));
+          value = new CareTeamStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CareTeamStatus>
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 767422259: // participant
           this.getParticipant().add((CareTeamParticipantComponent) value); // CareTeamParticipantComponent
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -2058947787: // managingOrganization
-          this.getManagingOrganization().add(castToReference(value)); // Reference
+          this.getManagingOrganization().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1312,30 +1312,30 @@ public class CareTeam extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new CareTeamStatusEnumFactory().fromType(castToCode(value));
+          value = new CareTeamStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<CareTeamStatus>
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("participant")) {
           this.getParticipant().add((CareTeamParticipantComponent) value);
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("managingOrganization")) {
-          this.getManagingOrganization().add(castToReference(value));
+          this.getManagingOrganization().add(TypeConvertor.castToReference(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

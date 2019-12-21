@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ImplementationGuide", profile="http://hl7.org/fhir/StructureDefinition/ImplementationGuide")
 @ChildOrder(names={"url", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "copyright", "packageId", "license", "fhirVersion", "dependsOn", "global", "definition", "manifest"})
-public class ImplementationGuide extends MetadataResource {
+public class ImplementationGuide extends CanonicalResource {
 
     public enum SPDXLicense {
         /**
@@ -6009,13 +6009,13 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116076: // uri
-          this.uri = castToCanonical(value); // CanonicalType
+          this.uri = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 1802060801: // packageId
-          this.packageId = castToId(value); // IdType
+          this.packageId = TypeConvertor.castToId(value); // IdType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6025,11 +6025,11 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("uri")) {
-          this.uri = castToCanonical(value); // CanonicalType
+          this.uri = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("packageId")) {
-          this.packageId = castToId(value); // IdType
+          this.packageId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6273,10 +6273,10 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6286,9 +6286,9 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6995,10 +6995,10 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -7008,9 +7008,9 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -7127,7 +7127,7 @@ public class ImplementationGuide extends MetadataResource {
          */
         @Child(name = "example", type = {BooleanType.class, CanonicalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Is an example/What is this an example of?", formalDefinition="If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile." )
-        protected Type example;
+        protected DataType example;
 
         /**
          * Reference to the id of the grouping this resource appears in.
@@ -7339,7 +7339,7 @@ public class ImplementationGuide extends MetadataResource {
         /**
          * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
          */
-        public Type getExample() { 
+        public DataType getExample() { 
           return this.example;
         }
 
@@ -7380,7 +7380,7 @@ public class ImplementationGuide extends MetadataResource {
         /**
          * @param value {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
          */
-        public ImplementationGuideDefinitionResourceComponent setExample(Type value) { 
+        public ImplementationGuideDefinitionResourceComponent setExample(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof CanonicalType))
             throw new Error("Not the right type for ImplementationGuide.definition.resource.example[x]: "+value.fhirType());
           this.example = value;
@@ -7481,23 +7481,23 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         case 461006061: // fhirVersion
-          value = new FHIRVersionEnumFactory().fromType(castToCode(value));
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getFhirVersion().add((Enumeration) value); // Enumeration<FHIRVersion>
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1322970774: // example
-          this.example = castToType(value); // Type
+          this.example = TypeConvertor.castToType(value); // Type
           return value;
         case 1291547006: // groupingId
-          this.groupingId = castToId(value); // IdType
+          this.groupingId = TypeConvertor.castToId(value); // IdType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -7507,18 +7507,18 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("fhirVersion")) {
-          value = new FHIRVersionEnumFactory().fromType(castToCode(value));
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getFhirVersion().add((Enumeration) value);
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("example[x]")) {
-          this.example = castToType(value); // Type
+          this.example = TypeConvertor.castToType(value); // Type
         } else if (name.equals("groupingId")) {
-          this.groupingId = castToId(value); // IdType
+          this.groupingId = TypeConvertor.castToId(value); // IdType
         } else
           return super.setProperty(name, value);
         return value;
@@ -7650,7 +7650,7 @@ public class ImplementationGuide extends MetadataResource {
          */
         @Child(name = "name", type = {UrlType.class, Binary.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Where to find that page", formalDefinition="The source address for the page." )
-        protected Type name;
+        protected DataType name;
 
         /**
          * A short title used to represent this page in navigational structures such as table of contents, bread crumbs, etc.
@@ -7686,7 +7686,7 @@ public class ImplementationGuide extends MetadataResource {
     /**
      * Constructor
      */
-      public ImplementationGuideDefinitionPageComponent(Type name, StringType title, Enumeration<GuidePageGeneration> generation) {
+      public ImplementationGuideDefinitionPageComponent(DataType name, StringType title, Enumeration<GuidePageGeneration> generation) {
         super();
         this.name = name;
         this.title = title;
@@ -7696,7 +7696,7 @@ public class ImplementationGuide extends MetadataResource {
         /**
          * @return {@link #name} (The source address for the page.)
          */
-        public Type getName() { 
+        public DataType getName() { 
           return this.name;
         }
 
@@ -7737,7 +7737,7 @@ public class ImplementationGuide extends MetadataResource {
         /**
          * @param value {@link #name} (The source address for the page.)
          */
-        public ImplementationGuideDefinitionPageComponent setName(Type value) { 
+        public ImplementationGuideDefinitionPageComponent setName(DataType value) { 
           if (value != null && !(value instanceof UrlType || value instanceof Reference))
             throw new Error("Not the right type for ImplementationGuide.definition.page.name[x]: "+value.fhirType());
           this.name = value;
@@ -7926,13 +7926,13 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToType(value); // Type
+          this.name = TypeConvertor.castToType(value); // Type
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case 305703192: // generation
-          value = new GuidePageGenerationEnumFactory().fromType(castToCode(value));
+          value = new GuidePageGenerationEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.generation = (Enumeration) value; // Enumeration<GuidePageGeneration>
           return value;
         case 3433103: // page
@@ -7946,11 +7946,11 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name[x]")) {
-          this.name = castToType(value); // Type
+          this.name = TypeConvertor.castToType(value); // Type
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("generation")) {
-          value = new GuidePageGenerationEnumFactory().fromType(castToCode(value));
+          value = new GuidePageGenerationEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.generation = (Enumeration) value; // Enumeration<GuidePageGeneration>
         } else if (name.equals("page")) {
           this.getPage().add((ImplementationGuideDefinitionPageComponent) value);
@@ -8212,10 +8212,10 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToString(value); // StringType
+          this.code = TypeConvertor.castToString(value); // StringType
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8225,9 +8225,9 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToString(value); // StringType
+          this.code = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -8521,13 +8521,13 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -896505829: // source
-          this.source = castToString(value); // StringType
+          this.source = TypeConvertor.castToString(value); // StringType
           return value;
         case 109264468: // scope
-          this.scope = castToString(value); // StringType
+          this.scope = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8537,11 +8537,11 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("source")) {
-          this.source = castToString(value); // StringType
+          this.source = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("scope")) {
-          this.scope = castToString(value); // StringType
+          this.scope = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -8992,7 +8992,7 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1839654540: // rendering
-          this.rendering = castToUrl(value); // UrlType
+          this.rendering = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case -341064690: // resource
           this.getResource().add((ManifestResourceComponent) value); // ManifestResourceComponent
@@ -9001,10 +9001,10 @@ public class ImplementationGuide extends MetadataResource {
           this.getPage().add((ManifestPageComponent) value); // ManifestPageComponent
           return value;
         case 100313435: // image
-          this.getImage().add(castToString(value)); // StringType
+          this.getImage().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 106069776: // other
-          this.getOther().add(castToString(value)); // StringType
+          this.getOther().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -9014,15 +9014,15 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("rendering")) {
-          this.rendering = castToUrl(value); // UrlType
+          this.rendering = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("resource")) {
           this.getResource().add((ManifestResourceComponent) value);
         } else if (name.equals("page")) {
           this.getPage().add((ManifestPageComponent) value);
         } else if (name.equals("image")) {
-          this.getImage().add(castToString(value));
+          this.getImage().add(TypeConvertor.castToString(value));
         } else if (name.equals("other")) {
-          this.getOther().add(castToString(value));
+          this.getOther().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -9154,7 +9154,7 @@ public class ImplementationGuide extends MetadataResource {
          */
         @Child(name = "example", type = {BooleanType.class, CanonicalType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Is an example/What is this an example of?", formalDefinition="If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile." )
-        protected Type example;
+        protected DataType example;
 
         /**
          * The relative path for primary page for this resource within the IG.
@@ -9207,7 +9207,7 @@ public class ImplementationGuide extends MetadataResource {
         /**
          * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
          */
-        public Type getExample() { 
+        public DataType getExample() { 
           return this.example;
         }
 
@@ -9248,7 +9248,7 @@ public class ImplementationGuide extends MetadataResource {
         /**
          * @param value {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
          */
-        public ManifestResourceComponent setExample(Type value) { 
+        public ManifestResourceComponent setExample(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof CanonicalType))
             throw new Error("Not the right type for ImplementationGuide.manifest.resource.example[x]: "+value.fhirType());
           this.example = value;
@@ -9340,13 +9340,13 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1322970774: // example
-          this.example = castToType(value); // Type
+          this.example = TypeConvertor.castToType(value); // Type
           return value;
         case -70808303: // relativePath
-          this.relativePath = castToUrl(value); // UrlType
+          this.relativePath = TypeConvertor.castToUrl(value); // UrlType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -9356,11 +9356,11 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("example[x]")) {
-          this.example = castToType(value); // Type
+          this.example = TypeConvertor.castToType(value); // Type
         } else if (name.equals("relativePath")) {
-          this.relativePath = castToUrl(value); // UrlType
+          this.relativePath = TypeConvertor.castToUrl(value); // UrlType
         } else
           return super.setProperty(name, value);
         return value;
@@ -9688,13 +9688,13 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1413299531: // anchor
-          this.getAnchor().add(castToString(value)); // StringType
+          this.getAnchor().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -9704,11 +9704,11 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("anchor")) {
-          this.getAnchor().add(castToString(value));
+          this.getAnchor().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -10905,54 +10905,54 @@ public class ImplementationGuide extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1802060801: // packageId
-          this.packageId = castToId(value); // IdType
+          this.packageId = TypeConvertor.castToId(value); // IdType
           return value;
         case 166757441: // license
-          value = new SPDXLicenseEnumFactory().fromType(castToCode(value));
+          value = new SPDXLicenseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.license = (Enumeration) value; // Enumeration<SPDXLicense>
           return value;
         case 461006061: // fhirVersion
-          value = new FHIRVersionEnumFactory().fromType(castToCode(value));
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getFhirVersion().add((Enumeration) value); // Enumeration<FHIRVersion>
           return value;
         case -1109214266: // dependsOn
@@ -10975,39 +10975,39 @@ public class ImplementationGuide extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("packageId")) {
-          this.packageId = castToId(value); // IdType
+          this.packageId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("license")) {
-          value = new SPDXLicenseEnumFactory().fromType(castToCode(value));
+          value = new SPDXLicenseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.license = (Enumeration) value; // Enumeration<SPDXLicense>
         } else if (name.equals("fhirVersion")) {
-          value = new FHIRVersionEnumFactory().fromType(castToCode(value));
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getFhirVersion().add((Enumeration) value);
         } else if (name.equals("dependsOn")) {
           this.getDependsOn().add((ImplementationGuideDependsOnComponent) value);

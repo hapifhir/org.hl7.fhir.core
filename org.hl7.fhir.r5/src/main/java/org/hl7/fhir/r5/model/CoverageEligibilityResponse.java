@@ -549,13 +549,13 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -351767064: // coverage
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1945431270: // inforce
-          this.inforce = castToBoolean(value); // BooleanType
+          this.inforce = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -407369416: // benefitPeriod
-          this.benefitPeriod = castToPeriod(value); // Period
+          this.benefitPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 3242771: // item
           this.getItem().add((ItemsComponent) value); // ItemsComponent
@@ -568,11 +568,11 @@ public class CoverageEligibilityResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("coverage")) {
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("inforce")) {
-          this.inforce = castToBoolean(value); // BooleanType
+          this.inforce = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("benefitPeriod")) {
-          this.benefitPeriod = castToPeriod(value); // Period
+          this.benefitPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("item")) {
           this.getItem().add((ItemsComponent) value);
         } else
@@ -1397,46 +1397,46 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 50511102: // category
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1957227299: // productOrService
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
-          this.getModifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -987494927: // provider
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1994055114: // excluded
-          this.excluded = castToBoolean(value); // BooleanType
+          this.excluded = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 1843485230: // network
-          this.network = castToCodeableConcept(value); // CodeableConcept
+          this.network = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3594628: // unit
-          this.unit = castToCodeableConcept(value); // CodeableConcept
+          this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3556460: // term
-          this.term = castToCodeableConcept(value); // CodeableConcept
+          this.term = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -222710633: // benefit
           this.getBenefit().add((BenefitComponent) value); // BenefitComponent
           return value;
         case 374204216: // authorizationRequired
-          this.authorizationRequired = castToBoolean(value); // BooleanType
+          this.authorizationRequired = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1931146484: // authorizationSupporting
-          this.getAuthorizationSupporting().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAuthorizationSupporting().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1409445430: // authorizationUrl
-          this.authorizationUrl = castToUri(value); // UriType
+          this.authorizationUrl = TypeConvertor.castToUri(value); // UriType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1446,33 +1446,33 @@ public class CoverageEligibilityResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("category")) {
-          this.category = castToCodeableConcept(value); // CodeableConcept
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
-          this.productOrService = castToCodeableConcept(value); // CodeableConcept
+          this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
-          this.getModifier().add(castToCodeableConcept(value));
+          this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("provider")) {
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("excluded")) {
-          this.excluded = castToBoolean(value); // BooleanType
+          this.excluded = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("network")) {
-          this.network = castToCodeableConcept(value); // CodeableConcept
+          this.network = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unit")) {
-          this.unit = castToCodeableConcept(value); // CodeableConcept
+          this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("term")) {
-          this.term = castToCodeableConcept(value); // CodeableConcept
+          this.term = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("benefit")) {
           this.getBenefit().add((BenefitComponent) value);
         } else if (name.equals("authorizationRequired")) {
-          this.authorizationRequired = castToBoolean(value); // BooleanType
+          this.authorizationRequired = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("authorizationSupporting")) {
-          this.getAuthorizationSupporting().add(castToCodeableConcept(value));
+          this.getAuthorizationSupporting().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("authorizationUrl")) {
-          this.authorizationUrl = castToUri(value); // UriType
+          this.authorizationUrl = TypeConvertor.castToUri(value); // UriType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1667,14 +1667,14 @@ public class CoverageEligibilityResponse extends DomainResource {
          */
         @Child(name = "allowed", type = {UnsignedIntType.class, StringType.class, Money.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefits allowed", formalDefinition="The quantity of the benefit which is permitted under the coverage." )
-        protected Type allowed;
+        protected DataType allowed;
 
         /**
          * The quantity of the benefit which have been consumed to date.
          */
         @Child(name = "used", type = {UnsignedIntType.class, StringType.class, Money.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefits used", formalDefinition="The quantity of the benefit which have been consumed to date." )
-        protected Type used;
+        protected DataType used;
 
         private static final long serialVersionUID = -1506285314L;
 
@@ -1720,7 +1720,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         /**
          * @return {@link #allowed} (The quantity of the benefit which is permitted under the coverage.)
          */
-        public Type getAllowed() { 
+        public DataType getAllowed() { 
           return this.allowed;
         }
 
@@ -1776,7 +1776,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         /**
          * @param value {@link #allowed} (The quantity of the benefit which is permitted under the coverage.)
          */
-        public BenefitComponent setAllowed(Type value) { 
+        public BenefitComponent setAllowed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof StringType || value instanceof Money))
             throw new Error("Not the right type for CoverageEligibilityResponse.insurance.item.benefit.allowed[x]: "+value.fhirType());
           this.allowed = value;
@@ -1786,7 +1786,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         /**
          * @return {@link #used} (The quantity of the benefit which have been consumed to date.)
          */
-        public Type getUsed() { 
+        public DataType getUsed() { 
           return this.used;
         }
 
@@ -1842,7 +1842,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         /**
          * @param value {@link #used} (The quantity of the benefit which have been consumed to date.)
          */
-        public BenefitComponent setUsed(Type value) { 
+        public BenefitComponent setUsed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof StringType || value instanceof Money))
             throw new Error("Not the right type for CoverageEligibilityResponse.insurance.item.benefit.used[x]: "+value.fhirType());
           this.used = value;
@@ -1890,13 +1890,13 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -911343192: // allowed
-          this.allowed = castToType(value); // Type
+          this.allowed = TypeConvertor.castToType(value); // Type
           return value;
         case 3599293: // used
-          this.used = castToType(value); // Type
+          this.used = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1906,11 +1906,11 @@ public class CoverageEligibilityResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("allowed[x]")) {
-          this.allowed = castToType(value); // Type
+          this.allowed = TypeConvertor.castToType(value); // Type
         } else if (name.equals("used[x]")) {
-          this.used = castToType(value); // Type
+          this.used = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -2097,7 +2097,7 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2107,7 +2107,7 @@ public class CoverageEligibilityResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -2218,7 +2218,7 @@ public class CoverageEligibilityResponse extends DomainResource {
      */
     @Child(name = "serviced", type = {DateType.class, Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Estimated date or dates of service", formalDefinition="The date or dates when the enclosed suite of services were performed or completed." )
-    protected Type serviced;
+    protected DataType serviced;
 
     /**
      * The date this resource was created.
@@ -2500,7 +2500,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return {@link #serviced} (The date or dates when the enclosed suite of services were performed or completed.)
      */
-    public Type getServiced() { 
+    public DataType getServiced() { 
       return this.serviced;
     }
 
@@ -2541,7 +2541,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @param value {@link #serviced} (The date or dates when the enclosed suite of services were performed or completed.)
      */
-    public CoverageEligibilityResponse setServiced(Type value) { 
+    public CoverageEligibilityResponse setServiced(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof Period))
         throw new Error("Not the right type for CoverageEligibilityResponse.serviced[x]: "+value.fhirType());
       this.serviced = value;
@@ -3010,49 +3010,49 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EligibilityResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new EligibilityResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EligibilityResponseStatus>
           return value;
         case -220463842: // purpose
-          value = new EligibilityResponsePurposeEnumFactory().fromType(castToCode(value));
+          value = new EligibilityResponsePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getPurpose().add((Enumeration) value); // Enumeration<EligibilityResponsePurpose>
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1379209295: // serviced
-          this.serviced = castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // Type
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 693934258: // requestor
-          this.requestor = castToReference(value); // Reference
+          this.requestor = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1095692943: // request
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
           return value;
         case 583380919: // disposition
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
           return value;
         case 1957615864: // insurer
-          this.insurer = castToReference(value); // Reference
+          this.insurer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 73049818: // insurance
           this.getInsurance().add((InsuranceComponent) value); // InsuranceComponent
           return value;
         case 522246568: // preAuthRef
-          this.preAuthRef = castToString(value); // StringType
+          this.preAuthRef = TypeConvertor.castToString(value); // StringType
           return value;
         case 3148996: // form
-          this.form = castToCodeableConcept(value); // CodeableConcept
+          this.form = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 96784904: // error
           this.getError().add((ErrorsComponent) value); // ErrorsComponent
@@ -3065,36 +3065,36 @@ public class CoverageEligibilityResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EligibilityResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new EligibilityResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EligibilityResponseStatus>
         } else if (name.equals("purpose")) {
-          value = new EligibilityResponsePurposeEnumFactory().fromType(castToCode(value));
+          value = new EligibilityResponsePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getPurpose().add((Enumeration) value);
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("serviced[x]")) {
-          this.serviced = castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // Type
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requestor")) {
-          this.requestor = castToReference(value); // Reference
+          this.requestor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("request")) {
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
         } else if (name.equals("disposition")) {
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("insurer")) {
-          this.insurer = castToReference(value); // Reference
+          this.insurer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("insurance")) {
           this.getInsurance().add((InsuranceComponent) value);
         } else if (name.equals("preAuthRef")) {
-          this.preAuthRef = castToString(value); // StringType
+          this.preAuthRef = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("form")) {
-          this.form = castToCodeableConcept(value); // CodeableConcept
+          this.form = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("error")) {
           this.getError().add((ErrorsComponent) value);
         } else

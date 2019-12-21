@@ -274,7 +274,7 @@ public class RiskAssessment extends DomainResource {
          */
         @Child(name = "probability", type = {DecimalType.class, Range.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Likelihood of specified outcome", formalDefinition="Indicates how likely the outcome is (in the specified timeframe)." )
-        protected Type probability;
+        protected DataType probability;
 
         /**
          * Indicates how likely the outcome is (in the specified timeframe), expressed as a qualitative value (e.g. low, medium, or high).
@@ -296,7 +296,7 @@ public class RiskAssessment extends DomainResource {
          */
         @Child(name = "when", type = {Period.class, Range.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Timeframe or age range", formalDefinition="Indicates the period of time or age range of the subject to which the specified probability applies." )
-        protected Type when;
+        protected DataType when;
 
         /**
          * Additional information explaining the basis for the prediction.
@@ -341,7 +341,7 @@ public class RiskAssessment extends DomainResource {
         /**
          * @return {@link #probability} (Indicates how likely the outcome is (in the specified timeframe).)
          */
-        public Type getProbability() { 
+        public DataType getProbability() { 
           return this.probability;
         }
 
@@ -382,7 +382,7 @@ public class RiskAssessment extends DomainResource {
         /**
          * @param value {@link #probability} (Indicates how likely the outcome is (in the specified timeframe).)
          */
-        public RiskAssessmentPredictionComponent setProbability(Type value) { 
+        public RiskAssessmentPredictionComponent setProbability(DataType value) { 
           if (value != null && !(value instanceof DecimalType || value instanceof Range))
             throw new Error("Not the right type for RiskAssessment.prediction.probability[x]: "+value.fhirType());
           this.probability = value;
@@ -483,7 +483,7 @@ public class RiskAssessment extends DomainResource {
         /**
          * @return {@link #when} (Indicates the period of time or age range of the subject to which the specified probability applies.)
          */
-        public Type getWhen() { 
+        public DataType getWhen() { 
           return this.when;
         }
 
@@ -524,7 +524,7 @@ public class RiskAssessment extends DomainResource {
         /**
          * @param value {@link #when} (Indicates the period of time or age range of the subject to which the specified probability applies.)
          */
-        public RiskAssessmentPredictionComponent setWhen(Type value) { 
+        public RiskAssessmentPredictionComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof Range))
             throw new Error("Not the right type for RiskAssessment.prediction.when[x]: "+value.fhirType());
           this.when = value;
@@ -628,22 +628,22 @@ public class RiskAssessment extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1106507950: // outcome
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1290561483: // probability
-          this.probability = castToType(value); // Type
+          this.probability = TypeConvertor.castToType(value); // Type
           return value;
         case 123308730: // qualitativeRisk
-          this.qualitativeRisk = castToCodeableConcept(value); // CodeableConcept
+          this.qualitativeRisk = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -70741061: // relativeRisk
-          this.relativeRisk = castToDecimal(value); // DecimalType
+          this.relativeRisk = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 3648314: // when
-          this.when = castToType(value); // Type
+          this.when = TypeConvertor.castToType(value); // Type
           return value;
         case 345689335: // rationale
-          this.rationale = castToString(value); // StringType
+          this.rationale = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -653,17 +653,17 @@ public class RiskAssessment extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("outcome")) {
-          this.outcome = castToCodeableConcept(value); // CodeableConcept
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("probability[x]")) {
-          this.probability = castToType(value); // Type
+          this.probability = TypeConvertor.castToType(value); // Type
         } else if (name.equals("qualitativeRisk")) {
-          this.qualitativeRisk = castToCodeableConcept(value); // CodeableConcept
+          this.qualitativeRisk = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("relativeRisk")) {
-          this.relativeRisk = castToDecimal(value); // DecimalType
+          this.relativeRisk = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("when[x]")) {
-          this.when = castToType(value); // Type
+          this.when = TypeConvertor.castToType(value); // Type
         } else if (name.equals("rationale")) {
-          this.rationale = castToString(value); // StringType
+          this.rationale = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -848,7 +848,7 @@ public class RiskAssessment extends DomainResource {
      */
     @Child(name = "occurrence", type = {DateTimeType.class, Period.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When was assessment made?", formalDefinition="The date (and possibly time) the risk assessment was performed." )
-    protected Type occurrence;
+    protected DataType occurrence;
 
     /**
      * For assessments or prognosis specific to a particular condition, indicates the condition being assessed.
@@ -1169,7 +1169,7 @@ public class RiskAssessment extends DomainResource {
     /**
      * @return {@link #occurrence} (The date (and possibly time) the risk assessment was performed.)
      */
-    public Type getOccurrence() { 
+    public DataType getOccurrence() { 
       return this.occurrence;
     }
 
@@ -1210,7 +1210,7 @@ public class RiskAssessment extends DomainResource {
     /**
      * @param value {@link #occurrence} (The date (and possibly time) the risk assessment was performed.)
      */
-    public RiskAssessment setOccurrence(Type value) { 
+    public RiskAssessment setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
         throw new Error("Not the right type for RiskAssessment.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
@@ -1657,56 +1657,56 @@ public class RiskAssessment extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
-          this.basedOn = castToReference(value); // Reference
+          this.basedOn = TypeConvertor.castToReference(value); // Reference
           return value;
         case -995424086: // parent
-          this.parent = castToReference(value); // Reference
+          this.parent = TypeConvertor.castToReference(value); // Reference
           return value;
         case -892481550: // status
-          value = new RiskAssessmentStatusEnumFactory().fromType(castToCode(value));
+          value = new RiskAssessmentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<RiskAssessmentStatus>
           return value;
         case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
           return value;
         case -861311717: // condition
-          this.condition = castToReference(value); // Reference
+          this.condition = TypeConvertor.castToReference(value); // Reference
           return value;
         case 481140686: // performer
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 93508670: // basis
-          this.getBasis().add(castToReference(value)); // Reference
+          this.getBasis().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1161234575: // prediction
           this.getPrediction().add((RiskAssessmentPredictionComponent) value); // RiskAssessmentPredictionComponent
           return value;
         case 1293793087: // mitigation
-          this.mitigation = castToString(value); // StringType
+          this.mitigation = TypeConvertor.castToString(value); // StringType
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1716,40 +1716,40 @@ public class RiskAssessment extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
-          this.basedOn = castToReference(value); // Reference
+          this.basedOn = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("parent")) {
-          this.parent = castToReference(value); // Reference
+          this.parent = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("status")) {
-          value = new RiskAssessmentStatusEnumFactory().fromType(castToCode(value));
+          value = new RiskAssessmentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<RiskAssessmentStatus>
         } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // Type
         } else if (name.equals("condition")) {
-          this.condition = castToReference(value); // Reference
+          this.condition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performer")) {
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("basis")) {
-          this.getBasis().add(castToReference(value));
+          this.getBasis().add(TypeConvertor.castToReference(value));
         } else if (name.equals("prediction")) {
           this.getPrediction().add((RiskAssessmentPredictionComponent) value);
         } else if (name.equals("mitigation")) {
-          this.mitigation = castToString(value); // StringType
+          this.mitigation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
           return super.setProperty(name, value);
         return value;

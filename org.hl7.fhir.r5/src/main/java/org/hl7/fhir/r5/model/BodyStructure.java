@@ -520,28 +520,28 @@ public class BodyStructure extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1807231644: // morphology
-          this.morphology = castToCodeableConcept(value); // CodeableConcept
+          this.morphology = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1901043637: // location
-          this.location = castToCodeableConcept(value); // CodeableConcept
+          this.location = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 433081461: // locationQualifier
-          this.getLocationQualifier().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getLocationQualifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 100313435: // image
-          this.getImage().add(castToAttachment(value)); // Attachment
+          this.getImage().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -551,21 +551,21 @@ public class BodyStructure extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("morphology")) {
-          this.morphology = castToCodeableConcept(value); // CodeableConcept
+          this.morphology = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("location")) {
-          this.location = castToCodeableConcept(value); // CodeableConcept
+          this.location = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("locationQualifier")) {
-          this.getLocationQualifier().add(castToCodeableConcept(value));
+          this.getLocationQualifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("image")) {
-          this.getImage().add(castToAttachment(value));
+          this.getImage().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

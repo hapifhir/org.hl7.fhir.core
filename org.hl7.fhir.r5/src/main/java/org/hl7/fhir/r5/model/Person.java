@@ -333,10 +333,10 @@ public class Person extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -880905839: // target
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1771900717: // assurance
-          value = new IdentityAssuranceLevelEnumFactory().fromType(castToCode(value));
+          value = new IdentityAssuranceLevelEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.assurance = (Enumeration) value; // Enumeration<IdentityAssuranceLevel>
           return value;
         default: return super.setProperty(hash, name, value);
@@ -347,9 +347,9 @@ public class Person extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("target")) {
-          this.target = castToReference(value); // Reference
+          this.target = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("assurance")) {
-          value = new IdentityAssuranceLevelEnumFactory().fromType(castToCode(value));
+          value = new IdentityAssuranceLevelEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.assurance = (Enumeration) value; // Enumeration<IdentityAssuranceLevel>
         } else
           return super.setProperty(name, value);
@@ -1022,32 +1022,32 @@ public class Person extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3373707: // name
-          this.getName().add(castToHumanName(value)); // HumanName
+          this.getName().add(TypeConvertor.castToHumanName(value)); // HumanName
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1249512767: // gender
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
           return value;
         case -1210031859: // birthDate
-          this.birthDate = castToDate(value); // DateType
+          this.birthDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1147692044: // address
-          this.getAddress().add(castToAddress(value)); // Address
+          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
           return value;
         case 106642994: // photo
-          this.photo = castToAttachment(value); // Attachment
+          this.photo = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -2058947787: // managingOrganization
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3321850: // link
           this.getLink().add((PersonLinkComponent) value); // PersonLinkComponent
@@ -1060,24 +1060,24 @@ public class Person extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("name")) {
-          this.getName().add(castToHumanName(value));
+          this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("gender")) {
-          value = new AdministrativeGenderEnumFactory().fromType(castToCode(value));
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
         } else if (name.equals("birthDate")) {
-          this.birthDate = castToDate(value); // DateType
+          this.birthDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("address")) {
-          this.getAddress().add(castToAddress(value));
+          this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("photo")) {
-          this.photo = castToAttachment(value); // Attachment
+          this.photo = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("managingOrganization")) {
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("link")) {
           this.getLink().add((PersonLinkComponent) value);
         } else

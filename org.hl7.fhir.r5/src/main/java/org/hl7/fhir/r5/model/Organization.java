@@ -272,16 +272,16 @@ public class Organization extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -220463842: // purpose
-          this.purpose = castToCodeableConcept(value); // CodeableConcept
+          this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToHumanName(value); // HumanName
+          this.name = TypeConvertor.castToHumanName(value); // HumanName
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1147692044: // address
-          this.address = castToAddress(value); // Address
+          this.address = TypeConvertor.castToAddress(value); // Address
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -291,13 +291,13 @@ public class Organization extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("purpose")) {
-          this.purpose = castToCodeableConcept(value); // CodeableConcept
+          this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
-          this.name = castToHumanName(value); // HumanName
+          this.name = TypeConvertor.castToHumanName(value); // HumanName
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
-          this.address = castToAddress(value); // Address
+          this.address = TypeConvertor.castToAddress(value); // Address
         } else
           return super.setProperty(name, value);
         return value;
@@ -1030,34 +1030,34 @@ public class Organization extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 92902992: // alias
-          this.getAlias().add(castToString(value)); // StringType
+          this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1147692044: // address
-          this.getAddress().add(castToAddress(value)); // Address
+          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
           return value;
         case -995410646: // partOf
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
           return value;
         case 951526432: // contact
           this.getContact().add((OrganizationContactComponent) value); // OrganizationContactComponent
           return value;
         case 1741102485: // endpoint
-          this.getEndpoint().add(castToReference(value)); // Reference
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1067,25 +1067,25 @@ public class Organization extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("alias")) {
-          this.getAlias().add(castToString(value));
+          this.getAlias().add(TypeConvertor.castToString(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
-          this.getAddress().add(castToAddress(value));
+          this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("partOf")) {
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
           this.getContact().add((OrganizationContactComponent) value);
         } else if (name.equals("endpoint")) {
-          this.getEndpoint().add(castToReference(value));
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

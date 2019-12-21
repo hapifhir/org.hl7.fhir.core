@@ -529,10 +529,10 @@ public class DetectedIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1335224239: // detail
-          this.getDetail().add(castToReference(value)); // Reference
+          this.getDetail().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -542,9 +542,9 @@ public class DetectedIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("detail")) {
-          this.getDetail().add(castToReference(value));
+          this.getDetail().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -804,13 +804,13 @@ public class DetectedIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1422950858: // action
-          this.action = castToCodeableConcept(value); // CodeableConcept
+          this.action = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -820,11 +820,11 @@ public class DetectedIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("action")) {
-          this.action = castToCodeableConcept(value); // CodeableConcept
+          this.action = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -957,7 +957,7 @@ public class DetectedIssue extends DomainResource {
      */
     @Child(name = "identified", type = {DateTimeType.class, Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When identified", formalDefinition="The date or period when the detected issue was initially identified." )
-    protected Type identified;
+    protected DataType identified;
 
     /**
      * Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.
@@ -1216,7 +1216,7 @@ public class DetectedIssue extends DomainResource {
     /**
      * @return {@link #identified} (The date or period when the detected issue was initially identified.)
      */
-    public Type getIdentified() { 
+    public DataType getIdentified() { 
       return this.identified;
     }
 
@@ -1257,7 +1257,7 @@ public class DetectedIssue extends DomainResource {
     /**
      * @param value {@link #identified} (The date or period when the detected issue was initially identified.)
      */
-    public DetectedIssue setIdentified(Type value) { 
+    public DetectedIssue setIdentified(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
         throw new Error("Not the right type for DetectedIssue.identified[x]: "+value.fhirType());
       this.identified = value;
@@ -1608,39 +1608,39 @@ public class DetectedIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new DetectedIssueStatusEnumFactory().fromType(castToCode(value));
+          value = new DetectedIssueStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DetectedIssueStatus>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1478300413: // severity
-          value = new DetectedIssueSeverityEnumFactory().fromType(castToCode(value));
+          value = new DetectedIssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<DetectedIssueSeverity>
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1618432869: // identified
-          this.identified = castToType(value); // Type
+          this.identified = TypeConvertor.castToType(value); // Type
           return value;
         case -1406328437: // author
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
           return value;
         case -810216884: // implicated
-          this.getImplicated().add(castToReference(value)); // Reference
+          this.getImplicated().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 382967383: // evidence
           this.getEvidence().add((DetectedIssueEvidenceComponent) value); // DetectedIssueEvidenceComponent
           return value;
         case -1335224239: // detail
-          this.detail = castToString(value); // StringType
+          this.detail = TypeConvertor.castToString(value); // StringType
           return value;
         case -925155509: // reference
-          this.reference = castToUri(value); // UriType
+          this.reference = TypeConvertor.castToUri(value); // UriType
           return value;
         case 1293793087: // mitigation
           this.getMitigation().add((DetectedIssueMitigationComponent) value); // DetectedIssueMitigationComponent
@@ -1653,29 +1653,29 @@ public class DetectedIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new DetectedIssueStatusEnumFactory().fromType(castToCode(value));
+          value = new DetectedIssueStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<DetectedIssueStatus>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("severity")) {
-          value = new DetectedIssueSeverityEnumFactory().fromType(castToCode(value));
+          value = new DetectedIssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<DetectedIssueSeverity>
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("identified[x]")) {
-          this.identified = castToType(value); // Type
+          this.identified = TypeConvertor.castToType(value); // Type
         } else if (name.equals("author")) {
-          this.author = castToReference(value); // Reference
+          this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("implicated")) {
-          this.getImplicated().add(castToReference(value));
+          this.getImplicated().add(TypeConvertor.castToReference(value));
         } else if (name.equals("evidence")) {
           this.getEvidence().add((DetectedIssueEvidenceComponent) value);
         } else if (name.equals("detail")) {
-          this.detail = castToString(value); // StringType
+          this.detail = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("reference")) {
-          this.reference = castToUri(value); // UriType
+          this.reference = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("mitigation")) {
           this.getMitigation().add((DetectedIssueMitigationComponent) value);
         } else

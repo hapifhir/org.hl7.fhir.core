@@ -895,34 +895,34 @@ public class ImagingStudy extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 115792: // uid
-          this.uid = castToId(value); // IdType
+          this.uid = TypeConvertor.castToId(value); // IdType
           return value;
         case -1034364087: // number
-          this.number = castToUnsignedInt(value); // UnsignedIntType
+          this.number = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -622722335: // modality
-          this.modality = castToCoding(value); // Coding
+          this.modality = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1043544226: // numberOfInstances
-          this.numberOfInstances = castToUnsignedInt(value); // UnsignedIntType
+          this.numberOfInstances = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 1741102485: // endpoint
-          this.getEndpoint().add(castToReference(value)); // Reference
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.bodySite = castToCoding(value); // Coding
+          this.bodySite = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -170291817: // laterality
-          this.laterality = castToCoding(value); // Coding
+          this.laterality = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -2132868344: // specimen
-          this.getSpecimen().add(castToReference(value)); // Reference
+          this.getSpecimen().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1897185151: // started
-          this.started = castToDateTime(value); // DateTimeType
+          this.started = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 481140686: // performer
           this.getPerformer().add((ImagingStudySeriesPerformerComponent) value); // ImagingStudySeriesPerformerComponent
@@ -938,25 +938,25 @@ public class ImagingStudy extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("uid")) {
-          this.uid = castToId(value); // IdType
+          this.uid = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("number")) {
-          this.number = castToUnsignedInt(value); // UnsignedIntType
+          this.number = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("modality")) {
-          this.modality = castToCoding(value); // Coding
+          this.modality = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("numberOfInstances")) {
-          this.numberOfInstances = castToUnsignedInt(value); // UnsignedIntType
+          this.numberOfInstances = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("endpoint")) {
-          this.getEndpoint().add(castToReference(value));
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.bodySite = castToCoding(value); // Coding
+          this.bodySite = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("laterality")) {
-          this.laterality = castToCoding(value); // Coding
+          this.laterality = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("specimen")) {
-          this.getSpecimen().add(castToReference(value));
+          this.getSpecimen().add(TypeConvertor.castToReference(value));
         } else if (name.equals("started")) {
-          this.started = castToDateTime(value); // DateTimeType
+          this.started = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
           this.getPerformer().add((ImagingStudySeriesPerformerComponent) value);
         } else if (name.equals("instance")) {
@@ -1240,10 +1240,10 @@ public class ImagingStudy extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1380938712: // function
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 92645877: // actor
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1253,9 +1253,9 @@ public class ImagingStudy extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("function")) {
-          this.function = castToCodeableConcept(value); // CodeableConcept
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("actor")) {
-          this.actor = castToReference(value); // Reference
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -1585,16 +1585,16 @@ public class ImagingStudy extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 115792: // uid
-          this.uid = castToId(value); // IdType
+          this.uid = TypeConvertor.castToId(value); // IdType
           return value;
         case 1560041540: // sopClass
-          this.sopClass = castToCoding(value); // Coding
+          this.sopClass = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -1034364087: // number
-          this.number = castToUnsignedInt(value); // UnsignedIntType
+          this.number = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1604,13 +1604,13 @@ public class ImagingStudy extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("uid")) {
-          this.uid = castToId(value); // IdType
+          this.uid = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("sopClass")) {
-          this.sopClass = castToCoding(value); // Coding
+          this.sopClass = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("number")) {
-          this.number = castToUnsignedInt(value); // UnsignedIntType
+          this.number = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2835,62 +2835,62 @@ public class ImagingStudy extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ImagingStudyStatusEnumFactory().fromType(castToCode(value));
+          value = new ImagingStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ImagingStudyStatus>
           return value;
         case -622722335: // modality
-          this.getModality().add(castToCoding(value)); // Coding
+          this.getModality().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1897185151: // started
-          this.started = castToDateTime(value); // DateTimeType
+          this.started = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -332612366: // basedOn
-          this.getBasedOn().add(castToReference(value)); // Reference
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -722568161: // referrer
-          this.referrer = castToReference(value); // Reference
+          this.referrer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2008009094: // interpreter
-          this.getInterpreter().add(castToReference(value)); // Reference
+          this.getInterpreter().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1741102485: // endpoint
-          this.getEndpoint().add(castToReference(value)); // Reference
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1920000407: // numberOfSeries
-          this.numberOfSeries = castToUnsignedInt(value); // UnsignedIntType
+          this.numberOfSeries = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -1043544226: // numberOfInstances
-          this.numberOfInstances = castToUnsignedInt(value); // UnsignedIntType
+          this.numberOfInstances = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 881809848: // procedureReference
-          this.procedureReference = castToReference(value); // Reference
+          this.procedureReference = TypeConvertor.castToReference(value); // Reference
           return value;
         case -698023072: // procedureCode
-          this.getProcedureCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getProcedureCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1901043637: // location
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -905838985: // series
           this.getSeries().add((ImagingStudySeriesComponent) value); // ImagingStudySeriesComponent
@@ -2903,44 +2903,44 @@ public class ImagingStudy extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ImagingStudyStatusEnumFactory().fromType(castToCode(value));
+          value = new ImagingStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ImagingStudyStatus>
         } else if (name.equals("modality")) {
-          this.getModality().add(castToCoding(value));
+          this.getModality().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("started")) {
-          this.started = castToDateTime(value); // DateTimeType
+          this.started = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("basedOn")) {
-          this.getBasedOn().add(castToReference(value));
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("referrer")) {
-          this.referrer = castToReference(value); // Reference
+          this.referrer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("interpreter")) {
-          this.getInterpreter().add(castToReference(value));
+          this.getInterpreter().add(TypeConvertor.castToReference(value));
         } else if (name.equals("endpoint")) {
-          this.getEndpoint().add(castToReference(value));
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else if (name.equals("numberOfSeries")) {
-          this.numberOfSeries = castToUnsignedInt(value); // UnsignedIntType
+          this.numberOfSeries = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("numberOfInstances")) {
-          this.numberOfInstances = castToUnsignedInt(value); // UnsignedIntType
+          this.numberOfInstances = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("procedureReference")) {
-          this.procedureReference = castToReference(value); // Reference
+          this.procedureReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("procedureCode")) {
-          this.getProcedureCode().add(castToCodeableConcept(value));
+          this.getProcedureCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("location")) {
-          this.location = castToReference(value); // Reference
+          this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("series")) {
           this.getSeries().add((ImagingStudySeriesComponent) value);
         } else

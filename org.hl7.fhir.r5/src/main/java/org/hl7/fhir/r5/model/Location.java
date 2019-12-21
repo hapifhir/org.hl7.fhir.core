@@ -711,13 +711,13 @@ public class Location extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 137365935: // longitude
-          this.longitude = castToDecimal(value); // DecimalType
+          this.longitude = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1439978388: // latitude
-          this.latitude = castToDecimal(value); // DecimalType
+          this.latitude = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 2036550306: // altitude
-          this.altitude = castToDecimal(value); // DecimalType
+          this.altitude = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -727,11 +727,11 @@ public class Location extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("longitude")) {
-          this.longitude = castToDecimal(value); // DecimalType
+          this.longitude = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("latitude")) {
-          this.latitude = castToDecimal(value); // DecimalType
+          this.latitude = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("altitude")) {
-          this.altitude = castToDecimal(value); // DecimalType
+          this.altitude = TypeConvertor.castToDecimal(value); // DecimalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1101,17 +1101,17 @@ public class Location extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 68050338: // daysOfWeek
-          value = new DaysOfWeekEnumFactory().fromType(castToCode(value));
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getDaysOfWeek().add((Enumeration) value); // Enumeration<DaysOfWeek>
           return value;
         case -1414913477: // allDay
-          this.allDay = castToBoolean(value); // BooleanType
+          this.allDay = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 84062277: // openingTime
-          this.openingTime = castToTime(value); // TimeType
+          this.openingTime = TypeConvertor.castToTime(value); // TimeType
           return value;
         case 188137762: // closingTime
-          this.closingTime = castToTime(value); // TimeType
+          this.closingTime = TypeConvertor.castToTime(value); // TimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1121,14 +1121,14 @@ public class Location extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("daysOfWeek")) {
-          value = new DaysOfWeekEnumFactory().fromType(castToCode(value));
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getDaysOfWeek().add((Enumeration) value);
         } else if (name.equals("allDay")) {
-          this.allDay = castToBoolean(value); // BooleanType
+          this.allDay = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("openingTime")) {
-          this.openingTime = castToTime(value); // TimeType
+          this.openingTime = TypeConvertor.castToTime(value); // TimeType
         } else if (name.equals("closingTime")) {
-          this.closingTime = castToTime(value); // TimeType
+          this.closingTime = TypeConvertor.castToTime(value); // TimeType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2151,57 +2151,57 @@ public class Location extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new LocationStatusEnumFactory().fromType(castToCode(value));
+          value = new LocationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<LocationStatus>
           return value;
         case -2103166364: // operationalStatus
-          this.operationalStatus = castToCoding(value); // Coding
+          this.operationalStatus = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 92902992: // alias
-          this.getAlias().add(castToString(value)); // StringType
+          this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3357091: // mode
-          value = new LocationModeEnumFactory().fromType(castToCode(value));
+          value = new LocationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<LocationMode>
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case -1147692044: // address
-          this.address = castToAddress(value); // Address
+          this.address = TypeConvertor.castToAddress(value); // Address
           return value;
         case -1474715471: // physicalType
-          this.physicalType = castToCodeableConcept(value); // CodeableConcept
+          this.physicalType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 747804969: // position
           this.position = (LocationPositionComponent) value; // LocationPositionComponent
           return value;
         case -2058947787: // managingOrganization
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -995410646: // partOf
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1588872511: // hoursOfOperation
           this.getHoursOfOperation().add((LocationHoursOfOperationComponent) value); // LocationHoursOfOperationComponent
           return value;
         case -1149143617: // availabilityExceptions
-          this.availabilityExceptions = castToString(value); // StringType
+          this.availabilityExceptions = TypeConvertor.castToString(value); // StringType
           return value;
         case 1741102485: // endpoint
-          this.getEndpoint().add(castToReference(value)); // Reference
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2211,41 +2211,41 @@ public class Location extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new LocationStatusEnumFactory().fromType(castToCode(value));
+          value = new LocationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<LocationStatus>
         } else if (name.equals("operationalStatus")) {
-          this.operationalStatus = castToCoding(value); // Coding
+          this.operationalStatus = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("alias")) {
-          this.getAlias().add(castToString(value));
+          this.getAlias().add(TypeConvertor.castToString(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("mode")) {
-          value = new LocationModeEnumFactory().fromType(castToCode(value));
+          value = new LocationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<LocationMode>
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
-          this.address = castToAddress(value); // Address
+          this.address = TypeConvertor.castToAddress(value); // Address
         } else if (name.equals("physicalType")) {
-          this.physicalType = castToCodeableConcept(value); // CodeableConcept
+          this.physicalType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("position")) {
           this.position = (LocationPositionComponent) value; // LocationPositionComponent
         } else if (name.equals("managingOrganization")) {
-          this.managingOrganization = castToReference(value); // Reference
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("partOf")) {
-          this.partOf = castToReference(value); // Reference
+          this.partOf = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("hoursOfOperation")) {
           this.getHoursOfOperation().add((LocationHoursOfOperationComponent) value);
         } else if (name.equals("availabilityExceptions")) {
-          this.availabilityExceptions = castToString(value); // StringType
+          this.availabilityExceptions = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("endpoint")) {
-          this.getEndpoint().add(castToReference(value));
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

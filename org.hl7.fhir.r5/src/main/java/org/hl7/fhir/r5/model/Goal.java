@@ -290,14 +290,14 @@ public class Goal extends DomainResource {
          */
         @Child(name = "detail", type = {Quantity.class, Range.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Ratio.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The target value to be achieved", formalDefinition="The target value of the focus to be achieved to signify the fulfillment of the goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any focus value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any focus value at or above the low value." )
-        protected Type detail;
+        protected DataType detail;
 
         /**
          * Indicates either the date or the duration after start by which the goal should be met.
          */
         @Child(name = "due", type = {DateType.class, Duration.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Reach goal on or before", formalDefinition="Indicates either the date or the duration after start by which the goal should be met." )
-        protected Type due;
+        protected DataType due;
 
         private static final long serialVersionUID = -585108934L;
 
@@ -335,7 +335,7 @@ public class Goal extends DomainResource {
         /**
          * @return {@link #detail} (The target value of the focus to be achieved to signify the fulfillment of the goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any focus value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any focus value at or above the low value.)
          */
-        public Type getDetail() { 
+        public DataType getDetail() { 
           return this.detail;
         }
 
@@ -451,7 +451,7 @@ public class Goal extends DomainResource {
         /**
          * @param value {@link #detail} (The target value of the focus to be achieved to signify the fulfillment of the goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any focus value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any focus value at or above the low value.)
          */
-        public GoalTargetComponent setDetail(Type value) { 
+        public GoalTargetComponent setDetail(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Ratio))
             throw new Error("Not the right type for Goal.target.detail[x]: "+value.fhirType());
           this.detail = value;
@@ -461,7 +461,7 @@ public class Goal extends DomainResource {
         /**
          * @return {@link #due} (Indicates either the date or the duration after start by which the goal should be met.)
          */
-        public Type getDue() { 
+        public DataType getDue() { 
           return this.due;
         }
 
@@ -502,7 +502,7 @@ public class Goal extends DomainResource {
         /**
          * @param value {@link #due} (Indicates either the date or the duration after start by which the goal should be met.)
          */
-        public GoalTargetComponent setDue(Type value) { 
+        public GoalTargetComponent setDue(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Duration))
             throw new Error("Not the right type for Goal.target.due[x]: "+value.fhirType());
           this.due = value;
@@ -553,13 +553,13 @@ public class Goal extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 938321246: // measure
-          this.measure = castToCodeableConcept(value); // CodeableConcept
+          this.measure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1335224239: // detail
-          this.detail = castToType(value); // Type
+          this.detail = TypeConvertor.castToType(value); // Type
           return value;
         case 99828: // due
-          this.due = castToType(value); // Type
+          this.due = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -569,11 +569,11 @@ public class Goal extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("measure")) {
-          this.measure = castToCodeableConcept(value); // CodeableConcept
+          this.measure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("detail[x]")) {
-          this.detail = castToType(value); // Type
+          this.detail = TypeConvertor.castToType(value); // Type
         } else if (name.equals("due[x]")) {
-          this.due = castToType(value); // Type
+          this.due = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -761,7 +761,7 @@ public class Goal extends DomainResource {
     @Child(name = "start", type = {DateType.class, CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When goal pursuit begins", formalDefinition="The date or event after which the goal should begin being pursued." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/goal-start-event")
-    protected Type start;
+    protected DataType start;
 
     /**
      * Indicates what should be done by when.
@@ -1134,7 +1134,7 @@ public class Goal extends DomainResource {
     /**
      * @return {@link #start} (The date or event after which the goal should begin being pursued.)
      */
-    public Type getStart() { 
+    public DataType getStart() { 
       return this.start;
     }
 
@@ -1175,7 +1175,7 @@ public class Goal extends DomainResource {
     /**
      * @param value {@link #start} (The date or event after which the goal should begin being pursued.)
      */
-    public Goal setStart(Type value) { 
+    public Goal setStart(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof CodeableConcept))
         throw new Error("Not the right type for Goal.start[x]: "+value.fhirType());
       this.start = value;
@@ -1647,56 +1647,56 @@ public class Goal extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 1165552636: // lifecycleStatus
-          value = new GoalLifecycleStatusEnumFactory().fromType(castToCode(value));
+          value = new GoalLifecycleStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.lifecycleStatus = (Enumeration) value; // Enumeration<GoalLifecycleStatus>
           return value;
         case 104524801: // achievementStatus
-          this.achievementStatus = castToCodeableConcept(value); // CodeableConcept
+          this.achievementStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 379114255: // continuous
-          this.continuous = castToBoolean(value); // BooleanType
+          this.continuous = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1165461084: // priority
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToCodeableConcept(value); // CodeableConcept
+          this.description = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 109757538: // start
-          this.start = castToType(value); // Type
+          this.start = TypeConvertor.castToType(value); // Type
           return value;
         case -880905839: // target
           this.getTarget().add((GoalTargetComponent) value); // GoalTargetComponent
           return value;
         case 247524032: // statusDate
-          this.statusDate = castToDate(value); // DateType
+          this.statusDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case 2051346646: // statusReason
-          this.statusReason = castToString(value); // StringType
+          this.statusReason = TypeConvertor.castToString(value); // StringType
           return value;
         case 175423686: // expressedBy
-          this.expressedBy = castToReference(value); // Reference
+          this.expressedBy = TypeConvertor.castToReference(value); // Reference
           return value;
         case 874544034: // addresses
-          this.getAddresses().add(castToReference(value)); // Reference
+          this.getAddresses().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 1062482015: // outcomeCode
-          this.getOutcomeCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getOutcomeCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -782273511: // outcomeReference
-          this.getOutcomeReference().add(castToReference(value)); // Reference
+          this.getOutcomeReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1706,40 +1706,40 @@ public class Goal extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("lifecycleStatus")) {
-          value = new GoalLifecycleStatusEnumFactory().fromType(castToCode(value));
+          value = new GoalLifecycleStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.lifecycleStatus = (Enumeration) value; // Enumeration<GoalLifecycleStatus>
         } else if (name.equals("achievementStatus")) {
-          this.achievementStatus = castToCodeableConcept(value); // CodeableConcept
+          this.achievementStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("continuous")) {
-          this.continuous = castToBoolean(value); // BooleanType
+          this.continuous = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("priority")) {
-          this.priority = castToCodeableConcept(value); // CodeableConcept
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToCodeableConcept(value); // CodeableConcept
+          this.description = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("start[x]")) {
-          this.start = castToType(value); // Type
+          this.start = TypeConvertor.castToType(value); // Type
         } else if (name.equals("target")) {
           this.getTarget().add((GoalTargetComponent) value);
         } else if (name.equals("statusDate")) {
-          this.statusDate = castToDate(value); // DateType
+          this.statusDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("statusReason")) {
-          this.statusReason = castToString(value); // StringType
+          this.statusReason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expressedBy")) {
-          this.expressedBy = castToReference(value); // Reference
+          this.expressedBy = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("addresses")) {
-          this.getAddresses().add(castToReference(value));
+          this.getAddresses().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("outcomeCode")) {
-          this.getOutcomeCode().add(castToCodeableConcept(value));
+          this.getOutcomeCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("outcomeReference")) {
-          this.getOutcomeReference().add(castToReference(value));
+          this.getOutcomeReference().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

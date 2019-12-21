@@ -776,7 +776,7 @@ public interface Fivews extends PatternBase {
     /**
      * @return {@link #what} (what this resource is about.)
      */
-    public Type getWhat() throws FHIRException ;
+    public DataType getWhat() throws FHIRException ;
 
     /**
      * @return {@link #what} (what this resource is about.)
@@ -807,7 +807,7 @@ public interface Fivews extends PatternBase {
     /**
      * @param value {@link #what} (what this resource is about.)
      */
-    public Fivews setWhat(Type value) throws FHIRException;
+    public Fivews setWhat(DataType value) throws FHIRException;
 
     /**
      * @return {@link #subject} (Who this resource is about.)
@@ -932,7 +932,7 @@ public interface Fivews extends PatternBase {
     /**
      * @return {@link #done} (when the work described in this resource was completed (or will be).)
      */
-    public Type getDone() throws FHIRException ;
+    public DataType getDone() throws FHIRException ;
 
     /**
      * @return {@link #done} (when the work described in this resource was completed (or will be).)
@@ -963,7 +963,7 @@ public interface Fivews extends PatternBase {
     /**
      * @param value {@link #done} (when the work described in this resource was completed (or will be).)
      */
-    public Fivews setDone(Type value) throws FHIRException;
+    public Fivews setDone(DataType value) throws FHIRException;
 
     /**
      * @return {@link #recorded} (when this resource itself was created.). This is the underlying object with id, value and extensions. The accessor "getRecorded" gives direct access to the value
@@ -1194,12 +1194,12 @@ public interface Fivews extends PatternBase {
     /**
      * @return {@link #where} (The location of the work described.)
      */
-    public List<Type> getWhere() throws FHIRException;
+    public List<DataType> getWhere() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setWhere(List<Type> theWhere) throws FHIRException;
+    public Fivews setWhere(List<DataType> theWhere) throws FHIRException;
 
     /**
      * @return whether there is more than zero values for where
@@ -1214,24 +1214,24 @@ public interface Fivews extends PatternBase {
      */
     public int getWhereMax();
 
-    public Type addWhere() throws FHIRException;
+    public DataType addWhere() throws FHIRException;
 
-    public Fivews addWhere(Type t) throws FHIRException;
+    public Fivews addWhere(DataType t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #where}, creating it if it does not already exist
      */
-    public Type getWhereFirstRep() throws FHIRException;
+    public DataType getWhereFirstRep() throws FHIRException;
 
     /**
      * @return {@link #why} (Why this work was done.)
      */
-    public List<Type> getWhy() throws FHIRException;
+    public List<DataType> getWhy() throws FHIRException;
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Fivews setWhy(List<Type> theWhy) throws FHIRException;
+    public Fivews setWhy(List<DataType> theWhy) throws FHIRException;
 
     /**
      * @return whether there is more than zero values for why
@@ -1246,14 +1246,14 @@ public interface Fivews extends PatternBase {
      */
     public int getWhyMax();
 
-    public Type addWhy() throws FHIRException;
+    public DataType addWhy() throws FHIRException;
 
-    public Fivews addWhy(Type t) throws FHIRException;
+    public Fivews addWhy(DataType t) throws FHIRException;
 
     /**
      * @return The first repetition of repeating field {@link #why}, creating it if it does not already exist
      */
-    public Type getWhyFirstRep() throws FHIRException;
+    public DataType getWhyFirstRep() throws FHIRException;
 
   public String fhirType();
 

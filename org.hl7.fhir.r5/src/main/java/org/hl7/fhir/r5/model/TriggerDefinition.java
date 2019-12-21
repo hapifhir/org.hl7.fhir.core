@@ -67,7 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.
  */
 @DatatypeDef(name="TriggerDefinition")
-public class TriggerDefinition extends Type implements ICompositeType {
+public class TriggerDefinition extends DataType implements ICompositeType {
 
     public enum TriggerType {
         /**
@@ -277,7 +277,7 @@ public class TriggerDefinition extends Type implements ICompositeType {
      */
     @Child(name = "timing", type = {Timing.class, Schedule.class, DateType.class, DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Timing of the event", formalDefinition="The timing of the event (if this is a periodic trigger)." )
-    protected Type timing;
+    protected DataType timing;
 
     /**
      * The triggering data of the event (if this is a data trigger). If more than one data is requirement is specified, then all the data requirements must be true.
@@ -293,7 +293,7 @@ public class TriggerDefinition extends Type implements ICompositeType {
     @Description(shortDefinition="Whether the event triggers (boolean expression)", formalDefinition="A boolean-valued expression that is evaluated in the context of the container of the trigger definition and returns whether or not the trigger fires." )
     protected Expression condition;
 
-    private static final long serialVersionUID = -1706033335L;
+    private static final long serialVersionUID = 137099027L;
 
   /**
    * Constructor
@@ -407,7 +407,7 @@ public class TriggerDefinition extends Type implements ICompositeType {
     /**
      * @return {@link #timing} (The timing of the event (if this is a periodic trigger).)
      */
-    public Type getTiming() { 
+    public DataType getTiming() { 
       return this.timing;
     }
 
@@ -478,7 +478,7 @@ public class TriggerDefinition extends Type implements ICompositeType {
     /**
      * @param value {@link #timing} (The timing of the event (if this is a periodic trigger).)
      */
-    public TriggerDefinition setTiming(Type value) { 
+    public TriggerDefinition setTiming(DataType value) { 
       if (value != null && !(value instanceof Timing || value instanceof Reference || value instanceof DateType || value instanceof DateTimeType))
         throw new Error("Not the right type for TriggerDefinition.timing[x]: "+value.fhirType());
       this.timing = value;
@@ -594,7 +594,7 @@ public class TriggerDefinition extends Type implements ICompositeType {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<TriggerType>
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // Type
+        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
         case 3076010: /*data*/ return this.data == null ? new Base[0] : this.data.toArray(new Base[this.data.size()]); // DataRequirement
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // Expression
         default: return super.getProperty(hash, name, checkValid);
@@ -606,20 +606,20 @@ public class TriggerDefinition extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new TriggerTypeEnumFactory().fromType(castToCode(value));
+          value = new TriggerTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<TriggerType>
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -873664438: // timing
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
           return value;
         case 3076010: // data
-          this.getData().add(castToDataRequirement(value)); // DataRequirement
+          this.getData().add(TypeConvertor.castToDataRequirement(value)); // DataRequirement
           return value;
         case -861311717: // condition
-          this.condition = castToExpression(value); // Expression
+          this.condition = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -629,16 +629,16 @@ public class TriggerDefinition extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new TriggerTypeEnumFactory().fromType(castToCode(value));
+          value = new TriggerTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<TriggerType>
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("timing[x]")) {
-          this.timing = castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("data")) {
-          this.getData().add(castToDataRequirement(value));
+          this.getData().add(TypeConvertor.castToDataRequirement(value));
         } else if (name.equals("condition")) {
-          this.condition = castToExpression(value); // Expression
+          this.condition = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;

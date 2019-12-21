@@ -66,14 +66,14 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A  text note which also  contains information about who made the statement and when.
  */
 @DatatypeDef(name="Annotation")
-public class Annotation extends Type implements ICompositeType {
+public class Annotation extends DataType implements ICompositeType {
 
     /**
      * The individual responsible for making the annotation.
      */
     @Child(name = "author", type = {Practitioner.class, Patient.class, RelatedPerson.class, Organization.class, StringType.class}, order=0, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Individual responsible for the annotation", formalDefinition="The individual responsible for making the annotation." )
-    protected Type author;
+    protected DataType author;
 
     /**
      * Indicates when this particular annotation was made.
@@ -89,7 +89,7 @@ public class Annotation extends Type implements ICompositeType {
     @Description(shortDefinition="The annotation  - text content (as markdown)", formalDefinition="The text of the annotation in markdown format." )
     protected MarkdownType text;
 
-    private static final long serialVersionUID = 1324090545L;
+    private static final long serialVersionUID = 1108562171L;
 
   /**
    * Constructor
@@ -109,7 +109,7 @@ public class Annotation extends Type implements ICompositeType {
     /**
      * @return {@link #author} (The individual responsible for making the annotation.)
      */
-    public Type getAuthor() { 
+    public DataType getAuthor() { 
       return this.author;
     }
 
@@ -150,7 +150,7 @@ public class Annotation extends Type implements ICompositeType {
     /**
      * @param value {@link #author} (The individual responsible for making the annotation.)
      */
-    public Annotation setAuthor(Type value) { 
+    public Annotation setAuthor(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof StringType))
         throw new Error("Not the right type for Annotation.author[x]: "+value.fhirType());
       this.author = value;
@@ -275,7 +275,7 @@ public class Annotation extends Type implements ICompositeType {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Type
+        case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // DataType
         case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DateTimeType
         case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // MarkdownType
         default: return super.getProperty(hash, name, checkValid);
@@ -287,13 +287,13 @@ public class Annotation extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1406328437: // author
-          this.author = castToType(value); // Type
+          this.author = TypeConvertor.castToType(value); // DataType
           return value;
         case 3560141: // time
-          this.time = castToDateTime(value); // DateTimeType
+          this.time = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 3556653: // text
-          this.text = castToMarkdown(value); // MarkdownType
+          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -303,11 +303,11 @@ public class Annotation extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("author[x]")) {
-          this.author = castToType(value); // Type
+          this.author = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("time")) {
-          this.time = castToDateTime(value); // DateTimeType
+          this.time = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("text")) {
-          this.text = castToMarkdown(value); // MarkdownType
+          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;

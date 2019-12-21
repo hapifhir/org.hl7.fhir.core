@@ -161,7 +161,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
           String filename =  e.getAsString();
           String contents = TestingUtilities.loadTestResource("validator", filename);
-          MetadataResource mr = (MetadataResource) loadResource(filename, contents, v);
+          CanonicalResource mr = (CanonicalResource) loadResource(filename, contents, v);
           val.getContext().cacheResource(mr);
         }
       }
@@ -183,7 +183,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         for (JsonElement e : logical.getAsJsonArray("supporting")) {
           String filename =  e.getAsString();
           String contents = TestingUtilities.loadTestResource("validator", filename);
-          MetadataResource mr = (MetadataResource) loadResource(filename, contents, v);
+          CanonicalResource mr = (CanonicalResource) loadResource(filename, contents, v);
           if (mr instanceof StructureDefinition) {
             val.getContext().generateSnapshot((StructureDefinition) mr, true);
           }

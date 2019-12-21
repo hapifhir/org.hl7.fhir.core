@@ -65,7 +65,7 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextStreamWriter;
@@ -318,7 +318,7 @@ public class XLSXWriter  extends TextStreamWriter  {
     return b.toString();
   }
 
-  private String renderType(Type value) throws Exception {
+  private String renderType(DataType value) throws Exception {
     if (value == null)
       return "";
     if (value.isPrimitive())

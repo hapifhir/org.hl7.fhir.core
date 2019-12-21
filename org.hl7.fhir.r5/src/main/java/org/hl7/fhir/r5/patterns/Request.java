@@ -984,7 +984,7 @@ public interface Request extends PatternBase {
     /**
      * @return {@link #occurrence} (The date or time(s) at which the activity or service is desired to occur or not occur.)
      */
-    public Type getOccurrence() throws FHIRException ;
+    public DataType getOccurrence() throws FHIRException ;
 
     /**
      * @return {@link #occurrence} (The date or time(s) at which the activity or service is desired to occur or not occur.)
@@ -1022,7 +1022,7 @@ public interface Request extends PatternBase {
     /**
      * @param value {@link #occurrence} (The date or time(s) at which the activity or service is desired to occur or not occur.)
      */
-    public Request setOccurrence(Type value) throws FHIRException;
+    public Request setOccurrence(DataType value) throws FHIRException;
 
     /**
      * @return {@link #authoredOn} (For draft {{title}}s, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation.). This is the underlying object with id, value and extensions. The accessor "getAuthoredOn" gives direct access to the value
@@ -1083,7 +1083,7 @@ public interface Request extends PatternBase {
     /**
      * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Type getReported() throws FHIRException ;
+    public DataType getReported() throws FHIRException ;
 
     /**
      * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
@@ -1114,7 +1114,7 @@ public interface Request extends PatternBase {
     /**
      * @param value {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Request setReported(Type value) throws FHIRException;
+    public Request setReported(DataType value) throws FHIRException;
 
     /**
      * @return {@link #performerType} (The type of individual that is desired to act upon/ not act upon the {{request}}.)

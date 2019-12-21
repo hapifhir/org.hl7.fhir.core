@@ -617,25 +617,25 @@ public class VerificationResult extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 117694: // who
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1314116695: // communicationMethod
-          this.getCommunicationMethod().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCommunicationMethod().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1775633867: // validationStatus
-          this.validationStatus = castToCodeableConcept(value); // CodeableConcept
+          this.validationStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -280180793: // validationDate
-          this.validationDate = castToDateTime(value); // DateTimeType
+          this.validationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1463787104: // canPushUpdates
-          this.canPushUpdates = castToCodeableConcept(value); // CodeableConcept
+          this.canPushUpdates = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 945223605: // pushTypeAvailable
-          this.getPushTypeAvailable().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getPushTypeAvailable().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -645,19 +645,19 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("who")) {
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("communicationMethod")) {
-          this.getCommunicationMethod().add(castToCodeableConcept(value));
+          this.getCommunicationMethod().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("validationStatus")) {
-          this.validationStatus = castToCodeableConcept(value); // CodeableConcept
+          this.validationStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("validationDate")) {
-          this.validationDate = castToDateTime(value); // DateTimeType
+          this.validationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("canPushUpdates")) {
-          this.canPushUpdates = castToCodeableConcept(value); // CodeableConcept
+          this.canPushUpdates = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("pushTypeAvailable")) {
-          this.getPushTypeAvailable().add(castToCodeableConcept(value));
+          this.getPushTypeAvailable().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1170,28 +1170,28 @@ public class VerificationResult extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 117694: // who
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
           return value;
         case -14402964: // onBehalfOf
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1314116695: // communicationMethod
-          this.communicationMethod = castToCodeableConcept(value); // CodeableConcept
+          this.communicationMethod = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3076014: // date
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
           return value;
         case -799067682: // sourceIdentityCertificate
-          this.sourceIdentityCertificate = castToString(value); // StringType
+          this.sourceIdentityCertificate = TypeConvertor.castToString(value); // StringType
           return value;
         case 431558827: // proxyIdentityCertificate
-          this.proxyIdentityCertificate = castToString(value); // StringType
+          this.proxyIdentityCertificate = TypeConvertor.castToString(value); // StringType
           return value;
         case 1455540714: // proxySignature
-          this.proxySignature = castToSignature(value); // Signature
+          this.proxySignature = TypeConvertor.castToSignature(value); // Signature
           return value;
         case 1754480349: // sourceSignature
-          this.sourceSignature = castToSignature(value); // Signature
+          this.sourceSignature = TypeConvertor.castToSignature(value); // Signature
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1201,21 +1201,21 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("who")) {
-          this.who = castToReference(value); // Reference
+          this.who = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("onBehalfOf")) {
-          this.onBehalfOf = castToReference(value); // Reference
+          this.onBehalfOf = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("communicationMethod")) {
-          this.communicationMethod = castToCodeableConcept(value); // CodeableConcept
+          this.communicationMethod = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("date")) {
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("sourceIdentityCertificate")) {
-          this.sourceIdentityCertificate = castToString(value); // StringType
+          this.sourceIdentityCertificate = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("proxyIdentityCertificate")) {
-          this.proxyIdentityCertificate = castToString(value); // StringType
+          this.proxyIdentityCertificate = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("proxySignature")) {
-          this.proxySignature = castToSignature(value); // Signature
+          this.proxySignature = TypeConvertor.castToSignature(value); // Signature
         } else if (name.equals("sourceSignature")) {
-          this.sourceSignature = castToSignature(value); // Signature
+          this.sourceSignature = TypeConvertor.castToSignature(value); // Signature
         } else
           return super.setProperty(name, value);
         return value;
@@ -1513,13 +1513,13 @@ public class VerificationResult extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1178922291: // organization
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
           return value;
         case -854379015: // identityCertificate
-          this.identityCertificate = castToString(value); // StringType
+          this.identityCertificate = TypeConvertor.castToString(value); // StringType
           return value;
         case -184196152: // attestationSignature
-          this.attestationSignature = castToSignature(value); // Signature
+          this.attestationSignature = TypeConvertor.castToSignature(value); // Signature
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1529,11 +1529,11 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("organization")) {
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("identityCertificate")) {
-          this.identityCertificate = castToString(value); // StringType
+          this.identityCertificate = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("attestationSignature")) {
-          this.attestationSignature = castToSignature(value); // Signature
+          this.attestationSignature = TypeConvertor.castToSignature(value); // Signature
         } else
           return super.setProperty(name, value);
         return value;
@@ -2395,38 +2395,38 @@ public class VerificationResult extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -880905839: // target
-          this.getTarget().add(castToReference(value)); // Reference
+          this.getTarget().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 308958310: // targetLocation
-          this.getTargetLocation().add(castToString(value)); // StringType
+          this.getTargetLocation().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 3377302: // need
-          this.need = castToCodeableConcept(value); // CodeableConcept
+          this.need = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new StatusEnumFactory().fromType(castToCode(value));
+          value = new StatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<Status>
           return value;
         case 247524032: // statusDate
-          this.statusDate = castToDateTime(value); // DateTimeType
+          this.statusDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -279681197: // validationType
-          this.validationType = castToCodeableConcept(value); // CodeableConcept
+          this.validationType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 797680566: // validationProcess
-          this.getValidationProcess().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getValidationProcess().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -70023844: // frequency
-          this.frequency = castToTiming(value); // Timing
+          this.frequency = TypeConvertor.castToTiming(value); // Timing
           return value;
         case -1313229366: // lastPerformed
-          this.lastPerformed = castToDateTime(value); // DateTimeType
+          this.lastPerformed = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1874589434: // nextScheduled
-          this.nextScheduled = castToDate(value); // DateType
+          this.nextScheduled = TypeConvertor.castToDate(value); // DateType
           return value;
         case 1816382560: // failureAction
-          this.failureAction = castToCodeableConcept(value); // CodeableConcept
+          this.failureAction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -528721731: // primarySource
           this.getPrimarySource().add((VerificationResultPrimarySourceComponent) value); // VerificationResultPrimarySourceComponent
@@ -2445,28 +2445,28 @@ public class VerificationResult extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("target")) {
-          this.getTarget().add(castToReference(value));
+          this.getTarget().add(TypeConvertor.castToReference(value));
         } else if (name.equals("targetLocation")) {
-          this.getTargetLocation().add(castToString(value));
+          this.getTargetLocation().add(TypeConvertor.castToString(value));
         } else if (name.equals("need")) {
-          this.need = castToCodeableConcept(value); // CodeableConcept
+          this.need = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new StatusEnumFactory().fromType(castToCode(value));
+          value = new StatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<Status>
         } else if (name.equals("statusDate")) {
-          this.statusDate = castToDateTime(value); // DateTimeType
+          this.statusDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("validationType")) {
-          this.validationType = castToCodeableConcept(value); // CodeableConcept
+          this.validationType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("validationProcess")) {
-          this.getValidationProcess().add(castToCodeableConcept(value));
+          this.getValidationProcess().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("frequency")) {
-          this.frequency = castToTiming(value); // Timing
+          this.frequency = TypeConvertor.castToTiming(value); // Timing
         } else if (name.equals("lastPerformed")) {
-          this.lastPerformed = castToDateTime(value); // DateTimeType
+          this.lastPerformed = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("nextScheduled")) {
-          this.nextScheduled = castToDate(value); // DateType
+          this.nextScheduled = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("failureAction")) {
-          this.failureAction = castToCodeableConcept(value); // CodeableConcept
+          this.failureAction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("primarySource")) {
           this.getPrimarySource().add((VerificationResultPrimarySourceComponent) value);
         } else if (name.equals("attestation")) {

@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="TestScript", profile="http://hl7.org/fhir/StructureDefinition/TestScript")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "origin", "destination", "metadata", "fixture", "profile", "variable", "setup", "test", "teardown"})
-public class TestScript extends MetadataResource {
+public class TestScript extends CanonicalResource {
 
     public enum TestScriptRequestMethodCode {
         /**
@@ -959,10 +959,10 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 100346066: // index
-          this.index = castToInteger(value); // IntegerType
+          this.index = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -309425751: // profile
-          this.profile = castToCoding(value); // Coding
+          this.profile = TypeConvertor.castToCoding(value); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -972,9 +972,9 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("index")) {
-          this.index = castToInteger(value); // IntegerType
+          this.index = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("profile")) {
-          this.profile = castToCoding(value); // Coding
+          this.profile = TypeConvertor.castToCoding(value); // Coding
         } else
           return super.setProperty(name, value);
         return value;
@@ -1190,10 +1190,10 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 100346066: // index
-          this.index = castToInteger(value); // IntegerType
+          this.index = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -309425751: // profile
-          this.profile = castToCoding(value); // Coding
+          this.profile = TypeConvertor.castToCoding(value); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1203,9 +1203,9 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("index")) {
-          this.index = castToInteger(value); // IntegerType
+          this.index = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("profile")) {
-          this.profile = castToCoding(value); // Coding
+          this.profile = TypeConvertor.castToCoding(value); // Coding
         } else
           return super.setProperty(name, value);
         return value;
@@ -1709,10 +1709,10 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1722,9 +1722,9 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2271,25 +2271,25 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -393139297: // required
-          this.required = castToBoolean(value); // BooleanType
+          this.required = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1109784050: // validated
-          this.validated = castToBoolean(value); // BooleanType
+          this.validated = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1008619738: // origin
-          this.getOrigin().add(castToInteger(value)); // IntegerType
+          this.getOrigin().add(TypeConvertor.castToInteger(value)); // IntegerType
           return value;
         case -1429847026: // destination
-          this.destination = castToInteger(value); // IntegerType
+          this.destination = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 3321850: // link
-          this.getLink().add(castToUri(value)); // UriType
+          this.getLink().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -1487597642: // capabilities
-          this.capabilities = castToCanonical(value); // CanonicalType
+          this.capabilities = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2299,19 +2299,19 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("required")) {
-          this.required = castToBoolean(value); // BooleanType
+          this.required = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("validated")) {
-          this.validated = castToBoolean(value); // BooleanType
+          this.validated = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("origin")) {
-          this.getOrigin().add(castToInteger(value));
+          this.getOrigin().add(TypeConvertor.castToInteger(value));
         } else if (name.equals("destination")) {
-          this.destination = castToInteger(value); // IntegerType
+          this.destination = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("link")) {
-          this.getLink().add(castToUri(value));
+          this.getLink().add(TypeConvertor.castToUri(value));
         } else if (name.equals("capabilities")) {
-          this.capabilities = castToCanonical(value); // CanonicalType
+          this.capabilities = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2623,13 +2623,13 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 73154411: // autocreate
-          this.autocreate = castToBoolean(value); // BooleanType
+          this.autocreate = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 89990170: // autodelete
-          this.autodelete = castToBoolean(value); // BooleanType
+          this.autodelete = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -341064690: // resource
-          this.resource = castToReference(value); // Reference
+          this.resource = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2639,11 +2639,11 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("autocreate")) {
-          this.autocreate = castToBoolean(value); // BooleanType
+          this.autocreate = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("autodelete")) {
-          this.autodelete = castToBoolean(value); // BooleanType
+          this.autodelete = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("resource")) {
-          this.resource = castToReference(value); // Reference
+          this.resource = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -3245,28 +3245,28 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -659125328: // defaultValue
-          this.defaultValue = castToString(value); // StringType
+          this.defaultValue = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1795452264: // expression
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
           return value;
         case 1160732269: // headerField
-          this.headerField = castToString(value); // StringType
+          this.headerField = TypeConvertor.castToString(value); // StringType
           return value;
         case 3202695: // hint
-          this.hint = castToString(value); // StringType
+          this.hint = TypeConvertor.castToString(value); // StringType
           return value;
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case 1746327190: // sourceId
-          this.sourceId = castToId(value); // IdType
+          this.sourceId = TypeConvertor.castToId(value); // IdType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3276,21 +3276,21 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("defaultValue")) {
-          this.defaultValue = castToString(value); // StringType
+          this.defaultValue = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expression")) {
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("headerField")) {
-          this.headerField = castToString(value); // StringType
+          this.headerField = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("hint")) {
-          this.hint = castToString(value); // StringType
+          this.hint = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("sourceId")) {
-          this.sourceId = castToId(value); // IdType
+          this.sourceId = TypeConvertor.castToId(value); // IdType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4820,56 +4820,56 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCoding(value); // Coding
+          this.type = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -341064690: // resource
-          this.resource = castToCode(value); // CodeType
+          this.resource = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 102727412: // label
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1423461112: // accept
-          this.accept = castToCode(value); // CodeType
+          this.accept = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -389131437: // contentType
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1429847026: // destination
-          this.destination = castToInteger(value); // IntegerType
+          this.destination = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -1760554218: // encodeRequestUrl
-          this.encodeRequestUrl = castToBoolean(value); // BooleanType
+          this.encodeRequestUrl = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1077554975: // method
-          value = new TestScriptRequestMethodCodeEnumFactory().fromType(castToCode(value));
+          value = new TestScriptRequestMethodCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.method = (Enumeration) value; // Enumeration<TestScriptRequestMethodCode>
           return value;
         case -1008619738: // origin
-          this.origin = castToInteger(value); // IntegerType
+          this.origin = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -995427962: // params
-          this.params = castToString(value); // StringType
+          this.params = TypeConvertor.castToString(value); // StringType
           return value;
         case 1074158076: // requestHeader
           this.getRequestHeader().add((SetupActionOperationRequestHeaderComponent) value); // SetupActionOperationRequestHeaderComponent
           return value;
         case 693933066: // requestId
-          this.requestId = castToId(value); // IdType
+          this.requestId = TypeConvertor.castToId(value); // IdType
           return value;
         case -633138884: // responseId
-          this.responseId = castToId(value); // IdType
+          this.responseId = TypeConvertor.castToId(value); // IdType
           return value;
         case 1746327190: // sourceId
-          this.sourceId = castToId(value); // IdType
+          this.sourceId = TypeConvertor.castToId(value); // IdType
           return value;
         case -441951604: // targetId
-          this.targetId = castToId(value); // IdType
+          this.targetId = TypeConvertor.castToId(value); // IdType
           return value;
         case 116079: // url
-          this.url = castToString(value); // StringType
+          this.url = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4879,40 +4879,40 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCoding(value); // Coding
+          this.type = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("resource")) {
-          this.resource = castToCode(value); // CodeType
+          this.resource = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("label")) {
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("accept")) {
-          this.accept = castToCode(value); // CodeType
+          this.accept = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("contentType")) {
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("destination")) {
-          this.destination = castToInteger(value); // IntegerType
+          this.destination = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("encodeRequestUrl")) {
-          this.encodeRequestUrl = castToBoolean(value); // BooleanType
+          this.encodeRequestUrl = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("method")) {
-          value = new TestScriptRequestMethodCodeEnumFactory().fromType(castToCode(value));
+          value = new TestScriptRequestMethodCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.method = (Enumeration) value; // Enumeration<TestScriptRequestMethodCode>
         } else if (name.equals("origin")) {
-          this.origin = castToInteger(value); // IntegerType
+          this.origin = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("params")) {
-          this.params = castToString(value); // StringType
+          this.params = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("requestHeader")) {
           this.getRequestHeader().add((SetupActionOperationRequestHeaderComponent) value);
         } else if (name.equals("requestId")) {
-          this.requestId = castToId(value); // IdType
+          this.requestId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("responseId")) {
-          this.responseId = castToId(value); // IdType
+          this.responseId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("sourceId")) {
-          this.sourceId = castToId(value); // IdType
+          this.sourceId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("targetId")) {
-          this.targetId = castToId(value); // IdType
+          this.targetId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("url")) {
-          this.url = castToString(value); // StringType
+          this.url = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5255,10 +5255,10 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 97427706: // field
-          this.field = castToString(value); // StringType
+          this.field = TypeConvertor.castToString(value); // StringType
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5268,9 +5268,9 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("field")) {
-          this.field = castToString(value); // StringType
+          this.field = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6690,74 +6690,74 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 102727412: // label
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -962590849: // direction
-          value = new AssertionDirectionTypeEnumFactory().fromType(castToCode(value));
+          value = new AssertionDirectionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.direction = (Enumeration) value; // Enumeration<AssertionDirectionType>
           return value;
         case 2081856758: // compareToSourceId
-          this.compareToSourceId = castToString(value); // StringType
+          this.compareToSourceId = TypeConvertor.castToString(value); // StringType
           return value;
         case -1415702669: // compareToSourceExpression
-          this.compareToSourceExpression = castToString(value); // StringType
+          this.compareToSourceExpression = TypeConvertor.castToString(value); // StringType
           return value;
         case -790206144: // compareToSourcePath
-          this.compareToSourcePath = castToString(value); // StringType
+          this.compareToSourcePath = TypeConvertor.castToString(value); // StringType
           return value;
         case -389131437: // contentType
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1795452264: // expression
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
           return value;
         case 1160732269: // headerField
-          this.headerField = castToString(value); // StringType
+          this.headerField = TypeConvertor.castToString(value); // StringType
           return value;
         case 818925001: // minimumId
-          this.minimumId = castToString(value); // StringType
+          this.minimumId = TypeConvertor.castToString(value); // StringType
           return value;
         case 1001488901: // navigationLinks
-          this.navigationLinks = castToBoolean(value); // BooleanType
+          this.navigationLinks = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -500553564: // operator
-          value = new AssertionOperatorTypeEnumFactory().fromType(castToCode(value));
+          value = new AssertionOperatorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operator = (Enumeration) value; // Enumeration<AssertionOperatorType>
           return value;
         case 3433509: // path
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
           return value;
         case 1217874000: // requestMethod
-          value = new TestScriptRequestMethodCodeEnumFactory().fromType(castToCode(value));
+          value = new TestScriptRequestMethodCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.requestMethod = (Enumeration) value; // Enumeration<TestScriptRequestMethodCode>
           return value;
         case 37099616: // requestURL
-          this.requestURL = castToString(value); // StringType
+          this.requestURL = TypeConvertor.castToString(value); // StringType
           return value;
         case -341064690: // resource
-          this.resource = castToCode(value); // CodeType
+          this.resource = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -340323263: // response
-          value = new AssertionResponseTypesEnumFactory().fromType(castToCode(value));
+          value = new AssertionResponseTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.response = (Enumeration) value; // Enumeration<AssertionResponseTypes>
           return value;
         case 1438723534: // responseCode
-          this.responseCode = castToString(value); // StringType
+          this.responseCode = TypeConvertor.castToString(value); // StringType
           return value;
         case 1746327190: // sourceId
-          this.sourceId = castToId(value); // IdType
+          this.sourceId = TypeConvertor.castToId(value); // IdType
           return value;
         case 1555541038: // validateProfileId
-          this.validateProfileId = castToId(value); // IdType
+          this.validateProfileId = TypeConvertor.castToId(value); // IdType
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         case -481159832: // warningOnly
-          this.warningOnly = castToBoolean(value); // BooleanType
+          this.warningOnly = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6767,53 +6767,53 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("label")) {
-          this.label = castToString(value); // StringType
+          this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("direction")) {
-          value = new AssertionDirectionTypeEnumFactory().fromType(castToCode(value));
+          value = new AssertionDirectionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.direction = (Enumeration) value; // Enumeration<AssertionDirectionType>
         } else if (name.equals("compareToSourceId")) {
-          this.compareToSourceId = castToString(value); // StringType
+          this.compareToSourceId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("compareToSourceExpression")) {
-          this.compareToSourceExpression = castToString(value); // StringType
+          this.compareToSourceExpression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("compareToSourcePath")) {
-          this.compareToSourcePath = castToString(value); // StringType
+          this.compareToSourcePath = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contentType")) {
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("expression")) {
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("headerField")) {
-          this.headerField = castToString(value); // StringType
+          this.headerField = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("minimumId")) {
-          this.minimumId = castToString(value); // StringType
+          this.minimumId = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("navigationLinks")) {
-          this.navigationLinks = castToBoolean(value); // BooleanType
+          this.navigationLinks = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("operator")) {
-          value = new AssertionOperatorTypeEnumFactory().fromType(castToCode(value));
+          value = new AssertionOperatorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operator = (Enumeration) value; // Enumeration<AssertionOperatorType>
         } else if (name.equals("path")) {
-          this.path = castToString(value); // StringType
+          this.path = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("requestMethod")) {
-          value = new TestScriptRequestMethodCodeEnumFactory().fromType(castToCode(value));
+          value = new TestScriptRequestMethodCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.requestMethod = (Enumeration) value; // Enumeration<TestScriptRequestMethodCode>
         } else if (name.equals("requestURL")) {
-          this.requestURL = castToString(value); // StringType
+          this.requestURL = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("resource")) {
-          this.resource = castToCode(value); // CodeType
+          this.resource = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("response")) {
-          value = new AssertionResponseTypesEnumFactory().fromType(castToCode(value));
+          value = new AssertionResponseTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.response = (Enumeration) value; // Enumeration<AssertionResponseTypes>
         } else if (name.equals("responseCode")) {
-          this.responseCode = castToString(value); // StringType
+          this.responseCode = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("sourceId")) {
-          this.sourceId = castToId(value); // IdType
+          this.sourceId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("validateProfileId")) {
-          this.validateProfileId = castToId(value); // IdType
+          this.validateProfileId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("warningOnly")) {
-          this.warningOnly = castToBoolean(value); // BooleanType
+          this.warningOnly = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -7250,10 +7250,10 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1422950858: // action
           this.getAction().add((TestActionComponent) value); // TestActionComponent
@@ -7266,9 +7266,9 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("action")) {
           this.getAction().add((TestActionComponent) value);
         } else
@@ -9209,50 +9209,50 @@ public class TestScript extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1008619738: // origin
           this.getOrigin().add((TestScriptOriginComponent) value); // TestScriptOriginComponent
@@ -9267,7 +9267,7 @@ public class TestScript extends MetadataResource {
           this.getFixture().add((TestScriptFixtureComponent) value); // TestScriptFixtureComponent
           return value;
         case -309425751: // profile
-          this.getProfile().add(castToReference(value)); // Reference
+          this.getProfile().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1249586564: // variable
           this.getVariable().add((TestScriptVariableComponent) value); // TestScriptVariableComponent
@@ -9289,36 +9289,36 @@ public class TestScript extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("origin")) {
           this.getOrigin().add((TestScriptOriginComponent) value);
         } else if (name.equals("destination")) {
@@ -9328,7 +9328,7 @@ public class TestScript extends MetadataResource {
         } else if (name.equals("fixture")) {
           this.getFixture().add((TestScriptFixtureComponent) value);
         } else if (name.equals("profile")) {
-          this.getProfile().add(castToReference(value));
+          this.getProfile().add(TypeConvertor.castToReference(value));
         } else if (name.equals("variable")) {
           this.getVariable().add((TestScriptVariableComponent) value);
         } else if (name.equals("setup")) {

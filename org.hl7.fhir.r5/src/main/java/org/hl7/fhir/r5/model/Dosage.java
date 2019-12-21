@@ -84,16 +84,16 @@ public class Dosage extends BackboneType implements ICompositeType {
          */
         @Child(name = "dose", type = {Range.class, Quantity.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Amount of medication per dose", formalDefinition="Amount of medication per dose." )
-        protected Type dose;
+        protected DataType dose;
 
         /**
          * Amount of medication per unit of time.
          */
         @Child(name = "rate", type = {Ratio.class, Range.class, Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Amount of medication per unit of time", formalDefinition="Amount of medication per unit of time." )
-        protected Type rate;
+        protected DataType rate;
 
-        private static final long serialVersionUID = -2133698888L;
+        private static final long serialVersionUID = 230646604L;
 
     /**
      * Constructor
@@ -129,7 +129,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         /**
          * @return {@link #dose} (Amount of medication per dose.)
          */
-        public Type getDose() { 
+        public DataType getDose() { 
           return this.dose;
         }
 
@@ -170,7 +170,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #dose} (Amount of medication per dose.)
          */
-        public DosageDoseAndRateComponent setDose(Type value) { 
+        public DosageDoseAndRateComponent setDose(DataType value) { 
           if (value != null && !(value instanceof Range || value instanceof Quantity))
             throw new Error("Not the right type for Dosage.doseAndRate.dose[x]: "+value.fhirType());
           this.dose = value;
@@ -180,7 +180,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         /**
          * @return {@link #rate} (Amount of medication per unit of time.)
          */
-        public Type getRate() { 
+        public DataType getRate() { 
           return this.rate;
         }
 
@@ -236,7 +236,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #rate} (Amount of medication per unit of time.)
          */
-        public DosageDoseAndRateComponent setRate(Type value) { 
+        public DosageDoseAndRateComponent setRate(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof Range || value instanceof Quantity))
             throw new Error("Not the right type for Dosage.doseAndRate.rate[x]: "+value.fhirType());
           this.rate = value;
@@ -272,8 +272,8 @@ public class Dosage extends BackboneType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 3089437: /*dose*/ return this.dose == null ? new Base[0] : new Base[] {this.dose}; // Type
-        case 3493088: /*rate*/ return this.rate == null ? new Base[0] : new Base[] {this.rate}; // Type
+        case 3089437: /*dose*/ return this.dose == null ? new Base[0] : new Base[] {this.dose}; // DataType
+        case 3493088: /*rate*/ return this.rate == null ? new Base[0] : new Base[] {this.rate}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -283,13 +283,13 @@ public class Dosage extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3089437: // dose
-          this.dose = castToType(value); // Type
+          this.dose = TypeConvertor.castToType(value); // DataType
           return value;
         case 3493088: // rate
-          this.rate = castToType(value); // Type
+          this.rate = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -299,11 +299,11 @@ public class Dosage extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("dose[x]")) {
-          this.dose = castToType(value); // Type
+          this.dose = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("rate[x]")) {
-          this.rate = castToType(value); // Type
+          this.rate = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -450,7 +450,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     @Child(name = "asNeeded", type = {BooleanType.class, CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Take \"as needed\" (for x)", formalDefinition="Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-as-needed-reason")
-    protected Type asNeeded;
+    protected DataType asNeeded;
 
     /**
      * Body site to administer to.
@@ -504,7 +504,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     @Description(shortDefinition="Upper limit on medication per lifetime of the patient", formalDefinition="Upper limit on medication per lifetime of the patient." )
     protected Quantity maxDosePerLifetime;
 
-    private static final long serialVersionUID = -1095063329L;
+    private static final long serialVersionUID = 1743553833L;
 
   /**
    * Constructor
@@ -736,7 +736,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     /**
      * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).)
      */
-    public Type getAsNeeded() { 
+    public DataType getAsNeeded() { 
       return this.asNeeded;
     }
 
@@ -777,7 +777,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     /**
      * @param value {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).)
      */
-    public Dosage setAsNeeded(Type value) { 
+    public Dosage setAsNeeded(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
         throw new Error("Not the right type for Dosage.asNeeded[x]: "+value.fhirType());
       this.asNeeded = value;
@@ -1030,7 +1030,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         case 1623641575: /*additionalInstruction*/ return this.additionalInstruction == null ? new Base[0] : this.additionalInstruction.toArray(new Base[this.additionalInstruction.size()]); // CodeableConcept
         case 737543241: /*patientInstruction*/ return this.patientInstruction == null ? new Base[0] : new Base[] {this.patientInstruction}; // StringType
         case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // Timing
-        case -1432923513: /*asNeeded*/ return this.asNeeded == null ? new Base[0] : new Base[] {this.asNeeded}; // Type
+        case -1432923513: /*asNeeded*/ return this.asNeeded == null ? new Base[0] : new Base[] {this.asNeeded}; // DataType
         case 3530567: /*site*/ return this.site == null ? new Base[0] : new Base[] {this.site}; // CodeableConcept
         case 108704329: /*route*/ return this.route == null ? new Base[0] : new Base[] {this.route}; // CodeableConcept
         case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
@@ -1047,43 +1047,43 @@ public class Dosage extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1349547969: // sequence
-          this.sequence = castToInteger(value); // IntegerType
+          this.sequence = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case 1623641575: // additionalInstruction
-          this.getAdditionalInstruction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAdditionalInstruction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 737543241: // patientInstruction
-          this.patientInstruction = castToString(value); // StringType
+          this.patientInstruction = TypeConvertor.castToString(value); // StringType
           return value;
         case -873664438: // timing
-          this.timing = castToTiming(value); // Timing
+          this.timing = TypeConvertor.castToTiming(value); // Timing
           return value;
         case -1432923513: // asNeeded
-          this.asNeeded = castToType(value); // Type
+          this.asNeeded = TypeConvertor.castToType(value); // DataType
           return value;
         case 3530567: // site
-          this.site = castToCodeableConcept(value); // CodeableConcept
+          this.site = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 108704329: // route
-          this.route = castToCodeableConcept(value); // CodeableConcept
+          this.route = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1077554975: // method
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -611024774: // doseAndRate
           this.getDoseAndRate().add((DosageDoseAndRateComponent) value); // DosageDoseAndRateComponent
           return value;
         case 1506263709: // maxDosePerPeriod
-          this.maxDosePerPeriod = castToRatio(value); // Ratio
+          this.maxDosePerPeriod = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case 2004889914: // maxDosePerAdministration
-          this.maxDosePerAdministration = castToQuantity(value); // Quantity
+          this.maxDosePerAdministration = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 642099621: // maxDosePerLifetime
-          this.maxDosePerLifetime = castToQuantity(value); // Quantity
+          this.maxDosePerLifetime = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1093,31 +1093,31 @@ public class Dosage extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
-          this.sequence = castToInteger(value); // IntegerType
+          this.sequence = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("additionalInstruction")) {
-          this.getAdditionalInstruction().add(castToCodeableConcept(value));
+          this.getAdditionalInstruction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("patientInstruction")) {
-          this.patientInstruction = castToString(value); // StringType
+          this.patientInstruction = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("timing")) {
-          this.timing = castToTiming(value); // Timing
+          this.timing = TypeConvertor.castToTiming(value); // Timing
         } else if (name.equals("asNeeded[x]")) {
-          this.asNeeded = castToType(value); // Type
+          this.asNeeded = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("site")) {
-          this.site = castToCodeableConcept(value); // CodeableConcept
+          this.site = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("route")) {
-          this.route = castToCodeableConcept(value); // CodeableConcept
+          this.route = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("method")) {
-          this.method = castToCodeableConcept(value); // CodeableConcept
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("doseAndRate")) {
           this.getDoseAndRate().add((DosageDoseAndRateComponent) value);
         } else if (name.equals("maxDosePerPeriod")) {
-          this.maxDosePerPeriod = castToRatio(value); // Ratio
+          this.maxDosePerPeriod = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("maxDosePerAdministration")) {
-          this.maxDosePerAdministration = castToQuantity(value); // Quantity
+          this.maxDosePerAdministration = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("maxDosePerLifetime")) {
-          this.maxDosePerLifetime = castToQuantity(value); // Quantity
+          this.maxDosePerLifetime = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;

@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="Measure", profile="http://hl7.org/fhir/StructureDefinition/Measure")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "status", "experimental", "subject[x]", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "usage", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "library", "disclaimer", "scoring", "compositeScoring", "type", "riskAdjustment", "rateAggregation", "rationale", "clinicalRecommendationStatement", "improvementNotation", "definition", "guidance", "group", "supplementalData"})
-public class Measure extends MetadataResource {
+public class Measure extends CanonicalResource {
 
     @Block()
     public static class MeasureGroupComponent extends BackboneElement implements IBaseBackboneElement {
@@ -327,10 +327,10 @@ public class Measure extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -2023558323: // population
           this.getPopulation().add((MeasureGroupPopulationComponent) value); // MeasureGroupPopulationComponent
@@ -346,9 +346,9 @@ public class Measure extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("population")) {
           this.getPopulation().add((MeasureGroupPopulationComponent) value);
         } else if (name.equals("stratifier")) {
@@ -627,13 +627,13 @@ public class Measure extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 1952046943: // criteria
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -643,11 +643,11 @@ public class Measure extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("criteria")) {
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -963,13 +963,13 @@ public class Measure extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 1952046943: // criteria
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
           return value;
         case -1399907075: // component
           this.getComponent().add((MeasureGroupStratifierComponentComponent) value); // MeasureGroupStratifierComponentComponent
@@ -982,11 +982,11 @@ public class Measure extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("criteria")) {
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
         } else if (name.equals("component")) {
           this.getComponent().add((MeasureGroupStratifierComponentComponent) value);
         } else
@@ -1259,13 +1259,13 @@ public class Measure extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 1952046943: // criteria
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1275,11 +1275,11 @@ public class Measure extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("criteria")) {
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -1604,16 +1604,16 @@ public class Measure extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111574433: // usage
-          this.getUsage().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getUsage().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 1952046943: // criteria
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1623,13 +1623,13 @@ public class Measure extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("usage")) {
-          this.getUsage().add(castToCodeableConcept(value));
+          this.getUsage().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("criteria")) {
-          this.criteria = castToExpression(value); // Expression
+          this.criteria = TypeConvertor.castToExpression(value); // Expression
         } else
           return super.setProperty(name, value);
         return value;
@@ -1750,7 +1750,7 @@ public class Measure extends MetadataResource {
     @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=2, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="E.g. Patient, Practitioner, RelatedPerson, Organization, Location, Device", formalDefinition="The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
-    protected Type subject;
+    protected DataType subject;
 
     /**
      * Explanation of why this measure is needed and why it has been designed as it has.
@@ -2347,7 +2347,7 @@ public class Measure extends MetadataResource {
     /**
      * @return {@link #subject} (The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything.)
      */
-    public Type getSubject() { 
+    public DataType getSubject() { 
       return this.subject;
     }
 
@@ -2388,7 +2388,7 @@ public class Measure extends MetadataResource {
     /**
      * @param value {@link #subject} (The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything.)
      */
-    public Measure setSubject(Type value) { 
+    public Measure setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for Measure.subject[x]: "+value.fhirType());
       this.subject = value;
@@ -4085,122 +4085,122 @@ public class Measure extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -2060497896: // subtitle
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1867885268: // subject
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 111574433: // usage
-          this.usage = castToString(value); // StringType
+          this.usage = TypeConvertor.castToString(value); // StringType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 110546223: // topic
-          this.getTopic().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1406328437: // author
-          this.getAuthor().add(castToContactDetail(value)); // ContactDetail
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1307827859: // editor
-          this.getEditor().add(castToContactDetail(value)); // ContactDetail
+          this.getEditor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -261190139: // reviewer
-          this.getReviewer().add(castToContactDetail(value)); // ContactDetail
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 1740277666: // endorser
-          this.getEndorser().add(castToContactDetail(value)); // ContactDetail
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case 666807069: // relatedArtifact
-          this.getRelatedArtifact().add(castToRelatedArtifact(value)); // RelatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case 166208699: // library
-          this.getLibrary().add(castToCanonical(value)); // CanonicalType
+          this.getLibrary().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 432371099: // disclaimer
-          this.disclaimer = castToMarkdown(value); // MarkdownType
+          this.disclaimer = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1924005583: // scoring
-          this.scoring = castToCodeableConcept(value); // CodeableConcept
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 569347656: // compositeScoring
-          this.compositeScoring = castToCodeableConcept(value); // CodeableConcept
+          this.compositeScoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3575610: // type
-          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 93273500: // riskAdjustment
-          this.riskAdjustment = castToString(value); // StringType
+          this.riskAdjustment = TypeConvertor.castToString(value); // StringType
           return value;
         case 1254503906: // rateAggregation
-          this.rateAggregation = castToString(value); // StringType
+          this.rateAggregation = TypeConvertor.castToString(value); // StringType
           return value;
         case 345689335: // rationale
-          this.rationale = castToMarkdown(value); // MarkdownType
+          this.rationale = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -18631389: // clinicalRecommendationStatement
-          this.clinicalRecommendationStatement = castToMarkdown(value); // MarkdownType
+          this.clinicalRecommendationStatement = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -2085456136: // improvementNotation
-          this.improvementNotation = castToCodeableConcept(value); // CodeableConcept
+          this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1014418093: // definition
-          this.getDefinition().add(castToMarkdown(value)); // MarkdownType
+          this.getDefinition().add(TypeConvertor.castToMarkdown(value)); // MarkdownType
           return value;
         case -1314002088: // guidance
-          this.guidance = castToMarkdown(value); // MarkdownType
+          this.guidance = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 98629247: // group
           this.getGroup().add((MeasureGroupComponent) value); // MeasureGroupComponent
@@ -4216,84 +4216,84 @@ public class Measure extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subtitle")) {
-          this.subtitle = castToString(value); // StringType
+          this.subtitle = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
-          this.subject = castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // Type
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("usage")) {
-          this.usage = castToString(value); // StringType
+          this.usage = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("topic")) {
-          this.getTopic().add(castToCodeableConcept(value));
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("author")) {
-          this.getAuthor().add(castToContactDetail(value));
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("editor")) {
-          this.getEditor().add(castToContactDetail(value));
+          this.getEditor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("reviewer")) {
-          this.getReviewer().add(castToContactDetail(value));
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("endorser")) {
-          this.getEndorser().add(castToContactDetail(value));
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
-          this.getRelatedArtifact().add(castToRelatedArtifact(value));
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("library")) {
-          this.getLibrary().add(castToCanonical(value));
+          this.getLibrary().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("disclaimer")) {
-          this.disclaimer = castToMarkdown(value); // MarkdownType
+          this.disclaimer = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("scoring")) {
-          this.scoring = castToCodeableConcept(value); // CodeableConcept
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("compositeScoring")) {
-          this.compositeScoring = castToCodeableConcept(value); // CodeableConcept
+          this.compositeScoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("type")) {
-          this.getType().add(castToCodeableConcept(value));
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("riskAdjustment")) {
-          this.riskAdjustment = castToString(value); // StringType
+          this.riskAdjustment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("rateAggregation")) {
-          this.rateAggregation = castToString(value); // StringType
+          this.rateAggregation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("rationale")) {
-          this.rationale = castToMarkdown(value); // MarkdownType
+          this.rationale = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("clinicalRecommendationStatement")) {
-          this.clinicalRecommendationStatement = castToMarkdown(value); // MarkdownType
+          this.clinicalRecommendationStatement = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("improvementNotation")) {
-          this.improvementNotation = castToCodeableConcept(value); // CodeableConcept
+          this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("definition")) {
-          this.getDefinition().add(castToMarkdown(value));
+          this.getDefinition().add(TypeConvertor.castToMarkdown(value));
         } else if (name.equals("guidance")) {
-          this.guidance = castToMarkdown(value); // MarkdownType
+          this.guidance = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("group")) {
           this.getGroup().add((MeasureGroupComponent) value);
         } else if (name.equals("supplementalData")) {

@@ -31,7 +31,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.utils.formats.Turtle;
 import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
 import org.hl7.fhir.r5.utils.formats.Turtle.Section;
@@ -53,12 +53,12 @@ public abstract class RdfParserBase extends ParserBase implements IParser  {
 	}
 
   @Override
-  public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError {
+  public DataType parseType(InputStream input, String knownType) throws IOException, FHIRFormatError {
     throw new Error("Parsing not implemented yet");
   }
 
   @Override
-  public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError {
+  public DataType parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError {
     throw new Error("Parsing not implemented yet");
   }
 
@@ -86,7 +86,7 @@ public abstract class RdfParserBase extends ParserBase implements IParser  {
 	}
 
 	@Override
-	public void compose(OutputStream stream, Type type, String rootName) throws IOException {
+	public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
 		throw new Error("Not supported in RDF");  
 	}
 

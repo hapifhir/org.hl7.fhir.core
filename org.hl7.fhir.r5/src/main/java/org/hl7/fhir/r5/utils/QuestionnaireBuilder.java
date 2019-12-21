@@ -61,7 +61,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TimeType;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
@@ -612,30 +612,30 @@ public class QuestionnaireBuilder {
   }
 
   @SuppressWarnings("unchecked")
-  private Type convertType(Base value, QuestionnaireItemType af, ValueSet vs, String path) throws FHIRException {
+  private DataType convertType(Base value, QuestionnaireItemType af, ValueSet vs, String path) throws FHIRException {
     switch (af) {
       // simple cases
-    case BOOLEAN: if (value instanceof BooleanType) return (Type) value; break;
-    case DECIMAL: if (value instanceof DecimalType) return (Type) value; break;
-    case INTEGER: if (value instanceof IntegerType) return (Type) value; break;
-    case DATE: if (value instanceof DateType) return (Type) value; break;
-    case DATETIME: if (value instanceof DateTimeType) return (Type) value; break;
-    case TIME: if (value instanceof TimeType) return (Type) value; break;
+    case BOOLEAN: if (value instanceof BooleanType) return (DataType) value; break;
+    case DECIMAL: if (value instanceof DecimalType) return (DataType) value; break;
+    case INTEGER: if (value instanceof IntegerType) return (DataType) value; break;
+    case DATE: if (value instanceof DateType) return (DataType) value; break;
+    case DATETIME: if (value instanceof DateTimeType) return (DataType) value; break;
+    case TIME: if (value instanceof TimeType) return (DataType) value; break;
     case STRING:
       if (value instanceof StringType) 
-        return (Type) value;
+        return (DataType) value;
       else if (value instanceof UriType) 
         return new StringType(((UriType) value).asStringValue());
 		break;
-    case TEXT: if (value instanceof StringType) return (Type) value; break;
-    case QUANTITY: if (value instanceof  Quantity) return (Type) value; break;
+    case TEXT: if (value instanceof StringType) return (DataType) value; break;
+    case QUANTITY: if (value instanceof  Quantity) return (DataType) value; break;
 
     // complex cases:
     // ? QuestionnaireItemTypeAttachment: ...?
     case CHOICE:
     case OPENCHOICE :
       if (value instanceof Coding)
-        return (Type) value;
+        return (DataType) value;
       else if (value instanceof Enumeration) { 
         Coding cc = new Coding();
         cc.setCode(((Enumeration<Enum<?>>) value).asStringValue());
@@ -651,7 +651,7 @@ public class QuestionnaireBuilder {
 
     case REFERENCE:
       if (value instanceof Reference)
-        return (Type) value;
+        return (DataType) value;
       else if (value instanceof StringType) {
         Reference r = new Reference();
         r.setReference(((StringType) value).asStringValue());

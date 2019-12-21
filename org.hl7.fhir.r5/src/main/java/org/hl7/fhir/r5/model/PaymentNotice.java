@@ -746,41 +746,41 @@ public class PaymentNotice extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new PaymentNoticeStatusEnumFactory().fromType(castToCode(value));
+          value = new PaymentNoticeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PaymentNoticeStatus>
           return value;
         case 1095692943: // request
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case -340323263: // response
-          this.response = castToReference(value); // Reference
+          this.response = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -987494927: // provider
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
           return value;
         case -786681338: // payment
-          this.payment = castToReference(value); // Reference
+          this.payment = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1540873516: // paymentDate
-          this.paymentDate = castToDate(value); // DateType
+          this.paymentDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case 106443592: // payee
-          this.payee = castToReference(value); // Reference
+          this.payee = TypeConvertor.castToReference(value); // Reference
           return value;
         case 820081177: // recipient
-          this.recipient = castToReference(value); // Reference
+          this.recipient = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         case 1430704536: // paymentStatus
-          this.paymentStatus = castToCodeableConcept(value); // CodeableConcept
+          this.paymentStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -790,30 +790,30 @@ public class PaymentNotice extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new PaymentNoticeStatusEnumFactory().fromType(castToCode(value));
+          value = new PaymentNoticeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PaymentNoticeStatus>
         } else if (name.equals("request")) {
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("response")) {
-          this.response = castToReference(value); // Reference
+          this.response = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("provider")) {
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("payment")) {
-          this.payment = castToReference(value); // Reference
+          this.payment = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("paymentDate")) {
-          this.paymentDate = castToDate(value); // DateType
+          this.paymentDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("payee")) {
-          this.payee = castToReference(value); // Reference
+          this.payee = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("recipient")) {
-          this.recipient = castToReference(value); // Reference
+          this.recipient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("paymentStatus")) {
-          this.paymentStatus = castToCodeableConcept(value); // CodeableConcept
+          this.paymentStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;

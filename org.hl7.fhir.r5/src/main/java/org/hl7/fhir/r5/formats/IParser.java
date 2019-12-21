@@ -60,7 +60,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.xmlpull.v1.XmlPullParserException;
 
 
@@ -160,8 +160,8 @@ public interface IParser {
  * @throws FHIRFormatError 
  * @throws IOException 
    */
-  public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError;
-  public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError;
+  public DataType parseType(InputStream input, String knownType) throws IOException, FHIRFormatError;
+  public DataType parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError;
   
   /**
    * This is used to parse a type - a fragment of a resource. 
@@ -177,7 +177,7 @@ public interface IParser {
  * @throws IOException 
  * @throws FHIRFormatError 
    */
-  public Type parseType(String input, String knownType) throws UnsupportedEncodingException, FHIRFormatError, IOException;
+  public DataType parseType(String input, String knownType) throws UnsupportedEncodingException, FHIRFormatError, IOException;
   /**
    * This is used to parse a type - a fragment of a resource. 
    * There's no reason to use this in production - it's used 
@@ -191,7 +191,7 @@ public interface IParser {
  * @throws IOException 
  * @throws FHIRFormatError 
 	 */
-  public Type parseType(byte[] bytes, String knownType) throws FHIRFormatError, IOException;
+  public DataType parseType(byte[] bytes, String knownType) throws FHIRFormatError, IOException;
   
   // -- Writing methods ----------------------------------------
 
@@ -222,7 +222,7 @@ public interface IParser {
 	 * @throws FHIRFormatError 
 	 * @throws IOException 
 	 */
-	public void compose(OutputStream stream, Type type, String rootName) throws IOException;
+	public void compose(OutputStream stream, DataType type, String rootName) throws IOException;
 
 	/**
    * Compose a type to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
@@ -230,7 +230,7 @@ public interface IParser {
    * Not supported by all implementations. rootName is ignored in the JSON format
 	 * @throws IOException 
    */
-  public String composeString(Type type, String rootName) throws IOException;
+  public String composeString(DataType type, String rootName) throws IOException;
 
 	/**
 	 * Compose a type to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
@@ -238,7 +238,7 @@ public interface IParser {
    * Not supported by all implementations. rootName is ignored in the JSON format
 	 * @throws IOException 
 	 */
-	public byte[] composeBytes(Type type, String rootName) throws IOException;
+	public byte[] composeBytes(DataType type, String rootName) throws IOException;
 
 
 }

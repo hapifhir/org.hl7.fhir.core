@@ -67,7 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A contributor to the content of a knowledge asset, including authors, editors, reviewers, and endorsers.
  */
 @DatatypeDef(name="Contributor")
-public class Contributor extends Type implements ICompositeType {
+public class Contributor extends DataType implements ICompositeType {
 
     public enum ContributorType {
         /**
@@ -409,14 +409,14 @@ public class Contributor extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ContributorTypeEnumFactory().fromType(castToCode(value));
+          value = new ContributorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ContributorType>
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -426,12 +426,12 @@ public class Contributor extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ContributorTypeEnumFactory().fromType(castToCode(value));
+          value = new ContributorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ContributorType>
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else
           return super.setProperty(name, value);
         return value;

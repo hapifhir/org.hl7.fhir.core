@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="CapabilityStatement", profile="http://hl7.org/fhir/StructureDefinition/CapabilityStatement")
 @ChildOrder(names={"url", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "kind", "instantiates", "imports", "software", "implementation", "fhirVersion", "format", "patchFormat", "implementationGuide", "rest", "messaging", "document"})
-public class CapabilityStatement extends MetadataResource implements IBaseConformance {
+public class CapabilityStatement extends CanonicalResource implements IBaseConformance {
 
     public enum CapabilityStatementKind {
         /**
@@ -1481,13 +1481,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 212873301: // releaseDate
-          this.releaseDate = castToDateTime(value); // DateTimeType
+          this.releaseDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1497,11 +1497,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("releaseDate")) {
-          this.releaseDate = castToDateTime(value); // DateTimeType
+          this.releaseDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1782,13 +1782,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 116079: // url
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case 1611297262: // custodian
-          this.custodian = castToReference(value); // Reference
+          this.custodian = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1798,11 +1798,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("url")) {
-          this.url = castToUrl(value); // UrlType
+          this.url = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("custodian")) {
-          this.custodian = castToReference(value); // Reference
+          this.custodian = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -2407,11 +2407,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new RestfulCapabilityModeEnumFactory().fromType(castToCode(value));
+          value = new RestfulCapabilityModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<RestfulCapabilityMode>
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 949122880: // security
           this.security = (CapabilityStatementRestSecurityComponent) value; // CapabilityStatementRestSecurityComponent
@@ -2429,7 +2429,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           this.getOperation().add((CapabilityStatementRestResourceOperationComponent) value); // CapabilityStatementRestResourceOperationComponent
           return value;
         case -397756334: // compartment
-          this.getCompartment().add(castToCanonical(value)); // CanonicalType
+          this.getCompartment().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2439,10 +2439,10 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new RestfulCapabilityModeEnumFactory().fromType(castToCode(value));
+          value = new RestfulCapabilityModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<RestfulCapabilityMode>
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("security")) {
           this.security = (CapabilityStatementRestSecurityComponent) value; // CapabilityStatementRestSecurityComponent
         } else if (name.equals("resource")) {
@@ -2454,7 +2454,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         } else if (name.equals("operation")) {
           this.getOperation().add((CapabilityStatementRestResourceOperationComponent) value);
         } else if (name.equals("compartment")) {
-          this.getCompartment().add(castToCanonical(value));
+          this.getCompartment().add(TypeConvertor.castToCanonical(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2808,13 +2808,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059629: // cors
-          this.cors = castToBoolean(value); // BooleanType
+          this.cors = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1984153269: // service
-          this.getService().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getService().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2824,11 +2824,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("cors")) {
-          this.cors = castToBoolean(value); // BooleanType
+          this.cors = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("service")) {
-          this.getService().add(castToCodeableConcept(value));
+          this.getService().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4012,53 +4012,53 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 1225477403: // supportedProfile
-          this.getSupportedProfile().add(castToCanonical(value)); // CanonicalType
+          this.getSupportedProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1844104722: // interaction
           this.getInteraction().add((ResourceInteractionComponent) value); // ResourceInteractionComponent
           return value;
         case -670487542: // versioning
-          value = new ResourceVersionPolicyEnumFactory().fromType(castToCode(value));
+          value = new ResourceVersionPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.versioning = (Enumeration) value; // Enumeration<ResourceVersionPolicy>
           return value;
         case 187518494: // readHistory
-          this.readHistory = castToBoolean(value); // BooleanType
+          this.readHistory = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1400550619: // updateCreate
-          this.updateCreate = castToBoolean(value); // BooleanType
+          this.updateCreate = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 6401826: // conditionalCreate
-          this.conditionalCreate = castToBoolean(value); // BooleanType
+          this.conditionalCreate = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 822786364: // conditionalRead
-          value = new ConditionalReadStatusEnumFactory().fromType(castToCode(value));
+          value = new ConditionalReadStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.conditionalRead = (Enumeration) value; // Enumeration<ConditionalReadStatus>
           return value;
         case 519849711: // conditionalUpdate
-          this.conditionalUpdate = castToBoolean(value); // BooleanType
+          this.conditionalUpdate = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 23237585: // conditionalDelete
-          value = new ConditionalDeleteStatusEnumFactory().fromType(castToCode(value));
+          value = new ConditionalDeleteStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.conditionalDelete = (Enumeration) value; // Enumeration<ConditionalDeleteStatus>
           return value;
         case 796257373: // referencePolicy
-          value = new ReferenceHandlingPolicyEnumFactory().fromType(castToCode(value));
+          value = new ReferenceHandlingPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getReferencePolicy().add((Enumeration) value); // Enumeration<ReferenceHandlingPolicy>
           return value;
         case -1035904544: // searchInclude
-          this.getSearchInclude().add(castToString(value)); // StringType
+          this.getSearchInclude().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -2123884979: // searchRevInclude
-          this.getSearchRevInclude().add(castToString(value)); // StringType
+          this.getSearchRevInclude().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -553645115: // searchParam
           this.getSearchParam().add((CapabilityStatementRestResourceSearchParamComponent) value); // CapabilityStatementRestResourceSearchParamComponent
@@ -4074,39 +4074,39 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = castToCode(value); // CodeType
+          this.type = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("supportedProfile")) {
-          this.getSupportedProfile().add(castToCanonical(value));
+          this.getSupportedProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("interaction")) {
           this.getInteraction().add((ResourceInteractionComponent) value);
         } else if (name.equals("versioning")) {
-          value = new ResourceVersionPolicyEnumFactory().fromType(castToCode(value));
+          value = new ResourceVersionPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.versioning = (Enumeration) value; // Enumeration<ResourceVersionPolicy>
         } else if (name.equals("readHistory")) {
-          this.readHistory = castToBoolean(value); // BooleanType
+          this.readHistory = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("updateCreate")) {
-          this.updateCreate = castToBoolean(value); // BooleanType
+          this.updateCreate = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("conditionalCreate")) {
-          this.conditionalCreate = castToBoolean(value); // BooleanType
+          this.conditionalCreate = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("conditionalRead")) {
-          value = new ConditionalReadStatusEnumFactory().fromType(castToCode(value));
+          value = new ConditionalReadStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.conditionalRead = (Enumeration) value; // Enumeration<ConditionalReadStatus>
         } else if (name.equals("conditionalUpdate")) {
-          this.conditionalUpdate = castToBoolean(value); // BooleanType
+          this.conditionalUpdate = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("conditionalDelete")) {
-          value = new ConditionalDeleteStatusEnumFactory().fromType(castToCode(value));
+          value = new ConditionalDeleteStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.conditionalDelete = (Enumeration) value; // Enumeration<ConditionalDeleteStatus>
         } else if (name.equals("referencePolicy")) {
-          value = new ReferenceHandlingPolicyEnumFactory().fromType(castToCode(value));
+          value = new ReferenceHandlingPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getReferencePolicy().add((Enumeration) value);
         } else if (name.equals("searchInclude")) {
-          this.getSearchInclude().add(castToString(value));
+          this.getSearchInclude().add(TypeConvertor.castToString(value));
         } else if (name.equals("searchRevInclude")) {
-          this.getSearchRevInclude().add(castToString(value));
+          this.getSearchRevInclude().add(TypeConvertor.castToString(value));
         } else if (name.equals("searchParam")) {
           this.getSearchParam().add((CapabilityStatementRestResourceSearchParamComponent) value);
         } else if (name.equals("operation")) {
@@ -4482,11 +4482,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          value = new TypeRestfulInteractionEnumFactory().fromType(castToCode(value));
+          value = new TypeRestfulInteractionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<TypeRestfulInteraction>
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4496,10 +4496,10 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          value = new TypeRestfulInteractionEnumFactory().fromType(castToCode(value));
+          value = new TypeRestfulInteractionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<TypeRestfulInteraction>
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4853,17 +4853,17 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 3575610: // type
-          value = new SearchParamTypeEnumFactory().fromType(castToCode(value));
+          value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SearchParamType>
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4873,14 +4873,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition")) {
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("type")) {
-          value = new SearchParamTypeEnumFactory().fromType(castToCode(value));
+          value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SearchParamType>
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5189,13 +5189,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5205,11 +5205,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition")) {
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5456,11 +5456,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          value = new SystemRestfulInteractionEnumFactory().fromType(castToCode(value));
+          value = new SystemRestfulInteractionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<SystemRestfulInteraction>
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5470,10 +5470,10 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          value = new SystemRestfulInteractionEnumFactory().fromType(castToCode(value));
+          value = new SystemRestfulInteractionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<SystemRestfulInteraction>
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -5832,10 +5832,10 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           this.getEndpoint().add((CapabilityStatementMessagingEndpointComponent) value); // CapabilityStatementMessagingEndpointComponent
           return value;
         case 897803608: // reliableCache
-          this.reliableCache = castToUnsignedInt(value); // UnsignedIntType
+          this.reliableCache = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1805139079: // supportedMessage
           this.getSupportedMessage().add((CapabilityStatementMessagingSupportedMessageComponent) value); // CapabilityStatementMessagingSupportedMessageComponent
@@ -5850,9 +5850,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         if (name.equals("endpoint")) {
           this.getEndpoint().add((CapabilityStatementMessagingEndpointComponent) value);
         } else if (name.equals("reliableCache")) {
-          this.reliableCache = castToUnsignedInt(value); // UnsignedIntType
+          this.reliableCache = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("supportedMessage")) {
           this.getSupportedMessage().add((CapabilityStatementMessagingSupportedMessageComponent) value);
         } else
@@ -6093,10 +6093,10 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -989163880: // protocol
-          this.protocol = castToCoding(value); // Coding
+          this.protocol = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -1147692044: // address
-          this.address = castToUrl(value); // UrlType
+          this.address = TypeConvertor.castToUrl(value); // UrlType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6106,9 +6106,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("protocol")) {
-          this.protocol = castToCoding(value); // Coding
+          this.protocol = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("address")) {
-          this.address = castToUrl(value); // UrlType
+          this.address = TypeConvertor.castToUrl(value); // UrlType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6345,11 +6345,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new EventCapabilityModeEnumFactory().fromType(castToCode(value));
+          value = new EventCapabilityModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<EventCapabilityMode>
           return value;
         case -1014418093: // definition
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6359,10 +6359,10 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new EventCapabilityModeEnumFactory().fromType(castToCode(value));
+          value = new EventCapabilityModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<EventCapabilityMode>
         } else if (name.equals("definition")) {
-          this.definition = castToCanonical(value); // CanonicalType
+          this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6657,14 +6657,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new DocumentModeEnumFactory().fromType(castToCode(value));
+          value = new DocumentModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<DocumentMode>
           return value;
         case 1587405498: // documentation
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -309425751: // profile
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6674,12 +6674,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new DocumentModeEnumFactory().fromType(castToCode(value));
+          value = new DocumentModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<DocumentMode>
         } else if (name.equals("documentation")) {
-          this.documentation = castToMarkdown(value); // MarkdownType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("profile")) {
-          this.profile = castToCanonical(value); // CanonicalType
+          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -8280,57 +8280,57 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3292052: // kind
-          value = new CapabilityStatementKindEnumFactory().fromType(castToCode(value));
+          value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CapabilityStatementKind>
           return value;
         case -246883639: // instantiates
-          this.getInstantiates().add(castToCanonical(value)); // CanonicalType
+          this.getInstantiates().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 1926037870: // imports
-          this.getImports().add(castToCanonical(value)); // CanonicalType
+          this.getImports().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 1319330215: // software
           this.software = (CapabilityStatementSoftwareComponent) value; // CapabilityStatementSoftwareComponent
@@ -8339,17 +8339,17 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           this.implementation = (CapabilityStatementImplementationComponent) value; // CapabilityStatementImplementationComponent
           return value;
         case 461006061: // fhirVersion
-          value = new FHIRVersionEnumFactory().fromType(castToCode(value));
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.fhirVersion = (Enumeration) value; // Enumeration<FHIRVersion>
           return value;
         case -1268779017: // format
-          this.getFormat().add(castToCode(value)); // CodeType
+          this.getFormat().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         case 172338783: // patchFormat
-          this.getPatchFormat().add(castToCode(value)); // CodeType
+          this.getPatchFormat().add(TypeConvertor.castToCode(value)); // CodeType
           return value;
         case 156966506: // implementationGuide
-          this.getImplementationGuide().add(castToCanonical(value)); // CanonicalType
+          this.getImplementationGuide().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 3496916: // rest
           this.getRest().add((CapabilityStatementRestComponent) value); // CapabilityStatementRestComponent
@@ -8368,54 +8368,54 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("kind")) {
-          value = new CapabilityStatementKindEnumFactory().fromType(castToCode(value));
+          value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CapabilityStatementKind>
         } else if (name.equals("instantiates")) {
-          this.getInstantiates().add(castToCanonical(value));
+          this.getInstantiates().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("imports")) {
-          this.getImports().add(castToCanonical(value));
+          this.getImports().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("software")) {
           this.software = (CapabilityStatementSoftwareComponent) value; // CapabilityStatementSoftwareComponent
         } else if (name.equals("implementation")) {
           this.implementation = (CapabilityStatementImplementationComponent) value; // CapabilityStatementImplementationComponent
         } else if (name.equals("fhirVersion")) {
-          value = new FHIRVersionEnumFactory().fromType(castToCode(value));
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.fhirVersion = (Enumeration) value; // Enumeration<FHIRVersion>
         } else if (name.equals("format")) {
-          this.getFormat().add(castToCode(value));
+          this.getFormat().add(TypeConvertor.castToCode(value));
         } else if (name.equals("patchFormat")) {
-          this.getPatchFormat().add(castToCode(value));
+          this.getPatchFormat().add(TypeConvertor.castToCode(value));
         } else if (name.equals("implementationGuide")) {
-          this.getImplementationGuide().add(castToCanonical(value));
+          this.getImplementationGuide().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("rest")) {
           this.getRest().add((CapabilityStatementRestComponent) value);
         } else if (name.equals("messaging")) {

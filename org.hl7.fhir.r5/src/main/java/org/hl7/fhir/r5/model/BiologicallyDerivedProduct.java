@@ -434,7 +434,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         @Child(name = "collected", type = {DateTimeType.class, Period.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time of product collection", formalDefinition="Time of product collection." )
-        protected Type collected;
+        protected DataType collected;
 
         private static final long serialVersionUID = -2115607425L;
 
@@ -496,7 +496,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @return {@link #collected} (Time of product collection.)
          */
-        public Type getCollected() { 
+        public DataType getCollected() { 
           return this.collected;
         }
 
@@ -537,7 +537,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @param value {@link #collected} (Time of product collection.)
          */
-        public BiologicallyDerivedProductCollectionComponent setCollected(Type value) { 
+        public BiologicallyDerivedProductCollectionComponent setCollected(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
             throw new Error("Not the right type for BiologicallyDerivedProduct.collection.collected[x]: "+value.fhirType());
           this.collected = value;
@@ -580,13 +580,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1883491469: // collector
-          this.collector = castToReference(value); // Reference
+          this.collector = TypeConvertor.castToReference(value); // Reference
           return value;
         case -896505829: // source
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1883491145: // collected
-          this.collected = castToType(value); // Type
+          this.collected = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -596,11 +596,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("collector")) {
-          this.collector = castToReference(value); // Reference
+          this.collector = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("source")) {
-          this.source = castToReference(value); // Reference
+          this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("collected[x]")) {
-          this.collected = castToType(value); // Type
+          this.collected = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -726,7 +726,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         @Child(name = "time", type = {DateTimeType.class, Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time of processing", formalDefinition="Time of processing." )
-        protected Type time;
+        protected DataType time;
 
         private static final long serialVersionUID = 1933636455L;
 
@@ -837,7 +837,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @return {@link #time} (Time of processing.)
          */
-        public Type getTime() { 
+        public DataType getTime() { 
           return this.time;
         }
 
@@ -878,7 +878,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @param value {@link #time} (Time of processing.)
          */
-        public BiologicallyDerivedProductProcessingComponent setTime(Type value) { 
+        public BiologicallyDerivedProductProcessingComponent setTime(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
             throw new Error("Not the right type for BiologicallyDerivedProduct.processing.time[x]: "+value.fhirType());
           this.time = value;
@@ -924,16 +924,16 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1095204141: // procedure
-          this.procedure = castToCodeableConcept(value); // CodeableConcept
+          this.procedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1226589236: // additive
-          this.additive = castToReference(value); // Reference
+          this.additive = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3560141: // time
-          this.time = castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -943,13 +943,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("procedure")) {
-          this.procedure = castToCodeableConcept(value); // CodeableConcept
+          this.procedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("additive")) {
-          this.additive = castToReference(value); // Reference
+          this.additive = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("time[x]")) {
-          this.time = castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1066,7 +1066,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         @Child(name = "time", type = {DateTimeType.class, Period.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time of manipulation", formalDefinition="Time of manipulation." )
-        protected Type time;
+        protected DataType time;
 
         private static final long serialVersionUID = 717201078L;
 
@@ -1129,7 +1129,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @return {@link #time} (Time of manipulation.)
          */
-        public Type getTime() { 
+        public DataType getTime() { 
           return this.time;
         }
 
@@ -1170,7 +1170,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @param value {@link #time} (Time of manipulation.)
          */
-        public BiologicallyDerivedProductManipulationComponent setTime(Type value) { 
+        public BiologicallyDerivedProductManipulationComponent setTime(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
             throw new Error("Not the right type for BiologicallyDerivedProduct.manipulation.time[x]: "+value.fhirType());
           this.time = value;
@@ -1210,10 +1210,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3560141: // time
-          this.time = castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // Type
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1223,9 +1223,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("time[x]")) {
-          this.time = castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // Type
         } else
           return super.setProperty(name, value);
         return value;
@@ -1577,17 +1577,17 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 321701236: // temperature
-          this.temperature = castToDecimal(value); // DecimalType
+          this.temperature = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 109250890: // scale
-          value = new BiologicallyDerivedProductStorageScaleEnumFactory().fromType(castToCode(value));
+          value = new BiologicallyDerivedProductStorageScaleEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.scale = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStorageScale>
           return value;
         case -1992012396: // duration
-          this.duration = castToPeriod(value); // Period
+          this.duration = TypeConvertor.castToPeriod(value); // Period
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1597,14 +1597,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("temperature")) {
-          this.temperature = castToDecimal(value); // DecimalType
+          this.temperature = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("scale")) {
-          value = new BiologicallyDerivedProductStorageScaleEnumFactory().fromType(castToCode(value));
+          value = new BiologicallyDerivedProductStorageScaleEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.scale = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStorageScale>
         } else if (name.equals("duration")) {
-          this.duration = castToPeriod(value); // Period
+          this.duration = TypeConvertor.castToPeriod(value); // Period
         } else
           return super.setProperty(name, value);
         return value;
@@ -2326,27 +2326,27 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 197299981: // productCategory
-          value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(castToCode(value));
+          value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.productCategory = (Enumeration) value; // Enumeration<BiologicallyDerivedProductCategory>
           return value;
         case -1492131972: // productCode
-          this.productCode = castToCodeableConcept(value); // CodeableConcept
+          this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(castToCode(value));
+          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
           return value;
         case 1095692943: // request
-          this.getRequest().add(castToReference(value)); // Reference
+          this.getRequest().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1285004149: // quantity
-          this.quantity = castToInteger(value); // IntegerType
+          this.quantity = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -995424086: // parent
-          this.getParent().add(castToReference(value)); // Reference
+          this.getParent().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1741312354: // collection
           this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
@@ -2368,21 +2368,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("productCategory")) {
-          value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(castToCode(value));
+          value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.productCategory = (Enumeration) value; // Enumeration<BiologicallyDerivedProductCategory>
         } else if (name.equals("productCode")) {
-          this.productCode = castToCodeableConcept(value); // CodeableConcept
+          this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(castToCode(value));
+          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
         } else if (name.equals("request")) {
-          this.getRequest().add(castToReference(value));
+          this.getRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("quantity")) {
-          this.quantity = castToInteger(value); // IntegerType
+          this.quantity = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("parent")) {
-          this.getParent().add(castToReference(value));
+          this.getParent().add(TypeConvertor.castToReference(value));
         } else if (name.equals("collection")) {
           this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
         } else if (name.equals("processing")) {

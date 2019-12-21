@@ -79,7 +79,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -338,11 +338,11 @@ public class ToolingExtensions {
   }
 
   @SuppressWarnings("unchecked")
-  public static PrimitiveType<Type> readPrimitiveExtension(DomainResource c, String uri) {
+  public static PrimitiveType<DataType> readPrimitiveExtension(DomainResource c, String uri) {
     Extension ex = getExtension(c, uri);
     if (ex == null)
       return null;
-    return (PrimitiveType<Type>) ex.getValue();
+    return (PrimitiveType<DataType>) ex.getValue();
   }
 
   public static boolean findStringExtension(Element c, String uri) {
@@ -595,7 +595,7 @@ public class ToolingExtensions {
     element.getExtension().add(extension);
   }
 
-  public static Type getAllowedUnits(ElementDefinition eld) {
+  public static DataType getAllowedUnits(ElementDefinition eld) {
     for (Extension e : eld.getExtension()) 
       if (e.getUrl().equals(EXT_ALLOWABLE_UNITS)) 
         return e.getValue();

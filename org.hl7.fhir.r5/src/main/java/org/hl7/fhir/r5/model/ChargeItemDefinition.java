@@ -72,7 +72,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ChargeItemDefinition", profile="http://hl7.org/fhir/StructureDefinition/ChargeItemDefinition")
 @ChildOrder(names={"url", "identifier", "version", "title", "derivedFromUri", "partOf", "replaces", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "code", "instance", "applicability", "propertyGroup"})
-public class ChargeItemDefinition extends MetadataResource {
+public class ChargeItemDefinition extends CanonicalResource {
 
     public enum ChargeItemDefinitionPriceComponentType {
         /**
@@ -442,13 +442,13 @@ public class ChargeItemDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1613589672: // language
-          this.language = castToString(value); // StringType
+          this.language = TypeConvertor.castToString(value); // StringType
           return value;
         case -1795452264: // expression
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -458,11 +458,11 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("language")) {
-          this.language = castToString(value); // StringType
+          this.language = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expression")) {
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1063,17 +1063,17 @@ public class ChargeItemDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ChargeItemDefinitionPriceComponentTypeEnumFactory().fromType(castToCode(value));
+          value = new ChargeItemDefinitionPriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ChargeItemDefinitionPriceComponentType>
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1282148017: // factor
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1083,14 +1083,14 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ChargeItemDefinitionPriceComponentTypeEnumFactory().fromType(castToCode(value));
+          value = new ChargeItemDefinitionPriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ChargeItemDefinitionPriceComponentType>
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("factor")) {
-          this.factor = castToDecimal(value); // DecimalType
+          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else
           return super.setProperty(name, value);
         return value;
@@ -2512,68 +2512,68 @@ public class ChargeItemDefinition extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1076333435: // derivedFromUri
-          this.getDerivedFromUri().add(castToUri(value)); // UriType
+          this.getDerivedFromUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -995410646: // partOf
-          this.getPartOf().add(castToCanonical(value)); // CanonicalType
+          this.getPartOf().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -430332865: // replaces
-          this.getReplaces().add(castToCanonical(value)); // CanonicalType
+          this.getReplaces().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -403934648: // effectivePeriod
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 3059181: // code
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 555127957: // instance
-          this.getInstance().add(castToReference(value)); // Reference
+          this.getInstance().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1526770491: // applicability
           this.getApplicability().add((ChargeItemDefinitionApplicabilityComponent) value); // ChargeItemDefinitionApplicabilityComponent
@@ -2589,48 +2589,48 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("derivedFromUri")) {
-          this.getDerivedFromUri().add(castToUri(value));
+          this.getDerivedFromUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("partOf")) {
-          this.getPartOf().add(castToCanonical(value));
+          this.getPartOf().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("replaces")) {
-          this.getReplaces().add(castToCanonical(value));
+          this.getReplaces().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = castToDate(value); // DateType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = castToDate(value); // DateType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = castToPeriod(value); // Period
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("code")) {
-          this.code = castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("instance")) {
-          this.getInstance().add(castToReference(value));
+          this.getInstance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("applicability")) {
           this.getApplicability().add((ChargeItemDefinitionApplicabilityComponent) value);
         } else if (name.equals("propertyGroup")) {

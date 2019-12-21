@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * The metadata about a resource. This is content in the resource that is maintained by the infrastructure. Changes to the content might not always be associated with version changes to the resource.
  */
 @DatatypeDef(name="Meta")
-public class Meta extends Type implements IBaseMetaType {
+public class Meta extends DataType implements IBaseMetaType {
 
     /**
      * The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.
@@ -528,22 +528,22 @@ public class Meta extends Type implements IBaseMetaType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1407102957: // versionId
-          this.versionId = castToId(value); // IdType
+          this.versionId = TypeConvertor.castToId(value); // IdType
           return value;
         case 1649733957: // lastUpdated
-          this.lastUpdated = castToInstant(value); // InstantType
+          this.lastUpdated = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -896505829: // source
-          this.source = castToUri(value); // UriType
+          this.source = TypeConvertor.castToUri(value); // UriType
           return value;
         case -309425751: // profile
-          this.getProfile().add(castToCanonical(value)); // CanonicalType
+          this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 949122880: // security
-          this.getSecurity().add(castToCoding(value)); // Coding
+          this.getSecurity().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 114586: // tag
-          this.getTag().add(castToCoding(value)); // Coding
+          this.getTag().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -553,17 +553,17 @@ public class Meta extends Type implements IBaseMetaType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("versionId")) {
-          this.versionId = castToId(value); // IdType
+          this.versionId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("lastUpdated")) {
-          this.lastUpdated = castToInstant(value); // InstantType
+          this.lastUpdated = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("source")) {
-          this.source = castToUri(value); // UriType
+          this.source = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("profile")) {
-          this.getProfile().add(castToCanonical(value));
+          this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("security")) {
-          this.getSecurity().add(castToCoding(value));
+          this.getSecurity().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("tag")) {
-          this.getTag().add(castToCoding(value));
+          this.getTag().add(TypeConvertor.castToCoding(value));
         } else
           return super.setProperty(name, value);
         return value;

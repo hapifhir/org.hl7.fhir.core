@@ -96,7 +96,7 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.UriType;
@@ -1188,7 +1188,7 @@ public class StructureMapUtilities {
 		}
 	}
 
-	private Type readConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
+	private DataType readConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
 		if (Utilities.isInteger(s))
 			return new IntegerType(s);
 		else if (Utilities.isDecimal(s, false))
@@ -2003,7 +2003,7 @@ public class StructureMapUtilities {
 
 
 	private Base getParam(Variables vars, StructureMapGroupRuleTargetParameterComponent parameter) throws DefinitionException {
-		Type p = parameter.getValue();
+		DataType p = parameter.getValue();
 		if (!(p instanceof IdType))
 			return p;
 		else { 
@@ -2498,7 +2498,7 @@ public class StructureMapUtilities {
     } else { 
       boolean mapsSrc = false;
       for (StructureMapGroupRuleTargetParameterComponent p : tgt.getParameter()) {
-        Type pr = p.getValue();
+        DataType pr = p.getValue();
         if (pr instanceof IdType && ((IdType) pr).asStringValue().equals(tv)) 
           mapsSrc = true;
       }
@@ -2514,7 +2514,7 @@ public class StructureMapUtilities {
         }
       }
     }
-    Type fixed = generateFixedValue(tgt);
+    DataType fixed = generateFixedValue(tgt);
     
     PropertyWithType prop = updateProfile(var, tgt.getElement(), type, map, profiles, sliceName, fixed, tgt);
     if (tgt.hasVariable())
@@ -2524,7 +2524,7 @@ public class StructureMapUtilities {
         vars.add(VariableMode.OUTPUT, tgt.getVariable(), prop); 
   }
   
-  private Type generateFixedValue(StructureMapGroupRuleTargetComponent tgt) {
+  private DataType generateFixedValue(StructureMapGroupRuleTargetComponent tgt) {
     if (!allParametersFixed(tgt))
       return null;
     if (!tgt.hasTransform())
@@ -2555,13 +2555,13 @@ public class StructureMapUtilities {
   }
 
   @SuppressWarnings("rawtypes")
-  private Coding buildCoding(Type value1, Type value2) {
+  private Coding buildCoding(DataType value1, DataType value2) {
     return new Coding().setSystem(((PrimitiveType) value1).asStringValue()).setCode(((PrimitiveType) value2).asStringValue()) ;
   }
 
   private boolean allParametersFixed(StructureMapGroupRuleTargetComponent tgt) {
     for (StructureMapGroupRuleTargetParameterComponent p : tgt.getParameter()) {
-      Type pr = p.getValue();
+      DataType pr = p.getValue();
       if (pr instanceof IdType)
         return false;
     }
@@ -2594,8 +2594,8 @@ public class StructureMapUtilities {
   private String describeTransformCCorC(StructureMapGroupRuleTargetComponent tgt) throws FHIRException {
     if (tgt.getParameter().size() < 2)
       return null;
-    Type p1 = tgt.getParameter().get(0).getValue();
-    Type p2 = tgt.getParameter().get(1).getValue();
+    DataType p1 = tgt.getParameter().get(0).getValue();
+    DataType p2 = tgt.getParameter().get(1).getValue();
     if (p1 instanceof IdType || p2 instanceof IdType)
       return null;
     if (!(p1 instanceof PrimitiveType) || !(p2 instanceof PrimitiveType))
@@ -2642,7 +2642,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private PropertyWithType updateProfile(VariableForProfiling var, String element, TypeDetails type, StructureMap map, List<StructureDefinition> profiles, String sliceName, Type fixed, StructureMapGroupRuleTargetComponent tgt) throws FHIRException {
+  private PropertyWithType updateProfile(VariableForProfiling var, String element, TypeDetails type, StructureMap map, List<StructureDefinition> profiles, String sliceName, DataType fixed, StructureMapGroupRuleTargetComponent tgt) throws FHIRException {
     if (var == null) {
       assert (Utilities.noString(element));
       // 1. start the new structure definition
@@ -2800,7 +2800,7 @@ public class StructureMapUtilities {
     }
   }
   private String getParamString(VariablesForProfiling vars, StructureMapGroupRuleTargetParameterComponent parameter) {
-    Type p = parameter.getValue();
+    DataType p = parameter.getValue();
     if (p == null || p instanceof IdType)
       return null;
     if (!p.hasPrimitiveValue())
@@ -2809,21 +2809,21 @@ public class StructureMapUtilities {
   }
 
   private String getParamId(VariablesForProfiling vars, StructureMapGroupRuleTargetParameterComponent parameter) {
-    Type p = parameter.getValue();
+    DataType p = parameter.getValue();
     if (p == null || !(p instanceof IdType))
       return null;
     return p.primitiveValue();
   }
 
   private boolean isParamId(VariablesForProfiling vars, StructureMapGroupRuleTargetParameterComponent parameter) {
-    Type p = parameter.getValue();
+    DataType p = parameter.getValue();
     if (p == null || !(p instanceof IdType))
       return false;
     return vars.get(null, p.primitiveValue()) != null;
   }
 
   private TypeDetails getParam(VariablesForProfiling vars, StructureMapGroupRuleTargetParameterComponent parameter) throws DefinitionException {
-    Type p = parameter.getValue();
+    DataType p = parameter.getValue();
     if (!(p instanceof IdType))
       return new TypeDetails(CollectionStatus.SINGLETON, ProfileUtilities.sdNs(p.fhirType(), worker.getOverrideVersionNs()));
     else { 

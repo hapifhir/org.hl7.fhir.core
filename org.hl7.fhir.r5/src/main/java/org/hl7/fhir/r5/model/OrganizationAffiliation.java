@@ -766,40 +766,40 @@ public class OrganizationAffiliation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1422950650: // active
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 1178922291: // organization
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1593310702: // participatingOrganization
-          this.participatingOrganization = castToReference(value); // Reference
+          this.participatingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1843485230: // network
-          this.getNetwork().add(castToReference(value)); // Reference
+          this.getNetwork().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1694759682: // specialty
-          this.getSpecialty().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1901043637: // location
-          this.getLocation().add(castToReference(value)); // Reference
+          this.getLocation().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1289661064: // healthcareService
-          this.getHealthcareService().add(castToReference(value)); // Reference
+          this.getHealthcareService().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
         case 1741102485: // endpoint
-          this.getEndpoint().add(castToReference(value)); // Reference
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -809,29 +809,29 @@ public class OrganizationAffiliation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("active")) {
-          this.active = castToBoolean(value); // BooleanType
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("organization")) {
-          this.organization = castToReference(value); // Reference
+          this.organization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participatingOrganization")) {
-          this.participatingOrganization = castToReference(value); // Reference
+          this.participatingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("network")) {
-          this.getNetwork().add(castToReference(value));
+          this.getNetwork().add(TypeConvertor.castToReference(value));
         } else if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("specialty")) {
-          this.getSpecialty().add(castToCodeableConcept(value));
+          this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("location")) {
-          this.getLocation().add(castToReference(value));
+          this.getLocation().add(TypeConvertor.castToReference(value));
         } else if (name.equals("healthcareService")) {
-          this.getHealthcareService().add(castToReference(value));
+          this.getHealthcareService().add(TypeConvertor.castToReference(value));
         } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("endpoint")) {
-          this.getEndpoint().add(castToReference(value));
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;

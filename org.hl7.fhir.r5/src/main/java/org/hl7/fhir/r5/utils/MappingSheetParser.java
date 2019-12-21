@@ -43,7 +43,7 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapContextType;
@@ -242,7 +242,7 @@ public class MappingSheetParser {
     throw new Error("not processed yet: "+condition); 
   }
 
-  private void loadMetadata(MetadataResource mr) throws FHIRException {
+  private void loadMetadata(CanonicalResource mr) throws FHIRException {
     if (metadata.containsKey("id"))
       mr.setId(metadata.get("id"));
     if (metadata.containsKey("url"))

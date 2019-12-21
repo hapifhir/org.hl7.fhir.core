@@ -67,115 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.
  */
 @DatatypeDef(name="Expression")
-public class Expression extends Type implements ICompositeType {
-
-    public enum ExpressionLanguage {
-        /**
-         * Clinical Quality Language.
-         */
-        TEXT_CQL, 
-        /**
-         * FHIRPath.
-         */
-        TEXT_FHIRPATH, 
-        /**
-         * FHIR's RESTful query syntax - typically independent of base URL.
-         */
-        APPLICATION_XFHIRQUERY, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ExpressionLanguage fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("text/cql".equals(codeString))
-          return TEXT_CQL;
-        if ("text/fhirpath".equals(codeString))
-          return TEXT_FHIRPATH;
-        if ("application/x-fhir-query".equals(codeString))
-          return APPLICATION_XFHIRQUERY;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ExpressionLanguage code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TEXT_CQL: return "text/cql";
-            case TEXT_FHIRPATH: return "text/fhirpath";
-            case APPLICATION_XFHIRQUERY: return "application/x-fhir-query";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case TEXT_CQL: return "http://hl7.org/fhir/expression-language";
-            case TEXT_FHIRPATH: return "http://hl7.org/fhir/expression-language";
-            case APPLICATION_XFHIRQUERY: return "http://hl7.org/fhir/expression-language";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TEXT_CQL: return "Clinical Quality Language.";
-            case TEXT_FHIRPATH: return "FHIRPath.";
-            case APPLICATION_XFHIRQUERY: return "FHIR's RESTful query syntax - typically independent of base URL.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TEXT_CQL: return "CQL";
-            case TEXT_FHIRPATH: return "FHIRPath";
-            case APPLICATION_XFHIRQUERY: return "FHIR Query";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ExpressionLanguageEnumFactory implements EnumFactory<ExpressionLanguage> {
-    public ExpressionLanguage fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("text/cql".equals(codeString))
-          return ExpressionLanguage.TEXT_CQL;
-        if ("text/fhirpath".equals(codeString))
-          return ExpressionLanguage.TEXT_FHIRPATH;
-        if ("application/x-fhir-query".equals(codeString))
-          return ExpressionLanguage.APPLICATION_XFHIRQUERY;
-        throw new IllegalArgumentException("Unknown ExpressionLanguage code '"+codeString+"'");
-        }
-        public Enumeration<ExpressionLanguage> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ExpressionLanguage>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("text/cql".equals(codeString))
-          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.TEXT_CQL);
-        if ("text/fhirpath".equals(codeString))
-          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.TEXT_FHIRPATH);
-        if ("application/x-fhir-query".equals(codeString))
-          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.APPLICATION_XFHIRQUERY);
-        throw new FHIRException("Unknown ExpressionLanguage code '"+codeString+"'");
-        }
-    public String toCode(ExpressionLanguage code) {
-      if (code == ExpressionLanguage.TEXT_CQL)
-        return "text/cql";
-      if (code == ExpressionLanguage.TEXT_FHIRPATH)
-        return "text/fhirpath";
-      if (code == ExpressionLanguage.APPLICATION_XFHIRQUERY)
-        return "application/x-fhir-query";
-      return "?";
-      }
-    public String toSystem(ExpressionLanguage code) {
-      return code.getSystem();
-      }
-    }
+public class Expression extends DataType implements ICompositeType {
 
     /**
      * A brief, natural language description of the condition that effectively communicates the intended semantics.
@@ -213,7 +105,7 @@ public class Expression extends Type implements ICompositeType {
     @Description(shortDefinition="Where the expression is found", formalDefinition="A URI that defines where the expression is found." )
     protected UriType reference;
 
-    private static final long serialVersionUID = -941986742L;
+    private static final long serialVersionUID = -465056222L;
 
   /**
    * Constructor
@@ -498,7 +390,7 @@ public class Expression extends Type implements ICompositeType {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // Enumeration<ExpressionLanguage>
+        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeType
         case -1795452264: /*expression*/ return this.expression == null ? new Base[0] : new Base[] {this.expression}; // StringType
         case -925155509: /*reference*/ return this.reference == null ? new Base[0] : new Base[] {this.reference}; // UriType
         default: return super.getProperty(hash, name, checkValid);
@@ -510,19 +402,19 @@ public class Expression extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1724546052: // description
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToId(value); // IdType
+          this.name = TypeConvertor.castToId(value); // IdType
           return value;
         case -1613589672: // language
-          this.language = castToCode(value); // Enumeration<ExpressionLanguage>
+          this.language = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1795452264: // expression
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
           return value;
         case -925155509: // reference
-          this.reference = castToUri(value); // UriType
+          this.reference = TypeConvertor.castToUri(value); // UriType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -532,15 +424,15 @@ public class Expression extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
-          this.description = castToString(value); // StringType
+          this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToId(value); // IdType
+          this.name = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("language")) {
-          this.language = castToCode(value); // Enumeration<ExpressionLanguage>
+          this.language = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("expression")) {
-          this.expression = castToString(value); // StringType
+          this.expression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("reference")) {
-          this.reference = castToUri(value); // UriType
+          this.reference = TypeConvertor.castToUri(value); // UriType
         } else
           return super.setProperty(name, value);
         return value;

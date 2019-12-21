@@ -402,22 +402,22 @@ public class ManufacturedItemDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1451400348: // manufacturedDoseForm
-          this.manufacturedDoseForm = castToCodeableConcept(value); // CodeableConcept
+          this.manufacturedDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1427765963: // unitOfPresentation
-          this.unitOfPresentation = castToCodeableConcept(value); // CodeableConcept
+          this.unitOfPresentation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1969347631: // manufacturer
-          this.getManufacturer().add(castToReference(value)); // Reference
+          this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -206409263: // ingredient
-          this.getIngredient().add(castToReference(value)); // Reference
+          this.getIngredient().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1599676319: // physicalCharacteristics
-          this.physicalCharacteristics = castToProdCharacteristic(value); // ProdCharacteristic
+          this.physicalCharacteristics = TypeConvertor.castToProdCharacteristic(value); // ProdCharacteristic
           return value;
         case 722135304: // otherCharacteristics
-          this.getOtherCharacteristics().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getOtherCharacteristics().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -427,17 +427,17 @@ public class ManufacturedItemDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("manufacturedDoseForm")) {
-          this.manufacturedDoseForm = castToCodeableConcept(value); // CodeableConcept
+          this.manufacturedDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unitOfPresentation")) {
-          this.unitOfPresentation = castToCodeableConcept(value); // CodeableConcept
+          this.unitOfPresentation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("manufacturer")) {
-          this.getManufacturer().add(castToReference(value));
+          this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add(castToReference(value));
+          this.getIngredient().add(TypeConvertor.castToReference(value));
         } else if (name.equals("physicalCharacteristics")) {
-          this.physicalCharacteristics = castToProdCharacteristic(value); // ProdCharacteristic
+          this.physicalCharacteristics = TypeConvertor.castToProdCharacteristic(value); // ProdCharacteristic
         } else if (name.equals("otherCharacteristics")) {
-          this.getOtherCharacteristics().add(castToCodeableConcept(value));
+          this.getOtherCharacteristics().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;

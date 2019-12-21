@@ -65,7 +65,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -93,9 +93,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	// -- in descendent generated code --------------------------------------
 
 	abstract protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError ;
-  abstract protected Type parseType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
-  abstract protected Type parseAnyType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
-	abstract protected void composeType(String prefix, Type type) throws IOException ;
+  abstract protected DataType parseType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
+  abstract protected DataType parseAnyType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
+	abstract protected void composeType(String prefix, DataType type) throws IOException ;
 
 	/* -- entry points --------------------------------------------------- */
 
@@ -127,7 +127,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
 	@Override
-	public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError  {
+	public DataType parseType(InputStream input, String knownType) throws IOException, FHIRFormatError  {
 		try {
 			XmlPullParser xml = loadXml(input);
 			return parseType(xml, knownType);
@@ -137,7 +137,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
   @Override
-  public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError  {
+  public DataType parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError  {
     try {
       XmlPullParser xml = loadXml(input);
       return parseAnyType(xml, knownType);
@@ -176,7 +176,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	 * Compose a type to a stream (used in the spec, for example, but not normally in production)
 	 * @ 
 	 */
-	public void compose(OutputStream stream, String rootName, Type type)  throws IOException {
+	public void compose(OutputStream stream, String rootName, DataType type)  throws IOException {
 		xml = new XMLWriter(stream, "UTF-8");
 		xml.setPretty(style == OutputStyle.PRETTY);
 		xml.start();
@@ -186,7 +186,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
 	@Override
-	public void compose(OutputStream stream, Type type, String rootName)  throws IOException {
+	public void compose(OutputStream stream, DataType type, String rootName)  throws IOException {
 		xml = new XMLWriter(stream, "UTF-8");
 		xml.setPretty(style == OutputStyle.PRETTY);
 		xml.start();
@@ -264,7 +264,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	/* -- worker routines --------------------------------------------------- */
 
-	protected void parseTypeAttributes(XmlPullParser xpp, Type t) {
+	protected void parseTypeAttributes(XmlPullParser xpp, DataType t) {
 		parseElementAttributes(xpp, t);
 	}
 
@@ -388,7 +388,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 			for (String comment : base.getFormatCommentsPost())
 				xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
 	}
-	protected void composeTypeAttributes(Type type) throws IOException {
+	protected void composeTypeAttributes(DataType type) throws IOException {
 		composeElementAttributes(type);
 	}
 

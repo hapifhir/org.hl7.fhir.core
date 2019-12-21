@@ -275,16 +275,16 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -991726143: // period
-          this.period = castToQuantity(value); // Quantity
+          this.period = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 2103459492: // specialPrecautionsForStorage
-          this.getSpecialPrecautionsForStorage().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getSpecialPrecautionsForStorage().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -294,13 +294,13 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("period")) {
-          this.period = castToQuantity(value); // Quantity
+          this.period = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("specialPrecautionsForStorage")) {
-          this.getSpecialPrecautionsForStorage().add(castToCodeableConcept(value));
+          this.getSpecialPrecautionsForStorage().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;

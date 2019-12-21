@@ -546,26 +546,26 @@ public class EnrollmentRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EnrollmentRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new EnrollmentRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EnrollmentRequestStatus>
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1957615864: // insurer
-          this.insurer = castToReference(value); // Reference
+          this.insurer = TypeConvertor.castToReference(value); // Reference
           return value;
         case -987494927: // provider
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
           return value;
         case 508663171: // candidate
-          this.candidate = castToReference(value); // Reference
+          this.candidate = TypeConvertor.castToReference(value); // Reference
           return value;
         case -351767064: // coverage
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -575,20 +575,20 @@ public class EnrollmentRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EnrollmentRequestStatusEnumFactory().fromType(castToCode(value));
+          value = new EnrollmentRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EnrollmentRequestStatus>
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("insurer")) {
-          this.insurer = castToReference(value); // Reference
+          this.insurer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("provider")) {
-          this.provider = castToReference(value); // Reference
+          this.provider = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("candidate")) {
-          this.candidate = castToReference(value); // Reference
+          this.candidate = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("coverage")) {
-          this.coverage = castToReference(value); // Reference
+          this.coverage = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

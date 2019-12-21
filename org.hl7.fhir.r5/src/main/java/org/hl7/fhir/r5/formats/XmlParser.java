@@ -591,7 +591,7 @@ public class XmlParser extends XmlParserBase {
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("url")) {
         res.setUrlElement(parseUrl(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("size")) {
-        res.setSizeElement(parseUnsignedInt(xpp));
+        res.setSizeElement(parseInteger64(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("hash")) {
         res.setHashElement(parseBase64Binary(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("title")) {
@@ -1824,7 +1824,7 @@ public class XmlParser extends XmlParserBase {
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("periodUnit")) {
         res.setPeriodUnitElement(parseEnumeration(xpp, Timing.UnitsOfTime.NULL, new Timing.UnitsOfTimeEnumFactory()));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("dayOfWeek")) {
-        res.getDayOfWeek().add(parseEnumeration(xpp, Timing.DayOfWeek.NULL, new Timing.DayOfWeekEnumFactory()));
+        res.getDayOfWeek().add(parseEnumeration(xpp, Timing.DaysOfWeek.NULL, new Timing.DaysOfWeekEnumFactory()));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("timeOfDay")) {
         res.getTimeOfDay().add(parseTime(xpp));
       } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("when")) {
@@ -24705,7 +24705,7 @@ public class XmlParser extends XmlParserBase {
     throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
   }
 
-  protected Type parseType(String prefix, XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected DataType parseType(String prefix, XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp.getName().equals(prefix+"date"))
       return parseDate(xpp);
     else if (xpp.getName().equals(prefix+"dateTime"))
@@ -24869,7 +24869,7 @@ public class XmlParser extends XmlParserBase {
     throw new FHIRFormatError("Unknown type "+xpp.getName());
   }
 
-  protected Type parseType(XmlPullParser xpp, String type) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected DataType parseType(XmlPullParser xpp, String type) throws XmlPullParserException, IOException, FHIRFormatError {
     if (type.equals("date"))
       return parseDate(xpp);
     else if (type.equals("dateTime"))
@@ -25806,7 +25806,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   @Override
-    protected Type parseAnyType(XmlPullParser xpp, String type) throws XmlPullParserException, IOException, FHIRFormatError {
+    protected DataType parseAnyType(XmlPullParser xpp, String type) throws XmlPullParserException, IOException, FHIRFormatError {
       if (type.equals("ElementDefinition"))
         return parseElementDefinition(xpp);
       else if (type.equals("DataRequirement"))
@@ -26661,8 +26661,8 @@ public class XmlParser extends XmlParserBase {
       if (element.hasPeriodUnitElement())
         composeEnumeration("periodUnit", element.getPeriodUnitElement(), new Timing.UnitsOfTimeEnumFactory());
         if (element.hasDayOfWeek()) 
-          for (Enumeration<Timing.DayOfWeek> e : element.getDayOfWeek()) 
-            composeEnumeration("dayOfWeek", e, new Timing.DayOfWeekEnumFactory());
+          for (Enumeration<Timing.DaysOfWeek> e : element.getDayOfWeek()) 
+            composeEnumeration("dayOfWeek", e, new Timing.DaysOfWeekEnumFactory());
       if (element.hasTimeOfDay()) { 
         for (TimeType e : element.getTimeOfDay()) 
           composeTime("timeOfDay", e);
@@ -26851,7 +26851,7 @@ public class XmlParser extends XmlParserBase {
         composeUrl("url", element.getUrlElement());
       }
       if (element.hasSizeElement()) {
-        composeUnsignedInt("size", element.getSizeElement());
+        composeInteger64("size", element.getSizeElement());
       }
       if (element.hasHashElement()) {
         composeBase64Binary("hash", element.getHashElement());
@@ -51739,7 +51739,7 @@ public class XmlParser extends XmlParserBase {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
   }
 
-  protected void composeType(String prefix, Type type) throws IOException {
+  protected void composeType(String prefix, DataType type) throws IOException {
     if (type == null)
       ;
     else if (type instanceof Extension)

@@ -69,7 +69,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * An amount of economic utility in some recognized currency.
  */
 @DatatypeDef(name="Money")
-public class Money extends Type implements ICompositeType {
+public class Money extends DataType implements ICompositeType {
 
     /**
      * Numerical value (with implicit precision).
@@ -241,10 +241,10 @@ public class Money extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = castToDecimal(value); // DecimalType
+          this.value = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
         case 575402001: // currency
-          this.currency = castToCode(value); // CodeType
+          this.currency = TypeConvertor.castToCode(value); // CodeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -254,9 +254,9 @@ public class Money extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value")) {
-          this.value = castToDecimal(value); // DecimalType
+          this.value = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("currency")) {
-          this.currency = castToCode(value); // CodeType
+          this.currency = TypeConvertor.castToCode(value); // CodeType
         } else
           return super.setProperty(name, value);
         return value;

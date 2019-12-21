@@ -597,10 +597,10 @@ public class Consent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1475610435: // authority
-          this.authority = castToUri(value); // UriType
+          this.authority = TypeConvertor.castToUri(value); // UriType
           return value;
         case 116076: // uri
-          this.uri = castToUri(value); // UriType
+          this.uri = TypeConvertor.castToUri(value); // UriType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -610,9 +610,9 @@ public class Consent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("authority")) {
-          this.authority = castToUri(value); // UriType
+          this.authority = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("uri")) {
-          this.uri = castToUri(value); // UriType
+          this.uri = TypeConvertor.castToUri(value); // UriType
         } else
           return super.setProperty(name, value);
         return value;
@@ -884,13 +884,13 @@ public class Consent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1994383672: // verified
-          this.verified = castToBoolean(value); // BooleanType
+          this.verified = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1425236050: // verifiedWith
-          this.verifiedWith = castToReference(value); // Reference
+          this.verifiedWith = TypeConvertor.castToReference(value); // Reference
           return value;
         case 642233449: // verificationDate
-          this.verificationDate = castToDateTime(value); // DateTimeType
+          this.verificationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -900,11 +900,11 @@ public class Consent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("verified")) {
-          this.verified = castToBoolean(value); // BooleanType
+          this.verified = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("verifiedWith")) {
-          this.verifiedWith = castToReference(value); // Reference
+          this.verifiedWith = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("verificationDate")) {
-          this.verificationDate = castToDateTime(value); // DateTimeType
+          this.verificationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1667,32 +1667,32 @@ public class Consent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ConsentProvisionTypeEnumFactory().fromType(castToCode(value));
+          value = new ConsentProvisionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ConsentProvisionType>
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 92645877: // actor
           this.getActor().add((provisionActorComponent) value); // provisionActorComponent
           return value;
         case -1422950858: // action
-          this.getAction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getAction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -722296940: // securityLabel
-          this.getSecurityLabel().add(castToCoding(value)); // Coding
+          this.getSecurityLabel().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case -220463842: // purpose
-          this.getPurpose().add(castToCoding(value)); // Coding
+          this.getPurpose().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 94742904: // class
-          this.getClass_().add(castToCoding(value)); // Coding
+          this.getClass_().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 3059181: // code
-          this.getCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1177250315: // dataPeriod
-          this.dataPeriod = castToPeriod(value); // Period
+          this.dataPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 3076010: // data
           this.getData().add((provisionDataComponent) value); // provisionDataComponent
@@ -1708,24 +1708,24 @@ public class Consent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ConsentProvisionTypeEnumFactory().fromType(castToCode(value));
+          value = new ConsentProvisionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ConsentProvisionType>
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("actor")) {
           this.getActor().add((provisionActorComponent) value);
         } else if (name.equals("action")) {
-          this.getAction().add(castToCodeableConcept(value));
+          this.getAction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("securityLabel")) {
-          this.getSecurityLabel().add(castToCoding(value));
+          this.getSecurityLabel().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("purpose")) {
-          this.getPurpose().add(castToCoding(value));
+          this.getPurpose().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("class")) {
-          this.getClass_().add(castToCoding(value));
+          this.getClass_().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("code")) {
-          this.getCode().add(castToCodeableConcept(value));
+          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("dataPeriod")) {
-          this.dataPeriod = castToPeriod(value); // Period
+          this.dataPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("data")) {
           this.getData().add((provisionDataComponent) value);
         } else if (name.equals("provision")) {
@@ -2015,10 +2015,10 @@ public class Consent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2028,9 +2028,9 @@ public class Consent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          this.role = castToCodeableConcept(value); // CodeableConcept
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -2247,11 +2247,11 @@ public class Consent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 938160637: // meaning
-          value = new ConsentDataMeaningEnumFactory().fromType(castToCode(value));
+          value = new ConsentDataMeaningEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.meaning = (Enumeration) value; // Enumeration<ConsentDataMeaning>
           return value;
         case -925155509: // reference
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2261,10 +2261,10 @@ public class Consent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("meaning")) {
-          value = new ConsentDataMeaningEnumFactory().fromType(castToCode(value));
+          value = new ConsentDataMeaningEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.meaning = (Enumeration) value; // Enumeration<ConsentDataMeaning>
         } else if (name.equals("reference")) {
-          this.reference = castToReference(value); // Reference
+          this.reference = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -3146,41 +3146,41 @@ public class Consent extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ConsentStateEnumFactory().fromType(castToCode(value));
+          value = new ConsentStateEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ConsentState>
           return value;
         case 109264468: // scope
-          this.scope = castToCodeableConcept(value); // CodeableConcept
+          this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 50511102: // category
-          this.getCategory().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -791418107: // patient
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1792749467: // dateTime
-          this.dateTime = castToDateTime(value); // DateTimeType
+          this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 481140686: // performer
-          this.getPerformer().add(castToReference(value)); // Reference
+          this.getPerformer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1178922291: // organization
-          this.getOrganization().add(castToReference(value)); // Reference
+          this.getOrganization().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1964406686: // sourceAttachment
-          this.getSourceAttachment().add(castToAttachment(value)); // Attachment
+          this.getSourceAttachment().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
         case -244259472: // sourceReference
-          this.getSourceReference().add(castToReference(value)); // Reference
+          this.getSourceReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -982670030: // policy
           this.getPolicy().add((ConsentPolicyComponent) value); // ConsentPolicyComponent
           return value;
         case 1593493326: // policyRule
-          this.policyRule = castToCodeableConcept(value); // CodeableConcept
+          this.policyRule = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1484401125: // verification
           this.getVerification().add((ConsentVerificationComponent) value); // ConsentVerificationComponent
@@ -3196,30 +3196,30 @@ public class Consent extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ConsentStateEnumFactory().fromType(castToCode(value));
+          value = new ConsentStateEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ConsentState>
         } else if (name.equals("scope")) {
-          this.scope = castToCodeableConcept(value); // CodeableConcept
+          this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
-          this.getCategory().add(castToCodeableConcept(value));
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("patient")) {
-          this.patient = castToReference(value); // Reference
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("dateTime")) {
-          this.dateTime = castToDateTime(value); // DateTimeType
+          this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
-          this.getPerformer().add(castToReference(value));
+          this.getPerformer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("organization")) {
-          this.getOrganization().add(castToReference(value));
+          this.getOrganization().add(TypeConvertor.castToReference(value));
         } else if (name.equals("sourceAttachment")) {
-          this.getSourceAttachment().add(castToAttachment(value));
+          this.getSourceAttachment().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("sourceReference")) {
-          this.getSourceReference().add(castToReference(value));
+          this.getSourceReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("policy")) {
           this.getPolicy().add((ConsentPolicyComponent) value);
         } else if (name.equals("policyRule")) {
-          this.policyRule = castToCodeableConcept(value); // CodeableConcept
+          this.policyRule = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("verification")) {
           this.getVerification().add((ConsentVerificationComponent) value);
         } else if (name.equals("provision")) {

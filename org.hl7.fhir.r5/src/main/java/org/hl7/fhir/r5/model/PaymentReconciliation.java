@@ -605,34 +605,34 @@ public class PaymentReconciliation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1925032183: // predecessor
-          this.predecessor = castToIdentifier(value); // Identifier
+          this.predecessor = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1095692943: // request
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case 348678409: // submitter
-          this.submitter = castToReference(value); // Reference
+          this.submitter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -340323263: // response
-          this.response = castToReference(value); // Reference
+          this.response = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076014: // date
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
           return value;
         case 1847674614: // responsible
-          this.responsible = castToReference(value); // Reference
+          this.responsible = TypeConvertor.castToReference(value); // Reference
           return value;
         case 106443592: // payee
-          this.payee = castToReference(value); // Reference
+          this.payee = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1413853096: // amount
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -642,25 +642,25 @@ public class PaymentReconciliation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("predecessor")) {
-          this.predecessor = castToIdentifier(value); // Identifier
+          this.predecessor = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("request")) {
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("submitter")) {
-          this.submitter = castToReference(value); // Reference
+          this.submitter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("response")) {
-          this.response = castToReference(value); // Reference
+          this.response = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
-          this.date = castToDate(value); // DateType
+          this.date = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("responsible")) {
-          this.responsible = castToReference(value); // Reference
+          this.responsible = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("payee")) {
-          this.payee = castToReference(value); // Reference
+          this.payee = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("amount")) {
-          this.amount = castToMoney(value); // Money
+          this.amount = TypeConvertor.castToMoney(value); // Money
         } else
           return super.setProperty(name, value);
         return value;
@@ -956,11 +956,11 @@ public class PaymentReconciliation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new NoteTypeEnumFactory().fromType(castToCode(value));
+          value = new NoteTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<NoteType>
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -970,10 +970,10 @@ public class PaymentReconciliation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new NoteTypeEnumFactory().fromType(castToCode(value));
+          value = new NoteTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<NoteType>
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1811,48 +1811,48 @@ public class PaymentReconciliation extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new PaymentReconciliationStatusEnumFactory().fromType(castToCode(value));
+          value = new PaymentReconciliationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PaymentReconciliationStatus>
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 1028554472: // created
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1144026207: // paymentIssuer
-          this.paymentIssuer = castToReference(value); // Reference
+          this.paymentIssuer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1095692943: // request
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case 693934258: // requestor
-          this.requestor = castToReference(value); // Reference
+          this.requestor = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
           return value;
         case 583380919: // disposition
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
           return value;
         case -1540873516: // paymentDate
-          this.paymentDate = castToDate(value); // DateType
+          this.paymentDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case 909332990: // paymentAmount
-          this.paymentAmount = castToMoney(value); // Money
+          this.paymentAmount = TypeConvertor.castToMoney(value); // Money
           return value;
         case 1555852111: // paymentIdentifier
-          this.paymentIdentifier = castToIdentifier(value); // Identifier
+          this.paymentIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1335224239: // detail
           this.getDetail().add((DetailsComponent) value); // DetailsComponent
           return value;
         case 473181393: // formCode
-          this.formCode = castToCodeableConcept(value); // CodeableConcept
+          this.formCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 202339073: // processNote
           this.getProcessNote().add((NotesComponent) value); // NotesComponent
@@ -1865,35 +1865,35 @@ public class PaymentReconciliation extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new PaymentReconciliationStatusEnumFactory().fromType(castToCode(value));
+          value = new PaymentReconciliationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PaymentReconciliationStatus>
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("created")) {
-          this.created = castToDateTime(value); // DateTimeType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("paymentIssuer")) {
-          this.paymentIssuer = castToReference(value); // Reference
+          this.paymentIssuer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("request")) {
-          this.request = castToReference(value); // Reference
+          this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("requestor")) {
-          this.requestor = castToReference(value); // Reference
+          this.requestor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new RemittanceOutcomeEnumFactory().fromType(castToCode(value));
+          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
         } else if (name.equals("disposition")) {
-          this.disposition = castToString(value); // StringType
+          this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("paymentDate")) {
-          this.paymentDate = castToDate(value); // DateType
+          this.paymentDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("paymentAmount")) {
-          this.paymentAmount = castToMoney(value); // Money
+          this.paymentAmount = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("paymentIdentifier")) {
-          this.paymentIdentifier = castToIdentifier(value); // Identifier
+          this.paymentIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("detail")) {
           this.getDetail().add((DetailsComponent) value);
         } else if (name.equals("formCode")) {
-          this.formCode = castToCodeableConcept(value); // CodeableConcept
+          this.formCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("processNote")) {
           this.getProcessNote().add((NotesComponent) value);
         } else

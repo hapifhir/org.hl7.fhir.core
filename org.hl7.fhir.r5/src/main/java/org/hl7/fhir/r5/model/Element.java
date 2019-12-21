@@ -257,10 +257,10 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3355: // id
-          this.id = castToString(value); // StringType
+          this.id = TypeConvertor.castToString(value); // StringType
           return value;
         case -612557761: // extension
-          this.getExtension().add(castToExtension(value)); // Extension
+          this.getExtension().add(TypeConvertor.castToExtension(value)); // Extension
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -270,9 +270,9 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("id")) {
-          this.id = castToString(value); // StringType
+          this.id = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("extension")) {
-          this.getExtension().add(castToExtension(value));
+          this.getExtension().add(TypeConvertor.castToExtension(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -350,6 +350,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(id, extension);
       }
 
+// added from java-adornments.txt:
   @Override
   public String getIdBase() {
     return getId();
@@ -359,8 +360,8 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   public void setIdBase(String value) {
     setId(value);
   }
-// added from java-adornments.txt:
-  public void addExtension(String url, Type value) {
+  
+  public void addExtension(String url, DataType value) {
     if (disallowExtensions)
       throw new Error("Extensions are not allowed in this context");
     Extension ex = new Extension();

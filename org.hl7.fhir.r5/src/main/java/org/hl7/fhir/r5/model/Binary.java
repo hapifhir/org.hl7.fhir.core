@@ -262,13 +262,13 @@ public class Binary extends BaseBinary implements IBaseBinary {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -389131437: // contentType
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1622888881: // securityContext
-          this.securityContext = castToReference(value); // Reference
+          this.securityContext = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3076010: // data
-          this.data = castToBase64Binary(value); // Base64BinaryType
+          this.data = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -278,11 +278,11 @@ public class Binary extends BaseBinary implements IBaseBinary {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("contentType")) {
-          this.contentType = castToCode(value); // CodeType
+          this.contentType = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("securityContext")) {
-          this.securityContext = castToReference(value); // Reference
+          this.securityContext = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("data")) {
-          this.data = castToBase64Binary(value); // Base64BinaryType
+          this.data = TypeConvertor.castToBase64Binary(value); // Base64BinaryType
         } else
           return super.setProperty(name, value);
         return value;

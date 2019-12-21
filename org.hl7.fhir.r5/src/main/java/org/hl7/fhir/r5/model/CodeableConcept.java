@@ -68,7 +68,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A concept that may be defined by a formal reference to a terminology or ontology or may be provided by text.
  */
 @DatatypeDef(name="CodeableConcept")
-public class CodeableConcept extends Type implements ICompositeType {
+public class CodeableConcept extends DataType implements ICompositeType {
 
     /**
      * A reference to a code defined by a terminology system.
@@ -225,10 +225,10 @@ public class CodeableConcept extends Type implements ICompositeType {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1355086998: // coding
-          this.getCoding().add(castToCoding(value)); // Coding
+          this.getCoding().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 3556653: // text
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -238,9 +238,9 @@ public class CodeableConcept extends Type implements ICompositeType {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("coding")) {
-          this.getCoding().add(castToCoding(value));
+          this.getCoding().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;

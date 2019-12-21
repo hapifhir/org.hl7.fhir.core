@@ -246,7 +246,7 @@ public class GuidanceResponse extends DomainResource {
      */
     @Child(name = "module", type = {UriType.class, CanonicalType.class, CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What guidance was requested", formalDefinition="An identifier, CodeableConcept or canonical reference to the guidance that was requested." )
-    protected Type module;
+    protected DataType module;
 
     /**
      * The status of the response. If the evaluation is completed successfully, the status will indicate success. However, in order to complete the evaluation, the engine may require more information. In this case, the status will be data-required, and the response will contain a description of the additional required information. If the evaluation completed successfully, but the engine determines that a potentially more accurate response could be provided if more data was available, the status will be data-requested, and the response will contain a description of the additional requested information.
@@ -345,7 +345,7 @@ public class GuidanceResponse extends DomainResource {
   /**
    * Constructor
    */
-    public GuidanceResponse(Type module, Enumeration<GuidanceResponseStatus> status) {
+    public GuidanceResponse(DataType module, Enumeration<GuidanceResponseStatus> status) {
       super();
       this.module = module;
       this.status = status;
@@ -431,7 +431,7 @@ public class GuidanceResponse extends DomainResource {
     /**
      * @return {@link #module} (An identifier, CodeableConcept or canonical reference to the guidance that was requested.)
      */
-    public Type getModule() { 
+    public DataType getModule() { 
       return this.module;
     }
 
@@ -487,7 +487,7 @@ public class GuidanceResponse extends DomainResource {
     /**
      * @param value {@link #module} (An identifier, CodeableConcept or canonical reference to the guidance that was requested.)
      */
-    public GuidanceResponse setModule(Type value) { 
+    public GuidanceResponse setModule(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType || value instanceof CodeableConcept))
         throw new Error("Not the right type for GuidanceResponse.module[x]: "+value.fhirType());
       this.module = value;
@@ -1046,50 +1046,50 @@ public class GuidanceResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -354233192: // requestIdentifier
-          this.requestIdentifier = castToIdentifier(value); // Identifier
+          this.requestIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1068784020: // module
-          this.module = castToType(value); // Type
+          this.module = TypeConvertor.castToType(value); // Type
           return value;
         case -892481550: // status
-          value = new GuidanceResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new GuidanceResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<GuidanceResponseStatus>
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -298443636: // occurrenceDateTime
-          this.occurrenceDateTime = castToDateTime(value); // DateTimeType
+          this.occurrenceDateTime = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 481140686: // performer
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1146218137: // reasonReference
-          this.getReasonReference().add(castToReference(value)); // Reference
+          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
-          this.getNote().add(castToAnnotation(value)); // Annotation
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 1081619755: // evaluationMessage
-          this.getEvaluationMessage().add(castToReference(value)); // Reference
+          this.getEvaluationMessage().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 525609419: // outputParameters
-          this.outputParameters = castToReference(value); // Reference
+          this.outputParameters = TypeConvertor.castToReference(value); // Reference
           return value;
         case -934426595: // result
-          this.result = castToReference(value); // Reference
+          this.result = TypeConvertor.castToReference(value); // Reference
           return value;
         case 629147193: // dataRequirement
-          this.getDataRequirement().add(castToDataRequirement(value)); // DataRequirement
+          this.getDataRequirement().add(TypeConvertor.castToDataRequirement(value)); // DataRequirement
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1099,36 +1099,36 @@ public class GuidanceResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("requestIdentifier")) {
-          this.requestIdentifier = castToIdentifier(value); // Identifier
+          this.requestIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("module[x]")) {
-          this.module = castToType(value); // Type
+          this.module = TypeConvertor.castToType(value); // Type
         } else if (name.equals("status")) {
-          value = new GuidanceResponseStatusEnumFactory().fromType(castToCode(value));
+          value = new GuidanceResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<GuidanceResponseStatus>
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
-          this.encounter = castToReference(value); // Reference
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrenceDateTime")) {
-          this.occurrenceDateTime = castToDateTime(value); // DateTimeType
+          this.occurrenceDateTime = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
-          this.performer = castToReference(value); // Reference
+          this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(castToCodeableConcept(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(castToReference(value));
+          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
-          this.getNote().add(castToAnnotation(value));
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("evaluationMessage")) {
-          this.getEvaluationMessage().add(castToReference(value));
+          this.getEvaluationMessage().add(TypeConvertor.castToReference(value));
         } else if (name.equals("outputParameters")) {
-          this.outputParameters = castToReference(value); // Reference
+          this.outputParameters = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("result")) {
-          this.result = castToReference(value); // Reference
+          this.result = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("dataRequirement")) {
-          this.getDataRequirement().add(castToDataRequirement(value));
+          this.getDataRequirement().add(TypeConvertor.castToDataRequirement(value));
         } else
           return super.setProperty(name, value);
         return value;

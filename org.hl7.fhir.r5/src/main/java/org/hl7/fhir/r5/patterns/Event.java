@@ -627,7 +627,7 @@ public interface Event extends PatternBase {
     /**
      * @return {@link #occurrence} (The date, period or timing when the {{title}} did occur or is occurring.)
      */
-    public Type getOccurrence() throws FHIRException ;
+    public DataType getOccurrence() throws FHIRException ;
 
     /**
      * @return {@link #occurrence} (The date, period or timing when the {{title}} did occur or is occurring.)
@@ -665,7 +665,7 @@ public interface Event extends PatternBase {
     /**
      * @param value {@link #occurrence} (The date, period or timing when the {{title}} did occur or is occurring.)
      */
-    public Event setOccurrence(Type value) throws FHIRException;
+    public Event setOccurrence(DataType value) throws FHIRException;
 
     /**
      * @return {@link #recorded} (The date the occurrence of the {{title}} was first captured in the record - potentially significantly after the occurrence of the event.). This is the underlying object with id, value and extensions. The accessor "getRecorded" gives direct access to the value
@@ -704,7 +704,7 @@ public interface Event extends PatternBase {
     /**
      * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Type getReported() throws FHIRException ;
+    public DataType getReported() throws FHIRException ;
 
     /**
      * @return {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
@@ -735,7 +735,7 @@ public interface Event extends PatternBase {
     /**
      * @param value {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
      */
-    public Event setReported(Type value) throws FHIRException;
+    public Event setReported(DataType value) throws FHIRException;
 
     /**
      * @return {@link #performer} (Indicates who or what performed the {{title}} and how they were involved.)

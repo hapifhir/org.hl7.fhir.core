@@ -57,6 +57,7 @@ import java.util.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -445,7 +446,7 @@ public class ActivityDefinitionDefinitionImpl extends PatternBaseImpl implements
       return 0;
     }
 
-    public Type getSubject() throws FHIRException {
+    public DataType getSubject() throws FHIRException {
       throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
     }
 
@@ -469,7 +470,7 @@ public class ActivityDefinitionDefinitionImpl extends PatternBaseImpl implements
       return false;
     }
 
-    public Definition setSubject(Type value) throws FHIRException {
+    public Definition setSubject(DataType value) throws FHIRException {
       throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
     }
 

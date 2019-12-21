@@ -757,29 +757,29 @@ responding, withdrawal, non-compliance and/or adverse event.
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.getIdentifier().add(castToIdentifier(value)); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ResearchSubjectStatusEnumFactory().fromType(castToCode(value));
+          value = new ResearchSubjectStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ResearchSubjectStatus>
           return value;
         case -991726143: // period
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 109776329: // study
-          this.study = castToReference(value); // Reference
+          this.study = TypeConvertor.castToReference(value); // Reference
           return value;
         case -46292327: // individual
-          this.individual = castToReference(value); // Reference
+          this.individual = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1741912494: // assignedArm
-          this.assignedArm = castToString(value); // StringType
+          this.assignedArm = TypeConvertor.castToString(value); // StringType
           return value;
         case 528827886: // actualArm
-          this.actualArm = castToString(value); // StringType
+          this.actualArm = TypeConvertor.castToString(value); // StringType
           return value;
         case 951500826: // consent
-          this.consent = castToReference(value); // Reference
+          this.consent = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -789,22 +789,22 @@ responding, withdrawal, non-compliance and/or adverse event.
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.getIdentifier().add(castToIdentifier(value));
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ResearchSubjectStatusEnumFactory().fromType(castToCode(value));
+          value = new ResearchSubjectStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ResearchSubjectStatus>
         } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("study")) {
-          this.study = castToReference(value); // Reference
+          this.study = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("individual")) {
-          this.individual = castToReference(value); // Reference
+          this.individual = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("assignedArm")) {
-          this.assignedArm = castToString(value); // StringType
+          this.assignedArm = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("actualArm")) {
-          this.actualArm = castToString(value); // StringType
+          this.actualArm = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("consent")) {
-          this.consent = castToReference(value); // Reference
+          this.consent = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;

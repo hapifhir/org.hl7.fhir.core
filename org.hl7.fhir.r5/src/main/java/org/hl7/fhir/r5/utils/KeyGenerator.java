@@ -1,7 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.MetadataResource;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.utilities.Utilities;
 
 public class KeyGenerator {
@@ -17,8 +17,8 @@ public class KeyGenerator {
   public void genId(DomainResource dr) {
     i++;
     dr.setId(getAcronym(dr.fhirType())+Integer.toString(i));
-    if (dr instanceof MetadataResource) {
-      MetadataResource mr = (MetadataResource) dr;
+    if (dr instanceof CanonicalResource) {
+      CanonicalResource mr = (CanonicalResource) dr;
       mr.setUrl(Utilities.pathURL(canonical, mr.fhirType(), mr.getId()));
     }
   }

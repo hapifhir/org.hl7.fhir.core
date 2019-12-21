@@ -41,7 +41,7 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.Type;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -331,7 +331,7 @@ public class CodeSystemUtilities {
   }
 
  
-  public static Type readProperty(ConceptDefinitionComponent concept, String code) {
+  public static DataType readProperty(ConceptDefinitionComponent concept, String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
       if (p.getCode().equals(code))
         return p.getValue(); 

@@ -71,7 +71,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ConceptMap", profile="http://hl7.org/fhir/StructureDefinition/ConceptMap")
 @ChildOrder(names={"url", "identifier", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "source[x]", "target[x]", "group"})
-public class ConceptMap extends MetadataResource {
+public class ConceptMap extends CanonicalResource {
 
     public enum ConceptMapGroupUnmappedMode {
         /**
@@ -549,16 +549,16 @@ public class ConceptMap extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -896505829: // source
-          this.source = castToUri(value); // UriType
+          this.source = TypeConvertor.castToUri(value); // UriType
           return value;
         case 446171197: // sourceVersion
-          this.sourceVersion = castToString(value); // StringType
+          this.sourceVersion = TypeConvertor.castToString(value); // StringType
           return value;
         case -880905839: // target
-          this.target = castToUri(value); // UriType
+          this.target = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1639412217: // targetVersion
-          this.targetVersion = castToString(value); // StringType
+          this.targetVersion = TypeConvertor.castToString(value); // StringType
           return value;
         case -1662836996: // element
           this.getElement().add((SourceElementComponent) value); // SourceElementComponent
@@ -574,13 +574,13 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("source")) {
-          this.source = castToUri(value); // UriType
+          this.source = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("sourceVersion")) {
-          this.sourceVersion = castToString(value); // StringType
+          this.sourceVersion = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("target")) {
-          this.target = castToUri(value); // UriType
+          this.target = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("targetVersion")) {
-          this.targetVersion = castToString(value); // StringType
+          this.targetVersion = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("element")) {
           this.getElement().add((SourceElementComponent) value);
         } else if (name.equals("unmapped")) {
@@ -969,13 +969,13 @@ public class ConceptMap extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         case 104971227: // noMap
-          this.noMap = castToBoolean(value); // BooleanType
+          this.noMap = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -880905839: // target
           this.getTarget().add((TargetElementComponent) value); // TargetElementComponent
@@ -988,11 +988,11 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("noMap")) {
-          this.noMap = castToBoolean(value); // BooleanType
+          this.noMap = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("target")) {
           this.getTarget().add((TargetElementComponent) value);
         } else
@@ -1496,17 +1496,17 @@ public class ConceptMap extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         case -261851592: // relationship
-          value = new ConceptMapRelationshipEnumFactory().fromType(castToCode(value));
+          value = new ConceptMapRelationshipEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ConceptMapRelationship>
           return value;
         case 950398559: // comment
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
           return value;
         case -1109214266: // dependsOn
           this.getDependsOn().add((OtherElementComponent) value); // OtherElementComponent
@@ -1522,14 +1522,14 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("relationship")) {
-          value = new ConceptMapRelationshipEnumFactory().fromType(castToCode(value));
+          value = new ConceptMapRelationshipEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ConceptMapRelationship>
         } else if (name.equals("comment")) {
-          this.comment = castToString(value); // StringType
+          this.comment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("dependsOn")) {
           this.getDependsOn().add((OtherElementComponent) value);
         } else if (name.equals("product")) {
@@ -1922,16 +1922,16 @@ public class ConceptMap extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -993141291: // property
-          this.property = castToUri(value); // UriType
+          this.property = TypeConvertor.castToUri(value); // UriType
           return value;
         case -887328209: // system
-          this.system = castToCanonical(value); // CanonicalType
+          this.system = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 111972721: // value
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1941,13 +1941,13 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("property")) {
-          this.property = castToUri(value); // UriType
+          this.property = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("system")) {
-          this.system = castToCanonical(value); // CanonicalType
+          this.system = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("value")) {
-          this.value = castToString(value); // StringType
+          this.value = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2319,17 +2319,17 @@ public class ConceptMap extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new ConceptMapGroupUnmappedModeEnumFactory().fromType(castToCode(value));
+          value = new ConceptMapGroupUnmappedModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<ConceptMapGroupUnmappedMode>
           return value;
         case 3059181: // code
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 1671764162: // display
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
           return value;
         case 116079: // url
-          this.url = castToCanonical(value); // CanonicalType
+          this.url = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2339,14 +2339,14 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new ConceptMapGroupUnmappedModeEnumFactory().fromType(castToCode(value));
+          value = new ConceptMapGroupUnmappedModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<ConceptMapGroupUnmappedMode>
         } else if (name.equals("code")) {
-          this.code = castToCode(value); // CodeType
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("display")) {
-          this.display = castToString(value); // StringType
+          this.display = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("url")) {
-          this.url = castToCanonical(value); // CanonicalType
+          this.url = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2468,14 +2468,14 @@ public class ConceptMap extends MetadataResource {
      */
     @Child(name = "source", type = {UriType.class, CanonicalType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The source value set that contains the concepts that are being mapped", formalDefinition="Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings." )
-    protected Type source;
+    protected DataType source;
 
     /**
      * The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.
      */
     @Child(name = "target", type = {UriType.class, CanonicalType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The target value set which provides context for the mappings", formalDefinition="The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made." )
-    protected Type target;
+    protected DataType target;
 
     /**
      * A group of mappings that all have the same source and target system.
@@ -3218,7 +3218,7 @@ public class ConceptMap extends MetadataResource {
     /**
      * @return {@link #source} (Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.)
      */
-    public Type getSource() { 
+    public DataType getSource() { 
       return this.source;
     }
 
@@ -3259,7 +3259,7 @@ public class ConceptMap extends MetadataResource {
     /**
      * @param value {@link #source} (Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.)
      */
-    public ConceptMap setSource(Type value) { 
+    public ConceptMap setSource(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
         throw new Error("Not the right type for ConceptMap.source[x]: "+value.fhirType());
       this.source = value;
@@ -3269,7 +3269,7 @@ public class ConceptMap extends MetadataResource {
     /**
      * @return {@link #target} (The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
      */
-    public Type getTarget() { 
+    public DataType getTarget() { 
       return this.target;
     }
 
@@ -3310,7 +3310,7 @@ public class ConceptMap extends MetadataResource {
     /**
      * @param value {@link #target} (The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
      */
-    public ConceptMap setTarget(Type value) { 
+    public ConceptMap setTarget(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
         throw new Error("Not the right type for ConceptMap.target[x]: "+value.fhirType());
       this.target = value;
@@ -3454,56 +3454,56 @@ public class ConceptMap extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 116079: // url
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
           return value;
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 351608024: // version
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -404562712: // experimental
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
-          this.getContact().add(castToContactDetail(value)); // ContactDetail
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -669707736: // useContext
-          this.getUseContext().add(castToUsageContext(value)); // UsageContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
-          this.getJurisdiction().add(castToCodeableConcept(value)); // CodeableConcept
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -220463842: // purpose
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1522889671: // copyright
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -896505829: // source
-          this.source = castToType(value); // Type
+          this.source = TypeConvertor.castToType(value); // Type
           return value;
         case -880905839: // target
-          this.target = castToType(value); // Type
+          this.target = TypeConvertor.castToType(value); // Type
           return value;
         case 98629247: // group
           this.getGroup().add((ConceptMapGroupComponent) value); // ConceptMapGroupComponent
@@ -3516,40 +3516,40 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
-          this.url = castToUri(value); // UriType
+          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("version")) {
-          this.version = castToString(value); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = castToString(value); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.title = castToString(value); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(castToCode(value));
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
-          this.experimental = castToBoolean(value); // BooleanType
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.date = castToDateTime(value); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.publisher = castToString(value); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
-          this.getContact().add(castToContactDetail(value));
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
-          this.description = castToMarkdown(value); // MarkdownType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("useContext")) {
-          this.getUseContext().add(castToUsageContext(value));
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(castToCodeableConcept(value));
+          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
-          this.purpose = castToMarkdown(value); // MarkdownType
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
-          this.copyright = castToMarkdown(value); // MarkdownType
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("source[x]")) {
-          this.source = castToType(value); // Type
+          this.source = TypeConvertor.castToType(value); // Type
         } else if (name.equals("target[x]")) {
-          this.target = castToType(value); // Type
+          this.target = TypeConvertor.castToType(value); // Type
         } else if (name.equals("group")) {
           this.getGroup().add((ConceptMapGroupComponent) value);
         } else
