@@ -4387,7 +4387,7 @@ public class VersionConvertor_14_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
     copyElement(src, tgt);
     tgt.setUri(src.getUri());
-    
+
     if ( org.hl7.fhir.dstu2016may.utils.ToolingExtensions.hasExtension(src, VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION)) {
       tgt.setPackageId(org.hl7.fhir.dstu2016may.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION));
     }
@@ -4404,6 +4404,10 @@ public class VersionConvertor_14_50 {
     copyElement(src, tgt);
     tgt.setType(org.hl7.fhir.dstu2016may.model.ImplementationGuide.GuideDependencyType.REFERENCE);
     tgt.setUri(src.getUri());
+    if (src.hasPackageId())
+      tgt.addExtension(new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION, new org.hl7.fhir.dstu2016may.model.IdType(src.getPackageId())));
+    if (src.hasVersion())
+      tgt.addExtension(new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION, new org.hl7.fhir.dstu2016may.model.StringType(src.getVersion())));
     return tgt;
   }
 
