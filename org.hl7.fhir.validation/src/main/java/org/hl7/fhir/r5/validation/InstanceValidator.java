@@ -2279,8 +2279,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!candidateProfiles.isEmpty()) {
                 for (String pr: candidateProfiles) {
                   profiles.add(pr);
+                  StructureDefinition cpr = (StructureDefinition)context.fetchResource(StructureDefinition.class, pr);
                   List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
-                  doResourceProfile(hostContext, we, pr, profileErrors, stack.push(we, -1, null, null), path, element, profile);
+                  doResourceProfile(hostContext, we, pr, profileErrors, stack.push(we, -1, null, null), path, element, cpr);
   
                   if (hasErrors(profileErrors))
                     badProfiles.add(profileErrors);
@@ -2347,9 +2348,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void doResourceProfile(ValidatorHostContext hostContext, Element resource, String profile, List<ValidationMessage> errors, NodeStack stack, String path, Element element, StructureDefinition containingProfile) throws FHIRException, IOException {
     ResourceProfiles resourceProfiles = addResourceProfile(errors, resource, profile, path, element, stack, containingProfile);
-    if (resourceProfiles.isProcessed()) {
+    if (!resourceProfiles.isProcessed()) {
       start(hostContext, errors, resource, resource, null, stack);
     }
+    // lloyd capture errors?
   }
 
   private ResourceProfiles getResourceProfiles(Element resource, NodeStack stack) {

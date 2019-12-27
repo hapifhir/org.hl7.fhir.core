@@ -4737,6 +4737,25 @@ public class VersionConvertor_10_40 {
       tgt.addEndpoint(convertConformanceMessagingEndpointComponent(t));
     tgt.setReliableCache(src.getReliableCache());
     tgt.setDocumentation(src.getDocumentation());
+    for (org.hl7.fhir.dstu2.model.Conformance.ConformanceMessagingEventComponent t : src.getEvent()) {
+      org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT);
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("code", convertCoding(t.getCode())));
+      if (t.hasCategory())
+        e.addExtension(new org.hl7.fhir.r4.model.Extension("category", new org.hl7.fhir.r4.model.CodeType(t.getCategory().toCode())));
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("mode", new org.hl7.fhir.r4.model.CodeType(t.getMode().toCode())));
+      if (t.getFocusElement().hasValue())
+        e.addExtension(new org.hl7.fhir.r4.model.Extension("focus", new org.hl7.fhir.r4.model.StringType(t.getFocus())));
+      else {
+        org.hl7.fhir.r4.model.Extension focusE = new org.hl7.fhir.r4.model.Extension("focus");
+        copyElement(t.getFocusElement(), focusE);
+        e.addExtension(focusE);
+      }
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("request", convertReference(t.getRequest())));
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("response", convertReference(t.getResponse())));
+      if (t.hasDocumentation())
+        e.addExtension(new org.hl7.fhir.r4.model.Extension("documentation", new org.hl7.fhir.r4.model.StringType(t.getDocumentation())));
+      tgt.addExtension(e);
+    }
     return tgt;
   }
 
@@ -4749,6 +4768,25 @@ public class VersionConvertor_10_40 {
       tgt.addEndpoint(convertConformanceMessagingEndpointComponent(t));
     tgt.setReliableCache(src.getReliableCache());
     tgt.setDocumentation(src.getDocumentation());
+    for (org.hl7.fhir.r4.model.Extension e : src.getExtensionsByUrl(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT)) {
+      org.hl7.fhir.dstu2.model.Conformance.ConformanceMessagingEventComponent event = new org.hl7.fhir.dstu2.model.Conformance.ConformanceMessagingEventComponent();
+      tgt.addEvent(event);
+      event.setCode(convertCoding((org.hl7.fhir.r4.model.Coding)e.getExtensionByUrl("code").getValue()));
+      if (e.hasExtension("category"))
+        event.setCategory(org.hl7.fhir.dstu2.model.Conformance.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
+      event.setMode(org.hl7.fhir.dstu2.model.Conformance.ConformanceEventMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
+      org.hl7.fhir.r4.model.Extension focusE = e.getExtensionByUrl("focus");
+      if (focusE.hasValue())
+        event.setFocus(focusE.getValue().toString());
+      else {
+        event.setFocusElement(new org.hl7.fhir.dstu2.model.CodeType());
+        copyElement(focusE, event.getFocusElement());
+      }
+      event.setRequest(convertReference((org.hl7.fhir.r4.model.Reference)e.getExtensionByUrl("request").getValue()));
+      event.setResponse(convertReference((org.hl7.fhir.r4.model.Reference)e.getExtensionByUrl("response").getValue()));
+      if (e.hasExtension("documentation"))
+        event.setDocumentation(e.getExtensionByUrl("documentation").getValue().toString());
+    }
     return tgt;
   }
 
