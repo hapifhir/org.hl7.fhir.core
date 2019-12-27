@@ -29,6 +29,7 @@ public class VersionConvertorConstants {
   public final static String MODIFIER_TAKEN = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MedicationStatment.taken";
   public final static String MODIFIER_REASON_LEGACY = "No Modifier Reason provideed in previous versions of FHIR";
   public final static String PROFILE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.type.profile";
+  public final static String IG_CONFORMANCE_MESSAGE_EVENT = "http://hl7.org/fhir/1.0/StructureDefinition/extension-Conformance.messaging.event";
   
   public static String refToVS(String url) {
     if (url == null)
