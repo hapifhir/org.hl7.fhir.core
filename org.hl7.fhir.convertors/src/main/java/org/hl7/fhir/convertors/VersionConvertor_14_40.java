@@ -4007,8 +4007,9 @@ public class VersionConvertor_14_40 {
       if (t.getFocusElement().hasValue())
         e.addExtension(new org.hl7.fhir.r4.model.Extension("focus", new org.hl7.fhir.r4.model.StringType(t.getFocus())));
       else {
-        org.hl7.fhir.r4.model.Extension focusE = new org.hl7.fhir.r4.model.Extension("focus");
-        copyElement(t.getFocusElement(), focusE);
+        org.hl7.fhir.r4.model.CodeType focus = new org.hl7.fhir.r4.model.CodeType();
+        org.hl7.fhir.r4.model.Extension focusE = new org.hl7.fhir.r4.model.Extension("focus", focus);
+        copyElement(t.getFocusElement(), focus);
         e.addExtension(focusE);
       }
       e.addExtension(new org.hl7.fhir.r4.model.Extension("request", convertReference(t.getRequest())));
@@ -4043,11 +4044,11 @@ public class VersionConvertor_14_40 {
         event.setCategory(org.hl7.fhir.dstu2016may.model.Conformance.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
       event.setMode(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
       org.hl7.fhir.r4.model.Extension focusE = e.getExtensionByUrl("focus");
-      if (focusE.hasValue())
+      if (focusE.getValue().hasPrimitiveValue())
         event.setFocus(focusE.getValue().toString());
       else {
         event.setFocusElement(new org.hl7.fhir.dstu2016may.model.CodeType());
-        copyElement(focusE, event.getFocusElement());
+        copyElement(focusE.getValue(), event.getFocusElement());
       }
       event.setRequest(convertReference((org.hl7.fhir.r4.model.Reference)e.getExtensionByUrl("request").getValue()));
       event.setResponse(convertReference((org.hl7.fhir.r4.model.Reference)e.getExtensionByUrl("response").getValue()));
