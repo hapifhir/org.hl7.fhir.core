@@ -175,10 +175,12 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     String tn = ti.getName();
     parser.append("  protected boolean parse"+upFirst(tn).replace(".", "")+"Content(int eventType, XmlPullParser xpp, "+tn+" res) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
     boolean first = true;
-    for (ElementDefinition ed : ti.getChildren()) {
-      if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
-        genElement(analysis, ti, ed, null, first);
-        first = false;
+    if (!analysis.isInterface()) {
+      for (ElementDefinition ed : ti.getChildren()) {
+        if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+          genElement(analysis, ti, ed, null, first);
+          first = false;
+        }
       }
     }
     if (!first)
@@ -279,6 +281,13 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     } else {
       composer.append("    composeElementAttributes(element);\r\n");
     }
+    for (ElementDefinition ed : ti.getChildren()) {
+      if (ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+        composer.append("      if (element.has"+upFirst(getElementName(ed.getName(), true))+"Element())\r\n");
+        composer.append("        xml.attribute(\""+ed.getName()+"\", element.get"+upFirst(getElementName(ed.getName(), true))+"Element().getValue());\r\n");
+      }
+    }
+    
     composer.append("      xml.enter(FHIR_NS, name);\r\n");
     composer.append("      compose"+pfx+tn+"Elements(element);\r\n");
     composer.append("      composeElementClose(element);\r\n");
@@ -302,10 +311,12 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     
     composer.append("  protected void compose"+tn+"Elements("+tn+" element) throws IOException {\r\n");
     composer.append("    compose"+ti.getAncestorName()+"Elements(element);\r\n");
-    
-    for (ElementDefinition ed : ti.getChildren()) {
-      if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
-        genElementCompose(analysis, ti, ed, null);
+
+    if (!analysis.isInterface()) {
+      for (ElementDefinition ed : ti.getChildren()) {
+        if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+          genElementCompose(analysis, ti, ed, null);
+        }
       }
     }
     composer.append("  }\r\n\r\n");    

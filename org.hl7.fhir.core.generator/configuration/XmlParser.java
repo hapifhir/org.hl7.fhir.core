@@ -364,45 +364,45 @@ public class XmlParser extends XmlParserBase {
       throw new IOException("prefix == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
-    } else if (xpp.getName().equals(prefix+"date")) {
+    } else if (xpp.getName().equals(prefix+"Date")) {
       return parseDate(xpp);
-    } else if (xpp.getName().equals(prefix+"dateTime")) {
+    } else if (xpp.getName().equals(prefix+"DateTime")) {
       return parseDateTime(xpp);
-    } else if (xpp.getName().equals(prefix+"code")) {
+    } else if (xpp.getName().equals(prefix+"Code")) {
       return parseCode(xpp);
-    } else if (xpp.getName().equals(prefix+"string")) {
+    } else if (xpp.getName().equals(prefix+"String")) {
       return parseString(xpp);
-    } else if (xpp.getName().equals(prefix+"integer")) {
+    } else if (xpp.getName().equals(prefix+"Integer")) {
       return parseInteger(xpp);
-    } else if (xpp.getName().equals(prefix+"integer64")) {
+    } else if (xpp.getName().equals(prefix+"Integer64")) {
       return parseInteger64(xpp);
-    } else if (xpp.getName().equals(prefix+"oid")) {
+    } else if (xpp.getName().equals(prefix+"Oid")) {
       return parseOid(xpp);
-    } else if (xpp.getName().equals(prefix+"canonical")) {
+    } else if (xpp.getName().equals(prefix+"Canonical")) {
       return parseCanonical(xpp);
-    } else if (xpp.getName().equals(prefix+"uri")) {
+    } else if (xpp.getName().equals(prefix+"Uri")) {
       return parseUri(xpp);
-    } else if (xpp.getName().equals(prefix+"uuid")) {
+    } else if (xpp.getName().equals(prefix+"Uuid")) {
       return parseUuid(xpp);
-    } else if (xpp.getName().equals(prefix+"url")) {
+    } else if (xpp.getName().equals(prefix+"Url")) {
       return parseUrl(xpp);
-    } else if (xpp.getName().equals(prefix+"instant")) {
+    } else if (xpp.getName().equals(prefix+"Instant")) {
       return parseInstant(xpp);
-    } else if (xpp.getName().equals(prefix+"boolean")) {
+    } else if (xpp.getName().equals(prefix+"Boolean")) {
       return parseBoolean(xpp);
-    } else if (xpp.getName().equals(prefix+"base64Binary")) {
+    } else if (xpp.getName().equals(prefix+"Base64Binary")) {
       return parseBase64Binary(xpp);
-    } else if (xpp.getName().equals(prefix+"unsignedInt")) {
+    } else if (xpp.getName().equals(prefix+"UnsignedInt")) {
       return parseUnsignedInt(xpp);
-    } else if (xpp.getName().equals(prefix+"markdown")) {
+    } else if (xpp.getName().equals(prefix+"Markdown")) {
       return parseMarkdown(xpp);
-    } else if (xpp.getName().equals(prefix+"time")) {
+    } else if (xpp.getName().equals(prefix+"Time")) {
       return parseTime(xpp);
-    } else if (xpp.getName().equals(prefix+"id")) {
+    } else if (xpp.getName().equals(prefix+"Id")) {
       return parseId(xpp);
-    } else if (xpp.getName().equals(prefix+"positiveInt")) {
+    } else if (xpp.getName().equals(prefix+"PositiveInt")) {
       return parsePositiveInt(xpp);
-    } else if (xpp.getName().equals(prefix+"decimal")) {
+    } else if (xpp.getName().equals(prefix+"Decimal")) {
       return parseDecimal(xpp);
 {{parse-type-prefix}}
     } else {

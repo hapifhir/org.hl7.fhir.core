@@ -1858,16 +1858,24 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		     * getXXXFirstRep() for repeatable element
 		     */
 		    if (!"DomainResource".equals(className)) {
-		      jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist");
+		      jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist {3}");
 		      write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep() { \r\n");
-		      write(indent+"  if (get"+getTitle(getElementName(e.getName(), false))+"().isEmpty()) {\r\n");
+		      if (e.unbounded()) {
+		        write(indent+"  if (get"+getTitle(getElementName(e.getName(), false))+"().isEmpty()) {\r\n");
+		      } else {
+            write(indent+"  if ("+getElementName(e.getName(), false)+" == null) {\r\n");
+		      }
 		      if ((definitions.hasPrimitiveType(e.typeSummary()))) {
 		        write(indent+"    add" + getTitle(getElementName(e.getName(), false)) + "Element();\r\n");
 		      } else {
 		        write(indent+"    add" + getTitle(getElementName(e.getName(), false)) + "();\r\n");
 		      }
 		      write(indent+"  }\r\n");
-		      write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"().get(0);\r\n");
+          if (e.unbounded()) {
+  		      write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"().get(0);\r\n");
+          } else {
+            write(indent+"  return "+getElementName(e.getName(), false)+";\r\n");            
+          }
 		      write(indent+"}\r\n\r\n");
 		    }
 
@@ -2087,7 +2095,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
          * getXXXFirstRep() for repeatable element
          */
         if (!"DomainResource".equals(ti.getName())) {
-          jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist");
+          jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist {1}");
           write(indent+"public abstract "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep(); \r\n");
         }
       }
@@ -2272,7 +2280,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
          * getXXXFirstRep() for repeatable element
          */
         if (!"DomainResource".equals(className)) {
-          jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist");
+          jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist {2}");
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep() { \r\n");
           write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
           write(indent+"}\r\n");
