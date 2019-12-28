@@ -58,7 +58,7 @@ public class JavaCoreGenerator {
     long start = System.currentTimeMillis();
     Date date = new Date();
     
-    String ap = Utilities.path(src, "src", "main", "resources");
+    String ap = Utilities.path(src);
     System.out.println("Load Configuration from "+ap);
     Configuration config = new Configuration(ap);
     

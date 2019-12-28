@@ -14,9 +14,10 @@ To test the generation:
 * make sure that project is not in the build path for the generator itself, which depends on the production R5 code 
 * run the generation
 * refresh etc and make sure that the compiler is happy
-* copy the JUnit tests ...
+* copy the JUnit tests RoundTripTests into the copy project, update the constants, and execute it
+* check all the tests pass, and inspect a sampling of the results for consistency 
 
-Configuring the Generation
+Configuring the Generation Output
 
 The most common reason to alter the generation is to add additional utility routines/enhanceements to the generated classes. 
 To do this, edit on the one of the templates in the configuration directory - xx.java, where xx is the class name (may include

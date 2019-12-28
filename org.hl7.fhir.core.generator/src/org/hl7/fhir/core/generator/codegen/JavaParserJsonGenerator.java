@@ -43,6 +43,8 @@ import org.hl7.fhir.core.generator.analysis.TypeInfo;
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -167,9 +169,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     parser.append("  protected void parse"+upFirst(tn).replace(".", "")+"Properties(JsonObject json, "+tn+" res) throws IOException, FHIRFormatError {\r\n");
 
     parser.append("    parse"+analysis.getAncestor().getName()+"Properties(json, res);\r\n");
-
-    for (ElementDefinition e : analysis.getRootType().getChildren()) {
-      genElementParser(analysis, analysis.getRootType(), e, bUseOwner, null);
+    if (!analysis.isInterface()) {
+      for (ElementDefinition e : analysis.getRootType().getChildren()) {
+        genElementParser(analysis, analysis.getRootType(), e, bUseOwner, null);
+      }
     }
     parser.append("  }\r\n\r\n");
   }
@@ -187,10 +190,11 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       String prsr = null;
       String aprsr = null;
       String anprsr = null;
+      EnumInfo ei = null;
+      String en = null;
       if (ed.hasUserData("java.enum")) {
-        EnumInfo ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
+        ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
         ValueSet vs = ei.getValueSet();
-        String en;
         if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
@@ -238,7 +242,16 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           parser.append("    if (json.has(\""+name+"\")) {\r\n");
           parser.append("      JsonArray array = json.getAsJsonArray(\""+name+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
-          parser.append("        res.get"+upFirst(name)+"().add("+aprsr+");\r\n");
+          parser.append("        if (array.get(i).isJsonNull()) {\r\n");
+          if (en == null) {
+            parser.append("          res.get"+upFirst(name)+"().add(new "+tn+"Type());\r\n");
+          } else {
+            parser.append("          res.get"+upFirst(name)+"().add(new Enumeration<"+en+">(new "+en+"EnumFactory(), "+en+".NULL));\r\n");
+          }
+
+          parser.append("        } else {;\r\n");
+          parser.append("          res.get"+upFirst(name)+"().add("+aprsr+");\r\n");
+          parser.append("        }\r\n");
           parser.append("      }\r\n");
           parser.append("    };\r\n");
           parser.append("    if (json.has(\"_"+name+"\")) {\r\n");
@@ -300,8 +313,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
     composer.append("  protected void compose"+tn+"Properties("+tn+" element) throws IOException {\r\n");
     composer.append("      compose"+analysis.getAncestor().getName()+"Properties(element);\r\n");
-    for (ElementDefinition e : analysis.getRootType().getChildren()) {
-      genElementComposer(analysis, analysis.getRootType(), e, null);
+    if (!analysis.isInterface()) {
+      for (ElementDefinition e : analysis.getRootType().getChildren()) {
+        genElementComposer(analysis, analysis.getRootType(), e, null);
+      }
     }
     composer.append("  }\r\n\r\n");
   }
