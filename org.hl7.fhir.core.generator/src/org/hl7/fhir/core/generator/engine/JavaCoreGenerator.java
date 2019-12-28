@@ -15,6 +15,8 @@ import org.hl7.fhir.core.generator.codegen.Configuration;
 import org.hl7.fhir.core.generator.codegen.JavaEnumerationsGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaFactoryGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserJsonGenerator;
+import org.hl7.fhir.core.generator.codegen.JavaParserRdfGenerator;
+import org.hl7.fhir.core.generator.codegen.JavaParserXmlGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaResourceGenerator;
 import org.hl7.fhir.core.generator.loader.DefinitionsLoader;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -53,6 +55,7 @@ public class JavaCoreGenerator {
   
 
   private void generate(String version, String src, String dest) throws Exception {
+    long start = System.currentTimeMillis();
     Date date = new Date();
     
     String ap = Utilities.path(src, "src", "main", "resources");
@@ -82,6 +85,8 @@ public class JavaCoreGenerator {
     
     JavaFactoryGenerator fgen = new JavaFactoryGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "ResourceFactory.java")), master, config, date, npm.version());
     JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "JsonParser.java")), master, config, date, npm.version());
+    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "XmlParser.java")), master, config, date, npm.version());
+    JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "RdfParser.java")), master, config, date, npm.version());
     
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
@@ -97,6 +102,8 @@ public class JavaCoreGenerator {
           gen.generate(analysis); 
           gen.close();
           jgen.seeClass(analysis);
+          xgen.seeClass(analysis);
+          rgen.seeClass(analysis);
         }
       }
     }
@@ -113,6 +120,8 @@ public class JavaCoreGenerator {
           gen.generate(analysis); 
           gen.close();
           jgen.seeClass(analysis);
+          xgen.seeClass(analysis);
+          rgen.seeClass(analysis);
         }
       }
     }
@@ -130,6 +139,8 @@ public class JavaCoreGenerator {
           gen.generate(analysis); 
           gen.close();
           jgen.seeClass(analysis);
+          xgen.seeClass(analysis);
+          rgen.seeClass(analysis);
         }
       }
     }
@@ -146,6 +157,8 @@ public class JavaCoreGenerator {
           gen.generate(analysis); 
           gen.close();
           jgen.seeClass(analysis);
+          xgen.seeClass(analysis);
+          rgen.seeClass(analysis);
         }
       }
     }
@@ -155,7 +168,13 @@ public class JavaCoreGenerator {
     System.out.println(" .. JsonParser");
     jgen.generate();
     jgen.close();
-    System.out.println("Done");   
+    System.out.println(" .. XmlParser");
+    xgen.generate();
+    xgen.close();
+    System.out.println(" .. RdfParser");
+    rgen.generate();
+    rgen.close();
+    System.out.println("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");   
     
   }
 

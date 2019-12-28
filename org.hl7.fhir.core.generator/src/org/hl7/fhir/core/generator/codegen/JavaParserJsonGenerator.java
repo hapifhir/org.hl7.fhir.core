@@ -24,7 +24,7 @@ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
 PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGed.
+POSSIBILITY OF SUCH DAMAGE.
 
  */
 
@@ -49,9 +49,8 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.Utilities;
 
-import jdk.internal.org.objectweb.asm.tree.analysis.AnalyzerException;
-
 public class JavaParserJsonGenerator extends JavaBaseGenerator {
+
 
   private StringBuilder parser = new StringBuilder();
   private StringBuilder pregt = new StringBuilder();
