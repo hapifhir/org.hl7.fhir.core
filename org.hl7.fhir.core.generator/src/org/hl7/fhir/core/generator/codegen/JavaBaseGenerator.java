@@ -69,7 +69,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
 
   public String startLicenseValue() {
-    return "\r\n/*-\r\n"+config.getLicense()+"*/\r\n\r\n";
+    return "\r\n\r\n"+config.getLicense()+"\r\n\r\n";
   }
 
   public String startVMarkValue() {
@@ -283,4 +283,23 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     }
     return "ResourceType".equals(b.toString()) ? "ResourceTypeEnum" : b.toString();
   }
+  
+  
+  protected ElementDefinition matchingInheritedElement(List<ElementDefinition> children, ElementDefinition m) {
+    if (children == null) {
+      return null;
+    }
+    String mtail = m.getPath().substring(m.getPath().indexOf("."));
+    for (ElementDefinition t : children) {
+      String ttail = t.getPath().substring(t.getPath().indexOf("."));
+      if (ttail.equals(mtail)) {
+        return t;
+      }
+      
+    }
+    return null;
+  }
+
+  
+
 }

@@ -9,8 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.core.generator.analysis.Analyser;
+import org.hl7.fhir.core.generator.analysis.Analysis;
 import org.hl7.fhir.core.generator.codegen.Configuration;
 import org.hl7.fhir.core.generator.codegen.JavaEnumerationsGenerator;
+import org.hl7.fhir.core.generator.codegen.JavaFactoryGenerator;
+import org.hl7.fhir.core.generator.codegen.JavaParserJsonGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaResourceGenerator;
 import org.hl7.fhir.core.generator.loader.DefinitionsLoader;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -74,31 +78,83 @@ public class JavaCoreGenerator {
     System.out.println(" .. Enumerations");
     JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "Enumerations.java")), master, config, date, npm.version());
     egen.generate();
+    egen.close();
+    
+    JavaFactoryGenerator fgen = new JavaFactoryGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "ResourceFactory.java")), master, config, date, npm.version());
+    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "JsonParser.java")), master, config, date, npm.version());
     
     for (StructureDefinition sd : master.getStructures().getList()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
           String name = javaName(sd.getName());
 
           System.out.println(" .. "+name);
+          Analyser jca = new Analyser(master, config);
+          Analysis analysis = jca.analyse(sd);
+          
           String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
           JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
-          gen.generate(sd, name, getSearchParams(master, sd.getName()));
+          gen.generate(analysis); 
+          gen.close();
+          jgen.seeClass(analysis);
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
           String name = javaName(sd.getName());
 
           System.out.println(" .. "+name);
+          Analyser jca = new Analyser(master, config);
+          Analysis analysis = jca.analyse(sd);
           String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
           JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
-          gen.generate(sd, name, getSearchParams(master, sd.getName()));
+          gen.generate(analysis); 
+          gen.close();
+          jgen.seeClass(analysis);
         }
       }
     }
+    for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
+        if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
+          String name = javaName(sd.getName());
+
+          System.out.println(" .. "+name);
+          Analyser jca = new Analyser(master, config);
+          Analysis analysis = jca.analyse(sd);
+          
+          String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
+          JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
+          gen.generate(analysis); 
+          gen.close();
+          jgen.seeClass(analysis);
+        }
+      }
+    }
+    for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
+        if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
+          String name = javaName(sd.getName());
+
+          System.out.println(" .. "+name);
+          Analyser jca = new Analyser(master, config);
+          Analysis analysis = jca.analyse(sd);
+          String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
+          JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
+          gen.generate(analysis); 
+          gen.close();
+          jgen.seeClass(analysis);
+        }
+      }
+    }
+    System.out.println(" .. Factory");
+    fgen.generate();
+    fgen.close();
+    System.out.println(" .. JsonParser");
+    jgen.generate();
+    jgen.close();
     System.out.println("Done");   
     
   }
@@ -123,72 +179,33 @@ public class JavaCoreGenerator {
         }
       }
     }
-    
-    for (StructureDefinition sd : defns.getStructures().getList()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE) {
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-          if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
-            ValueSet vs = defns.getValuesets().get(ed.getBinding().getValueSet());
-            boolean shared = false;
-            if (vs != null) {
-              List<String> list = (List<String>) vs.getUserData("usages");
-              if (list != null && list.size() > 1) {
-                shared = true;
-              }
-            }
-            if (config.getIni().hasProperty("shared", ed.getPath())) {
-              shared = config.getIni().getBooleanProperty("shared", ed.getPath());
-            }
-            if (shared) {
-              ed.getBinding().setUserData("shared", true);
-            }
-          }
-        }
+
+    for (ValueSet vs : defns.getValuesets().getList()) {
+      List<String> list = (List<String>) vs.getUserData("usages");
+      boolean shared = false;
+      if (list != null && list.size() > 1) {
+        shared = true;
+      }
+      if (config.getIni().hasProperty("shared", vs.getUrl())) {
+        shared = config.getIni().getBooleanProperty("shared", vs.getUrl());
+      }
+      if (shared) {
+        vs.setUserData("shared", true);
       }
     }
   }
-
-
-  private List<SearchParameter> getSearchParams(Definitions defns, String name) {
-    List<SearchParameter> res = new ArrayList<>();
-    if (!Utilities.existsInList(name, "Resource")) {
-      for (SearchParameter sp : defns.getSearchParams().getList()) {
-        boolean relevant = false;
-        for (CodeType c : sp.getBase()) {
-          if (c.getValue().equals(name)) {
-            relevant = true;
-            break;
-          }
-        }
-        if (relevant) {
-          res.add(sp);
-        }
-      }
-    }
-    return res;
-  }
-
 
   private String javaName(String name) {
     return "List".equals(name) ? "ListResource" : name;
   }
 
   private void updateExpansions(Definitions master, Definitions expansions) {
-    for (StructureDefinition sd : master.getStructures().getList()) {
-      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-        if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
-          String ref = ed.getBinding().getValueSet();
-          if (ref.contains("|")) {
-            ref = ref.substring(0, ref.indexOf("|"));
-          }
-          ValueSet exp = expansions.getValuesets().get(ref);
-          if (exp != null) {
-            ed.getBinding().setUserData("expansion", exp);
-          }
-        }
+    for (ValueSet vs: master.getValuesets().getList()) {
+      ValueSet vse = expansions.getValuesets().get(vs.getUrl());
+      if (vse != null) {
+        vs.setUserData("expansion", vse);
       }
-    }
-    
+    }    
   }
 
 

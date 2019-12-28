@@ -25,6 +25,7 @@ public class Definitions {
   private CanonicalResourceManager<SearchParameter> searchParams = new CanonicalResourceManager<>(true);
   private CanonicalResourceManager<CompartmentDefinition> compartments = new CanonicalResourceManager<>(true);
   
+  
   public CanonicalResourceManager<CodeSystem> getCodeSystems() {
     return codeSystems;
   }
