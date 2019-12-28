@@ -80,15 +80,14 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (String n : names) {
       ValueSet vs = enums.get(n);
       write("//   "+n+": "+vs.getDescription());
-      ValueSet vsd = definitions.getValuesets().get(vs.getUrl());
-      write(vsd.getUserData("usages").toString());
+      write(vs.getUserData("usages").toString());
       write("\r\n");
     }
     write("\r\n");
     write("\r\n");
     for (String n : names) {
       ValueSet vs = enums.get(n);
-      generateEnum(n, vs);
+      generateEnum(n, (ValueSet) vs.getUserData("expansion"));
 		}
 		write("\r\n");
 		write("}\r\n");
@@ -98,16 +97,9 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 
 	private Map<String, ValueSet> scanForEnums() {
 	  Map<String, ValueSet> res = new HashMap<>();
-    for (StructureDefinition sd : definitions.getStructures().getList()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE) {
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-          if (ed.hasBinding() && ed.getBinding().hasValueSet() && ed.getBinding().hasUserData("shared")) {
-            ValueSet vs = (ValueSet) ed.getBinding().getUserData("expansion");
-            if (vs != null) {
-              res.put(getCodeListType(vs.getName()), vs);
-            }
-          }
-        }
+    for (ValueSet vs : definitions.getValuesets().getSortedList()) {
+      if (vs.hasUserData("shared") && vs.hasUserData("expansion")) {
+        res.put(getCodeListType(vs.getName()), vs);
       }
     }
     return res;

@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,6 +41,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.hl7.fhir.core.generator.analysis.Analysis;
+import org.hl7.fhir.core.generator.analysis.EnumInfo;
+import org.hl7.fhir.core.generator.analysis.TypeInfo;
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -73,52 +77,30 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
   public enum JavaGenClass { Type, Resource, Constraint }
 	private JavaGenClass clss;
+  private String allfields;
+  private long hashSum;
+
 	
 	public JavaResourceGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
 		super(out, definitions, configuration, version, genDate);
 	}
 
-	private Map<ElementDefinition, String> typeNames = new HashMap<ElementDefinition, String>();
-	private List<String> typeNameStrings = new ArrayList<String>();
-	private List<ElementDefinition> enums = new ArrayList<ElementDefinition>();
-	private List<String> enumNames = new ArrayList<String>();
-	private List<ElementDefinition> strucs  = new ArrayList<ElementDefinition>();
-  private String classname;
-  private String allfields;
-  private long hashSum;
-  private String inheritedHash;
-//  private String javaPatternDir;
-
-
-	public Map<ElementDefinition, String> getTypeNames() {
-		return typeNames;
-	}
-
 	// public void generate(ElementDefinition root, String name, JavaGenClass clss, ProfiledType cd, Date genDate, String version, boolean isAbstract, Map<String, SearchParameterDefn> nameToSearchParamDef, ElementDefinition template) throws Exception {
-	public void generate(StructureDefinition structure, String name, List<SearchParameter> searchParams) throws Exception {
-		typeNames.clear();
-		typeNameStrings.clear();
-		enums.clear();
-		strucs.clear();
-		enumNames.clear();
-    classname = upFirst(name);
-
-		if (structure.getKind() == StructureDefinitionKind.RESOURCE) {
+	public void generate(Analysis analysis) throws Exception {   
+		if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
 		  clss = JavaGenClass.Resource;
 		} else {
 		  clss = JavaGenClass.Type;
-		}
-    boolean isRefType = structure.getName().equals("Reference");   
-
+		}    
 		write("package org.hl7.fhir.r5.model;\r\n");
     startMark(version, genDate);
 		
     boolean hl = true; // hasList(root);
-    boolean hh = hasXhtml(structure.getSnapshot().getElement());
-    boolean hd = hasDecimal(structure.getSnapshot().getElement());
-    boolean hs = hasString(structure.getSnapshot().getElement());
-    boolean he = hasSharedEnums(structure.getSnapshot().getElement());
-    boolean hn = hasNestedTypes(structure.getSnapshot().getElement());
+    boolean hh = hasXhtml(analysis.getStructure().getSnapshot().getElement());
+    boolean hd = hasDecimal(analysis.getStructure().getSnapshot().getElement());
+    boolean hs = hasString(analysis.getStructure().getSnapshot().getElement());
+    boolean he = hasSharedEnums(analysis.getStructure().getSnapshot().getElement());
+    boolean hn = hasNestedTypes(analysis.getStructure().getSnapshot().getElement());
     if (hl || hh || hd || he) {
       if (hl) {
         write("import java.util.ArrayList;\r\n");
@@ -152,7 +134,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("import ca.uhn.fhir.model.api.annotation.ResourceDef;\r\n");
       write("import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;\r\n");
     } 
-    if (clss == JavaGenClass.Resource || "BackboneElement".equals(name) || "BackboneType".equals(name)) {
+    if (clss == JavaGenClass.Resource || "BackboneElement".equals(analysis.getName()) || "BackboneType".equals(analysis.getName())) {
       write("import org.hl7.fhir.instance.model.api.IBaseBackboneElement;\r\n");
     }
     write("import ca.uhn.fhir.model.api.annotation.Child;\r\n");
@@ -164,106 +146,84 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write("import ca.uhn.fhir.model.api.annotation.Block;\r\n");
     
     write("\r\n");
-    if (config.getIni().hasProperty("imports", classname)) {
-      for (String imp : config.getIni().getStringProperty("imports", classname).split("\\,")) {
+    if (config.getIni().hasProperty("imports", analysis.getName())) {
+      for (String imp : config.getIni().getStringProperty("imports", analysis.getName()).split("\\,")) {
         write("import "+imp+";\r\n");
       }
     }
     
-		jdoc("", replaceTitle(structure.getName(), structure.getDescription()));
-		ElementDefinition root = structure.getSnapshot().getElementFirstRep();
-		List<ElementDefinition> children = filterChildren(ProfileUtilities.getChildList(structure, root));
-    StructureDefinition sdb = definitions.getStructures().get(structure.getBaseDefinition());
-    List<ElementDefinition> inheritedChildren = getAbstractChildren(sdb);
-		boolean hasChildren = children.size() > 0;
-		String supertype = sdb.getName();
-    boolean isAbstract = structure.getAbstract();
-    boolean isInterface = structure.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface");
-    String hierarchy = "extends "+supertype;
+		jdoc("", replaceTitle(analysis.getName(), analysis.getStructure().getDescription()));
+		TypeInfo ti = analysis.getRootType();
+		boolean hasChildren = ti.getChildren().size() > 0;
+    String hierarchy = "extends "+analysis.getAncestor().getName();
     if (clss == JavaGenClass.Resource) {
-      if (!isAbstract) {
-        write("@ResourceDef(name=\""+upFirst(name).replace("ListResource", "List")+"\", profile=\"http://hl7.org/fhir/StructureDefinition/"+upFirst(name)+"\")\r\n");
+      if (!analysis.isAbstract()) {
+        write("@ResourceDef(name=\""+upFirst(analysis.getName()).replace("ListResource", "List")+"\", profile=\"http://hl7.org/fhir/StructureDefinition/"+upFirst(analysis.getName())+"\")\r\n");
       }
     } else {
-      write("@DatatypeDef(name=\""+upFirst(name)+"\")\r\n");
+      write("@DatatypeDef(name=\""+upFirst(analysis.getName())+"\")\r\n");
       hierarchy = hierarchy + " implements ICompositeType";
     }
     
-    if (config.getIni().hasProperty("hierarchy", classname)) {
-      hierarchy = config.getIni().getStringProperty("hierarchy", classname).replace("{{super}}", supertype);
+    if (config.getIni().hasProperty("hierarchy", analysis.getName())) {
+      hierarchy = config.getIni().getStringProperty("hierarchy", analysis.getName()).replace("{{super}}", analysis.getAncestor().getName());
     }
 				
-    write("public "+(isAbstract? "abstract " : "")+"class "+classname+" "+hierarchy.trim()+" {\r\n");
+    write("public "+(analysis.isAbstract()? "abstract " : "")+"class "+analysis.getClassName()+" "+hierarchy.trim()+" {\r\n");
 		write("\r\n");
 
-		for (ElementDefinition e : children) {
-		  scanNestedTypes(structure, root, children, structure.getName(), e);
+		for (String s : sorted(analysis.getEnums().keySet())) {
+  		EnumInfo e = analysis.getEnums().get(s);
+		  generateEnum(e);
 		}
-		for (ElementDefinition n : typeNames.keySet()) {
-		  String nn = typeNames.get(n);
-		  if (nn.startsWith("@")) {
-		    ElementDefinition er = getElementForPath(structure, nn.substring(1));
-		    if (!typeNames.containsKey(er)) {
-		      throw new Exception("not found: "+er); 
-		    }
-		    String nnn = typeNames.get(er);
-		    typeNames.put(n, nnn);
-		    n.setUserData("type", nnn);
-		  }
-		}
-		for (ElementDefinition e : enums) {
-		  generateEnum(e, upFirst(name));
-		}
-		for (ElementDefinition e : strucs) {
-		  generateType(structure, e, JavaGenClass.Type, structure.getName(), isInterface);
+    for (TypeInfo t : analysis.getTypeList()) {
+		  generateType(analysis, t);
 		}
 
 		allfields = "";
 		int i = 0;
-		for (ElementDefinition e : children) {
-		  if (!isInterface) {
-		    generateField(root, e, "    ", i++, structure);
+		for (ElementDefinition e : ti.getChildren()) {
+		  if (!analysis.isInterface()) {
+		    generateField(analysis, ti, e, "    ", i++);
 		  }
 		}
 		write("    private static final long serialVersionUID = "+Long.toString(allfields.hashCode())+"L;\r\n\r\n");
 		hashSum = hashSum + allfields.hashCode();
 
 		List<ElementDefinition> mandatory = new ArrayList<ElementDefinition>();
-		generateConstructor(upFirst(name), mandatory, "  ");      
+		generateConstructor(analysis.getClassName(), mandatory, "  ");      
 		if (hasChildren) {
-		  for (ElementDefinition e : children) {
+		  for (ElementDefinition e : ti.getChildren()) {
 		    if (e.getMin() > 0)
 		      mandatory.add(e);
 		  }
 		  if (mandatory.size() > 0)
-		    generateConstructor(upFirst(name), mandatory, "  ");
+		    generateConstructor(analysis.getClassName(), mandatory, "  ");
 
-		  generateTypeSpecificConstructors(upFirst(name));
+		  generateTypeSpecificConstructors(analysis.getClassName());
 
-		  for (ElementDefinition e : children) {
-	      if (isInterface) {
-          generateAbstractAccessors(root, e, "    ", upFirst(name));
+		  for (ElementDefinition e : ti.getChildren()) {
+	      if (analysis.isInterface()) {
+          generateAbstractAccessors(analysis, ti, e, "    ");
 	      } else {
-		      generateAccessors(root, e, "    ", upFirst(name), matchingInheritedElement(inheritedChildren, e));
+		      generateAccessors(analysis, ti, e, "    ", matchingInheritedElement(ti.getInheritedChildren(), e));
 	      }
 		  }
-		  if (!isInterface) {
-		    for (ElementDefinition e : filterInherited(inheritedChildren, children)) {
-		      generateUnimplementedAccessors(root, e, "    ", upFirst(name));
+		  if (!analysis.isInterface()) {
+		    for (ElementDefinition e : filterInherited(ti.getInheritedChildren(), ti.getChildren())) {
+		      generateUnimplementedAccessors(analysis, ti, e, "    ");
 		    }
 		  }
-      
-		  generateTypeSpecificAccessors(name);
 
-		  generateChildrenRegister(root, children, "    ", isAbstract, isInterface, structure.getName());
-		  generatePropertyGetterId(root, children, "    ", isInterface);
-		  generatePropertySetterId(root, children, "    ", isInterface);
-		  generatePropertySetterName(root, children, "    ", isInterface);
-		  generatePropertyMaker(root, children, "    ", isInterface, inheritedChildren);
-		  generatePropertyTypeGetter(root, children, "    ", isInterface);
-		  generateChildAdder(root, children, "    ", classname, isInterface);
+		  generateChildrenRegister(analysis, ti, "    ");
+		  generatePropertyGetterId(analysis, ti, "    ");
+		  generatePropertySetterId(analysis, ti, "    ");
+		  generatePropertySetterName(analysis, ti, "    ");
+		  generatePropertyMaker(analysis, ti, "    ");
+		  generatePropertyTypeGetter(analysis, ti, "    ");
+		  generateChildAdder(analysis, ti, "    ");
 		}
-		generateFhirType(structure.getName());
+		generateFhirType(analysis.getName());
       
 //      // check for mappings
 //      for (String map : root.getMappings().keySet()) {
@@ -275,19 +235,19 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 //        }
 //      }
 
-		generateCopy(root, children, classname, false, isAbstract, isInterface);
+		generateCopy(analysis, ti, false);
     if (hasChildren) {
-		  generateEquals(root, children, classname, false, isAbstract, isInterface);
-		  generateIsEmpty(root, children, classname, false, isAbstract, isInterface);
+		  generateEquals(analysis, ti, false);
+		  generateIsEmpty(analysis, ti, false);
     }
 
-		if (clss == JavaGenClass.Resource && !isAbstract) {
+		if (clss == JavaGenClass.Resource && !analysis.isAbstract()) {
 		  write("  @Override\r\n");
 		  write("  public ResourceType getResourceType() {\r\n");
-		  write("    return ResourceType."+structure.getName()+";\r\n");
+		  write("    return ResourceType."+analysis.getName()+";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
-		} else if (isAbstract && Utilities.noString(supertype)) {
+		} else if (analysis.isAbstract() && Utilities.noString(analysis.getAncestor().getName())) {
       write("\r\n"); 
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
@@ -299,7 +259,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("    setId(value);\r\n");
       write("  }\r\n");
 		  write("  public abstract ResourceType getResourceType();\r\n");
-		} else if (isAbstract && Utilities.noString(supertype)) {
+		} else if (analysis.isAbstract() && Utilities.noString(analysis.getAncestor().getName())) {
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
       write("    return getId();\r\n"); 
@@ -314,7 +274,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		// Write resource fields which can be used as constants in client code
 		// to refer to standard search params
 		Set<String> spcodes = new HashSet<>();
-		for (SearchParameter sp : searchParams) {
+		for (SearchParameter sp : analysis.getSearchParams()) {
 		  String code = sp.getCode();
 		  if (!spcodes.contains(code)) {
 		    spcodes.add(code);
@@ -339,24 +299,24 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		         * static binding to the individual possibilities. AFAIK this is only
 		         * used right now in Observation (e.g. for code-value-[x]) 
 		         */
-		        for (SearchParameter nextCandidate : searchParams) {
+		        for (SearchParameter nextCandidate : analysis.getSearchParams()) {
 		          if (nextCandidate.getCode().startsWith(partialCode)) {
 		            String nextCompositeCode = rootCode + "-" + nextCandidate.getCode();
 		            String[] compositeOf = new String[] { rootCode, nextCandidate.getCode() };
-		            writeSearchParameterField(name, clss, isAbstract, sp, nextCompositeCode, compositeOf, searchParams, name);
+		            writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, nextCompositeCode, compositeOf, analysis.getSearchParams(), analysis.getName());
 		          }
 		        }
 		      } else {
 		        SearchParameter comp0 = definitions.getSearchParams().get(sp.getComponent().get(0).getDefinition());
 		        SearchParameter comp1 = definitions.getSearchParams().get(sp.getComponent().get(1).getDefinition());
 		        if (comp0 == null) {
-		          throw new Error("Couldn't find composite component " + sp.getComponent().get(0).getDefinition() + " on "+root.getName());
+		          throw new Error("Couldn't find composite component " + sp.getComponent().get(0).getDefinition() + " on "+analysis.getName());
 		        }
 		        if (comp1 == null) {
-		          throw new Error("Couldn't find composite component " + sp.getComponent().get(1).getDefinition() + " on "+root.getName());
+		          throw new Error("Couldn't find composite component " + sp.getComponent().get(1).getDefinition() + " on "+analysis.getName());
 		        }
 		        String[] compositeOf = new String[] { comp0.getCode(), comp1.getCode() };
-		        writeSearchParameterField(name, clss, isAbstract, sp, sp.getCode(), compositeOf, searchParams, name);
+		        writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, sp.getCode(), compositeOf, analysis.getSearchParams(), analysis.getName());
 		      }  
 		    } else if (code.contains("[x]")) {
 		      /*
@@ -365,45 +325,30 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		       */
 		      throw new Exception("Unable to generate constant for search parameter: " + code);
 		    } else {
-		      writeSearchParameterField(name, clss, isAbstract, sp, code, null, searchParams, name);
+		      writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, code, null, analysis.getSearchParams(), analysis.getName());
 		    }
 		  }
 		}
 
-		if (config.getAdornments().containsKey(classname)) {
+		if (config.getAdornments().containsKey(analysis.getClassName())) {
       write("// Manual code (from Configuration.txt)t:\r\n");
-		  write(config.getAdornments().get(classname)+"\r\n");
+		  write(config.getAdornments().get(analysis.getClassName())+"\r\n");
       write("// end addition\r\n");
 		}
 		write("\r\n");
 		write("}\r\n");
 		write("\r\n");
 		flush();
-	}
+}
 
-	private ElementDefinition matchingInheritedElement(List<ElementDefinition> children, ElementDefinition m) {
-    String mtail = m.getPath().substring(m.getPath().indexOf("."));
-    for (ElementDefinition t : children) {
-      String ttail = t.getPath().substring(t.getPath().indexOf("."));
-      if (ttail.equals(mtail)) {
-        return t;
-      }
-      
-    }
-    return null;
+	private List<String> sorted(Set<String> keys) {
+	  List<String> res = new ArrayList<>();
+	  res.addAll(keys);
+	  Collections.sort(res);
+    return res;
   }
 
-  private List<ElementDefinition> getAbstractChildren(StructureDefinition structure) {
-	  if (!structure.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface")) {
-	    return new ArrayList<>();
-	  }
-	  List<ElementDefinition> res = new ArrayList<>();
-	  StructureDefinition sdb = definitions.getStructures().get(structure.getBaseDefinition());
-	  res.addAll(getAbstractChildren(sdb));
-	  res.addAll(filterChildren(ProfileUtilities.getChildList(structure, structure.getSnapshot().getElementFirstRep())));
-	  return res;
-	}
-
+ 
 	private List<ElementDefinition> filterInherited(List<ElementDefinition> inherited, List<ElementDefinition> children) {
 	  List<ElementDefinition> res = new ArrayList<>();
 	  for (ElementDefinition t : inherited) {
@@ -552,19 +497,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     return null;
   }
 
-  private List<ElementDefinition> filterChildren(List<ElementDefinition> childList) {
-    List<ElementDefinition> res = new ArrayList<>();
-    res.addAll(childList);
-    List<ElementDefinition> r = new ArrayList<>();
-    for (ElementDefinition t : childList) {
-      if (!t.getPath().equals(t.getBase().getPath())) {
-        r.add(t);
-      }
-    }
-    res.removeAll(r);
-    return res;
-  }
-
   private String defaultString(String expression) {
     return expression == null ? "" : expression;
   }
@@ -677,294 +609,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     }
   }
 
-  private void generateTypeSpecificAccessors(String name) throws IOException {
-    if (upFirst(name).equals("DomainResource")) {
-      write("    /**\r\n"); 
-          write("     * Returns a list of extensions from this element which have the given URL. Note that\r\n"); 
-          write("     * this list may not be modified (you can not add or remove elements from it)\r\n"); 
-          write("     */\r\n"); 
-          write("    public List<Extension> getExtensionsByUrl(String theUrl) {\r\n"); 
-          write("      org.apache.commons.lang3.Validate.notBlank(theUrl, \"theUrl must be provided with a value\");\r\n"); 
-          write("      ArrayList<Extension> retVal = new ArrayList<Extension>();\r\n"); 
-          write("      for (Extension next : getExtension()) {\r\n"); 
-          write("        if (theUrl.equals(next.getUrl())) {\r\n"); 
-          write("          retVal.add(next);\r\n"); 
-          write("        }\r\n"); 
-          write("      }\r\n"); 
-          write("      return Collections.unmodifiableList(retVal);\r\n"); 
-          write("    }\r\n"); 
-          write("\r\n"); 
-          write("    /**\r\n"); 
-          write("     * Returns a list of modifier extensions from this element which have the given URL. Note that\r\n"); 
-          write("     * this list may not be modified (you can not add or remove elements from it)\r\n"); 
-          write("     */\r\n"); 
-          write("    public List<Extension> getModifierExtensionsByUrl(String theUrl) {\r\n"); 
-          write("      org.apache.commons.lang3.Validate.notBlank(theUrl, \"theUrl must be provided with a value\");\r\n"); 
-          write("      ArrayList<Extension> retVal = new ArrayList<Extension>();\r\n"); 
-          write("      for (Extension next : getModifierExtension()) {\r\n"); 
-          write("        if (theUrl.equals(next.getUrl())) {\r\n"); 
-          write("          retVal.add(next);\r\n"); 
-          write("        }\r\n"); 
-          write("      }\r\n"); 
-          write("      return Collections.unmodifiableList(retVal);\r\n"); 
-          write("    }\r\n"); 
-          write("\r\n");
-    }
-    if (upFirst(name).equals("Element")) {
-      write("   /**\r\n"); 
-          write("    * Returns an unmodifiable list containing all extensions on this element which \r\n"); 
-          write("    * match the given URL.\r\n"); 
-          write("    * \r\n"); 
-          write("    * @param theUrl The URL. Must not be blank or null.\r\n"); 
-          write("    * @return an unmodifiable list containing all extensions on this element which \r\n"); 
-          write("    * match the given URL\r\n"); 
-          write("    */\r\n"); 
-          write("   public List<Extension> getExtensionsByUrl(String theUrl) {\r\n"); 
-          write("     org.apache.commons.lang3.Validate.notBlank(theUrl, \"theUrl must not be blank or null\");\r\n"); 
-          write("     ArrayList<Extension> retVal = new ArrayList<Extension>();\r\n"); 
-          write("     for (Extension next : getExtension()) {\r\n"); 
-          write("       if (theUrl.equals(next.getUrl())) {\r\n"); 
-          write("         retVal.add(next);\r\n"); 
-          write("       }\r\n"); 
-          write("     }\r\n"); 
-          write("     return java.util.Collections.unmodifiableList(retVal);\r\n"); 
-          write("   }\r\n");
-      write("  public boolean hasExtension(String theUrl) {\r\n");
-      write("    return !getExtensionsByUrl(theUrl).isEmpty(); \r\n");
-      write("  }\r\n");
-      write("\r\n");
-      write("  public String getExtensionString(String theUrl) throws FHIRException {\r\n");
-      write("    List<Extension> ext = getExtensionsByUrl(theUrl); \r\n");
-      write("    if (ext.isEmpty()) \r\n");
-      write("      return null; \r\n");
-      write("    if (ext.size() > 1) \r\n");
-      write("      throw new FHIRException(\"Multiple matching extensions found\");\r\n");
-      write("    if (!ext.get(0).getValue().isPrimitive())\r\n");
-      write("      throw new FHIRException(\"Extension could not be converted to a string\");\r\n");
-      write("    return ext.get(0).getValue().primitiveValue();\r\n");
-      write("  }\r\n");
-      write("\r\n");
-    }
-    if (upFirst(name).equals("Bundle") || upFirst(name).equals("BundleEntryComponent")) {
-		  write(" /**\r\n"); 
-		      write("   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}. \r\n"); 
-		      write("   * If no link is found which matches the given relation, returns <code>null</code>. If more than one\r\n"); 
-		      write("   * link is found which matches the given relation, returns the first matching BundleLinkComponent.\r\n"); 
-		      write("   * \r\n"); 
-		      write("   * @param theRelation\r\n"); 
-		      write("   *            The relation, such as \"next\", or \"self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}.\r\n"); 
-		      write("   * @return Returns a matching BundleLinkComponent, or <code>null</code>\r\n"); 
-		      write("   * @see IBaseBundle#LINK_NEXT\r\n"); 
-		      write("   * @see IBaseBundle#LINK_PREV\r\n"); 
-		      write("   * @see IBaseBundle#LINK_SELF\r\n"); 
-		      write("   */\r\n"); 
-		      write("  public BundleLinkComponent getLink(String theRelation) {\r\n"); 
-		      write("    org.apache.commons.lang3.Validate.notBlank(theRelation, \"theRelation may not be null or empty\");\r\n"); 
-		      write("    for (BundleLinkComponent next : getLink()) {\r\n"); 
-		      write("      if (theRelation.equals(next.getRelation())) {\r\n"); 
-		      write("        return next;\r\n"); 
-		      write("      }\r\n"); 
-		      write("    }\r\n"); 
-		      write("    return null;\r\n"); 
-		      write("  }\r\n"); 
-		      write("\r\n"); 
-		      write("  /**\r\n"); 
-		      write("   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}. \r\n"); 
-		      write("   * If no link is found which matches the given relation, creates a new BundleLinkComponent with the\r\n"); 
-		      write("   * given relation and adds it to this Bundle. If more than one\r\n"); 
-		      write("   * link is found which matches the given relation, returns the first matching BundleLinkComponent.\r\n"); 
-		      write("   * \r\n"); 
-		      write("   * @param theRelation\r\n"); 
-		      write("   *            The relation, such as \"next\", or \"self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}.\r\n"); 
-		      write("   * @return Returns a matching BundleLinkComponent, or <code>null</code>\r\n"); 
-		      write("   * @see IBaseBundle#LINK_NEXT\r\n"); 
-		      write("   * @see IBaseBundle#LINK_PREV\r\n"); 
-		      write("   * @see IBaseBundle#LINK_SELF\r\n"); 
-		      write("   */\r\n"); 
-		      write("  public BundleLinkComponent getLinkOrCreate(String theRelation) {\r\n"); 
-		      write("    org.apache.commons.lang3.Validate.notBlank(theRelation, \"theRelation may not be null or empty\");\r\n"); 
-		      write("    for (BundleLinkComponent next : getLink()) {\r\n"); 
-		      write("      if (theRelation.equals(next.getRelation())) {\r\n"); 
-		      write("        return next;\r\n"); 
-		      write("      }\r\n"); 
-		      write("    }\r\n"); 
-		      write("    BundleLinkComponent retVal = new BundleLinkComponent();\r\n"); 
-		      write("    retVal.setRelation(theRelation);\r\n"); 
-		      write("    getLink().add(retVal);\r\n"); 
-		      write("    return retVal;\r\n"); 
-		      write("  }\r\n"); 
-		      write("");
-		}
-    if (upFirst(name).equals("HumanName")) {
-      write(" /**\r\n"); 
-          write("  /**\r\n"); 
-          write("   * Returns all repetitions of {@link #getGiven() given name} as a space separated string\r\n"); 
-          write("   * \r\n"); 
-          write("   * @see DatatypeUtil#joinStringsSpaceSeparated(List)\r\n"); 
-          write("   */\r\n"); 
-          write("  public String getGivenAsSingleString() {\r\n"); 
-          write("    return joinStringsSpaceSeparated(getGiven());\r\n"); 
-          write("  }\r\n"); 
-          write("\r\n"); 
-          write("  /**\r\n"); 
-          write("   * Returns all repetitions of {@link #getPrefix() prefix name} as a space separated string\r\n"); 
-          write("   * \r\n"); 
-          write("   * @see DatatypeUtil#joinStringsSpaceSeparated(List)\r\n"); 
-          write("   */\r\n"); 
-          write("  public String getPrefixAsSingleString() {\r\n"); 
-          write("    return joinStringsSpaceSeparated(getPrefix());\r\n"); 
-          write("  }\r\n"); 
-          write("\r\n"); 
-          write("  /**\r\n"); 
-          write("   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated string\r\n"); 
-          write("   * \r\n"); 
-          write("   * @see DatatypeUtil#joinStringsSpaceSeparated(List)\r\n"); 
-          write("   */\r\n"); 
-          write("  public String getSuffixAsSingleString() {\r\n"); 
-          write("    return joinStringsSpaceSeparated(getSuffix());\r\n"); 
-          write("  }\r\n"); 
-          write("\r\n"); 
-          write("  /**\r\n"); 
-          write("   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced\r\n"); 
-          write("   * string separating each part.\r\n"); 
-          write("   * <p>\r\n"); 
-          write("   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead.\r\n"); 
-          write("   * </p>\r\n"); 
-          write("   */\r\n"); 
-          write("  public String getNameAsSingleString() {\r\n"); 
-          write("    List<StringType> nameParts = new ArrayList<StringType>();\r\n"); 
-          write("    nameParts.addAll(getPrefix());\r\n"); 
-          write("    nameParts.addAll(getGiven());\r\n"); 
-          write("    nameParts.add(getFamilyElement());\r\n"); 
-          write("    nameParts.addAll(getSuffix());\r\n"); 
-          write("    if (nameParts.size() > 0) {\r\n"); 
-          write("      return joinStringsSpaceSeparated(nameParts);\r\n"); 
-          write("    } else {\r\n"); 
-          write("      return getTextElement().getValue();\r\n"); 
-          write("    }\r\n"); 
-          write("  }\r\n"); 
-          write("\r\n"); 
-          write("  /**\r\n"); 
-          write("   * Joins a list of strings with a single space (' ') between each string\r\n"); 
-          write("   * \r\n"); 
-          write("   * TODO: replace with call to ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to 1.4\r\n"); 
-          write("   */\r\n"); 
-          write("  private static String joinStringsSpaceSeparated(List<? extends IPrimitiveType<String>> theStrings) {\r\n"); 
-          write("    StringBuilder b = new StringBuilder();\r\n"); 
-          write("    for (IPrimitiveType<String> next : theStrings) {\r\n"); 
-          write("      if (next.isEmpty()) {\r\n"); 
-          write("        continue;\r\n"); 
-          write("      }\r\n"); 
-          write("      if (b.length() > 0) {\r\n"); 
-          write("        b.append(' ');\r\n"); 
-          write("      }\r\n"); 
-          write("      b.append(next.getValue());\r\n"); 
-          write("    }\r\n"); 
-          write("    return b.toString();\r\n"); 
-          write("  }\r\n"); 
-          write("");
-    }
-    if (upFirst(name).equals("Meta")) {
-      write("    /**\r\n"); 
-          write("     * Convenience method which adds a tag\r\n"); 
-          write("     * \r\n"); 
-          write("     * @param theSystem The code system\r\n"); 
-          write("     * @param theCode The code\r\n"); 
-          write("     * @param theDisplay The display name\r\n"); 
-          write("     * @return Returns a reference to <code>this</code> for easy chaining\r\n"); 
-          write("     */\r\n"); 
-          write("    public Meta addTag(String theSystem, String theCode, String theDisplay) {\r\n"); 
-          write("     addTag().setSystem(theSystem).setCode(theCode).setDisplay(theDisplay);\r\n"); 
-          write("     return this;\r\n"); 
-          write("    }\r\n"); 
-          write("");
-      write("    /**\r\n"); 
-          write("     * Convenience method which adds a security tag\r\n"); 
-          write("     * \r\n"); 
-          write("     * @param theSystem The code system\r\n"); 
-          write("     * @param theCode The code\r\n"); 
-          write("     * @param theDisplay The display name\r\n"); 
-          write("     * @return Returns a reference to <code>this</code> for easy chaining\r\n"); 
-          write("     */\r\n"); 
-          write("    public Meta addSecurity(String theSystem, String theCode, String theDisplay) {\r\n"); 
-          write("     addSecurity().setSystem(theSystem).setCode(theCode).setDisplay(theDisplay);\r\n"); 
-          write("     return this;\r\n"); 
-          write("    }\r\n"); 
-          write("");
-          write("   /**\r\n" );
-          write(    "   * Returns the first tag (if any) that has the given system and code, or returns\r\n"); 
-          write(    "   * <code>null</code> if none\r\n"); 
-          write(    "   */\r\n" );
-          write(    "  public Coding getTag(String theSystem, String theCode) {\r\n"); 
-          write (   "    for (Coding next : getTag()) {\r\n" );
-          write  (  "      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) {\r\n" ); 
-          write (   "        return next;\r\n" ); 
-          write (   "      }\r\n" ); 
-          write (   "    }\r\n" );
-              write(    "    return null;\r\n" ); 
-              write(     "  }\r\n" ); 
-              write(     "\r\n" );
-              write(     "  /**\r\n" );
-              write(     "   * Returns the first security label (if any) that has the given system and code, or returns\r\n" ); 
-              write(     "   * <code>null</code> if none\r\n"); 
-              write(     "   */\r\n" );
-              write(     "  public Coding getSecurity(String theSystem, String theCode) {\r\n"); 
-              write(     "    for (Coding next : getTag()) {\r\n" );
-              write(      "      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) {\r\n" ); 
-              write(      "        return next;\r\n" ); 
-              write(      "      }\r\n" ); 
-              write(      "    }\r\n" );
-              write(      "    return null;\r\n"); 
-              write(      "  }\r\n");
-    }
-    if (upFirst(name).equals("Period")) {
-      write("   /**\r\n");
-      write("   * Sets the value for <b>start</b> ()\r\n"); 
-      write("   *\r\n");
-      write("     * <p>\r\n");
-      write("     * <b>Definition:</b>\r\n");
-      write("     * The start of the period. The boundary is inclusive.\r\n"); 
-      write("     * </p> \r\n"); 
-      write("   */\r\n");
-      write("  public Period setStart( Date theDate,  TemporalPrecisionEnum thePrecision) {\r\n"); 
-      write("    start = new DateTimeType(theDate, thePrecision); \r\n"); 
-      write("    return this; \r\n"); 
-      write("  }\r\n"); 
-      write("\r\n");
-      write("   /**\r\n");
-      write("   * Sets the value for <b>end</b> ()\r\n"); 
-      write("   *\r\n");
-      write("     * <p>\r\n");
-      write("     * <b>Definition:</b>\r\n");
-      write("     * The end of the period. The boundary is inclusive.\r\n"); 
-      write("     * </p> \r\n"); 
-      write("   */\r\n");
-      write("  public Period setEnd( Date theDate,  TemporalPrecisionEnum thePrecision) {\r\n"); 
-      write("    end = new DateTimeType(theDate, thePrecision); \r\n"); 
-      write("    return this; \r\n"); 
-      write("  }\r\n"); 
-      write("\r\n");
-    }
-    if (upFirst(name).equals("Reference")) {
-      write(" /**\r\n"); 
-          write("   * Convenience setter which sets the reference to the complete {@link IIdType#getValue() value} of the given\r\n"); 
-          write("   * reference.\r\n"); 
-          write("   *\r\n"); 
-          write("   * @param theReference The reference, or <code>null</code>\r\n"); 
-          write("   * @return \r\n"); 
-          write("   * @return Returns a reference to this\r\n"); 
-          write("   */\r\n"); 
-          write("  public Reference setReferenceElement(IIdType theReference) {\r\n"); 
-          write("    if (theReference != null) {\r\n"); 
-          write("      setReference(theReference.getValue());\r\n"); 
-          write("    } else {\r\n"); 
-          write("      setReference(null);\r\n"); 
-          write("    }\r\n"); 
-          write("    return this;\r\n"); 
-          write("  }\r\n"); 
-          write("");
-    }
-  }
 
   private void generateFhirType(String path) throws IOException {
     write("  public String fhirType() {\r\n");
@@ -1002,7 +646,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		write(indent+" */\r\n");
   }
 
-	private void generateChildrenRegister(ElementDefinition p, List<ElementDefinition> children, String indent, boolean isAbstract, boolean isInterface, String rn) throws Exception {
+	private void generateChildrenRegister(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+	  String rn = analysis.getName();
+	  boolean isInterface = analysis.isInterface();
+	  List<ElementDefinition> children = ti.getChildren();
 	  write(indent+"  protected void listChildren(List<Property> children) {\r\n");
     write(indent+"    super.listChildren(children);\r\n");
 	  for (ElementDefinition e : children) {
@@ -1089,14 +736,18 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     return tn.toString();
 	}
 
-private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> children, String indent, boolean isInterface, List<ElementDefinition> inheritedChildren) throws Exception {
+private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+  List<ElementDefinition> children = ti.getChildren();
+  boolean isInterface = analysis.isInterface();
+  List<ElementDefinition> inheritedChildren = ti.getInheritedChildren();
+  
     write(indent+"  @Override\r\n");
     write(indent+"  public Base makeProperty(int hash, String name) throws FHIRException {\r\n");
     write(indent+"    switch (hash) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface) { 
         ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e);
-        String tn = typeNames.get(e);
+        String tn = e.getUserString("java.type");
         if (!e.typeSummary().equals("xhtml")) {
           genPropMaker(indent, e, tn, e.getName(), inh);
         } else {
@@ -1135,13 +786,15 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     }
   }
 
-  private void generatePropertySetterName(ElementDefinition p, List<ElementDefinition> children, String indent, boolean isInterface) throws Exception {
+  private void generatePropertySetterName(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
     write(indent+"  @Override\r\n");
     write(indent+"  public Base setProperty(String name, Base value) throws FHIRException {\r\n");
     boolean first = true;
     for (ElementDefinition e : children) {
       if (!isInterface) { 
-        String tn = typeNames.get(e);
+        String tn = e.getUserString("java.type");
         if (first) 
           write(indent+"    ");
         else
@@ -1177,13 +830,15 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     write(indent+"  }\r\n\r\n");  
   }
 
-  private void generatePropertySetterId(ElementDefinition p, List<ElementDefinition> children, String indent, boolean isInterface) throws Exception {
+  private void generatePropertySetterId(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
     write(indent+"  @Override\r\n");
     write(indent+"  public Base setProperty(int hash, String name, Base value) throws FHIRException {\r\n");
     write(indent+"    switch (hash) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface) { 
-        String tn = typeNames.get(e);
+        String tn = e.getUserString("java.type");
         String name = e.getName().replace("[x]", "");
         write(indent+"    case "+propId(name)+": // "+name+"\r\n");
         String cn = "("+tn+") value";
@@ -1212,13 +867,15 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     write(indent+"  }\r\n\r\n");  
   }
 
-  private void generatePropertyGetterId(ElementDefinition p, List<ElementDefinition> children, String indent, boolean isInterface) throws Exception {
+  private void generatePropertyGetterId(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
     write(indent+"  @Override\r\n");
     write(indent+"  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {\r\n");
     write(indent+"    switch (hash) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface) { 
-        String tn = typeNames.get(e);
+        String tn = e.getUserString("java.type");
         String name = e.getName().replace("[x]", "");
         write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
         if (e.unbounded()) {
@@ -1235,7 +892,9 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     write(indent+"  }\r\n\r\n");  
   }
 
-  private void generatePropertyTypeGetter(ElementDefinition p, List<ElementDefinition> children, String indent, boolean isInterface) throws Exception {
+  private void generatePropertyTypeGetter(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
     write(indent+"  @Override\r\n");
     write(indent+"  public String[] getTypesForProperty(int hash, String name) throws FHIRException {\r\n");
     write(indent+"    switch (hash) {\r\n");
@@ -1271,7 +930,11 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     return Integer.toString(name.hashCode());
   }
 
-  private void generateChildAdder(ElementDefinition p, List<ElementDefinition> children, String indent, String parent, boolean isInterface) throws Exception {
+  private void generateChildAdder(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
+    String parent = ti.getDefn().getPath();
+    
     write(indent+"  @Override\r\n");
     write(indent+"  public Base addChild(String name) throws FHIRException {\r\n");
     boolean first = true;
@@ -1279,7 +942,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
       if (!isInterface) { 
         if (!e.typeSummary().equals("xhtml")) { 
           if (e.getType().size() <= 1 && !e.typeSummary().equals("*")) {
-            String tn = typeNames.get(e);
+            String tn = e.getUserString("java.type");
             String name = e.getName();
             String namet = e.getName();
             first = generateChildAddItem(indent, parent, first, e, tn, name, namet);
@@ -1357,8 +1020,8 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
       if (!first)
         write(", ");
       first = false;
-      String tn = typeNames.get(e);
-      if (definitions.hasPrimitiveType(e.typeSummary()) && !enums.contains(e)) {
+      String tn = e.getUserString("java.type");
+      if (definitions.hasPrimitiveType(e.typeSummary()) && !e.hasUserData("java.enum")) {
         if ("xhtml".equals(e.typeSummary())) {
           tn = "XhtmlNode";
         } else {
@@ -1454,19 +1117,25 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     return e.getPath().equals(e.getBase().getPath());
   }
 
-  private void generateEnum(ElementDefinition e, String name) throws Exception {
-		String tn = typeNames.get(e);
-		String tns = tn.substring(tn.indexOf("<")+1);
-		tns = tns.substring(0, tns.length()-1);
-		if (e.getBinding().hasUserData("shared"))
+  private void generateEnum(EnumInfo e) throws Exception {
+		String tn = e.getName();
+		String tns = tn;
+		if (tn.startsWith("Enumeration<")) {
+		  tns = tn.substring(tn.indexOf("<")+1);
+		  tns = tns.substring(0, tns.length()-1);
+		} else {
+		  tn = "Enumeration<"+tn+">";
+		}
+		ValueSet vs = e.getValueSet();
+		ValueSet vse = (ValueSet) vs.getUserData("expansion");
+		if (vs.hasUserData("shared")) {
 		  return;
-    if (!e.getBinding().hasUserData("expansion")) {
+		}
+    if (vse == null) {
       return;
     }
     
-		ValueSet vs = (ValueSet) e.getBinding().getUserData("expansion");
-		vs.setUserData("java-generated", true);
-		List<ValueSetExpansionContainsComponent> codes = vs.getExpansion().getContains();
+		List<ValueSetExpansionContainsComponent> codes = vse.getExpansion().getContains();
     String url = vs.getUrl();
     CommaSeparatedStringBuilder el = new CommaSeparatedStringBuilder();
 
@@ -1603,18 +1272,19 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 //    enumInfo.put("org.hl7.fhir.r5.model."+name+"."+tns, url+"|"+el.toString());
 	}
 
-  private void generateType(StructureDefinition structure, ElementDefinition e, JavaGenClass clss, String rn, boolean isInterface) throws Exception {
-		String tn = typeNames.get(e);
+  private void generateType(Analysis analysis, TypeInfo ti) throws Exception {
+		String tn = ti.getName();
+		ElementDefinition e = ti.getDefn();
 
 		StructureDefinition sd = definitions.getType(e.typeSummary());
-		List<ElementDefinition> children = filterChildren(ProfileUtilities.getChildList(structure, e));
+		List<ElementDefinition> children = ti.getChildren();
 		write("    @Block()\r\n");
 		write("    public static class "+tn+" extends "+sd.getName()+" implements "+(sd.getName().equals("Element") ? "IBaseDatatypeElement" : "IBaseBackboneElement")+" {\r\n");
 
 		allfields = "";
 		int i = 1;
 		for (ElementDefinition c : children) {
-			generateField(e, c, "        ", i++, structure);
+			generateField(analysis, ti, c, "        ", i++);
 		}
 		write("        private static final long serialVersionUID = "+Long.toString(allfields.hashCode())+"L;\r\n\r\n");
     hashSum = hashSum + allfields.hashCode();
@@ -1629,19 +1299,19 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
       generateConstructor(tn, mandatory, "    ");
 		
 		for (ElementDefinition c : children) {
-			generateAccessors(e, c, "        ", tn, null);
+			generateAccessors(analysis, ti, c, "        ", null);
 		}
-		generateTypeSpecificAccessors(tn);
-    generateChildrenRegister(e, children, "      ", false, isInterface, rn);
-    generatePropertyGetterId(e, children, "    ", isInterface);
-    generatePropertySetterId(e, children, "    ", isInterface);
-    generatePropertySetterName(e, children, "    ", isInterface);
-    generatePropertyMaker(e, children, "    ", isInterface, null);
-    generatePropertyTypeGetter(e, children, "    ", isInterface);
-    generateChildAdder(e, children, "    ", classname, isInterface);
-    generateCopy(e, children, tn, true, false, isInterface);
-    generateEquals(e, children, tn, true, false, isInterface);
-    generateIsEmpty(e, children, tn, true, false, isInterface);
+
+    generateChildrenRegister(analysis, ti,"      ");
+    generatePropertyGetterId(analysis, ti,"    ");
+    generatePropertySetterId(analysis, ti,"    ");
+    generatePropertySetterName(analysis, ti,"    ");
+    generatePropertyMaker(analysis, ti,"    ");
+    generatePropertyTypeGetter(analysis, ti,"    ");
+    generateChildAdder(analysis, ti,"    ");
+    generateCopy(analysis, ti, true);
+    generateEquals(analysis, ti, true);
+    generateIsEmpty(analysis, ti, true);
     generateFhirType(e.getPath());
     if (config.getAdornments().containsKey(tn)) {
       write("// added from java-adornments.txt:\r\n");
@@ -1654,7 +1324,12 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 	}
 
   
-  private void generateEquals(ElementDefinition e, List<ElementDefinition> children, String tn, boolean owner, boolean isAbstract, boolean isInterface) throws Exception {
+  private void generateEquals(Analysis analysis, TypeInfo ti, boolean owner) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    String tn = ti.getName();
+    boolean isAbstract = analysis.isAbstract(); 
+    boolean isInterface = analysis.isInterface();
+    
     write("      @Override\r\n");
     write("      public boolean equalsDeep(Base other_) {\r\n");
     write("        if (!super.equalsDeep(other_))\r\n");
@@ -1725,12 +1400,17 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     write("      }\r\n\r\n");  
   }
   
-	private void generateCopy(ElementDefinition e, List<ElementDefinition> children, String tn, boolean owner, boolean isAbstract, boolean isInterface) throws Exception {
+	private void generateCopy(Analysis analysis, TypeInfo ti, boolean owner) throws Exception {
+	  List<ElementDefinition> children = ti.getChildren();
+	  String tn = ti.getName();
+	  boolean isAbstract = analysis.isAbstract();
+	  boolean isInterface = analysis.isInterface();
+	      
+	  
 	  if (isAbstract) {
       write("      public abstract "+tn+" copy();\r\n\r\n");
       write("      public void copyValues("+tn+" dst) {\r\n");
-      if (!e.getName().equals("Element") && !e.getName().equals("Resource"))
-        write("        super.copyValues(dst);\r\n");
+      write("        super.copyValues(dst);\r\n");
 	  } else {
       write("      public "+tn+" copy() {\r\n");
       write("        "+tn+" dst = new "+tn+"();\r\n");
@@ -1744,9 +1424,10 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
       if (!isInterface) {
 	      String name = getElementName(c.getName(), true);
 	      if (c.unbounded()) {
+	        String ctn = c.getUserString("java.type");
 	        write("        if ("+name+" != null) {\r\n");
-	        write("          dst."+name+" = new ArrayList<"+typeNames.get(c)+">();\r\n");
-	        write("          for ("+typeNames.get(c)+" i : "+name+")\r\n");
+	        write("          dst."+name+" = new ArrayList<"+ctn+">();\r\n");
+	        write("          for ("+ctn+" i : "+name+")\r\n");
 	        write("            dst."+name+".add(i.copy());\r\n");
 	        write("        };\r\n");
 	      } else {
@@ -1764,7 +1445,12 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     }
   }
 
-  private void generateIsEmpty(ElementDefinition e, List<ElementDefinition> children, String tn, boolean owner, boolean isAbstract, boolean isInterface) throws Exception {
+  private void generateIsEmpty(Analysis analysis, TypeInfo ti, boolean owner) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    String tn = ti.getName();
+    boolean isAbstract = analysis.isAbstract();
+    boolean isInterface = analysis.isInterface();
+    
     write("      public boolean isEmpty() {\r\n");
     write("        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(");
     int col = 70;
@@ -1792,99 +1478,6 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     write("      }\r\n\r\n");
   }
 
-  private void scanNestedTypes(StructureDefinition structure, ElementDefinition root, List<ElementDefinition> children, String path, ElementDefinition e) throws Exception {
-    String tn = null;
-    if (e.typeSummary().equals("code") && e.hasBinding()) {
-      ElementDefinitionBindingComponent cd = e.getBinding();
-      if (isEnum(cd)) {
-        ValueSet vs = definitions.getValuesets().get(cd.getValueSet()); 	
-        if (vs != null) {
-          tn = getCodeListType(vs.getName());
-          if (!enumNames.contains(tn)) {
-            enumNames.add(tn);
-            enums.add(e);
-          }
-          typeNames.put(e,  "Enumeration<"+tn+">");
-          e.setUserData("type", "Enumeration<"+tn+">");
-        }
-      }
-		}
-		if (tn == null) {
-			if (e.getType().size() > 0 && !e.hasContentReference() && (!Utilities.existsInList(e.getType().get(0).getCode(), "Element", "BackboneElement"))) {
-				tn = e.typeSummary();
-//				if (clss != JavaGenClass.Resource) {
-//					if (tn.equals("boolean")) tn = "Boolean";
-//					else if (tn.equals("integer")) tn = "Integer";
-//					else if (tn.equals("decimal")) tn = "Decimal";
-//					else if (tn.equals("base64Binary")) tn = "Base64Binary";
-//					else if (tn.equals("instant")) tn = "Instant";
-//					else if (tn.equals("string")) tn = "StringType";
-//          else if (tn.equals("uri")) tn = "Uri";
-//          else if (tn.equals("xml:lang")) tn = "Code";
-//					else if (tn.equals("code")) tn = "Code";
-//					else if (tn.equals("oid")) tn = "Oid";
-//          else if (tn.equals("uuid")) tn = "Uuid";
-//					else if (tn.equals("sid")) tn = "Sid";
-//					else if (tn.equals("id")) tn = "Id";
-//					else if (tn.equals("date")) tn = "Date";
-//					else if (tn.equals("dateTime")) tn = "DateTime";
-//					else 
-//						tn = getTypeName(e);
-//				} else 
-				tn = getTypeName(e);
-				if (e.typeSummary().equals("xml:lang"))
-				  tn = "CodeType";
-				if (e.typeSummary().equals("xhtml")) 
-					tn = "XhtmlNode";
-				else if (e.getType().size() > 1)
-					tn ="DataType";
-				else if (definitions.hasPrimitiveType(tn))
-				  tn = upFirst(tn)+"Type";
-
-				typeNames.put(e,  tn);
-				e.setUserData("type", tn);
-			} else {
-				if (e.hasContentReference()) {
-				  ElementDefinition er = getElementForPath(structure, e.getContentReference().substring(1));
-				  if (typeNames.containsKey(er)) {
-  					tn = typeNames.get(er);
-				  } else {
-				    tn = "@"+er.getPath(); // have to resolve this later
-				  }
-					typeNames.put(e,  tn);
-					e.setUserData("type", tn);
-//				} else if (e.getDeclaredTypeName() != null) {
-//					tn = e.getDeclaredTypeName();
-//					typeNames.put(e,  tn);
-//					System.out.println(tn);
-				} else {
-					if (e.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name")) 
-						tn = e.getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name")+"Component";
-					else if (config.getIni().hasProperty("typenames", e.getPath())) {
-            tn = config.getIni().getStringProperty("typenames", e.getPath())+"Component";
-					} else {
-						tn = path+getTitle(e.getName())+"Component";
-					}
-					if (tn.equals("Element"))
-						tn = "Element_";
-					strucs.add(e);
-					if (typeNameStrings.contains(tn)) {
-						char i = 'A';
-						while (typeNameStrings.contains(tn+i))
-							i++;
-						tn = tn + i;
-					}
-					typeNames.put(e,  tn);
-					e.setUserData("type", tn);
-					typeNameStrings.add(tn);
-					List<ElementDefinition> gcl = filterChildren(ProfileUtilities.getChildList(structure, e));
-					for (ElementDefinition c : gcl) {
-						scanNestedTypes(structure, root, filterChildren(ProfileUtilities.getChildList(structure, c)), path+getTitle(e.getName()), c);
-					}
-				}
-			}
-		}
-	}
 
 	private ElementDefinition getElementForPath(StructureDefinition structure, String pathname) throws Exception {
 	  String[] path = pathname.split("\\.");
@@ -1905,21 +1498,21 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 	}
 
 
-	private void generateField(ElementDefinition root, ElementDefinition e, String indent, int order, StructureDefinition structure) throws Exception {
-		String tn = typeNames.get(e);
+	private void generateField(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent, int order) throws Exception {
+		String tn = e.getUserString("java.type");
 
 		if (e.unbounded()) {
-		  jdoc(indent, replaceTitle(root.getName(), e.getDefinition()));
-      writeAttributeAnnotation(indent, e, order, tn, root.getName(), structure, root);
-			if (tn == null && e.hasContentReference())
-				writeWithHash(indent+"protected List<"+root.getName()+"> "+getElementName(e.getName(), true)+";\r\n");
-			else {
+		  jdoc(indent, replaceTitle(analysis.getName(), e.getDefinition()));
+      writeAttributeAnnotation(indent, e, order, tn, analysis.getName(), analysis.getStructure());
+//			if (tn == null && e.hasContentReference())
+//				writeWithHash(indent+"protected List<"+tn+"> "+getElementName(e.getName(), true)+";\r\n");
+//			else {
 			  writeWithHash(indent+"protected List<"+tn+"> "+getElementName(e.getName(), true)+";\r\n");
-			}
+//			}
 			write("\r\n");
 		} else {
-      jdoc(indent, replaceTitle(root.getName(), e.getDefinition()));
-      writeAttributeAnnotation(indent, e, order, tn, root.getName(), structure, root);
+      jdoc(indent, replaceTitle(analysis.getName(), e.getDefinition()));
+      writeAttributeAnnotation(indent, e, order, tn, analysis.getName(), analysis.getStructure());
       writeWithHash(indent+"protected "+tn+" "+getElementName(e.getName(), true)+";\r\n");
       write("\r\n");
 		}
@@ -1938,7 +1531,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     return rn;
   }
 
-  private void writeAttributeAnnotation(String indent, ElementDefinition e, int order, String tn, String rn, StructureDefinition structure, ElementDefinition root) throws Exception {
+  private void writeAttributeAnnotation(String indent, ElementDefinition e, int order, String tn, String rn, StructureDefinition structure) throws Exception {
     String elementName = getElementName(e.getName(), true);
     if (elementName.endsWith("_")) {
       // The annotation doesn't need trailing _
@@ -1990,7 +1583,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
   private String getTypeClassList(ElementDefinition e, String tn, StructureDefinition structure) throws Exception {
     if (e.hasContentReference()) {
       ElementDefinition er = getElementForPath(structure, e.getContentReference().substring(1));
-      String s = typeNames.get(er);
+      String s = er.getUserString("java.type");
       return s+".class";
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -2074,28 +1667,29 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
       tns = tns.substring(0, tns.length()-1);
     }
 
-    if (tns != null && enumNames.contains(tns))
+    if (tns != null /*&& enumNames.contains(tns)*/)
       return tns;
     
     return "??";
   }
-	private void generateAccessors(ElementDefinition root, ElementDefinition e, String indent, String className, ElementDefinition inh) throws Exception {
-		String tn = typeNames.get(e);
+	private void generateAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent, ElementDefinition inh) throws Exception {
+		String tn = e.getUserString("java.type");
+		String className = ti.getName();
 
 		if (Utilities.noString(tn)) {
 		  throw new Error("??");
 		}
-		boolean isReferenceRefField = (root.getName().equals("Reference") && e.getName().equals("reference"));
+		boolean isReferenceRefField = (analysis.getName().equals("Reference") && e.getName().equals("reference"));
 		
 		String simpleType = getSimpleType(tn);
 		if (e.unbounded() || (inh != null && inh.unbounded())) {
 		  /*
 		   * getXXX()for repeatable type
 		   */
-		  jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+		  jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		  String listGenericType;
 		  if (tn == null && e.hasContentReference()) {
-		    listGenericType = root.getName();
+		    listGenericType = analysis.getName();
 		  } else {
 		    listGenericType = tn;
 		  }
@@ -2153,7 +1747,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 		    /*
 		     * addXXXElement() for repeatable primitive
 		     */
-		    jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+		    jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		    write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"Element() {//2 \r\n");
 		    if (!e.unbounded()) {
           write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
@@ -2175,7 +1769,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 		    /*
 		     * addXXX(foo) for repeatable primitive
 		     */
-		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		    write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
 		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
 		    write(indent+"  t.setValue(value);\r\n");
@@ -2189,7 +1783,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 		    /*
 		     * hasXXX(foo) for repeatable primitive
 		     */
-		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		    write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
 		    write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
 		    write(indent+"    return false;\r\n");
@@ -2280,7 +1874,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 		  }
 		} else {
       if (!"xhtml".equals(e.typeSummary()) && isJavaPrimitive(e) || (e.getType().size() == 1 && e.typeSummary().startsWith("canonical("))) {
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         if (isReferenceRefField) {
           /*
            * Reference#getReferenceElement is defined differently in BaseReference.java?
@@ -2313,13 +1907,13 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         write(indent+"  return this."+getElementName(e.getName(), true)+" != null && !this."+getElementName(e.getName(), true)+".isEmpty();\r\n");
         write(indent+"}\r\n");
         write("\r\n");
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value) { \r\n");
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");
         write(indent+"}\r\n");
         write("\r\n");
-        jdoc(indent, "@return "+replaceTitle(root.getName(), e.getDefinition()));
+        jdoc(indent, "@return "+replaceTitle(analysis.getName(), e.getDefinition()));
         write(indent+"public "+simpleType+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
         if (e.typeSummary().equals("boolean"))
           write(indent+"  return this."+getElementName(e.getName(), true)+" == null || this."+getElementName(e.getName(), true)+".isEmpty() ? false : this."+getElementName(e.getName(), true)+".getValue();\r\n");
@@ -2331,12 +1925,12 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
           write(indent+"  return this."+getElementName(e.getName(), true)+" == null ? null : this."+getElementName(e.getName(), true)+".getValue();\r\n");
         write(indent+"}\r\n");
         write("\r\n");
-	      generateSetter(e, indent, className, tn, simpleType, root.getName());
+	      generateSetter(e, indent, className, tn, simpleType, analysis.getName());
 
 	      // BigDecimal sugar methods 
 	      if (simpleType.equals("BigDecimal")) {
-          generateSetter(e, indent, className, tn, "long", root.getName());
-	        generateSetter(e, indent, className, tn, "double", root.getName());
+          generateSetter(e, indent, className, tn, "long", analysis.getName());
+	        generateSetter(e, indent, className, tn, "double", analysis.getName());
 	      }
 //	      // code sugar methods
 //	      if (e.typeSummary().equals("code")) {
@@ -2362,7 +1956,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 //        }
 	      
       } else {
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
         if (!tn.equals("Resource") && !tn.equals("DataType") && !tn.endsWith(".DataType")) {
           write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
@@ -2379,7 +1973,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         write("\r\n");
         if (e.getType().size() > 1 && (tn.equals("DataType") || !tn.endsWith(".DataType"))) {
           for (TypeRefComponent t : e.getType()) {
-            jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+            jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
             String ttn = getTypename(t);
             write(indent+"public "+ttn+" get"+getTitle(getElementName(e.getName(), false))+ttn+"() throws FHIRException { \r\n");
             write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
@@ -2399,7 +1993,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         write(indent+"  return this."+getElementName(e.getName(), true)+" != null && !this."+getElementName(e.getName(), true)+".isEmpty();\r\n");
         write(indent+"}\r\n");
         write("\r\n");
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+tn+" value) { \r\n");
         if (e.getType().size() > 1 && (tn.equals("DataType") || !tn.endsWith(".DataType"))) {
           write(indent+"  if (value != null && !(");
@@ -2421,32 +2015,32 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
 
 	}
 
-  private void generateAbstractAccessors(ElementDefinition root, ElementDefinition e, String indent, String className) throws Exception {
-    String tn = typeNames.get(e);
+  private void generateAbstractAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent) throws Exception {
+    String tn = e.getUserString("java.type");
 
     if (Utilities.noString(tn)) {
       throw new Error("??");
     }
-    boolean isReferenceRefField = (root.getName().equals("Reference") && e.getName().equals("reference"));
+    boolean isReferenceRefField = (ti.getDefn().getName().equals("Reference") && e.getName().equals("reference"));
     
     String simpleType = getSimpleType(tn);
     if (e.unbounded()) {
       /*
        * getXXX()for repeatable type
        */
-      jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+      jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
       String listGenericType;
-      if (tn == null && e.hasContentReference()) {
-        listGenericType = root.getName();
-      } else {
+//      if (tn == null && e.hasContentReference()) {
+//        listGenericType = root.getName();
+//      } else {
         listGenericType = tn;
-      }
+//      }
       write(indent+"public abstract List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"(); \r\n");
       /*
        * setXXX(List<foo>) for repeating type
        */
       jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
-      write(indent+"public abstract " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + "); \r\n");
+      write(indent+"public abstract " + ti.getName() + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + "); \r\n");
 
       /*
        * hasXXX() for repeatable type
@@ -2457,19 +2051,19 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         /*
          * addXXXElement() for repeatable primitive
          */
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public abstract "+tn+" add"+getTitle(getElementName(e.getName(), false))+"Element();//2 \r\n");
 
         /*
          * addXXX(foo) for repeatable primitive
          */
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
-        write(indent+"public abstract "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value); //1\r\n");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
+        write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value); //1\r\n");
 
         /*
          * hasXXX(foo) for repeatable primitive
          */
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public abstract boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value); \r\n");
       } else {
         if (!definitions.hasResource(tn)) {
@@ -2481,25 +2075,25 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
           /*
            * addXXX(foo) for repeatable composite
            */
-          write(indent+"public abstract "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3\r\n");
+          write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3\r\n");
         } else {
           /*
            * addXXX(foo) for repeatable composite
            */
-          write(indent+"public abstract "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3\r\n");
+          write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3\r\n");
         }
 
         /*
          * getXXXFirstRep() for repeatable element
          */
-        if (!"DomainResource".equals(className)) {
+        if (!"DomainResource".equals(ti.getName())) {
           jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist");
           write(indent+"public abstract "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep(); \r\n");
         }
       }
     } else {
       if (!"xhtml".equals(e.typeSummary()) && isJavaPrimitive(e) || (e.getType().size() == 1 && e.typeSummary().startsWith("canonical("))) {
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         if (isReferenceRefField) {
           /*
            * Reference#getReferenceElement is defined differently in BaseReference.java?
@@ -2513,31 +2107,31 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         write(indent+"public abstract boolean has"+getTitle(getElementName(e.getName(), false))+"Element(); \r\n");
         write(indent+"public abstract boolean has"+getTitle(getElementName(e.getName(), false))+"(); \r\n");
         write("\r\n");
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
-        write(indent+"public abstract "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value); \r\n");
-        jdoc(indent, "@return "+replaceTitle(root.getName(), e.getDefinition()));
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
+        write(indent+"public abstract "+ti.getName()+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value); \r\n");
+        jdoc(indent, "@return "+replaceTitle(analysis.getName(), e.getDefinition()));
         write(indent+"public abstract "+simpleType+" get"+getTitle(getElementName(e.getName(), false))+"(); \r\n");
-        generateAbstractSetter(e, indent, className, tn, simpleType, root.getName());
+        generateAbstractSetter(e, indent, ti.getName(), tn, simpleType, analysis.getName());
 
         // BigDecimal sugar methods 
         if (simpleType.equals("BigDecimal")) {
-          generateAbstractSetter(e, indent, className, tn, "long", root.getName());
-          generateAbstractSetter(e, indent, className, tn, "double", root.getName());
+          generateAbstractSetter(e, indent, ti.getName(), tn, "long", analysis.getName());
+          generateAbstractSetter(e, indent, ti.getName(), tn, "double", analysis.getName());
         }        
       } else {
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public abstract "+tn+" get"+getTitle(getElementName(e.getName(), false))+"(); \r\n");
         if (e.getType().size() > 1 && (tn.equals("DataType") || !tn.endsWith(".DataType"))) {
           for (TypeRefComponent t : e.getType()) {
-            jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+            jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
             String ttn = getTypename(t);
             write(indent+"public abstract "+ttn+" get"+getTitle(getElementName(e.getName(), false))+ttn+"() throws FHIRException; \r\n");
             write(indent+"public abstract boolean has"+getTitle(getElementName(e.getName(), false))+ttn+"(); \r\n");
           }
         }
         write(indent+"public abstract boolean has"+getTitle(getElementName(e.getName(), false))+"(); \r\n");
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
-        write(indent+"public abstract "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+tn+" value); \r\n");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
+        write(indent+"public abstract "+ti.getName()+" set"+getTitle(getElementName(e.getName(), false))+"("+tn+" value); \r\n");
         write("\r\n");
       }
     }
@@ -2584,13 +2178,9 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
     return hashSum;
   }
 
-  public void setInheritedHash(String value) {
-    inheritedHash = value;
-    
-  }
-
-  private void generateUnimplementedAccessors(ElementDefinition root, ElementDefinition e, String indent, String className) throws Exception {
-    String tn = typeNames.get(e);
+  private void generateUnimplementedAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent) throws Exception {
+    String tn = e.getUserString("java.type");
+    String className = ti.getName();
 
     if (Utilities.noString(tn)) {
       tn = e.getUserString("type");
@@ -2598,29 +2188,29 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         throw new Error("??");
       }
     }
-    boolean isReferenceRefField = (root.getName().equals("Reference") && e.getName().equals("reference"));
+    boolean isReferenceRefField = (analysis.getName().equals("Reference") && e.getName().equals("reference"));
     
     String simpleType = getSimpleType(tn);
     if (e.unbounded()) {
       /*
        * getXXX()for repeatable type
        */
-      jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+      jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
       String listGenericType;
       if (tn == null && e.hasContentReference()) {
-        listGenericType = root.getName();
+        listGenericType = analysis.getName();
       } else {
         listGenericType = tn;
       }
       write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-      write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+      write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
       write(indent+"}\r\n");
       /*
        * setXXX(List<foo>) for repeating type
        */
       jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
       write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
-      write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+      write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
       write(indent+"}\r\n");
 
       /*
@@ -2634,23 +2224,23 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         /*
          * addXXXElement() for repeatable primitive
          */
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"Element(){//2 \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
 
         /*
          * addXXX(foo) for repeatable primitive
          */
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
 
         /*
          * hasXXX(foo) for repeatable primitive
          */
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value); \r\n");
         write(indent+"  return false;\r\n");
         write(indent+"}\r\n");
@@ -2660,21 +2250,21 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
            * addXXX() for repeatable composite
            */
           write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
           write(indent+"}\r\n");
 
           /*
            * addXXX(foo) for repeatable composite
            */
           write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
           write(indent+"}\r\n");
         } else {
           /*
            * addXXX(foo) for repeatable composite
            */
           write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
           write(indent+"}\r\n");
         }
 
@@ -2684,13 +2274,13 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         if (!"DomainResource".equals(className)) {
           jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist");
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep() { \r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
           write(indent+"}\r\n");
         }
       }
     } else {
       if (!"xhtml".equals(e.typeSummary()) && isJavaPrimitive(e) || (e.getType().size() == 1 && e.typeSummary().startsWith("canonical("))) {
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         if (isReferenceRefField) {
           /*
            * Reference#getReferenceElement is defined differently in BaseReference.java?
@@ -2699,7 +2289,7 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         } else { 
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"Element() { \r\n");
         }
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
         write("\r\n");
 
@@ -2710,31 +2300,31 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         write(indent+"  return false;\r\n");
         write(indent+"}\r\n");
         write("\r\n");
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value) { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
         write(indent+"public "+simpleType+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
-        generateUnimplementedSetter(root, e, indent, className, tn, simpleType, root.getName());
+        generateUnimplementedSetter(analysis, e, indent, className, tn, simpleType, analysis.getName());
 
         // BigDecimal sugar methods 
         if (simpleType.equals("BigDecimal")) {
-          generateUnimplementedSetter(root, e, indent, className, tn, "long", root.getName());
-          generateUnimplementedSetter(root, e, indent, className, tn, "double", root.getName());
+          generateUnimplementedSetter(analysis, e, indent, className, tn, "long", analysis.getName());
+          generateUnimplementedSetter(analysis, e, indent, className, tn, "double", analysis.getName());
         }        
       } else {
-        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
         if (e.getType().size() > 1 && (tn.equals("DataType") || !tn.endsWith(".DataType"))) {
           for (TypeRefComponent t : e.getType()) {
-            jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+            jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
             String ttn = getTypename(t);
             write(indent+"public "+ttn+" get"+getTitle(getElementName(e.getName(), false))+ttn+"() { throws FHIRException; \r\n");
-            write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+            write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
             write(indent+"}\r\n");
             write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
           }
@@ -2742,9 +2332,9 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
         write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
         write(indent+"  return false;\r\n");
         write(indent+"}\r\n");
-        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(root.getName(), e.getDefinition())+")");
+        jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+tn+" value) { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
         write(indent+"}\r\n");
         write("\r\n");
       }
@@ -2753,10 +2343,10 @@ private void generatePropertyMaker(ElementDefinition p, List<ElementDefinition> 
   }
 
 
-  private void generateUnimplementedSetter(ElementDefinition root, ElementDefinition e, String indent, String className, String tn, String simpleType, String rn) throws IOException {
+  private void generateUnimplementedSetter(Analysis analysis, ElementDefinition e, String indent, String className, String tn, String simpleType, String rn) throws IOException {
     jdoc(indent, "@param value "+replaceTitle(rn, e.getDefinition()));
     write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
-    write(indent+"  throw new Error(\"The resource type \\\""+root.getPath()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+    write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
     write(indent+"}\r\n");
   }
 }
