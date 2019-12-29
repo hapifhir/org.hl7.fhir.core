@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A financial tool for tracking value accrued for a particular purpose.  In the healthcare field, used to track charges for a patient, cost centers, etc.
  */
@@ -243,7 +245,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
      */
       public CoverageComponent(Reference coverage) {
         super();
-        this.coverage = coverage;
+        this.setCoverage(coverage);
       }
 
         /**
@@ -373,7 +375,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -351767064:  return getCoverage(); 
+        case -351767064:  return getCoverage();
         case -1165461084:  return getPriorityElement();
         default: return super.makeProperty(hash, name);
         }
@@ -397,7 +399,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.coverage;
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type Account.coverage.priority");
         }
         else
           return super.addChild(name);
@@ -483,7 +485,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
      */
       public GuarantorComponent(Reference party) {
         super();
-        this.party = party;
+        this.setParty(party);
       }
 
         /**
@@ -641,9 +643,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 106437350:  return getParty(); 
+        case 106437350:  return getParty();
         case -1013289154:  return getOnHoldElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -667,7 +669,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.party;
         }
         else if (name.equals("onHold")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.onHold");
+          throw new FHIRException("Cannot call addChild on a primitive type Account.guarantor.onHold");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -813,9 +815,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
   /**
    * Constructor
    */
-    public Account(Enumeration<AccountStatus> status) {
+    public Account(AccountStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -862,7 +864,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1033,7 +1035,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
      */
     public Reference getSubjectFirstRep() { 
       if (getSubject().isEmpty()) {
@@ -1110,7 +1112,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return The first repetition of repeating field {@link #coverage}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #coverage}, creating it if it does not already exist {3}
      */
     public CoverageComponent getCoverageFirstRep() { 
       if (getCoverage().isEmpty()) {
@@ -1236,7 +1238,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return The first repetition of repeating field {@link #guarantor}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #guarantor}, creating it if it does not already exist {3}
      */
     public GuarantorComponent getGuarantorFirstRep() { 
       if (getGuarantor().isEmpty()) {
@@ -1399,15 +1401,15 @@ A coverage may only be responsible for specific types of charges, and the sequen
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return getType();
         case 3373707:  return getNameElement();
         case -1867885268:  return addSubject(); 
-        case 2129104086:  return getServicePeriod(); 
+        case 2129104086:  return getServicePeriod();
         case -351767064:  return addCoverage(); 
-        case 106164915:  return getOwner(); 
+        case 106164915:  return getOwner();
         case -1724546052:  return getDescriptionElement();
         case -188629045:  return addGuarantor(); 
-        case -995410646:  return getPartOf(); 
+        case -995410646:  return getPartOf();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1557,6 +1559,46 @@ A coverage may only be responsible for specific types of charges, and the sequen
    }
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Account number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Account.identifier", description="Account number", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Account number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>Human-readable label</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Account.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="Account.name", description="Human-readable label", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>Human-readable label</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Account.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
    * Search parameter: <b>owner</b>
    * <p>
    * Description: <b>Entity managing the Account</b><br>
@@ -1583,24 +1625,30 @@ A coverage may only be responsible for specific types of charges, and the sequen
   public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Account:owner").toLocked();
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>Account number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.identifier</b><br>
+   * Description: <b>The entity that caused the expenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="Account.identifier", description="Account number", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>Account number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.identifier</b><br>
+   * Description: <b>The entity that caused the expenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Account:patient").toLocked();
 
  /**
    * Search parameter: <b>period</b>
@@ -1623,6 +1671,26 @@ A coverage may only be responsible for specific types of charges, and the sequen
   public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
 
  /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Account.status", description="active | inactive | entered-in-error | on-hold | unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
    * Search parameter: <b>subject</b>
    * <p>
    * Description: <b>The entity that caused the expenses</b><br>
@@ -1630,7 +1698,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
    * Path: <b>Account.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="Account.subject", description="The entity that caused the expenses", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="subject", path="Account.subject", description="The entity that caused the expenses", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -1647,52 +1715,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
    * the path value of "<b>Account:subject</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Account:subject").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Account:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Account:patient").toLocked();
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Human-readable label</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Account.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Account.name", description="Human-readable label", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Human-readable label</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Account.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
    * Search parameter: <b>type</b>
@@ -1713,26 +1735,6 @@ A coverage may only be responsible for specific types of charges, and the sequen
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Account.status", description="active | inactive | entered-in-error | on-hold | unknown", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

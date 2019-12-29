@@ -26,12 +26,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.utils.formats.Turtle;
 import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
 import org.hl7.fhir.r5.utils.formats.Turtle.Section;
@@ -85,6 +87,9 @@ public abstract class RdfParserBase extends ParserBase implements IParser  {
 		}
 	}
 
+  protected void composeBase(Complex t, String parentType, String name, Base element, int index) {
+  }
+
 	@Override
 	public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
 		throw new Error("Not supported in RDF");  
@@ -94,7 +99,7 @@ public abstract class RdfParserBase extends ParserBase implements IParser  {
 		return "\"" +Turtle.escape(value, true) + "\"";
 	}
 
-	protected void composeXhtml(Complex t, String string, String string2, XhtmlNode div, int i) {
+	protected void composeXhtmlNode(Complex t, String string, String string2, XhtmlNode div, int i) {
 	}
 
 	protected void decorateCode(Complex t, Enumeration<? extends Enum> value) {

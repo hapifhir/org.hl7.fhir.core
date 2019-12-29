@@ -290,6 +290,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		parseElementAttributes(xpp, e);
 	}
 
+  protected void parseResourceAttributes(XmlPullParser xpp, Resource r) {
+  }
+
 	private String pathForLocation(XmlPullParser xpp) {
 		return xpp.getPositionDescription();
 	}
@@ -388,6 +391,12 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 			for (String comment : base.getFormatCommentsPost())
 				xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
 	}
+  protected void composeResourceAttributes(Resource element) throws IOException {
+    if (style != OutputStyle.CANONICAL)
+      for (String comment : element.getFormatCommentsPre())
+        xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
+  }
+
 	protected void composeTypeAttributes(DataType type) throws IOException {
 		composeElementAttributes(type);
 	}
@@ -410,6 +419,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		}
 	}
 
+  protected void composeBaseElements(Base element) throws IOException {
+    // nothing
+  }
 
 	abstract protected void composeString(String name, StringType value) throws IOException ;
 

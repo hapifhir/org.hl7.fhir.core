@@ -172,18 +172,18 @@ public class TerminologyCapabilities extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.TerminologyCapabilities.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case INSTANCE: return org.hl7.fhir.r5.model.TerminologyCapabilities.CapabilityStatementKind.INSTANCE;
-    case CAPABILITY: return org.hl7.fhir.r5.model.TerminologyCapabilities.CapabilityStatementKind.CAPABILITY;
-    case REQUIREMENTS: return org.hl7.fhir.r5.model.TerminologyCapabilities.CapabilityStatementKind.REQUIREMENTS;
-    default: return org.hl7.fhir.r5.model.TerminologyCapabilities.CapabilityStatementKind.NULL;
+    case INSTANCE: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.INSTANCE;
+    case CAPABILITY: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.CAPABILITY;
+    case REQUIREMENTS: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.REQUIREMENTS;
+    default: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r5.model.TerminologyCapabilities.CapabilityStatementKind src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

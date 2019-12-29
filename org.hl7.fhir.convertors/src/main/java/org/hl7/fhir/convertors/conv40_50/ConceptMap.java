@@ -68,7 +68,7 @@ public class ConceptMap extends VersionConvertor_40_50 {
     if (src.hasUrl())
       tgt.setUrlElement(convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(convertIdentifier(src.getIdentifier()));
     if (src.hasVersion())
       tgt.setVersionElement(convertString(src.getVersionElement()));
     if (src.hasName())
@@ -112,7 +112,7 @@ public class ConceptMap extends VersionConvertor_40_50 {
     if (src.hasUrl())
       tgt.setUrlElement(convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasVersion())
       tgt.setVersionElement(convertString(src.getVersionElement()));
     if (src.hasName())

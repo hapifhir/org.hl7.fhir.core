@@ -272,18 +272,18 @@ public class ExplanationOfBenefit extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ExplanationOfBenefit.Use convertUse(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.Use convertUse(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case CLAIM: return org.hl7.fhir.r5.model.ExplanationOfBenefit.Use.CLAIM;
-    case PREAUTHORIZATION: return org.hl7.fhir.r5.model.ExplanationOfBenefit.Use.PREAUTHORIZATION;
-    case PREDETERMINATION: return org.hl7.fhir.r5.model.ExplanationOfBenefit.Use.PREDETERMINATION;
-    default: return org.hl7.fhir.r5.model.ExplanationOfBenefit.Use.NULL;
+    case CLAIM: return org.hl7.fhir.r5.model.Enumerations.Use.CLAIM;
+    case PREAUTHORIZATION: return org.hl7.fhir.r5.model.Enumerations.Use.PREAUTHORIZATION;
+    case PREDETERMINATION: return org.hl7.fhir.r5.model.Enumerations.Use.PREDETERMINATION;
+    default: return org.hl7.fhir.r5.model.Enumerations.Use.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ExplanationOfBenefit.Use convertUse(org.hl7.fhir.r5.model.ExplanationOfBenefit.Use src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ExplanationOfBenefit.Use convertUse(org.hl7.fhir.r5.model.Enumerations.Use src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -294,19 +294,19 @@ public class ExplanationOfBenefit extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes convertRemittanceOutcome(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case QUEUED: return org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome.QUEUED;
-    case COMPLETE: return org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome.COMPLETE;
-    case ERROR: return org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome.ERROR;
-    case PARTIAL: return org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome.PARTIAL;
-    default: return org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome.NULL;
+    case QUEUED: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED;
+    case COMPLETE: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE;
+    case ERROR: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR;
+    case PARTIAL: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL;
+    default: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.ExplanationOfBenefit.RemittanceOutcome src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

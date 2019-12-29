@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,11 +67,104 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Details and position information for a physical place where services are provided and resources and participants may be stored, found, contained, or accommodated.
  */
 @ResourceDef(name="Location", profile="http://hl7.org/fhir/StructureDefinition/Location")
 public class Location extends DomainResource {
+
+    public enum LocationMode {
+        /**
+         * The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).
+         */
+        INSTANCE, 
+        /**
+         * The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).
+         */
+        KIND, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static LocationMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instance".equals(codeString))
+          return INSTANCE;
+        if ("kind".equals(codeString))
+          return KIND;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown LocationMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTANCE: return "instance";
+            case KIND: return "kind";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case INSTANCE: return "http://hl7.org/fhir/location-mode";
+            case KIND: return "http://hl7.org/fhir/location-mode";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTANCE: return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
+            case KIND: return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTANCE: return "Instance";
+            case KIND: return "Kind";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class LocationModeEnumFactory implements EnumFactory<LocationMode> {
+    public LocationMode fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instance".equals(codeString))
+          return LocationMode.INSTANCE;
+        if ("kind".equals(codeString))
+          return LocationMode.KIND;
+        throw new IllegalArgumentException("Unknown LocationMode code '"+codeString+"'");
+        }
+        public Enumeration<LocationMode> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<LocationMode>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("instance".equals(codeString))
+          return new Enumeration<LocationMode>(this, LocationMode.INSTANCE);
+        if ("kind".equals(codeString))
+          return new Enumeration<LocationMode>(this, LocationMode.KIND);
+        throw new FHIRException("Unknown LocationMode code '"+codeString+"'");
+        }
+    public String toCode(LocationMode code) {
+      if (code == LocationMode.INSTANCE)
+        return "instance";
+      if (code == LocationMode.KIND)
+        return "kind";
+      return "?";
+      }
+    public String toSystem(LocationMode code) {
+      return code.getSystem();
+      }
+    }
 
     public enum LocationStatus {
         /**
@@ -180,270 +274,6 @@ public class Location extends DomainResource {
       }
     }
 
-    public enum LocationMode {
-        /**
-         * The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).
-         */
-        INSTANCE, 
-        /**
-         * The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).
-         */
-        KIND, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static LocationMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("instance".equals(codeString))
-          return INSTANCE;
-        if ("kind".equals(codeString))
-          return KIND;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown LocationMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INSTANCE: return "instance";
-            case KIND: return "kind";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case INSTANCE: return "http://hl7.org/fhir/location-mode";
-            case KIND: return "http://hl7.org/fhir/location-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INSTANCE: return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
-            case KIND: return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INSTANCE: return "Instance";
-            case KIND: return "Kind";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class LocationModeEnumFactory implements EnumFactory<LocationMode> {
-    public LocationMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("instance".equals(codeString))
-          return LocationMode.INSTANCE;
-        if ("kind".equals(codeString))
-          return LocationMode.KIND;
-        throw new IllegalArgumentException("Unknown LocationMode code '"+codeString+"'");
-        }
-        public Enumeration<LocationMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<LocationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("instance".equals(codeString))
-          return new Enumeration<LocationMode>(this, LocationMode.INSTANCE);
-        if ("kind".equals(codeString))
-          return new Enumeration<LocationMode>(this, LocationMode.KIND);
-        throw new FHIRException("Unknown LocationMode code '"+codeString+"'");
-        }
-    public String toCode(LocationMode code) {
-      if (code == LocationMode.INSTANCE)
-        return "instance";
-      if (code == LocationMode.KIND)
-        return "kind";
-      return "?";
-      }
-    public String toSystem(LocationMode code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DaysOfWeek {
-        /**
-         * Monday.
-         */
-        MON, 
-        /**
-         * Tuesday.
-         */
-        TUE, 
-        /**
-         * Wednesday.
-         */
-        WED, 
-        /**
-         * Thursday.
-         */
-        THU, 
-        /**
-         * Friday.
-         */
-        FRI, 
-        /**
-         * Saturday.
-         */
-        SAT, 
-        /**
-         * Sunday.
-         */
-        SUN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DaysOfWeek fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return MON;
-        if ("tue".equals(codeString))
-          return TUE;
-        if ("wed".equals(codeString))
-          return WED;
-        if ("thu".equals(codeString))
-          return THU;
-        if ("fri".equals(codeString))
-          return FRI;
-        if ("sat".equals(codeString))
-          return SAT;
-        if ("sun".equals(codeString))
-          return SUN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MON: return "mon";
-            case TUE: return "tue";
-            case WED: return "wed";
-            case THU: return "thu";
-            case FRI: return "fri";
-            case SAT: return "sat";
-            case SUN: return "sun";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MON: return "http://hl7.org/fhir/days-of-week";
-            case TUE: return "http://hl7.org/fhir/days-of-week";
-            case WED: return "http://hl7.org/fhir/days-of-week";
-            case THU: return "http://hl7.org/fhir/days-of-week";
-            case FRI: return "http://hl7.org/fhir/days-of-week";
-            case SAT: return "http://hl7.org/fhir/days-of-week";
-            case SUN: return "http://hl7.org/fhir/days-of-week";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MON: return "Monday.";
-            case TUE: return "Tuesday.";
-            case WED: return "Wednesday.";
-            case THU: return "Thursday.";
-            case FRI: return "Friday.";
-            case SAT: return "Saturday.";
-            case SUN: return "Sunday.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
-    public DaysOfWeek fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return DaysOfWeek.MON;
-        if ("tue".equals(codeString))
-          return DaysOfWeek.TUE;
-        if ("wed".equals(codeString))
-          return DaysOfWeek.WED;
-        if ("thu".equals(codeString))
-          return DaysOfWeek.THU;
-        if ("fri".equals(codeString))
-          return DaysOfWeek.FRI;
-        if ("sat".equals(codeString))
-          return DaysOfWeek.SAT;
-        if ("sun".equals(codeString))
-          return DaysOfWeek.SUN;
-        throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("mon".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
-        if ("tue".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
-        if ("wed".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
-        if ("thu".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
-        if ("fri".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
-        if ("sat".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
-        if ("sun".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
-        throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-    public String toCode(DaysOfWeek code) {
-      if (code == DaysOfWeek.MON)
-        return "mon";
-      if (code == DaysOfWeek.TUE)
-        return "tue";
-      if (code == DaysOfWeek.WED)
-        return "wed";
-      if (code == DaysOfWeek.THU)
-        return "thu";
-      if (code == DaysOfWeek.FRI)
-        return "fri";
-      if (code == DaysOfWeek.SAT)
-        return "sat";
-      if (code == DaysOfWeek.SUN)
-        return "sun";
-      return "?";
-      }
-    public String toSystem(DaysOfWeek code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class LocationPositionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -479,10 +309,10 @@ public class Location extends DomainResource {
     /**
      * Constructor
      */
-      public LocationPositionComponent(DecimalType longitude, DecimalType latitude) {
+      public LocationPositionComponent(BigDecimal longitude, BigDecimal latitude) {
         super();
-        this.longitude = longitude;
-        this.latitude = latitude;
+        this.setLongitude(longitude);
+        this.setLatitude(latitude);
       }
 
         /**
@@ -762,13 +592,13 @@ public class Location extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("longitude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.longitude");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.position.longitude");
         }
         else if (name.equals("latitude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.latitude");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.position.latitude");
         }
         else if (name.equals("altitude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.altitude");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.position.altitude");
         }
         else
           return super.addChild(name);
@@ -1161,16 +991,16 @@ public class Location extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("daysOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.daysOfWeek");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.hoursOfOperation.daysOfWeek");
         }
         else if (name.equals("allDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.allDay");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.hoursOfOperation.allDay");
         }
         else if (name.equals("openingTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.openingTime");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.hoursOfOperation.openingTime");
         }
         else if (name.equals("closingTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Location.closingTime");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.hoursOfOperation.closingTime");
         }
         else
           return super.addChild(name);
@@ -1405,7 +1235,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1739,7 +1569,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
      */
     public CodeableConcept getTypeFirstRep() { 
       if (getType().isEmpty()) {
@@ -1792,7 +1622,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
      */
     public ContactPoint getTelecomFirstRep() { 
       if (getTelecom().isEmpty()) {
@@ -1965,7 +1795,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #hoursOfOperation}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #hoursOfOperation}, creating it if it does not already exist {3}
      */
     public LocationHoursOfOperationComponent getHoursOfOperationFirstRep() { 
       if (getHoursOfOperation().isEmpty()) {
@@ -2067,7 +1897,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist {3}
      */
     public Reference getEndpointFirstRep() { 
       if (getEndpoint().isEmpty()) {
@@ -2465,130 +2295,44 @@ public class Location extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>address-city</b>
    * <p>
-   * Description: <b>An identifier for the location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Location.identifier", description="An identifier for the location", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>partof</b>
-   * <p>
-   * Description: <b>A location of which this location is a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.partOf</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="partof", path="Location.partOf", description="A location of which this location is a part", type="reference", target={Location.class } )
-  public static final String SP_PARTOF = "partof";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>partof</b>
-   * <p>
-   * Description: <b>A location of which this location is a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.partOf</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTOF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Location:partof</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("Location:partof").toLocked();
-
- /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>A (part of the) address of the location</b><br>
+   * Description: <b>A city specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.address</b><br>
+   * Path: <b>Location.address.city</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address", path="Location.address", description="A (part of the) address of the location", type="string" )
-  public static final String SP_ADDRESS = "address";
+  @SearchParamDefinition(name="address-city", path="Location.address.city", description="A city specified in an address", type="string" )
+  public static final String SP_ADDRESS_CITY = "address-city";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
    * <p>
-   * Description: <b>A (part of the) address of the location</b><br>
+   * Description: <b>A city specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.address</b><br>
+   * Path: <b>Location.address.city</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
 
  /**
-   * Search parameter: <b>address-state</b>
+   * Search parameter: <b>address-country</b>
    * <p>
-   * Description: <b>A state specified in an address</b><br>
+   * Description: <b>A country specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.address.state</b><br>
+   * Path: <b>Location.address.country</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-state", path="Location.address.state", description="A state specified in an address", type="string" )
-  public static final String SP_ADDRESS_STATE = "address-state";
+  @SearchParamDefinition(name="address-country", path="Location.address.country", description="A country specified in an address", type="string" )
+  public static final String SP_ADDRESS_COUNTRY = "address-country";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
    * <p>
-   * Description: <b>A state specified in an address</b><br>
+   * Description: <b>A country specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.address.state</b><br>
+   * Path: <b>Location.address.country</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
-
- /**
-   * Search parameter: <b>operational-status</b>
-   * <p>
-   * Description: <b>Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.operationalStatus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="operational-status", path="Location.operationalStatus", description="Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)", type="token" )
-  public static final String SP_OPERATIONAL_STATUS = "operational-status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>operational-status</b>
-   * <p>
-   * Description: <b>Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.operationalStatus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OPERATIONAL_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OPERATIONAL_STATUS);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Location.type", description="A code for the type of location", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
 
  /**
    * Search parameter: <b>address-postalcode</b>
@@ -2611,24 +2355,64 @@ public class Location extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
 
  /**
-   * Search parameter: <b>address-country</b>
+   * Search parameter: <b>address-state</b>
    * <p>
-   * Description: <b>A country specified in an address</b><br>
+   * Description: <b>A state specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.address.country</b><br>
+   * Path: <b>Location.address.state</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-country", path="Location.address.country", description="A country specified in an address", type="string" )
-  public static final String SP_ADDRESS_COUNTRY = "address-country";
+  @SearchParamDefinition(name="address-state", path="Location.address.state", description="A state specified in an address", type="string" )
+  public static final String SP_ADDRESS_STATE = "address-state";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
    * <p>
-   * Description: <b>A country specified in an address</b><br>
+   * Description: <b>A state specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.address.country</b><br>
+   * Path: <b>Location.address.state</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
+
+ /**
+   * Search parameter: <b>address-use</b>
+   * <p>
+   * Description: <b>A use code specified in an address</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.address.use</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-use", path="Location.address.use", description="A use code specified in an address", type="token" )
+  public static final String SP_ADDRESS_USE = "address-use";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
+   * <p>
+   * Description: <b>A use code specified in an address</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.address.use</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
+
+ /**
+   * Search parameter: <b>address</b>
+   * <p>
+   * Description: <b>A (part of the) address of the location</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Location.address</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address", path="Location.address", description="A (part of the) address of the location", type="string" )
+  public static final String SP_ADDRESS = "address";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <p>
+   * Description: <b>A (part of the) address of the location</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Location.address</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
 
  /**
    * Search parameter: <b>endpoint</b>
@@ -2657,37 +2441,31 @@ public class Location extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("Location:endpoint").toLocked();
 
  /**
-   * Search parameter: <b>organization</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>Searches for locations that are managed by the provided organization</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.managingOrganization</b><br>
+   * Description: <b>An identifier for the location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="organization", path="Location.managingOrganization", description="Searches for locations that are managed by the provided organization", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
+  @SearchParamDefinition(name="identifier", path="Location.identifier", description="An identifier for the location", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>Searches for locations that are managed by the provided organization</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.managingOrganization</b><br>
+   * Description: <b>An identifier for the location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Location:organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Location:organization").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>name</b>
    * <p>
    * Description: <b>A portion of the location's name or alias</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.name, Location.alias</b><br>
+   * Path: <b>Location.name | Location.alias</b><br>
    * </p>
    */
   @SearchParamDefinition(name="name", path="Location.name | Location.alias", description="A portion of the location's name or alias", type="string" )
@@ -2697,30 +2475,10 @@ public class Location extends DomainResource {
    * <p>
    * Description: <b>A portion of the location's name or alias</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Location.name, Location.alias</b><br>
+   * Path: <b>Location.name | Location.alias</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.address.use</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-use", path="Location.address.use", description="A use code specified in an address", type="token" )
-  public static final String SP_ADDRESS_USE = "address-use";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.address.use</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
 
  /**
    * Search parameter: <b>near</b>
@@ -2753,24 +2511,76 @@ Requires the near-distance parameter to be provided also</b><br>
   public static final ca.uhn.fhir.rest.gclient.SpecialClientParam NEAR = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_NEAR);
 
  /**
-   * Search parameter: <b>address-city</b>
+   * Search parameter: <b>operational-status</b>
    * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.city</b><br>
+   * Description: <b>Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.operationalStatus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-city", path="Location.address.city", description="A city specified in an address", type="string" )
-  public static final String SP_ADDRESS_CITY = "address-city";
+  @SearchParamDefinition(name="operational-status", path="Location.operationalStatus", description="Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)", type="token" )
+  public static final String SP_OPERATIONAL_STATUS = "operational-status";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
+   * <b>Fluent Client</b> search parameter constant for <b>operational-status</b>
    * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.city</b><br>
+   * Description: <b>Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.operationalStatus</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OPERATIONAL_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OPERATIONAL_STATUS);
+
+ /**
+   * Search parameter: <b>organization</b>
+   * <p>
+   * Description: <b>Searches for locations that are managed by the provided organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Location.managingOrganization</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="organization", path="Location.managingOrganization", description="Searches for locations that are managed by the provided organization", type="reference", target={Organization.class } )
+  public static final String SP_ORGANIZATION = "organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <p>
+   * Description: <b>Searches for locations that are managed by the provided organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Location.managingOrganization</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Location:organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Location:organization").toLocked();
+
+ /**
+   * Search parameter: <b>partof</b>
+   * <p>
+   * Description: <b>A location of which this location is a part</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Location.partOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="partof", path="Location.partOf", description="A location of which this location is a part", type="reference", target={Location.class } )
+  public static final String SP_PARTOF = "partof";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>partof</b>
+   * <p>
+   * Description: <b>A location of which this location is a part</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Location.partOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTOF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Location:partof</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("Location:partof").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -2791,6 +2601,26 @@ Requires the near-distance parameter to be provided also</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>A code for the type of location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Location.type", description="A code for the type of location", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>A code for the type of location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Location.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

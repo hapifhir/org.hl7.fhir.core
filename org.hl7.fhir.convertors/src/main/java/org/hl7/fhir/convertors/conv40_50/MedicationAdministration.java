@@ -24,8 +24,8 @@ package org.hl7.fhir.convertors.conv40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatus;
-import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus;
+import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes;
+import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -155,7 +155,7 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  private static CodeType convertMedicationAdministrationStatus(Enumeration<MedicationAdministrationStatus> src) {
+  private static CodeType convertMedicationAdministrationStatus(Enumeration<MedicationAdministrationStatusCodes> src) {
     if (src == null)
       return null;
     CodeType tgt = new CodeType();
@@ -164,12 +164,12 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  private static Enumeration<MedicationAdministrationStatus> convertMedicationAdministrationStatus(CodeType src) {
+  private static Enumeration<MedicationAdministrationStatusCodes> convertMedicationAdministrationStatus(CodeType src) {
     if (src == null)
       return null;
-    Enumeration<MedicationAdministrationStatus> tgt = new Enumeration<MedicationAdministrationStatus>();
+    Enumeration<MedicationAdministrationStatusCodes> tgt = new Enumeration<MedicationAdministrationStatusCodes>();
     copyElement(src, tgt);
-    tgt.setValue(MedicationAdministrationStatus.fromCode(src.getCode()));
+    tgt.setValue(MedicationAdministrationStatusCodes.fromCode(src.getCode()));
     return tgt;
   }
 

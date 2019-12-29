@@ -208,22 +208,22 @@ public class ServiceRequest extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus convertServiceRequestStatus(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertServiceRequestStatus(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case DRAFT: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.DRAFT;
-    case ACTIVE: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.ONHOLD;
-    case REVOKED: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.REVOKED;
-    case COMPLETED: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus.NULL;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+    case ONHOLD: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+    case REVOKED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus convertServiceRequestStatus(org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus convertServiceRequestStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -238,24 +238,24 @@ public class ServiceRequest extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent convertServiceRequestIntent(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertServiceRequestIntent(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.PLAN;
-    case DIRECTIVE: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.DIRECTIVE;
-    case ORDER: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.OPTION;
-    default: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent.NULL;
+    case PROPOSAL: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+    case PLAN: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+    case DIRECTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+    case ORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+    case ORIGINALORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+    case REFLEXORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+    case FILLERORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+    case INSTANCEORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+    case OPTION: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent convertServiceRequestIntent(org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent convertServiceRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -272,19 +272,19 @@ public class ServiceRequest extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority convertServiceRequestPriority(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertServiceRequestPriority(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority convertServiceRequestPriority(org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority convertServiceRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

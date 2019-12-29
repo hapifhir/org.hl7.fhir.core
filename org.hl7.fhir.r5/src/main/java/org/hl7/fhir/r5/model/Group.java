@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.
  */
@@ -73,11 +75,11 @@ public class Group extends DomainResource {
 
     public enum GroupType {
         /**
-         * Group contains "person" Patient resources.
+         * Group contains \"person\" Patient resources.
          */
         PERSON, 
         /**
-         * Group contains "animal" Patient resources.
+         * Group contains \"animal\" Patient resources.
          */
         ANIMAL, 
         /**
@@ -257,7 +259,7 @@ public class Group extends DomainResource {
         @Description(shortDefinition="Period over which characteristic is tested", formalDefinition="The period over which the characteristic is tested; e.g. the patient had an operation during the month of June." )
         protected Period period;
 
-        private static final long serialVersionUID = -1000688967L;
+        private static final long serialVersionUID = 279867823L;
 
     /**
      * Constructor
@@ -269,11 +271,11 @@ public class Group extends DomainResource {
     /**
      * Constructor
      */
-      public GroupCharacteristicComponent(CodeableConcept code, DataType value, BooleanType exclude) {
+      public GroupCharacteristicComponent(CodeableConcept code, DataType value, boolean exclude) {
         super();
-        this.code = code;
-        this.value = value;
-        this.exclude = exclude;
+        this.setCode(code);
+        this.setValue(value);
+        this.setExclude(exclude);
       }
 
         /**
@@ -479,11 +481,11 @@ public class Group extends DomainResource {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that identifies the kind of trait being asserted.", 0, 1, code);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The value of the trait that holds (or does not hold - see 'exclude') for members of the group.", 0, 1, value);
           case -1321148966: /*exclude*/  return new Property("exclude", "boolean", "If true, indicates the characteristic is one that is NOT held by members of the group.", 0, 1, exclude);
           case -991726143: /*period*/  return new Property("period", "Period", "The period over which the characteristic is tested; e.g. the patient had an operation during the month of June.", 0, 1, period);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -495,7 +497,7 @@ public class Group extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         case -1321148966: /*exclude*/ return this.exclude == null ? new Base[0] : new Base[] {this.exclude}; // BooleanType
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         default: return super.getProperty(hash, name, checkValid);
@@ -510,7 +512,7 @@ public class Group extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         case -1321148966: // exclude
           this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
@@ -528,7 +530,7 @@ public class Group extends DomainResource {
         if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("exclude")) {
           this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("period")) {
@@ -590,7 +592,7 @@ public class Group extends DomainResource {
           return this.value;
         }
         else if (name.equals("exclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.exclude");
+          throw new FHIRException("Cannot call addChild on a primitive type Group.characteristic.exclude");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -684,7 +686,7 @@ public class Group extends DomainResource {
      */
       public GroupMemberComponent(Reference entity) {
         super();
-        this.entity = entity;
+        this.setEntity(entity);
       }
 
         /**
@@ -872,7 +874,7 @@ public class Group extends DomainResource {
           return this.period;
         }
         else if (name.equals("inactive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.inactive");
+          throw new FHIRException("Cannot call addChild on a primitive type Group.member.inactive");
         }
         else
           return super.addChild(name);
@@ -1007,10 +1009,10 @@ public class Group extends DomainResource {
   /**
    * Constructor
    */
-    public Group(Enumeration<GroupType> type, BooleanType actual) {
+    public Group(GroupType type, boolean actual) {
       super();
-      this.type = type;
-      this.actual = actual;
+      this.setType(type);
+      this.setActual(actual);
     }
 
     /**
@@ -1057,7 +1059,7 @@ public class Group extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1387,7 +1389,7 @@ public class Group extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
      */
     public GroupCharacteristicComponent getCharacteristicFirstRep() { 
       if (getCharacteristic().isEmpty()) {
@@ -1440,7 +1442,7 @@ public class Group extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #member}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #member}, creating it if it does not already exist {3}
      */
     public GroupMemberComponent getMemberFirstRep() { 
       if (getMember().isEmpty()) {
@@ -1736,6 +1738,86 @@ public class Group extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTUAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTUAL);
 
  /**
+   * Search parameter: <b>characteristic-value</b>
+   * <p>
+   * Description: <b>A composite of both characteristic and value</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Group.characteristic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic-value", path="Group.characteristic", description="A composite of both characteristic and value", type="composite", compositeOf={"characteristic", "value"} )
+  public static final String SP_CHARACTERISTIC_VALUE = "characteristic-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic-value</b>
+   * <p>
+   * Description: <b>A composite of both characteristic and value</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Group.characteristic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CHARACTERISTIC_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CHARACTERISTIC_VALUE);
+
+ /**
+   * Search parameter: <b>characteristic</b>
+   * <p>
+   * Description: <b>Kind of characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic", path="Group.characteristic.code", description="Kind of characteristic", type="token" )
+  public static final String SP_CHARACTERISTIC = "characteristic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
+   * <p>
+   * Description: <b>Kind of characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>The kind of resources contained</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="Group.code", description="The kind of resources contained", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>The kind of resources contained</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>exclude</b>
+   * <p>
+   * Description: <b>Group includes or excludes</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.exclude</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="exclude", path="Group.characteristic.exclude", description="Group includes or excludes", type="token" )
+  public static final String SP_EXCLUDE = "exclude";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>exclude</b>
+   * <p>
+   * Description: <b>Group includes or excludes</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.exclude</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXCLUDE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXCLUDE);
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Unique id</b><br>
@@ -1754,26 +1836,6 @@ public class Group extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>characteristic-value</b>
-   * <p>
-   * Description: <b>A composite of both characteristic and value</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="characteristic-value", path="Group.characteristic", description="A composite of both characteristic and value", type="composite", compositeOf={"characteristic", "value"} )
-  public static final String SP_CHARACTERISTIC_VALUE = "characteristic-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>characteristic-value</b>
-   * <p>
-   * Description: <b>A composite of both characteristic and value</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CHARACTERISTIC_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CHARACTERISTIC_VALUE);
 
  /**
    * Search parameter: <b>managing-entity</b>
@@ -1802,26 +1864,6 @@ public class Group extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_MANAGING_ENTITY = new ca.uhn.fhir.model.api.Include("Group:managing-entity").toLocked();
 
  /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>The kind of resources contained</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="Group.code", description="The kind of resources contained", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>The kind of resources contained</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
    * Search parameter: <b>member</b>
    * <p>
    * Description: <b>Reference to the group member</b><br>
@@ -1829,7 +1871,7 @@ public class Group extends DomainResource {
    * Path: <b>Group.member.entity</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="member", path="Group.member.entity", description="Reference to the group member", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, Group.class, Medication.class, Patient.class, Practitioner.class, PractitionerRole.class, Substance.class } )
+  @SearchParamDefinition(name="member", path="Group.member.entity", description="Reference to the group member", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Group.class, Medication.class, Patient.class, Practitioner.class, PractitionerRole.class, Substance.class } )
   public static final String SP_MEMBER = "member";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>member</b>
@@ -1846,26 +1888,6 @@ public class Group extends DomainResource {
    * the path value of "<b>Group:member</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_MEMBER = new ca.uhn.fhir.model.api.Include("Group:member").toLocked();
-
- /**
-   * Search parameter: <b>exclude</b>
-   * <p>
-   * Description: <b>Group includes or excludes</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.characteristic.exclude</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="exclude", path="Group.characteristic.exclude", description="Group includes or excludes", type="token" )
-  public static final String SP_EXCLUDE = "exclude";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>exclude</b>
-   * <p>
-   * Description: <b>Group includes or excludes</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.characteristic.exclude</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXCLUDE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXCLUDE);
 
  /**
    * Search parameter: <b>type</b>
@@ -1892,7 +1914,7 @@ public class Group extends DomainResource {
    * <p>
    * Description: <b>Value held by characteristic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Group.characteristic.value[x]</b><br>
+   * Path: <b>(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="value", path="(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)", description="Value held by characteristic", type="token" )
@@ -1902,30 +1924,10 @@ public class Group extends DomainResource {
    * <p>
    * Description: <b>Value held by characteristic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Group.characteristic.value[x]</b><br>
+   * Path: <b>(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALUE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALUE);
-
- /**
-   * Search parameter: <b>characteristic</b>
-   * <p>
-   * Description: <b>Kind of characteristic</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.characteristic.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="characteristic", path="Group.characteristic.code", description="Kind of characteristic", type="token" )
-  public static final String SP_CHARACTERISTIC = "characteristic";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
-   * <p>
-   * Description: <b>Kind of characteristic</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.characteristic.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
 
 
 }

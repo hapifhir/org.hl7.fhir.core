@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.
  */
@@ -410,7 +412,7 @@ public class MeasureReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #population}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #population}, creating it if it does not already exist {3}
          */
         public MeasureReportGroupPopulationComponent getPopulationFirstRep() { 
           if (getPopulation().isEmpty()) {
@@ -487,7 +489,7 @@ public class MeasureReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #stratifier}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #stratifier}, creating it if it does not already exist {3}
          */
         public MeasureReportGroupStratifierComponent getStratifierFirstRep() { 
           if (getStratifier().isEmpty()) {
@@ -876,7 +878,7 @@ public class MeasureReport extends DomainResource {
           return this.code;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.count");
+          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.population.count");
         }
         else if (name.equals("subjectResults")) {
           this.subjectResults = new Reference();
@@ -1001,7 +1003,7 @@ public class MeasureReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCodeFirstRep() { 
           if (getCode().isEmpty()) {
@@ -1054,7 +1056,7 @@ public class MeasureReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #stratum}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #stratum}, creating it if it does not already exist {3}
          */
         public StratifierGroupComponent getStratumFirstRep() { 
           if (getStratum().isEmpty()) {
@@ -1304,7 +1306,7 @@ public class MeasureReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #component}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #component}, creating it if it does not already exist {3}
          */
         public StratifierGroupComponentComponent getComponentFirstRep() { 
           if (getComponent().isEmpty()) {
@@ -1357,7 +1359,7 @@ public class MeasureReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #population}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #population}, creating it if it does not already exist {3}
          */
         public StratifierGroupPopulationComponent getPopulationFirstRep() { 
           if (getPopulation().isEmpty()) {
@@ -1586,8 +1588,8 @@ public class MeasureReport extends DomainResource {
      */
       public StratifierGroupComponentComponent(CodeableConcept code, CodeableConcept value) {
         super();
-        this.code = code;
-        this.value = value;
+        this.setCode(code);
+        this.setValue(value);
       }
 
         /**
@@ -1980,7 +1982,7 @@ public class MeasureReport extends DomainResource {
           return this.code;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.count");
+          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.stratifier.stratum.population.count");
         }
         else if (name.equals("subjectResults")) {
           this.subjectResults = new Reference();
@@ -2128,12 +2130,12 @@ public class MeasureReport extends DomainResource {
   /**
    * Constructor
    */
-    public MeasureReport(Enumeration<MeasureReportStatus> status, Enumeration<MeasureReportType> type, CanonicalType measure, Period period) {
+    public MeasureReport(MeasureReportStatus status, MeasureReportType type, String measure, Period period) {
       super();
-      this.status = status;
-      this.type = type;
-      this.measure = measure;
-      this.period = period;
+      this.setStatus(status);
+      this.setType(type);
+      this.setMeasure(measure);
+      this.setPeriod(period);
     }
 
     /**
@@ -2180,7 +2182,7 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2513,7 +2515,7 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #group}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #group}, creating it if it does not already exist {3}
      */
     public MeasureReportGroupComponent getGroupFirstRep() { 
       if (getGroup().isEmpty()) {
@@ -2566,7 +2568,7 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #evaluatedResource}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #evaluatedResource}, creating it if it does not already exist {3}
      */
     public Reference getEvaluatedResourceFirstRep() { 
       if (getEvaluatedResource().isEmpty()) {
@@ -2846,8 +2848,8 @@ public class MeasureReport extends DomainResource {
         if (!(other_ instanceof MeasureReport))
           return false;
         MeasureReport o = (MeasureReport) other_;
-        return compareValues(status, o.status, true) && compareValues(type, o.type, true) && compareValues(date, o.date, true)
-          ;
+        return compareValues(status, o.status, true) && compareValues(type, o.type, true) && compareValues(measure, o.measure, true)
+           && compareValues(date, o.date, true);
       }
 
       public boolean isEmpty() {
@@ -2882,6 +2884,32 @@ public class MeasureReport extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
+   * Search parameter: <b>evaluated-resource</b>
+   * <p>
+   * Description: <b>An evaluated resource referenced by the measure report</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MeasureReport.evaluatedResource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="evaluated-resource", path="MeasureReport.evaluatedResource", description="An evaluated resource referenced by the measure report", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_EVALUATED_RESOURCE = "evaluated-resource";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>evaluated-resource</b>
+   * <p>
+   * Description: <b>An evaluated resource referenced by the measure report</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MeasureReport.evaluatedResource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EVALUATED_RESOURCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EVALUATED_RESOURCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MeasureReport:evaluated-resource</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_EVALUATED_RESOURCE = new ca.uhn.fhir.model.api.Include("MeasureReport:evaluated-resource").toLocked();
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>External identifier of the measure report to be returned</b><br>
@@ -2900,26 +2928,6 @@ public class MeasureReport extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>period</b>
-   * <p>
-   * Description: <b>The period of the measure report</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>MeasureReport.period</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="period", path="MeasureReport.period", description="The period of the measure report", type="date" )
-  public static final String SP_PERIOD = "period";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>period</b>
-   * <p>
-   * Description: <b>The period of the measure report</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>MeasureReport.period</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
 
  /**
    * Search parameter: <b>measure</b>
@@ -2952,17 +2960,17 @@ public class MeasureReport extends DomainResource {
    * <p>
    * Description: <b>The identity of a patient to search for individual measure report results for</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>MeasureReport.subject</b><br>
+   * Path: <b>MeasureReport.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="MeasureReport.subject.where(resolve() is Patient)", description="The identity of a patient to search for individual measure report results for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="MeasureReport.subject.where(resolve() is Patient)", description="The identity of a patient to search for individual measure report results for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
    * Description: <b>The identity of a patient to search for individual measure report results for</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>MeasureReport.subject</b><br>
+   * Path: <b>MeasureReport.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -2974,30 +2982,24 @@ public class MeasureReport extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("MeasureReport:patient").toLocked();
 
  /**
-   * Search parameter: <b>subject</b>
+   * Search parameter: <b>period</b>
    * <p>
-   * Description: <b>The identity of a subject to search for individual measure report results for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MeasureReport.subject</b><br>
+   * Description: <b>The period of the measure report</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>MeasureReport.period</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="MeasureReport.subject", description="The identity of a subject to search for individual measure report results for", type="reference", target={Device.class, Group.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="period", path="MeasureReport.period", description="The period of the measure report", type="date" )
+  public static final String SP_PERIOD = "period";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <b>Fluent Client</b> search parameter constant for <b>period</b>
    * <p>
-   * Description: <b>The identity of a subject to search for individual measure report results for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MeasureReport.subject</b><br>
+   * Description: <b>The period of the measure report</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>MeasureReport.period</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MeasureReport:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("MeasureReport:subject").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
 
  /**
    * Search parameter: <b>reporter</b>
@@ -3046,30 +3048,30 @@ public class MeasureReport extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
-   * Search parameter: <b>evaluated-resource</b>
+   * Search parameter: <b>subject</b>
    * <p>
-   * Description: <b>An evaluated resource referenced by the measure report</b><br>
+   * Description: <b>The identity of a subject to search for individual measure report results for</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>MeasureReport.evaluatedResource</b><br>
+   * Path: <b>MeasureReport.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="evaluated-resource", path="MeasureReport.evaluatedResource", description="An evaluated resource referenced by the measure report", type="reference" )
-  public static final String SP_EVALUATED_RESOURCE = "evaluated-resource";
+  @SearchParamDefinition(name="subject", path="MeasureReport.subject", description="The identity of a subject to search for individual measure report results for", type="reference", target={Device.class, Group.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_SUBJECT = "subject";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>evaluated-resource</b>
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
    * <p>
-   * Description: <b>An evaluated resource referenced by the measure report</b><br>
+   * Description: <b>The identity of a subject to search for individual measure report results for</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>MeasureReport.evaluatedResource</b><br>
+   * Path: <b>MeasureReport.subject</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EVALUATED_RESOURCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EVALUATED_RESOURCE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MeasureReport:evaluated-resource</b>".
+   * the path value of "<b>MeasureReport:subject</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_EVALUATED_RESOURCE = new ca.uhn.fhir.model.api.Include("MeasureReport:evaluated-resource").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("MeasureReport:subject").toLocked();
 
 
 }

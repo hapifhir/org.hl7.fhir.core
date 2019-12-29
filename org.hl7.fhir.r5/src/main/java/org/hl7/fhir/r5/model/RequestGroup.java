@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,1379 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A group of related requests that can be used to capture intended activities that have inter-dependencies such as "give this medication after that one".
  */
 @ResourceDef(name="RequestGroup", profile="http://hl7.org/fhir/StructureDefinition/RequestGroup")
 public class RequestGroup extends DomainResource {
-
-    public enum RequestStatus {
-        /**
-         * The request has been created but is not yet complete or ready for action.
-         */
-        DRAFT, 
-        /**
-         * The request is in force and ready to be acted upon.
-         */
-        ACTIVE, 
-        /**
-         * The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.
-         */
-        ONHOLD, 
-        /**
-         * The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.
-         */
-        REVOKED, 
-        /**
-         * The activity described by the request has been fully performed.  No further activity will occur.
-         */
-        COMPLETED, 
-        /**
-         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
-         */
-        ENTEREDINERROR, 
-        /**
-         * The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("on-hold".equals(codeString))
-          return ONHOLD;
-        if ("revoked".equals(codeString))
-          return REVOKED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case ONHOLD: return "on-hold";
-            case REVOKED: return "revoked";
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case DRAFT: return "http://hl7.org/fhir/request-status";
-            case ACTIVE: return "http://hl7.org/fhir/request-status";
-            case ONHOLD: return "http://hl7.org/fhir/request-status";
-            case REVOKED: return "http://hl7.org/fhir/request-status";
-            case COMPLETED: return "http://hl7.org/fhir/request-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
-            case UNKNOWN: return "http://hl7.org/fhir/request-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "The request has been created but is not yet complete or ready for action.";
-            case ACTIVE: return "The request is in force and ready to be acted upon.";
-            case ONHOLD: return "The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.";
-            case REVOKED: return "The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.";
-            case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
-            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
-            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case ONHOLD: return "On Hold";
-            case REVOKED: return "Revoked";
-            case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
-    public RequestStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return RequestStatus.DRAFT;
-        if ("active".equals(codeString))
-          return RequestStatus.ACTIVE;
-        if ("on-hold".equals(codeString))
-          return RequestStatus.ONHOLD;
-        if ("revoked".equals(codeString))
-          return RequestStatus.REVOKED;
-        if ("completed".equals(codeString))
-          return RequestStatus.COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return RequestStatus.ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return RequestStatus.UNKNOWN;
-        throw new IllegalArgumentException("Unknown RequestStatus code '"+codeString+"'");
-        }
-        public Enumeration<RequestStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("draft".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.DRAFT);
-        if ("active".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.ACTIVE);
-        if ("on-hold".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.ONHOLD);
-        if ("revoked".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.REVOKED);
-        if ("completed".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.COMPLETED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.ENTEREDINERROR);
-        if ("unknown".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.UNKNOWN);
-        throw new FHIRException("Unknown RequestStatus code '"+codeString+"'");
-        }
-    public String toCode(RequestStatus code) {
-      if (code == RequestStatus.DRAFT)
-        return "draft";
-      if (code == RequestStatus.ACTIVE)
-        return "active";
-      if (code == RequestStatus.ONHOLD)
-        return "on-hold";
-      if (code == RequestStatus.REVOKED)
-        return "revoked";
-      if (code == RequestStatus.COMPLETED)
-        return "completed";
-      if (code == RequestStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      if (code == RequestStatus.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    public String toSystem(RequestStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RequestIntent {
-        /**
-         * The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.
-         */
-        PROPOSAL, 
-        /**
-         * The request represents an intention to ensure something occurs without providing an authorization for others to act.
-         */
-        PLAN, 
-        /**
-         * The request represents a legally binding instruction authored by a Patient or RelatedPerson.
-         */
-        DIRECTIVE, 
-        /**
-         * The request represents a request/demand and authorization for action by a Practitioner.
-         */
-        ORDER, 
-        /**
-         * The request represents an original authorization for action.
-         */
-        ORIGINALORDER, 
-        /**
-         * The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.
-         */
-        REFLEXORDER, 
-        /**
-         * The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.
-         */
-        FILLERORDER, 
-        /**
-         * An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.
-         */
-        INSTANCEORDER, 
-        /**
-         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
-         */
-        OPTION, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestIntent fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposal".equals(codeString))
-          return PROPOSAL;
-        if ("plan".equals(codeString))
-          return PLAN;
-        if ("directive".equals(codeString))
-          return DIRECTIVE;
-        if ("order".equals(codeString))
-          return ORDER;
-        if ("original-order".equals(codeString))
-          return ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return INSTANCEORDER;
-        if ("option".equals(codeString))
-          return OPTION;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROPOSAL: return "proposal";
-            case PLAN: return "plan";
-            case DIRECTIVE: return "directive";
-            case ORDER: return "order";
-            case ORIGINALORDER: return "original-order";
-            case REFLEXORDER: return "reflex-order";
-            case FILLERORDER: return "filler-order";
-            case INSTANCEORDER: return "instance-order";
-            case OPTION: return "option";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PROPOSAL: return "http://hl7.org/fhir/request-intent";
-            case PLAN: return "http://hl7.org/fhir/request-intent";
-            case DIRECTIVE: return "http://hl7.org/fhir/request-intent";
-            case ORDER: return "http://hl7.org/fhir/request-intent";
-            case ORIGINALORDER: return "http://hl7.org/fhir/request-intent";
-            case REFLEXORDER: return "http://hl7.org/fhir/request-intent";
-            case FILLERORDER: return "http://hl7.org/fhir/request-intent";
-            case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
-            case OPTION: return "http://hl7.org/fhir/request-intent";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
-            case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
-            case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
-            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
-            case ORIGINALORDER: return "The request represents an original authorization for action.";
-            case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
-            case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
-            case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
-            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROPOSAL: return "Proposal";
-            case PLAN: return "Plan";
-            case DIRECTIVE: return "Directive";
-            case ORDER: return "Order";
-            case ORIGINALORDER: return "Original Order";
-            case REFLEXORDER: return "Reflex Order";
-            case FILLERORDER: return "Filler Order";
-            case INSTANCEORDER: return "Instance Order";
-            case OPTION: return "Option";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestIntentEnumFactory implements EnumFactory<RequestIntent> {
-    public RequestIntent fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposal".equals(codeString))
-          return RequestIntent.PROPOSAL;
-        if ("plan".equals(codeString))
-          return RequestIntent.PLAN;
-        if ("directive".equals(codeString))
-          return RequestIntent.DIRECTIVE;
-        if ("order".equals(codeString))
-          return RequestIntent.ORDER;
-        if ("original-order".equals(codeString))
-          return RequestIntent.ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return RequestIntent.REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return RequestIntent.FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return RequestIntent.INSTANCEORDER;
-        if ("option".equals(codeString))
-          return RequestIntent.OPTION;
-        throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
-        }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("proposal".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL);
-        if ("plan".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN);
-        if ("directive".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE);
-        if ("order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER);
-        if ("original-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER);
-        if ("reflex-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER);
-        if ("filler-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER);
-        if ("instance-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER);
-        if ("option".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION);
-        throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
-        }
-    public String toCode(RequestIntent code) {
-      if (code == RequestIntent.PROPOSAL)
-        return "proposal";
-      if (code == RequestIntent.PLAN)
-        return "plan";
-      if (code == RequestIntent.DIRECTIVE)
-        return "directive";
-      if (code == RequestIntent.ORDER)
-        return "order";
-      if (code == RequestIntent.ORIGINALORDER)
-        return "original-order";
-      if (code == RequestIntent.REFLEXORDER)
-        return "reflex-order";
-      if (code == RequestIntent.FILLERORDER)
-        return "filler-order";
-      if (code == RequestIntent.INSTANCEORDER)
-        return "instance-order";
-      if (code == RequestIntent.OPTION)
-        return "option";
-      return "?";
-      }
-    public String toSystem(RequestIntent code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RequestPriority {
-        /**
-         * The request has normal priority.
-         */
-        ROUTINE, 
-        /**
-         * The request should be actioned promptly - higher priority than routine.
-         */
-        URGENT, 
-        /**
-         * The request should be actioned as soon as possible - higher priority than urgent.
-         */
-        ASAP, 
-        /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
-         */
-        STAT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return ROUTINE;
-        if ("urgent".equals(codeString))
-          return URGENT;
-        if ("asap".equals(codeString))
-          return ASAP;
-        if ("stat".equals(codeString))
-          return STAT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ROUTINE: return "routine";
-            case URGENT: return "urgent";
-            case ASAP: return "asap";
-            case STAT: return "stat";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ROUTINE: return "http://hl7.org/fhir/request-priority";
-            case URGENT: return "http://hl7.org/fhir/request-priority";
-            case ASAP: return "http://hl7.org/fhir/request-priority";
-            case STAT: return "http://hl7.org/fhir/request-priority";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ROUTINE: return "The request has normal priority.";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ROUTINE: return "Routine";
-            case URGENT: return "Urgent";
-            case ASAP: return "ASAP";
-            case STAT: return "STAT";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> {
-    public RequestPriority fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return RequestPriority.ROUTINE;
-        if ("urgent".equals(codeString))
-          return RequestPriority.URGENT;
-        if ("asap".equals(codeString))
-          return RequestPriority.ASAP;
-        if ("stat".equals(codeString))
-          return RequestPriority.STAT;
-        throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
-        if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
-        if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
-        if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
-        throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-    public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
-        return "routine";
-      if (code == RequestPriority.URGENT)
-        return "urgent";
-      if (code == RequestPriority.ASAP)
-        return "asap";
-      if (code == RequestPriority.STAT)
-        return "stat";
-      return "?";
-      }
-    public String toSystem(RequestPriority code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionConditionKind {
-        /**
-         * The condition describes whether or not a given action is applicable.
-         */
-        APPLICABILITY, 
-        /**
-         * The condition is a starting condition for the action.
-         */
-        START, 
-        /**
-         * The condition is a stop, or exit condition for the action.
-         */
-        STOP, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionConditionKind fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("applicability".equals(codeString))
-          return APPLICABILITY;
-        if ("start".equals(codeString))
-          return START;
-        if ("stop".equals(codeString))
-          return STOP;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case APPLICABILITY: return "applicability";
-            case START: return "start";
-            case STOP: return "stop";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case APPLICABILITY: return "http://hl7.org/fhir/action-condition-kind";
-            case START: return "http://hl7.org/fhir/action-condition-kind";
-            case STOP: return "http://hl7.org/fhir/action-condition-kind";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case APPLICABILITY: return "The condition describes whether or not a given action is applicable.";
-            case START: return "The condition is a starting condition for the action.";
-            case STOP: return "The condition is a stop, or exit condition for the action.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case APPLICABILITY: return "Applicability";
-            case START: return "Start";
-            case STOP: return "Stop";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionConditionKindEnumFactory implements EnumFactory<ActionConditionKind> {
-    public ActionConditionKind fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("applicability".equals(codeString))
-          return ActionConditionKind.APPLICABILITY;
-        if ("start".equals(codeString))
-          return ActionConditionKind.START;
-        if ("stop".equals(codeString))
-          return ActionConditionKind.STOP;
-        throw new IllegalArgumentException("Unknown ActionConditionKind code '"+codeString+"'");
-        }
-        public Enumeration<ActionConditionKind> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionConditionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("applicability".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.APPLICABILITY);
-        if ("start".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.START);
-        if ("stop".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.STOP);
-        throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
-        }
-    public String toCode(ActionConditionKind code) {
-      if (code == ActionConditionKind.APPLICABILITY)
-        return "applicability";
-      if (code == ActionConditionKind.START)
-        return "start";
-      if (code == ActionConditionKind.STOP)
-        return "stop";
-      return "?";
-      }
-    public String toSystem(ActionConditionKind code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionRelationshipType {
-        /**
-         * The action must be performed before the start of the related action.
-         */
-        BEFORESTART, 
-        /**
-         * The action must be performed before the related action.
-         */
-        BEFORE, 
-        /**
-         * The action must be performed before the end of the related action.
-         */
-        BEFOREEND, 
-        /**
-         * The action must be performed concurrent with the start of the related action.
-         */
-        CONCURRENTWITHSTART, 
-        /**
-         * The action must be performed concurrent with the related action.
-         */
-        CONCURRENT, 
-        /**
-         * The action must be performed concurrent with the end of the related action.
-         */
-        CONCURRENTWITHEND, 
-        /**
-         * The action must be performed after the start of the related action.
-         */
-        AFTERSTART, 
-        /**
-         * The action must be performed after the related action.
-         */
-        AFTER, 
-        /**
-         * The action must be performed after the end of the related action.
-         */
-        AFTEREND, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionRelationshipType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("before-start".equals(codeString))
-          return BEFORESTART;
-        if ("before".equals(codeString))
-          return BEFORE;
-        if ("before-end".equals(codeString))
-          return BEFOREEND;
-        if ("concurrent-with-start".equals(codeString))
-          return CONCURRENTWITHSTART;
-        if ("concurrent".equals(codeString))
-          return CONCURRENT;
-        if ("concurrent-with-end".equals(codeString))
-          return CONCURRENTWITHEND;
-        if ("after-start".equals(codeString))
-          return AFTERSTART;
-        if ("after".equals(codeString))
-          return AFTER;
-        if ("after-end".equals(codeString))
-          return AFTEREND;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case BEFORESTART: return "before-start";
-            case BEFORE: return "before";
-            case BEFOREEND: return "before-end";
-            case CONCURRENTWITHSTART: return "concurrent-with-start";
-            case CONCURRENT: return "concurrent";
-            case CONCURRENTWITHEND: return "concurrent-with-end";
-            case AFTERSTART: return "after-start";
-            case AFTER: return "after";
-            case AFTEREND: return "after-end";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case BEFORESTART: return "http://hl7.org/fhir/action-relationship-type";
-            case BEFORE: return "http://hl7.org/fhir/action-relationship-type";
-            case BEFOREEND: return "http://hl7.org/fhir/action-relationship-type";
-            case CONCURRENTWITHSTART: return "http://hl7.org/fhir/action-relationship-type";
-            case CONCURRENT: return "http://hl7.org/fhir/action-relationship-type";
-            case CONCURRENTWITHEND: return "http://hl7.org/fhir/action-relationship-type";
-            case AFTERSTART: return "http://hl7.org/fhir/action-relationship-type";
-            case AFTER: return "http://hl7.org/fhir/action-relationship-type";
-            case AFTEREND: return "http://hl7.org/fhir/action-relationship-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case BEFORESTART: return "The action must be performed before the start of the related action.";
-            case BEFORE: return "The action must be performed before the related action.";
-            case BEFOREEND: return "The action must be performed before the end of the related action.";
-            case CONCURRENTWITHSTART: return "The action must be performed concurrent with the start of the related action.";
-            case CONCURRENT: return "The action must be performed concurrent with the related action.";
-            case CONCURRENTWITHEND: return "The action must be performed concurrent with the end of the related action.";
-            case AFTERSTART: return "The action must be performed after the start of the related action.";
-            case AFTER: return "The action must be performed after the related action.";
-            case AFTEREND: return "The action must be performed after the end of the related action.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case BEFORESTART: return "Before Start";
-            case BEFORE: return "Before";
-            case BEFOREEND: return "Before End";
-            case CONCURRENTWITHSTART: return "Concurrent With Start";
-            case CONCURRENT: return "Concurrent";
-            case CONCURRENTWITHEND: return "Concurrent With End";
-            case AFTERSTART: return "After Start";
-            case AFTER: return "After";
-            case AFTEREND: return "After End";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionRelationshipTypeEnumFactory implements EnumFactory<ActionRelationshipType> {
-    public ActionRelationshipType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("before-start".equals(codeString))
-          return ActionRelationshipType.BEFORESTART;
-        if ("before".equals(codeString))
-          return ActionRelationshipType.BEFORE;
-        if ("before-end".equals(codeString))
-          return ActionRelationshipType.BEFOREEND;
-        if ("concurrent-with-start".equals(codeString))
-          return ActionRelationshipType.CONCURRENTWITHSTART;
-        if ("concurrent".equals(codeString))
-          return ActionRelationshipType.CONCURRENT;
-        if ("concurrent-with-end".equals(codeString))
-          return ActionRelationshipType.CONCURRENTWITHEND;
-        if ("after-start".equals(codeString))
-          return ActionRelationshipType.AFTERSTART;
-        if ("after".equals(codeString))
-          return ActionRelationshipType.AFTER;
-        if ("after-end".equals(codeString))
-          return ActionRelationshipType.AFTEREND;
-        throw new IllegalArgumentException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-        public Enumeration<ActionRelationshipType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("before-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORESTART);
-        if ("before".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORE);
-        if ("before-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFOREEND);
-        if ("concurrent-with-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHSTART);
-        if ("concurrent".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENT);
-        if ("concurrent-with-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHEND);
-        if ("after-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTERSTART);
-        if ("after".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTER);
-        if ("after-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTEREND);
-        throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-    public String toCode(ActionRelationshipType code) {
-      if (code == ActionRelationshipType.BEFORESTART)
-        return "before-start";
-      if (code == ActionRelationshipType.BEFORE)
-        return "before";
-      if (code == ActionRelationshipType.BEFOREEND)
-        return "before-end";
-      if (code == ActionRelationshipType.CONCURRENTWITHSTART)
-        return "concurrent-with-start";
-      if (code == ActionRelationshipType.CONCURRENT)
-        return "concurrent";
-      if (code == ActionRelationshipType.CONCURRENTWITHEND)
-        return "concurrent-with-end";
-      if (code == ActionRelationshipType.AFTERSTART)
-        return "after-start";
-      if (code == ActionRelationshipType.AFTER)
-        return "after";
-      if (code == ActionRelationshipType.AFTEREND)
-        return "after-end";
-      return "?";
-      }
-    public String toSystem(ActionRelationshipType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionGroupingBehavior {
-        /**
-         * Any group marked with this behavior should be displayed as a visual group to the end user.
-         */
-        VISUALGROUP, 
-        /**
-         * A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so.
-         */
-        LOGICALGROUP, 
-        /**
-         * A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are "aspirin, 500 mg, 2 times per day" and "aspirin, 300 mg, 3 times per day". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of "AtMostOne", unless it's a required action, in which case, it would be "ExactlyOne".
-         */
-        SENTENCEGROUP, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionGroupingBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("visual-group".equals(codeString))
-          return VISUALGROUP;
-        if ("logical-group".equals(codeString))
-          return LOGICALGROUP;
-        if ("sentence-group".equals(codeString))
-          return SENTENCEGROUP;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case VISUALGROUP: return "visual-group";
-            case LOGICALGROUP: return "logical-group";
-            case SENTENCEGROUP: return "sentence-group";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case VISUALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
-            case LOGICALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
-            case SENTENCEGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user.";
-            case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so.";
-            case SENTENCEGROUP: return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\".";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case VISUALGROUP: return "Visual Group";
-            case LOGICALGROUP: return "Logical Group";
-            case SENTENCEGROUP: return "Sentence Group";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionGroupingBehaviorEnumFactory implements EnumFactory<ActionGroupingBehavior> {
-    public ActionGroupingBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("visual-group".equals(codeString))
-          return ActionGroupingBehavior.VISUALGROUP;
-        if ("logical-group".equals(codeString))
-          return ActionGroupingBehavior.LOGICALGROUP;
-        if ("sentence-group".equals(codeString))
-          return ActionGroupingBehavior.SENTENCEGROUP;
-        throw new IllegalArgumentException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionGroupingBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionGroupingBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("visual-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.VISUALGROUP);
-        if ("logical-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.LOGICALGROUP);
-        if ("sentence-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.SENTENCEGROUP);
-        throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionGroupingBehavior code) {
-      if (code == ActionGroupingBehavior.VISUALGROUP)
-        return "visual-group";
-      if (code == ActionGroupingBehavior.LOGICALGROUP)
-        return "logical-group";
-      if (code == ActionGroupingBehavior.SENTENCEGROUP)
-        return "sentence-group";
-      return "?";
-      }
-    public String toSystem(ActionGroupingBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionSelectionBehavior {
-        /**
-         * Any number of the actions in the group may be chosen, from zero to all.
-         */
-        ANY, 
-        /**
-         * All the actions in the group must be selected as a single unit.
-         */
-        ALL, 
-        /**
-         * All the actions in the group are meant to be chosen as a single unit: either all must be selected by the end user, or none may be selected.
-         */
-        ALLORNONE, 
-        /**
-         * The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.
-         */
-        EXACTLYONE, 
-        /**
-         * The end user may choose zero or at most one of the actions in the group.
-         */
-        ATMOSTONE, 
-        /**
-         * The end user must choose a minimum of one, and as many additional as desired.
-         */
-        ONEORMORE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionSelectionBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("any".equals(codeString))
-          return ANY;
-        if ("all".equals(codeString))
-          return ALL;
-        if ("all-or-none".equals(codeString))
-          return ALLORNONE;
-        if ("exactly-one".equals(codeString))
-          return EXACTLYONE;
-        if ("at-most-one".equals(codeString))
-          return ATMOSTONE;
-        if ("one-or-more".equals(codeString))
-          return ONEORMORE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ANY: return "any";
-            case ALL: return "all";
-            case ALLORNONE: return "all-or-none";
-            case EXACTLYONE: return "exactly-one";
-            case ATMOSTONE: return "at-most-one";
-            case ONEORMORE: return "one-or-more";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ANY: return "http://hl7.org/fhir/action-selection-behavior";
-            case ALL: return "http://hl7.org/fhir/action-selection-behavior";
-            case ALLORNONE: return "http://hl7.org/fhir/action-selection-behavior";
-            case EXACTLYONE: return "http://hl7.org/fhir/action-selection-behavior";
-            case ATMOSTONE: return "http://hl7.org/fhir/action-selection-behavior";
-            case ONEORMORE: return "http://hl7.org/fhir/action-selection-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ANY: return "Any number of the actions in the group may be chosen, from zero to all.";
-            case ALL: return "All the actions in the group must be selected as a single unit.";
-            case ALLORNONE: return "All the actions in the group are meant to be chosen as a single unit: either all must be selected by the end user, or none may be selected.";
-            case EXACTLYONE: return "The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.";
-            case ATMOSTONE: return "The end user may choose zero or at most one of the actions in the group.";
-            case ONEORMORE: return "The end user must choose a minimum of one, and as many additional as desired.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ANY: return "Any";
-            case ALL: return "All";
-            case ALLORNONE: return "All Or None";
-            case EXACTLYONE: return "Exactly One";
-            case ATMOSTONE: return "At Most One";
-            case ONEORMORE: return "One Or More";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionSelectionBehaviorEnumFactory implements EnumFactory<ActionSelectionBehavior> {
-    public ActionSelectionBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("any".equals(codeString))
-          return ActionSelectionBehavior.ANY;
-        if ("all".equals(codeString))
-          return ActionSelectionBehavior.ALL;
-        if ("all-or-none".equals(codeString))
-          return ActionSelectionBehavior.ALLORNONE;
-        if ("exactly-one".equals(codeString))
-          return ActionSelectionBehavior.EXACTLYONE;
-        if ("at-most-one".equals(codeString))
-          return ActionSelectionBehavior.ATMOSTONE;
-        if ("one-or-more".equals(codeString))
-          return ActionSelectionBehavior.ONEORMORE;
-        throw new IllegalArgumentException("Unknown ActionSelectionBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionSelectionBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionSelectionBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("any".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ANY);
-        if ("all".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALL);
-        if ("all-or-none".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALLORNONE);
-        if ("exactly-one".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.EXACTLYONE);
-        if ("at-most-one".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ATMOSTONE);
-        if ("one-or-more".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ONEORMORE);
-        throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionSelectionBehavior code) {
-      if (code == ActionSelectionBehavior.ANY)
-        return "any";
-      if (code == ActionSelectionBehavior.ALL)
-        return "all";
-      if (code == ActionSelectionBehavior.ALLORNONE)
-        return "all-or-none";
-      if (code == ActionSelectionBehavior.EXACTLYONE)
-        return "exactly-one";
-      if (code == ActionSelectionBehavior.ATMOSTONE)
-        return "at-most-one";
-      if (code == ActionSelectionBehavior.ONEORMORE)
-        return "one-or-more";
-      return "?";
-      }
-    public String toSystem(ActionSelectionBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionRequiredBehavior {
-        /**
-         * An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.
-         */
-        MUST, 
-        /**
-         * An action with this behavior may be included in the set of actions processed by the end user.
-         */
-        COULD, 
-        /**
-         * An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.
-         */
-        MUSTUNLESSDOCUMENTED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionRequiredBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("must".equals(codeString))
-          return MUST;
-        if ("could".equals(codeString))
-          return COULD;
-        if ("must-unless-documented".equals(codeString))
-          return MUSTUNLESSDOCUMENTED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MUST: return "must";
-            case COULD: return "could";
-            case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MUST: return "http://hl7.org/fhir/action-required-behavior";
-            case COULD: return "http://hl7.org/fhir/action-required-behavior";
-            case MUSTUNLESSDOCUMENTED: return "http://hl7.org/fhir/action-required-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MUST: return "An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.";
-            case COULD: return "An action with this behavior may be included in the set of actions processed by the end user.";
-            case MUSTUNLESSDOCUMENTED: return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MUST: return "Must";
-            case COULD: return "Could";
-            case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionRequiredBehaviorEnumFactory implements EnumFactory<ActionRequiredBehavior> {
-    public ActionRequiredBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("must".equals(codeString))
-          return ActionRequiredBehavior.MUST;
-        if ("could".equals(codeString))
-          return ActionRequiredBehavior.COULD;
-        if ("must-unless-documented".equals(codeString))
-          return ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
-        throw new IllegalArgumentException("Unknown ActionRequiredBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionRequiredBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionRequiredBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("must".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUST);
-        if ("could".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.COULD);
-        if ("must-unless-documented".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
-        throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionRequiredBehavior code) {
-      if (code == ActionRequiredBehavior.MUST)
-        return "must";
-      if (code == ActionRequiredBehavior.COULD)
-        return "could";
-      if (code == ActionRequiredBehavior.MUSTUNLESSDOCUMENTED)
-        return "must-unless-documented";
-      return "?";
-      }
-    public String toSystem(ActionRequiredBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionPrecheckBehavior {
-        /**
-         * An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider "pre-checking" such an action as a convenience for the user.
-         */
-        YES, 
-        /**
-         * An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not "pre-check" such an action.
-         */
-        NO, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionPrecheckBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return YES;
-        if ("no".equals(codeString))
-          return NO;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case YES: return "yes";
-            case NO: return "no";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case YES: return "http://hl7.org/fhir/action-precheck-behavior";
-            case NO: return "http://hl7.org/fhir/action-precheck-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case YES: return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user.";
-            case NO: return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case YES: return "Yes";
-            case NO: return "No";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionPrecheckBehaviorEnumFactory implements EnumFactory<ActionPrecheckBehavior> {
-    public ActionPrecheckBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return ActionPrecheckBehavior.YES;
-        if ("no".equals(codeString))
-          return ActionPrecheckBehavior.NO;
-        throw new IllegalArgumentException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionPrecheckBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionPrecheckBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("yes".equals(codeString))
-          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.YES);
-        if ("no".equals(codeString))
-          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.NO);
-        throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionPrecheckBehavior code) {
-      if (code == ActionPrecheckBehavior.YES)
-        return "yes";
-      if (code == ActionPrecheckBehavior.NO)
-        return "no";
-      return "?";
-      }
-    public String toSystem(ActionPrecheckBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionCardinalityBehavior {
-        /**
-         * The action may only be selected one time.
-         */
-        SINGLE, 
-        /**
-         * The action may be selected multiple times.
-         */
-        MULTIPLE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionCardinalityBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("single".equals(codeString))
-          return SINGLE;
-        if ("multiple".equals(codeString))
-          return MULTIPLE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SINGLE: return "single";
-            case MULTIPLE: return "multiple";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case SINGLE: return "http://hl7.org/fhir/action-cardinality-behavior";
-            case MULTIPLE: return "http://hl7.org/fhir/action-cardinality-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SINGLE: return "The action may only be selected one time.";
-            case MULTIPLE: return "The action may be selected multiple times.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SINGLE: return "Single";
-            case MULTIPLE: return "Multiple";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionCardinalityBehaviorEnumFactory implements EnumFactory<ActionCardinalityBehavior> {
-    public ActionCardinalityBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("single".equals(codeString))
-          return ActionCardinalityBehavior.SINGLE;
-        if ("multiple".equals(codeString))
-          return ActionCardinalityBehavior.MULTIPLE;
-        throw new IllegalArgumentException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionCardinalityBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionCardinalityBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("single".equals(codeString))
-          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.SINGLE);
-        if ("multiple".equals(codeString))
-          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.MULTIPLE);
-        throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionCardinalityBehavior code) {
-      if (code == ActionCardinalityBehavior.SINGLE)
-        return "single";
-      if (code == ActionCardinalityBehavior.MULTIPLE)
-        return "multiple";
-      return "?";
-      }
-    public String toSystem(ActionCardinalityBehavior code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class RequestGroupActionComponent extends BackboneElement implements IBaseBackboneElement {
@@ -1581,7 +215,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Sub action", formalDefinition="Sub actions." )
         protected List<RequestGroupActionComponent> action;
 
-        private static final long serialVersionUID = 558009654L;
+        private static final long serialVersionUID = -919880448L;
 
     /**
      * Constructor
@@ -1879,7 +513,7 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCodeFirstRep() { 
           if (getCode().isEmpty()) {
@@ -1932,7 +566,7 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #documentation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #documentation}, creating it if it does not already exist {3}
          */
         public RelatedArtifact getDocumentationFirstRep() { 
           if (getDocumentation().isEmpty()) {
@@ -1985,7 +619,7 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #condition}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #condition}, creating it if it does not already exist {3}
          */
         public RequestGroupActionConditionComponent getConditionFirstRep() { 
           if (getCondition().isEmpty()) {
@@ -2038,7 +672,7 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #relatedAction}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #relatedAction}, creating it if it does not already exist {3}
          */
         public RequestGroupActionRelatedActionComponent getRelatedActionFirstRep() { 
           if (getRelatedAction().isEmpty()) {
@@ -2202,7 +836,7 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
          */
         public Reference getParticipantFirstRep() { 
           if (getParticipant().isEmpty()) {
@@ -2548,7 +1182,7 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
          */
         public RequestGroupActionComponent getActionFirstRep() { 
           if (getAction().isEmpty()) {
@@ -2594,12 +1228,12 @@ public class RequestGroup extends DomainResource {
           case -384107967: /*relatedAction*/  return new Property("relatedAction", "", "A relationship to another action such as \"before\" or \"30-60 minutes after start of\".", 0, java.lang.Integer.MAX_VALUE, relatedAction);
           case 164632566: /*timing[x]*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -873664438: /*timing*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case 164607061: /*timingAge*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -615615829: /*timingPeriod*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -1327253506: /*timingDuration*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -710871277: /*timingRange*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -497554124: /*timingTiming*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "dateTime", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case 164607061: /*timingAge*/  return new Property("timing[x]", "Age", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -615615829: /*timingPeriod*/  return new Property("timing[x]", "Period", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -1327253506: /*timingDuration*/  return new Property("timing[x]", "Duration", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -710871277: /*timingRange*/  return new Property("timing[x]", "Range", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
           case 767422259: /*participant*/  return new Property("participant", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device)", "The participant that should perform or be responsible for this action.", 0, java.lang.Integer.MAX_VALUE, participant);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of action to perform (create, update, remove).", 0, 1, type);
           case 586678389: /*groupingBehavior*/  return new Property("groupingBehavior", "code", "Defines the grouping behavior for the action and its children.", 0, 1, groupingBehavior);
@@ -2626,7 +1260,7 @@ public class RequestGroup extends DomainResource {
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : this.documentation.toArray(new Base[this.documentation.size()]); // RelatedArtifact
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // RequestGroupActionConditionComponent
         case -384107967: /*relatedAction*/ return this.relatedAction == null ? new Base[0] : this.relatedAction.toArray(new Base[this.relatedAction.size()]); // RequestGroupActionRelatedActionComponent
-        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // Type
+        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // Reference
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 586678389: /*groupingBehavior*/ return this.groupingBehavior == null ? new Base[0] : new Base[] {this.groupingBehavior}; // Enumeration<ActionGroupingBehavior>
@@ -2673,7 +1307,7 @@ public class RequestGroup extends DomainResource {
           this.getRelatedAction().add((RequestGroupActionRelatedActionComponent) value); // RequestGroupActionRelatedActionComponent
           return value;
         case -873664438: // timing
-          this.timing = TypeConvertor.castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
           return value;
         case 767422259: // participant
           this.getParticipant().add(TypeConvertor.castToReference(value)); // Reference
@@ -2734,7 +1368,7 @@ public class RequestGroup extends DomainResource {
         } else if (name.equals("relatedAction")) {
           this.getRelatedAction().add((RequestGroupActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
-          this.timing = TypeConvertor.castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("participant")) {
           this.getParticipant().add(TypeConvertor.castToReference(value));
         } else if (name.equals("type")) {
@@ -2821,19 +1455,19 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.prefix");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.prefix");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.title");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.title");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.description");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.description");
         }
         else if (name.equals("textEquivalent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.textEquivalent");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.textEquivalent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.priority");
         }
         else if (name.equals("code")) {
           return addCode();
@@ -2879,19 +1513,19 @@ public class RequestGroup extends DomainResource {
           return this.type;
         }
         else if (name.equals("groupingBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.groupingBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.groupingBehavior");
         }
         else if (name.equals("selectionBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.selectionBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.selectionBehavior");
         }
         else if (name.equals("requiredBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.requiredBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.requiredBehavior");
         }
         else if (name.equals("precheckBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.precheckBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.precheckBehavior");
         }
         else if (name.equals("cardinalityBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.cardinalityBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.cardinalityBehavior");
         }
         else if (name.equals("resource")) {
           this.resource = new Reference();
@@ -3031,9 +1665,9 @@ public class RequestGroup extends DomainResource {
     /**
      * Constructor
      */
-      public RequestGroupActionConditionComponent(Enumeration<ActionConditionKind> kind) {
+      public RequestGroupActionConditionComponent(ActionConditionKind kind) {
         super();
-        this.kind = kind;
+        this.setKind(kind);
       }
 
         /**
@@ -3181,7 +1815,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.condition.kind");
         }
         else if (name.equals("expression")) {
           this.expression = new Expression();
@@ -3258,7 +1892,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
         protected DataType offset;
 
-        private static final long serialVersionUID = 1063306770L;
+        private static final long serialVersionUID = 621784796L;
 
     /**
      * Constructor
@@ -3270,10 +1904,10 @@ public class RequestGroup extends DomainResource {
     /**
      * Constructor
      */
-      public RequestGroupActionRelatedActionComponent(IdType actionId, Enumeration<ActionRelationshipType> relationship) {
+      public RequestGroupActionRelatedActionComponent(String actionId, ActionRelationshipType relationship) {
         super();
-        this.actionId = actionId;
-        this.relationship = relationship;
+        this.setActionId(actionId);
+        this.setRelationship(relationship);
       }
 
         /**
@@ -3431,8 +2065,8 @@ public class RequestGroup extends DomainResource {
           case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship);
           case -1960684787: /*offset[x]*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
           case -1019779949: /*offset*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
-          case 134075207: /*offsetDuration*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
-          case 1263585386: /*offsetRange*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
+          case 134075207: /*offsetDuration*/  return new Property("offset[x]", "Duration", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
+          case 1263585386: /*offsetRange*/  return new Property("offset[x]", "Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3443,7 +2077,7 @@ public class RequestGroup extends DomainResource {
         switch (hash) {
         case -1656172047: /*actionId*/ return this.actionId == null ? new Base[0] : new Base[] {this.actionId}; // IdType
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<ActionRelationshipType>
-        case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // Type
+        case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3460,7 +2094,7 @@ public class RequestGroup extends DomainResource {
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
           return value;
         case -1019779949: // offset
-          this.offset = TypeConvertor.castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3475,7 +2109,7 @@ public class RequestGroup extends DomainResource {
           value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
         } else if (name.equals("offset[x]")) {
-          this.offset = TypeConvertor.castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -3507,10 +2141,10 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("actionId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.actionId");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.relatedAction.actionId");
         }
         else if (name.equals("relationship")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.relationship");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.relatedAction.relationship");
         }
         else if (name.equals("offsetDuration")) {
           this.offset = new Duration();
@@ -3712,10 +2346,10 @@ public class RequestGroup extends DomainResource {
   /**
    * Constructor
    */
-    public RequestGroup(Enumeration<RequestStatus> status, Enumeration<RequestIntent> intent) {
+    public RequestGroup(RequestStatus status, RequestIntent intent) {
       super();
-      this.status = status;
-      this.intent = intent;
+      this.setStatus(status);
+      this.setIntent(intent);
     }
 
     /**
@@ -3762,7 +2396,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -3937,7 +2571,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
      */
     public Reference getBasedOnFirstRep() { 
       if (getBasedOn().isEmpty()) {
@@ -3990,7 +2624,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #replaces}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #replaces}, creating it if it does not already exist {3}
      */
     public Reference getReplacesFirstRep() { 
       if (getReplaces().isEmpty()) {
@@ -4351,7 +2985,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
@@ -4404,7 +3038,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
      */
     public Reference getReasonReferenceFirstRep() { 
       if (getReasonReference().isEmpty()) {
@@ -4457,7 +3091,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -4510,7 +3144,7 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
      */
     public RequestGroupActionComponent getActionFirstRep() { 
       if (getAction().isEmpty()) {
@@ -4936,6 +3570,32 @@ public class RequestGroup extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>author</b>
+   * <p>
+   * Description: <b>The author of the request group</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.author</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="author", path="RequestGroup.author", description="The author of the request group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_AUTHOR = "author";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>author</b>
+   * <p>
+   * Description: <b>The author of the request group</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.author</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:author</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("RequestGroup:author").toLocked();
+
+ /**
    * Search parameter: <b>authored</b>
    * <p>
    * Description: <b>The date the request group was authored</b><br>
@@ -4954,26 +3614,6 @@ public class RequestGroup extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifiers for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="RequestGroup.identifier", description="External identifiers for the request group", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifiers for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>code</b>
@@ -4996,56 +3636,70 @@ public class RequestGroup extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
-   * Search parameter: <b>subject</b>
+   * Search parameter: <b>encounter</b>
    * <p>
-   * Description: <b>The subject that the request group is about</b><br>
+   * Description: <b>The encounter the request group applies to</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject</b><br>
+   * Path: <b>RequestGroup.encounter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="RequestGroup.subject", description="The subject that the request group is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="encounter", path="RequestGroup.encounter", description="The encounter the request group applies to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
    * <p>
-   * Description: <b>The subject that the request group is about</b><br>
+   * Description: <b>The encounter the request group applies to</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject</b><br>
+   * Path: <b>RequestGroup.encounter</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:subject</b>".
+   * the path value of "<b>RequestGroup:encounter</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RequestGroup:subject").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("RequestGroup:encounter").toLocked();
 
  /**
-   * Search parameter: <b>author</b>
+   * Search parameter: <b>group-identifier</b>
    * <p>
-   * Description: <b>The author of the request group</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.author</b><br>
+   * Description: <b>The group identifier for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.groupIdentifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="author", path="RequestGroup.author", description="The author of the request group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_AUTHOR = "author";
+  @SearchParamDefinition(name="group-identifier", path="RequestGroup.groupIdentifier", description="The group identifier for the request group", type="token" )
+  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>author</b>
+   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
    * <p>
-   * Description: <b>The author of the request group</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.author</b><br>
+   * Description: <b>The group identifier for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.groupIdentifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
 
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:author</b>".
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>External identifiers for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.identifier</b><br>
+   * </p>
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("RequestGroup:author").toLocked();
+  @SearchParamDefinition(name="identifier", path="RequestGroup.identifier", description="External identifiers for the request group", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>External identifiers for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>instantiates-canonical</b>
@@ -5074,50 +3728,24 @@ public class RequestGroup extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_INSTANTIATES_CANONICAL = new ca.uhn.fhir.model.api.Include("RequestGroup:instantiates-canonical").toLocked();
 
  /**
-   * Search parameter: <b>encounter</b>
+   * Search parameter: <b>instantiates-uri</b>
    * <p>
-   * Description: <b>The encounter the request group applies to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.encounter</b><br>
+   * Description: <b>The external definition from which the request group is realized</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>RequestGroup.instantiatesUri</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="RequestGroup.encounter", description="The encounter the request group applies to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="instantiates-uri", path="RequestGroup.instantiatesUri", description="The external definition from which the request group is realized", type="uri" )
+  public static final String SP_INSTANTIATES_URI = "instantiates-uri";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>instantiates-uri</b>
    * <p>
-   * Description: <b>The encounter the request group applies to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.encounter</b><br>
+   * Description: <b>The external definition from which the request group is realized</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>RequestGroup.instantiatesUri</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("RequestGroup:encounter").toLocked();
-
- /**
-   * Search parameter: <b>priority</b>
-   * <p>
-   * Description: <b>The priority of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.priority</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="priority", path="RequestGroup.priority", description="The priority of the request group", type="token" )
-  public static final String SP_PRIORITY = "priority";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
-   * <p>
-   * Description: <b>The priority of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.priority</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES_URI);
 
  /**
    * Search parameter: <b>intent</b>
@@ -5147,7 +3775,7 @@ public class RequestGroup extends DomainResource {
    * Path: <b>RequestGroup.action.participant</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="participant", path="RequestGroup.action.participant", description="The participant in the requests in the group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="participant", path="RequestGroup.action.participant", description="The participant in the requests in the group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PARTICIPANT = "participant";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>participant</b>
@@ -5166,31 +3794,11 @@ public class RequestGroup extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT = new ca.uhn.fhir.model.api.Include("RequestGroup:participant").toLocked();
 
  /**
-   * Search parameter: <b>group-identifier</b>
-   * <p>
-   * Description: <b>The group identifier for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.groupIdentifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="group-identifier", path="RequestGroup.groupIdentifier", description="The group identifier for the request group", type="token" )
-  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
-   * <p>
-   * Description: <b>The group identifier for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.groupIdentifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
-
- /**
    * Search parameter: <b>patient</b>
    * <p>
    * Description: <b>The identity of a patient to search for request groups</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject</b><br>
+   * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="patient", path="RequestGroup.subject.where(resolve() is Patient)", description="The identity of a patient to search for request groups", type="reference", target={Patient.class } )
@@ -5200,7 +3808,7 @@ public class RequestGroup extends DomainResource {
    * <p>
    * Description: <b>The identity of a patient to search for request groups</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject</b><br>
+   * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -5212,24 +3820,24 @@ public class RequestGroup extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("RequestGroup:patient").toLocked();
 
  /**
-   * Search parameter: <b>instantiates-uri</b>
+   * Search parameter: <b>priority</b>
    * <p>
-   * Description: <b>The external definition from which the request group is realized</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>RequestGroup.instantiatesUri</b><br>
+   * Description: <b>The priority of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.priority</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="instantiates-uri", path="RequestGroup.instantiatesUri", description="The external definition from which the request group is realized", type="uri" )
-  public static final String SP_INSTANTIATES_URI = "instantiates-uri";
+  @SearchParamDefinition(name="priority", path="RequestGroup.priority", description="The priority of the request group", type="token" )
+  public static final String SP_PRIORITY = "priority";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>instantiates-uri</b>
+   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
    * <p>
-   * Description: <b>The external definition from which the request group is realized</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>RequestGroup.instantiatesUri</b><br>
+   * Description: <b>The priority of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.priority</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES_URI);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
 
  /**
    * Search parameter: <b>status</b>
@@ -5250,6 +3858,32 @@ public class RequestGroup extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The subject that the request group is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="RequestGroup.subject", description="The subject that the request group is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The subject that the request group is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RequestGroup:subject").toLocked();
 
 
 }

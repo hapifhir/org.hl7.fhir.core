@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,135 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The subscription resource describes a particular client's request to be notified about a Topic.
  */
 @ResourceDef(name="Subscription", profile="http://hl7.org/fhir/StructureDefinition/Subscription")
 public class Subscription extends DomainResource {
-
-    public enum SubscriptionStatus {
-        /**
-         * The client has requested the subscription, and the server has not yet set it up.
-         */
-        REQUESTED, 
-        /**
-         * The subscription is active.
-         */
-        ACTIVE, 
-        /**
-         * The server has an error executing the notification.
-         */
-        ERROR, 
-        /**
-         * Too many errors have occurred or the subscription has expired.
-         */
-        OFF, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static SubscriptionStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("requested".equals(codeString))
-          return REQUESTED;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("error".equals(codeString))
-          return ERROR;
-        if ("off".equals(codeString))
-          return OFF;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown SubscriptionStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case REQUESTED: return "requested";
-            case ACTIVE: return "active";
-            case ERROR: return "error";
-            case OFF: return "off";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case REQUESTED: return "http://hl7.org/fhir/subscription-status";
-            case ACTIVE: return "http://hl7.org/fhir/subscription-status";
-            case ERROR: return "http://hl7.org/fhir/subscription-status";
-            case OFF: return "http://hl7.org/fhir/subscription-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case REQUESTED: return "The client has requested the subscription, and the server has not yet set it up.";
-            case ACTIVE: return "The subscription is active.";
-            case ERROR: return "The server has an error executing the notification.";
-            case OFF: return "Too many errors have occurred or the subscription has expired.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case REQUESTED: return "Requested";
-            case ACTIVE: return "Active";
-            case ERROR: return "Error";
-            case OFF: return "Off";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class SubscriptionStatusEnumFactory implements EnumFactory<SubscriptionStatus> {
-    public SubscriptionStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("requested".equals(codeString))
-          return SubscriptionStatus.REQUESTED;
-        if ("active".equals(codeString))
-          return SubscriptionStatus.ACTIVE;
-        if ("error".equals(codeString))
-          return SubscriptionStatus.ERROR;
-        if ("off".equals(codeString))
-          return SubscriptionStatus.OFF;
-        throw new IllegalArgumentException("Unknown SubscriptionStatus code '"+codeString+"'");
-        }
-        public Enumeration<SubscriptionStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<SubscriptionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("requested".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.REQUESTED);
-        if ("active".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ACTIVE);
-        if ("error".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ERROR);
-        if ("off".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.OFF);
-        throw new FHIRException("Unknown SubscriptionStatus code '"+codeString+"'");
-        }
-    public String toCode(SubscriptionStatus code) {
-      if (code == SubscriptionStatus.REQUESTED)
-        return "requested";
-      if (code == SubscriptionStatus.ACTIVE)
-        return "active";
-      if (code == SubscriptionStatus.ERROR)
-        return "error";
-      if (code == SubscriptionStatus.OFF)
-        return "off";
-      return "?";
-      }
-    public String toSystem(SubscriptionStatus code) {
-      return code.getSystem();
-      }
-    }
 
     public enum SubscriptionFilterByMatchType {
         /**
@@ -444,6 +321,130 @@ public class Subscription extends DomainResource {
       }
     }
 
+    public enum SubscriptionStatus {
+        /**
+         * The client has requested the subscription, and the server has not yet set it up.
+         */
+        REQUESTED, 
+        /**
+         * The subscription is active.
+         */
+        ACTIVE, 
+        /**
+         * The server has an error executing the notification.
+         */
+        ERROR, 
+        /**
+         * Too many errors have occurred or the subscription has expired.
+         */
+        OFF, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static SubscriptionStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("requested".equals(codeString))
+          return REQUESTED;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("error".equals(codeString))
+          return ERROR;
+        if ("off".equals(codeString))
+          return OFF;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown SubscriptionStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case REQUESTED: return "requested";
+            case ACTIVE: return "active";
+            case ERROR: return "error";
+            case OFF: return "off";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case REQUESTED: return "http://hl7.org/fhir/subscription-status";
+            case ACTIVE: return "http://hl7.org/fhir/subscription-status";
+            case ERROR: return "http://hl7.org/fhir/subscription-status";
+            case OFF: return "http://hl7.org/fhir/subscription-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case REQUESTED: return "The client has requested the subscription, and the server has not yet set it up.";
+            case ACTIVE: return "The subscription is active.";
+            case ERROR: return "The server has an error executing the notification.";
+            case OFF: return "Too many errors have occurred or the subscription has expired.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case REQUESTED: return "Requested";
+            case ACTIVE: return "Active";
+            case ERROR: return "Error";
+            case OFF: return "Off";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class SubscriptionStatusEnumFactory implements EnumFactory<SubscriptionStatus> {
+    public SubscriptionStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("requested".equals(codeString))
+          return SubscriptionStatus.REQUESTED;
+        if ("active".equals(codeString))
+          return SubscriptionStatus.ACTIVE;
+        if ("error".equals(codeString))
+          return SubscriptionStatus.ERROR;
+        if ("off".equals(codeString))
+          return SubscriptionStatus.OFF;
+        throw new IllegalArgumentException("Unknown SubscriptionStatus code '"+codeString+"'");
+        }
+        public Enumeration<SubscriptionStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<SubscriptionStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("requested".equals(codeString))
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.REQUESTED);
+        if ("active".equals(codeString))
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ACTIVE);
+        if ("error".equals(codeString))
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ERROR);
+        if ("off".equals(codeString))
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.OFF);
+        throw new FHIRException("Unknown SubscriptionStatus code '"+codeString+"'");
+        }
+    public String toCode(SubscriptionStatus code) {
+      if (code == SubscriptionStatus.REQUESTED)
+        return "requested";
+      if (code == SubscriptionStatus.ACTIVE)
+        return "active";
+      if (code == SubscriptionStatus.ERROR)
+        return "error";
+      if (code == SubscriptionStatus.OFF)
+        return "off";
+      return "?";
+      }
+    public String toSystem(SubscriptionStatus code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class SubscriptionFilterByComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -480,10 +481,10 @@ public class Subscription extends DomainResource {
     /**
      * Constructor
      */
-      public SubscriptionFilterByComponent(StringType name, StringType value) {
+      public SubscriptionFilterByComponent(String name, String value) {
         super();
-        this.name = name;
-        this.value = value;
+        this.setName(name);
+        this.setValue(value);
       }
 
         /**
@@ -711,13 +712,13 @@ public class Subscription extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.name");
         }
         else if (name.equals("matchType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.matchType");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.matchType");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.value");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.value");
         }
         else
           return super.addChild(name);
@@ -775,7 +776,7 @@ public class Subscription extends DomainResource {
          * The type of channel to send notifications on.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="rest-hook | websocket | email | sms | message", formalDefinition="The type of channel to send notifications on." )
+        @Description(shortDefinition="rest-hook | websocket | email | message", formalDefinition="The type of channel to send notifications on." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-channel-type")
         protected CodeableConcept type;
 
@@ -821,7 +822,7 @@ public class Subscription extends DomainResource {
      */
       public SubscriptionChannelComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -1135,13 +1136,13 @@ public class Subscription extends DomainResource {
           return this.type;
         }
         else if (name.equals("endpoint")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.endpoint");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.channel.endpoint");
         }
         else if (name.equals("header")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.header");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.channel.header");
         }
         else if (name.equals("heartbeatPeriod")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.heartbeatPeriod");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.channel.heartbeatPeriod");
         }
         else if (name.equals("payload")) {
           this.payload = new SubscriptionChannelPayloadComponent();
@@ -1208,10 +1209,10 @@ public class Subscription extends DomainResource {
     @Block()
     public static class SubscriptionChannelPayloadComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type "text/plain" may also be used for Email and SMS subscriptions.
+         * The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
          */
         @Child(name = "contentType", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="MIME type to send, or omit for no payload", formalDefinition="The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type \"text/plain\" may also be used for Email and SMS subscriptions." )
+        @Description(shortDefinition="MIME type to send, or omit for no payload", formalDefinition="The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
         protected CodeType contentType;
 
@@ -1233,7 +1234,7 @@ public class Subscription extends DomainResource {
       }
 
         /**
-         * @return {@link #contentType} (The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type "text/plain" may also be used for Email and SMS subscriptions.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
+         * @return {@link #contentType} (The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
          */
         public CodeType getContentTypeElement() { 
           if (this.contentType == null)
@@ -1253,7 +1254,7 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @param value {@link #contentType} (The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type "text/plain" may also be used for Email and SMS subscriptions.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
+         * @param value {@link #contentType} (The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
          */
         public SubscriptionChannelPayloadComponent setContentTypeElement(CodeType value) { 
           this.contentType = value;
@@ -1261,14 +1262,14 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type "text/plain" may also be used for Email and SMS subscriptions.
+         * @return The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
          */
         public String getContentType() { 
           return this.contentType == null ? null : this.contentType.getValue();
         }
 
         /**
-         * @param value The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type "text/plain" may also be used for Email and SMS subscriptions.
+         * @param value The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
          */
         public SubscriptionChannelPayloadComponent setContentType(String value) { 
           if (Utilities.noString(value))
@@ -1332,14 +1333,14 @@ public class Subscription extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type \"text/plain\" may also be used for Email and SMS subscriptions.", 0, 1, contentType));
+          children.add(new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions.", 0, 1, contentType));
           children.add(new Property("content", "code", "How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -389131437: /*contentType*/  return new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The mime type \"text/plain\" may also be used for Email and SMS subscriptions.", 0, 1, contentType);
+          case -389131437: /*contentType*/  return new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions.", 0, 1, contentType);
           case 951530617: /*content*/  return new Property("content", "code", "How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1406,10 +1407,10 @@ public class Subscription extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("contentType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.contentType");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.channel.payload.contentType");
         }
         else if (name.equals("content")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.content");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.channel.payload.content");
         }
         else
           return super.addChild(name);
@@ -1504,7 +1505,7 @@ public class Subscription extends DomainResource {
     /**
      * A description of why this subscription is defined.
      */
-    @Child(name = "reason", type = {StringType.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "reason", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Description of why this subscription was created", formalDefinition="A description of why this subscription is defined." )
     protected StringType reason;
 
@@ -1524,10 +1525,10 @@ public class Subscription extends DomainResource {
     protected List<CodeableConcept> error;
 
     /**
-     * A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.
+     * A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.
      */
     @Child(name = "eventCount", type = {UnsignedIntType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Notification event counter", formalDefinition="A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an \"active\" or \"error\" state -- not \"requested\" or \"off\").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter." )
+    @Description(shortDefinition="Notification event counter", formalDefinition="A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an \"active\" or \"error\" state -- not \"requested\" or \"off\").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values." )
     protected UnsignedIntType eventCount;
 
     /**
@@ -1549,12 +1550,11 @@ public class Subscription extends DomainResource {
   /**
    * Constructor
    */
-    public Subscription(Enumeration<SubscriptionStatus> status, Reference topic, StringType reason, SubscriptionChannelComponent channel) {
+    public Subscription(SubscriptionStatus status, Reference topic, SubscriptionChannelComponent channel) {
       super();
-      this.status = status;
-      this.topic = topic;
-      this.reason = reason;
-      this.channel = channel;
+      this.setStatus(status);
+      this.setTopic(topic);
+      this.setChannel(channel);
     }
 
     /**
@@ -1601,7 +1601,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1772,7 +1772,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactPoint getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -1869,9 +1869,13 @@ public class Subscription extends DomainResource {
      * @param value A description of why this subscription is defined.
      */
     public Subscription setReason(String value) { 
+      if (Utilities.noString(value))
+        this.reason = null;
+      else {
         if (this.reason == null)
           this.reason = new StringType();
         this.reason.setValue(value);
+      }
       return this;
     }
 
@@ -1919,7 +1923,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #filterBy}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #filterBy}, creating it if it does not already exist {3}
      */
     public SubscriptionFilterByComponent getFilterByFirstRep() { 
       if (getFilterBy().isEmpty()) {
@@ -1972,7 +1976,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #error}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #error}, creating it if it does not already exist {3}
      */
     public CodeableConcept getErrorFirstRep() { 
       if (getError().isEmpty()) {
@@ -1982,7 +1986,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #eventCount} (A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.). This is the underlying object with id, value and extensions. The accessor "getEventCount" gives direct access to the value
+     * @return {@link #eventCount} (A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.). This is the underlying object with id, value and extensions. The accessor "getEventCount" gives direct access to the value
      */
     public UnsignedIntType getEventCountElement() { 
       if (this.eventCount == null)
@@ -2002,7 +2006,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @param value {@link #eventCount} (A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.). This is the underlying object with id, value and extensions. The accessor "getEventCount" gives direct access to the value
+     * @param value {@link #eventCount} (A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.). This is the underlying object with id, value and extensions. The accessor "getEventCount" gives direct access to the value
      */
     public Subscription setEventCountElement(UnsignedIntType value) { 
       this.eventCount = value;
@@ -2010,14 +2014,14 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.
+     * @return A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.
      */
     public int getEventCount() { 
       return this.eventCount == null || this.eventCount.isEmpty() ? 0 : this.eventCount.getValue();
     }
 
     /**
-     * @param value A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.
+     * @param value A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an "active" or "error" state -- not "requested" or "off").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.
      */
     public Subscription setEventCount(int value) { 
         if (this.eventCount == null)
@@ -2061,7 +2065,7 @@ public class Subscription extends DomainResource {
         children.add(new Property("reason", "string", "A description of why this subscription is defined.", 0, 1, reason));
         children.add(new Property("filterBy", "", "The filter properties to be applied to narrow the topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy));
         children.add(new Property("error", "CodeableConcept", "A record of the last error that occurred when the server processed a notification.", 0, java.lang.Integer.MAX_VALUE, error));
-        children.add(new Property("eventCount", "unsignedInt", "A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an \"active\" or \"error\" state -- not \"requested\" or \"off\").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.", 0, 1, eventCount));
+        children.add(new Property("eventCount", "unsignedInt", "A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an \"active\" or \"error\" state -- not \"requested\" or \"off\").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.", 0, 1, eventCount));
         children.add(new Property("channel", "", "Details where to send notifications when resources are received that meet the criteria.", 0, 1, channel));
       }
 
@@ -2077,7 +2081,7 @@ public class Subscription extends DomainResource {
         case -934964668: /*reason*/  return new Property("reason", "string", "A description of why this subscription is defined.", 0, 1, reason);
         case -721168913: /*filterBy*/  return new Property("filterBy", "", "The filter properties to be applied to narrow the topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy);
         case 96784904: /*error*/  return new Property("error", "CodeableConcept", "A record of the last error that occurred when the server processed a notification.", 0, java.lang.Integer.MAX_VALUE, error);
-        case 958365333: /*eventCount*/  return new Property("eventCount", "unsignedInt", "A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an \"active\" or \"error\" state -- not \"requested\" or \"off\").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.", 0, 1, eventCount);
+        case 958365333: /*eventCount*/  return new Property("eventCount", "unsignedInt", "A record of  the number of events for which the server has attempted delivery on this subscription (i.e., the number of events that occurred while the subscription is in an \"active\" or \"error\" state -- not \"requested\" or \"off\").   Server Initializes to 0 for a new subscription.  Repeated attempts at delivery of the *same* event notification do not increment this counter.  Valid values are unsigned integers (0+).  The decmial type is used to ensure that counts can grow larger than 32-bit values.", 0, 1, eventCount);
         case 738950403: /*channel*/  return new Property("channel", "", "Details where to send notifications when resources are received that meet the criteria.", 0, 1, channel);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2335,6 +2339,26 @@ public class Subscription extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>contact</b>
+   * <p>
+   * Description: <b>Contact details for the subscription</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.contact</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contact", path="Subscription.contact", description="Contact details for the subscription", type="token" )
+  public static final String SP_CONTACT = "contact";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contact</b>
+   * <p>
+   * Description: <b>Contact details for the subscription</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.contact</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTACT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTACT);
+
+ /**
    * Search parameter: <b>payload</b>
    * <p>
    * Description: <b>The mime-type of the notification payload</b><br>
@@ -2355,24 +2379,24 @@ public class Subscription extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD);
 
  /**
-   * Search parameter: <b>contact</b>
+   * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>Contact details for the subscription</b><br>
+   * Description: <b>The current state of the subscription</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Subscription.contact</b><br>
+   * Path: <b>Subscription.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="contact", path="Subscription.contact", description="Contact details for the subscription", type="token" )
-  public static final String SP_CONTACT = "contact";
+  @SearchParamDefinition(name="status", path="Subscription.status", description="The current state of the subscription", type="token" )
+  public static final String SP_STATUS = "status";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>contact</b>
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>Contact details for the subscription</b><br>
+   * Description: <b>The current state of the subscription</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Subscription.contact</b><br>
+   * Path: <b>Subscription.status</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTACT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTACT);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>type</b>
@@ -2413,26 +2437,6 @@ public class Subscription extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current state of the subscription</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Subscription.status", description="The current state of the subscription", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current state of the subscription</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

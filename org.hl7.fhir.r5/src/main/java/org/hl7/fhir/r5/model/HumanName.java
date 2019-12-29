@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,53 +25,50 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
-// added from java-adornments.txt:
+
 import ca.uhn.fhir.util.DatatypeUtil;
-import org.hl7.fhir.instance.model.api.IPrimitiveType;
-
-
-// end addition
+import  org.hl7.fhir.instance.model.api.IPrimitiveType;
 /**
- * A human's name with the ability to identify parts and usage.
+ * Base StructureDefinition for HumanName Type: A human's name with the ability to identify parts and usage.
  */
 @DatatypeDef(name="HumanName")
 public class HumanName extends DataType implements ICompositeType {
@@ -81,7 +79,7 @@ public class HumanName extends DataType implements ICompositeType {
          */
         USUAL, 
         /**
-         * The formal name as registered in an official (government) registry, but which name might not be commonly used. May be called "legal name".
+         * The formal name as registered in an official (government) registry, but which name might not be commonly used. May be called \"legal name\".
          */
         OFFICIAL, 
         /**
@@ -660,72 +658,6 @@ public class HumanName extends DataType implements ICompositeType {
       return this;
     }
 
- /**
-  /**
-   * Returns all repetitions of {@link #getGiven() given name} as a space separated string
-   * 
-   * @see DatatypeUtil#joinStringsSpaceSeparated(List)
-   */
-  public String getGivenAsSingleString() {
-    return joinStringsSpaceSeparated(getGiven());
-  }
-
-  /**
-   * Returns all repetitions of {@link #getPrefix() prefix name} as a space separated string
-   * 
-   * @see DatatypeUtil#joinStringsSpaceSeparated(List)
-   */
-  public String getPrefixAsSingleString() {
-    return joinStringsSpaceSeparated(getPrefix());
-  }
-
-  /**
-   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated string
-   * 
-   * @see DatatypeUtil#joinStringsSpaceSeparated(List)
-   */
-  public String getSuffixAsSingleString() {
-    return joinStringsSpaceSeparated(getSuffix());
-  }
-
-  /**
-   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced
-   * string separating each part.
-   * <p>
-   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead.
-   * </p>
-   */
-  public String getNameAsSingleString() {
-    List<StringType> nameParts = new ArrayList<StringType>();
-    nameParts.addAll(getPrefix());
-    nameParts.addAll(getGiven());
-    nameParts.add(getFamilyElement());
-    nameParts.addAll(getSuffix());
-    if (nameParts.size() > 0) {
-      return joinStringsSpaceSeparated(nameParts);
-    } else {
-      return getTextElement().getValue();
-    }
-  }
-
-  /**
-   * Joins a list of strings with a single space (' ') between each string
-   * 
-   * TODO: replace with call to ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to 1.4
-   */
-  private static String joinStringsSpaceSeparated(List<? extends IPrimitiveType<String>> theStrings) {
-    StringBuilder b = new StringBuilder();
-    for (IPrimitiveType<String> next : theStrings) {
-      if (next.isEmpty()) {
-        continue;
-      }
-      if (b.length() > 0) {
-        b.append(' ');
-      }
-      b.append(next.getValue());
-    }
-    return b.toString();
-  }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("use", "code", "Identifies the purpose for this name.", 0, 1, use));
@@ -944,6 +876,76 @@ public class HumanName extends DataType implements ICompositeType {
           , prefix, suffix, period);
       }
 
+// Manual code (from Configuration.txt)t:
+ /** 
+  /** 
+   * Returns all repetitions of {@link #getGiven() given name} as a space separated string 
+   *  
+   * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
+   */ 
+  public String getGivenAsSingleString() { 
+    return joinStringsSpaceSeparated(getGiven()); 
+  } 
+
+  /** 
+   * Returns all repetitions of {@link #getPrefix() prefix name} as a space separated string 
+   *  
+   * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
+   */ 
+  public String getPrefixAsSingleString() { 
+    return joinStringsSpaceSeparated(getPrefix()); 
+  } 
+
+  /** 
+   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated string 
+   *  
+   * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
+   */ 
+  public String getSuffixAsSingleString() { 
+    return joinStringsSpaceSeparated(getSuffix()); 
+  } 
+
+  /** 
+   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced 
+   * string separating each part. 
+   * <p> 
+   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead. 
+   * </p> 
+   */ 
+  public String getNameAsSingleString() { 
+    List<StringType> nameParts = new ArrayList<StringType>(); 
+    nameParts.addAll(getPrefix()); 
+    nameParts.addAll(getGiven()); 
+    nameParts.add(getFamilyElement()); 
+    nameParts.addAll(getSuffix()); 
+    if (nameParts.size() > 0) { 
+      return joinStringsSpaceSeparated(nameParts); 
+    } else { 
+      return getTextElement().getValue(); 
+    } 
+  } 
+
+  /** 
+   * Joins a list of strings with a single space (' ') between each string 
+   *  
+   * TODO: replace with call to ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to 1.4 
+   */ 
+  private static String joinStringsSpaceSeparated(List<? extends IPrimitiveType<String>> theStrings) { 
+    StringBuilder b = new StringBuilder(); 
+    for (IPrimitiveType<String> next : theStrings) { 
+      if (next.isEmpty()) { 
+        continue; 
+      } 
+      if (b.length() > 0) { 
+        b.append(' '); 
+      } 
+      b.append(next.getValue()); 
+    } 
+    return b.toString(); 
+  } 
+
+
+// end addition
 
 }
 

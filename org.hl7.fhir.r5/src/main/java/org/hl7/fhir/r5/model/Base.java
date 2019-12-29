@@ -157,7 +157,9 @@ private Map<String, Object> userData;
 		return false;
 	}
 	
-	protected abstract void listChildren(List<Property> result) ;
+	protected void listChildren(List<Property> result) {
+	  // nothing
+	}
 	
 	public Base setProperty(String name, Base value) throws FHIRException {
 	  throw new FHIRException("Attempt to set unknown property "+name);
@@ -352,6 +354,9 @@ private Map<String, Object> userData;
     if (_checkValid)
       throw new FHIRException("Attempt to read invalid property '"+_name+"' on type "+fhirType());
     return null; 
+  }
+
+  public void copyValues(Base dst) {   
   }
 
 }

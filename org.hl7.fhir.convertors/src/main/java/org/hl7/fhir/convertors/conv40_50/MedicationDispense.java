@@ -24,7 +24,7 @@ package org.hl7.fhir.convertors.conv40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus;
+import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -174,24 +174,24 @@ public class MedicationDispense extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  private static CodeType convertStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> src) {
+  private static CodeType convertStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> src) {
     if (src == null)
       return null;
     CodeType tgt = new CodeType();
     copyElement(src, tgt);
-    if (src.getValue() == MedicationDispenseStatus.DECLINED)
+    if (src.getValue() == MedicationDispenseStatusCodes.DECLINED)
       tgt.setValue("stopped");
     else
       tgt.setValue(src.getValueAsString());
     return tgt;
   }
 
-  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> convertMedicationStatus(org.hl7.fhir.r4.model.CodeType src) {
+  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> convertMedicationStatus(org.hl7.fhir.r4.model.CodeType src) {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatus>();
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes>();
     copyElement(src, tgt);
-    tgt.setValue(MedicationDispenseStatus.fromCode(src.getCode()));
+    tgt.setValue(MedicationDispenseStatusCodes.fromCode(src.getCode()));
     return tgt;
   }
   public static org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent convertMedicationDispensePerformerComponent(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent src) throws FHIRException {

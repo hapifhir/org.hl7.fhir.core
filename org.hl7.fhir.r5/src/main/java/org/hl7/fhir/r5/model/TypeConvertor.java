@@ -220,6 +220,25 @@ public class TypeConvertor {
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a CodeableConcept");
   }
   
+  public static CodeableReference castToCodeableReference(Base b) throws FHIRException {
+    if (b instanceof CodeableReference) {
+      return (CodeableReference) b;
+    } else if (b instanceof CodeType) {
+      CodeableReference cc = new CodeableReference();
+      cc.getConcept().addCoding().setCode(((CodeType) b).asStringValue());
+      return cc;
+    } else if (b instanceof Reference) {
+      CodeableReference cc = new CodeableReference();
+      cc.setReference((Reference) b);
+      return cc;
+    } else if(b instanceof StringType) {
+      CodeableReference cc = new CodeableReference();
+      cc.getConcept().addCoding().setCode(((StringType) b).asStringValue());
+      return cc;
+    } else
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a CodeableConcept");
+  }
+  
   public static Population castToPopulation(Base b) throws FHIRException {
     if (b instanceof Population)
       return (Population) b;

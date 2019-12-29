@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A pharmaceutical product described in terms of its composition and dose form.
  */
@@ -74,20 +76,27 @@ public class AdministrableProductDefinition extends DomainResource {
     @Block()
     public static class AdministrableProductDefinitionCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A coded characteristic.
+         * A code expressing the type of characteristic.
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A coded characteristic", formalDefinition="A coded characteristic." )
+        @Description(shortDefinition="A code expressing the type of characteristic", formalDefinition="A code expressing the type of characteristic." )
         protected CodeableConcept code;
+
+        /**
+         * A value for the characteristic.
+         */
+        @Child(name = "value", type = {Coding.class, Quantity.class, StringType.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
+        protected DataType value;
 
         /**
          * The status of characteristic e.g. assigned or pending.
          */
-        @Child(name = "status", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "status", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The status of characteristic e.g. assigned or pending", formalDefinition="The status of characteristic e.g. assigned or pending." )
         protected CodeableConcept status;
 
-        private static final long serialVersionUID = 1414556635L;
+        private static final long serialVersionUID = -343249058L;
 
     /**
      * Constructor
@@ -101,11 +110,11 @@ public class AdministrableProductDefinition extends DomainResource {
      */
       public AdministrableProductDefinitionCharacteristicComponent(CodeableConcept code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
-         * @return {@link #code} (A coded characteristic.)
+         * @return {@link #code} (A code expressing the type of characteristic.)
          */
         public CodeableConcept getCode() { 
           if (this.code == null)
@@ -121,10 +130,121 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #code} (A coded characteristic.)
+         * @param value {@link #code} (A code expressing the type of characteristic.)
          */
         public AdministrableProductDefinitionCharacteristicComponent setCode(CodeableConcept value) { 
           this.code = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (A value for the characteristic.)
+         */
+        public AdministrableProductDefinitionCharacteristicComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Coding || value instanceof Quantity || value instanceof StringType || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
+            throw new Error("Not the right type for AdministrableProductDefinition.characteristic.value[x]: "+value.fhirType());
+          this.value = value;
           return this;
         }
 
@@ -154,14 +274,23 @@ public class AdministrableProductDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "CodeableConcept", "A coded characteristic.", 0, 1, code));
+          children.add(new Property("code", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, code));
+          children.add(new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value));
           children.add(new Property("status", "CodeableConcept", "The status of characteristic e.g. assigned or pending.", 0, 1, status));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A coded characteristic.", 0, 1, code);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, code);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "A value for the characteristic.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "A value for the characteristic.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "A value for the characteristic.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "A value for the characteristic.", 0, 1, value);
           case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status of characteristic e.g. assigned or pending.", 0, 1, status);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -172,6 +301,7 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -183,6 +313,9 @@ public class AdministrableProductDefinition extends DomainResource {
         switch (hash) {
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         case -892481550: // status
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -196,6 +329,8 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("status")) {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
@@ -207,6 +342,8 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return getCode();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         case -892481550:  return getStatus();
         default: return super.makeProperty(hash, name);
         }
@@ -217,6 +354,7 @@ public class AdministrableProductDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"Coding", "Quantity", "string", "date", "boolean", "Attachment"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -228,6 +366,30 @@ public class AdministrableProductDefinition extends DomainResource {
         if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
+        }
+        else if (name.equals("valueCoding")) {
+          this.value = new Coding();
+          return this.value;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueDate")) {
+          this.value = new DateType();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueAttachment")) {
+          this.value = new Attachment();
+          return this.value;
         }
         else if (name.equals("status")) {
           this.status = new CodeableConcept();
@@ -246,6 +408,7 @@ public class AdministrableProductDefinition extends DomainResource {
       public void copyValues(AdministrableProductDefinitionCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
+        dst.value = value == null ? null : value.copy();
         dst.status = status == null ? null : status.copy();
       }
 
@@ -256,7 +419,8 @@ public class AdministrableProductDefinition extends DomainResource {
         if (!(other_ instanceof AdministrableProductDefinitionCharacteristicComponent))
           return false;
         AdministrableProductDefinitionCharacteristicComponent o = (AdministrableProductDefinitionCharacteristicComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(status, o.status, true);
+        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true) && compareDeep(status, o.status, true)
+          ;
       }
 
       @Override
@@ -270,7 +434,7 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, status);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value, status);
       }
 
   public String fhirType() {
@@ -345,7 +509,7 @@ public class AdministrableProductDefinition extends DomainResource {
      */
       public AdministrableProductDefinitionRouteOfAdministrationComponent(CodeableConcept code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -536,7 +700,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #targetSpecies}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #targetSpecies}, creating it if it does not already exist {3}
          */
         public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent getTargetSpeciesFirstRep() { 
           if (getTargetSpecies().isEmpty()) {
@@ -785,7 +949,7 @@ public class AdministrableProductDefinition extends DomainResource {
      */
       public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent(CodeableConcept code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -856,7 +1020,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #withdrawalPeriod}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #withdrawalPeriod}, creating it if it does not already exist {3}
          */
         public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent getWithdrawalPeriodFirstRep() { 
           if (getWithdrawalPeriod().isEmpty()) {
@@ -1034,8 +1198,8 @@ public class AdministrableProductDefinition extends DomainResource {
      */
       public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent(CodeableConcept tissue, Quantity value) {
         super();
-        this.tissue = tissue;
-        this.value = value;
+        this.setTissue(tissue);
+        this.setValue(value);
       }
 
         /**
@@ -1227,7 +1391,7 @@ public class AdministrableProductDefinition extends DomainResource {
           return this.value;
         }
         else if (name.equals("supportingInformation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdministrableProductDefinition.supportingInformation");
+          throw new FHIRException("Cannot call addChild on a primitive type AdministrableProductDefinition.routeOfAdministration.targetSpecies.withdrawalPeriod.supportingInformation");
         }
         else
           return super.addChild(name);
@@ -1308,34 +1472,41 @@ public class AdministrableProductDefinition extends DomainResource {
     protected CodeableConcept unitOfPresentation;
 
     /**
+     * The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.
+     */
+    @Child(name = "producedFrom", type = {ManufacturedItemDefinition.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients", formalDefinition="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients." )
+    protected List<Reference> producedFrom;
+
+    /**
      * The ingredients of this administrable pharmaceutical product.
      */
-    @Child(name = "ingredient", type = {Ingredient.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "ingredient", type = {Ingredient.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The ingredients of this administrable pharmaceutical product", formalDefinition="The ingredients of this administrable pharmaceutical product." )
     protected List<Reference> ingredient;
 
     /**
      * Accompanying device.
      */
-    @Child(name = "device", type = {DeviceDefinition.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "device", type = {DeviceDefinition.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Accompanying device", formalDefinition="Accompanying device." )
     protected List<Reference> device;
 
     /**
      * Characteristics e.g. a products onset of action.
      */
-    @Child(name = "characteristic", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "characteristic", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Characteristics e.g. a products onset of action", formalDefinition="Characteristics e.g. a products onset of action." )
     protected List<AdministrableProductDefinitionCharacteristicComponent> characteristic;
 
     /**
      * The path by which the pharmaceutical product is taken into or makes contact with the body.
      */
-    @Child(name = "routeOfAdministration", type = {}, order=7, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "routeOfAdministration", type = {}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The path by which the pharmaceutical product is taken into or makes contact with the body", formalDefinition="The path by which the pharmaceutical product is taken into or makes contact with the body." )
     protected List<AdministrableProductDefinitionRouteOfAdministrationComponent> routeOfAdministration;
 
-    private static final long serialVersionUID = 696345043L;
+    private static final long serialVersionUID = 1618278928L;
 
   /**
    * Constructor
@@ -1347,9 +1518,10 @@ public class AdministrableProductDefinition extends DomainResource {
   /**
    * Constructor
    */
-    public AdministrableProductDefinition(CodeableConcept administrableDoseForm) {
+    public AdministrableProductDefinition(CodeableConcept administrableDoseForm, AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
       super();
-      this.administrableDoseForm = administrableDoseForm;
+      this.setAdministrableDoseForm(administrableDoseForm);
+      this.addRouteOfAdministration(routeOfAdministration);
     }
 
     /**
@@ -1396,7 +1568,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1449,7 +1621,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
      */
     public Reference getSubjectFirstRep() { 
       if (getSubject().isEmpty()) {
@@ -1507,6 +1679,59 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #producedFrom} (The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.)
+     */
+    public List<Reference> getProducedFrom() { 
+      if (this.producedFrom == null)
+        this.producedFrom = new ArrayList<Reference>();
+      return this.producedFrom;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public AdministrableProductDefinition setProducedFrom(List<Reference> theProducedFrom) { 
+      this.producedFrom = theProducedFrom;
+      return this;
+    }
+
+    public boolean hasProducedFrom() { 
+      if (this.producedFrom == null)
+        return false;
+      for (Reference item : this.producedFrom)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addProducedFrom() { //3
+      Reference t = new Reference();
+      if (this.producedFrom == null)
+        this.producedFrom = new ArrayList<Reference>();
+      this.producedFrom.add(t);
+      return t;
+    }
+
+    public AdministrableProductDefinition addProducedFrom(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.producedFrom == null)
+        this.producedFrom = new ArrayList<Reference>();
+      this.producedFrom.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #producedFrom}, creating it if it does not already exist {3}
+     */
+    public Reference getProducedFromFirstRep() { 
+      if (getProducedFrom().isEmpty()) {
+        addProducedFrom();
+      }
+      return getProducedFrom().get(0);
+    }
+
+    /**
      * @return {@link #ingredient} (The ingredients of this administrable pharmaceutical product.)
      */
     public List<Reference> getIngredient() { 
@@ -1550,7 +1775,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
      */
     public Reference getIngredientFirstRep() { 
       if (getIngredient().isEmpty()) {
@@ -1603,7 +1828,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #device}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #device}, creating it if it does not already exist {3}
      */
     public Reference getDeviceFirstRep() { 
       if (getDevice().isEmpty()) {
@@ -1656,7 +1881,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
      */
     public AdministrableProductDefinitionCharacteristicComponent getCharacteristicFirstRep() { 
       if (getCharacteristic().isEmpty()) {
@@ -1709,7 +1934,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #routeOfAdministration}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #routeOfAdministration}, creating it if it does not already exist {3}
      */
     public AdministrableProductDefinitionRouteOfAdministrationComponent getRouteOfAdministrationFirstRep() { 
       if (getRouteOfAdministration().isEmpty()) {
@@ -1724,6 +1949,7 @@ public class AdministrableProductDefinition extends DomainResource {
         children.add(new Property("subject", "Reference(MedicinalProductDefinition)", "The product that this is a pharmaceutical product of.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, after necessary reconstitution.", 0, 1, administrableDoseForm));
         children.add(new Property("unitOfPresentation", "CodeableConcept", "Todo.", 0, 1, unitOfPresentation));
+        children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.", 0, java.lang.Integer.MAX_VALUE, producedFrom));
         children.add(new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable pharmaceutical product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("device", "Reference(DeviceDefinition)", "Accompanying device.", 0, java.lang.Integer.MAX_VALUE, device));
         children.add(new Property("characteristic", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, characteristic));
@@ -1737,6 +1963,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition)", "The product that this is a pharmaceutical product of.", 0, java.lang.Integer.MAX_VALUE, subject);
         case 1446105202: /*administrableDoseForm*/  return new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, after necessary reconstitution.", 0, 1, administrableDoseForm);
         case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "Todo.", 0, 1, unitOfPresentation);
+        case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.", 0, java.lang.Integer.MAX_VALUE, producedFrom);
         case -206409263: /*ingredient*/  return new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable pharmaceutical product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "Accompanying device.", 0, java.lang.Integer.MAX_VALUE, device);
         case 366313883: /*characteristic*/  return new Property("characteristic", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, characteristic);
@@ -1753,6 +1980,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
         case 1446105202: /*administrableDoseForm*/ return this.administrableDoseForm == null ? new Base[0] : new Base[] {this.administrableDoseForm}; // CodeableConcept
         case -1427765963: /*unitOfPresentation*/ return this.unitOfPresentation == null ? new Base[0] : new Base[] {this.unitOfPresentation}; // CodeableConcept
+        case 588380494: /*producedFrom*/ return this.producedFrom == null ? new Base[0] : this.producedFrom.toArray(new Base[this.producedFrom.size()]); // Reference
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // Reference
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : this.device.toArray(new Base[this.device.size()]); // Reference
         case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // AdministrableProductDefinitionCharacteristicComponent
@@ -1776,6 +2004,9 @@ public class AdministrableProductDefinition extends DomainResource {
           return value;
         case -1427765963: // unitOfPresentation
           this.unitOfPresentation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 588380494: // producedFrom
+          this.getProducedFrom().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -206409263: // ingredient
           this.getIngredient().add(TypeConvertor.castToReference(value)); // Reference
@@ -1804,6 +2035,8 @@ public class AdministrableProductDefinition extends DomainResource {
           this.administrableDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unitOfPresentation")) {
           this.unitOfPresentation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("producedFrom")) {
+          this.getProducedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("ingredient")) {
           this.getIngredient().add(TypeConvertor.castToReference(value));
         } else if (name.equals("device")) {
@@ -1824,6 +2057,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case -1867885268:  return addSubject(); 
         case 1446105202:  return getAdministrableDoseForm();
         case -1427765963:  return getUnitOfPresentation();
+        case 588380494:  return addProducedFrom(); 
         case -206409263:  return addIngredient(); 
         case -1335157162:  return addDevice(); 
         case 366313883:  return addCharacteristic(); 
@@ -1840,6 +2074,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1446105202: /*administrableDoseForm*/ return new String[] {"CodeableConcept"};
         case -1427765963: /*unitOfPresentation*/ return new String[] {"CodeableConcept"};
+        case 588380494: /*producedFrom*/ return new String[] {"Reference"};
         case -206409263: /*ingredient*/ return new String[] {"Reference"};
         case -1335157162: /*device*/ return new String[] {"Reference"};
         case 366313883: /*characteristic*/ return new String[] {};
@@ -1864,6 +2099,9 @@ public class AdministrableProductDefinition extends DomainResource {
         else if (name.equals("unitOfPresentation")) {
           this.unitOfPresentation = new CodeableConcept();
           return this.unitOfPresentation;
+        }
+        else if (name.equals("producedFrom")) {
+          return addProducedFrom();
         }
         else if (name.equals("ingredient")) {
           return addIngredient();
@@ -1906,6 +2144,11 @@ public class AdministrableProductDefinition extends DomainResource {
         };
         dst.administrableDoseForm = administrableDoseForm == null ? null : administrableDoseForm.copy();
         dst.unitOfPresentation = unitOfPresentation == null ? null : unitOfPresentation.copy();
+        if (producedFrom != null) {
+          dst.producedFrom = new ArrayList<Reference>();
+          for (Reference i : producedFrom)
+            dst.producedFrom.add(i.copy());
+        };
         if (ingredient != null) {
           dst.ingredient = new ArrayList<Reference>();
           for (Reference i : ingredient)
@@ -1940,9 +2183,9 @@ public class AdministrableProductDefinition extends DomainResource {
           return false;
         AdministrableProductDefinition o = (AdministrableProductDefinition) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(subject, o.subject, true) && compareDeep(administrableDoseForm, o.administrableDoseForm, true)
-           && compareDeep(unitOfPresentation, o.unitOfPresentation, true) && compareDeep(ingredient, o.ingredient, true)
-           && compareDeep(device, o.device, true) && compareDeep(characteristic, o.characteristic, true) && compareDeep(routeOfAdministration, o.routeOfAdministration, true)
-          ;
+           && compareDeep(unitOfPresentation, o.unitOfPresentation, true) && compareDeep(producedFrom, o.producedFrom, true)
+           && compareDeep(ingredient, o.ingredient, true) && compareDeep(device, o.device, true) && compareDeep(characteristic, o.characteristic, true)
+           && compareDeep(routeOfAdministration, o.routeOfAdministration, true);
       }
 
       @Override
@@ -1957,13 +2200,34 @@ public class AdministrableProductDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, subject, administrableDoseForm
-          , unitOfPresentation, ingredient, device, characteristic, routeOfAdministration);
+          , unitOfPresentation, producedFrom, ingredient, device, characteristic, routeOfAdministration
+          );
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.AdministrableProductDefinition;
    }
+
+ /**
+   * Search parameter: <b>dose-form</b>
+   * <p>
+   * Description: <b>The administrable dose form, after necessary reconstitution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="dose-form", path="AdministrableProductDefinition.administrableDoseForm", description="The administrable dose form, after necessary reconstitution", type="token" )
+  public static final String SP_DOSE_FORM = "dose-form";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>dose-form</b>
+   * <p>
+   * Description: <b>The administrable dose form, after necessary reconstitution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_FORM);
 
  /**
    * Search parameter: <b>identifier</b>

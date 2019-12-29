@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,44 +25,39 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.util.Collections;
-import org.hl7.fhir.instance.model.api.IDomainResource;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
-import org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -69,6 +65,13 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
+import java.util.Collections;
+import  org.hl7.fhir.instance.model.api.IDomainResource;
+import  org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import  org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
+import  org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 /**
  * A resource that includes narrative, extensions, and contained resources.
  */
@@ -260,36 +263,6 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       return this;
     }
 
-    /**
-     * Returns a list of extensions from this element which have the given URL. Note that
-     * this list may not be modified (you can not add or remove elements from it)
-     */
-    public List<Extension> getExtensionsByUrl(String theUrl) {
-      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
-      ArrayList<Extension> retVal = new ArrayList<Extension>();
-      for (Extension next : getExtension()) {
-        if (theUrl.equals(next.getUrl())) {
-          retVal.add(next);
-        }
-      }
-      return Collections.unmodifiableList(retVal);
-    }
-
-    /**
-     * Returns a list of modifier extensions from this element which have the given URL. Note that
-     * this list may not be modified (you can not add or remove elements from it)
-     */
-    public List<Extension> getModifierExtensionsByUrl(String theUrl) {
-      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
-      ArrayList<Extension> retVal = new ArrayList<Extension>();
-      for (Extension next : getModifierExtension()) {
-        if (theUrl.equals(next.getUrl())) {
-          retVal.add(next);
-        }
-      }
-      return Collections.unmodifiableList(retVal);
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("text", "Narrative", "A human-readable narrative that contains a summary of the resource and can be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety.", 0, 1, text));
@@ -453,7 +426,27 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
           , modifierExtension);
       }
 
-// added from java-adornments.txt:
+ /**
+   * Search parameter: <b>_text</b>
+   * <p>
+   * Description: <b>Search on the narrative of the resource</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="_text", path="", description="Search on the narrative of the resource", type="string" )
+  public static final String SP_TEXT = "_text";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>_text</b>
+   * <p>
+   * Description: <b>Search on the narrative of the resource</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TEXT = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TEXT);
+
+// Manual code (from Configuration.txt)t:
 
   public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {
@@ -507,6 +500,37 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         }
         return null;
       }
+
+    /**
+     * Returns a list of extensions from this element which have the given URL. Note that
+     * this list may not be modified (you can not add or remove elements from it)
+     */
+    public List<Extension> getExtensionsByUrl(String theUrl) {
+      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
+      ArrayList<Extension> retVal = new ArrayList<Extension>();
+      for (Extension next : getExtension()) {
+        if (theUrl.equals(next.getUrl())) {
+          retVal.add(next);
+        }
+      }
+      return Collections.unmodifiableList(retVal);
+    }
+
+    /**
+     * Returns a list of modifier extensions from this element which have the given URL. Note that
+     * this list may not be modified (you can not add or remove elements from it)
+     */
+    public List<Extension> getModifierExtensionsByUrl(String theUrl) {
+      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
+      ArrayList<Extension> retVal = new ArrayList<Extension>();
+      for (Extension next : getModifierExtension()) {
+        if (theUrl.equals(next.getUrl())) {
+          retVal.add(next);
+        }
+      }
+      return Collections.unmodifiableList(retVal);
+    }
+
 
 // end addition
 

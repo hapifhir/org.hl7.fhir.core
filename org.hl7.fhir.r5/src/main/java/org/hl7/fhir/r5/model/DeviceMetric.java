@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,132 +66,381 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Describes a measurement, calculation or setting capability of a medical device.
  */
 @ResourceDef(name="DeviceMetric", profile="http://hl7.org/fhir/StructureDefinition/DeviceMetric")
 public class DeviceMetric extends DomainResource {
 
-    public enum DeviceMetricOperationalStatus {
+    public enum DeviceMetricCalibrationState {
         /**
-         * The DeviceMetric is operating and will generate DeviceObservations.
+         * The metric has not been calibrated.
          */
-        ON, 
+        NOTCALIBRATED, 
         /**
-         * The DeviceMetric is not operating.
+         * The metric needs to be calibrated.
          */
-        OFF, 
+        CALIBRATIONREQUIRED, 
         /**
-         * The DeviceMetric is operating, but will not generate any DeviceObservations.
+         * The metric has been calibrated.
          */
-        STANDBY, 
+        CALIBRATED, 
         /**
-         * The DeviceMetric was entered in error.
+         * The state of calibration of this metric is unspecified.
          */
-        ENTEREDINERROR, 
+        UNSPECIFIED, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static DeviceMetricOperationalStatus fromCode(String codeString) throws FHIRException {
+        public static DeviceMetricCalibrationState fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("on".equals(codeString))
-          return ON;
-        if ("off".equals(codeString))
-          return OFF;
-        if ("standby".equals(codeString))
-          return STANDBY;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
+        if ("not-calibrated".equals(codeString))
+          return NOTCALIBRATED;
+        if ("calibration-required".equals(codeString))
+          return CALIBRATIONREQUIRED;
+        if ("calibrated".equals(codeString))
+          return CALIBRATED;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
+          throw new FHIRException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case ON: return "on";
-            case OFF: return "off";
-            case STANDBY: return "standby";
-            case ENTEREDINERROR: return "entered-in-error";
+            case NOTCALIBRATED: return "not-calibrated";
+            case CALIBRATIONREQUIRED: return "calibration-required";
+            case CALIBRATED: return "calibrated";
+            case UNSPECIFIED: return "unspecified";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case ON: return "http://hl7.org/fhir/metric-operational-status";
-            case OFF: return "http://hl7.org/fhir/metric-operational-status";
-            case STANDBY: return "http://hl7.org/fhir/metric-operational-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/metric-operational-status";
+            case NOTCALIBRATED: return "http://hl7.org/fhir/metric-calibration-state";
+            case CALIBRATIONREQUIRED: return "http://hl7.org/fhir/metric-calibration-state";
+            case CALIBRATED: return "http://hl7.org/fhir/metric-calibration-state";
+            case UNSPECIFIED: return "http://hl7.org/fhir/metric-calibration-state";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case ON: return "The DeviceMetric is operating and will generate DeviceObservations.";
-            case OFF: return "The DeviceMetric is not operating.";
-            case STANDBY: return "The DeviceMetric is operating, but will not generate any DeviceObservations.";
-            case ENTEREDINERROR: return "The DeviceMetric was entered in error.";
+            case NOTCALIBRATED: return "The metric has not been calibrated.";
+            case CALIBRATIONREQUIRED: return "The metric needs to be calibrated.";
+            case CALIBRATED: return "The metric has been calibrated.";
+            case UNSPECIFIED: return "The state of calibration of this metric is unspecified.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case ON: return "On";
-            case OFF: return "Off";
-            case STANDBY: return "Standby";
-            case ENTEREDINERROR: return "Entered In Error";
+            case NOTCALIBRATED: return "Not Calibrated";
+            case CALIBRATIONREQUIRED: return "Calibration Required";
+            case CALIBRATED: return "Calibrated";
+            case UNSPECIFIED: return "Unspecified";
             default: return "?";
           }
         }
     }
 
-  public static class DeviceMetricOperationalStatusEnumFactory implements EnumFactory<DeviceMetricOperationalStatus> {
-    public DeviceMetricOperationalStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class DeviceMetricCalibrationStateEnumFactory implements EnumFactory<DeviceMetricCalibrationState> {
+    public DeviceMetricCalibrationState fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("on".equals(codeString))
-          return DeviceMetricOperationalStatus.ON;
-        if ("off".equals(codeString))
-          return DeviceMetricOperationalStatus.OFF;
-        if ("standby".equals(codeString))
-          return DeviceMetricOperationalStatus.STANDBY;
-        if ("entered-in-error".equals(codeString))
-          return DeviceMetricOperationalStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
+        if ("not-calibrated".equals(codeString))
+          return DeviceMetricCalibrationState.NOTCALIBRATED;
+        if ("calibration-required".equals(codeString))
+          return DeviceMetricCalibrationState.CALIBRATIONREQUIRED;
+        if ("calibrated".equals(codeString))
+          return DeviceMetricCalibrationState.CALIBRATED;
+        if ("unspecified".equals(codeString))
+          return DeviceMetricCalibrationState.UNSPECIFIED;
+        throw new IllegalArgumentException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricOperationalStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricCalibrationState> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceMetricOperationalStatus>(this);
+            return new Enumeration<DeviceMetricCalibrationState>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("on".equals(codeString))
-          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.ON);
-        if ("off".equals(codeString))
-          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.OFF);
-        if ("standby".equals(codeString))
-          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.STANDBY);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
+        if ("not-calibrated".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.NOTCALIBRATED);
+        if ("calibration-required".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.CALIBRATIONREQUIRED);
+        if ("calibrated".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.CALIBRATED);
+        if ("unspecified".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.UNSPECIFIED);
+        throw new FHIRException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
         }
-    public String toCode(DeviceMetricOperationalStatus code) {
-      if (code == DeviceMetricOperationalStatus.ON)
-        return "on";
-      if (code == DeviceMetricOperationalStatus.OFF)
-        return "off";
-      if (code == DeviceMetricOperationalStatus.STANDBY)
-        return "standby";
-      if (code == DeviceMetricOperationalStatus.ENTEREDINERROR)
-        return "entered-in-error";
+    public String toCode(DeviceMetricCalibrationState code) {
+      if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
+        return "not-calibrated";
+      if (code == DeviceMetricCalibrationState.CALIBRATIONREQUIRED)
+        return "calibration-required";
+      if (code == DeviceMetricCalibrationState.CALIBRATED)
+        return "calibrated";
+      if (code == DeviceMetricCalibrationState.UNSPECIFIED)
+        return "unspecified";
       return "?";
       }
-    public String toSystem(DeviceMetricOperationalStatus code) {
+    public String toSystem(DeviceMetricCalibrationState code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum DeviceMetricCalibrationType {
+        /**
+         * Metric calibration method has not been identified.
+         */
+        UNSPECIFIED, 
+        /**
+         * Offset metric calibration method.
+         */
+        OFFSET, 
+        /**
+         * Gain metric calibration method.
+         */
+        GAIN, 
+        /**
+         * Two-point metric calibration method.
+         */
+        TWOPOINT, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static DeviceMetricCalibrationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
+        if ("offset".equals(codeString))
+          return OFFSET;
+        if ("gain".equals(codeString))
+          return GAIN;
+        if ("two-point".equals(codeString))
+          return TWOPOINT;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNSPECIFIED: return "unspecified";
+            case OFFSET: return "offset";
+            case GAIN: return "gain";
+            case TWOPOINT: return "two-point";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case UNSPECIFIED: return "http://hl7.org/fhir/metric-calibration-type";
+            case OFFSET: return "http://hl7.org/fhir/metric-calibration-type";
+            case GAIN: return "http://hl7.org/fhir/metric-calibration-type";
+            case TWOPOINT: return "http://hl7.org/fhir/metric-calibration-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNSPECIFIED: return "Metric calibration method has not been identified.";
+            case OFFSET: return "Offset metric calibration method.";
+            case GAIN: return "Gain metric calibration method.";
+            case TWOPOINT: return "Two-point metric calibration method.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNSPECIFIED: return "Unspecified";
+            case OFFSET: return "Offset";
+            case GAIN: return "Gain";
+            case TWOPOINT: return "Two Point";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class DeviceMetricCalibrationTypeEnumFactory implements EnumFactory<DeviceMetricCalibrationType> {
+    public DeviceMetricCalibrationType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unspecified".equals(codeString))
+          return DeviceMetricCalibrationType.UNSPECIFIED;
+        if ("offset".equals(codeString))
+          return DeviceMetricCalibrationType.OFFSET;
+        if ("gain".equals(codeString))
+          return DeviceMetricCalibrationType.GAIN;
+        if ("two-point".equals(codeString))
+          return DeviceMetricCalibrationType.TWOPOINT;
+        throw new IllegalArgumentException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
+        }
+        public Enumeration<DeviceMetricCalibrationType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<DeviceMetricCalibrationType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("unspecified".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.UNSPECIFIED);
+        if ("offset".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.OFFSET);
+        if ("gain".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.GAIN);
+        if ("two-point".equals(codeString))
+          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.TWOPOINT);
+        throw new FHIRException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
+        }
+    public String toCode(DeviceMetricCalibrationType code) {
+      if (code == DeviceMetricCalibrationType.UNSPECIFIED)
+        return "unspecified";
+      if (code == DeviceMetricCalibrationType.OFFSET)
+        return "offset";
+      if (code == DeviceMetricCalibrationType.GAIN)
+        return "gain";
+      if (code == DeviceMetricCalibrationType.TWOPOINT)
+        return "two-point";
+      return "?";
+      }
+    public String toSystem(DeviceMetricCalibrationType code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum DeviceMetricCategory {
+        /**
+         * DeviceObservations generated for this DeviceMetric are measured.
+         */
+        MEASUREMENT, 
+        /**
+         * DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.
+         */
+        SETTING, 
+        /**
+         * DeviceObservations generated for this DeviceMetric are calculated.
+         */
+        CALCULATION, 
+        /**
+         * The category of this DeviceMetric is unspecified.
+         */
+        UNSPECIFIED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static DeviceMetricCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("measurement".equals(codeString))
+          return MEASUREMENT;
+        if ("setting".equals(codeString))
+          return SETTING;
+        if ("calculation".equals(codeString))
+          return CALCULATION;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown DeviceMetricCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MEASUREMENT: return "measurement";
+            case SETTING: return "setting";
+            case CALCULATION: return "calculation";
+            case UNSPECIFIED: return "unspecified";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case MEASUREMENT: return "http://hl7.org/fhir/metric-category";
+            case SETTING: return "http://hl7.org/fhir/metric-category";
+            case CALCULATION: return "http://hl7.org/fhir/metric-category";
+            case UNSPECIFIED: return "http://hl7.org/fhir/metric-category";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MEASUREMENT: return "DeviceObservations generated for this DeviceMetric are measured.";
+            case SETTING: return "DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.";
+            case CALCULATION: return "DeviceObservations generated for this DeviceMetric are calculated.";
+            case UNSPECIFIED: return "The category of this DeviceMetric is unspecified.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MEASUREMENT: return "Measurement";
+            case SETTING: return "Setting";
+            case CALCULATION: return "Calculation";
+            case UNSPECIFIED: return "Unspecified";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class DeviceMetricCategoryEnumFactory implements EnumFactory<DeviceMetricCategory> {
+    public DeviceMetricCategory fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("measurement".equals(codeString))
+          return DeviceMetricCategory.MEASUREMENT;
+        if ("setting".equals(codeString))
+          return DeviceMetricCategory.SETTING;
+        if ("calculation".equals(codeString))
+          return DeviceMetricCategory.CALCULATION;
+        if ("unspecified".equals(codeString))
+          return DeviceMetricCategory.UNSPECIFIED;
+        throw new IllegalArgumentException("Unknown DeviceMetricCategory code '"+codeString+"'");
+        }
+        public Enumeration<DeviceMetricCategory> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<DeviceMetricCategory>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("measurement".equals(codeString))
+          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.MEASUREMENT);
+        if ("setting".equals(codeString))
+          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.SETTING);
+        if ("calculation".equals(codeString))
+          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.CALCULATION);
+        if ("unspecified".equals(codeString))
+          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.UNSPECIFIED);
+        throw new FHIRException("Unknown DeviceMetricCategory code '"+codeString+"'");
+        }
+    public String toCode(DeviceMetricCategory code) {
+      if (code == DeviceMetricCategory.MEASUREMENT)
+        return "measurement";
+      if (code == DeviceMetricCategory.SETTING)
+        return "setting";
+      if (code == DeviceMetricCategory.CALCULATION)
+        return "calculation";
+      if (code == DeviceMetricCategory.UNSPECIFIED)
+        return "unspecified";
+      return "?";
+      }
+    public String toSystem(DeviceMetricCategory code) {
       return code.getSystem();
       }
     }
@@ -383,374 +633,126 @@ public class DeviceMetric extends DomainResource {
       }
     }
 
-    public enum DeviceMetricCategory {
+    public enum DeviceMetricOperationalStatus {
         /**
-         * DeviceObservations generated for this DeviceMetric are measured.
+         * The DeviceMetric is operating and will generate DeviceObservations.
          */
-        MEASUREMENT, 
+        ON, 
         /**
-         * DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.
+         * The DeviceMetric is not operating.
          */
-        SETTING, 
+        OFF, 
         /**
-         * DeviceObservations generated for this DeviceMetric are calculated.
+         * The DeviceMetric is operating, but will not generate any DeviceObservations.
          */
-        CALCULATION, 
+        STANDBY, 
         /**
-         * The category of this DeviceMetric is unspecified.
+         * The DeviceMetric was entered in error.
          */
-        UNSPECIFIED, 
+        ENTEREDINERROR, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static DeviceMetricCategory fromCode(String codeString) throws FHIRException {
+        public static DeviceMetricOperationalStatus fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("measurement".equals(codeString))
-          return MEASUREMENT;
-        if ("setting".equals(codeString))
-          return SETTING;
-        if ("calculation".equals(codeString))
-          return CALCULATION;
-        if ("unspecified".equals(codeString))
-          return UNSPECIFIED;
+        if ("on".equals(codeString))
+          return ON;
+        if ("off".equals(codeString))
+          return OFF;
+        if ("standby".equals(codeString))
+          return STANDBY;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown DeviceMetricCategory code '"+codeString+"'");
+          throw new FHIRException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case MEASUREMENT: return "measurement";
-            case SETTING: return "setting";
-            case CALCULATION: return "calculation";
-            case UNSPECIFIED: return "unspecified";
+            case ON: return "on";
+            case OFF: return "off";
+            case STANDBY: return "standby";
+            case ENTEREDINERROR: return "entered-in-error";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case MEASUREMENT: return "http://hl7.org/fhir/metric-category";
-            case SETTING: return "http://hl7.org/fhir/metric-category";
-            case CALCULATION: return "http://hl7.org/fhir/metric-category";
-            case UNSPECIFIED: return "http://hl7.org/fhir/metric-category";
+            case ON: return "http://hl7.org/fhir/metric-operational-status";
+            case OFF: return "http://hl7.org/fhir/metric-operational-status";
+            case STANDBY: return "http://hl7.org/fhir/metric-operational-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/metric-operational-status";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case MEASUREMENT: return "DeviceObservations generated for this DeviceMetric are measured.";
-            case SETTING: return "DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.";
-            case CALCULATION: return "DeviceObservations generated for this DeviceMetric are calculated.";
-            case UNSPECIFIED: return "The category of this DeviceMetric is unspecified.";
+            case ON: return "The DeviceMetric is operating and will generate DeviceObservations.";
+            case OFF: return "The DeviceMetric is not operating.";
+            case STANDBY: return "The DeviceMetric is operating, but will not generate any DeviceObservations.";
+            case ENTEREDINERROR: return "The DeviceMetric was entered in error.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case MEASUREMENT: return "Measurement";
-            case SETTING: return "Setting";
-            case CALCULATION: return "Calculation";
-            case UNSPECIFIED: return "Unspecified";
+            case ON: return "On";
+            case OFF: return "Off";
+            case STANDBY: return "Standby";
+            case ENTEREDINERROR: return "Entered In Error";
             default: return "?";
           }
         }
     }
 
-  public static class DeviceMetricCategoryEnumFactory implements EnumFactory<DeviceMetricCategory> {
-    public DeviceMetricCategory fromCode(String codeString) throws IllegalArgumentException {
+  public static class DeviceMetricOperationalStatusEnumFactory implements EnumFactory<DeviceMetricOperationalStatus> {
+    public DeviceMetricOperationalStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("measurement".equals(codeString))
-          return DeviceMetricCategory.MEASUREMENT;
-        if ("setting".equals(codeString))
-          return DeviceMetricCategory.SETTING;
-        if ("calculation".equals(codeString))
-          return DeviceMetricCategory.CALCULATION;
-        if ("unspecified".equals(codeString))
-          return DeviceMetricCategory.UNSPECIFIED;
-        throw new IllegalArgumentException("Unknown DeviceMetricCategory code '"+codeString+"'");
+        if ("on".equals(codeString))
+          return DeviceMetricOperationalStatus.ON;
+        if ("off".equals(codeString))
+          return DeviceMetricOperationalStatus.OFF;
+        if ("standby".equals(codeString))
+          return DeviceMetricOperationalStatus.STANDBY;
+        if ("entered-in-error".equals(codeString))
+          return DeviceMetricOperationalStatus.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricOperationalStatus> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceMetricCategory>(this);
+            return new Enumeration<DeviceMetricOperationalStatus>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("measurement".equals(codeString))
-          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.MEASUREMENT);
-        if ("setting".equals(codeString))
-          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.SETTING);
-        if ("calculation".equals(codeString))
-          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.CALCULATION);
-        if ("unspecified".equals(codeString))
-          return new Enumeration<DeviceMetricCategory>(this, DeviceMetricCategory.UNSPECIFIED);
-        throw new FHIRException("Unknown DeviceMetricCategory code '"+codeString+"'");
+        if ("on".equals(codeString))
+          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.ON);
+        if ("off".equals(codeString))
+          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.OFF);
+        if ("standby".equals(codeString))
+          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.STANDBY);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<DeviceMetricOperationalStatus>(this, DeviceMetricOperationalStatus.ENTEREDINERROR);
+        throw new FHIRException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
         }
-    public String toCode(DeviceMetricCategory code) {
-      if (code == DeviceMetricCategory.MEASUREMENT)
-        return "measurement";
-      if (code == DeviceMetricCategory.SETTING)
-        return "setting";
-      if (code == DeviceMetricCategory.CALCULATION)
-        return "calculation";
-      if (code == DeviceMetricCategory.UNSPECIFIED)
-        return "unspecified";
+    public String toCode(DeviceMetricOperationalStatus code) {
+      if (code == DeviceMetricOperationalStatus.ON)
+        return "on";
+      if (code == DeviceMetricOperationalStatus.OFF)
+        return "off";
+      if (code == DeviceMetricOperationalStatus.STANDBY)
+        return "standby";
+      if (code == DeviceMetricOperationalStatus.ENTEREDINERROR)
+        return "entered-in-error";
       return "?";
       }
-    public String toSystem(DeviceMetricCategory code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DeviceMetricCalibrationType {
-        /**
-         * Metric calibration method has not been identified.
-         */
-        UNSPECIFIED, 
-        /**
-         * Offset metric calibration method.
-         */
-        OFFSET, 
-        /**
-         * Gain metric calibration method.
-         */
-        GAIN, 
-        /**
-         * Two-point metric calibration method.
-         */
-        TWOPOINT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DeviceMetricCalibrationType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("unspecified".equals(codeString))
-          return UNSPECIFIED;
-        if ("offset".equals(codeString))
-          return OFFSET;
-        if ("gain".equals(codeString))
-          return GAIN;
-        if ("two-point".equals(codeString))
-          return TWOPOINT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UNSPECIFIED: return "unspecified";
-            case OFFSET: return "offset";
-            case GAIN: return "gain";
-            case TWOPOINT: return "two-point";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case UNSPECIFIED: return "http://hl7.org/fhir/metric-calibration-type";
-            case OFFSET: return "http://hl7.org/fhir/metric-calibration-type";
-            case GAIN: return "http://hl7.org/fhir/metric-calibration-type";
-            case TWOPOINT: return "http://hl7.org/fhir/metric-calibration-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UNSPECIFIED: return "Metric calibration method has not been identified.";
-            case OFFSET: return "Offset metric calibration method.";
-            case GAIN: return "Gain metric calibration method.";
-            case TWOPOINT: return "Two-point metric calibration method.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UNSPECIFIED: return "Unspecified";
-            case OFFSET: return "Offset";
-            case GAIN: return "Gain";
-            case TWOPOINT: return "Two Point";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DeviceMetricCalibrationTypeEnumFactory implements EnumFactory<DeviceMetricCalibrationType> {
-    public DeviceMetricCalibrationType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("unspecified".equals(codeString))
-          return DeviceMetricCalibrationType.UNSPECIFIED;
-        if ("offset".equals(codeString))
-          return DeviceMetricCalibrationType.OFFSET;
-        if ("gain".equals(codeString))
-          return DeviceMetricCalibrationType.GAIN;
-        if ("two-point".equals(codeString))
-          return DeviceMetricCalibrationType.TWOPOINT;
-        throw new IllegalArgumentException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
-        }
-        public Enumeration<DeviceMetricCalibrationType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DeviceMetricCalibrationType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("unspecified".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.UNSPECIFIED);
-        if ("offset".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.OFFSET);
-        if ("gain".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.GAIN);
-        if ("two-point".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationType>(this, DeviceMetricCalibrationType.TWOPOINT);
-        throw new FHIRException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
-        }
-    public String toCode(DeviceMetricCalibrationType code) {
-      if (code == DeviceMetricCalibrationType.UNSPECIFIED)
-        return "unspecified";
-      if (code == DeviceMetricCalibrationType.OFFSET)
-        return "offset";
-      if (code == DeviceMetricCalibrationType.GAIN)
-        return "gain";
-      if (code == DeviceMetricCalibrationType.TWOPOINT)
-        return "two-point";
-      return "?";
-      }
-    public String toSystem(DeviceMetricCalibrationType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DeviceMetricCalibrationState {
-        /**
-         * The metric has not been calibrated.
-         */
-        NOTCALIBRATED, 
-        /**
-         * The metric needs to be calibrated.
-         */
-        CALIBRATIONREQUIRED, 
-        /**
-         * The metric has been calibrated.
-         */
-        CALIBRATED, 
-        /**
-         * The state of calibration of this metric is unspecified.
-         */
-        UNSPECIFIED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DeviceMetricCalibrationState fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("not-calibrated".equals(codeString))
-          return NOTCALIBRATED;
-        if ("calibration-required".equals(codeString))
-          return CALIBRATIONREQUIRED;
-        if ("calibrated".equals(codeString))
-          return CALIBRATED;
-        if ("unspecified".equals(codeString))
-          return UNSPECIFIED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOTCALIBRATED: return "not-calibrated";
-            case CALIBRATIONREQUIRED: return "calibration-required";
-            case CALIBRATED: return "calibrated";
-            case UNSPECIFIED: return "unspecified";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case NOTCALIBRATED: return "http://hl7.org/fhir/metric-calibration-state";
-            case CALIBRATIONREQUIRED: return "http://hl7.org/fhir/metric-calibration-state";
-            case CALIBRATED: return "http://hl7.org/fhir/metric-calibration-state";
-            case UNSPECIFIED: return "http://hl7.org/fhir/metric-calibration-state";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOTCALIBRATED: return "The metric has not been calibrated.";
-            case CALIBRATIONREQUIRED: return "The metric needs to be calibrated.";
-            case CALIBRATED: return "The metric has been calibrated.";
-            case UNSPECIFIED: return "The state of calibration of this metric is unspecified.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOTCALIBRATED: return "Not Calibrated";
-            case CALIBRATIONREQUIRED: return "Calibration Required";
-            case CALIBRATED: return "Calibrated";
-            case UNSPECIFIED: return "Unspecified";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DeviceMetricCalibrationStateEnumFactory implements EnumFactory<DeviceMetricCalibrationState> {
-    public DeviceMetricCalibrationState fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("not-calibrated".equals(codeString))
-          return DeviceMetricCalibrationState.NOTCALIBRATED;
-        if ("calibration-required".equals(codeString))
-          return DeviceMetricCalibrationState.CALIBRATIONREQUIRED;
-        if ("calibrated".equals(codeString))
-          return DeviceMetricCalibrationState.CALIBRATED;
-        if ("unspecified".equals(codeString))
-          return DeviceMetricCalibrationState.UNSPECIFIED;
-        throw new IllegalArgumentException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
-        }
-        public Enumeration<DeviceMetricCalibrationState> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DeviceMetricCalibrationState>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("not-calibrated".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.NOTCALIBRATED);
-        if ("calibration-required".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.CALIBRATIONREQUIRED);
-        if ("calibrated".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.CALIBRATED);
-        if ("unspecified".equals(codeString))
-          return new Enumeration<DeviceMetricCalibrationState>(this, DeviceMetricCalibrationState.UNSPECIFIED);
-        throw new FHIRException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
-        }
-    public String toCode(DeviceMetricCalibrationState code) {
-      if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
-        return "not-calibrated";
-      if (code == DeviceMetricCalibrationState.CALIBRATIONREQUIRED)
-        return "calibration-required";
-      if (code == DeviceMetricCalibrationState.CALIBRATED)
-        return "calibrated";
-      if (code == DeviceMetricCalibrationState.UNSPECIFIED)
-        return "unspecified";
-      return "?";
-      }
-    public String toSystem(DeviceMetricCalibrationState code) {
+    public String toSystem(DeviceMetricOperationalStatus code) {
       return code.getSystem();
       }
     }
@@ -1024,13 +1026,13 @@ public class DeviceMetric extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.type");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.calibration.type");
         }
         else if (name.equals("state")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.state");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.calibration.state");
         }
         else if (name.equals("time")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.time");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.calibration.time");
         }
         else
           return super.addChild(name);
@@ -1169,10 +1171,10 @@ public class DeviceMetric extends DomainResource {
   /**
    * Constructor
    */
-    public DeviceMetric(CodeableConcept type, Enumeration<DeviceMetricCategory> category) {
+    public DeviceMetric(CodeableConcept type, DeviceMetricCategory category) {
       super();
-      this.type = type;
-      this.category = category;
+      this.setType(type);
+      this.setCategory(category);
     }
 
     /**
@@ -1219,7 +1221,7 @@ public class DeviceMetric extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1535,7 +1537,7 @@ public class DeviceMetric extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #calibration}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #calibration}, creating it if it does not already exist {3}
      */
     public DeviceMetricCalibrationComponent getCalibrationFirstRep() { 
       if (getCalibration().isEmpty()) {
@@ -1814,6 +1816,46 @@ public class DeviceMetric extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>The category of the metric</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceMetric.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="DeviceMetric.category", description="The category of the metric", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>The category of the metric</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceMetric.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the metric</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceMetric.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="DeviceMetric.identifier", description="The identifier of the metric", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the metric</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceMetric.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
    * Search parameter: <b>parent</b>
    * <p>
    * Description: <b>The parent DeviceMetric resource</b><br>
@@ -1838,26 +1880,6 @@ public class DeviceMetric extends DomainResource {
    * the path value of "<b>DeviceMetric:parent</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("DeviceMetric:parent").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier of the metric</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceMetric.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="DeviceMetric.identifier", description="The identifier of the metric", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier of the metric</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceMetric.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>source</b>
@@ -1904,26 +1926,6 @@ public class DeviceMetric extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>The category of the metric</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceMetric.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="category", path="DeviceMetric.category", description="The category of the metric", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>The category of the metric</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceMetric.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
 
 
 }

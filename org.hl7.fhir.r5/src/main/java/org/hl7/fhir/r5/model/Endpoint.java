@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
  */
@@ -321,11 +322,12 @@ public class Endpoint extends DomainResource {
   /**
    * Constructor
    */
-    public Endpoint(Enumeration<EndpointStatus> status, Coding connectionType, UrlType address) {
+    public Endpoint(EndpointStatus status, Coding connectionType, CodeableConcept payloadType, String address) {
       super();
-      this.status = status;
-      this.connectionType = connectionType;
-      this.address = address;
+      this.setStatus(status);
+      this.setConnectionType(connectionType);
+      this.addPayloadType(payloadType);
+      this.setAddress(address);
     }
 
     /**
@@ -372,7 +374,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -567,7 +569,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactPoint getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -644,7 +646,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #payloadType}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #payloadType}, creating it if it does not already exist {3}
      */
     public CodeableConcept getPayloadTypeFirstRep() { 
       if (getPayloadType().isEmpty()) {
@@ -1112,24 +1114,24 @@ public class Endpoint extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>payload-type</b>
+   * Search parameter: <b>connection-type</b>
    * <p>
-   * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
+   * Description: <b>Protocol/Profile/Standard to be used with this endpoint connection</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Endpoint.payloadType</b><br>
+   * Path: <b>Endpoint.connectionType</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="payload-type", path="Endpoint.payloadType", description="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", type="token" )
-  public static final String SP_PAYLOAD_TYPE = "payload-type";
+  @SearchParamDefinition(name="connection-type", path="Endpoint.connectionType", description="Protocol/Profile/Standard to be used with this endpoint connection", type="token" )
+  public static final String SP_CONNECTION_TYPE = "connection-type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>payload-type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>connection-type</b>
    * <p>
-   * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
+   * Description: <b>Protocol/Profile/Standard to be used with this endpoint connection</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Endpoint.payloadType</b><br>
+   * Path: <b>Endpoint.connectionType</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD_TYPE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONNECTION_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONNECTION_TYPE);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -1150,6 +1152,26 @@ public class Endpoint extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A name that this endpoint can be identified by</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Endpoint.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="Endpoint.name", description="A name that this endpoint can be identified by", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A name that this endpoint can be identified by</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Endpoint.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
    * Search parameter: <b>organization</b>
@@ -1178,44 +1200,24 @@ public class Endpoint extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Endpoint:organization").toLocked();
 
  /**
-   * Search parameter: <b>connection-type</b>
+   * Search parameter: <b>payload-type</b>
    * <p>
-   * Description: <b>Protocol/Profile/Standard to be used with this endpoint connection</b><br>
+   * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Endpoint.connectionType</b><br>
+   * Path: <b>Endpoint.payloadType</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="connection-type", path="Endpoint.connectionType", description="Protocol/Profile/Standard to be used with this endpoint connection", type="token" )
-  public static final String SP_CONNECTION_TYPE = "connection-type";
+  @SearchParamDefinition(name="payload-type", path="Endpoint.payloadType", description="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", type="token" )
+  public static final String SP_PAYLOAD_TYPE = "payload-type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>connection-type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>payload-type</b>
    * <p>
-   * Description: <b>Protocol/Profile/Standard to be used with this endpoint connection</b><br>
+   * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Endpoint.connectionType</b><br>
+   * Path: <b>Endpoint.payloadType</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONNECTION_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONNECTION_TYPE);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A name that this endpoint can be identified by</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Endpoint.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Endpoint.name", description="A name that this endpoint can be identified by", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A name that this endpoint can be identified by</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Endpoint.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD_TYPE);
 
  /**
    * Search parameter: <b>status</b>

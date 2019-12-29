@@ -166,19 +166,19 @@ public class SupplyRequest extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.SupplyRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.SupplyRequest.RequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.SupplyRequest.RequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.SupplyRequest.RequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.SupplyRequest.RequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.SupplyRequest.RequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.SupplyRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.SupplyRequest.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.SupplyRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

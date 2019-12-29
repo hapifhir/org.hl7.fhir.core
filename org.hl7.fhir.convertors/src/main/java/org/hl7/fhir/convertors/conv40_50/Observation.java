@@ -172,23 +172,23 @@ public class Observation extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Observation.ObservationStatus convertObservationStatus(org.hl7.fhir.r4.model.Observation.ObservationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ObservationStatus convertObservationStatus(org.hl7.fhir.r4.model.Observation.ObservationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case REGISTERED: return org.hl7.fhir.r5.model.Observation.ObservationStatus.REGISTERED;
-    case PRELIMINARY: return org.hl7.fhir.r5.model.Observation.ObservationStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r5.model.Observation.ObservationStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r5.model.Observation.ObservationStatus.AMENDED;
-    case CORRECTED: return org.hl7.fhir.r5.model.Observation.ObservationStatus.CORRECTED;
-    case CANCELLED: return org.hl7.fhir.r5.model.Observation.ObservationStatus.CANCELLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Observation.ObservationStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.Observation.ObservationStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.Observation.ObservationStatus.NULL;
+    case REGISTERED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED;
+    case PRELIMINARY: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY;
+    case FINAL: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL;
+    case AMENDED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED;
+    case CORRECTED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Observation.ObservationStatus convertObservationStatus(org.hl7.fhir.r5.model.Observation.ObservationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Observation.ObservationStatus convertObservationStatus(org.hl7.fhir.r5.model.Enumerations.ObservationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

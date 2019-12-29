@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,13 +66,14 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
  */
 @ResourceDef(name="NutritionIntake", profile="http://hl7.org/fhir/StructureDefinition/NutritionIntake")
 public class NutritionIntake extends DomainResource {
 
-    public enum NutritionIntakeStatus {
+    public enum NutritionIntakeStatusCodes {
         /**
          * The nutrition is still being taken.
          */
@@ -108,7 +110,7 @@ public class NutritionIntake extends DomainResource {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static NutritionIntakeStatus fromCode(String codeString) throws FHIRException {
+        public static NutritionIntakeStatusCodes fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("active".equals(codeString))
@@ -130,7 +132,7 @@ public class NutritionIntake extends DomainResource {
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown NutritionIntakeStatus code '"+codeString+"'");
+          throw new FHIRException("Unknown NutritionIntakeStatusCodes code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -186,75 +188,75 @@ public class NutritionIntake extends DomainResource {
         }
     }
 
-  public static class NutritionIntakeStatusEnumFactory implements EnumFactory<NutritionIntakeStatus> {
-    public NutritionIntakeStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class NutritionIntakeStatusCodesEnumFactory implements EnumFactory<NutritionIntakeStatusCodes> {
+    public NutritionIntakeStatusCodes fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("active".equals(codeString))
-          return NutritionIntakeStatus.ACTIVE;
+          return NutritionIntakeStatusCodes.ACTIVE;
         if ("completed".equals(codeString))
-          return NutritionIntakeStatus.COMPLETED;
+          return NutritionIntakeStatusCodes.COMPLETED;
         if ("entered-in-error".equals(codeString))
-          return NutritionIntakeStatus.ENTEREDINERROR;
+          return NutritionIntakeStatusCodes.ENTEREDINERROR;
         if ("intended".equals(codeString))
-          return NutritionIntakeStatus.INTENDED;
+          return NutritionIntakeStatusCodes.INTENDED;
         if ("stopped".equals(codeString))
-          return NutritionIntakeStatus.STOPPED;
+          return NutritionIntakeStatusCodes.STOPPED;
         if ("on-hold".equals(codeString))
-          return NutritionIntakeStatus.ONHOLD;
+          return NutritionIntakeStatusCodes.ONHOLD;
         if ("unknown".equals(codeString))
-          return NutritionIntakeStatus.UNKNOWN;
+          return NutritionIntakeStatusCodes.UNKNOWN;
         if ("not-taken".equals(codeString))
-          return NutritionIntakeStatus.NOTTAKEN;
-        throw new IllegalArgumentException("Unknown NutritionIntakeStatus code '"+codeString+"'");
+          return NutritionIntakeStatusCodes.NOTTAKEN;
+        throw new IllegalArgumentException("Unknown NutritionIntakeStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<NutritionIntakeStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<NutritionIntakeStatusCodes> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NutritionIntakeStatus>(this);
+            return new Enumeration<NutritionIntakeStatusCodes>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.ACTIVE);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.ACTIVE);
         if ("completed".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.COMPLETED);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.COMPLETED);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.ENTEREDINERROR);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.ENTEREDINERROR);
         if ("intended".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.INTENDED);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.INTENDED);
         if ("stopped".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.STOPPED);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.STOPPED);
         if ("on-hold".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.ONHOLD);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.ONHOLD);
         if ("unknown".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.UNKNOWN);
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.UNKNOWN);
         if ("not-taken".equals(codeString))
-          return new Enumeration<NutritionIntakeStatus>(this, NutritionIntakeStatus.NOTTAKEN);
-        throw new FHIRException("Unknown NutritionIntakeStatus code '"+codeString+"'");
+          return new Enumeration<NutritionIntakeStatusCodes>(this, NutritionIntakeStatusCodes.NOTTAKEN);
+        throw new FHIRException("Unknown NutritionIntakeStatusCodes code '"+codeString+"'");
         }
-    public String toCode(NutritionIntakeStatus code) {
-      if (code == NutritionIntakeStatus.ACTIVE)
+    public String toCode(NutritionIntakeStatusCodes code) {
+      if (code == NutritionIntakeStatusCodes.ACTIVE)
         return "active";
-      if (code == NutritionIntakeStatus.COMPLETED)
+      if (code == NutritionIntakeStatusCodes.COMPLETED)
         return "completed";
-      if (code == NutritionIntakeStatus.ENTEREDINERROR)
+      if (code == NutritionIntakeStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
-      if (code == NutritionIntakeStatus.INTENDED)
+      if (code == NutritionIntakeStatusCodes.INTENDED)
         return "intended";
-      if (code == NutritionIntakeStatus.STOPPED)
+      if (code == NutritionIntakeStatusCodes.STOPPED)
         return "stopped";
-      if (code == NutritionIntakeStatus.ONHOLD)
+      if (code == NutritionIntakeStatusCodes.ONHOLD)
         return "on-hold";
-      if (code == NutritionIntakeStatus.UNKNOWN)
+      if (code == NutritionIntakeStatusCodes.UNKNOWN)
         return "unknown";
-      if (code == NutritionIntakeStatus.NOTTAKEN)
+      if (code == NutritionIntakeStatusCodes.NOTTAKEN)
         return "not-taken";
       return "?";
       }
-    public String toSystem(NutritionIntakeStatus code) {
+    public String toSystem(NutritionIntakeStatusCodes code) {
       return code.getSystem();
       }
     }
@@ -324,8 +326,8 @@ public class NutritionIntake extends DomainResource {
      */
       public NutritionIntakeConsumedItemComponent(CodeableConcept type, CodeableConcept nutritionProduct) {
         super();
-        this.type = type;
-        this.nutritionProduct = nutritionProduct;
+        this.setType(type);
+        this.setNutritionProduct(nutritionProduct);
       }
 
         /**
@@ -522,8 +524,8 @@ public class NutritionIntake extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "Indicates what a category of item that was consumed: eg., food, fluid, enteral, etc.", 0, 1, type));
           children.add(new Property("nutritionProduct", "CodeableConcept", "Identifies the food or fluid product that was consumed. This is potentially a link to a resource representing the details of the food product (TBD) or a simple attribute carrying a code that identifies the food from a known list of foods.", 0, 1, nutritionProduct));
           children.add(new Property("schedule", "Timing", "Scheduled frequency of consumption.", 0, 1, schedule));
-          children.add(new Property("amount", "SimpleQuantity", "Quantity of the specified food.", 0, 1, amount));
-          children.add(new Property("rate", "SimpleQuantity", "Rate at which enteral feeding was administered.", 0, 1, rate));
+          children.add(new Property("amount", "Quantity", "Quantity of the specified food.", 0, 1, amount));
+          children.add(new Property("rate", "Quantity", "Rate at which enteral feeding was administered.", 0, 1, rate));
           children.add(new Property("notConsumed", "boolean", "Indicator when a patient is in a setting where it is helpful to know if food was not consumed, such as it was refused, held (as in tube feedings), or otherwise not provided. If a consumption is being recorded from an app, such as MyFitnessPal, this indicator will likely not be used.", 0, 1, notConsumed));
           children.add(new Property("notConsumedReason", "CodeableConcept", "Document the reason the food or fluid was not consumed, such as refused, held, etc.", 0, 1, notConsumedReason));
         }
@@ -534,8 +536,8 @@ public class NutritionIntake extends DomainResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates what a category of item that was consumed: eg., food, fluid, enteral, etc.", 0, 1, type);
           case -1684132297: /*nutritionProduct*/  return new Property("nutritionProduct", "CodeableConcept", "Identifies the food or fluid product that was consumed. This is potentially a link to a resource representing the details of the food product (TBD) or a simple attribute carrying a code that identifies the food from a known list of foods.", 0, 1, nutritionProduct);
           case -697920873: /*schedule*/  return new Property("schedule", "Timing", "Scheduled frequency of consumption.", 0, 1, schedule);
-          case -1413853096: /*amount*/  return new Property("amount", "SimpleQuantity", "Quantity of the specified food.", 0, 1, amount);
-          case 3493088: /*rate*/  return new Property("rate", "SimpleQuantity", "Rate at which enteral feeding was administered.", 0, 1, rate);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "Quantity of the specified food.", 0, 1, amount);
+          case 3493088: /*rate*/  return new Property("rate", "Quantity", "Rate at which enteral feeding was administered.", 0, 1, rate);
           case -148762661: /*notConsumed*/  return new Property("notConsumed", "boolean", "Indicator when a patient is in a setting where it is helpful to know if food was not consumed, such as it was refused, held (as in tube feedings), or otherwise not provided. If a consumption is being recorded from an app, such as MyFitnessPal, this indicator will likely not be used.", 0, 1, notConsumed);
           case -440795649: /*notConsumedReason*/  return new Property("notConsumedReason", "CodeableConcept", "Document the reason the food or fluid was not consumed, such as refused, held, etc.", 0, 1, notConsumedReason);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -629,8 +631,8 @@ public class NutritionIntake extends DomainResource {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1684132297: /*nutritionProduct*/ return new String[] {"CodeableConcept"};
         case -697920873: /*schedule*/ return new String[] {"Timing"};
-        case -1413853096: /*amount*/ return new String[] {"SimpleQuantity"};
-        case 3493088: /*rate*/ return new String[] {"SimpleQuantity"};
+        case -1413853096: /*amount*/ return new String[] {"Quantity"};
+        case 3493088: /*rate*/ return new String[] {"Quantity"};
         case -148762661: /*notConsumed*/ return new String[] {"boolean"};
         case -440795649: /*notConsumedReason*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
@@ -661,7 +663,7 @@ public class NutritionIntake extends DomainResource {
           return this.rate;
         }
         else if (name.equals("notConsumed")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.notConsumed");
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.consumedItem.notConsumed");
         }
         else if (name.equals("notConsumedReason")) {
           this.notConsumedReason = new CodeableConcept();
@@ -753,8 +755,8 @@ public class NutritionIntake extends DomainResource {
      */
       public NutritionIntakeIngredientLabelComponent(CodeableConcept nutrient, Quantity amount) {
         super();
-        this.nutrient = nutrient;
-        this.amount = amount;
+        this.setNutrient(nutrient);
+        this.setAmount(amount);
       }
 
         /**
@@ -808,14 +810,14 @@ public class NutritionIntake extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("nutrient", "CodeableConcept", "Total nutrient consumed. This could be a macronutrient (protein, fat, carbohydrate), or a vitamin and mineral.", 0, 1, nutrient));
-          children.add(new Property("amount", "SimpleQuantity", "Total amount of nutrient consumed.", 0, 1, amount));
+          children.add(new Property("amount", "Quantity", "Total amount of nutrient consumed.", 0, 1, amount));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1671151641: /*nutrient*/  return new Property("nutrient", "CodeableConcept", "Total nutrient consumed. This could be a macronutrient (protein, fat, carbohydrate), or a vitamin and mineral.", 0, 1, nutrient);
-          case -1413853096: /*amount*/  return new Property("amount", "SimpleQuantity", "Total amount of nutrient consumed.", 0, 1, amount);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "Total amount of nutrient consumed.", 0, 1, amount);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -870,7 +872,7 @@ public class NutritionIntake extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1671151641: /*nutrient*/ return new String[] {"CodeableConcept"};
-        case -1413853096: /*amount*/ return new String[] {"SimpleQuantity"};
+        case -1413853096: /*amount*/ return new String[] {"Quantity"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -960,7 +962,7 @@ public class NutritionIntake extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | completed | entered-in-error | intended | stopped | on-hold | unknown | not-taken", formalDefinition="A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/nutrition-intake-status")
-    protected Enumeration<NutritionIntakeStatus> status;
+    protected Enumeration<NutritionIntakeStatusCodes> status;
 
     /**
      * Captures the reason for the current state of the NutritionIntake.
@@ -1055,7 +1057,7 @@ public class NutritionIntake extends DomainResource {
     @Description(shortDefinition="Further information about the consumption", formalDefinition="Provides extra information about the Nutrition Intake that is not conveyed by the other attributes." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1482407460L;
+    private static final long serialVersionUID = 2139832010L;
 
   /**
    * Constructor
@@ -1067,10 +1069,11 @@ public class NutritionIntake extends DomainResource {
   /**
    * Constructor
    */
-    public NutritionIntake(Enumeration<NutritionIntakeStatus> status, Reference subject) {
+    public NutritionIntake(NutritionIntakeStatusCodes status, NutritionIntakeConsumedItemComponent consumedItem, Reference subject) {
       super();
-      this.status = status;
-      this.subject = subject;
+      this.setStatus(status);
+      this.addConsumedItem(consumedItem);
+      this.setSubject(subject);
     }
 
     /**
@@ -1117,7 +1120,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1170,7 +1173,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
      */
     public Reference getBasedOnFirstRep() { 
       if (getBasedOn().isEmpty()) {
@@ -1223,7 +1226,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #partOf}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #partOf}, creating it if it does not already exist {3}
      */
     public Reference getPartOfFirstRep() { 
       if (getPartOf().isEmpty()) {
@@ -1235,12 +1238,12 @@ public class NutritionIntake extends DomainResource {
     /**
      * @return {@link #status} (A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<NutritionIntakeStatus> getStatusElement() { 
+    public Enumeration<NutritionIntakeStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create NutritionIntake.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<NutritionIntakeStatus>(new NutritionIntakeStatusEnumFactory()); // bb
+          this.status = new Enumeration<NutritionIntakeStatusCodes>(new NutritionIntakeStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -1255,7 +1258,7 @@ public class NutritionIntake extends DomainResource {
     /**
      * @param value {@link #status} (A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public NutritionIntake setStatusElement(Enumeration<NutritionIntakeStatus> value) { 
+    public NutritionIntake setStatusElement(Enumeration<NutritionIntakeStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -1263,16 +1266,16 @@ public class NutritionIntake extends DomainResource {
     /**
      * @return A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed.
      */
-    public NutritionIntakeStatus getStatus() { 
+    public NutritionIntakeStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed.
      */
-    public NutritionIntake setStatus(NutritionIntakeStatus value) { 
+    public NutritionIntake setStatus(NutritionIntakeStatusCodes value) { 
         if (this.status == null)
-          this.status = new Enumeration<NutritionIntakeStatus>(new NutritionIntakeStatusEnumFactory());
+          this.status = new Enumeration<NutritionIntakeStatusCodes>(new NutritionIntakeStatusCodesEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1321,7 +1324,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #statusReason}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #statusReason}, creating it if it does not already exist {3}
      */
     public CodeableConcept getStatusReasonFirstRep() { 
       if (getStatusReason().isEmpty()) {
@@ -1374,7 +1377,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCategoryFirstRep() { 
       if (getCategory().isEmpty()) {
@@ -1427,7 +1430,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #consumedItem}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #consumedItem}, creating it if it does not already exist {3}
      */
     public NutritionIntakeConsumedItemComponent getConsumedItemFirstRep() { 
       if (getConsumedItem().isEmpty()) {
@@ -1480,7 +1483,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #ingredientLabel}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #ingredientLabel}, creating it if it does not already exist {3}
      */
     public NutritionIntakeIngredientLabelComponent getIngredientLabelFirstRep() { 
       if (getIngredientLabel().isEmpty()) {
@@ -1705,7 +1708,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #derivedFrom}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #derivedFrom}, creating it if it does not already exist {3}
      */
     public Reference getDerivedFromFirstRep() { 
       if (getDerivedFrom().isEmpty()) {
@@ -1758,7 +1761,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
@@ -1811,7 +1814,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
      */
     public Reference getReasonReferenceFirstRep() { 
       if (getReasonReference().isEmpty()) {
@@ -1864,7 +1867,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -1909,8 +1912,8 @@ public class NutritionIntake extends DomainResource {
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this NutritionIntake.", 0, 1, encounter);
         case 247104889: /*effective[x]*/  return new Property("effective[x]", "dateTime|Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, effective);
         case -1468651097: /*effective*/  return new Property("effective[x]", "dateTime|Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, effective);
-        case -275306910: /*effectiveDateTime*/  return new Property("effective[x]", "dateTime|Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, effective);
-        case -403934648: /*effectivePeriod*/  return new Property("effective[x]", "dateTime|Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, effective);
+        case -275306910: /*effectiveDateTime*/  return new Property("effective[x]", "dateTime", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, effective);
+        case -403934648: /*effectivePeriod*/  return new Property("effective[x]", "Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, effective);
         case -1980855245: /*dateAsserted*/  return new Property("dateAsserted", "dateTime", "The date when the Nutrition Intake was asserted by the information source.", 0, 1, dateAsserted);
         case -2123220889: /*informationSource*/  return new Property("informationSource", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Organization)", "The person or organization that provided the information about the consumption of this food or fluid. Note: Use derivedFrom when a NutritionIntake is derived from other resources.", 0, 1, informationSource);
         case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(Any)", "Allows linking the NutritionIntake to the underlying NutritionOrder, or to other information, such as AllergyIntolerance, that supports or is used to derive the NutritionIntake.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
@@ -1928,14 +1931,14 @@ public class NutritionIntake extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<NutritionIntakeStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<NutritionIntakeStatusCodes>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : this.statusReason.toArray(new Base[this.statusReason.size()]); // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case -854114533: /*consumedItem*/ return this.consumedItem == null ? new Base[0] : this.consumedItem.toArray(new Base[this.consumedItem.size()]); // NutritionIntakeConsumedItemComponent
         case -936536157: /*ingredientLabel*/ return this.ingredientLabel == null ? new Base[0] : this.ingredientLabel.toArray(new Base[this.ingredientLabel.size()]); // NutritionIntakeIngredientLabelComponent
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
-        case -1468651097: /*effective*/ return this.effective == null ? new Base[0] : new Base[] {this.effective}; // Type
+        case -1468651097: /*effective*/ return this.effective == null ? new Base[0] : new Base[] {this.effective}; // DataType
         case -1980855245: /*dateAsserted*/ return this.dateAsserted == null ? new Base[0] : new Base[] {this.dateAsserted}; // DateTimeType
         case -2123220889: /*informationSource*/ return this.informationSource == null ? new Base[0] : new Base[] {this.informationSource}; // Reference
         case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : this.derivedFrom.toArray(new Base[this.derivedFrom.size()]); // Reference
@@ -1960,8 +1963,8 @@ public class NutritionIntake extends DomainResource {
           this.getPartOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          value = new NutritionIntakeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<NutritionIntakeStatus>
+          value = new NutritionIntakeStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<NutritionIntakeStatusCodes>
           return value;
         case 2051346646: // statusReason
           this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1982,7 +1985,7 @@ public class NutritionIntake extends DomainResource {
           this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1468651097: // effective
-          this.effective = TypeConvertor.castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // DataType
           return value;
         case -1980855245: // dateAsserted
           this.dateAsserted = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -2016,8 +2019,8 @@ public class NutritionIntake extends DomainResource {
         } else if (name.equals("partOf")) {
           this.getPartOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
-          value = new NutritionIntakeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<NutritionIntakeStatus>
+          value = new NutritionIntakeStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<NutritionIntakeStatusCodes>
         } else if (name.equals("statusReason")) {
           this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("category")) {
@@ -2031,7 +2034,7 @@ public class NutritionIntake extends DomainResource {
         } else if (name.equals("encounter")) {
           this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("effective[x]")) {
-          this.effective = TypeConvertor.castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("dateAsserted")) {
           this.dateAsserted = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("informationSource")) {
@@ -2284,6 +2287,72 @@ public class NutritionIntake extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>Returns statements of this category of NutritionIntake</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="NutritionIntake.category", description="Returns statements of this category of NutritionIntake", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Returns statements of this category of NutritionIntake</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>effective</b>
+   * <p>
+   * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>NutritionIntake.effective</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effective", path="NutritionIntake.effective", description="Date when patient was taking (or not taking) the medication", type="date" )
+  public static final String SP_EFFECTIVE = "effective";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
+   * <p>
+   * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>NutritionIntake.effective</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Returns statements for a specific encounter</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="NutritionIntake.encounter", description="Returns statements for a specific encounter", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Returns statements for a specific encounter</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("NutritionIntake:encounter").toLocked();
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Return statements with this external identifier</b><br>
@@ -2304,26 +2373,6 @@ public class NutritionIntake extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>effective</b>
-   * <p>
-   * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>NutritionIntake.effective[x]</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effective", path="NutritionIntake.effective", description="Date when patient was taking (or not taking) the medication", type="date" )
-  public static final String SP_EFFECTIVE = "effective";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
-   * <p>
-   * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>NutritionIntake.effective[x]</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
-
- /**
    * Search parameter: <b>nutrition</b>
    * <p>
    * Description: <b>Return statements of this medication reference</b><br>
@@ -2342,58 +2391,6 @@ public class NutritionIntake extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam NUTRITION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NUTRITION);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The identity of a patient, animal or group to list statements for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="NutritionIntake.subject", description="The identity of a patient, animal or group to list statements for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The identity of a patient, animal or group to list statements for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>NutritionIntake:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("NutritionIntake:subject").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Returns statements for a specific patient.</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Returns statements for a specific patient.</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>NutritionIntake:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("NutritionIntake:patient").toLocked();
 
  /**
    * Search parameter: <b>part-of</b>
@@ -2422,6 +2419,32 @@ public class NutritionIntake extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PART_OF = new ca.uhn.fhir.model.api.Include("NutritionIntake:part-of").toLocked();
 
  /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Returns statements for a specific patient.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Returns statements for a specific patient.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("NutritionIntake:patient").toLocked();
+
+ /**
    * Search parameter: <b>source</b>
    * <p>
    * Description: <b>Who or where the information in the statement came from</b><br>
@@ -2429,7 +2452,7 @@ public class NutritionIntake extends DomainResource {
    * Path: <b>NutritionIntake.informationSource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="source", path="NutritionIntake.informationSource", description="Who or where the information in the statement came from", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="source", path="NutritionIntake.informationSource", description="Who or where the information in the statement came from", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_SOURCE = "source";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>source</b>
@@ -2446,52 +2469,6 @@ public class NutritionIntake extends DomainResource {
    * the path value of "<b>NutritionIntake:source</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("NutritionIntake:source").toLocked();
-
- /**
-   * Search parameter: <b>encounter</b>
-   * <p>
-   * Description: <b>Returns statements for a specific encounter</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.encounter</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="encounter", path="NutritionIntake.encounter", description="Returns statements for a specific encounter", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
-   * <p>
-   * Description: <b>Returns statements for a specific encounter</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.encounter</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>NutritionIntake:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("NutritionIntake:encounter").toLocked();
-
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>Returns statements of this category of NutritionIntake</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionIntake.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="category", path="NutritionIntake.category", description="Returns statements of this category of NutritionIntake", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>Returns statements of this category of NutritionIntake</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionIntake.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
 
  /**
    * Search parameter: <b>status</b>
@@ -2512,6 +2489,32 @@ public class NutritionIntake extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The identity of a patient, animal or group to list statements for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="NutritionIntake.subject", description="The identity of a patient, animal or group to list statements for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The identity of a patient, animal or group to list statements for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("NutritionIntake:subject").toLocked();
 
 
 }

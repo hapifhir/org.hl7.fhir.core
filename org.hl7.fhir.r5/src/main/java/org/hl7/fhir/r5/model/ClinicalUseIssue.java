@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,8 +66,9 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
- * A single item of clinical particulars - an indication, contraindication, interaction etc. for a medicinal product.
+ * A single usage issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
  */
 @ResourceDef(name="ClinicalUseIssue", profile="http://hl7.org/fhir/StructureDefinition/ClinicalUseIssue")
 public class ClinicalUseIssue extends DomainResource {
@@ -349,7 +351,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #comorbidity}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #comorbidity}, creating it if it does not already exist {3}
          */
         public CodeableConcept getComorbidityFirstRep() { 
           if (getComorbidity().isEmpty()) {
@@ -402,7 +404,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #indication}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #indication}, creating it if it does not already exist {3}
          */
         public Reference getIndicationFirstRep() { 
           if (getIndication().isEmpty()) {
@@ -455,7 +457,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #otherTherapy}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #otherTherapy}, creating it if it does not already exist {3}
          */
         public ClinicalUseIssueContraindicationOtherTherapyComponent getOtherTherapyFirstRep() { 
           if (getOtherTherapy().isEmpty()) {
@@ -665,7 +667,7 @@ public class ClinicalUseIssue extends DomainResource {
         @Description(shortDefinition="Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication", formalDefinition="Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication." )
         protected DataType medication;
 
-        private static final long serialVersionUID = 1438478115L;
+        private static final long serialVersionUID = -923241363L;
 
     /**
      * Constructor
@@ -679,8 +681,8 @@ public class ClinicalUseIssue extends DomainResource {
      */
       public ClinicalUseIssueContraindicationOtherTherapyComponent(CodeableConcept therapyRelationshipType, DataType medication) {
         super();
-        this.therapyRelationshipType = therapyRelationshipType;
-        this.medication = medication;
+        this.setTherapyRelationshipType(therapyRelationshipType);
+        this.setMedication(medication);
       }
 
         /**
@@ -770,8 +772,8 @@ public class ClinicalUseIssue extends DomainResource {
           case -551658469: /*therapyRelationshipType*/  return new Property("therapyRelationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, therapyRelationshipType);
           case 1458402129: /*medication[x]*/  return new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
           case 1998965455: /*medication*/  return new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
-          case -209845038: /*medicationCodeableConcept*/  return new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
-          case 2104315196: /*medicationReference*/  return new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
+          case -209845038: /*medicationCodeableConcept*/  return new Property("medication[x]", "CodeableConcept", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
+          case 2104315196: /*medicationReference*/  return new Property("medication[x]", "Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -781,7 +783,7 @@ public class ClinicalUseIssue extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -551658469: /*therapyRelationshipType*/ return this.therapyRelationshipType == null ? new Base[0] : new Base[] {this.therapyRelationshipType}; // CodeableConcept
-        case 1998965455: /*medication*/ return this.medication == null ? new Base[0] : new Base[] {this.medication}; // Type
+        case 1998965455: /*medication*/ return this.medication == null ? new Base[0] : new Base[] {this.medication}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -794,7 +796,7 @@ public class ClinicalUseIssue extends DomainResource {
           this.therapyRelationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1998965455: // medication
-          this.medication = TypeConvertor.castToType(value); // Type
+          this.medication = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -806,7 +808,7 @@ public class ClinicalUseIssue extends DomainResource {
         if (name.equals("therapyRelationshipType")) {
           this.therapyRelationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("medication[x]")) {
-          this.medication = TypeConvertor.castToType(value); // Type
+          this.medication = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1048,7 +1050,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #comorbidity}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #comorbidity}, creating it if it does not already exist {3}
          */
         public CodeableConcept getComorbidityFirstRep() { 
           if (getComorbidity().isEmpty()) {
@@ -1149,7 +1151,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #undesirableEffect}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #undesirableEffect}, creating it if it does not already exist {3}
          */
         public Reference getUndesirableEffectFirstRep() { 
           if (getUndesirableEffect().isEmpty()) {
@@ -1202,7 +1204,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #otherTherapy}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #otherTherapy}, creating it if it does not already exist {3}
          */
         public ClinicalUseIssueContraindicationOtherTherapyComponent getOtherTherapyFirstRep() { 
           if (getOtherTherapy().isEmpty()) {
@@ -1517,7 +1519,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #interactant}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #interactant}, creating it if it does not already exist {3}
          */
         public ClinicalUseIssueInteractionInteractantComponent getInteractantFirstRep() { 
           if (getInteractant().isEmpty()) {
@@ -1809,7 +1811,7 @@ public class ClinicalUseIssue extends DomainResource {
         @Description(shortDefinition="The specific medication, food or laboratory test that interacts", formalDefinition="The specific medication, food or laboratory test that interacts." )
         protected DataType item;
 
-        private static final long serialVersionUID = 1445276561L;
+        private static final long serialVersionUID = 1847936859L;
 
     /**
      * Constructor
@@ -1823,7 +1825,7 @@ public class ClinicalUseIssue extends DomainResource {
      */
       public ClinicalUseIssueInteractionInteractantComponent(DataType item) {
         super();
-        this.item = item;
+        this.setItem(item);
       }
 
         /**
@@ -1887,8 +1889,8 @@ public class ClinicalUseIssue extends DomainResource {
           switch (_hash) {
           case 2116201613: /*item[x]*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
           case 3242771: /*item*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
-          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
-          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
+          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
+          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1897,7 +1899,7 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // Type
+        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1907,7 +1909,7 @@ public class ClinicalUseIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3242771: // item
-          this.item = TypeConvertor.castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1917,7 +1919,7 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("item[x]")) {
-          this.item = TypeConvertor.castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2279,9 +2281,9 @@ public class ClinicalUseIssue extends DomainResource {
     /**
      * General description.
      */
-    @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General description", formalDefinition="General description." )
-    protected StringType description;
+    protected MarkdownType description;
 
     /**
      * Specifics for when this is a contraindication.
@@ -2318,7 +2320,7 @@ public class ClinicalUseIssue extends DomainResource {
     @Description(shortDefinition="A possible negative outcome from the use of this treatment", formalDefinition="Describe the undesirable effects of the medicinal product." )
     protected ClinicalUseIssueUndesirableEffectComponent undesirableEffect;
 
-    private static final long serialVersionUID = -753961753L;
+    private static final long serialVersionUID = -1817506487L;
 
   /**
    * Constructor
@@ -2330,9 +2332,9 @@ public class ClinicalUseIssue extends DomainResource {
   /**
    * Constructor
    */
-    public ClinicalUseIssue(Enumeration<ClinicalUseIssueType> type) {
+    public ClinicalUseIssue(ClinicalUseIssueType type) {
       super();
-      this.type = type;
+      this.setType(type);
     }
 
     /**
@@ -2379,7 +2381,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2477,7 +2479,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
      */
     public Reference getSubjectFirstRep() { 
       if (getSubject().isEmpty()) {
@@ -2513,12 +2515,12 @@ public class ClinicalUseIssue extends DomainResource {
     /**
      * @return {@link #description} (General description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public StringType getDescriptionElement() { 
+    public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ClinicalUseIssue.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
+          this.description = new MarkdownType(); // bb
       return this.description;
     }
 
@@ -2533,7 +2535,7 @@ public class ClinicalUseIssue extends DomainResource {
     /**
      * @param value {@link #description} (General description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public ClinicalUseIssue setDescriptionElement(StringType value) { 
+    public ClinicalUseIssue setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -2549,11 +2551,11 @@ public class ClinicalUseIssue extends DomainResource {
      * @param value General description.
      */
     public ClinicalUseIssue setDescription(String value) { 
-      if (Utilities.noString(value))
+      if (value == null)
         this.description = null;
       else {
         if (this.description == null)
-          this.description = new StringType();
+          this.description = new MarkdownType();
         this.description.setValue(value);
       }
       return this;
@@ -2675,7 +2677,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #population}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #population}, creating it if it does not already exist {3}
      */
     public Population getPopulationFirstRep() { 
       if (getPopulation().isEmpty()) {
@@ -2714,7 +2716,7 @@ public class ClinicalUseIssue extends DomainResource {
         children.add(new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | other.", 0, 1, type));
         children.add(new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("status", "CodeableConcept", "General description.", 0, 1, status));
-        children.add(new Property("description", "string", "General description.", 0, 1, description));
+        children.add(new Property("description", "markdown", "General description.", 0, 1, description));
         children.add(new Property("contraindication", "", "Specifics for when this is a contraindication.", 0, 1, contraindication));
         children.add(new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication));
         children.add(new Property("interaction", "", "Specifics for when this is an interaction.", 0, 1, interaction));
@@ -2729,7 +2731,7 @@ public class ClinicalUseIssue extends DomainResource {
         case 3575610: /*type*/  return new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | other.", 0, 1, type);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "General description.", 0, 1, status);
-        case -1724546052: /*description*/  return new Property("description", "string", "General description.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "General description.", 0, 1, description);
         case 107135229: /*contraindication*/  return new Property("contraindication", "", "Specifics for when this is a contraindication.", 0, 1, contraindication);
         case -597168804: /*indication*/  return new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication);
         case 1844104722: /*interaction*/  return new Property("interaction", "", "Specifics for when this is an interaction.", 0, 1, interaction);
@@ -2747,7 +2749,7 @@ public class ClinicalUseIssue extends DomainResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ClinicalUseIssueType>
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case 107135229: /*contraindication*/ return this.contraindication == null ? new Base[0] : new Base[] {this.contraindication}; // ClinicalUseIssueContraindicationComponent
         case -597168804: /*indication*/ return this.indication == null ? new Base[0] : new Base[] {this.indication}; // ClinicalUseIssueIndicationComponent
         case 1844104722: /*interaction*/ return this.interaction == null ? new Base[0] : new Base[] {this.interaction}; // ClinicalUseIssueInteractionComponent
@@ -2775,7 +2777,7 @@ public class ClinicalUseIssue extends DomainResource {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 107135229: // contraindication
           this.contraindication = (ClinicalUseIssueContraindicationComponent) value; // ClinicalUseIssueContraindicationComponent
@@ -2809,7 +2811,7 @@ public class ClinicalUseIssue extends DomainResource {
         } else if (name.equals("status")) {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("contraindication")) {
           this.contraindication = (ClinicalUseIssueContraindicationComponent) value; // ClinicalUseIssueContraindicationComponent
         } else if (name.equals("indication")) {
@@ -2850,7 +2852,7 @@ public class ClinicalUseIssue extends DomainResource {
         case 3575610: /*type*/ return new String[] {"code"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
-        case -1724546052: /*description*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case 107135229: /*contraindication*/ return new String[] {};
         case -597168804: /*indication*/ return new String[] {};
         case 1844104722: /*interaction*/ return new String[] {};
@@ -2979,6 +2981,46 @@ public class ClinicalUseIssue extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>contraindication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contraindication", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item", type="token" )
+  public static final String SP_CONTRAINDICATION = "contraindication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contraindication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTRAINDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTRAINDICATION);
+
+ /**
+   * Search parameter: <b>effect</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effect", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest", type="token" )
+  public static final String SP_EFFECT = "effect";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effect</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EFFECT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EFFECT);
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Business identifier for this issue</b><br>
@@ -2999,19 +3041,85 @@ public class ClinicalUseIssue extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
+   * Search parameter: <b>indication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="indication", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item", type="token" )
+  public static final String SP_INDICATION = "indication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>indication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INDICATION);
+
+ /**
+   * Search parameter: <b>interaction</b>
+   * <p>
+   * Description: <b>The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.interaction.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="interaction", path="ClinicalUseIssue.interaction.type", description="The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction", type="token" )
+  public static final String SP_INTERACTION = "interaction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>interaction</b>
+   * <p>
+   * Description: <b>The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.interaction.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTERACTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTERACTION);
+
+ /**
+   * Search parameter: <b>product</b>
+   * <p>
+   * Description: <b>The medicinal product for which this is a clinical usage issue</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product", path="ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)", description="The medicinal product for which this is a clinical usage issue", type="reference", target={MedicinalProductDefinition.class } )
+  public static final String SP_PRODUCT = "product";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product</b>
+   * <p>
+   * Description: <b>The medicinal product for which this is a clinical usage issue</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRODUCT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRODUCT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:product</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRODUCT = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:product").toLocked();
+
+ /**
    * Search parameter: <b>subject</b>
    * <p>
-   * Description: <b>The medication for which this is a clinical particular</b><br>
+   * Description: <b>The resource for which this is a clinical usage issue</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>ClinicalUseIssue.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="ClinicalUseIssue.subject", description="The medication for which this is a clinical particular", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
+  @SearchParamDefinition(name="subject", path="ClinicalUseIssue.subject", description="The resource for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
    * <p>
-   * Description: <b>The medication for which this is a clinical particular</b><br>
+   * Description: <b>The resource for which this is a clinical usage issue</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>ClinicalUseIssue.subject</b><br>
    * </p>
@@ -3023,6 +3131,26 @@ public class ClinicalUseIssue extends DomainResource {
    * the path value of "<b>ClinicalUseIssue:subject</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:subject").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>indication | contraindication | interaction | undesirable-effect | other</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="ClinicalUseIssue.type", description="indication | contraindication | interaction | undesirable-effect | other", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>indication | contraindication | interaction | undesirable-effect | other</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

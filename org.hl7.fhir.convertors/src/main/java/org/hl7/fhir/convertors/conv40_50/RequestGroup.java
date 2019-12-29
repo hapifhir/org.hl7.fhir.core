@@ -148,22 +148,22 @@ public class RequestGroup extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.RequestStatus convertRequestStatus(org.hl7.fhir.r4.model.RequestGroup.RequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertRequestStatus(org.hl7.fhir.r4.model.RequestGroup.RequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case DRAFT: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.DRAFT;
-    case ACTIVE: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.ONHOLD;
-    case REVOKED: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.REVOKED;
-    case COMPLETED: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.RequestGroup.RequestStatus.NULL;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+    case ONHOLD: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+    case REVOKED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.RequestStatus convertRequestStatus(org.hl7.fhir.r5.model.RequestGroup.RequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.RequestStatus convertRequestStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -178,24 +178,24 @@ public class RequestGroup extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.RequestGroup.RequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.RequestGroup.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.PLAN;
-    case DIRECTIVE: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.DIRECTIVE;
-    case ORDER: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.OPTION;
-    default: return org.hl7.fhir.r5.model.RequestGroup.RequestIntent.NULL;
+    case PROPOSAL: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+    case PLAN: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+    case DIRECTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+    case ORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+    case ORIGINALORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+    case REFLEXORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+    case FILLERORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+    case INSTANCEORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+    case OPTION: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.RequestGroup.RequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -212,19 +212,19 @@ public class RequestGroup extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.RequestGroup.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.RequestGroup.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.RequestGroup.RequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.RequestGroup.RequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.RequestGroup.RequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.RequestGroup.RequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.RequestGroup.RequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.RequestGroup.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -328,18 +328,18 @@ public class RequestGroup extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case VISUALGROUP: return org.hl7.fhir.r5.model.RequestGroup.ActionGroupingBehavior.VISUALGROUP;
-    case LOGICALGROUP: return org.hl7.fhir.r5.model.RequestGroup.ActionGroupingBehavior.LOGICALGROUP;
-    case SENTENCEGROUP: return org.hl7.fhir.r5.model.RequestGroup.ActionGroupingBehavior.SENTENCEGROUP;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionGroupingBehavior.NULL;
+    case VISUALGROUP: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.VISUALGROUP;
+    case LOGICALGROUP: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.LOGICALGROUP;
+    case SENTENCEGROUP: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.SENTENCEGROUP;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r5.model.RequestGroup.ActionGroupingBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -350,21 +350,21 @@ public class RequestGroup extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ANY: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.ANY;
-    case ALL: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.ALL;
-    case ALLORNONE: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.ALLORNONE;
-    case EXACTLYONE: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.EXACTLYONE;
-    case ATMOSTONE: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.ATMOSTONE;
-    case ONEORMORE: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.ONEORMORE;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior.NULL;
+    case ANY: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ANY;
+    case ALL: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALL;
+    case ALLORNONE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALLORNONE;
+    case EXACTLYONE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.EXACTLYONE;
+    case ATMOSTONE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ATMOSTONE;
+    case ONEORMORE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ONEORMORE;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r5.model.RequestGroup.ActionSelectionBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -378,18 +378,18 @@ public class RequestGroup extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case MUST: return org.hl7.fhir.r5.model.RequestGroup.ActionRequiredBehavior.MUST;
-    case COULD: return org.hl7.fhir.r5.model.RequestGroup.ActionRequiredBehavior.COULD;
-    case MUSTUNLESSDOCUMENTED: return org.hl7.fhir.r5.model.RequestGroup.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionRequiredBehavior.NULL;
+    case MUST: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUST;
+    case COULD: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.COULD;
+    case MUSTUNLESSDOCUMENTED: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r5.model.RequestGroup.ActionRequiredBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -400,17 +400,17 @@ public class RequestGroup extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case YES: return org.hl7.fhir.r5.model.RequestGroup.ActionPrecheckBehavior.YES;
-    case NO: return org.hl7.fhir.r5.model.RequestGroup.ActionPrecheckBehavior.NO;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionPrecheckBehavior.NULL;
+    case YES: return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.YES;
+    case NO: return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r5.model.RequestGroup.ActionPrecheckBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -420,17 +420,17 @@ public class RequestGroup extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case SINGLE: return org.hl7.fhir.r5.model.RequestGroup.ActionCardinalityBehavior.SINGLE;
-    case MULTIPLE: return org.hl7.fhir.r5.model.RequestGroup.ActionCardinalityBehavior.MULTIPLE;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionCardinalityBehavior.NULL;
+    case SINGLE: return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.SINGLE;
+    case MULTIPLE: return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.MULTIPLE;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r5.model.RequestGroup.ActionCardinalityBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -464,18 +464,18 @@ public class RequestGroup extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case APPLICABILITY: return org.hl7.fhir.r5.model.RequestGroup.ActionConditionKind.APPLICABILITY;
-    case START: return org.hl7.fhir.r5.model.RequestGroup.ActionConditionKind.START;
-    case STOP: return org.hl7.fhir.r5.model.RequestGroup.ActionConditionKind.STOP;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionConditionKind.NULL;
+    case APPLICABILITY: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.APPLICABILITY;
+    case START: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.START;
+    case STOP: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.STOP;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r5.model.RequestGroup.ActionConditionKind src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -514,24 +514,24 @@ public class RequestGroup extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case BEFORESTART: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.BEFORESTART;
-    case BEFORE: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.BEFORE;
-    case BEFOREEND: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.BEFOREEND;
-    case CONCURRENTWITHSTART: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.CONCURRENTWITHSTART;
-    case CONCURRENT: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.CONCURRENT;
-    case CONCURRENTWITHEND: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.CONCURRENTWITHEND;
-    case AFTERSTART: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.AFTERSTART;
-    case AFTER: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.AFTER;
-    case AFTEREND: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.AFTEREND;
-    default: return org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType.NULL;
+    case BEFORESTART: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORESTART;
+    case BEFORE: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORE;
+    case BEFOREEND: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFOREEND;
+    case CONCURRENTWITHSTART: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHSTART;
+    case CONCURRENT: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENT;
+    case CONCURRENTWITHEND: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHEND;
+    case AFTERSTART: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTERSTART;
+    case AFTER: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTER;
+    case AFTEREND: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTEREND;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r5.model.RequestGroup.ActionRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

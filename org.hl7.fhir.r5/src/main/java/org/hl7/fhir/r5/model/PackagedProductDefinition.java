@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A medicinal product in a container or package.
  */
@@ -101,7 +103,7 @@ public class PackagedProductDefinition extends DomainResource {
      */
       public PackagedProductDefinitionBatchIdentifierComponent(Identifier outerPackaging) {
         super();
-        this.outerPackaging = outerPackaging;
+        this.setOuterPackaging(outerPackaging);
       }
 
         /**
@@ -341,10 +343,10 @@ public class PackagedProductDefinition extends DomainResource {
         protected List<PackagedProductDefinitionPackageCharacteristicComponent> characteristic;
 
         /**
-         * The item(s) within the packaging).
+         * The item(s) within the packaging.
          */
         @Child(name = "containedItem", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The item(s) within the packaging)", formalDefinition="The item(s) within the packaging)." )
+        @Description(shortDefinition="The item(s) within the packaging", formalDefinition="The item(s) within the packaging." )
         protected List<PackagedProductDefinitionPackageContainedItemComponent> containedItem;
 
         /**
@@ -407,7 +409,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
          */
         public Identifier getIdentifierFirstRep() { 
           if (getIdentifier().isEmpty()) {
@@ -508,7 +510,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #material}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #material}, creating it if it does not already exist {3}
          */
         public CodeableConcept getMaterialFirstRep() { 
           if (getMaterial().isEmpty()) {
@@ -561,7 +563,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #alternateMaterial}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #alternateMaterial}, creating it if it does not already exist {3}
          */
         public CodeableConcept getAlternateMaterialFirstRep() { 
           if (getAlternateMaterial().isEmpty()) {
@@ -614,7 +616,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #shelfLifeStorage}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #shelfLifeStorage}, creating it if it does not already exist {3}
          */
         public ProductShelfLife getShelfLifeStorageFirstRep() { 
           if (getShelfLifeStorage().isEmpty()) {
@@ -667,7 +669,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist {3}
          */
         public Reference getManufacturerFirstRep() { 
           if (getManufacturer().isEmpty()) {
@@ -720,7 +722,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
          */
         public PackagedProductDefinitionPackageCharacteristicComponent getCharacteristicFirstRep() { 
           if (getCharacteristic().isEmpty()) {
@@ -730,7 +732,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #containedItem} (The item(s) within the packaging).)
+         * @return {@link #containedItem} (The item(s) within the packaging.)
          */
         public List<PackagedProductDefinitionPackageContainedItemComponent> getContainedItem() { 
           if (this.containedItem == null)
@@ -773,7 +775,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #containedItem}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #containedItem}, creating it if it does not already exist {3}
          */
         public PackagedProductDefinitionPackageContainedItemComponent getContainedItemFirstRep() { 
           if (getContainedItem().isEmpty()) {
@@ -826,7 +828,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #package_}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #package_}, creating it if it does not already exist {3}
          */
         public PackagedProductDefinitionPackageComponent getPackageFirstRep() { 
           if (getPackage().isEmpty()) {
@@ -845,7 +847,7 @@ public class PackagedProductDefinition extends DomainResource {
           children.add(new Property("shelfLifeStorage", "ProductShelfLife", "Shelf Life and storage information.", 0, java.lang.Integer.MAX_VALUE, shelfLifeStorage));
           children.add(new Property("manufacturer", "Reference(Organization)", "Manufacturer of this Package Item.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
           children.add(new Property("characteristic", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, characteristic));
-          children.add(new Property("containedItem", "", "The item(s) within the packaging).", 0, java.lang.Integer.MAX_VALUE, containedItem));
+          children.add(new Property("containedItem", "", "The item(s) within the packaging.", 0, java.lang.Integer.MAX_VALUE, containedItem));
           children.add(new Property("package", "@PackagedProductDefinition.package", "Allows containers within containers.", 0, java.lang.Integer.MAX_VALUE, package_));
         }
 
@@ -860,7 +862,7 @@ public class PackagedProductDefinition extends DomainResource {
           case 172049237: /*shelfLifeStorage*/  return new Property("shelfLifeStorage", "ProductShelfLife", "Shelf Life and storage information.", 0, java.lang.Integer.MAX_VALUE, shelfLifeStorage);
           case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Manufacturer of this Package Item.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
           case 366313883: /*characteristic*/  return new Property("characteristic", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, characteristic);
-          case 1953679910: /*containedItem*/  return new Property("containedItem", "", "The item(s) within the packaging).", 0, java.lang.Integer.MAX_VALUE, containedItem);
+          case 1953679910: /*containedItem*/  return new Property("containedItem", "", "The item(s) within the packaging.", 0, java.lang.Integer.MAX_VALUE, containedItem);
           case -807062458: /*package*/  return new Property("package", "@PackagedProductDefinition.package", "Allows containers within containers.", 0, java.lang.Integer.MAX_VALUE, package_);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1129,7 +1131,7 @@ public class PackagedProductDefinition extends DomainResource {
         @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
         protected DataType value;
 
-        private static final long serialVersionUID = 884525025L;
+        private static final long serialVersionUID = -1950789033L;
 
     /**
      * Constructor
@@ -1143,7 +1145,7 @@ public class PackagedProductDefinition extends DomainResource {
      */
       public PackagedProductDefinitionPackageCharacteristicComponent(CodeableConcept code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -1293,12 +1295,12 @@ public class PackagedProductDefinition extends DomainResource {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, code);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case -766192449: /*valueDate*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "A value for the characteristic.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "A value for the characteristic.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "A value for the characteristic.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "A value for the characteristic.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1308,7 +1310,7 @@ public class PackagedProductDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1321,7 +1323,7 @@ public class PackagedProductDefinition extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1333,7 +1335,7 @@ public class PackagedProductDefinition extends DomainResource {
         if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1453,7 +1455,7 @@ public class PackagedProductDefinition extends DomainResource {
         @Description(shortDefinition="The number of this type of item within this packaging", formalDefinition="The number of this type of item within this packaging." )
         protected DataType amount;
 
-        private static final long serialVersionUID = 656616688L;
+        private static final long serialVersionUID = 454818874L;
 
     /**
      * Constructor
@@ -1506,7 +1508,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #item}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #item}, creating it if it does not already exist {3}
          */
         public Reference getItemFirstRep() { 
           if (getItem().isEmpty()) {
@@ -1578,8 +1580,8 @@ public class PackagedProductDefinition extends DomainResource {
           case 3242771: /*item*/  return new Property("item", "Reference(ManufacturedItemDefinition|DeviceDefinition)", "The manufactured item or device as contained in the packaged medicinal product.", 0, java.lang.Integer.MAX_VALUE, item);
           case 646780200: /*amount[x]*/  return new Property("amount[x]", "Quantity|integer", "The number of this type of item within this packaging.", 0, 1, amount);
           case -1413853096: /*amount*/  return new Property("amount[x]", "Quantity|integer", "The number of this type of item within this packaging.", 0, 1, amount);
-          case 1664303363: /*amountQuantity*/  return new Property("amount[x]", "Quantity|integer", "The number of this type of item within this packaging.", 0, 1, amount);
-          case 2053191110: /*amountInteger*/  return new Property("amount[x]", "Quantity|integer", "The number of this type of item within this packaging.", 0, 1, amount);
+          case 1664303363: /*amountQuantity*/  return new Property("amount[x]", "Quantity", "The number of this type of item within this packaging.", 0, 1, amount);
+          case 2053191110: /*amountInteger*/  return new Property("amount[x]", "integer", "The number of this type of item within this packaging.", 0, 1, amount);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1589,7 +1591,7 @@ public class PackagedProductDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3242771: /*item*/ return this.item == null ? new Base[0] : this.item.toArray(new Base[this.item.size()]); // Reference
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Type
+        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1602,7 +1604,7 @@ public class PackagedProductDefinition extends DomainResource {
           this.getItem().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1413853096: // amount
-          this.amount = TypeConvertor.castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1614,7 +1616,7 @@ public class PackagedProductDefinition extends DomainResource {
         if (name.equals("item")) {
           this.getItem().add(TypeConvertor.castToReference(value));
         } else if (name.equals("amount[x]")) {
-          this.amount = TypeConvertor.castToType(value); // Type
+          this.amount = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1741,34 +1743,41 @@ public class PackagedProductDefinition extends DomainResource {
     protected List<MarketingStatus> marketingStatus;
 
     /**
+     * States whether a drug product is supplied with another item such as a diluent or adjuvant.
+     */
+    @Child(name = "copackagedIndicator", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="States whether a drug product is supplied with another item such as a diluent or adjuvant", formalDefinition="States whether a drug product is supplied with another item such as a diluent or adjuvant." )
+    protected BooleanType copackagedIndicator;
+
+    /**
      * Manufacturer of this Package Item.
      */
-    @Child(name = "marketingAuthorization", type = {RegulatedAuthorization.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "marketingAuthorization", type = {RegulatedAuthorization.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Manufacturer of this Package Item", formalDefinition="Manufacturer of this Package Item." )
     protected Reference marketingAuthorization;
 
     /**
      * Manufacturer of this Package Item.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "manufacturer", type = {Organization.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Manufacturer of this Package Item", formalDefinition="Manufacturer of this Package Item." )
     protected List<Reference> manufacturer;
 
     /**
      * Batch numbering.
      */
-    @Child(name = "batchIdentifier", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "batchIdentifier", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Batch numbering", formalDefinition="Batch numbering." )
     protected List<PackagedProductDefinitionBatchIdentifierComponent> batchIdentifier;
 
     /**
      * A packaging item, as a contained for medicine, possibly with other packaging items within.
      */
-    @Child(name = "package", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "package", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A packaging item, as a contained for medicine, possibly with other packaging items within", formalDefinition="A packaging item, as a contained for medicine, possibly with other packaging items within." )
     protected List<PackagedProductDefinitionPackageComponent> package_;
 
-    private static final long serialVersionUID = -1124177667L;
+    private static final long serialVersionUID = -246367398L;
 
   /**
    * Constructor
@@ -1821,7 +1830,7 @@ public class PackagedProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1874,7 +1883,7 @@ public class PackagedProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
      */
     public Reference getSubjectFirstRep() { 
       if (getSubject().isEmpty()) {
@@ -2000,13 +2009,58 @@ public class PackagedProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #marketingStatus}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #marketingStatus}, creating it if it does not already exist {3}
      */
     public MarketingStatus getMarketingStatusFirstRep() { 
       if (getMarketingStatus().isEmpty()) {
         addMarketingStatus();
       }
       return getMarketingStatus().get(0);
+    }
+
+    /**
+     * @return {@link #copackagedIndicator} (States whether a drug product is supplied with another item such as a diluent or adjuvant.). This is the underlying object with id, value and extensions. The accessor "getCopackagedIndicator" gives direct access to the value
+     */
+    public BooleanType getCopackagedIndicatorElement() { 
+      if (this.copackagedIndicator == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create PackagedProductDefinition.copackagedIndicator");
+        else if (Configuration.doAutoCreate())
+          this.copackagedIndicator = new BooleanType(); // bb
+      return this.copackagedIndicator;
+    }
+
+    public boolean hasCopackagedIndicatorElement() { 
+      return this.copackagedIndicator != null && !this.copackagedIndicator.isEmpty();
+    }
+
+    public boolean hasCopackagedIndicator() { 
+      return this.copackagedIndicator != null && !this.copackagedIndicator.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copackagedIndicator} (States whether a drug product is supplied with another item such as a diluent or adjuvant.). This is the underlying object with id, value and extensions. The accessor "getCopackagedIndicator" gives direct access to the value
+     */
+    public PackagedProductDefinition setCopackagedIndicatorElement(BooleanType value) { 
+      this.copackagedIndicator = value;
+      return this;
+    }
+
+    /**
+     * @return States whether a drug product is supplied with another item such as a diluent or adjuvant.
+     */
+    public boolean getCopackagedIndicator() { 
+      return this.copackagedIndicator == null || this.copackagedIndicator.isEmpty() ? false : this.copackagedIndicator.getValue();
+    }
+
+    /**
+     * @param value States whether a drug product is supplied with another item such as a diluent or adjuvant.
+     */
+    public PackagedProductDefinition setCopackagedIndicator(boolean value) { 
+        if (this.copackagedIndicator == null)
+          this.copackagedIndicator = new BooleanType();
+        this.copackagedIndicator.setValue(value);
+      return this;
     }
 
     /**
@@ -2077,7 +2131,7 @@ public class PackagedProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist {3}
      */
     public Reference getManufacturerFirstRep() { 
       if (getManufacturer().isEmpty()) {
@@ -2130,7 +2184,7 @@ public class PackagedProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #batchIdentifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #batchIdentifier}, creating it if it does not already exist {3}
      */
     public PackagedProductDefinitionBatchIdentifierComponent getBatchIdentifierFirstRep() { 
       if (getBatchIdentifier().isEmpty()) {
@@ -2183,7 +2237,7 @@ public class PackagedProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #package_}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #package_}, creating it if it does not already exist {3}
      */
     public PackagedProductDefinitionPackageComponent getPackageFirstRep() { 
       if (getPackage().isEmpty()) {
@@ -2199,6 +2253,7 @@ public class PackagedProductDefinition extends DomainResource {
         children.add(new Property("description", "string", "Textual description.", 0, 1, description));
         children.add(new Property("legalStatusOfSupply", "CodeableConcept", "The legal status of supply of the medicinal product as classified by the regulator.", 0, 1, legalStatusOfSupply));
         children.add(new Property("marketingStatus", "MarketingStatus", "Marketing information.", 0, java.lang.Integer.MAX_VALUE, marketingStatus));
+        children.add(new Property("copackagedIndicator", "boolean", "States whether a drug product is supplied with another item such as a diluent or adjuvant.", 0, 1, copackagedIndicator));
         children.add(new Property("marketingAuthorization", "Reference(RegulatedAuthorization)", "Manufacturer of this Package Item.", 0, 1, marketingAuthorization));
         children.add(new Property("manufacturer", "Reference(Organization)", "Manufacturer of this Package Item.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("batchIdentifier", "", "Batch numbering.", 0, java.lang.Integer.MAX_VALUE, batchIdentifier));
@@ -2213,6 +2268,7 @@ public class PackagedProductDefinition extends DomainResource {
         case -1724546052: /*description*/  return new Property("description", "string", "Textual description.", 0, 1, description);
         case -844874031: /*legalStatusOfSupply*/  return new Property("legalStatusOfSupply", "CodeableConcept", "The legal status of supply of the medicinal product as classified by the regulator.", 0, 1, legalStatusOfSupply);
         case 70767032: /*marketingStatus*/  return new Property("marketingStatus", "MarketingStatus", "Marketing information.", 0, java.lang.Integer.MAX_VALUE, marketingStatus);
+        case -1638663195: /*copackagedIndicator*/  return new Property("copackagedIndicator", "boolean", "States whether a drug product is supplied with another item such as a diluent or adjuvant.", 0, 1, copackagedIndicator);
         case 571831283: /*marketingAuthorization*/  return new Property("marketingAuthorization", "Reference(RegulatedAuthorization)", "Manufacturer of this Package Item.", 0, 1, marketingAuthorization);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Manufacturer of this Package Item.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1688395901: /*batchIdentifier*/  return new Property("batchIdentifier", "", "Batch numbering.", 0, java.lang.Integer.MAX_VALUE, batchIdentifier);
@@ -2230,6 +2286,7 @@ public class PackagedProductDefinition extends DomainResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -844874031: /*legalStatusOfSupply*/ return this.legalStatusOfSupply == null ? new Base[0] : new Base[] {this.legalStatusOfSupply}; // CodeableConcept
         case 70767032: /*marketingStatus*/ return this.marketingStatus == null ? new Base[0] : this.marketingStatus.toArray(new Base[this.marketingStatus.size()]); // MarketingStatus
+        case -1638663195: /*copackagedIndicator*/ return this.copackagedIndicator == null ? new Base[0] : new Base[] {this.copackagedIndicator}; // BooleanType
         case 571831283: /*marketingAuthorization*/ return this.marketingAuthorization == null ? new Base[0] : new Base[] {this.marketingAuthorization}; // Reference
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
         case -1688395901: /*batchIdentifier*/ return this.batchIdentifier == null ? new Base[0] : this.batchIdentifier.toArray(new Base[this.batchIdentifier.size()]); // PackagedProductDefinitionBatchIdentifierComponent
@@ -2256,6 +2313,9 @@ public class PackagedProductDefinition extends DomainResource {
           return value;
         case 70767032: // marketingStatus
           this.getMarketingStatus().add(TypeConvertor.castToMarketingStatus(value)); // MarketingStatus
+          return value;
+        case -1638663195: // copackagedIndicator
+          this.copackagedIndicator = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 571831283: // marketingAuthorization
           this.marketingAuthorization = TypeConvertor.castToReference(value); // Reference
@@ -2286,6 +2346,8 @@ public class PackagedProductDefinition extends DomainResource {
           this.legalStatusOfSupply = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("marketingStatus")) {
           this.getMarketingStatus().add(TypeConvertor.castToMarketingStatus(value));
+        } else if (name.equals("copackagedIndicator")) {
+          this.copackagedIndicator = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("marketingAuthorization")) {
           this.marketingAuthorization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("manufacturer")) {
@@ -2307,6 +2369,7 @@ public class PackagedProductDefinition extends DomainResource {
         case -1724546052:  return getDescriptionElement();
         case -844874031:  return getLegalStatusOfSupply();
         case 70767032:  return addMarketingStatus(); 
+        case -1638663195:  return getCopackagedIndicatorElement();
         case 571831283:  return getMarketingAuthorization();
         case -1969347631:  return addManufacturer(); 
         case -1688395901:  return addBatchIdentifier(); 
@@ -2324,6 +2387,7 @@ public class PackagedProductDefinition extends DomainResource {
         case -1724546052: /*description*/ return new String[] {"string"};
         case -844874031: /*legalStatusOfSupply*/ return new String[] {"CodeableConcept"};
         case 70767032: /*marketingStatus*/ return new String[] {"MarketingStatus"};
+        case -1638663195: /*copackagedIndicator*/ return new String[] {"boolean"};
         case 571831283: /*marketingAuthorization*/ return new String[] {"Reference"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case -1688395901: /*batchIdentifier*/ return new String[] {};
@@ -2350,6 +2414,9 @@ public class PackagedProductDefinition extends DomainResource {
         }
         else if (name.equals("marketingStatus")) {
           return addMarketingStatus();
+        }
+        else if (name.equals("copackagedIndicator")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PackagedProductDefinition.copackagedIndicator");
         }
         else if (name.equals("marketingAuthorization")) {
           this.marketingAuthorization = new Reference();
@@ -2398,6 +2465,7 @@ public class PackagedProductDefinition extends DomainResource {
           for (MarketingStatus i : marketingStatus)
             dst.marketingStatus.add(i.copy());
         };
+        dst.copackagedIndicator = copackagedIndicator == null ? null : copackagedIndicator.copy();
         dst.marketingAuthorization = marketingAuthorization == null ? null : marketingAuthorization.copy();
         if (manufacturer != null) {
           dst.manufacturer = new ArrayList<Reference>();
@@ -2429,9 +2497,9 @@ public class PackagedProductDefinition extends DomainResource {
         PackagedProductDefinition o = (PackagedProductDefinition) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(subject, o.subject, true) && compareDeep(description, o.description, true)
            && compareDeep(legalStatusOfSupply, o.legalStatusOfSupply, true) && compareDeep(marketingStatus, o.marketingStatus, true)
-           && compareDeep(marketingAuthorization, o.marketingAuthorization, true) && compareDeep(manufacturer, o.manufacturer, true)
-           && compareDeep(batchIdentifier, o.batchIdentifier, true) && compareDeep(package_, o.package_, true)
-          ;
+           && compareDeep(copackagedIndicator, o.copackagedIndicator, true) && compareDeep(marketingAuthorization, o.marketingAuthorization, true)
+           && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(batchIdentifier, o.batchIdentifier, true)
+           && compareDeep(package_, o.package_, true);
       }
 
       @Override
@@ -2441,19 +2509,46 @@ public class PackagedProductDefinition extends DomainResource {
         if (!(other_ instanceof PackagedProductDefinition))
           return false;
         PackagedProductDefinition o = (PackagedProductDefinition) other_;
-        return compareValues(description, o.description, true);
+        return compareValues(description, o.description, true) && compareValues(copackagedIndicator, o.copackagedIndicator, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, subject, description
-          , legalStatusOfSupply, marketingStatus, marketingAuthorization, manufacturer, batchIdentifier
-          , package_);
+          , legalStatusOfSupply, marketingStatus, copackagedIndicator, marketingAuthorization
+          , manufacturer, batchIdentifier, package_);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.PackagedProductDefinition;
    }
+
+ /**
+   * Search parameter: <b>device</b>
+   * <p>
+   * Description: <b>A device associated within packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="device", path="", description="A device associated within packaged product", type="reference", target={DeviceDefinition.class } )
+  public static final String SP_DEVICE = "device";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>device</b>
+   * <p>
+   * Description: <b>A device associated within packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:device</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:device").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -2474,6 +2569,32 @@ public class PackagedProductDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>manufactured-item</b>
+   * <p>
+   * Description: <b>A manufactured item of medication within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufactured-item", path="", description="A manufactured item of medication within this packaged product", type="reference", target={ManufacturedItemDefinition.class } )
+  public static final String SP_MANUFACTURED_ITEM = "manufactured-item";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufactured-item</b>
+   * <p>
+   * Description: <b>A manufactured item of medication within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURED_ITEM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:manufactured-item</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURED_ITEM = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:manufactured-item").toLocked();
 
  /**
    * Search parameter: <b>subject</b>

@@ -4224,7 +4224,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     int i = 0;
     if (diffList.get(0).getPath().contains(".")) {
       String newPath = diffList.get(0).getPath().split("\\.")[0];
-      ElementDefinition e = new ElementDefinition(new StringType(newPath));
+      ElementDefinition e = new ElementDefinition(newPath);
       edh = new ElementDefinitionHolder(e, true);
     } else {
       edh = new ElementDefinitionHolder(diffList.get(0));
@@ -4266,7 +4266,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     while (i < list.size() && list.get(i).getPath().startsWith(prefix)) {
       if (list.get(i).getPath().substring(prefix.length()+1).contains(".")) {
         String newPath = prefix + list.get(i).getPath().substring(prefix.length()).split("\\.")[0];
-        ElementDefinition e = new ElementDefinition(new StringType(newPath));
+        ElementDefinition e = new ElementDefinition(newPath);
         ElementDefinitionHolder child = new ElementDefinitionHolder(e, true);
         edh.getChildren().add(child);
         i = processElementsIntoTree(child, i, list);

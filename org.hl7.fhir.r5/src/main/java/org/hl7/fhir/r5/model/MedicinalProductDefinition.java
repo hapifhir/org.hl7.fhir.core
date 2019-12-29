@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use).
  */
@@ -101,7 +103,7 @@ public class MedicinalProductDefinition extends DomainResource {
      */
       public MedicinalProductDefinitionContactComponent(Reference contact) {
         super();
-        this.contact = contact;
+        this.setContact(contact);
       }
 
         /**
@@ -290,10 +292,10 @@ public class MedicinalProductDefinition extends DomainResource {
         protected StringType productName;
 
         /**
-         * Type of the product name, such as rINN or BAN.
+         * Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.
          */
         @Child(name = "type", type = {Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type of the product name, such as rINN or BAN", formalDefinition="Type of the product name, such as rINN or BAN." )
+        @Description(shortDefinition="Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary", formalDefinition="Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary." )
         protected Coding type;
 
         /**
@@ -322,9 +324,9 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public MedicinalProductDefinitionNameComponent(StringType productName) {
+      public MedicinalProductDefinitionNameComponent(String productName) {
         super();
-        this.productName = productName;
+        this.setProductName(productName);
       }
 
         /**
@@ -373,7 +375,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #type} (Type of the product name, such as rINN or BAN.)
+         * @return {@link #type} (Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.)
          */
         public Coding getType() { 
           if (this.type == null)
@@ -389,7 +391,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (Type of the product name, such as rINN or BAN.)
+         * @param value {@link #type} (Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.)
          */
         public MedicinalProductDefinitionNameComponent setType(Coding value) { 
           this.type = value;
@@ -440,7 +442,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #namePart}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #namePart}, creating it if it does not already exist {3}
          */
         public MedicinalProductDefinitionNameNamePartComponent getNamePartFirstRep() { 
           if (getNamePart().isEmpty()) {
@@ -493,7 +495,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #countryLanguage}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #countryLanguage}, creating it if it does not already exist {3}
          */
         public MedicinalProductDefinitionNameCountryLanguageComponent getCountryLanguageFirstRep() { 
           if (getCountryLanguage().isEmpty()) {
@@ -505,7 +507,7 @@ public class MedicinalProductDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("productName", "string", "The full product name.", 0, 1, productName));
-          children.add(new Property("type", "Coding", "Type of the product name, such as rINN or BAN.", 0, 1, type));
+          children.add(new Property("type", "Coding", "Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.", 0, 1, type));
           children.add(new Property("namePart", "", "Coding words or phrases of the name.", 0, java.lang.Integer.MAX_VALUE, namePart));
           children.add(new Property("countryLanguage", "", "Country where the name applies.", 0, java.lang.Integer.MAX_VALUE, countryLanguage));
         }
@@ -514,7 +516,7 @@ public class MedicinalProductDefinition extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1491817446: /*productName*/  return new Property("productName", "string", "The full product name.", 0, 1, productName);
-          case 3575610: /*type*/  return new Property("type", "Coding", "Type of the product name, such as rINN or BAN.", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "Coding", "Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.", 0, 1, type);
           case 1840452894: /*namePart*/  return new Property("namePart", "", "Coding words or phrases of the name.", 0, java.lang.Integer.MAX_VALUE, namePart);
           case -141141746: /*countryLanguage*/  return new Property("countryLanguage", "", "Country where the name applies.", 0, java.lang.Integer.MAX_VALUE, countryLanguage);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -596,7 +598,7 @@ public class MedicinalProductDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("productName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.productName");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.name.productName");
         }
         else if (name.equals("type")) {
           this.type = new Coding();
@@ -695,10 +697,10 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public MedicinalProductDefinitionNameNamePartComponent(StringType part, Coding type) {
+      public MedicinalProductDefinitionNameNamePartComponent(String part, Coding type) {
         super();
-        this.part = part;
-        this.type = type;
+        this.setPart(part);
+        this.setType(type);
       }
 
         /**
@@ -844,7 +846,7 @@ public class MedicinalProductDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("part")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.part");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.name.namePart.part");
         }
         else if (name.equals("type")) {
           this.type = new Coding();
@@ -934,8 +936,8 @@ public class MedicinalProductDefinition extends DomainResource {
      */
       public MedicinalProductDefinitionNameCountryLanguageComponent(CodeableConcept country, CodeableConcept language) {
         super();
-        this.country = country;
-        this.language = language;
+        this.setCountry(country);
+        this.setLanguage(language);
       }
 
         /**
@@ -1156,6 +1158,250 @@ public class MedicinalProductDefinition extends DomainResource {
   }
 
     @Block()
+    public static class MedicinalProductDefinitionCrossReferenceComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Reference to another product, e.g. for linking authorised to investigational product.
+         */
+        @Child(name = "product", type = {Identifier.class, MedicinalProductDefinition.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Reference to another product, e.g. for linking authorised to investigational product", formalDefinition="Reference to another product, e.g. for linking authorised to investigational product." )
+        protected DataType product;
+
+        /**
+         * The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version.
+         */
+        @Child(name = "type", type = {Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version", formalDefinition="The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version." )
+        protected Coding type;
+
+        private static final long serialVersionUID = 783327629L;
+
+    /**
+     * Constructor
+     */
+      public MedicinalProductDefinitionCrossReferenceComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public MedicinalProductDefinitionCrossReferenceComponent(DataType product) {
+        super();
+        this.setProduct(product);
+      }
+
+        /**
+         * @return {@link #product} (Reference to another product, e.g. for linking authorised to investigational product.)
+         */
+        public DataType getProduct() { 
+          return this.product;
+        }
+
+        /**
+         * @return {@link #product} (Reference to another product, e.g. for linking authorised to investigational product.)
+         */
+        public Identifier getProductIdentifier() throws FHIRException { 
+          if (this.product == null)
+            this.product = new Identifier();
+          if (!(this.product instanceof Identifier))
+            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.product.getClass().getName()+" was encountered");
+          return (Identifier) this.product;
+        }
+
+        public boolean hasProductIdentifier() { 
+          return this != null && this.product instanceof Identifier;
+        }
+
+        /**
+         * @return {@link #product} (Reference to another product, e.g. for linking authorised to investigational product.)
+         */
+        public Reference getProductReference() throws FHIRException { 
+          if (this.product == null)
+            this.product = new Reference();
+          if (!(this.product instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.product.getClass().getName()+" was encountered");
+          return (Reference) this.product;
+        }
+
+        public boolean hasProductReference() { 
+          return this != null && this.product instanceof Reference;
+        }
+
+        public boolean hasProduct() { 
+          return this.product != null && !this.product.isEmpty();
+        }
+
+        /**
+         * @param value {@link #product} (Reference to another product, e.g. for linking authorised to investigational product.)
+         */
+        public MedicinalProductDefinitionCrossReferenceComponent setProduct(DataType value) { 
+          if (value != null && !(value instanceof Identifier || value instanceof Reference))
+            throw new Error("Not the right type for MedicinalProductDefinition.crossReference.product[x]: "+value.fhirType());
+          this.product = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version.)
+         */
+        public Coding getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicinalProductDefinitionCrossReferenceComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new Coding(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version.)
+         */
+        public MedicinalProductDefinitionCrossReferenceComponent setType(Coding value) { 
+          this.type = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("product[x]", "Identifier|Reference(MedicinalProductDefinition)", "Reference to another product, e.g. for linking authorised to investigational product.", 0, 1, product));
+          children.add(new Property("type", "Coding", "The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version.", 0, 1, type));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1753005361: /*product[x]*/  return new Property("product[x]", "Identifier|Reference(MedicinalProductDefinition)", "Reference to another product, e.g. for linking authorised to investigational product.", 0, 1, product);
+          case -309474065: /*product*/  return new Property("product[x]", "Identifier|Reference(MedicinalProductDefinition)", "Reference to another product, e.g. for linking authorised to investigational product.", 0, 1, product);
+          case 2006726392: /*productIdentifier*/  return new Property("product[x]", "Identifier", "Reference to another product, e.g. for linking authorised to investigational product.", 0, 1, product);
+          case -669667556: /*productReference*/  return new Property("product[x]", "Reference(MedicinalProductDefinition)", "Reference to another product, e.g. for linking authorised to investigational product.", 0, 1, product);
+          case 3575610: /*type*/  return new Property("type", "Coding", "The type of relationship, for instance branded to generic, product to development product (investigational), parallel import version.", 0, 1, type);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // DataType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Coding
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -309474065: // product
+          this.product = TypeConvertor.castToType(value); // DataType
+          return value;
+        case 3575610: // type
+          this.type = TypeConvertor.castToCoding(value); // Coding
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("product[x]")) {
+          this.product = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCoding(value); // Coding
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1753005361:  return getProduct();
+        case -309474065:  return getProduct();
+        case 3575610:  return getType();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -309474065: /*product*/ return new String[] {"Identifier", "Reference"};
+        case 3575610: /*type*/ return new String[] {"Coding"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("productIdentifier")) {
+          this.product = new Identifier();
+          return this.product;
+        }
+        else if (name.equals("productReference")) {
+          this.product = new Reference();
+          return this.product;
+        }
+        else if (name.equals("type")) {
+          this.type = new Coding();
+          return this.type;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public MedicinalProductDefinitionCrossReferenceComponent copy() {
+        MedicinalProductDefinitionCrossReferenceComponent dst = new MedicinalProductDefinitionCrossReferenceComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicinalProductDefinitionCrossReferenceComponent dst) {
+        super.copyValues(dst);
+        dst.product = product == null ? null : product.copy();
+        dst.type = type == null ? null : type.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MedicinalProductDefinitionCrossReferenceComponent))
+          return false;
+        MedicinalProductDefinitionCrossReferenceComponent o = (MedicinalProductDefinitionCrossReferenceComponent) other_;
+        return compareDeep(product, o.product, true) && compareDeep(type, o.type, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MedicinalProductDefinitionCrossReferenceComponent))
+          return false;
+        MedicinalProductDefinitionCrossReferenceComponent o = (MedicinalProductDefinitionCrossReferenceComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(product, type);
+      }
+
+  public String fhirType() {
+    return "MedicinalProductDefinition.crossReference";
+
+  }
+
+  }
+
+    @Block()
     public static class MedicinalProductDefinitionManufacturingBusinessOperationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The type of manufacturing operation e.g. manufacturing itself, re-packaging.
@@ -1348,7 +1594,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist {3}
          */
         public Reference getManufacturerFirstRep() { 
           if (getManufacturer().isEmpty()) {
@@ -1576,531 +1822,6 @@ public class MedicinalProductDefinition extends DomainResource {
 
   }
 
-    @Block()
-    public static class MedicinalProductDefinitionSpecialDesignationComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Identifier for the designation, or procedure number.
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Identifier for the designation, or procedure number", formalDefinition="Identifier for the designation, or procedure number." )
-        protected List<Identifier> identifier;
-
-        /**
-         * The type of special designation, e.g. orphan drug, minor use.
-         */
-        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The type of special designation, e.g. orphan drug, minor use", formalDefinition="The type of special designation, e.g. orphan drug, minor use." )
-        protected CodeableConcept type;
-
-        /**
-         * The intended use of the product, e.g. prevention, treatment.
-         */
-        @Child(name = "intendedUse", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The intended use of the product, e.g. prevention, treatment", formalDefinition="The intended use of the product, e.g. prevention, treatment." )
-        protected CodeableConcept intendedUse;
-
-        /**
-         * Condition for which the medicinal use applies.
-         */
-        @Child(name = "indication", type = {CodeableConcept.class, ClinicalUseIssue.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Condition for which the medicinal use applies", formalDefinition="Condition for which the medicinal use applies." )
-        protected DataType indication;
-
-        /**
-         * For example granted, pending, expired or withdrawn.
-         */
-        @Child(name = "status", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For example granted, pending, expired or withdrawn", formalDefinition="For example granted, pending, expired or withdrawn." )
-        protected CodeableConcept status;
-
-        /**
-         * Date when the designation was granted.
-         */
-        @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Date when the designation was granted", formalDefinition="Date when the designation was granted." )
-        protected DateTimeType date;
-
-        /**
-         * Animal species for which this applies.
-         */
-        @Child(name = "species", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Animal species for which this applies", formalDefinition="Animal species for which this applies." )
-        protected CodeableConcept species;
-
-        private static final long serialVersionUID = -1316809207L;
-
-    /**
-     * Constructor
-     */
-      public MedicinalProductDefinitionSpecialDesignationComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #identifier} (Identifier for the designation, or procedure number.)
-         */
-        public List<Identifier> getIdentifier() { 
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          return this.identifier;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setIdentifier(List<Identifier> theIdentifier) { 
-          this.identifier = theIdentifier;
-          return this;
-        }
-
-        public boolean hasIdentifier() { 
-          if (this.identifier == null)
-            return false;
-          for (Identifier item : this.identifier)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Identifier addIdentifier() { //3
-          Identifier t = new Identifier();
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return t;
-        }
-
-        public MedicinalProductDefinitionSpecialDesignationComponent addIdentifier(Identifier t) { //3
-          if (t == null)
-            return this;
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
-         */
-        public Identifier getIdentifierFirstRep() { 
-          if (getIdentifier().isEmpty()) {
-            addIdentifier();
-          }
-          return getIdentifier().get(0);
-        }
-
-        /**
-         * @return {@link #type} (The type of special designation, e.g. orphan drug, minor use.)
-         */
-        public CodeableConcept getType() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionSpecialDesignationComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (The type of special designation, e.g. orphan drug, minor use.)
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setType(CodeableConcept value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #intendedUse} (The intended use of the product, e.g. prevention, treatment.)
-         */
-        public CodeableConcept getIntendedUse() { 
-          if (this.intendedUse == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionSpecialDesignationComponent.intendedUse");
-            else if (Configuration.doAutoCreate())
-              this.intendedUse = new CodeableConcept(); // cc
-          return this.intendedUse;
-        }
-
-        public boolean hasIntendedUse() { 
-          return this.intendedUse != null && !this.intendedUse.isEmpty();
-        }
-
-        /**
-         * @param value {@link #intendedUse} (The intended use of the product, e.g. prevention, treatment.)
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setIntendedUse(CodeableConcept value) { 
-          this.intendedUse = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #indication} (Condition for which the medicinal use applies.)
-         */
-        public DataType getIndication() { 
-          return this.indication;
-        }
-
-        /**
-         * @return {@link #indication} (Condition for which the medicinal use applies.)
-         */
-        public CodeableConcept getIndicationCodeableConcept() throws FHIRException { 
-          if (this.indication == null)
-            this.indication = new CodeableConcept();
-          if (!(this.indication instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.indication.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.indication;
-        }
-
-        public boolean hasIndicationCodeableConcept() { 
-          return this != null && this.indication instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #indication} (Condition for which the medicinal use applies.)
-         */
-        public Reference getIndicationReference() throws FHIRException { 
-          if (this.indication == null)
-            this.indication = new Reference();
-          if (!(this.indication instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.indication.getClass().getName()+" was encountered");
-          return (Reference) this.indication;
-        }
-
-        public boolean hasIndicationReference() { 
-          return this != null && this.indication instanceof Reference;
-        }
-
-        public boolean hasIndication() { 
-          return this.indication != null && !this.indication.isEmpty();
-        }
-
-        /**
-         * @param value {@link #indication} (Condition for which the medicinal use applies.)
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setIndication(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for MedicinalProductDefinition.specialDesignation.indication[x]: "+value.fhirType());
-          this.indication = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #status} (For example granted, pending, expired or withdrawn.)
-         */
-        public CodeableConcept getStatus() { 
-          if (this.status == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionSpecialDesignationComponent.status");
-            else if (Configuration.doAutoCreate())
-              this.status = new CodeableConcept(); // cc
-          return this.status;
-        }
-
-        public boolean hasStatus() { 
-          return this.status != null && !this.status.isEmpty();
-        }
-
-        /**
-         * @param value {@link #status} (For example granted, pending, expired or withdrawn.)
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setStatus(CodeableConcept value) { 
-          this.status = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #date} (Date when the designation was granted.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
-         */
-        public DateTimeType getDateElement() { 
-          if (this.date == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionSpecialDesignationComponent.date");
-            else if (Configuration.doAutoCreate())
-              this.date = new DateTimeType(); // bb
-          return this.date;
-        }
-
-        public boolean hasDateElement() { 
-          return this.date != null && !this.date.isEmpty();
-        }
-
-        public boolean hasDate() { 
-          return this.date != null && !this.date.isEmpty();
-        }
-
-        /**
-         * @param value {@link #date} (Date when the designation was granted.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setDateElement(DateTimeType value) { 
-          this.date = value;
-          return this;
-        }
-
-        /**
-         * @return Date when the designation was granted.
-         */
-        public Date getDate() { 
-          return this.date == null ? null : this.date.getValue();
-        }
-
-        /**
-         * @param value Date when the designation was granted.
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setDate(Date value) { 
-          if (value == null)
-            this.date = null;
-          else {
-            if (this.date == null)
-              this.date = new DateTimeType();
-            this.date.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #species} (Animal species for which this applies.)
-         */
-        public CodeableConcept getSpecies() { 
-          if (this.species == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionSpecialDesignationComponent.species");
-            else if (Configuration.doAutoCreate())
-              this.species = new CodeableConcept(); // cc
-          return this.species;
-        }
-
-        public boolean hasSpecies() { 
-          return this.species != null && !this.species.isEmpty();
-        }
-
-        /**
-         * @param value {@link #species} (Animal species for which this applies.)
-         */
-        public MedicinalProductDefinitionSpecialDesignationComponent setSpecies(CodeableConcept value) { 
-          this.species = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "Identifier for the designation, or procedure number.", 0, java.lang.Integer.MAX_VALUE, identifier));
-          children.add(new Property("type", "CodeableConcept", "The type of special designation, e.g. orphan drug, minor use.", 0, 1, type));
-          children.add(new Property("intendedUse", "CodeableConcept", "The intended use of the product, e.g. prevention, treatment.", 0, 1, intendedUse));
-          children.add(new Property("indication[x]", "CodeableConcept|Reference(ClinicalUseIssue)", "Condition for which the medicinal use applies.", 0, 1, indication));
-          children.add(new Property("status", "CodeableConcept", "For example granted, pending, expired or withdrawn.", 0, 1, status));
-          children.add(new Property("date", "dateTime", "Date when the designation was granted.", 0, 1, date));
-          children.add(new Property("species", "CodeableConcept", "Animal species for which this applies.", 0, 1, species));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the designation, or procedure number.", 0, java.lang.Integer.MAX_VALUE, identifier);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of special designation, e.g. orphan drug, minor use.", 0, 1, type);
-          case -1618671268: /*intendedUse*/  return new Property("intendedUse", "CodeableConcept", "The intended use of the product, e.g. prevention, treatment.", 0, 1, intendedUse);
-          case -501208668: /*indication[x]*/  return new Property("indication[x]", "CodeableConcept|Reference(ClinicalUseIssue)", "Condition for which the medicinal use applies.", 0, 1, indication);
-          case -597168804: /*indication*/  return new Property("indication[x]", "CodeableConcept|Reference(ClinicalUseIssue)", "Condition for which the medicinal use applies.", 0, 1, indication);
-          case -1094003035: /*indicationCodeableConcept*/  return new Property("indication[x]", "CodeableConcept|Reference(ClinicalUseIssue)", "Condition for which the medicinal use applies.", 0, 1, indication);
-          case 803518799: /*indicationReference*/  return new Property("indication[x]", "CodeableConcept|Reference(ClinicalUseIssue)", "Condition for which the medicinal use applies.", 0, 1, indication);
-          case -892481550: /*status*/  return new Property("status", "CodeableConcept", "For example granted, pending, expired or withdrawn.", 0, 1, status);
-          case 3076014: /*date*/  return new Property("date", "dateTime", "Date when the designation was granted.", 0, 1, date);
-          case -2008465092: /*species*/  return new Property("species", "CodeableConcept", "Animal species for which this applies.", 0, 1, species);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -1618671268: /*intendedUse*/ return this.intendedUse == null ? new Base[0] : new Base[] {this.intendedUse}; // CodeableConcept
-        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : new Base[] {this.indication}; // Type
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
-        case -2008465092: /*species*/ return this.species == null ? new Base[0] : new Base[] {this.species}; // CodeableConcept
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1618432855: // identifier
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
-          return value;
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1618671268: // intendedUse
-          this.intendedUse = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -597168804: // indication
-          this.indication = TypeConvertor.castToType(value); // Type
-          return value;
-        case -892481550: // status
-          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 3076014: // date
-          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
-          return value;
-        case -2008465092: // species
-          this.species = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
-        } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("intendedUse")) {
-          this.intendedUse = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("indication[x]")) {
-          this.indication = TypeConvertor.castToType(value); // Type
-        } else if (name.equals("status")) {
-          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("date")) {
-          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("species")) {
-          this.species = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1618432855:  return addIdentifier(); 
-        case 3575610:  return getType();
-        case -1618671268:  return getIntendedUse();
-        case -501208668:  return getIndication();
-        case -597168804:  return getIndication();
-        case -892481550:  return getStatus();
-        case 3076014:  return getDateElement();
-        case -2008465092:  return getSpecies();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -1618671268: /*intendedUse*/ return new String[] {"CodeableConcept"};
-        case -597168804: /*indication*/ return new String[] {"CodeableConcept", "Reference"};
-        case -892481550: /*status*/ return new String[] {"CodeableConcept"};
-        case 3076014: /*date*/ return new String[] {"dateTime"};
-        case -2008465092: /*species*/ return new String[] {"CodeableConcept"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifier")) {
-          return addIdentifier();
-        }
-        else if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
-        }
-        else if (name.equals("intendedUse")) {
-          this.intendedUse = new CodeableConcept();
-          return this.intendedUse;
-        }
-        else if (name.equals("indicationCodeableConcept")) {
-          this.indication = new CodeableConcept();
-          return this.indication;
-        }
-        else if (name.equals("indicationReference")) {
-          this.indication = new Reference();
-          return this.indication;
-        }
-        else if (name.equals("status")) {
-          this.status = new CodeableConcept();
-          return this.status;
-        }
-        else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.date");
-        }
-        else if (name.equals("species")) {
-          this.species = new CodeableConcept();
-          return this.species;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public MedicinalProductDefinitionSpecialDesignationComponent copy() {
-        MedicinalProductDefinitionSpecialDesignationComponent dst = new MedicinalProductDefinitionSpecialDesignationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(MedicinalProductDefinitionSpecialDesignationComponent dst) {
-        super.copyValues(dst);
-        if (identifier != null) {
-          dst.identifier = new ArrayList<Identifier>();
-          for (Identifier i : identifier)
-            dst.identifier.add(i.copy());
-        };
-        dst.type = type == null ? null : type.copy();
-        dst.intendedUse = intendedUse == null ? null : intendedUse.copy();
-        dst.indication = indication == null ? null : indication.copy();
-        dst.status = status == null ? null : status.copy();
-        dst.date = date == null ? null : date.copy();
-        dst.species = species == null ? null : species.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof MedicinalProductDefinitionSpecialDesignationComponent))
-          return false;
-        MedicinalProductDefinitionSpecialDesignationComponent o = (MedicinalProductDefinitionSpecialDesignationComponent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(intendedUse, o.intendedUse, true)
-           && compareDeep(indication, o.indication, true) && compareDeep(status, o.status, true) && compareDeep(date, o.date, true)
-           && compareDeep(species, o.species, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof MedicinalProductDefinitionSpecialDesignationComponent))
-          return false;
-        MedicinalProductDefinitionSpecialDesignationComponent o = (MedicinalProductDefinitionSpecialDesignationComponent) other_;
-        return compareValues(date, o.date, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, intendedUse
-          , indication, status, date, species);
-      }
-
-  public String fhirType() {
-    return "MedicinalProductDefinition.specialDesignation";
-
-  }
-
-  }
-
     /**
      * Business identifier for this product. Could be an MPID.
      */
@@ -2160,9 +1881,9 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * Whether the Medicinal Product is subject to special measures for regulatory reasons.
      */
-    @Child(name = "specialMeasure", type = {StringType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "specialMeasures", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Whether the Medicinal Product is subject to special measures for regulatory reasons", formalDefinition="Whether the Medicinal Product is subject to special measures for regulatory reasons." )
-    protected List<StringType> specialMeasure;
+    protected List<CodeableConcept> specialMeasures;
 
     /**
      * If authorised for use in children.
@@ -2244,9 +1965,9 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * Reference to another product, e.g. for linking authorised to investigational product.
      */
-    @Child(name = "crossReference", type = {Identifier.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "crossReference", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Reference to another product, e.g. for linking authorised to investigational product", formalDefinition="Reference to another product, e.g. for linking authorised to investigational product." )
-    protected List<Identifier> crossReference;
+    protected List<MedicinalProductDefinitionCrossReferenceComponent> crossReference;
 
     /**
      * An operation applied to the product, for manufacturing or adminsitrative purpose.
@@ -2255,20 +1976,21 @@ public class MedicinalProductDefinition extends DomainResource {
     @Description(shortDefinition="An operation applied to the product, for manufacturing or adminsitrative purpose", formalDefinition="An operation applied to the product, for manufacturing or adminsitrative purpose." )
     protected List<MedicinalProductDefinitionManufacturingBusinessOperationComponent> manufacturingBusinessOperation;
 
-    /**
-     * Indicates if the medicinal product has an orphan designation for the treatment of a rare disease.
-     */
-    @Child(name = "specialDesignation", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Indicates if the medicinal product has an orphan designation for the treatment of a rare disease", formalDefinition="Indicates if the medicinal product has an orphan designation for the treatment of a rare disease." )
-    protected List<MedicinalProductDefinitionSpecialDesignationComponent> specialDesignation;
-
-    private static final long serialVersionUID = 1392072167L;
+    private static final long serialVersionUID = -1816954454L;
 
   /**
    * Constructor
    */
     public MedicinalProductDefinition() {
       super();
+    }
+
+  /**
+   * Constructor
+   */
+    public MedicinalProductDefinition(MedicinalProductDefinitionNameComponent name) {
+      super();
+      this.addName(name);
     }
 
     /**
@@ -2315,7 +2037,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2543,64 +2265,56 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #specialMeasure} (Whether the Medicinal Product is subject to special measures for regulatory reasons.)
+     * @return {@link #specialMeasures} (Whether the Medicinal Product is subject to special measures for regulatory reasons.)
      */
-    public List<StringType> getSpecialMeasure() { 
-      if (this.specialMeasure == null)
-        this.specialMeasure = new ArrayList<StringType>();
-      return this.specialMeasure;
+    public List<CodeableConcept> getSpecialMeasures() { 
+      if (this.specialMeasures == null)
+        this.specialMeasures = new ArrayList<CodeableConcept>();
+      return this.specialMeasures;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public MedicinalProductDefinition setSpecialMeasure(List<StringType> theSpecialMeasure) { 
-      this.specialMeasure = theSpecialMeasure;
+    public MedicinalProductDefinition setSpecialMeasures(List<CodeableConcept> theSpecialMeasures) { 
+      this.specialMeasures = theSpecialMeasures;
       return this;
     }
 
-    public boolean hasSpecialMeasure() { 
-      if (this.specialMeasure == null)
+    public boolean hasSpecialMeasures() { 
+      if (this.specialMeasures == null)
         return false;
-      for (StringType item : this.specialMeasure)
+      for (CodeableConcept item : this.specialMeasures)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    /**
-     * @return {@link #specialMeasure} (Whether the Medicinal Product is subject to special measures for regulatory reasons.)
-     */
-    public StringType addSpecialMeasureElement() {//2 
-      StringType t = new StringType();
-      if (this.specialMeasure == null)
-        this.specialMeasure = new ArrayList<StringType>();
-      this.specialMeasure.add(t);
+    public CodeableConcept addSpecialMeasures() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.specialMeasures == null)
+        this.specialMeasures = new ArrayList<CodeableConcept>();
+      this.specialMeasures.add(t);
       return t;
     }
 
-    /**
-     * @param value {@link #specialMeasure} (Whether the Medicinal Product is subject to special measures for regulatory reasons.)
-     */
-    public MedicinalProductDefinition addSpecialMeasure(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.specialMeasure == null)
-        this.specialMeasure = new ArrayList<StringType>();
-      this.specialMeasure.add(t);
+    public MedicinalProductDefinition addSpecialMeasures(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.specialMeasures == null)
+        this.specialMeasures = new ArrayList<CodeableConcept>();
+      this.specialMeasures.add(t);
       return this;
     }
 
     /**
-     * @param value {@link #specialMeasure} (Whether the Medicinal Product is subject to special measures for regulatory reasons.)
+     * @return The first repetition of repeating field {@link #specialMeasures}, creating it if it does not already exist {3}
      */
-    public boolean hasSpecialMeasure(String value) { 
-      if (this.specialMeasure == null)
-        return false;
-      for (StringType v : this.specialMeasure)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public CodeableConcept getSpecialMeasuresFirstRep() { 
+      if (getSpecialMeasures().isEmpty()) {
+        addSpecialMeasures();
+      }
+      return getSpecialMeasures().get(0);
     }
 
     /**
@@ -2671,7 +2385,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #productClassification}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #productClassification}, creating it if it does not already exist {3}
      */
     public CodeableConcept getProductClassificationFirstRep() { 
       if (getProductClassification().isEmpty()) {
@@ -2724,7 +2438,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #marketingStatus}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #marketingStatus}, creating it if it does not already exist {3}
      */
     public MarketingStatus getMarketingStatusFirstRep() { 
       if (getMarketingStatus().isEmpty()) {
@@ -2777,7 +2491,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #pharmaceuticalProduct}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #pharmaceuticalProduct}, creating it if it does not already exist {3}
      */
     public Reference getPharmaceuticalProductFirstRep() { 
       if (getPharmaceuticalProduct().isEmpty()) {
@@ -2830,7 +2544,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #packagedMedicinalProduct}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #packagedMedicinalProduct}, creating it if it does not already exist {3}
      */
     public Reference getPackagedMedicinalProductFirstRep() { 
       if (getPackagedMedicinalProduct().isEmpty()) {
@@ -2883,7 +2597,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
      */
     public Reference getIngredientFirstRep() { 
       if (getIngredient().isEmpty()) {
@@ -2936,7 +2650,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #attachedDocument}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #attachedDocument}, creating it if it does not already exist {3}
      */
     public Reference getAttachedDocumentFirstRep() { 
       if (getAttachedDocument().isEmpty()) {
@@ -2989,7 +2703,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #masterFile}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #masterFile}, creating it if it does not already exist {3}
      */
     public Reference getMasterFileFirstRep() { 
       if (getMasterFile().isEmpty()) {
@@ -3042,7 +2756,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public MedicinalProductDefinitionContactComponent getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -3095,7 +2809,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #clinicalTrial}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #clinicalTrial}, creating it if it does not already exist {3}
      */
     public Reference getClinicalTrialFirstRep() { 
       if (getClinicalTrial().isEmpty()) {
@@ -3148,7 +2862,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #name}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #name}, creating it if it does not already exist {3}
      */
     public MedicinalProductDefinitionNameComponent getNameFirstRep() { 
       if (getName().isEmpty()) {
@@ -3160,16 +2874,16 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * @return {@link #crossReference} (Reference to another product, e.g. for linking authorised to investigational product.)
      */
-    public List<Identifier> getCrossReference() { 
+    public List<MedicinalProductDefinitionCrossReferenceComponent> getCrossReference() { 
       if (this.crossReference == null)
-        this.crossReference = new ArrayList<Identifier>();
+        this.crossReference = new ArrayList<MedicinalProductDefinitionCrossReferenceComponent>();
       return this.crossReference;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public MedicinalProductDefinition setCrossReference(List<Identifier> theCrossReference) { 
+    public MedicinalProductDefinition setCrossReference(List<MedicinalProductDefinitionCrossReferenceComponent> theCrossReference) { 
       this.crossReference = theCrossReference;
       return this;
     }
@@ -3177,33 +2891,33 @@ public class MedicinalProductDefinition extends DomainResource {
     public boolean hasCrossReference() { 
       if (this.crossReference == null)
         return false;
-      for (Identifier item : this.crossReference)
+      for (MedicinalProductDefinitionCrossReferenceComponent item : this.crossReference)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Identifier addCrossReference() { //3
-      Identifier t = new Identifier();
+    public MedicinalProductDefinitionCrossReferenceComponent addCrossReference() { //3
+      MedicinalProductDefinitionCrossReferenceComponent t = new MedicinalProductDefinitionCrossReferenceComponent();
       if (this.crossReference == null)
-        this.crossReference = new ArrayList<Identifier>();
+        this.crossReference = new ArrayList<MedicinalProductDefinitionCrossReferenceComponent>();
       this.crossReference.add(t);
       return t;
     }
 
-    public MedicinalProductDefinition addCrossReference(Identifier t) { //3
+    public MedicinalProductDefinition addCrossReference(MedicinalProductDefinitionCrossReferenceComponent t) { //3
       if (t == null)
         return this;
       if (this.crossReference == null)
-        this.crossReference = new ArrayList<Identifier>();
+        this.crossReference = new ArrayList<MedicinalProductDefinitionCrossReferenceComponent>();
       this.crossReference.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #crossReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #crossReference}, creating it if it does not already exist {3}
      */
-    public Identifier getCrossReferenceFirstRep() { 
+    public MedicinalProductDefinitionCrossReferenceComponent getCrossReferenceFirstRep() { 
       if (getCrossReference().isEmpty()) {
         addCrossReference();
       }
@@ -3254,66 +2968,13 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #manufacturingBusinessOperation}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #manufacturingBusinessOperation}, creating it if it does not already exist {3}
      */
     public MedicinalProductDefinitionManufacturingBusinessOperationComponent getManufacturingBusinessOperationFirstRep() { 
       if (getManufacturingBusinessOperation().isEmpty()) {
         addManufacturingBusinessOperation();
       }
       return getManufacturingBusinessOperation().get(0);
-    }
-
-    /**
-     * @return {@link #specialDesignation} (Indicates if the medicinal product has an orphan designation for the treatment of a rare disease.)
-     */
-    public List<MedicinalProductDefinitionSpecialDesignationComponent> getSpecialDesignation() { 
-      if (this.specialDesignation == null)
-        this.specialDesignation = new ArrayList<MedicinalProductDefinitionSpecialDesignationComponent>();
-      return this.specialDesignation;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MedicinalProductDefinition setSpecialDesignation(List<MedicinalProductDefinitionSpecialDesignationComponent> theSpecialDesignation) { 
-      this.specialDesignation = theSpecialDesignation;
-      return this;
-    }
-
-    public boolean hasSpecialDesignation() { 
-      if (this.specialDesignation == null)
-        return false;
-      for (MedicinalProductDefinitionSpecialDesignationComponent item : this.specialDesignation)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public MedicinalProductDefinitionSpecialDesignationComponent addSpecialDesignation() { //3
-      MedicinalProductDefinitionSpecialDesignationComponent t = new MedicinalProductDefinitionSpecialDesignationComponent();
-      if (this.specialDesignation == null)
-        this.specialDesignation = new ArrayList<MedicinalProductDefinitionSpecialDesignationComponent>();
-      this.specialDesignation.add(t);
-      return t;
-    }
-
-    public MedicinalProductDefinition addSpecialDesignation(MedicinalProductDefinitionSpecialDesignationComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.specialDesignation == null)
-        this.specialDesignation = new ArrayList<MedicinalProductDefinitionSpecialDesignationComponent>();
-      this.specialDesignation.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #specialDesignation}, creating it if it does not already exist
-     */
-    public MedicinalProductDefinitionSpecialDesignationComponent getSpecialDesignationFirstRep() { 
-      if (getSpecialDesignation().isEmpty()) {
-        addSpecialDesignation();
-      }
-      return getSpecialDesignation().get(0);
     }
 
       protected void listChildren(List<Property> children) {
@@ -3326,7 +2987,7 @@ public class MedicinalProductDefinition extends DomainResource {
         children.add(new Property("indication", "markdown", "General combined description of indication(s) for this product. See also MedicinalProductDefinitionIndication.", 0, 1, indication));
         children.add(new Property("legalStatusOfSupply", "CodeableConcept", "The legal status of supply of the medicinal product as classified by the regulator.", 0, 1, legalStatusOfSupply));
         children.add(new Property("additionalMonitoringIndicator", "CodeableConcept", "Whether the Medicinal Product is subject to additional monitoring for regulatory reasons.", 0, 1, additionalMonitoringIndicator));
-        children.add(new Property("specialMeasure", "string", "Whether the Medicinal Product is subject to special measures for regulatory reasons.", 0, java.lang.Integer.MAX_VALUE, specialMeasure));
+        children.add(new Property("specialMeasures", "CodeableConcept", "Whether the Medicinal Product is subject to special measures for regulatory reasons.", 0, java.lang.Integer.MAX_VALUE, specialMeasures));
         children.add(new Property("paediatricUseIndicator", "CodeableConcept", "If authorised for use in children.", 0, 1, paediatricUseIndicator));
         children.add(new Property("productClassification", "CodeableConcept", "Allows the product to be classified by various systems.", 0, java.lang.Integer.MAX_VALUE, productClassification));
         children.add(new Property("marketingStatus", "MarketingStatus", "Marketing status of the medicinal product, in contrast to marketing authorizaton.", 0, java.lang.Integer.MAX_VALUE, marketingStatus));
@@ -3338,9 +2999,8 @@ public class MedicinalProductDefinition extends DomainResource {
         children.add(new Property("contact", "", "A product specific contact, person (in a role), or an organization.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("clinicalTrial", "Reference(ResearchStudy)", "Clinical trials or studies that this product is involved in.", 0, java.lang.Integer.MAX_VALUE, clinicalTrial));
         children.add(new Property("name", "", "The product's name, including full name and possibly coded parts.", 0, java.lang.Integer.MAX_VALUE, name));
-        children.add(new Property("crossReference", "Identifier", "Reference to another product, e.g. for linking authorised to investigational product.", 0, java.lang.Integer.MAX_VALUE, crossReference));
+        children.add(new Property("crossReference", "", "Reference to another product, e.g. for linking authorised to investigational product.", 0, java.lang.Integer.MAX_VALUE, crossReference));
         children.add(new Property("manufacturingBusinessOperation", "", "An operation applied to the product, for manufacturing or adminsitrative purpose.", 0, java.lang.Integer.MAX_VALUE, manufacturingBusinessOperation));
-        children.add(new Property("specialDesignation", "", "Indicates if the medicinal product has an orphan designation for the treatment of a rare disease.", 0, java.lang.Integer.MAX_VALUE, specialDesignation));
       }
 
       @Override
@@ -3354,7 +3014,7 @@ public class MedicinalProductDefinition extends DomainResource {
         case -597168804: /*indication*/  return new Property("indication", "markdown", "General combined description of indication(s) for this product. See also MedicinalProductDefinitionIndication.", 0, 1, indication);
         case -844874031: /*legalStatusOfSupply*/  return new Property("legalStatusOfSupply", "CodeableConcept", "The legal status of supply of the medicinal product as classified by the regulator.", 0, 1, legalStatusOfSupply);
         case 1935999744: /*additionalMonitoringIndicator*/  return new Property("additionalMonitoringIndicator", "CodeableConcept", "Whether the Medicinal Product is subject to additional monitoring for regulatory reasons.", 0, 1, additionalMonitoringIndicator);
-        case 1001286245: /*specialMeasure*/  return new Property("specialMeasure", "string", "Whether the Medicinal Product is subject to special measures for regulatory reasons.", 0, java.lang.Integer.MAX_VALUE, specialMeasure);
+        case 975102638: /*specialMeasures*/  return new Property("specialMeasures", "CodeableConcept", "Whether the Medicinal Product is subject to special measures for regulatory reasons.", 0, java.lang.Integer.MAX_VALUE, specialMeasures);
         case -1019867160: /*paediatricUseIndicator*/  return new Property("paediatricUseIndicator", "CodeableConcept", "If authorised for use in children.", 0, 1, paediatricUseIndicator);
         case 1247936181: /*productClassification*/  return new Property("productClassification", "CodeableConcept", "Allows the product to be classified by various systems.", 0, java.lang.Integer.MAX_VALUE, productClassification);
         case 70767032: /*marketingStatus*/  return new Property("marketingStatus", "MarketingStatus", "Marketing status of the medicinal product, in contrast to marketing authorizaton.", 0, java.lang.Integer.MAX_VALUE, marketingStatus);
@@ -3366,9 +3026,8 @@ public class MedicinalProductDefinition extends DomainResource {
         case 951526432: /*contact*/  return new Property("contact", "", "A product specific contact, person (in a role), or an organization.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 1232866243: /*clinicalTrial*/  return new Property("clinicalTrial", "Reference(ResearchStudy)", "Clinical trials or studies that this product is involved in.", 0, java.lang.Integer.MAX_VALUE, clinicalTrial);
         case 3373707: /*name*/  return new Property("name", "", "The product's name, including full name and possibly coded parts.", 0, java.lang.Integer.MAX_VALUE, name);
-        case -986968341: /*crossReference*/  return new Property("crossReference", "Identifier", "Reference to another product, e.g. for linking authorised to investigational product.", 0, java.lang.Integer.MAX_VALUE, crossReference);
+        case -986968341: /*crossReference*/  return new Property("crossReference", "", "Reference to another product, e.g. for linking authorised to investigational product.", 0, java.lang.Integer.MAX_VALUE, crossReference);
         case -171103255: /*manufacturingBusinessOperation*/  return new Property("manufacturingBusinessOperation", "", "An operation applied to the product, for manufacturing or adminsitrative purpose.", 0, java.lang.Integer.MAX_VALUE, manufacturingBusinessOperation);
-        case -964310658: /*specialDesignation*/  return new Property("specialDesignation", "", "Indicates if the medicinal product has an orphan designation for the treatment of a rare disease.", 0, java.lang.Integer.MAX_VALUE, specialDesignation);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -3385,7 +3044,7 @@ public class MedicinalProductDefinition extends DomainResource {
         case -597168804: /*indication*/ return this.indication == null ? new Base[0] : new Base[] {this.indication}; // MarkdownType
         case -844874031: /*legalStatusOfSupply*/ return this.legalStatusOfSupply == null ? new Base[0] : new Base[] {this.legalStatusOfSupply}; // CodeableConcept
         case 1935999744: /*additionalMonitoringIndicator*/ return this.additionalMonitoringIndicator == null ? new Base[0] : new Base[] {this.additionalMonitoringIndicator}; // CodeableConcept
-        case 1001286245: /*specialMeasure*/ return this.specialMeasure == null ? new Base[0] : this.specialMeasure.toArray(new Base[this.specialMeasure.size()]); // StringType
+        case 975102638: /*specialMeasures*/ return this.specialMeasures == null ? new Base[0] : this.specialMeasures.toArray(new Base[this.specialMeasures.size()]); // CodeableConcept
         case -1019867160: /*paediatricUseIndicator*/ return this.paediatricUseIndicator == null ? new Base[0] : new Base[] {this.paediatricUseIndicator}; // CodeableConcept
         case 1247936181: /*productClassification*/ return this.productClassification == null ? new Base[0] : this.productClassification.toArray(new Base[this.productClassification.size()]); // CodeableConcept
         case 70767032: /*marketingStatus*/ return this.marketingStatus == null ? new Base[0] : this.marketingStatus.toArray(new Base[this.marketingStatus.size()]); // MarketingStatus
@@ -3397,9 +3056,8 @@ public class MedicinalProductDefinition extends DomainResource {
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // MedicinalProductDefinitionContactComponent
         case 1232866243: /*clinicalTrial*/ return this.clinicalTrial == null ? new Base[0] : this.clinicalTrial.toArray(new Base[this.clinicalTrial.size()]); // Reference
         case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // MedicinalProductDefinitionNameComponent
-        case -986968341: /*crossReference*/ return this.crossReference == null ? new Base[0] : this.crossReference.toArray(new Base[this.crossReference.size()]); // Identifier
+        case -986968341: /*crossReference*/ return this.crossReference == null ? new Base[0] : this.crossReference.toArray(new Base[this.crossReference.size()]); // MedicinalProductDefinitionCrossReferenceComponent
         case -171103255: /*manufacturingBusinessOperation*/ return this.manufacturingBusinessOperation == null ? new Base[0] : this.manufacturingBusinessOperation.toArray(new Base[this.manufacturingBusinessOperation.size()]); // MedicinalProductDefinitionManufacturingBusinessOperationComponent
-        case -964310658: /*specialDesignation*/ return this.specialDesignation == null ? new Base[0] : this.specialDesignation.toArray(new Base[this.specialDesignation.size()]); // MedicinalProductDefinitionSpecialDesignationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3432,8 +3090,8 @@ public class MedicinalProductDefinition extends DomainResource {
         case 1935999744: // additionalMonitoringIndicator
           this.additionalMonitoringIndicator = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1001286245: // specialMeasure
-          this.getSpecialMeasure().add(TypeConvertor.castToString(value)); // StringType
+        case 975102638: // specialMeasures
+          this.getSpecialMeasures().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1019867160: // paediatricUseIndicator
           this.paediatricUseIndicator = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -3469,13 +3127,10 @@ public class MedicinalProductDefinition extends DomainResource {
           this.getName().add((MedicinalProductDefinitionNameComponent) value); // MedicinalProductDefinitionNameComponent
           return value;
         case -986968341: // crossReference
-          this.getCrossReference().add(TypeConvertor.castToIdentifier(value)); // Identifier
+          this.getCrossReference().add((MedicinalProductDefinitionCrossReferenceComponent) value); // MedicinalProductDefinitionCrossReferenceComponent
           return value;
         case -171103255: // manufacturingBusinessOperation
           this.getManufacturingBusinessOperation().add((MedicinalProductDefinitionManufacturingBusinessOperationComponent) value); // MedicinalProductDefinitionManufacturingBusinessOperationComponent
-          return value;
-        case -964310658: // specialDesignation
-          this.getSpecialDesignation().add((MedicinalProductDefinitionSpecialDesignationComponent) value); // MedicinalProductDefinitionSpecialDesignationComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3500,8 +3155,8 @@ public class MedicinalProductDefinition extends DomainResource {
           this.legalStatusOfSupply = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("additionalMonitoringIndicator")) {
           this.additionalMonitoringIndicator = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("specialMeasure")) {
-          this.getSpecialMeasure().add(TypeConvertor.castToString(value));
+        } else if (name.equals("specialMeasures")) {
+          this.getSpecialMeasures().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("paediatricUseIndicator")) {
           this.paediatricUseIndicator = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productClassification")) {
@@ -3525,11 +3180,9 @@ public class MedicinalProductDefinition extends DomainResource {
         } else if (name.equals("name")) {
           this.getName().add((MedicinalProductDefinitionNameComponent) value);
         } else if (name.equals("crossReference")) {
-          this.getCrossReference().add(TypeConvertor.castToIdentifier(value));
+          this.getCrossReference().add((MedicinalProductDefinitionCrossReferenceComponent) value);
         } else if (name.equals("manufacturingBusinessOperation")) {
           this.getManufacturingBusinessOperation().add((MedicinalProductDefinitionManufacturingBusinessOperationComponent) value);
-        } else if (name.equals("specialDesignation")) {
-          this.getSpecialDesignation().add((MedicinalProductDefinitionSpecialDesignationComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -3546,7 +3199,7 @@ public class MedicinalProductDefinition extends DomainResource {
         case -597168804:  return getIndicationElement();
         case -844874031:  return getLegalStatusOfSupply();
         case 1935999744:  return getAdditionalMonitoringIndicator();
-        case 1001286245:  return addSpecialMeasureElement();
+        case 975102638:  return addSpecialMeasures(); 
         case -1019867160:  return getPaediatricUseIndicator();
         case 1247936181:  return addProductClassification(); 
         case 70767032:  return addMarketingStatus(); 
@@ -3560,7 +3213,6 @@ public class MedicinalProductDefinition extends DomainResource {
         case 3373707:  return addName(); 
         case -986968341:  return addCrossReference(); 
         case -171103255:  return addManufacturingBusinessOperation(); 
-        case -964310658:  return addSpecialDesignation(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -3577,7 +3229,7 @@ public class MedicinalProductDefinition extends DomainResource {
         case -597168804: /*indication*/ return new String[] {"markdown"};
         case -844874031: /*legalStatusOfSupply*/ return new String[] {"CodeableConcept"};
         case 1935999744: /*additionalMonitoringIndicator*/ return new String[] {"CodeableConcept"};
-        case 1001286245: /*specialMeasure*/ return new String[] {"string"};
+        case 975102638: /*specialMeasures*/ return new String[] {"CodeableConcept"};
         case -1019867160: /*paediatricUseIndicator*/ return new String[] {"CodeableConcept"};
         case 1247936181: /*productClassification*/ return new String[] {"CodeableConcept"};
         case 70767032: /*marketingStatus*/ return new String[] {"MarketingStatus"};
@@ -3589,9 +3241,8 @@ public class MedicinalProductDefinition extends DomainResource {
         case 951526432: /*contact*/ return new String[] {};
         case 1232866243: /*clinicalTrial*/ return new String[] {"Reference"};
         case 3373707: /*name*/ return new String[] {};
-        case -986968341: /*crossReference*/ return new String[] {"Identifier"};
+        case -986968341: /*crossReference*/ return new String[] {};
         case -171103255: /*manufacturingBusinessOperation*/ return new String[] {};
-        case -964310658: /*specialDesignation*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3628,8 +3279,8 @@ public class MedicinalProductDefinition extends DomainResource {
           this.additionalMonitoringIndicator = new CodeableConcept();
           return this.additionalMonitoringIndicator;
         }
-        else if (name.equals("specialMeasure")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.specialMeasure");
+        else if (name.equals("specialMeasures")) {
+          return addSpecialMeasures();
         }
         else if (name.equals("paediatricUseIndicator")) {
           this.paediatricUseIndicator = new CodeableConcept();
@@ -3671,9 +3322,6 @@ public class MedicinalProductDefinition extends DomainResource {
         else if (name.equals("manufacturingBusinessOperation")) {
           return addManufacturingBusinessOperation();
         }
-        else if (name.equals("specialDesignation")) {
-          return addSpecialDesignation();
-        }
         else
           return super.addChild(name);
       }
@@ -3703,10 +3351,10 @@ public class MedicinalProductDefinition extends DomainResource {
         dst.indication = indication == null ? null : indication.copy();
         dst.legalStatusOfSupply = legalStatusOfSupply == null ? null : legalStatusOfSupply.copy();
         dst.additionalMonitoringIndicator = additionalMonitoringIndicator == null ? null : additionalMonitoringIndicator.copy();
-        if (specialMeasure != null) {
-          dst.specialMeasure = new ArrayList<StringType>();
-          for (StringType i : specialMeasure)
-            dst.specialMeasure.add(i.copy());
+        if (specialMeasures != null) {
+          dst.specialMeasures = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : specialMeasures)
+            dst.specialMeasures.add(i.copy());
         };
         dst.paediatricUseIndicator = paediatricUseIndicator == null ? null : paediatricUseIndicator.copy();
         if (productClassification != null) {
@@ -3760,19 +3408,14 @@ public class MedicinalProductDefinition extends DomainResource {
             dst.name.add(i.copy());
         };
         if (crossReference != null) {
-          dst.crossReference = new ArrayList<Identifier>();
-          for (Identifier i : crossReference)
+          dst.crossReference = new ArrayList<MedicinalProductDefinitionCrossReferenceComponent>();
+          for (MedicinalProductDefinitionCrossReferenceComponent i : crossReference)
             dst.crossReference.add(i.copy());
         };
         if (manufacturingBusinessOperation != null) {
           dst.manufacturingBusinessOperation = new ArrayList<MedicinalProductDefinitionManufacturingBusinessOperationComponent>();
           for (MedicinalProductDefinitionManufacturingBusinessOperationComponent i : manufacturingBusinessOperation)
             dst.manufacturingBusinessOperation.add(i.copy());
-        };
-        if (specialDesignation != null) {
-          dst.specialDesignation = new ArrayList<MedicinalProductDefinitionSpecialDesignationComponent>();
-          for (MedicinalProductDefinitionSpecialDesignationComponent i : specialDesignation)
-            dst.specialDesignation.add(i.copy());
         };
       }
 
@@ -3790,14 +3433,14 @@ public class MedicinalProductDefinition extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(domain, o.domain, true)
            && compareDeep(description, o.description, true) && compareDeep(combinedPharmaceuticalDoseForm, o.combinedPharmaceuticalDoseForm, true)
            && compareDeep(indication, o.indication, true) && compareDeep(legalStatusOfSupply, o.legalStatusOfSupply, true)
-           && compareDeep(additionalMonitoringIndicator, o.additionalMonitoringIndicator, true) && compareDeep(specialMeasure, o.specialMeasure, true)
+           && compareDeep(additionalMonitoringIndicator, o.additionalMonitoringIndicator, true) && compareDeep(specialMeasures, o.specialMeasures, true)
            && compareDeep(paediatricUseIndicator, o.paediatricUseIndicator, true) && compareDeep(productClassification, o.productClassification, true)
            && compareDeep(marketingStatus, o.marketingStatus, true) && compareDeep(pharmaceuticalProduct, o.pharmaceuticalProduct, true)
            && compareDeep(packagedMedicinalProduct, o.packagedMedicinalProduct, true) && compareDeep(ingredient, o.ingredient, true)
            && compareDeep(attachedDocument, o.attachedDocument, true) && compareDeep(masterFile, o.masterFile, true)
            && compareDeep(contact, o.contact, true) && compareDeep(clinicalTrial, o.clinicalTrial, true) && compareDeep(name, o.name, true)
            && compareDeep(crossReference, o.crossReference, true) && compareDeep(manufacturingBusinessOperation, o.manufacturingBusinessOperation, true)
-           && compareDeep(specialDesignation, o.specialDesignation, true);
+          ;
       }
 
       @Override
@@ -3808,21 +3451,47 @@ public class MedicinalProductDefinition extends DomainResource {
           return false;
         MedicinalProductDefinition o = (MedicinalProductDefinition) other_;
         return compareValues(description, o.description, true) && compareValues(indication, o.indication, true)
-           && compareValues(specialMeasure, o.specialMeasure, true);
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, domain
           , description, combinedPharmaceuticalDoseForm, indication, legalStatusOfSupply, additionalMonitoringIndicator
-          , specialMeasure, paediatricUseIndicator, productClassification, marketingStatus, pharmaceuticalProduct
+          , specialMeasures, paediatricUseIndicator, productClassification, marketingStatus, pharmaceuticalProduct
           , packagedMedicinalProduct, ingredient, attachedDocument, masterFile, contact, clinicalTrial
-          , name, crossReference, manufacturingBusinessOperation, specialDesignation);
+          , name, crossReference, manufacturingBusinessOperation);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.MedicinalProductDefinition;
    }
+
+ /**
+   * Search parameter: <b>contact</b>
+   * <p>
+   * Description: <b>A product specific contact, person (in a role), or an organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.contact.contact</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contact", path="MedicinalProductDefinition.contact.contact", description="A product specific contact, person (in a role), or an organization", type="reference", target={Organization.class, PractitionerRole.class } )
+  public static final String SP_CONTACT = "contact";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contact</b>
+   * <p>
+   * Description: <b>A product specific contact, person (in a role), or an organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.contact.contact</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTACT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTACT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicinalProductDefinition:contact</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTACT = new ca.uhn.fhir.model.api.Include("MedicinalProductDefinition:contact").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -3845,24 +3514,30 @@ public class MedicinalProductDefinition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>name</b>
+   * Search parameter: <b>master-file</b>
    * <p>
-   * Description: <b>The full product name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>MedicinalProductDefinition.name.productName</b><br>
+   * Description: <b>A master file for to the medicinal product (e.g. Pharmacovigilance System Master File)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.masterFile</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="name", path="MedicinalProductDefinition.name.productName", description="The full product name", type="string" )
-  public static final String SP_NAME = "name";
+  @SearchParamDefinition(name="master-file", path="MedicinalProductDefinition.masterFile", description="A master file for to the medicinal product (e.g. Pharmacovigilance System Master File)", type="reference", target={DocumentReference.class } )
+  public static final String SP_MASTER_FILE = "master-file";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <b>Fluent Client</b> search parameter constant for <b>master-file</b>
    * <p>
-   * Description: <b>The full product name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>MedicinalProductDefinition.name.productName</b><br>
+   * Description: <b>A master file for to the medicinal product (e.g. Pharmacovigilance System Master File)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.masterFile</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MASTER_FILE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MASTER_FILE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicinalProductDefinition:master-file</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MASTER_FILE = new ca.uhn.fhir.model.api.Include("MedicinalProductDefinition:master-file").toLocked();
 
  /**
    * Search parameter: <b>name-language</b>
@@ -3883,6 +3558,46 @@ public class MedicinalProductDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam NAME_LANGUAGE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NAME_LANGUAGE);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>The full product name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>MedicinalProductDefinition.name.productName</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="MedicinalProductDefinition.name.productName", description="The full product name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>The full product name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>MedicinalProductDefinition.name.productName</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>product-classification</b>
+   * <p>
+   * Description: <b>Allows the product to be classified by various systems</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.productClassification</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-classification", path="MedicinalProductDefinition.productClassification", description="Allows the product to be classified by various systems", type="token" )
+  public static final String SP_PRODUCT_CLASSIFICATION = "product-classification";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-classification</b>
+   * <p>
+   * Description: <b>Allows the product to be classified by various systems</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.productClassification</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CLASSIFICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CLASSIFICATION);
 
 
 }

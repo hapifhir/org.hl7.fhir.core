@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,12 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A definition of a condition and information relevant to managing it.
  */
 @ResourceDef(name="ConditionDefinition", profile="http://hl7.org/fhir/StructureDefinition/ConditionDefinition")
-@ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "code", "severity", "bodySite", "stage", "hasSeverity", "hasBodySite", "hasStage", "definition", "observation", "medication", "precondition", "team", "questionnaire", "plan"})
-public class ConditionDefinition extends CanonicalResource {
+public class ConditionDefinition extends MetadataResource {
 
     public enum ConditionPreconditionType {
         /**
@@ -704,7 +704,7 @@ public class ConditionDefinition extends CanonicalResource {
         @Description(shortDefinition="Value of Observation", formalDefinition="Value of Observation." )
         protected DataType value;
 
-        private static final long serialVersionUID = -47421353L;
+        private static final long serialVersionUID = -1210333235L;
 
     /**
      * Constructor
@@ -716,10 +716,10 @@ public class ConditionDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public ConditionDefinitionPreconditionComponent(Enumeration<ConditionPreconditionType> type, CodeableConcept code) {
+      public ConditionDefinitionPreconditionComponent(ConditionPreconditionType type, CodeableConcept code) {
         super();
-        this.type = type;
-        this.code = code;
+        this.setType(type);
+        this.setCode(code);
       }
 
         /**
@@ -856,8 +856,8 @@ public class ConditionDefinition extends CanonicalResource {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Code for relevant Observation.", 0, 1, code);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity", "Value of Observation.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity", "Value of Observation.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept|Quantity", "Value of Observation.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "CodeableConcept|Quantity", "Value of Observation.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Value of Observation.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Value of Observation.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -868,7 +868,7 @@ public class ConditionDefinition extends CanonicalResource {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ConditionPreconditionType>
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -885,7 +885,7 @@ public class ConditionDefinition extends CanonicalResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -900,7 +900,7 @@ public class ConditionDefinition extends CanonicalResource {
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -932,7 +932,7 @@ public class ConditionDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.precondition.type");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -1024,10 +1024,10 @@ public class ConditionDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public ConditionDefinitionQuestionnaireComponent(Enumeration<ConditionQuestionnairePurpose> purpose, Reference reference) {
+      public ConditionDefinitionQuestionnaireComponent(ConditionQuestionnairePurpose purpose, Reference reference) {
         super();
-        this.purpose = purpose;
-        this.reference = reference;
+        this.setPurpose(purpose);
+        this.setReference(reference);
       }
 
         /**
@@ -1175,7 +1175,7 @@ public class ConditionDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.questionnaire.purpose");
         }
         else if (name.equals("reference")) {
           this.reference = new Reference();
@@ -1258,7 +1258,7 @@ public class ConditionDefinition extends CanonicalResource {
      */
       public ConditionDefinitionPlanComponent(Reference reference) {
         super();
-        this.reference = reference;
+        this.setReference(reference);
       }
 
         /**
@@ -1438,23 +1438,109 @@ public class ConditionDefinition extends CanonicalResource {
   }
 
     /**
+     * An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
+     */
+    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical identifier for this condition definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers." )
+    protected UriType url;
+
+    /**
      * A formal identifier that is used to identify this condition definition when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Additional identifier for the condition definition", formalDefinition="A formal identifier that is used to identify this condition definition when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
+     * The identifier that is used to identify this version of the condition definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the condition definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     */
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the condition definition", formalDefinition="The identifier that is used to identify this version of the condition definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the condition definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence." )
+    protected StringType version;
+
+    /**
+     * A natural language name identifying the condition definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this condition definition (computer friendly)", formalDefinition="A natural language name identifying the condition definition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
+     * A short, descriptive, user-friendly title for the condition definition.
+     */
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this condition definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the condition definition." )
+    protected StringType title;
+
+    /**
      * An explanatory or alternate title for the event definition giving additional information about its content.
      */
-    @Child(name = "subtitle", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subtitle", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Subordinate title of the event definition", formalDefinition="An explanatory or alternate title for the event definition giving additional information about its content." )
     protected StringType subtitle;
 
     /**
+     * The status of this condition definition. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this condition definition. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
+     * A Boolean value to indicate that this condition definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this condition definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
+
+    /**
+     * The date  (and optionally time) when the condition definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the condition definition changes.
+     */
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the condition definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the condition definition changes." )
+    protected DateTimeType date;
+
+    /**
+     * The name of the organization or individual that published the condition definition.
+     */
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the condition definition." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
+
+    /**
+     * A free text natural language description of the condition definition from a consumer's perspective.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Natural language description of the condition definition", formalDefinition="A free text natural language description of the condition definition from a consumer's perspective." )
+    protected MarkdownType description;
+
+    /**
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate condition definition instances.
+     */
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate condition definition instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the condition definition is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction for condition definition (if applicable)", formalDefinition="A legal or geographic region in which the condition definition is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
+    protected List<CodeableConcept> jurisdiction;
+
+    /**
      * Identification of the condition, problem or diagnosis.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableConcept.class}, order=14, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Identification of the condition, problem or diagnosis", formalDefinition="Identification of the condition, problem or diagnosis." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
     protected CodeableConcept code;
@@ -1462,7 +1548,7 @@ public class ConditionDefinition extends CanonicalResource {
     /**
      * A subjective assessment of the severity of the condition as evaluated by the clinician.
      */
-    @Child(name = "severity", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "severity", type = {CodeableConcept.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Subjective severity of condition", formalDefinition="A subjective assessment of the severity of the condition as evaluated by the clinician." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-severity")
     protected CodeableConcept severity;
@@ -1470,7 +1556,7 @@ public class ConditionDefinition extends CanonicalResource {
     /**
      * The anatomical location where this condition manifests itself.
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Anatomical location, if relevant", formalDefinition="The anatomical location where this condition manifests itself." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected CodeableConcept bodySite;
@@ -1478,7 +1564,7 @@ public class ConditionDefinition extends CanonicalResource {
     /**
      * Clinical stage or grade of a condition. May include formal severity assessments.
      */
-    @Child(name = "stage", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "stage", type = {CodeableConcept.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Stage/grade, usually assessed formally", formalDefinition="Clinical stage or grade of a condition. May include formal severity assessments." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-stage")
     protected CodeableConcept stage;
@@ -1486,74 +1572,74 @@ public class ConditionDefinition extends CanonicalResource {
     /**
      * Whether Severity is appropriate to collect for this condition.
      */
-    @Child(name = "hasSeverity", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "hasSeverity", type = {BooleanType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Whether Severity is appropriate", formalDefinition="Whether Severity is appropriate to collect for this condition." )
     protected BooleanType hasSeverity;
 
     /**
      * Whether bodySite is appropriate to collect for this condition.
      */
-    @Child(name = "hasBodySite", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "hasBodySite", type = {BooleanType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Whether bodySite is appropriate", formalDefinition="Whether bodySite is appropriate to collect for this condition." )
     protected BooleanType hasBodySite;
 
     /**
      * Whether stage is appropriate to collect for this condition.
      */
-    @Child(name = "hasStage", type = {BooleanType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "hasStage", type = {BooleanType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Whether stage is appropriate", formalDefinition="Whether stage is appropriate to collect for this condition." )
     protected BooleanType hasStage;
 
     /**
      * Formal definitions of the condition. These may be references to ontologies, published clinical protocols or research papers.
      */
-    @Child(name = "definition", type = {UriType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "definition", type = {UriType.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Formal Definition for the condition", formalDefinition="Formal definitions of the condition. These may be references to ontologies, published clinical protocols or research papers." )
     protected List<UriType> definition;
 
     /**
      * Observations particularly relevant to this condition.
      */
-    @Child(name = "observation", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "observation", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Observations particularly relevant to this condition", formalDefinition="Observations particularly relevant to this condition." )
     protected List<ConditionDefinitionObservationComponent> observation;
 
     /**
      * Medications particularly relevant for this condition.
      */
-    @Child(name = "medication", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "medication", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Medications particularly relevant for this condition", formalDefinition="Medications particularly relevant for this condition." )
     protected List<ConditionDefinitionMedicationComponent> medication;
 
     /**
      * An observation that suggests that this condition applies.
      */
-    @Child(name = "precondition", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "precondition", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Observation that suggets this condition", formalDefinition="An observation that suggests that this condition applies." )
     protected List<ConditionDefinitionPreconditionComponent> precondition;
 
     /**
      * Appropriate team for this condition.
      */
-    @Child(name = "team", type = {CareTeam.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "team", type = {CareTeam.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Appropriate team for this condition", formalDefinition="Appropriate team for this condition." )
     protected List<Reference> team;
 
     /**
      * Questionnaire for this condition.
      */
-    @Child(name = "questionnaire", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "questionnaire", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Questionnaire for this condition", formalDefinition="Questionnaire for this condition." )
     protected List<ConditionDefinitionQuestionnaireComponent> questionnaire;
 
     /**
      * Plan that is appropriate.
      */
-    @Child(name = "plan", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "plan", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Plan that is appropriate", formalDefinition="Plan that is appropriate." )
     protected List<ConditionDefinitionPlanComponent> plan;
 
-    private static final long serialVersionUID = -585033870L;
+    private static final long serialVersionUID = 1798806914L;
 
   /**
    * Constructor
@@ -1565,10 +1651,10 @@ public class ConditionDefinition extends CanonicalResource {
   /**
    * Constructor
    */
-    public ConditionDefinition(Enumeration<PublicationStatus> status, CodeableConcept code) {
+    public ConditionDefinition(PublicationStatus status, CodeableConcept code) {
       super();
-      this.status = status;
-      this.code = code;
+      this.setStatus(status);
+      this.setCode(code);
     }
 
     /**
@@ -1664,7 +1750,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2101,7 +2187,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -2203,7 +2289,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -2256,7 +2342,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -2601,7 +2687,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #observation}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #observation}, creating it if it does not already exist {3}
      */
     public ConditionDefinitionObservationComponent getObservationFirstRep() { 
       if (getObservation().isEmpty()) {
@@ -2654,7 +2740,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #medication}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #medication}, creating it if it does not already exist {3}
      */
     public ConditionDefinitionMedicationComponent getMedicationFirstRep() { 
       if (getMedication().isEmpty()) {
@@ -2707,7 +2793,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #precondition}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #precondition}, creating it if it does not already exist {3}
      */
     public ConditionDefinitionPreconditionComponent getPreconditionFirstRep() { 
       if (getPrecondition().isEmpty()) {
@@ -2760,7 +2846,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #team}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #team}, creating it if it does not already exist {3}
      */
     public Reference getTeamFirstRep() { 
       if (getTeam().isEmpty()) {
@@ -2813,7 +2899,7 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #questionnaire}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #questionnaire}, creating it if it does not already exist {3}
      */
     public ConditionDefinitionQuestionnaireComponent getQuestionnaireFirstRep() { 
       if (getQuestionnaire().isEmpty()) {
@@ -2866,13 +2952,145 @@ public class ConditionDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #plan}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #plan}, creating it if it does not already exist {3}
      */
     public ConditionDefinitionPlanComponent getPlanFirstRep() { 
       if (getPlan().isEmpty()) {
         addPlan();
       }
       return getPlan().get(0);
+    }
+
+    /**
+     * @return {@link #purpose} (Explanation of why this condition definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public MarkdownType getPurposeElement() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+    }
+
+    public boolean hasPurposeElement() { 
+      return false;
+    }
+    public boolean hasPurpose() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #purpose} (Explanation of why this condition definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public ConditionDefinition setPurposeElement(MarkdownType value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+    }
+    public String getPurpose() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+    }
+    /**
+     * @param value Explanation of why this condition definition is needed and why it has been designed as it has.
+     */
+    public ConditionDefinition setPurpose(String value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+    }
+    /**
+     * @return {@link #copyright} (A copyright statement relating to the condition definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the condition definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public MarkdownType getCopyrightElement() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+    }
+
+    public boolean hasCopyrightElement() { 
+      return false;
+    }
+    public boolean hasCopyright() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyright} (A copyright statement relating to the condition definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the condition definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public ConditionDefinition setCopyrightElement(MarkdownType value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+    }
+    public String getCopyright() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+    }
+    /**
+     * @param value A copyright statement relating to the condition definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the condition definition.
+     */
+    public ConditionDefinition setCopyright(String value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+    }
+    /**
+     * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public DateType getApprovalDateElement() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+    }
+
+    public boolean hasApprovalDateElement() { 
+      return false;
+    }
+    public boolean hasApprovalDate() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public ConditionDefinition setApprovalDateElement(DateType value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+    }
+    public Date getApprovalDate() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+    }
+    /**
+     * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    public ConditionDefinition setApprovalDate(Date value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+    }
+    /**
+     * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public DateType getLastReviewDateElement() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+    }
+
+    public boolean hasLastReviewDateElement() { 
+      return false;
+    }
+    public boolean hasLastReviewDate() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public ConditionDefinition setLastReviewDateElement(DateType value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+    }
+    public Date getLastReviewDate() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+    }
+    /**
+     * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    public ConditionDefinition setLastReviewDate(Date value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+    }
+    /**
+     * @return {@link #effectivePeriod} (The period during which the condition definition content was or is planned to be in active use.)
+     */
+    public Period getEffectivePeriod() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"effectivePeriod\"");
+    }
+    public boolean hasEffectivePeriod() { 
+      return false;
+    }
+    /**
+     * @param value {@link #effectivePeriod} (The period during which the condition definition content was or is planned to be in active use.)
+     */
+    public ConditionDefinition setEffectivePeriod(Period value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"effectivePeriod\"");
     }
 
       protected void listChildren(List<Property> children) {
@@ -3400,9 +3618,13 @@ public class ConditionDefinition extends CanonicalResource {
         if (!(other_ instanceof ConditionDefinition))
           return false;
         ConditionDefinition o = (ConditionDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(subtitle, o.subtitle, true) && compareDeep(code, o.code, true)
-           && compareDeep(severity, o.severity, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(stage, o.stage, true)
-           && compareDeep(hasSeverity, o.hasSeverity, true) && compareDeep(hasBodySite, o.hasBodySite, true)
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(subtitle, o.subtitle, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(code, o.code, true) && compareDeep(severity, o.severity, true) && compareDeep(bodySite, o.bodySite, true)
+           && compareDeep(stage, o.stage, true) && compareDeep(hasSeverity, o.hasSeverity, true) && compareDeep(hasBodySite, o.hasBodySite, true)
            && compareDeep(hasStage, o.hasStage, true) && compareDeep(definition, o.definition, true) && compareDeep(observation, o.observation, true)
            && compareDeep(medication, o.medication, true) && compareDeep(precondition, o.precondition, true)
            && compareDeep(team, o.team, true) && compareDeep(questionnaire, o.questionnaire, true) && compareDeep(plan, o.plan, true)
@@ -3416,15 +3638,20 @@ public class ConditionDefinition extends CanonicalResource {
         if (!(other_ instanceof ConditionDefinition))
           return false;
         ConditionDefinition o = (ConditionDefinition) other_;
-        return compareValues(subtitle, o.subtitle, true) && compareValues(hasSeverity, o.hasSeverity, true)
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(subtitle, o.subtitle, true) && compareValues(status, o.status, true)
+           && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
+           && compareValues(description, o.description, true) && compareValues(hasSeverity, o.hasSeverity, true)
            && compareValues(hasBodySite, o.hasBodySite, true) && compareValues(hasStage, o.hasStage, true) && compareValues(definition, o.definition, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, subtitle, code
-          , severity, bodySite, stage, hasSeverity, hasBodySite, hasStage, definition, observation
-          , medication, precondition, team, questionnaire, plan);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
+          , name, title, subtitle, status, experimental, date, publisher, contact, description
+          , useContext, jurisdiction, code, severity, bodySite, stage, hasSeverity, hasBodySite
+          , hasStage, definition, observation, medication, precondition, team, questionnaire
+          , plan);
       }
 
   @Override
@@ -3433,51 +3660,51 @@ public class ConditionDefinition extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
+   * Search parameter: <b>context-quantity</b>
    * <p>
-   * Description: <b>The condition definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ConditionDefinition.date</b><br>
+   * Description: <b>A quantity- or range-valued use context assigned to the condition definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="ConditionDefinition.date", description="The condition definition publication date", type="date" )
-  public static final String SP_DATE = "date";
+  @SearchParamDefinition(name="context-quantity", path="(ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the condition definition", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
    * <p>
-   * Description: <b>The condition definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ConditionDefinition.date</b><br>
+   * Description: <b>A quantity- or range-valued use context assigned to the condition definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>context-type-quantity</b>
    * <p>
-   * Description: <b>External identifier for the condition definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.identifier</b><br>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the condition definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ConditionDefinition.useContext</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="ConditionDefinition.identifier", description="External identifier for the condition definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="context-type-quantity", path="ConditionDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the condition definition", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
    * <p>
-   * Description: <b>External identifier for the condition definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.identifier</b><br>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the condition definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ConditionDefinition.useContext</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
 
  /**
    * Search parameter: <b>context-type-value</b>
    * <p>
    * Description: <b>A use context type and value assigned to the condition definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>ConditionDefinition.useContext</b><br>
    * </p>
    */
   @SearchParamDefinition(name="context-type-value", path="ConditionDefinition.useContext", description="A use context type and value assigned to the condition definition", type="composite", compositeOf={"context-type", "context"} )
@@ -3487,50 +3714,10 @@ public class ConditionDefinition extends CanonicalResource {
    * <p>
    * Description: <b>A use context type and value assigned to the condition definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>ConditionDefinition.useContext</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the condition definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="ConditionDefinition.jurisdiction", description="Intended jurisdiction for the condition definition", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the condition definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the condition definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ConditionDefinition.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="ConditionDefinition.description", description="The description of the condition definition", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the condition definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ConditionDefinition.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
    * Search parameter: <b>context-type</b>
@@ -3553,84 +3740,104 @@ public class ConditionDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
-   * Search parameter: <b>title</b>
+   * Search parameter: <b>context</b>
    * <p>
-   * Description: <b>The human-friendly name of the condition definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ConditionDefinition.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ConditionDefinition.title", description="The human-friendly name of the condition definition", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the condition definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ConditionDefinition.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the condition definition</b><br>
+   * Description: <b>A use context assigned to the condition definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.version</b><br>
+   * Path: <b>(ConditionDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="ConditionDefinition.version", description="The business version of the condition definition", type="token" )
-  public static final String SP_VERSION = "version";
+  @SearchParamDefinition(name="context", path="(ConditionDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the condition definition", type="token" )
+  public static final String SP_CONTEXT = "context";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
    * <p>
-   * Description: <b>The business version of the condition definition</b><br>
+   * Description: <b>A use context assigned to the condition definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.version</b><br>
+   * Path: <b>(ConditionDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
-   * Search parameter: <b>url</b>
+   * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>The uri that identifies the condition definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ConditionDefinition.url</b><br>
+   * Description: <b>The condition definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ConditionDefinition.date</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="ConditionDefinition.url", description="The uri that identifies the condition definition", type="uri" )
-  public static final String SP_URL = "url";
+  @SearchParamDefinition(name="date", path="ConditionDefinition.date", description="The condition definition publication date", type="date" )
+  public static final String SP_DATE = "date";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>The uri that identifies the condition definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ConditionDefinition.url</b><br>
+   * Description: <b>The condition definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ConditionDefinition.date</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
-   * Search parameter: <b>context-quantity</b>
+   * Search parameter: <b>description</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the condition definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ConditionDefinition.useContext.valueQuantity, ConditionDefinition.useContext.valueRange</b><br>
+   * Description: <b>The description of the condition definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ConditionDefinition.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the condition definition", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+  @SearchParamDefinition(name="description", path="ConditionDefinition.description", description="The description of the condition definition", type="string" )
+  public static final String SP_DESCRIPTION = "description";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the condition definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ConditionDefinition.useContext.valueQuantity, ConditionDefinition.useContext.valueRange</b><br>
+   * Description: <b>The description of the condition definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ConditionDefinition.description</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>External identifier for the condition definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ConditionDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ConditionDefinition.identifier", description="External identifier for the condition definition", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>External identifier for the condition definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ConditionDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the condition definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ConditionDefinition.jurisdiction</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="jurisdiction", path="ConditionDefinition.jurisdiction", description="Intended jurisdiction for the condition definition", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the condition definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ConditionDefinition.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
 
  /**
    * Search parameter: <b>name</b>
@@ -3653,26 +3860,6 @@ public class ConditionDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the condition definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.useContext.valueCodeableConcept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(ConditionDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the condition definition", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the condition definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ConditionDefinition.useContext.valueCodeableConcept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
    * Search parameter: <b>publisher</b>
    * <p>
    * Description: <b>Name of the publisher of the condition definition</b><br>
@@ -3693,26 +3880,6 @@ public class ConditionDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the condition definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="ConditionDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the condition definition", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the condition definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>The current status of the condition definition</b><br>
@@ -3731,6 +3898,66 @@ public class ConditionDefinition extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the condition definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ConditionDefinition.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ConditionDefinition.title", description="The human-friendly name of the condition definition", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the condition definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ConditionDefinition.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the condition definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ConditionDefinition.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="ConditionDefinition.url", description="The uri that identifies the condition definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the condition definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ConditionDefinition.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>The business version of the condition definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ConditionDefinition.version</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="ConditionDefinition.version", description="The business version of the condition definition", type="token" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>The business version of the condition definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ConditionDefinition.version</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

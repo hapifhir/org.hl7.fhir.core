@@ -300,24 +300,24 @@ public class ValueSet extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.r4.model.ValueSet.FilterOperator src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.FilterOperator convertFilterOperator(org.hl7.fhir.r4.model.ValueSet.FilterOperator src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case EQUAL: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.EQUAL;
-    case ISA: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.ISA;
-    case DESCENDENTOF: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.DESCENDENTOF;
-    case ISNOTA: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.ISNOTA;
-    case REGEX: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.REGEX;
-    case IN: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.IN;
-    case NOTIN: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.NOTIN;
-    case GENERALIZES: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.GENERALIZES;
-    case EXISTS: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.EXISTS;
-    default: return org.hl7.fhir.r5.model.ValueSet.FilterOperator.NULL;
+    case EQUAL: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.EQUAL;
+    case ISA: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.ISA;
+    case DESCENDENTOF: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.DESCENDENTOF;
+    case ISNOTA: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.ISNOTA;
+    case REGEX: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.REGEX;
+    case IN: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.IN;
+    case NOTIN: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.NOTIN;
+    case GENERALIZES: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.GENERALIZES;
+    case EXISTS: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.EXISTS;
+    default: return org.hl7.fhir.r5.model.Enumerations.FilterOperator.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.r5.model.ValueSet.FilterOperator src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.r5.model.Enumerations.FilterOperator src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

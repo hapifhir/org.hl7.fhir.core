@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,1128 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.
  */
 @ResourceDef(name="PlanDefinition", profile="http://hl7.org/fhir/StructureDefinition/PlanDefinition")
-@ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "type", "status", "experimental", "subject[x]", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "usage", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "library", "goal", "action"})
-public class PlanDefinition extends CanonicalResource {
-
-    public enum RequestPriority {
-        /**
-         * The request has normal priority.
-         */
-        ROUTINE, 
-        /**
-         * The request should be actioned promptly - higher priority than routine.
-         */
-        URGENT, 
-        /**
-         * The request should be actioned as soon as possible - higher priority than urgent.
-         */
-        ASAP, 
-        /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
-         */
-        STAT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return ROUTINE;
-        if ("urgent".equals(codeString))
-          return URGENT;
-        if ("asap".equals(codeString))
-          return ASAP;
-        if ("stat".equals(codeString))
-          return STAT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ROUTINE: return "routine";
-            case URGENT: return "urgent";
-            case ASAP: return "asap";
-            case STAT: return "stat";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ROUTINE: return "http://hl7.org/fhir/request-priority";
-            case URGENT: return "http://hl7.org/fhir/request-priority";
-            case ASAP: return "http://hl7.org/fhir/request-priority";
-            case STAT: return "http://hl7.org/fhir/request-priority";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ROUTINE: return "The request has normal priority.";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ROUTINE: return "Routine";
-            case URGENT: return "Urgent";
-            case ASAP: return "ASAP";
-            case STAT: return "STAT";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> {
-    public RequestPriority fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return RequestPriority.ROUTINE;
-        if ("urgent".equals(codeString))
-          return RequestPriority.URGENT;
-        if ("asap".equals(codeString))
-          return RequestPriority.ASAP;
-        if ("stat".equals(codeString))
-          return RequestPriority.STAT;
-        throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
-        if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
-        if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
-        if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
-        throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-    public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
-        return "routine";
-      if (code == RequestPriority.URGENT)
-        return "urgent";
-      if (code == RequestPriority.ASAP)
-        return "asap";
-      if (code == RequestPriority.STAT)
-        return "stat";
-      return "?";
-      }
-    public String toSystem(RequestPriority code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionConditionKind {
-        /**
-         * The condition describes whether or not a given action is applicable.
-         */
-        APPLICABILITY, 
-        /**
-         * The condition is a starting condition for the action.
-         */
-        START, 
-        /**
-         * The condition is a stop, or exit condition for the action.
-         */
-        STOP, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionConditionKind fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("applicability".equals(codeString))
-          return APPLICABILITY;
-        if ("start".equals(codeString))
-          return START;
-        if ("stop".equals(codeString))
-          return STOP;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case APPLICABILITY: return "applicability";
-            case START: return "start";
-            case STOP: return "stop";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case APPLICABILITY: return "http://hl7.org/fhir/action-condition-kind";
-            case START: return "http://hl7.org/fhir/action-condition-kind";
-            case STOP: return "http://hl7.org/fhir/action-condition-kind";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case APPLICABILITY: return "The condition describes whether or not a given action is applicable.";
-            case START: return "The condition is a starting condition for the action.";
-            case STOP: return "The condition is a stop, or exit condition for the action.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case APPLICABILITY: return "Applicability";
-            case START: return "Start";
-            case STOP: return "Stop";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionConditionKindEnumFactory implements EnumFactory<ActionConditionKind> {
-    public ActionConditionKind fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("applicability".equals(codeString))
-          return ActionConditionKind.APPLICABILITY;
-        if ("start".equals(codeString))
-          return ActionConditionKind.START;
-        if ("stop".equals(codeString))
-          return ActionConditionKind.STOP;
-        throw new IllegalArgumentException("Unknown ActionConditionKind code '"+codeString+"'");
-        }
-        public Enumeration<ActionConditionKind> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionConditionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("applicability".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.APPLICABILITY);
-        if ("start".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.START);
-        if ("stop".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.STOP);
-        throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
-        }
-    public String toCode(ActionConditionKind code) {
-      if (code == ActionConditionKind.APPLICABILITY)
-        return "applicability";
-      if (code == ActionConditionKind.START)
-        return "start";
-      if (code == ActionConditionKind.STOP)
-        return "stop";
-      return "?";
-      }
-    public String toSystem(ActionConditionKind code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionRelationshipType {
-        /**
-         * The action must be performed before the start of the related action.
-         */
-        BEFORESTART, 
-        /**
-         * The action must be performed before the related action.
-         */
-        BEFORE, 
-        /**
-         * The action must be performed before the end of the related action.
-         */
-        BEFOREEND, 
-        /**
-         * The action must be performed concurrent with the start of the related action.
-         */
-        CONCURRENTWITHSTART, 
-        /**
-         * The action must be performed concurrent with the related action.
-         */
-        CONCURRENT, 
-        /**
-         * The action must be performed concurrent with the end of the related action.
-         */
-        CONCURRENTWITHEND, 
-        /**
-         * The action must be performed after the start of the related action.
-         */
-        AFTERSTART, 
-        /**
-         * The action must be performed after the related action.
-         */
-        AFTER, 
-        /**
-         * The action must be performed after the end of the related action.
-         */
-        AFTEREND, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionRelationshipType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("before-start".equals(codeString))
-          return BEFORESTART;
-        if ("before".equals(codeString))
-          return BEFORE;
-        if ("before-end".equals(codeString))
-          return BEFOREEND;
-        if ("concurrent-with-start".equals(codeString))
-          return CONCURRENTWITHSTART;
-        if ("concurrent".equals(codeString))
-          return CONCURRENT;
-        if ("concurrent-with-end".equals(codeString))
-          return CONCURRENTWITHEND;
-        if ("after-start".equals(codeString))
-          return AFTERSTART;
-        if ("after".equals(codeString))
-          return AFTER;
-        if ("after-end".equals(codeString))
-          return AFTEREND;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case BEFORESTART: return "before-start";
-            case BEFORE: return "before";
-            case BEFOREEND: return "before-end";
-            case CONCURRENTWITHSTART: return "concurrent-with-start";
-            case CONCURRENT: return "concurrent";
-            case CONCURRENTWITHEND: return "concurrent-with-end";
-            case AFTERSTART: return "after-start";
-            case AFTER: return "after";
-            case AFTEREND: return "after-end";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case BEFORESTART: return "http://hl7.org/fhir/action-relationship-type";
-            case BEFORE: return "http://hl7.org/fhir/action-relationship-type";
-            case BEFOREEND: return "http://hl7.org/fhir/action-relationship-type";
-            case CONCURRENTWITHSTART: return "http://hl7.org/fhir/action-relationship-type";
-            case CONCURRENT: return "http://hl7.org/fhir/action-relationship-type";
-            case CONCURRENTWITHEND: return "http://hl7.org/fhir/action-relationship-type";
-            case AFTERSTART: return "http://hl7.org/fhir/action-relationship-type";
-            case AFTER: return "http://hl7.org/fhir/action-relationship-type";
-            case AFTEREND: return "http://hl7.org/fhir/action-relationship-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case BEFORESTART: return "The action must be performed before the start of the related action.";
-            case BEFORE: return "The action must be performed before the related action.";
-            case BEFOREEND: return "The action must be performed before the end of the related action.";
-            case CONCURRENTWITHSTART: return "The action must be performed concurrent with the start of the related action.";
-            case CONCURRENT: return "The action must be performed concurrent with the related action.";
-            case CONCURRENTWITHEND: return "The action must be performed concurrent with the end of the related action.";
-            case AFTERSTART: return "The action must be performed after the start of the related action.";
-            case AFTER: return "The action must be performed after the related action.";
-            case AFTEREND: return "The action must be performed after the end of the related action.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case BEFORESTART: return "Before Start";
-            case BEFORE: return "Before";
-            case BEFOREEND: return "Before End";
-            case CONCURRENTWITHSTART: return "Concurrent With Start";
-            case CONCURRENT: return "Concurrent";
-            case CONCURRENTWITHEND: return "Concurrent With End";
-            case AFTERSTART: return "After Start";
-            case AFTER: return "After";
-            case AFTEREND: return "After End";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionRelationshipTypeEnumFactory implements EnumFactory<ActionRelationshipType> {
-    public ActionRelationshipType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("before-start".equals(codeString))
-          return ActionRelationshipType.BEFORESTART;
-        if ("before".equals(codeString))
-          return ActionRelationshipType.BEFORE;
-        if ("before-end".equals(codeString))
-          return ActionRelationshipType.BEFOREEND;
-        if ("concurrent-with-start".equals(codeString))
-          return ActionRelationshipType.CONCURRENTWITHSTART;
-        if ("concurrent".equals(codeString))
-          return ActionRelationshipType.CONCURRENT;
-        if ("concurrent-with-end".equals(codeString))
-          return ActionRelationshipType.CONCURRENTWITHEND;
-        if ("after-start".equals(codeString))
-          return ActionRelationshipType.AFTERSTART;
-        if ("after".equals(codeString))
-          return ActionRelationshipType.AFTER;
-        if ("after-end".equals(codeString))
-          return ActionRelationshipType.AFTEREND;
-        throw new IllegalArgumentException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-        public Enumeration<ActionRelationshipType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("before-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORESTART);
-        if ("before".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORE);
-        if ("before-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFOREEND);
-        if ("concurrent-with-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHSTART);
-        if ("concurrent".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENT);
-        if ("concurrent-with-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHEND);
-        if ("after-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTERSTART);
-        if ("after".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTER);
-        if ("after-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTEREND);
-        throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-    public String toCode(ActionRelationshipType code) {
-      if (code == ActionRelationshipType.BEFORESTART)
-        return "before-start";
-      if (code == ActionRelationshipType.BEFORE)
-        return "before";
-      if (code == ActionRelationshipType.BEFOREEND)
-        return "before-end";
-      if (code == ActionRelationshipType.CONCURRENTWITHSTART)
-        return "concurrent-with-start";
-      if (code == ActionRelationshipType.CONCURRENT)
-        return "concurrent";
-      if (code == ActionRelationshipType.CONCURRENTWITHEND)
-        return "concurrent-with-end";
-      if (code == ActionRelationshipType.AFTERSTART)
-        return "after-start";
-      if (code == ActionRelationshipType.AFTER)
-        return "after";
-      if (code == ActionRelationshipType.AFTEREND)
-        return "after-end";
-      return "?";
-      }
-    public String toSystem(ActionRelationshipType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionParticipantType {
-        /**
-         * The participant is the patient under evaluation.
-         */
-        PATIENT, 
-        /**
-         * The participant is a practitioner involved in the patient's care.
-         */
-        PRACTITIONER, 
-        /**
-         * The participant is a person related to the patient.
-         */
-        RELATEDPERSON, 
-        /**
-         * The participant is a system or device used in the care of the patient.
-         */
-        DEVICE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionParticipantType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("patient".equals(codeString))
-          return PATIENT;
-        if ("practitioner".equals(codeString))
-          return PRACTITIONER;
-        if ("related-person".equals(codeString))
-          return RELATEDPERSON;
-        if ("device".equals(codeString))
-          return DEVICE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionParticipantType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PATIENT: return "patient";
-            case PRACTITIONER: return "practitioner";
-            case RELATEDPERSON: return "related-person";
-            case DEVICE: return "device";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PATIENT: return "http://hl7.org/fhir/action-participant-type";
-            case PRACTITIONER: return "http://hl7.org/fhir/action-participant-type";
-            case RELATEDPERSON: return "http://hl7.org/fhir/action-participant-type";
-            case DEVICE: return "http://hl7.org/fhir/action-participant-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PATIENT: return "The participant is the patient under evaluation.";
-            case PRACTITIONER: return "The participant is a practitioner involved in the patient's care.";
-            case RELATEDPERSON: return "The participant is a person related to the patient.";
-            case DEVICE: return "The participant is a system or device used in the care of the patient.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PATIENT: return "Patient";
-            case PRACTITIONER: return "Practitioner";
-            case RELATEDPERSON: return "Related Person";
-            case DEVICE: return "Device";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionParticipantTypeEnumFactory implements EnumFactory<ActionParticipantType> {
-    public ActionParticipantType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("patient".equals(codeString))
-          return ActionParticipantType.PATIENT;
-        if ("practitioner".equals(codeString))
-          return ActionParticipantType.PRACTITIONER;
-        if ("related-person".equals(codeString))
-          return ActionParticipantType.RELATEDPERSON;
-        if ("device".equals(codeString))
-          return ActionParticipantType.DEVICE;
-        throw new IllegalArgumentException("Unknown ActionParticipantType code '"+codeString+"'");
-        }
-        public Enumeration<ActionParticipantType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("patient".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.PATIENT);
-        if ("practitioner".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.PRACTITIONER);
-        if ("related-person".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.RELATEDPERSON);
-        if ("device".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.DEVICE);
-        throw new FHIRException("Unknown ActionParticipantType code '"+codeString+"'");
-        }
-    public String toCode(ActionParticipantType code) {
-      if (code == ActionParticipantType.PATIENT)
-        return "patient";
-      if (code == ActionParticipantType.PRACTITIONER)
-        return "practitioner";
-      if (code == ActionParticipantType.RELATEDPERSON)
-        return "related-person";
-      if (code == ActionParticipantType.DEVICE)
-        return "device";
-      return "?";
-      }
-    public String toSystem(ActionParticipantType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionGroupingBehavior {
-        /**
-         * Any group marked with this behavior should be displayed as a visual group to the end user.
-         */
-        VISUALGROUP, 
-        /**
-         * A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so.
-         */
-        LOGICALGROUP, 
-        /**
-         * A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are "aspirin, 500 mg, 2 times per day" and "aspirin, 300 mg, 3 times per day". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of "AtMostOne", unless it's a required action, in which case, it would be "ExactlyOne".
-         */
-        SENTENCEGROUP, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionGroupingBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("visual-group".equals(codeString))
-          return VISUALGROUP;
-        if ("logical-group".equals(codeString))
-          return LOGICALGROUP;
-        if ("sentence-group".equals(codeString))
-          return SENTENCEGROUP;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case VISUALGROUP: return "visual-group";
-            case LOGICALGROUP: return "logical-group";
-            case SENTENCEGROUP: return "sentence-group";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case VISUALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
-            case LOGICALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
-            case SENTENCEGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user.";
-            case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so.";
-            case SENTENCEGROUP: return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\".";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case VISUALGROUP: return "Visual Group";
-            case LOGICALGROUP: return "Logical Group";
-            case SENTENCEGROUP: return "Sentence Group";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionGroupingBehaviorEnumFactory implements EnumFactory<ActionGroupingBehavior> {
-    public ActionGroupingBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("visual-group".equals(codeString))
-          return ActionGroupingBehavior.VISUALGROUP;
-        if ("logical-group".equals(codeString))
-          return ActionGroupingBehavior.LOGICALGROUP;
-        if ("sentence-group".equals(codeString))
-          return ActionGroupingBehavior.SENTENCEGROUP;
-        throw new IllegalArgumentException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionGroupingBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionGroupingBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("visual-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.VISUALGROUP);
-        if ("logical-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.LOGICALGROUP);
-        if ("sentence-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.SENTENCEGROUP);
-        throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionGroupingBehavior code) {
-      if (code == ActionGroupingBehavior.VISUALGROUP)
-        return "visual-group";
-      if (code == ActionGroupingBehavior.LOGICALGROUP)
-        return "logical-group";
-      if (code == ActionGroupingBehavior.SENTENCEGROUP)
-        return "sentence-group";
-      return "?";
-      }
-    public String toSystem(ActionGroupingBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionSelectionBehavior {
-        /**
-         * Any number of the actions in the group may be chosen, from zero to all.
-         */
-        ANY, 
-        /**
-         * All the actions in the group must be selected as a single unit.
-         */
-        ALL, 
-        /**
-         * All the actions in the group are meant to be chosen as a single unit: either all must be selected by the end user, or none may be selected.
-         */
-        ALLORNONE, 
-        /**
-         * The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.
-         */
-        EXACTLYONE, 
-        /**
-         * The end user may choose zero or at most one of the actions in the group.
-         */
-        ATMOSTONE, 
-        /**
-         * The end user must choose a minimum of one, and as many additional as desired.
-         */
-        ONEORMORE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionSelectionBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("any".equals(codeString))
-          return ANY;
-        if ("all".equals(codeString))
-          return ALL;
-        if ("all-or-none".equals(codeString))
-          return ALLORNONE;
-        if ("exactly-one".equals(codeString))
-          return EXACTLYONE;
-        if ("at-most-one".equals(codeString))
-          return ATMOSTONE;
-        if ("one-or-more".equals(codeString))
-          return ONEORMORE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ANY: return "any";
-            case ALL: return "all";
-            case ALLORNONE: return "all-or-none";
-            case EXACTLYONE: return "exactly-one";
-            case ATMOSTONE: return "at-most-one";
-            case ONEORMORE: return "one-or-more";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ANY: return "http://hl7.org/fhir/action-selection-behavior";
-            case ALL: return "http://hl7.org/fhir/action-selection-behavior";
-            case ALLORNONE: return "http://hl7.org/fhir/action-selection-behavior";
-            case EXACTLYONE: return "http://hl7.org/fhir/action-selection-behavior";
-            case ATMOSTONE: return "http://hl7.org/fhir/action-selection-behavior";
-            case ONEORMORE: return "http://hl7.org/fhir/action-selection-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ANY: return "Any number of the actions in the group may be chosen, from zero to all.";
-            case ALL: return "All the actions in the group must be selected as a single unit.";
-            case ALLORNONE: return "All the actions in the group are meant to be chosen as a single unit: either all must be selected by the end user, or none may be selected.";
-            case EXACTLYONE: return "The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.";
-            case ATMOSTONE: return "The end user may choose zero or at most one of the actions in the group.";
-            case ONEORMORE: return "The end user must choose a minimum of one, and as many additional as desired.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ANY: return "Any";
-            case ALL: return "All";
-            case ALLORNONE: return "All Or None";
-            case EXACTLYONE: return "Exactly One";
-            case ATMOSTONE: return "At Most One";
-            case ONEORMORE: return "One Or More";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionSelectionBehaviorEnumFactory implements EnumFactory<ActionSelectionBehavior> {
-    public ActionSelectionBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("any".equals(codeString))
-          return ActionSelectionBehavior.ANY;
-        if ("all".equals(codeString))
-          return ActionSelectionBehavior.ALL;
-        if ("all-or-none".equals(codeString))
-          return ActionSelectionBehavior.ALLORNONE;
-        if ("exactly-one".equals(codeString))
-          return ActionSelectionBehavior.EXACTLYONE;
-        if ("at-most-one".equals(codeString))
-          return ActionSelectionBehavior.ATMOSTONE;
-        if ("one-or-more".equals(codeString))
-          return ActionSelectionBehavior.ONEORMORE;
-        throw new IllegalArgumentException("Unknown ActionSelectionBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionSelectionBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionSelectionBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("any".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ANY);
-        if ("all".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALL);
-        if ("all-or-none".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALLORNONE);
-        if ("exactly-one".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.EXACTLYONE);
-        if ("at-most-one".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ATMOSTONE);
-        if ("one-or-more".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ONEORMORE);
-        throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionSelectionBehavior code) {
-      if (code == ActionSelectionBehavior.ANY)
-        return "any";
-      if (code == ActionSelectionBehavior.ALL)
-        return "all";
-      if (code == ActionSelectionBehavior.ALLORNONE)
-        return "all-or-none";
-      if (code == ActionSelectionBehavior.EXACTLYONE)
-        return "exactly-one";
-      if (code == ActionSelectionBehavior.ATMOSTONE)
-        return "at-most-one";
-      if (code == ActionSelectionBehavior.ONEORMORE)
-        return "one-or-more";
-      return "?";
-      }
-    public String toSystem(ActionSelectionBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionRequiredBehavior {
-        /**
-         * An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.
-         */
-        MUST, 
-        /**
-         * An action with this behavior may be included in the set of actions processed by the end user.
-         */
-        COULD, 
-        /**
-         * An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.
-         */
-        MUSTUNLESSDOCUMENTED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionRequiredBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("must".equals(codeString))
-          return MUST;
-        if ("could".equals(codeString))
-          return COULD;
-        if ("must-unless-documented".equals(codeString))
-          return MUSTUNLESSDOCUMENTED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MUST: return "must";
-            case COULD: return "could";
-            case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MUST: return "http://hl7.org/fhir/action-required-behavior";
-            case COULD: return "http://hl7.org/fhir/action-required-behavior";
-            case MUSTUNLESSDOCUMENTED: return "http://hl7.org/fhir/action-required-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MUST: return "An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.";
-            case COULD: return "An action with this behavior may be included in the set of actions processed by the end user.";
-            case MUSTUNLESSDOCUMENTED: return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MUST: return "Must";
-            case COULD: return "Could";
-            case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionRequiredBehaviorEnumFactory implements EnumFactory<ActionRequiredBehavior> {
-    public ActionRequiredBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("must".equals(codeString))
-          return ActionRequiredBehavior.MUST;
-        if ("could".equals(codeString))
-          return ActionRequiredBehavior.COULD;
-        if ("must-unless-documented".equals(codeString))
-          return ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
-        throw new IllegalArgumentException("Unknown ActionRequiredBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionRequiredBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionRequiredBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("must".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUST);
-        if ("could".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.COULD);
-        if ("must-unless-documented".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
-        throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionRequiredBehavior code) {
-      if (code == ActionRequiredBehavior.MUST)
-        return "must";
-      if (code == ActionRequiredBehavior.COULD)
-        return "could";
-      if (code == ActionRequiredBehavior.MUSTUNLESSDOCUMENTED)
-        return "must-unless-documented";
-      return "?";
-      }
-    public String toSystem(ActionRequiredBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionPrecheckBehavior {
-        /**
-         * An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider "pre-checking" such an action as a convenience for the user.
-         */
-        YES, 
-        /**
-         * An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not "pre-check" such an action.
-         */
-        NO, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionPrecheckBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return YES;
-        if ("no".equals(codeString))
-          return NO;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case YES: return "yes";
-            case NO: return "no";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case YES: return "http://hl7.org/fhir/action-precheck-behavior";
-            case NO: return "http://hl7.org/fhir/action-precheck-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case YES: return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user.";
-            case NO: return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case YES: return "Yes";
-            case NO: return "No";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionPrecheckBehaviorEnumFactory implements EnumFactory<ActionPrecheckBehavior> {
-    public ActionPrecheckBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return ActionPrecheckBehavior.YES;
-        if ("no".equals(codeString))
-          return ActionPrecheckBehavior.NO;
-        throw new IllegalArgumentException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionPrecheckBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionPrecheckBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("yes".equals(codeString))
-          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.YES);
-        if ("no".equals(codeString))
-          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.NO);
-        throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionPrecheckBehavior code) {
-      if (code == ActionPrecheckBehavior.YES)
-        return "yes";
-      if (code == ActionPrecheckBehavior.NO)
-        return "no";
-      return "?";
-      }
-    public String toSystem(ActionPrecheckBehavior code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActionCardinalityBehavior {
-        /**
-         * The action may only be selected one time.
-         */
-        SINGLE, 
-        /**
-         * The action may be selected multiple times.
-         */
-        MULTIPLE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActionCardinalityBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("single".equals(codeString))
-          return SINGLE;
-        if ("multiple".equals(codeString))
-          return MULTIPLE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SINGLE: return "single";
-            case MULTIPLE: return "multiple";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case SINGLE: return "http://hl7.org/fhir/action-cardinality-behavior";
-            case MULTIPLE: return "http://hl7.org/fhir/action-cardinality-behavior";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SINGLE: return "The action may only be selected one time.";
-            case MULTIPLE: return "The action may be selected multiple times.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SINGLE: return "Single";
-            case MULTIPLE: return "Multiple";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActionCardinalityBehaviorEnumFactory implements EnumFactory<ActionCardinalityBehavior> {
-    public ActionCardinalityBehavior fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("single".equals(codeString))
-          return ActionCardinalityBehavior.SINGLE;
-        if ("multiple".equals(codeString))
-          return ActionCardinalityBehavior.MULTIPLE;
-        throw new IllegalArgumentException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-        public Enumeration<ActionCardinalityBehavior> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActionCardinalityBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("single".equals(codeString))
-          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.SINGLE);
-        if ("multiple".equals(codeString))
-          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.MULTIPLE);
-        throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-    public String toCode(ActionCardinalityBehavior code) {
-      if (code == ActionCardinalityBehavior.SINGLE)
-        return "single";
-      if (code == ActionCardinalityBehavior.MULTIPLE)
-        return "multiple";
-      return "?";
-      }
-    public String toSystem(ActionCardinalityBehavior code) {
-      return code.getSystem();
-      }
-    }
+public class PlanDefinition extends MetadataResource {
 
     @Block()
     public static class PlanDefinitionGoalComponent extends BackboneElement implements IBaseBackboneElement {
@@ -1259,7 +143,7 @@ public class PlanDefinition extends CanonicalResource {
      */
       public PlanDefinitionGoalComponent(CodeableConcept description) {
         super();
-        this.description = description;
+        this.setDescription(description);
       }
 
         /**
@@ -1402,7 +286,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #addresses}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #addresses}, creating it if it does not already exist {3}
          */
         public CodeableConcept getAddressesFirstRep() { 
           if (getAddresses().isEmpty()) {
@@ -1455,7 +339,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #documentation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #documentation}, creating it if it does not already exist {3}
          */
         public RelatedArtifact getDocumentationFirstRep() { 
           if (getDocumentation().isEmpty()) {
@@ -1508,7 +392,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist {3}
          */
         public PlanDefinitionGoalTargetComponent getTargetFirstRep() { 
           if (getTarget().isEmpty()) {
@@ -1756,7 +640,7 @@ public class PlanDefinition extends CanonicalResource {
         @Description(shortDefinition="Reach goal within", formalDefinition="Indicates the timeframe after the start of the goal in which the goal should be met." )
         protected Duration due;
 
-        private static final long serialVersionUID = -131874144L;
+        private static final long serialVersionUID = -1464475626L;
 
     /**
      * Constructor
@@ -1892,9 +776,9 @@ public class PlanDefinition extends CanonicalResource {
           case 938321246: /*measure*/  return new Property("measure", "CodeableConcept", "The parameter whose value is to be tracked, e.g. body weight, blood pressure, or hemoglobin A1c level.", 0, 1, measure);
           case -1973084529: /*detail[x]*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
           case -1335224239: /*detail*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -1313079300: /*detailQuantity*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -2062632084: /*detailRange*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -175586544: /*detailCodeableConcept*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -1313079300: /*detailQuantity*/  return new Property("detail[x]", "Quantity", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -2062632084: /*detailRange*/  return new Property("detail[x]", "Range", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -175586544: /*detailCodeableConcept*/  return new Property("detail[x]", "CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
           case 99828: /*due*/  return new Property("due", "Duration", "Indicates the timeframe after the start of the goal in which the goal should be met.", 0, 1, due);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1905,7 +789,7 @@ public class PlanDefinition extends CanonicalResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 938321246: /*measure*/ return this.measure == null ? new Base[0] : new Base[] {this.measure}; // CodeableConcept
-        case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : new Base[] {this.detail}; // Type
+        case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : new Base[] {this.detail}; // DataType
         case 99828: /*due*/ return this.due == null ? new Base[0] : new Base[] {this.due}; // Duration
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1919,7 +803,7 @@ public class PlanDefinition extends CanonicalResource {
           this.measure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1335224239: // detail
-          this.detail = TypeConvertor.castToType(value); // Type
+          this.detail = TypeConvertor.castToType(value); // DataType
           return value;
         case 99828: // due
           this.due = TypeConvertor.castToDuration(value); // Duration
@@ -1934,7 +818,7 @@ public class PlanDefinition extends CanonicalResource {
         if (name.equals("measure")) {
           this.measure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("detail[x]")) {
-          this.detail = TypeConvertor.castToType(value); // Type
+          this.detail = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("due")) {
           this.due = TypeConvertor.castToDuration(value); // Duration
         } else
@@ -2235,7 +1119,7 @@ public class PlanDefinition extends CanonicalResource {
         @Description(shortDefinition="A sub-action", formalDefinition="Sub actions that are contained within the action. The behavior of this action determines the functionality of the sub-actions. For example, a selection behavior of at-most-one indicates that of the sub-actions, at most one may be chosen as part of realizing the action definition." )
         protected List<PlanDefinitionActionComponent> action;
 
-        private static final long serialVersionUID = 158605540L;
+        private static final long serialVersionUID = -1494545766L;
 
     /**
      * Constructor
@@ -2533,7 +1417,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCodeFirstRep() { 
           if (getCode().isEmpty()) {
@@ -2586,7 +1470,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
          */
         public CodeableConcept getReasonFirstRep() { 
           if (getReason().isEmpty()) {
@@ -2639,7 +1523,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #documentation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #documentation}, creating it if it does not already exist {3}
          */
         public RelatedArtifact getDocumentationFirstRep() { 
           if (getDocumentation().isEmpty()) {
@@ -2804,7 +1688,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #trigger}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #trigger}, creating it if it does not already exist {3}
          */
         public TriggerDefinition getTriggerFirstRep() { 
           if (getTrigger().isEmpty()) {
@@ -2857,7 +1741,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #condition}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #condition}, creating it if it does not already exist {3}
          */
         public PlanDefinitionActionConditionComponent getConditionFirstRep() { 
           if (getCondition().isEmpty()) {
@@ -2910,7 +1794,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
          */
         public DataRequirement getInputFirstRep() { 
           if (getInput().isEmpty()) {
@@ -2963,7 +1847,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #output}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #output}, creating it if it does not already exist {3}
          */
         public DataRequirement getOutputFirstRep() { 
           if (getOutput().isEmpty()) {
@@ -3016,7 +1900,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #relatedAction}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #relatedAction}, creating it if it does not already exist {3}
          */
         public PlanDefinitionActionRelatedActionComponent getRelatedActionFirstRep() { 
           if (getRelatedAction().isEmpty()) {
@@ -3180,7 +2064,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
          */
         public PlanDefinitionActionParticipantComponent getParticipantFirstRep() { 
           if (getParticipant().isEmpty()) {
@@ -3602,7 +2486,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #dynamicValue}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #dynamicValue}, creating it if it does not already exist {3}
          */
         public PlanDefinitionActionDynamicValueComponent getDynamicValueFirstRep() { 
           if (getDynamicValue().isEmpty()) {
@@ -3655,7 +2539,7 @@ public class PlanDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
          */
         public PlanDefinitionActionComponent getActionFirstRep() { 
           if (getAction().isEmpty()) {
@@ -3709,8 +2593,8 @@ public class PlanDefinition extends CanonicalResource {
           case -1240658034: /*goalId*/  return new Property("goalId", "id", "Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.", 0, java.lang.Integer.MAX_VALUE, goalId);
           case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
           case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
-          case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
-          case 772938623: /*subjectReference*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
+          case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
+          case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
           case -1059891784: /*trigger*/  return new Property("trigger", "TriggerDefinition", "A description of when the action should be triggered.", 0, java.lang.Integer.MAX_VALUE, trigger);
           case -861311717: /*condition*/  return new Property("condition", "", "An expression that describes applicability criteria or start/stop conditions for the action.", 0, java.lang.Integer.MAX_VALUE, condition);
           case 100358090: /*input*/  return new Property("input", "DataRequirement", "Defines input data requirements for the action.", 0, java.lang.Integer.MAX_VALUE, input);
@@ -3718,12 +2602,12 @@ public class PlanDefinition extends CanonicalResource {
           case -384107967: /*relatedAction*/  return new Property("relatedAction", "", "A relationship to another action such as \"before\" or \"30-60 minutes after start of\".", 0, java.lang.Integer.MAX_VALUE, relatedAction);
           case 164632566: /*timing[x]*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -873664438: /*timing*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case 164607061: /*timingAge*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -615615829: /*timingPeriod*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -1327253506: /*timingDuration*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -710871277: /*timingRange*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -497554124: /*timingTiming*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "dateTime", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case 164607061: /*timingAge*/  return new Property("timing[x]", "Age", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -615615829: /*timingPeriod*/  return new Property("timing[x]", "Period", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -1327253506: /*timingDuration*/  return new Property("timing[x]", "Duration", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -710871277: /*timingRange*/  return new Property("timing[x]", "Range", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
           case 767422259: /*participant*/  return new Property("participant", "", "Indicates who should participate in performing the action described.", 0, java.lang.Integer.MAX_VALUE, participant);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of action to perform (create, update, remove).", 0, 1, type);
           case 586678389: /*groupingBehavior*/  return new Property("groupingBehavior", "code", "Defines the grouping behavior for the action and its children.", 0, 1, groupingBehavior);
@@ -3733,8 +2617,8 @@ public class PlanDefinition extends CanonicalResource {
           case -922577408: /*cardinalityBehavior*/  return new Property("cardinalityBehavior", "code", "Defines whether the action can be selected multiple times.", 0, 1, cardinalityBehavior);
           case -1139422643: /*definition[x]*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
           case -1014418093: /*definition*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
-          case 933485793: /*definitionCanonical*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
-          case -1139428583: /*definitionUri*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
+          case 933485793: /*definitionCanonical*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
+          case -1139428583: /*definitionUri*/  return new Property("definition[x]", "uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
           case 1052666732: /*transform*/  return new Property("transform", "canonical(StructureMap)", "A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.", 0, 1, transform);
           case 572625010: /*dynamicValue*/  return new Property("dynamicValue", "", "Customizations that should be applied to the statically defined resource. For example, if the dosage of a medication must be computed based on the patient's weight, a customization would be used to specify an expression that calculated the weight, and the path on the resource that would contain the result.", 0, java.lang.Integer.MAX_VALUE, dynamicValue);
           case -1422950858: /*action*/  return new Property("action", "@PlanDefinition.action", "Sub actions that are contained within the action. The behavior of this action determines the functionality of the sub-actions. For example, a selection behavior of at-most-one indicates that of the sub-actions, at most one may be chosen as part of realizing the action definition.", 0, java.lang.Integer.MAX_VALUE, action);
@@ -3755,13 +2639,13 @@ public class PlanDefinition extends CanonicalResource {
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableConcept
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : this.documentation.toArray(new Base[this.documentation.size()]); // RelatedArtifact
         case -1240658034: /*goalId*/ return this.goalId == null ? new Base[0] : this.goalId.toArray(new Base[this.goalId.size()]); // IdType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Type
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case -1059891784: /*trigger*/ return this.trigger == null ? new Base[0] : this.trigger.toArray(new Base[this.trigger.size()]); // TriggerDefinition
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // PlanDefinitionActionConditionComponent
         case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // DataRequirement
         case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // DataRequirement
         case -384107967: /*relatedAction*/ return this.relatedAction == null ? new Base[0] : this.relatedAction.toArray(new Base[this.relatedAction.size()]); // PlanDefinitionActionRelatedActionComponent
-        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // Type
+        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // PlanDefinitionActionParticipantComponent
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 586678389: /*groupingBehavior*/ return this.groupingBehavior == null ? new Base[0] : new Base[] {this.groupingBehavior}; // Enumeration<ActionGroupingBehavior>
@@ -3769,7 +2653,7 @@ public class PlanDefinition extends CanonicalResource {
         case -1163906287: /*requiredBehavior*/ return this.requiredBehavior == null ? new Base[0] : new Base[] {this.requiredBehavior}; // Enumeration<ActionRequiredBehavior>
         case -1174249033: /*precheckBehavior*/ return this.precheckBehavior == null ? new Base[0] : new Base[] {this.precheckBehavior}; // Enumeration<ActionPrecheckBehavior>
         case -922577408: /*cardinalityBehavior*/ return this.cardinalityBehavior == null ? new Base[0] : new Base[] {this.cardinalityBehavior}; // Enumeration<ActionCardinalityBehavior>
-        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // Type
+        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // DataType
         case 1052666732: /*transform*/ return this.transform == null ? new Base[0] : new Base[] {this.transform}; // CanonicalType
         case 572625010: /*dynamicValue*/ return this.dynamicValue == null ? new Base[0] : this.dynamicValue.toArray(new Base[this.dynamicValue.size()]); // PlanDefinitionActionDynamicValueComponent
         case -1422950858: /*action*/ return this.action == null ? new Base[0] : this.action.toArray(new Base[this.action.size()]); // PlanDefinitionActionComponent
@@ -3810,7 +2694,7 @@ public class PlanDefinition extends CanonicalResource {
           this.getGoalId().add(TypeConvertor.castToId(value)); // IdType
           return value;
         case -1867885268: // subject
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
           return value;
         case -1059891784: // trigger
           this.getTrigger().add(TypeConvertor.castToTriggerDefinition(value)); // TriggerDefinition
@@ -3828,7 +2712,7 @@ public class PlanDefinition extends CanonicalResource {
           this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value); // PlanDefinitionActionRelatedActionComponent
           return value;
         case -873664438: // timing
-          this.timing = TypeConvertor.castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
           return value;
         case 767422259: // participant
           this.getParticipant().add((PlanDefinitionActionParticipantComponent) value); // PlanDefinitionActionParticipantComponent
@@ -3857,7 +2741,7 @@ public class PlanDefinition extends CanonicalResource {
           this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
           return value;
         case -1014418093: // definition
-          this.definition = TypeConvertor.castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // DataType
           return value;
         case 1052666732: // transform
           this.transform = TypeConvertor.castToCanonical(value); // CanonicalType
@@ -3895,7 +2779,7 @@ public class PlanDefinition extends CanonicalResource {
         } else if (name.equals("goalId")) {
           this.getGoalId().add(TypeConvertor.castToId(value));
         } else if (name.equals("subject[x]")) {
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("trigger")) {
           this.getTrigger().add(TypeConvertor.castToTriggerDefinition(value));
         } else if (name.equals("condition")) {
@@ -3907,7 +2791,7 @@ public class PlanDefinition extends CanonicalResource {
         } else if (name.equals("relatedAction")) {
           this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
-          this.timing = TypeConvertor.castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("participant")) {
           this.getParticipant().add((PlanDefinitionActionParticipantComponent) value);
         } else if (name.equals("type")) {
@@ -3928,7 +2812,7 @@ public class PlanDefinition extends CanonicalResource {
           value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
         } else if (name.equals("definition[x]")) {
-          this.definition = TypeConvertor.castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("transform")) {
           this.transform = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("dynamicValue")) {
@@ -4016,19 +2900,19 @@ public class PlanDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.prefix");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.prefix");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.title");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.description");
         }
         else if (name.equals("textEquivalent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.textEquivalent");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.textEquivalent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.priority");
         }
         else if (name.equals("code")) {
           return addCode();
@@ -4040,7 +2924,7 @@ public class PlanDefinition extends CanonicalResource {
           return addDocumentation();
         }
         else if (name.equals("goalId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.goalId");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.goalId");
         }
         else if (name.equals("subjectCodeableConcept")) {
           this.subject = new CodeableConcept();
@@ -4097,28 +2981,30 @@ public class PlanDefinition extends CanonicalResource {
           return this.type;
         }
         else if (name.equals("groupingBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.groupingBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.groupingBehavior");
         }
         else if (name.equals("selectionBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.selectionBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.selectionBehavior");
         }
         else if (name.equals("requiredBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.requiredBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.requiredBehavior");
         }
         else if (name.equals("precheckBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.precheckBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.precheckBehavior");
         }
         else if (name.equals("cardinalityBehavior")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.cardinalityBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.cardinalityBehavior");
         }
         else if (name.equals("definitionCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.definition[x]");
+          this.definition = new CanonicalType();
+          return this.definition;
         }
         else if (name.equals("definitionUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.definition[x]");
+          this.definition = new UriType();
+          return this.definition;
         }
         else if (name.equals("transform")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.transform");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.transform");
         }
         else if (name.equals("dynamicValue")) {
           return addDynamicValue();
@@ -4247,7 +3133,7 @@ public class PlanDefinition extends CanonicalResource {
            && compareValues(goalId, o.goalId, true) && compareValues(groupingBehavior, o.groupingBehavior, true)
            && compareValues(selectionBehavior, o.selectionBehavior, true) && compareValues(requiredBehavior, o.requiredBehavior, true)
            && compareValues(precheckBehavior, o.precheckBehavior, true) && compareValues(cardinalityBehavior, o.cardinalityBehavior, true)
-          ;
+           && compareValues(transform, o.transform, true);
       }
 
       public boolean isEmpty() {
@@ -4294,9 +3180,9 @@ public class PlanDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public PlanDefinitionActionConditionComponent(Enumeration<ActionConditionKind> kind) {
+      public PlanDefinitionActionConditionComponent(ActionConditionKind kind) {
         super();
-        this.kind = kind;
+        this.setKind(kind);
       }
 
         /**
@@ -4444,7 +3330,7 @@ public class PlanDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.condition.kind");
         }
         else if (name.equals("expression")) {
           this.expression = new Expression();
@@ -4521,7 +3407,7 @@ public class PlanDefinition extends CanonicalResource {
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
         protected DataType offset;
 
-        private static final long serialVersionUID = 1063306770L;
+        private static final long serialVersionUID = 621784796L;
 
     /**
      * Constructor
@@ -4533,10 +3419,10 @@ public class PlanDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public PlanDefinitionActionRelatedActionComponent(IdType actionId, Enumeration<ActionRelationshipType> relationship) {
+      public PlanDefinitionActionRelatedActionComponent(String actionId, ActionRelationshipType relationship) {
         super();
-        this.actionId = actionId;
-        this.relationship = relationship;
+        this.setActionId(actionId);
+        this.setRelationship(relationship);
       }
 
         /**
@@ -4694,8 +3580,8 @@ public class PlanDefinition extends CanonicalResource {
           case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship);
           case -1960684787: /*offset[x]*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
           case -1019779949: /*offset*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
-          case 134075207: /*offsetDuration*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
-          case 1263585386: /*offsetRange*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
+          case 134075207: /*offsetDuration*/  return new Property("offset[x]", "Duration", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
+          case 1263585386: /*offsetRange*/  return new Property("offset[x]", "Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -4706,7 +3592,7 @@ public class PlanDefinition extends CanonicalResource {
         switch (hash) {
         case -1656172047: /*actionId*/ return this.actionId == null ? new Base[0] : new Base[] {this.actionId}; // IdType
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<ActionRelationshipType>
-        case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // Type
+        case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -4723,7 +3609,7 @@ public class PlanDefinition extends CanonicalResource {
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
           return value;
         case -1019779949: // offset
-          this.offset = TypeConvertor.castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -4738,7 +3624,7 @@ public class PlanDefinition extends CanonicalResource {
           value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
         } else if (name.equals("offset[x]")) {
-          this.offset = TypeConvertor.castToType(value); // Type
+          this.offset = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4770,10 +3656,10 @@ public class PlanDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("actionId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actionId");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.relatedAction.actionId");
         }
         else if (name.equals("relationship")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.relationship");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.relatedAction.relationship");
         }
         else if (name.equals("offsetDuration")) {
           this.offset = new Duration();
@@ -4864,9 +3750,9 @@ public class PlanDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public PlanDefinitionActionParticipantComponent(Enumeration<ActionParticipantType> type) {
+      public PlanDefinitionActionParticipantComponent(ActionParticipantType type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -5014,7 +3900,7 @@ public class PlanDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.participant.type");
         }
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
@@ -5239,7 +4125,7 @@ public class PlanDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.path");
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.dynamicValue.path");
         }
         else if (name.equals("expression")) {
           this.expression = new Expression();
@@ -5293,81 +4179,167 @@ public class PlanDefinition extends CanonicalResource {
   }
 
     /**
+     * An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
+     */
+    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical identifier for this plan definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers." )
+    protected UriType url;
+
+    /**
      * A formal identifier that is used to identify this plan definition when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Additional identifier for the plan definition", formalDefinition="A formal identifier that is used to identify this plan definition when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
+     * The identifier that is used to identify this version of the plan definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the plan definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active artifacts.
+     */
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the plan definition", formalDefinition="The identifier that is used to identify this version of the plan definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the plan definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active artifacts." )
+    protected StringType version;
+
+    /**
+     * A natural language name identifying the plan definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this plan definition (computer friendly)", formalDefinition="A natural language name identifying the plan definition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
+     * A short, descriptive, user-friendly title for the plan definition.
+     */
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this plan definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the plan definition." )
+    protected StringType title;
+
+    /**
      * An explanatory or alternate title for the plan definition giving additional information about its content.
      */
-    @Child(name = "subtitle", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subtitle", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Subordinate title of the plan definition", formalDefinition="An explanatory or alternate title for the plan definition giving additional information about its content." )
     protected StringType subtitle;
 
     /**
      * A high-level category for the plan definition that distinguishes the kinds of systems that would be interested in the plan definition.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="order-set | clinical-protocol | eca-rule | workflow-definition", formalDefinition="A high-level category for the plan definition that distinguishes the kinds of systems that would be interested in the plan definition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/plan-definition-type")
     protected CodeableConcept type;
 
     /**
+     * The status of this plan definition. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this plan definition. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
+     * A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    @Child(name = "experimental", type = {BooleanType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
+
+    /**
      * A code or group definition that describes the intended subject of the plan definition.
      */
-    @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Type of individual the plan definition is focused on", formalDefinition="A code or group definition that describes the intended subject of the plan definition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
     protected DataType subject;
 
     /**
+     * The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes.
+     */
+    @Child(name = "date", type = {DateTimeType.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes." )
+    protected DateTimeType date;
+
+    /**
+     * The name of the organization or individual that published the plan definition.
+     */
+    @Child(name = "publisher", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the plan definition." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
+
+    /**
+     * A free text natural language description of the plan definition from a consumer's perspective.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Natural language description of the plan definition", formalDefinition="A free text natural language description of the plan definition from a consumer's perspective." )
+    protected MarkdownType description;
+
+    /**
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate plan definition instances.
+     */
+    @Child(name = "useContext", type = {UsageContext.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate plan definition instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the plan definition is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction for plan definition (if applicable)", formalDefinition="A legal or geographic region in which the plan definition is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
+    protected List<CodeableConcept> jurisdiction;
+
+    /**
      * Explanation of why this plan definition is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this plan definition is defined", formalDefinition="Explanation of why this plan definition is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A detailed description of how the plan definition is used from a clinical perspective.
      */
-    @Child(name = "usage", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "usage", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Describes the clinical usage of the plan", formalDefinition="A detailed description of how the plan definition is used from a clinical perspective." )
     protected StringType usage;
 
     /**
      * A copyright statement relating to the plan definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the plan definition.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the plan definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the plan definition." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the plan definition was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the plan definition was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the plan definition content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the plan definition is expected to be used", formalDefinition="The period during which the plan definition content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * Descriptive topics related to the content of the plan definition. Topics provide a high-level categorization of the definition that can be useful for filtering and searching.
      */
-    @Child(name = "topic", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "topic", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="E.g. Education, Treatment, Assessment", formalDefinition="Descriptive topics related to the content of the plan definition. Topics provide a high-level categorization of the definition that can be useful for filtering and searching." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
     protected List<CodeableConcept> topic;
@@ -5375,60 +4347,60 @@ public class PlanDefinition extends CanonicalResource {
     /**
      * An individiual or organization primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individual or organization primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individual or organization primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individual or organization primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individual or organization primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individual or organization responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individual or organization responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Related artifacts such as additional documentation, justification, or bibliographic references.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional documentation, citations", formalDefinition="Related artifacts such as additional documentation, justification, or bibliographic references." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * A reference to a Library resource containing any formal logic used by the plan definition.
      */
-    @Child(name = "library", type = {CanonicalType.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "library", type = {CanonicalType.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Logic used by the plan definition", formalDefinition="A reference to a Library resource containing any formal logic used by the plan definition." )
     protected List<CanonicalType> library;
 
     /**
      * Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.
      */
-    @Child(name = "goal", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "goal", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What the plan is trying to accomplish", formalDefinition="Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc." )
     protected List<PlanDefinitionGoalComponent> goal;
 
     /**
      * An action or group of actions to be taken as part of the plan.
      */
-    @Child(name = "action", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "action", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Action defined by the plan", formalDefinition="An action or group of actions to be taken as part of the plan." )
     protected List<PlanDefinitionActionComponent> action;
 
-    private static final long serialVersionUID = -1725695645L;
+    private static final long serialVersionUID = 485099011L;
 
   /**
    * Constructor
@@ -5440,9 +4412,9 @@ public class PlanDefinition extends CanonicalResource {
   /**
    * Constructor
    */
-    public PlanDefinition(Enumeration<PublicationStatus> status) {
+    public PlanDefinition(PublicationStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -5538,7 +4510,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -6050,7 +5022,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -6152,7 +5124,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -6205,7 +5177,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -6527,7 +5499,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {3}
      */
     public CodeableConcept getTopicFirstRep() { 
       if (getTopic().isEmpty()) {
@@ -6580,7 +5552,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
      */
     public ContactDetail getAuthorFirstRep() { 
       if (getAuthor().isEmpty()) {
@@ -6633,7 +5605,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {3}
      */
     public ContactDetail getEditorFirstRep() { 
       if (getEditor().isEmpty()) {
@@ -6686,7 +5658,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {3}
      */
     public ContactDetail getReviewerFirstRep() { 
       if (getReviewer().isEmpty()) {
@@ -6739,7 +5711,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {3}
      */
     public ContactDetail getEndorserFirstRep() { 
       if (getEndorser().isEmpty()) {
@@ -6792,7 +5764,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
       if (getRelatedArtifact().isEmpty()) {
@@ -6857,7 +5829,7 @@ public class PlanDefinition extends CanonicalResource {
       if (this.library == null)
         return false;
       for (CanonicalType v : this.library)
-        if (v.getValue().equals(value)) // canonical(Library)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -6906,7 +5878,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #goal}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #goal}, creating it if it does not already exist {3}
      */
     public PlanDefinitionGoalComponent getGoalFirstRep() { 
       if (getGoal().isEmpty()) {
@@ -6959,7 +5931,7 @@ public class PlanDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
      */
     public PlanDefinitionActionComponent getActionFirstRep() { 
       if (getAction().isEmpty()) {
@@ -7017,8 +5989,8 @@ public class PlanDefinition extends CanonicalResource {
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
         case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
-        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
+        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
+        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes.", 0, 1, date);
         case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the plan definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -7057,7 +6029,7 @@ public class PlanDefinition extends CanonicalResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Type
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
@@ -7116,7 +6088,7 @@ public class PlanDefinition extends CanonicalResource {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1867885268: // subject
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -7208,7 +6180,7 @@ public class PlanDefinition extends CanonicalResource {
         } else if (name.equals("experimental")) {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
@@ -7550,8 +6522,12 @@ public class PlanDefinition extends CanonicalResource {
         if (!(other_ instanceof PlanDefinition))
           return false;
         PlanDefinition o = (PlanDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(subtitle, o.subtitle, true) && compareDeep(type, o.type, true)
-           && compareDeep(subject, o.subject, true) && compareDeep(purpose, o.purpose, true) && compareDeep(usage, o.usage, true)
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(subtitle, o.subtitle, true)
+           && compareDeep(type, o.type, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(usage, o.usage, true)
            && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
            && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
@@ -7567,16 +6543,21 @@ public class PlanDefinition extends CanonicalResource {
         if (!(other_ instanceof PlanDefinition))
           return false;
         PlanDefinition o = (PlanDefinition) other_;
-        return compareValues(subtitle, o.subtitle, true) && compareValues(purpose, o.purpose, true) && compareValues(usage, o.usage, true)
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(subtitle, o.subtitle, true) && compareValues(status, o.status, true)
+           && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
+           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(usage, o.usage, true)
            && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true);
+           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(library, o.library, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, subtitle, type
-          , subject, purpose, usage, copyright, approvalDate, lastReviewDate, effectivePeriod
-          , topic, author, editor, reviewer, endorser, relatedArtifact, library, goal
-          , action);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
+          , name, title, subtitle, type, status, experimental, subject, date, publisher
+          , contact, description, useContext, jurisdiction, purpose, usage, copyright, approvalDate
+          , lastReviewDate, effectivePeriod, topic, author, editor, reviewer, endorser, relatedArtifact
+          , library, goal, action);
       }
 
   @Override
@@ -7585,77 +6566,77 @@ public class PlanDefinition extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The plan definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>PlanDefinition.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="PlanDefinition.date", description="The plan definition publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The plan definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>PlanDefinition.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="PlanDefinition.identifier", description="External identifier for the plan definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>successor</b>
+   * Search parameter: <b>composed-of</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="PlanDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_SUCCESSOR = "successor";
+  @SearchParamDefinition(name="composed-of", path="PlanDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_COMPOSED_OF = "composed-of";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>successor</b>
+   * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUCCESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUCCESSOR);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSED_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSED_OF);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PlanDefinition:successor</b>".
+   * the path value of "<b>PlanDefinition:composed-of</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUCCESSOR = new ca.uhn.fhir.model.api.Include("PlanDefinition:successor").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("PlanDefinition:composed-of").toLocked();
+
+ /**
+   * Search parameter: <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the plan definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-quantity", path="(PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the plan definition", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the plan definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the plan definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>PlanDefinition.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="PlanDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the plan definition", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the plan definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>PlanDefinition.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
 
  /**
    * Search parameter: <b>context-type-value</b>
    * <p>
    * Description: <b>A use context type and value assigned to the plan definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>PlanDefinition.useContext</b><br>
    * </p>
    */
   @SearchParamDefinition(name="context-type-value", path="PlanDefinition.useContext", description="A use context type and value assigned to the plan definition", type="composite", compositeOf={"context-type", "context"} )
@@ -7665,76 +6646,10 @@ public class PlanDefinition extends CanonicalResource {
    * <p>
    * Description: <b>A use context type and value assigned to the plan definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>PlanDefinition.useContext</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="PlanDefinition.jurisdiction", description="Intended jurisdiction for the plan definition", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the plan definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>PlanDefinition.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="PlanDefinition.description", description="The description of the plan definition", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the plan definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>PlanDefinition.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>derived-from</b>
-   * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="derived-from", path="PlanDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_DERIVED_FROM = "derived-from";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
-   * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PlanDefinition:derived-from</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("PlanDefinition:derived-from").toLocked();
 
  /**
    * Search parameter: <b>context-type</b>
@@ -7757,156 +6672,142 @@ public class PlanDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
-   * Search parameter: <b>predecessor</b>
+   * Search parameter: <b>context</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
+   * Description: <b>A use context assigned to the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(PlanDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="PlanDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_PREDECESSOR = "predecessor";
+  @SearchParamDefinition(name="context", path="(PlanDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the plan definition", type="token" )
+  public static final String SP_CONTEXT = "context";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
+   * Description: <b>A use context assigned to the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(PlanDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The plan definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PlanDefinition.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="PlanDefinition.date", description="The plan definition publication date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The plan definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PlanDefinition.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>definition</b>
+   * <p>
+   * Description: <b>Activity or plan definitions used by plan definition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.action.definition</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="definition", path="PlanDefinition.action.definition", description="Activity or plan definitions used by plan definition", type="reference", target={ActivityDefinition.class, PlanDefinition.class, Questionnaire.class } )
+  public static final String SP_DEFINITION = "definition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>definition</b>
+   * <p>
+   * Description: <b>Activity or plan definitions used by plan definition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.action.definition</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEFINITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEFINITION);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PlanDefinition:predecessor</b>".
+   * the path value of "<b>PlanDefinition:definition</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("PlanDefinition:predecessor").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEFINITION = new ca.uhn.fhir.model.api.Include("PlanDefinition:definition").toLocked();
 
  /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the plan definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>PlanDefinition.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="PlanDefinition.title", description="The human-friendly name of the plan definition", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the plan definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>PlanDefinition.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>composed-of</b>
+   * Search parameter: <b>depends-on</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="PlanDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_COMPOSED_OF = "composed-of";
+  @SearchParamDefinition(name="depends-on", path="PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DEPENDS_ON = "depends-on";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
+   * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSED_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSED_OF);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDS_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDS_ON);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PlanDefinition:composed-of</b>".
+   * the path value of "<b>PlanDefinition:depends-on</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("PlanDefinition:composed-of").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDS_ON = new ca.uhn.fhir.model.api.Include("PlanDefinition:depends-on").toLocked();
 
  /**
-   * Search parameter: <b>type</b>
+   * Search parameter: <b>derived-from</b>
    * <p>
-   * Description: <b>The type of artifact the plan (e.g. order-set, eca-rule, protocol)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.type</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="PlanDefinition.type", description="The type of artifact the plan (e.g. order-set, eca-rule, protocol)", type="token" )
-  public static final String SP_TYPE = "type";
+  @SearchParamDefinition(name="derived-from", path="PlanDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DERIVED_FROM = "derived-from";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
    * <p>
-   * Description: <b>The type of artifact the plan (e.g. order-set, eca-rule, protocol)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.type</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PlanDefinition:derived-from</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("PlanDefinition:derived-from").toLocked();
 
  /**
-   * Search parameter: <b>version</b>
+   * Search parameter: <b>description</b>
    * <p>
-   * Description: <b>The business version of the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.version</b><br>
+   * Description: <b>The description of the plan definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>PlanDefinition.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="PlanDefinition.version", description="The business version of the plan definition", type="token" )
-  public static final String SP_VERSION = "version";
+  @SearchParamDefinition(name="description", path="PlanDefinition.description", description="The description of the plan definition", type="string" )
+  public static final String SP_DESCRIPTION = "description";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
    * <p>
-   * Description: <b>The business version of the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.version</b><br>
+   * Description: <b>The description of the plan definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>PlanDefinition.description</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the plan definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>PlanDefinition.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="PlanDefinition.url", description="The uri that identifies the plan definition", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the plan definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>PlanDefinition.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the plan definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>PlanDefinition.useContext.valueQuantity, PlanDefinition.useContext.valueRange</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the plan definition", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the plan definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>PlanDefinition.useContext.valueQuantity, PlanDefinition.useContext.valueRange</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
    * Search parameter: <b>effective</b>
@@ -7929,30 +6830,44 @@ public class PlanDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
 
  /**
-   * Search parameter: <b>depends-on</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource, PlanDefinition.library</b><br>
+   * Description: <b>External identifier for the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library", description="What resource is being referenced", type="reference" )
-  public static final String SP_DEPENDS_ON = "depends-on";
+  @SearchParamDefinition(name="identifier", path="PlanDefinition.identifier", description="External identifier for the plan definition", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.relatedArtifact.resource, PlanDefinition.library</b><br>
+   * Description: <b>External identifier for the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDS_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDS_ON);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PlanDefinition:depends-on</b>".
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.jurisdiction</b><br>
+   * </p>
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDS_ON = new ca.uhn.fhir.model.api.Include("PlanDefinition:depends-on").toLocked();
+  @SearchParamDefinition(name="jurisdiction", path="PlanDefinition.jurisdiction", description="Intended jurisdiction for the plan definition", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
 
  /**
    * Search parameter: <b>name</b>
@@ -7975,24 +6890,30 @@ public class PlanDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>predecessor</b>
    * <p>
-   * Description: <b>A use context assigned to the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.useContext.valueCodeableConcept</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(PlanDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the plan definition", type="token" )
-  public static final String SP_CONTEXT = "context";
+  @SearchParamDefinition(name="predecessor", path="PlanDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PREDECESSOR = "predecessor";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
    * <p>
-   * Description: <b>A use context assigned to the plan definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.useContext.valueCodeableConcept</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PlanDefinition:predecessor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("PlanDefinition:predecessor").toLocked();
 
  /**
    * Search parameter: <b>publisher</b>
@@ -8015,6 +6936,72 @@ public class PlanDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="PlanDefinition.status", description="The current status of the plan definition", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>successor</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='successor').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="successor", path="PlanDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUCCESSOR = "successor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>successor</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PlanDefinition.relatedArtifact.where(type='successor').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUCCESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUCCESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PlanDefinition:successor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUCCESSOR = new ca.uhn.fhir.model.api.Include("PlanDefinition:successor").toLocked();
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the plan definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>PlanDefinition.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="PlanDefinition.title", description="The human-friendly name of the plan definition", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the plan definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>PlanDefinition.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
    * Search parameter: <b>topic</b>
    * <p>
    * Description: <b>Topics associated with the module</b><br>
@@ -8035,70 +7022,64 @@ public class PlanDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
 
  /**
-   * Search parameter: <b>definition</b>
+   * Search parameter: <b>type</b>
    * <p>
-   * Description: <b>Activity or plan definitions used by plan definition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.action.definition[x]</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="definition", path="PlanDefinition.action.definition", description="Activity or plan definitions used by plan definition", type="reference", target={ActivityDefinition.class, PlanDefinition.class, Questionnaire.class } )
-  public static final String SP_DEFINITION = "definition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>definition</b>
-   * <p>
-   * Description: <b>Activity or plan definitions used by plan definition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PlanDefinition.action.definition[x]</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEFINITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEFINITION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PlanDefinition:definition</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEFINITION = new ca.uhn.fhir.model.api.Include("PlanDefinition:definition").toLocked();
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the plan definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="PlanDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the plan definition", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the plan definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the plan definition</b><br>
+   * Description: <b>The type of artifact the plan (e.g. order-set, eca-rule, protocol)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.status</b><br>
+   * Path: <b>PlanDefinition.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="PlanDefinition.status", description="The current status of the plan definition", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="type", path="PlanDefinition.type", description="The type of artifact the plan (e.g. order-set, eca-rule, protocol)", type="token" )
+  public static final String SP_TYPE = "type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
-   * Description: <b>The current status of the plan definition</b><br>
+   * Description: <b>The type of artifact the plan (e.g. order-set, eca-rule, protocol)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>PlanDefinition.status</b><br>
+   * Path: <b>PlanDefinition.type</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the plan definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>PlanDefinition.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="PlanDefinition.url", description="The uri that identifies the plan definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the plan definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>PlanDefinition.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>The business version of the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.version</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="PlanDefinition.version", description="The business version of the plan definition", type="token" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>The business version of the plan definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PlanDefinition.version</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

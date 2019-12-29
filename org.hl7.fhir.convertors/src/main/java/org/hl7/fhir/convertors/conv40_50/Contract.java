@@ -208,30 +208,30 @@ public class Contract extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Contract.ContractStatus convertContractStatus(org.hl7.fhir.r4.model.Contract.ContractStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes convertContractStatus(org.hl7.fhir.r4.model.Contract.ContractStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case AMENDED: return org.hl7.fhir.r5.model.Contract.ContractStatus.AMENDED;
-    case APPENDED: return org.hl7.fhir.r5.model.Contract.ContractStatus.APPENDED;
-    case CANCELLED: return org.hl7.fhir.r5.model.Contract.ContractStatus.CANCELLED;
-    case DISPUTED: return org.hl7.fhir.r5.model.Contract.ContractStatus.DISPUTED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Contract.ContractStatus.ENTEREDINERROR;
-    case EXECUTABLE: return org.hl7.fhir.r5.model.Contract.ContractStatus.EXECUTABLE;
-    case EXECUTED: return org.hl7.fhir.r5.model.Contract.ContractStatus.EXECUTED;
-    case NEGOTIABLE: return org.hl7.fhir.r5.model.Contract.ContractStatus.NEGOTIABLE;
-    case OFFERED: return org.hl7.fhir.r5.model.Contract.ContractStatus.OFFERED;
-    case POLICY: return org.hl7.fhir.r5.model.Contract.ContractStatus.POLICY;
-    case REJECTED: return org.hl7.fhir.r5.model.Contract.ContractStatus.REJECTED;
-    case RENEWED: return org.hl7.fhir.r5.model.Contract.ContractStatus.RENEWED;
-    case REVOKED: return org.hl7.fhir.r5.model.Contract.ContractStatus.REVOKED;
-    case RESOLVED: return org.hl7.fhir.r5.model.Contract.ContractStatus.RESOLVED;
-    case TERMINATED: return org.hl7.fhir.r5.model.Contract.ContractStatus.TERMINATED;
-    default: return org.hl7.fhir.r5.model.Contract.ContractStatus.NULL;
+    case AMENDED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.AMENDED;
+    case APPENDED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.APPENDED;
+    case CANCELLED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.CANCELLED;
+    case DISPUTED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.DISPUTED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.ENTEREDINERROR;
+    case EXECUTABLE: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.EXECUTABLE;
+    case EXECUTED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.EXECUTED;
+    case NEGOTIABLE: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.NEGOTIABLE;
+    case OFFERED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.OFFERED;
+    case POLICY: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.POLICY;
+    case REJECTED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.REJECTED;
+    case RENEWED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.RENEWED;
+    case REVOKED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.REVOKED;
+    case RESOLVED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.RESOLVED;
+    case TERMINATED: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.TERMINATED;
+    default: return org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Contract.ContractStatus convertContractStatus(org.hl7.fhir.r5.model.Contract.ContractStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Contract.ContractStatus convertContractStatus(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -294,30 +294,30 @@ public class Contract extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Contract.ContractPublicationStatus convertContractPublicationStatus(org.hl7.fhir.r4.model.Contract.ContractPublicationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes convertContractPublicationStatus(org.hl7.fhir.r4.model.Contract.ContractPublicationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case AMENDED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.AMENDED;
-    case APPENDED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.APPENDED;
-    case CANCELLED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.CANCELLED;
-    case DISPUTED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.DISPUTED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.ENTEREDINERROR;
-    case EXECUTABLE: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.EXECUTABLE;
-    case EXECUTED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.EXECUTED;
-    case NEGOTIABLE: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.NEGOTIABLE;
-    case OFFERED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.OFFERED;
-    case POLICY: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.POLICY;
-    case REJECTED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.REJECTED;
-    case RENEWED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.RENEWED;
-    case REVOKED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.REVOKED;
-    case RESOLVED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.RESOLVED;
-    case TERMINATED: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.TERMINATED;
-    default: return org.hl7.fhir.r5.model.Contract.ContractPublicationStatus.NULL;
+    case AMENDED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.AMENDED;
+    case APPENDED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.APPENDED;
+    case CANCELLED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.CANCELLED;
+    case DISPUTED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.DISPUTED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.ENTEREDINERROR;
+    case EXECUTABLE: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.EXECUTABLE;
+    case EXECUTED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.EXECUTED;
+    case NEGOTIABLE: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.NEGOTIABLE;
+    case OFFERED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.OFFERED;
+    case POLICY: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.POLICY;
+    case REJECTED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.REJECTED;
+    case RENEWED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.RENEWED;
+    case REVOKED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.REVOKED;
+    case RESOLVED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.RESOLVED;
+    case TERMINATED: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.TERMINATED;
+    default: return org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Contract.ContractPublicationStatus convertContractPublicationStatus(org.hl7.fhir.r5.model.Contract.ContractPublicationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Contract.ContractPublicationStatus convertContractPublicationStatus(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

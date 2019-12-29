@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,135 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * This resource provides eligibility and plan details from the processing of an CoverageEligibilityRequest resource.
  */
 @ResourceDef(name="CoverageEligibilityResponse", profile="http://hl7.org/fhir/StructureDefinition/CoverageEligibilityResponse")
 public class CoverageEligibilityResponse extends DomainResource {
-
-    public enum EligibilityResponseStatus {
-        /**
-         * The instance is currently in-force.
-         */
-        ACTIVE, 
-        /**
-         * The instance is withdrawn, rescinded or reversed.
-         */
-        CANCELLED, 
-        /**
-         * A new instance the contents of which is not complete.
-         */
-        DRAFT, 
-        /**
-         * The instance was entered in error.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static EligibilityResponseStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown EligibilityResponseStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case CANCELLED: return "cancelled";
-            case DRAFT: return "draft";
-            case ENTEREDINERROR: return "entered-in-error";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ACTIVE: return "http://hl7.org/fhir/fm-status";
-            case CANCELLED: return "http://hl7.org/fhir/fm-status";
-            case DRAFT: return "http://hl7.org/fhir/fm-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "The instance is currently in-force.";
-            case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
-            case DRAFT: return "A new instance the contents of which is not complete.";
-            case ENTEREDINERROR: return "The instance was entered in error.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case CANCELLED: return "Cancelled";
-            case DRAFT: return "Draft";
-            case ENTEREDINERROR: return "Entered in Error";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class EligibilityResponseStatusEnumFactory implements EnumFactory<EligibilityResponseStatus> {
-    public EligibilityResponseStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return EligibilityResponseStatus.ACTIVE;
-        if ("cancelled".equals(codeString))
-          return EligibilityResponseStatus.CANCELLED;
-        if ("draft".equals(codeString))
-          return EligibilityResponseStatus.DRAFT;
-        if ("entered-in-error".equals(codeString))
-          return EligibilityResponseStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown EligibilityResponseStatus code '"+codeString+"'");
-        }
-        public Enumeration<EligibilityResponseStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<EligibilityResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("active".equals(codeString))
-          return new Enumeration<EligibilityResponseStatus>(this, EligibilityResponseStatus.ACTIVE);
-        if ("cancelled".equals(codeString))
-          return new Enumeration<EligibilityResponseStatus>(this, EligibilityResponseStatus.CANCELLED);
-        if ("draft".equals(codeString))
-          return new Enumeration<EligibilityResponseStatus>(this, EligibilityResponseStatus.DRAFT);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<EligibilityResponseStatus>(this, EligibilityResponseStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown EligibilityResponseStatus code '"+codeString+"'");
-        }
-    public String toCode(EligibilityResponseStatus code) {
-      if (code == EligibilityResponseStatus.ACTIVE)
-        return "active";
-      if (code == EligibilityResponseStatus.CANCELLED)
-        return "cancelled";
-      if (code == EligibilityResponseStatus.DRAFT)
-        return "draft";
-      if (code == EligibilityResponseStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      return "?";
-      }
-    public String toSystem(EligibilityResponseStatus code) {
-      return code.getSystem();
-      }
-    }
 
     public enum EligibilityResponsePurpose {
         /**
@@ -364,7 +241,7 @@ public class CoverageEligibilityResponse extends DomainResource {
      */
       public InsuranceComponent(Reference coverage) {
         super();
-        this.coverage = coverage;
+        this.setCoverage(coverage);
       }
 
         /**
@@ -504,7 +381,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #item}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #item}, creating it if it does not already exist {3}
          */
         public ItemsComponent getItemFirstRep() { 
           if (getItem().isEmpty()) {
@@ -611,7 +488,7 @@ public class CoverageEligibilityResponse extends DomainResource {
           return this.coverage;
         }
         else if (name.equals("inforce")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.inforce");
+          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.insurance.inforce");
         }
         else if (name.equals("benefitPeriod")) {
           this.benefitPeriod = new Period();
@@ -883,7 +760,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #modifier}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #modifier}, creating it if it does not already exist {3}
          */
         public CodeableConcept getModifierFirstRep() { 
           if (getModifier().isEmpty()) {
@@ -1175,7 +1052,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #benefit}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #benefit}, creating it if it does not already exist {3}
          */
         public BenefitComponent getBenefitFirstRep() { 
           if (getBenefit().isEmpty()) {
@@ -1273,7 +1150,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #authorizationSupporting}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #authorizationSupporting}, creating it if it does not already exist {3}
          */
         public CodeableConcept getAuthorizationSupportingFirstRep() { 
           if (getAuthorizationSupporting().isEmpty()) {
@@ -1540,13 +1417,13 @@ public class CoverageEligibilityResponse extends DomainResource {
           return this.provider;
         }
         else if (name.equals("excluded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.excluded");
+          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.insurance.item.excluded");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.name");
+          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.insurance.item.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.insurance.item.description");
         }
         else if (name.equals("network")) {
           this.network = new CodeableConcept();
@@ -1564,13 +1441,13 @@ public class CoverageEligibilityResponse extends DomainResource {
           return addBenefit();
         }
         else if (name.equals("authorizationRequired")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.authorizationRequired");
+          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.insurance.item.authorizationRequired");
         }
         else if (name.equals("authorizationSupporting")) {
           return addAuthorizationSupporting();
         }
         else if (name.equals("authorizationUrl")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.authorizationUrl");
+          throw new FHIRException("Cannot call addChild on a primitive type CoverageEligibilityResponse.insurance.item.authorizationUrl");
         }
         else
           return super.addChild(name);
@@ -1676,7 +1553,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         @Description(shortDefinition="Benefits used", formalDefinition="The quantity of the benefit which have been consumed to date." )
         protected DataType used;
 
-        private static final long serialVersionUID = -1506285314L;
+        private static final long serialVersionUID = 1900247614L;
 
     /**
      * Constructor
@@ -1690,7 +1567,7 @@ public class CoverageEligibilityResponse extends DomainResource {
      */
       public BenefitComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -1862,14 +1739,14 @@ public class CoverageEligibilityResponse extends DomainResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Classification of benefit being provided.", 0, 1, type);
           case -1336663592: /*allowed[x]*/  return new Property("allowed[x]", "unsignedInt|string|Money", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
           case -911343192: /*allowed*/  return new Property("allowed[x]", "unsignedInt|string|Money", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
-          case 1668802034: /*allowedUnsignedInt*/  return new Property("allowed[x]", "unsignedInt|string|Money", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
-          case -2135265319: /*allowedString*/  return new Property("allowed[x]", "unsignedInt|string|Money", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
-          case -351668232: /*allowedMoney*/  return new Property("allowed[x]", "unsignedInt|string|Money", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
+          case 1668802034: /*allowedUnsignedInt*/  return new Property("allowed[x]", "unsignedInt", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
+          case -2135265319: /*allowedString*/  return new Property("allowed[x]", "string", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
+          case -351668232: /*allowedMoney*/  return new Property("allowed[x]", "Money", "The quantity of the benefit which is permitted under the coverage.", 0, 1, allowed);
           case -147553373: /*used[x]*/  return new Property("used[x]", "unsignedInt|string|Money", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
           case 3599293: /*used*/  return new Property("used[x]", "unsignedInt|string|Money", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
-          case 1252740285: /*usedUnsignedInt*/  return new Property("used[x]", "unsignedInt|string|Money", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
-          case 2051978798: /*usedString*/  return new Property("used[x]", "unsignedInt|string|Money", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
-          case -78048509: /*usedMoney*/  return new Property("used[x]", "unsignedInt|string|Money", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
+          case 1252740285: /*usedUnsignedInt*/  return new Property("used[x]", "unsignedInt", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
+          case 2051978798: /*usedString*/  return new Property("used[x]", "string", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
+          case -78048509: /*usedMoney*/  return new Property("used[x]", "Money", "The quantity of the benefit which have been consumed to date.", 0, 1, used);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1879,8 +1756,8 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -911343192: /*allowed*/ return this.allowed == null ? new Base[0] : new Base[] {this.allowed}; // Type
-        case 3599293: /*used*/ return this.used == null ? new Base[0] : new Base[] {this.used}; // Type
+        case -911343192: /*allowed*/ return this.allowed == null ? new Base[0] : new Base[] {this.allowed}; // DataType
+        case 3599293: /*used*/ return this.used == null ? new Base[0] : new Base[] {this.used}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1893,10 +1770,10 @@ public class CoverageEligibilityResponse extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -911343192: // allowed
-          this.allowed = TypeConvertor.castToType(value); // Type
+          this.allowed = TypeConvertor.castToType(value); // DataType
           return value;
         case 3599293: // used
-          this.used = TypeConvertor.castToType(value); // Type
+          this.used = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1908,9 +1785,9 @@ public class CoverageEligibilityResponse extends DomainResource {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("allowed[x]")) {
-          this.allowed = TypeConvertor.castToType(value); // Type
+          this.allowed = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("used[x]")) {
-          this.used = TypeConvertor.castToType(value); // Type
+          this.used = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2043,7 +1920,7 @@ public class CoverageEligibilityResponse extends DomainResource {
      */
       public ErrorsComponent(CodeableConcept code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -2196,7 +2073,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | cancelled | draft | entered-in-error", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fm-status")
-    protected Enumeration<EligibilityResponseStatus> status;
+    protected Enumeration<FinancialResourceStatusCodes> status;
 
     /**
      * Code to specify whether requesting: prior authorization requirements for some service categories or billing codes; benefits for coverages specified or discovered; discovery and return of coverages for the patient; and/or validation that the specified coverage is in-force at the date/period specified or 'now' if not specified.
@@ -2247,7 +2124,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     @Child(name = "outcome", type = {CodeType.class}, order=8, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="queued | complete | error | partial", formalDefinition="The outcome of the request processing." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/remittance-outcome")
-    protected Enumeration<RemittanceOutcome> outcome;
+    protected Enumeration<ClaimProcessingCodes> outcome;
 
     /**
      * A human readable description of the status of the adjudication.
@@ -2292,7 +2169,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     @Description(shortDefinition="Processing errors", formalDefinition="Errors encountered during the processing of the request." )
     protected List<ErrorsComponent> error;
 
-    private static final long serialVersionUID = -1527014784L;
+    private static final long serialVersionUID = 1048956296L;
 
   /**
    * Constructor
@@ -2304,14 +2181,15 @@ public class CoverageEligibilityResponse extends DomainResource {
   /**
    * Constructor
    */
-    public CoverageEligibilityResponse(Enumeration<EligibilityResponseStatus> status, Reference patient, DateTimeType created, Reference request, Enumeration<RemittanceOutcome> outcome, Reference insurer) {
+    public CoverageEligibilityResponse(FinancialResourceStatusCodes status, EligibilityResponsePurpose purpose, Reference patient, Date created, Reference request, ClaimProcessingCodes outcome, Reference insurer) {
       super();
-      this.status = status;
-      this.patient = patient;
-      this.created = created;
-      this.request = request;
-      this.outcome = outcome;
-      this.insurer = insurer;
+      this.setStatus(status);
+      this.addPurpose(purpose);
+      this.setPatient(patient);
+      this.setCreated(created);
+      this.setRequest(request);
+      this.setOutcome(outcome);
+      this.setInsurer(insurer);
     }
 
     /**
@@ -2358,7 +2236,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2370,12 +2248,12 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<EligibilityResponseStatus> getStatusElement() { 
+    public Enumeration<FinancialResourceStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CoverageEligibilityResponse.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<EligibilityResponseStatus>(new EligibilityResponseStatusEnumFactory()); // bb
+          this.status = new Enumeration<FinancialResourceStatusCodes>(new FinancialResourceStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -2390,7 +2268,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @param value {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CoverageEligibilityResponse setStatusElement(Enumeration<EligibilityResponseStatus> value) { 
+    public CoverageEligibilityResponse setStatusElement(Enumeration<FinancialResourceStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -2398,16 +2276,16 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return The status of the resource instance.
      */
-    public EligibilityResponseStatus getStatus() { 
+    public FinancialResourceStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the resource instance.
      */
-    public CoverageEligibilityResponse setStatus(EligibilityResponseStatus value) { 
+    public CoverageEligibilityResponse setStatus(FinancialResourceStatusCodes value) { 
         if (this.status == null)
-          this.status = new Enumeration<EligibilityResponseStatus>(new EligibilityResponseStatusEnumFactory());
+          this.status = new Enumeration<FinancialResourceStatusCodes>(new FinancialResourceStatusCodesEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -2644,12 +2522,12 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return {@link #outcome} (The outcome of the request processing.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public Enumeration<RemittanceOutcome> getOutcomeElement() { 
+    public Enumeration<ClaimProcessingCodes> getOutcomeElement() { 
       if (this.outcome == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CoverageEligibilityResponse.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<RemittanceOutcome>(new RemittanceOutcomeEnumFactory()); // bb
+          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -2664,7 +2542,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @param value {@link #outcome} (The outcome of the request processing.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public CoverageEligibilityResponse setOutcomeElement(Enumeration<RemittanceOutcome> value) { 
+    public CoverageEligibilityResponse setOutcomeElement(Enumeration<ClaimProcessingCodes> value) { 
       this.outcome = value;
       return this;
     }
@@ -2672,16 +2550,16 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return The outcome of the request processing.
      */
-    public RemittanceOutcome getOutcome() { 
+    public ClaimProcessingCodes getOutcome() { 
       return this.outcome == null ? null : this.outcome.getValue();
     }
 
     /**
      * @param value The outcome of the request processing.
      */
-    public CoverageEligibilityResponse setOutcome(RemittanceOutcome value) { 
+    public CoverageEligibilityResponse setOutcome(ClaimProcessingCodes value) { 
         if (this.outcome == null)
-          this.outcome = new Enumeration<RemittanceOutcome>(new RemittanceOutcomeEnumFactory());
+          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory());
         this.outcome.setValue(value);
       return this;
     }
@@ -2803,7 +2681,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #insurance}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #insurance}, creating it if it does not already exist {3}
      */
     public InsuranceComponent getInsuranceFirstRep() { 
       if (getInsurance().isEmpty()) {
@@ -2929,7 +2807,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #error}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #error}, creating it if it does not already exist {3}
      */
     public ErrorsComponent getErrorFirstRep() { 
       if (getError().isEmpty()) {
@@ -2966,8 +2844,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "The party who is the beneficiary of the supplied coverage and for whom eligibility is sought.", 0, 1, patient);
         case -1927922223: /*serviced[x]*/  return new Property("serviced[x]", "date|Period", "The date or dates when the enclosed suite of services were performed or completed.", 0, 1, serviced);
         case 1379209295: /*serviced*/  return new Property("serviced[x]", "date|Period", "The date or dates when the enclosed suite of services were performed or completed.", 0, 1, serviced);
-        case 363246749: /*servicedDate*/  return new Property("serviced[x]", "date|Period", "The date or dates when the enclosed suite of services were performed or completed.", 0, 1, serviced);
-        case 1534966512: /*servicedPeriod*/  return new Property("serviced[x]", "date|Period", "The date or dates when the enclosed suite of services were performed or completed.", 0, 1, serviced);
+        case 363246749: /*servicedDate*/  return new Property("serviced[x]", "date", "The date or dates when the enclosed suite of services were performed or completed.", 0, 1, serviced);
+        case 1534966512: /*servicedPeriod*/  return new Property("serviced[x]", "Period", "The date or dates when the enclosed suite of services were performed or completed.", 0, 1, serviced);
         case 1028554472: /*created*/  return new Property("created", "dateTime", "The date this resource was created.", 0, 1, created);
         case 693934258: /*requestor*/  return new Property("requestor", "Reference(Practitioner|PractitionerRole|Organization)", "The provider which is responsible for the request.", 0, 1, requestor);
         case 1095692943: /*request*/  return new Property("request", "Reference(CoverageEligibilityRequest)", "Reference to the original request resource.", 0, 1, request);
@@ -2987,14 +2865,14 @@ public class CoverageEligibilityResponse extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<EligibilityResponseStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FinancialResourceStatusCodes>
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : this.purpose.toArray(new Base[this.purpose.size()]); // Enumeration<EligibilityResponsePurpose>
         case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
-        case 1379209295: /*serviced*/ return this.serviced == null ? new Base[0] : new Base[] {this.serviced}; // Type
+        case 1379209295: /*serviced*/ return this.serviced == null ? new Base[0] : new Base[] {this.serviced}; // DataType
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
         case 693934258: /*requestor*/ return this.requestor == null ? new Base[0] : new Base[] {this.requestor}; // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<RemittanceOutcome>
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case 1957615864: /*insurer*/ return this.insurer == null ? new Base[0] : new Base[] {this.insurer}; // Reference
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // InsuranceComponent
@@ -3013,8 +2891,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new EligibilityResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<EligibilityResponseStatus>
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
           return value;
         case -220463842: // purpose
           value = new EligibilityResponsePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -3024,7 +2902,7 @@ public class CoverageEligibilityResponse extends DomainResource {
           this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1379209295: // serviced
-          this.serviced = TypeConvertor.castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // DataType
           return value;
         case 1028554472: // created
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -3036,8 +2914,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
+          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
           return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
@@ -3067,15 +2945,15 @@ public class CoverageEligibilityResponse extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new EligibilityResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<EligibilityResponseStatus>
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
         } else if (name.equals("purpose")) {
           value = new EligibilityResponsePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getPurpose().add((Enumeration) value);
         } else if (name.equals("patient")) {
           this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("serviced[x]")) {
-          this.serviced = TypeConvertor.castToType(value); // Type
+          this.serviced = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("created")) {
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requestor")) {
@@ -3083,8 +2961,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         } else if (name.equals("request")) {
           this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
+          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("insurer")) {
@@ -3299,50 +3177,24 @@ public class CoverageEligibilityResponse extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>created</b>
    * <p>
-   * Description: <b>The business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.identifier</b><br>
+   * Description: <b>The creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CoverageEligibilityResponse.created</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="CoverageEligibilityResponse.identifier", description="The business identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="created", path="CoverageEligibilityResponse.created", description="The creation date", type="date" )
+  public static final String SP_CREATED = "created";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>created</b>
    * <p>
-   * Description: <b>The business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.identifier</b><br>
+   * Description: <b>The creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CoverageEligibilityResponse.created</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>request</b>
-   * <p>
-   * Description: <b>The EligibilityRequest reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.request</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="request", path="CoverageEligibilityResponse.request", description="The EligibilityRequest reference", type="reference", target={CoverageEligibilityRequest.class } )
-  public static final String SP_REQUEST = "request";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>request</b>
-   * <p>
-   * Description: <b>The EligibilityRequest reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.request</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CoverageEligibilityResponse:request</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:request").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
 
  /**
    * Search parameter: <b>disposition</b>
@@ -3365,30 +3217,24 @@ public class CoverageEligibilityResponse extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DISPOSITION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DISPOSITION);
 
  /**
-   * Search parameter: <b>patient</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>The reference to the patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.patient</b><br>
+   * Description: <b>The business identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CoverageEligibilityResponse.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="CoverageEligibilityResponse.patient", description="The reference to the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
+  @SearchParamDefinition(name="identifier", path="CoverageEligibilityResponse.identifier", description="The business identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>The reference to the patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.patient</b><br>
+   * Description: <b>The business identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CoverageEligibilityResponse.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CoverageEligibilityResponse:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:patient").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>insurer</b>
@@ -3417,26 +3263,6 @@ public class CoverageEligibilityResponse extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_INSURER = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:insurer").toLocked();
 
  /**
-   * Search parameter: <b>created</b>
-   * <p>
-   * Description: <b>The creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CoverageEligibilityResponse.created</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="created", path="CoverageEligibilityResponse.created", description="The creation date", type="date" )
-  public static final String SP_CREATED = "created";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>created</b>
-   * <p>
-   * Description: <b>The creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CoverageEligibilityResponse.created</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
-
- /**
    * Search parameter: <b>outcome</b>
    * <p>
    * Description: <b>The processing outcome</b><br>
@@ -3457,6 +3283,58 @@ public class CoverageEligibilityResponse extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam OUTCOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OUTCOME);
 
  /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The reference to the patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CoverageEligibilityResponse.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="CoverageEligibilityResponse.patient", description="The reference to the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The reference to the patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CoverageEligibilityResponse.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CoverageEligibilityResponse:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:patient").toLocked();
+
+ /**
+   * Search parameter: <b>request</b>
+   * <p>
+   * Description: <b>The EligibilityRequest reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CoverageEligibilityResponse.request</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="request", path="CoverageEligibilityResponse.request", description="The EligibilityRequest reference", type="reference", target={CoverageEligibilityRequest.class } )
+  public static final String SP_REQUEST = "request";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
+   * <p>
+   * Description: <b>The EligibilityRequest reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CoverageEligibilityResponse.request</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CoverageEligibilityResponse:request</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:request").toLocked();
+
+ /**
    * Search parameter: <b>requestor</b>
    * <p>
    * Description: <b>The EligibilityRequest provider</b><br>
@@ -3464,7 +3342,7 @@ public class CoverageEligibilityResponse extends DomainResource {
    * Path: <b>CoverageEligibilityResponse.requestor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="requestor", path="CoverageEligibilityResponse.requestor", description="The EligibilityRequest provider", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="requestor", path="CoverageEligibilityResponse.requestor", description="The EligibilityRequest provider", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_REQUESTOR = "requestor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>requestor</b>

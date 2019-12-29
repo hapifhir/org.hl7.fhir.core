@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyProcedureComponent;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -90,9 +90,9 @@ public class ImagingStudy extends VersionConvertor_40_50 {
     if (src.hasNumberOfInstances())
       tgt.setNumberOfInstancesElement(convertUnsignedInt(src.getNumberOfInstancesElement()));
     if (src.hasProcedureReference())
-      tgt.setProcedureReference(convertReference(src.getProcedureReference()));
+      tgt.addProcedure().setValue(convertReference(src.getProcedureReference()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProcedureCode())
-      tgt.addProcedureCode(convertCodeableConcept(t));
+      tgt.addProcedure().setValue(convertCodeableConcept(t));
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -137,10 +137,13 @@ public class ImagingStudy extends VersionConvertor_40_50 {
       tgt.setNumberOfSeriesElement(convertUnsignedInt(src.getNumberOfSeriesElement()));
     if (src.hasNumberOfInstances())
       tgt.setNumberOfInstancesElement(convertUnsignedInt(src.getNumberOfInstancesElement()));
-    if (src.hasProcedureReference())
-      tgt.setProcedureReference(convertReference(src.getProcedureReference()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProcedureCode())
-      tgt.addProcedureCode(convertCodeableConcept(t));
+    for (ImagingStudyProcedureComponent t : src.getProcedure()) {  
+      if (t.hasValueCodeableConcept())
+        tgt.addProcedureCode(convertCodeableConcept(t.getValueCodeableConcept()));
+      if (t.hasValueReference()) {
+       tgt.setProcedureReference(convertReference(t.getValueReference()));
+      }
+    }
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())

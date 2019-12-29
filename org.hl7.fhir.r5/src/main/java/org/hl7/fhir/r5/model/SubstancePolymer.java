@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Todo.
  */
@@ -164,7 +166,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #startingMaterial}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #startingMaterial}, creating it if it does not already exist {3}
          */
         public SubstancePolymerMonomerSetStartingMaterialComponent getStartingMaterialFirstRep() { 
           if (getStartingMaterial().isEmpty()) {
@@ -564,7 +566,7 @@ public class SubstancePolymer extends DomainResource {
           return this.type;
         }
         else if (name.equals("isDefining")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.isDefining");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.monomerSet.startingMaterial.isDefining");
         }
         else if (name.equals("amount")) {
           this.amount = new SubstanceAmount();
@@ -822,7 +824,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #repeatUnit}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #repeatUnit}, creating it if it does not already exist {3}
          */
         public SubstancePolymerRepeatRepeatUnitComponent getRepeatUnitFirstRep() { 
           if (getRepeatUnit().isEmpty()) {
@@ -925,10 +927,10 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("numberOfUnits")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.numberOfUnits");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.numberOfUnits");
         }
         else if (name.equals("averageMolecularFormula")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.averageMolecularFormula");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.averageMolecularFormula");
         }
         else if (name.equals("repeatUnitAmountType")) {
           this.repeatUnitAmountType = new CodeableConcept();
@@ -1181,7 +1183,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #degreeOfPolymerisation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #degreeOfPolymerisation}, creating it if it does not already exist {3}
          */
         public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent getDegreeOfPolymerisationFirstRep() { 
           if (getDegreeOfPolymerisation().isEmpty()) {
@@ -1234,7 +1236,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #structuralRepresentation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #structuralRepresentation}, creating it if it does not already exist {3}
          */
         public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent getStructuralRepresentationFirstRep() { 
           if (getStructuralRepresentation().isEmpty()) {
@@ -1351,7 +1353,7 @@ public class SubstancePolymer extends DomainResource {
           return this.orientationOfPolymerisation;
         }
         else if (name.equals("repeatUnit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeatUnit");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.repeatUnit");
         }
         else if (name.equals("amount")) {
           this.amount = new SubstanceAmount();
@@ -1842,7 +1844,7 @@ public class SubstancePolymer extends DomainResource {
           return this.type;
         }
         else if (name.equals("representation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.representation");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.structuralRepresentation.representation");
         }
         else if (name.equals("attachment")) {
           this.attachment = new Attachment();
@@ -2041,7 +2043,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #copolymerConnectivity}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #copolymerConnectivity}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCopolymerConnectivityFirstRep() { 
       if (getCopolymerConnectivity().isEmpty()) {
@@ -2155,7 +2157,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #monomerSet}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #monomerSet}, creating it if it does not already exist {3}
      */
     public SubstancePolymerMonomerSetComponent getMonomerSetFirstRep() { 
       if (getMonomerSet().isEmpty()) {
@@ -2208,7 +2210,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #repeat}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #repeat}, creating it if it does not already exist {3}
      */
     public SubstancePolymerRepeatComponent getRepeatFirstRep() { 
       if (getRepeat().isEmpty()) {

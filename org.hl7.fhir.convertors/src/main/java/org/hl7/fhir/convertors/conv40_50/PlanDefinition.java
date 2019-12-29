@@ -396,19 +396,19 @@ public class PlanDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.PlanDefinition.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.PlanDefinition.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.PlanDefinition.RequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.PlanDefinition.RequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.PlanDefinition.RequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.PlanDefinition.RequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.RequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.PlanDefinition.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -420,18 +420,18 @@ public class PlanDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case VISUALGROUP: return org.hl7.fhir.r5.model.PlanDefinition.ActionGroupingBehavior.VISUALGROUP;
-    case LOGICALGROUP: return org.hl7.fhir.r5.model.PlanDefinition.ActionGroupingBehavior.LOGICALGROUP;
-    case SENTENCEGROUP: return org.hl7.fhir.r5.model.PlanDefinition.ActionGroupingBehavior.SENTENCEGROUP;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionGroupingBehavior.NULL;
+    case VISUALGROUP: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.VISUALGROUP;
+    case LOGICALGROUP: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.LOGICALGROUP;
+    case SENTENCEGROUP: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.SENTENCEGROUP;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r5.model.PlanDefinition.ActionGroupingBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -442,21 +442,21 @@ public class PlanDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ANY: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.ANY;
-    case ALL: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.ALL;
-    case ALLORNONE: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.ALLORNONE;
-    case EXACTLYONE: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.EXACTLYONE;
-    case ATMOSTONE: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.ATMOSTONE;
-    case ONEORMORE: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.ONEORMORE;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior.NULL;
+    case ANY: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ANY;
+    case ALL: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALL;
+    case ALLORNONE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALLORNONE;
+    case EXACTLYONE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.EXACTLYONE;
+    case ATMOSTONE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ATMOSTONE;
+    case ONEORMORE: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ONEORMORE;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r5.model.PlanDefinition.ActionSelectionBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -470,18 +470,18 @@ public class PlanDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case MUST: return org.hl7.fhir.r5.model.PlanDefinition.ActionRequiredBehavior.MUST;
-    case COULD: return org.hl7.fhir.r5.model.PlanDefinition.ActionRequiredBehavior.COULD;
-    case MUSTUNLESSDOCUMENTED: return org.hl7.fhir.r5.model.PlanDefinition.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionRequiredBehavior.NULL;
+    case MUST: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUST;
+    case COULD: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.COULD;
+    case MUSTUNLESSDOCUMENTED: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r5.model.PlanDefinition.ActionRequiredBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -492,17 +492,17 @@ public class PlanDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case YES: return org.hl7.fhir.r5.model.PlanDefinition.ActionPrecheckBehavior.YES;
-    case NO: return org.hl7.fhir.r5.model.PlanDefinition.ActionPrecheckBehavior.NO;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionPrecheckBehavior.NULL;
+    case YES: return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.YES;
+    case NO: return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NO;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r5.model.PlanDefinition.ActionPrecheckBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -512,17 +512,17 @@ public class PlanDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case SINGLE: return org.hl7.fhir.r5.model.PlanDefinition.ActionCardinalityBehavior.SINGLE;
-    case MULTIPLE: return org.hl7.fhir.r5.model.PlanDefinition.ActionCardinalityBehavior.MULTIPLE;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionCardinalityBehavior.NULL;
+    case SINGLE: return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.SINGLE;
+    case MULTIPLE: return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.MULTIPLE;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r5.model.PlanDefinition.ActionCardinalityBehavior src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -556,18 +556,18 @@ public class PlanDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case APPLICABILITY: return org.hl7.fhir.r5.model.PlanDefinition.ActionConditionKind.APPLICABILITY;
-    case START: return org.hl7.fhir.r5.model.PlanDefinition.ActionConditionKind.START;
-    case STOP: return org.hl7.fhir.r5.model.PlanDefinition.ActionConditionKind.STOP;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionConditionKind.NULL;
+    case APPLICABILITY: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.APPLICABILITY;
+    case START: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.START;
+    case STOP: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.STOP;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r5.model.PlanDefinition.ActionConditionKind src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -606,24 +606,24 @@ public class PlanDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case BEFORESTART: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.BEFORESTART;
-    case BEFORE: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.BEFORE;
-    case BEFOREEND: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.BEFOREEND;
-    case CONCURRENTWITHSTART: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHSTART;
-    case CONCURRENT: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.CONCURRENT;
-    case CONCURRENTWITHEND: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHEND;
-    case AFTERSTART: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.AFTERSTART;
-    case AFTER: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.AFTER;
-    case AFTEREND: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.AFTEREND;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType.NULL;
+    case BEFORESTART: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORESTART;
+    case BEFORE: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORE;
+    case BEFOREEND: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFOREEND;
+    case CONCURRENTWITHSTART: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHSTART;
+    case CONCURRENT: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENT;
+    case CONCURRENTWITHEND: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHEND;
+    case AFTERSTART: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTERSTART;
+    case AFTER: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTER;
+    case AFTEREND: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTEREND;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r5.model.PlanDefinition.ActionRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -664,19 +664,19 @@ public class PlanDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType convertActionParticipantType(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionParticipantType convertActionParticipantType(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PATIENT: return org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType.PATIENT;
-    case PRACTITIONER: return org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType.PRACTITIONER;
-    case RELATEDPERSON: return org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType.RELATEDPERSON;
-    case DEVICE: return org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType.DEVICE;
-    default: return org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType.NULL;
+    case PATIENT: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PATIENT;
+    case PRACTITIONER: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PRACTITIONER;
+    case RELATEDPERSON: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.RELATEDPERSON;
+    case DEVICE: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.DEVICE;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType convertActionParticipantType(org.hl7.fhir.r5.model.PlanDefinition.ActionParticipantType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType convertActionParticipantType(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

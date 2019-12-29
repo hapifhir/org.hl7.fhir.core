@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,48 +25,49 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseMetaType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
+import org.hl7.fhir.instance.model.api.IBaseMetaType;
 /**
- * The metadata about a resource. This is content in the resource that is maintained by the infrastructure. Changes to the content might not always be associated with version changes to the resource.
+ * Base StructureDefinition for Meta Type: The metadata about a resource. This is content in the resource that is maintained by the infrastructure. Changes to the content might not always be associated with version changes to the resource.
  */
 @DatatypeDef(name="Meta")
 public class Meta extends DataType implements IBaseMetaType {
@@ -85,17 +87,17 @@ public class Meta extends DataType implements IBaseMetaType {
     protected InstantType lastUpdated;
 
     /**
-     * A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
+     * A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
      */
     @Child(name = "source", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Identifies where the resource comes from", formalDefinition="A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc." )
+    @Description(shortDefinition="Identifies where the resource comes from", formalDefinition="A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc." )
     protected UriType source;
 
     /**
-     * A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].
+     * A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).
      */
     @Child(name = "profile", type = {CanonicalType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Profiles this resource claims to conform to", formalDefinition="A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]]." )
+    @Description(shortDefinition="Profiles this resource claims to conform to", formalDefinition="A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url)." )
     protected List<CanonicalType> profile;
 
     /**
@@ -222,7 +224,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @return {@link #source} (A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.). This is the underlying object with id, value and extensions. The accessor "getSource" gives direct access to the value
+     * @return {@link #source} (A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.). This is the underlying object with id, value and extensions. The accessor "getSource" gives direct access to the value
      */
     public UriType getSourceElement() { 
       if (this.source == null)
@@ -242,7 +244,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @param value {@link #source} (A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.). This is the underlying object with id, value and extensions. The accessor "getSource" gives direct access to the value
+     * @param value {@link #source} (A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.). This is the underlying object with id, value and extensions. The accessor "getSource" gives direct access to the value
      */
     public Meta setSourceElement(UriType value) { 
       this.source = value;
@@ -250,14 +252,14 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @return A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
+     * @return A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
      */
     public String getSource() { 
       return this.source == null ? null : this.source.getValue();
     }
 
     /**
-     * @param value A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
+     * @param value A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
      */
     public Meta setSource(String value) { 
       if (Utilities.noString(value))
@@ -271,7 +273,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @return {@link #profile} (A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].)
+     * @return {@link #profile} (A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).)
      */
     public List<CanonicalType> getProfile() { 
       if (this.profile == null)
@@ -297,7 +299,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @return {@link #profile} (A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].)
+     * @return {@link #profile} (A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).)
      */
     public CanonicalType addProfileElement() {//2 
       CanonicalType t = new CanonicalType();
@@ -308,7 +310,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @param value {@link #profile} (A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].)
+     * @param value {@link #profile} (A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).)
      */
     public Meta addProfile(String value) { //1
       CanonicalType t = new CanonicalType();
@@ -320,13 +322,13 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @param value {@link #profile} (A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].)
+     * @param value {@link #profile} (A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).)
      */
     public boolean hasProfile(String value) { 
       if (this.profile == null)
         return false;
       for (CanonicalType v : this.profile)
-        if (v.getValue().equals(value)) // canonical(StructureDefinition)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -375,7 +377,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #security}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #security}, creating it if it does not already exist {3}
      */
     public Coding getSecurityFirstRep() { 
       if (getSecurity().isEmpty()) {
@@ -428,7 +430,7 @@ public class Meta extends DataType implements IBaseMetaType {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #tag}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #tag}, creating it if it does not already exist {3}
      */
     public Coding getTagFirstRep() { 
       if (getTag().isEmpty()) {
@@ -437,61 +439,12 @@ public class Meta extends DataType implements IBaseMetaType {
       return getTag().get(0);
     }
 
-    /**
-     * Convenience method which adds a tag
-     * 
-     * @param theSystem The code system
-     * @param theCode The code
-     * @param theDisplay The display name
-     * @return Returns a reference to <code>this</code> for easy chaining
-     */
-    public Meta addTag(String theSystem, String theCode, String theDisplay) {
-     addTag().setSystem(theSystem).setCode(theCode).setDisplay(theDisplay);
-     return this;
-    }
-    /**
-     * Convenience method which adds a security tag
-     * 
-     * @param theSystem The code system
-     * @param theCode The code
-     * @param theDisplay The display name
-     * @return Returns a reference to <code>this</code> for easy chaining
-     */
-    public Meta addSecurity(String theSystem, String theCode, String theDisplay) {
-     addSecurity().setSystem(theSystem).setCode(theCode).setDisplay(theDisplay);
-     return this;
-    }
-   /**
-   * Returns the first tag (if any) that has the given system and code, or returns
-   * <code>null</code> if none
-   */
-  public Coding getTag(String theSystem, String theCode) {
-    for (Coding next : getTag()) {
-      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) {
-        return next;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Returns the first security label (if any) that has the given system and code, or returns
-   * <code>null</code> if none
-   */
-  public Coding getSecurity(String theSystem, String theCode) {
-    for (Coding next : getTag()) {
-      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) {
-        return next;
-      }
-    }
-    return null;
-  }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("versionId", "id", "The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.", 0, 1, versionId));
         children.add(new Property("lastUpdated", "instant", "When the resource last changed - e.g. when the version changed.", 0, 1, lastUpdated));
-        children.add(new Property("source", "uri", "A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.", 0, 1, source));
-        children.add(new Property("profile", "canonical(StructureDefinition)", "A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].", 0, java.lang.Integer.MAX_VALUE, profile));
+        children.add(new Property("source", "uri", "A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.", 0, 1, source));
+        children.add(new Property("profile", "canonical(StructureDefinition)", "A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).", 0, java.lang.Integer.MAX_VALUE, profile));
         children.add(new Property("security", "Coding", "Security labels applied to this resource. These tags connect specific resources to the overall security policy and infrastructure.", 0, java.lang.Integer.MAX_VALUE, security));
         children.add(new Property("tag", "Coding", "Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and workflow, and applications are not required to consider the tags when interpreting the meaning of a resource.", 0, java.lang.Integer.MAX_VALUE, tag));
       }
@@ -501,8 +454,8 @@ public class Meta extends DataType implements IBaseMetaType {
         switch (_hash) {
         case -1407102957: /*versionId*/  return new Property("versionId", "id", "The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.", 0, 1, versionId);
         case 1649733957: /*lastUpdated*/  return new Property("lastUpdated", "instant", "When the resource last changed - e.g. when the version changed.", 0, 1, lastUpdated);
-        case -896505829: /*source*/  return new Property("source", "uri", "A uri that identifies the source system of the resource. This provides a minimal amount of [[[Provenance]]] information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.", 0, 1, source);
-        case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "A list of profiles (references to [[[StructureDefinition]]] resources) that this resource claims to conform to. The URL is a reference to [[[StructureDefinition.url]]].", 0, java.lang.Integer.MAX_VALUE, profile);
+        case -896505829: /*source*/  return new Property("source", "uri", "A uri that identifies the source system of the resource. This provides a minimal amount of [Provenance](provenance.html#) information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.", 0, 1, source);
+        case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "A list of profiles (references to [StructureDefinition](structuredefinition.html#) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](structuredefinition-definitions.html#StructureDefinition.url).", 0, java.lang.Integer.MAX_VALUE, profile);
         case 949122880: /*security*/  return new Property("security", "Coding", "Security labels applied to this resource. These tags connect specific resources to the overall security policy and infrastructure.", 0, java.lang.Integer.MAX_VALUE, security);
         case 114586: /*tag*/  return new Property("tag", "Coding", "Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and workflow, and applications are not required to consider the tags when interpreting the meaning of a resource.", 0, java.lang.Integer.MAX_VALUE, tag);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -678,7 +631,7 @@ public class Meta extends DataType implements IBaseMetaType {
           return false;
         Meta o = (Meta) other_;
         return compareValues(versionId, o.versionId, true) && compareValues(lastUpdated, o.lastUpdated, true)
-           && compareValues(source, o.source, true);
+           && compareValues(source, o.source, true) && compareValues(profile, o.profile, true);
       }
 
       public boolean isEmpty() {
@@ -686,6 +639,47 @@ public class Meta extends DataType implements IBaseMetaType {
           , profile, security, tag);
       }
 
+// Manual code (from Configuration.txt)t:
+    /** 
+     * Convenience method which adds a tag 
+     *  
+     * @param theSystem The code system 
+     * @param theCode The code 
+     * @param theDisplay The display name 
+     * @return Returns a reference to <code>this</code> for easy chaining 
+     */ 
+    public Meta addTag(String theSystem, String theCode, String theDisplay) { 
+     addTag().setSystem(theSystem).setCode(theCode).setDisplay(theDisplay); 
+     return this; 
+    } 
+
+   /**
+   * Returns the first tag (if any) that has the given system and code, or returns 
+   * <code>null</code> if none 
+   */
+  public Coding getTag(String theSystem, String theCode) { 
+    for (Coding next : getTag()) {
+      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) { 
+        return next; 
+      } 
+    }
+    return null; 
+  } 
+
+  /**
+   * Returns the first security label (if any) that has the given system and code, or returns 
+   * <code>null</code> if none 
+   */
+  public Coding getSecurity(String theSystem, String theCode) { 
+    for (Coding next : getTag()) {
+      if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) { 
+        return next; 
+      } 
+    }
+    return null; 
+  }
+
+// end addition
 
 }
 

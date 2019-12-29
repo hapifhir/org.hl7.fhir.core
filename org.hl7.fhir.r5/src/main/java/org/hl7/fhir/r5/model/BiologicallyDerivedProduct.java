@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,6 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A material substance originating from a biological entity intended to be transplanted or infused
 into another (possibly the same) biological entity.
@@ -215,11 +217,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
     public enum BiologicallyDerivedProductStatus {
         /**
-         * Product is currently available for use.
+         * 
          */
         AVAILABLE, 
         /**
-         * Product is not currently available for use.
+         * 
          */
         UNAVAILABLE, 
         /**
@@ -254,8 +256,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case AVAILABLE: return "Product is currently available for use.";
-            case UNAVAILABLE: return "Product is not currently available for use.";
+            case AVAILABLE: return "";
+            case UNAVAILABLE: return "";
             default: return "?";
           }
         }
@@ -436,7 +438,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         @Description(shortDefinition="Time of product collection", formalDefinition="Time of product collection." )
         protected DataType collected;
 
-        private static final long serialVersionUID = -2115607425L;
+        private static final long serialVersionUID = 626956533L;
 
     /**
      * Constructor
@@ -558,8 +560,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           case -896505829: /*source*/  return new Property("source", "Reference(Patient|Organization)", "The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.", 0, 1, source);
           case 1632037015: /*collected[x]*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
           case 1883491145: /*collected*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
-          case 2005009924: /*collectedDateTime*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
-          case 653185642: /*collectedPeriod*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
+          case 2005009924: /*collectedDateTime*/  return new Property("collected[x]", "dateTime", "Time of product collection.", 0, 1, collected);
+          case 653185642: /*collectedPeriod*/  return new Property("collected[x]", "Period", "Time of product collection.", 0, 1, collected);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -570,7 +572,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         switch (hash) {
         case 1883491469: /*collector*/ return this.collector == null ? new Base[0] : new Base[] {this.collector}; // Reference
         case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // Reference
-        case 1883491145: /*collected*/ return this.collected == null ? new Base[0] : new Base[] {this.collected}; // Type
+        case 1883491145: /*collected*/ return this.collected == null ? new Base[0] : new Base[] {this.collected}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -586,7 +588,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           this.source = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1883491145: // collected
-          this.collected = TypeConvertor.castToType(value); // Type
+          this.collected = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -600,7 +602,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else if (name.equals("source")) {
           this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("collected[x]")) {
-          this.collected = TypeConvertor.castToType(value); // Type
+          this.collected = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -728,7 +730,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         @Description(shortDefinition="Time of processing", formalDefinition="Time of processing." )
         protected DataType time;
 
-        private static final long serialVersionUID = 1933636455L;
+        private static final long serialVersionUID = 1871947569L;
 
     /**
      * Constructor
@@ -901,8 +903,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           case -1226589236: /*additive*/  return new Property("additive", "Reference(Substance)", "Substance added during processing.", 0, 1, additive);
           case -1313930605: /*time[x]*/  return new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time);
           case 3560141: /*time*/  return new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time);
-          case 2135345544: /*timeDateTime*/  return new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time);
-          case 693544686: /*timePeriod*/  return new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time);
+          case 2135345544: /*timeDateTime*/  return new Property("time[x]", "dateTime", "Time of processing.", 0, 1, time);
+          case 693544686: /*timePeriod*/  return new Property("time[x]", "Period", "Time of processing.", 0, 1, time);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -914,7 +916,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : new Base[] {this.procedure}; // CodeableConcept
         case -1226589236: /*additive*/ return this.additive == null ? new Base[0] : new Base[] {this.additive}; // Reference
-        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // Type
+        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -933,7 +935,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           this.additive = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3560141: // time
-          this.time = TypeConvertor.castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -949,7 +951,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else if (name.equals("additive")) {
           this.additive = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("time[x]")) {
-          this.time = TypeConvertor.castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -983,7 +985,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.description");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.processing.description");
         }
         else if (name.equals("procedure")) {
           this.procedure = new CodeableConcept();
@@ -1068,7 +1070,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         @Description(shortDefinition="Time of manipulation", formalDefinition="Time of manipulation." )
         protected DataType time;
 
-        private static final long serialVersionUID = 717201078L;
+        private static final long serialVersionUID = -1507978496L;
 
     /**
      * Constructor
@@ -1189,8 +1191,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           case -1724546052: /*description*/  return new Property("description", "string", "Description of manipulation.", 0, 1, description);
           case -1313930605: /*time[x]*/  return new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time);
           case 3560141: /*time*/  return new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time);
-          case 2135345544: /*timeDateTime*/  return new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time);
-          case 693544686: /*timePeriod*/  return new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time);
+          case 2135345544: /*timeDateTime*/  return new Property("time[x]", "dateTime", "Time of manipulation.", 0, 1, time);
+          case 693544686: /*timePeriod*/  return new Property("time[x]", "Period", "Time of manipulation.", 0, 1, time);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1200,7 +1202,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // Type
+        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1213,7 +1215,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3560141: // time
-          this.time = TypeConvertor.castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1225,7 +1227,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("time[x]")) {
-          this.time = TypeConvertor.castToType(value); // Type
+          this.time = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1255,7 +1257,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.description");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.manipulation.description");
         }
         else if (name.equals("timeDateTime")) {
           this.time = new DateTimeType();
@@ -1637,13 +1639,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.description");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.description");
         }
         else if (name.equals("temperature")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.temperature");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.temperature");
         }
         else if (name.equals("scale")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.scale");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.scale");
         }
         else if (name.equals("duration")) {
           this.duration = new Period();
@@ -1833,7 +1835,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2008,7 +2010,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #request}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #request}, creating it if it does not already exist {3}
      */
     public Reference getRequestFirstRep() { 
       if (getRequest().isEmpty()) {
@@ -2106,7 +2108,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #parent}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #parent}, creating it if it does not already exist {3}
      */
     public Reference getParentFirstRep() { 
       if (getParent().isEmpty()) {
@@ -2183,7 +2185,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #processing}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #processing}, creating it if it does not already exist {3}
      */
     public BiologicallyDerivedProductProcessingComponent getProcessingFirstRep() { 
       if (getProcessing().isEmpty()) {
@@ -2260,7 +2262,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #storage}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #storage}, creating it if it does not already exist {3}
      */
     public BiologicallyDerivedProductStorageComponent getStorageFirstRep() { 
       if (getStorage().isEmpty()) {

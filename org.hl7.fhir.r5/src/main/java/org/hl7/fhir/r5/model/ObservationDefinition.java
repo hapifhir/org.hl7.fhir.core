@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,42 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
 import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -67,135 +67,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.
  */
 @ResourceDef(name="ObservationDefinition", profile="http://hl7.org/fhir/StructureDefinition/ObservationDefinition")
 public class ObservationDefinition extends DomainResource {
-
-    public enum PublicationStatus {
-        /**
-         * This resource is still under development and is not yet considered to be ready for normal use.
-         */
-        DRAFT, 
-        /**
-         * This resource is ready for normal use.
-         */
-        ACTIVE, 
-        /**
-         * This resource has been withdrawn or superseded and should no longer be used.
-         */
-        RETIRED, 
-        /**
-         * The authoring system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply, it's just not known which one.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static PublicationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("retired".equals(codeString))
-          return RETIRED;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown PublicationStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case RETIRED: return "retired";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case DRAFT: return "http://hl7.org/fhir/publication-status";
-            case ACTIVE: return "http://hl7.org/fhir/publication-status";
-            case RETIRED: return "http://hl7.org/fhir/publication-status";
-            case UNKNOWN: return "http://hl7.org/fhir/publication-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "This resource is still under development and is not yet considered to be ready for normal use.";
-            case ACTIVE: return "This resource is ready for normal use.";
-            case RETIRED: return "This resource has been withdrawn or superseded and should no longer be used.";
-            case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case RETIRED: return "Retired";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class PublicationStatusEnumFactory implements EnumFactory<PublicationStatus> {
-    public PublicationStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return PublicationStatus.DRAFT;
-        if ("active".equals(codeString))
-          return PublicationStatus.ACTIVE;
-        if ("retired".equals(codeString))
-          return PublicationStatus.RETIRED;
-        if ("unknown".equals(codeString))
-          return PublicationStatus.UNKNOWN;
-        throw new IllegalArgumentException("Unknown PublicationStatus code '"+codeString+"'");
-        }
-        public Enumeration<PublicationStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<PublicationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("draft".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.DRAFT);
-        if ("active".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.ACTIVE);
-        if ("retired".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.RETIRED);
-        if ("unknown".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.UNKNOWN);
-        throw new FHIRException("Unknown PublicationStatus code '"+codeString+"'");
-        }
-    public String toCode(PublicationStatus code) {
-      if (code == PublicationStatus.DRAFT)
-        return "draft";
-      if (code == PublicationStatus.ACTIVE)
-        return "active";
-      if (code == PublicationStatus.RETIRED)
-        return "retired";
-      if (code == PublicationStatus.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    public String toSystem(PublicationStatus code) {
-      return code.getSystem();
-      }
-    }
 
     public enum ObservationDataType {
         /**
@@ -844,10 +721,10 @@ public class ObservationDefinition extends DomainResource {
           return this.unit;
         }
         else if (name.equals("conversionFactor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.conversionFactor");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.quantitativeDetails.conversionFactor");
         }
         else if (name.equals("decimalPrecision")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.decimalPrecision");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.quantitativeDetails.decimalPrecision");
         }
         else
           return super.addChild(name);
@@ -1113,7 +990,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #appliesTo}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #appliesTo}, creating it if it does not already exist {3}
          */
         public CodeableConcept getAppliesToFirstRep() { 
           if (getAppliesTo().isEmpty()) {
@@ -1406,7 +1283,7 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("category")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.category");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.category");
         }
         else if (name.equals("range")) {
           this.range = new Range();
@@ -1420,7 +1297,7 @@ public class ObservationDefinition extends DomainResource {
           return addAppliesTo();
         }
         else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.gender");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.gender");
         }
         else if (name.equals("age")) {
           this.age = new Range();
@@ -1431,7 +1308,7 @@ public class ObservationDefinition extends DomainResource {
           return this.gestationalAge;
         }
         else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.condition");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.condition");
         }
         else
           return super.addChild(name);
@@ -1541,7 +1418,7 @@ public class ObservationDefinition extends DomainResource {
      */
       public ObservationDefinitionComponentComponent(CodeableConcept code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -1697,7 +1574,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #qualifiedInterval}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #qualifiedInterval}, creating it if it does not already exist {3}
          */
         public ObservationDefinitionQualifiedIntervalComponent getQualifiedIntervalFirstRep() { 
           if (getQualifiedInterval().isEmpty()) {
@@ -1806,7 +1683,7 @@ public class ObservationDefinition extends DomainResource {
           return this.code;
         }
         else if (name.equals("permittedDataType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.permittedDataType");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.component.permittedDataType");
         }
         else if (name.equals("quantitativeDetails")) {
           this.quantitativeDetails = new ObservationDefinitionQuantitativeDetailsComponent();
@@ -2148,7 +2025,7 @@ public class ObservationDefinition extends DomainResource {
     @Description(shortDefinition="Component results", formalDefinition="Some observations have multiple component observations, expressed as separate code value pairs." )
     protected List<ObservationDefinitionComponentComponent> component;
 
-    private static final long serialVersionUID = 1657059612L;
+    private static final long serialVersionUID = 469528550L;
 
   /**
    * Constructor
@@ -2160,10 +2037,10 @@ public class ObservationDefinition extends DomainResource {
   /**
    * Constructor
    */
-    public ObservationDefinition(Enumeration<PublicationStatus> status, CodeableConcept code) {
+    public ObservationDefinition(PublicationStatus status, CodeableConcept code) {
       super();
-      this.status = status;
-      this.code = code;
+      this.setStatus(status);
+      this.setCode(code);
     }
 
     /**
@@ -2393,7 +2270,7 @@ public class ObservationDefinition extends DomainResource {
       if (this.derivedFromCanonical == null)
         return false;
       for (CanonicalType v : this.derivedFromCanonical)
-        if (v.getValue().equals(value)) // canonical(ObservationDefinition)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -2717,7 +2594,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -2819,7 +2696,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -2872,7 +2749,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -3169,7 +3046,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCategoryFirstRep() { 
       if (getCategory().isEmpty()) {
@@ -3521,7 +3398,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #qualifiedInterval}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #qualifiedInterval}, creating it if it does not already exist {3}
      */
     public ObservationDefinitionQualifiedIntervalComponent getQualifiedIntervalFirstRep() { 
       if (getQualifiedInterval().isEmpty()) {
@@ -3670,7 +3547,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #hasMember}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #hasMember}, creating it if it does not already exist {3}
      */
     public Reference getHasMemberFirstRep() { 
       if (getHasMember().isEmpty()) {
@@ -3723,7 +3600,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #component}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #component}, creating it if it does not already exist {3}
      */
     public ObservationDefinitionComponentComponent getComponentFirstRep() { 
       if (getComponent().isEmpty()) {
@@ -3787,8 +3664,8 @@ public class ObservationDefinition extends DomainResource {
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental);
         case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
         case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
-        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
+        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
+        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
         case 3076014: /*date*/  return new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date);
         case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the ObservationDefinition. May also allow for contact.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -3834,7 +3711,7 @@ public class ObservationDefinition extends DomainResource {
         case -1076333435: /*derivedFromUri*/ return this.derivedFromUri == null ? new Base[0] : this.derivedFromUri.toArray(new Base[this.derivedFromUri.size()]); // UriType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Type
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
@@ -3898,7 +3775,7 @@ public class ObservationDefinition extends DomainResource {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1867885268: // subject
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -4013,7 +3890,7 @@ public class ObservationDefinition extends DomainResource {
         } else if (name.equals("experimental")) {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
@@ -4440,12 +4317,12 @@ public class ObservationDefinition extends DomainResource {
           return false;
         ObservationDefinition o = (ObservationDefinition) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
-           && compareValues(derivedFromUri, o.derivedFromUri, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
-           && compareValues(date, o.date, true) && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true)
-           && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(permittedDataType, o.permittedDataType, true)
-           && compareValues(multipleResultsAllowed, o.multipleResultsAllowed, true) && compareValues(preferredReportName, o.preferredReportName, true)
-          ;
+           && compareValues(derivedFromCanonical, o.derivedFromCanonical, true) && compareValues(derivedFromUri, o.derivedFromUri, true)
+           && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
+           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+           && compareValues(permittedDataType, o.permittedDataType, true) && compareValues(multipleResultsAllowed, o.multipleResultsAllowed, true)
+           && compareValues(preferredReportName, o.preferredReportName, true);
       }
 
       public boolean isEmpty() {
@@ -4462,86 +4339,6 @@ public class ObservationDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ObservationDefinition;
    }
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The unique identifier associated with the specimen definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ObservationDefinition.identifier", description="The unique identifier associated with the specimen definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The unique identifier associated with the specimen definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Observation code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="ObservationDefinition.code", description="Observation code", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Observation code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>method</b>
-   * <p>
-   * Description: <b>Method of observation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.method</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="method", path="ObservationDefinition.method", description="Method of observation", type="token" )
-  public static final String SP_METHOD = "method";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>method</b>
-   * <p>
-   * Description: <b>Method of observation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.method</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam METHOD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_METHOD);
-
- /**
-   * Search parameter: <b>experimental</b>
-   * <p>
-   * Description: <b>Not for genuine usage (true)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.experimental</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="experimental", path="ObservationDefinition.experimental", description="Not for genuine usage (true)", type="token" )
-  public static final String SP_EXPERIMENTAL = "experimental";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
-   * <p>
-   * Description: <b>Not for genuine usage (true)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.experimental</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
 
  /**
    * Search parameter: <b>category</b>
@@ -4564,24 +4361,84 @@ public class ObservationDefinition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
 
  /**
-   * Search parameter: <b>title</b>
+   * Search parameter: <b>code</b>
    * <p>
-   * Description: <b>Human-friendly name of the ObservationDefinition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ObservationDefinition.title</b><br>
+   * Description: <b>Observation code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="title", path="ObservationDefinition.title", description="Human-friendly name of the ObservationDefinition", type="string" )
-  public static final String SP_TITLE = "title";
+  @SearchParamDefinition(name="code", path="ObservationDefinition.code", description="Observation code", type="token" )
+  public static final String SP_CODE = "code";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
    * <p>
-   * Description: <b>Human-friendly name of the ObservationDefinition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ObservationDefinition.title</b><br>
+   * Description: <b>Observation code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.code</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>experimental</b>
+   * <p>
+   * Description: <b>Not for genuine usage (true)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.experimental</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="experimental", path="ObservationDefinition.experimental", description="Not for genuine usage (true)", type="token" )
+  public static final String SP_EXPERIMENTAL = "experimental";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
+   * <p>
+   * Description: <b>Not for genuine usage (true)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.experimental</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identifier associated with the specimen definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ObservationDefinition.identifier", description="The unique identifier associated with the specimen definition", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identifier associated with the specimen definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>method</b>
+   * <p>
+   * Description: <b>Method of observation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.method</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="method", path="ObservationDefinition.method", description="Method of observation", type="token" )
+  public static final String SP_METHOD = "method";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>method</b>
+   * <p>
+   * Description: <b>Method of observation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ObservationDefinition.method</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam METHOD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_METHOD);
 
  /**
    * Search parameter: <b>status</b>
@@ -4602,6 +4459,26 @@ public class ObservationDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Human-friendly name of the ObservationDefinition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ObservationDefinition.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ObservationDefinition.title", description="Human-friendly name of the ObservationDefinition", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Human-friendly name of the ObservationDefinition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ObservationDefinition.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
 
 }

@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -180,18 +180,18 @@ public class CapabilityStatement extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case INSTANCE: return org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementKind.INSTANCE;
-    case CAPABILITY: return org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY;
-    case REQUIREMENTS: return org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementKind.REQUIREMENTS;
-    default: return org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementKind.NULL;
+    case INSTANCE: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.INSTANCE;
+    case CAPABILITY: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.CAPABILITY;
+    case REQUIREMENTS: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.REQUIREMENTS;
+    default: return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementKind src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -306,17 +306,17 @@ public class CapabilityStatement extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode convertRestfulCapabilityMode(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode convertRestfulCapabilityMode(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case CLIENT: return org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.CLIENT;
-    case SERVER: return org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.SERVER;
-    default: return org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.NULL;
+    case CLIENT: return org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.CLIENT;
+    case SERVER: return org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.SERVER;
+    default: return org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode convertRestfulCapabilityMode(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode convertRestfulCapabilityMode(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -360,7 +360,7 @@ public class CapabilityStatement extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
     copyElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getSupportedProfile())
@@ -396,13 +396,14 @@ public class CapabilityStatement extends VersionConvertor_40_50 {
     return tgt;
   }
 
+
   public static org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent convertCapabilityStatementRestResourceComponent(org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
     copyElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getSupportedProfile())

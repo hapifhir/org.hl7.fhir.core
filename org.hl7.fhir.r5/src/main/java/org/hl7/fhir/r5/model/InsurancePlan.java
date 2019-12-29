@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Details of a Health Insurance product/plan provided by an organization.
  */
@@ -204,7 +205,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
          */
         public ContactPoint getTelecomFirstRep() { 
           if (getTelecom().isEmpty()) {
@@ -435,9 +436,10 @@ public class InsurancePlan extends DomainResource {
     /**
      * Constructor
      */
-      public InsurancePlanCoverageComponent(CodeableConcept type) {
+      public InsurancePlanCoverageComponent(CodeableConcept type, CoverageBenefitComponent benefit) {
         super();
-        this.type = type;
+        this.setType(type);
+        this.addBenefit(benefit);
       }
 
         /**
@@ -508,7 +510,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #network}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #network}, creating it if it does not already exist {3}
          */
         public Reference getNetworkFirstRep() { 
           if (getNetwork().isEmpty()) {
@@ -561,7 +563,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #benefit}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #benefit}, creating it if it does not already exist {3}
          */
         public CoverageBenefitComponent getBenefitFirstRep() { 
           if (getBenefit().isEmpty()) {
@@ -757,7 +759,7 @@ public class InsurancePlan extends DomainResource {
      */
       public CoverageBenefitComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -877,7 +879,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #limit}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #limit}, creating it if it does not already exist {3}
          */
         public CoverageBenefitLimitComponent getLimitFirstRep() { 
           if (getLimit().isEmpty()) {
@@ -974,7 +976,7 @@ public class InsurancePlan extends DomainResource {
           return this.type;
         }
         else if (name.equals("requirement")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.requirement");
+          throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.coverage.benefit.requirement");
         }
         else if (name.equals("limit")) {
           return addLimit();
@@ -1331,7 +1333,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
          */
         public Identifier getIdentifierFirstRep() { 
           if (getIdentifier().isEmpty()) {
@@ -1408,7 +1410,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #coverageArea}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #coverageArea}, creating it if it does not already exist {3}
          */
         public Reference getCoverageAreaFirstRep() { 
           if (getCoverageArea().isEmpty()) {
@@ -1461,7 +1463,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #network}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #network}, creating it if it does not already exist {3}
          */
         public Reference getNetworkFirstRep() { 
           if (getNetwork().isEmpty()) {
@@ -1514,7 +1516,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #generalCost}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #generalCost}, creating it if it does not already exist {3}
          */
         public InsurancePlanPlanGeneralCostComponent getGeneralCostFirstRep() { 
           if (getGeneralCost().isEmpty()) {
@@ -1567,7 +1569,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #specificCost}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #specificCost}, creating it if it does not already exist {3}
          */
         public InsurancePlanPlanSpecificCostComponent getSpecificCostFirstRep() { 
           if (getSpecificCost().isEmpty()) {
@@ -2061,14 +2063,14 @@ public class InsurancePlan extends DomainResource {
           return this.type;
         }
         else if (name.equals("groupSize")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.groupSize");
+          throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.plan.generalCost.groupSize");
         }
         else if (name.equals("cost")) {
           this.cost = new Money();
           return this.cost;
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.comment");
+          throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.plan.generalCost.comment");
         }
         else
           return super.addChild(name);
@@ -2151,7 +2153,7 @@ public class InsurancePlan extends DomainResource {
      */
       public InsurancePlanPlanSpecificCostComponent(CodeableConcept category) {
         super();
-        this.category = category;
+        this.setCategory(category);
       }
 
         /**
@@ -2222,7 +2224,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #benefit}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #benefit}, creating it if it does not already exist {3}
          */
         public PlanBenefitComponent getBenefitFirstRep() { 
           if (getBenefit().isEmpty()) {
@@ -2392,7 +2394,7 @@ public class InsurancePlan extends DomainResource {
      */
       public PlanBenefitComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -2463,7 +2465,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #cost}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #cost}, creating it if it does not already exist {3}
          */
         public PlanBenefitCostComponent getCostFirstRep() { 
           if (getCost().isEmpty()) {
@@ -2648,7 +2650,7 @@ public class InsurancePlan extends DomainResource {
      */
       public PlanBenefitCostComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -2743,7 +2745,7 @@ public class InsurancePlan extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #qualifiers}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #qualifiers}, creating it if it does not already exist {3}
          */
         public CodeableConcept getQualifiersFirstRep() { 
           if (getQualifiers().isEmpty()) {
@@ -3092,7 +3094,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -3194,7 +3196,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
      */
     public CodeableConcept getTypeFirstRep() { 
       if (getType().isEmpty()) {
@@ -3429,7 +3431,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #coverageArea}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #coverageArea}, creating it if it does not already exist {3}
      */
     public Reference getCoverageAreaFirstRep() { 
       if (getCoverageArea().isEmpty()) {
@@ -3482,7 +3484,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public InsurancePlanContactComponent getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -3535,7 +3537,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist {3}
      */
     public Reference getEndpointFirstRep() { 
       if (getEndpoint().isEmpty()) {
@@ -3588,7 +3590,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #network}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #network}, creating it if it does not already exist {3}
      */
     public Reference getNetworkFirstRep() { 
       if (getNetwork().isEmpty()) {
@@ -3641,7 +3643,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #coverage}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #coverage}, creating it if it does not already exist {3}
      */
     public InsurancePlanCoverageComponent getCoverageFirstRep() { 
       if (getCoverage().isEmpty()) {
@@ -3694,7 +3696,7 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #plan}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #plan}, creating it if it does not already exist {3}
      */
     public InsurancePlanPlanComponent getPlanFirstRep() { 
       if (getPlan().isEmpty()) {
@@ -4054,44 +4056,64 @@ public class InsurancePlan extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>address-city</b>
    * <p>
-   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.identifier</b><br>
+   * Description: <b>A city specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.city</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="InsurancePlan.identifier", description="Any identifier for the organization (not the accreditation issuer's identifier)", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="address-city", path="InsurancePlan.contact.address.city", description="A city specified in an address", type="string" )
+  public static final String SP_ADDRESS_CITY = "address-city";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
    * <p>
-   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.identifier</b><br>
+   * Description: <b>A city specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.city</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
 
  /**
-   * Search parameter: <b>address</b>
+   * Search parameter: <b>address-country</b>
    * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
+   * Description: <b>A country specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address</b><br>
+   * Path: <b>InsurancePlan.contact.address.country</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address", path="InsurancePlan.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
-  public static final String SP_ADDRESS = "address";
+  @SearchParamDefinition(name="address-country", path="InsurancePlan.contact.address.country", description="A country specified in an address", type="string" )
+  public static final String SP_ADDRESS_COUNTRY = "address-country";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
    * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
+   * Description: <b>A country specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address</b><br>
+   * Path: <b>InsurancePlan.contact.address.country</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
+
+ /**
+   * Search parameter: <b>address-postalcode</b>
+   * <p>
+   * Description: <b>A postal code specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-postalcode", path="InsurancePlan.contact.address.postalCode", description="A postal code specified in an address", type="string" )
+  public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
+   * <p>
+   * Description: <b>A postal code specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
 
  /**
    * Search parameter: <b>address-state</b>
@@ -4114,70 +4136,44 @@ public class InsurancePlan extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
 
  /**
-   * Search parameter: <b>owned-by</b>
+   * Search parameter: <b>address-use</b>
    * <p>
-   * Description: <b>An organization of which this organization forms a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.ownedBy</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="owned-by", path="InsurancePlan.ownedBy", description="An organization of which this organization forms a part", type="reference", target={Organization.class } )
-  public static final String SP_OWNED_BY = "owned-by";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>owned-by</b>
-   * <p>
-   * Description: <b>An organization of which this organization forms a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.ownedBy</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNED_BY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNED_BY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>InsurancePlan:owned-by</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:owned-by").toLocked();
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of organization</b><br>
+   * Description: <b>A use code specified in an address</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.type</b><br>
+   * Path: <b>InsurancePlan.contact.address.use</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="InsurancePlan.type", description="A code for the type of organization", type="token" )
-  public static final String SP_TYPE = "type";
+  @SearchParamDefinition(name="address-use", path="InsurancePlan.contact.address.use", description="A use code specified in an address", type="token" )
+  public static final String SP_ADDRESS_USE = "address-use";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
    * <p>
-   * Description: <b>A code for the type of organization</b><br>
+   * Description: <b>A use code specified in an address</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.type</b><br>
+   * Path: <b>InsurancePlan.contact.address.use</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
 
  /**
-   * Search parameter: <b>address-postalcode</b>
+   * Search parameter: <b>address</b>
    * <p>
-   * Description: <b>A postal code specified in an address</b><br>
+   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
+   * Path: <b>InsurancePlan.contact.address</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-postalcode", path="InsurancePlan.contact.address.postalCode", description="A postal code specified in an address", type="string" )
-  public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
+  @SearchParamDefinition(name="address", path="InsurancePlan.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
+  public static final String SP_ADDRESS = "address";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
    * <p>
-   * Description: <b>A postal code specified in an address</b><br>
+   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
+   * Path: <b>InsurancePlan.contact.address</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
 
  /**
    * Search parameter: <b>administered-by</b>
@@ -4206,26 +4202,6 @@ public class InsurancePlan extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ADMINISTERED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:administered-by").toLocked();
 
  /**
-   * Search parameter: <b>address-country</b>
-   * <p>
-   * Description: <b>A country specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.country</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-country", path="InsurancePlan.contact.address.country", description="A country specified in an address", type="string" )
-  public static final String SP_ADDRESS_COUNTRY = "address-country";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
-   * <p>
-   * Description: <b>A country specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.country</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
-
- /**
    * Search parameter: <b>endpoint</b>
    * <p>
    * Description: <b>Technical endpoint</b><br>
@@ -4252,6 +4228,72 @@ public class InsurancePlan extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("InsurancePlan:endpoint").toLocked();
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="InsurancePlan.identifier", description="Any identifier for the organization (not the accreditation issuer's identifier)", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A portion of the organization's name or alias</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>name | alias</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="name | alias", description="A portion of the organization's name or alias", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A portion of the organization's name or alias</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>name | alias</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>owned-by</b>
+   * <p>
+   * Description: <b>An organization of which this organization forms a part</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.ownedBy</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="owned-by", path="InsurancePlan.ownedBy", description="An organization of which this organization forms a part", type="reference", target={Organization.class } )
+  public static final String SP_OWNED_BY = "owned-by";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>owned-by</b>
+   * <p>
+   * Description: <b>An organization of which this organization forms a part</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.ownedBy</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNED_BY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNED_BY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>InsurancePlan:owned-by</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:owned-by").toLocked();
+
+ /**
    * Search parameter: <b>phonetic</b>
    * <p>
    * Description: <b>A portion of the organization's name using some kind of phonetic matching algorithm</b><br>
@@ -4272,66 +4314,6 @@ public class InsurancePlan extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PHONETIC = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PHONETIC);
 
  /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A portion of the organization's name or alias</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.name, InsurancePlan.alias</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="name | alias", description="A portion of the organization's name or alias", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A portion of the organization's name or alias</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.name, InsurancePlan.alias</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.contact.address.use</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-use", path="InsurancePlan.contact.address.use", description="A use code specified in an address", type="token" )
-  public static final String SP_ADDRESS_USE = "address-use";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.contact.address.use</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
-
- /**
-   * Search parameter: <b>address-city</b>
-   * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.city</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-city", path="InsurancePlan.contact.address.city", description="A city specified in an address", type="string" )
-  public static final String SP_ADDRESS_CITY = "address-city";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
-   * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.city</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
-
- /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>Is the Organization record active</b><br>
@@ -4350,6 +4332,26 @@ public class InsurancePlan extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>A code for the type of organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="InsurancePlan.type", description="A code for the type of organization", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>A code for the type of organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

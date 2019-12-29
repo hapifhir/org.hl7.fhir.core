@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,47 +25,48 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
- * Indicates how the medication is/was taken or should be taken by the patient.
+ * Base StructureDefinition for Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.
  */
 @DatatypeDef(name="Dosage")
 public class Dosage extends BackboneType implements ICompositeType {
@@ -246,23 +248,23 @@ public class Dosage extends BackboneType implements ICompositeType {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The kind of dose or rate specified, for example, ordered or calculated.", 0, 1, type));
-          children.add(new Property("dose[x]", "Range|SimpleQuantity", "Amount of medication per dose.", 0, 1, dose));
-          children.add(new Property("rate[x]", "Ratio|Range|SimpleQuantity", "Amount of medication per unit of time.", 0, 1, rate));
+          children.add(new Property("dose[x]", "Range|Quantity", "Amount of medication per dose.", 0, 1, dose));
+          children.add(new Property("rate[x]", "Ratio|Range|Quantity", "Amount of medication per unit of time.", 0, 1, rate));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind of dose or rate specified, for example, ordered or calculated.", 0, 1, type);
-          case 1843195715: /*dose[x]*/  return new Property("dose[x]", "Range|SimpleQuantity", "Amount of medication per dose.", 0, 1, dose);
-          case 3089437: /*dose*/  return new Property("dose[x]", "Range|SimpleQuantity", "Amount of medication per dose.", 0, 1, dose);
-          case 1775578912: /*doseRange*/  return new Property("dose[x]", "Range|SimpleQuantity", "Amount of medication per dose.", 0, 1, dose);
-          case -2083618872: /*doseQuantity*/  return new Property("dose[x]", "Range|SimpleQuantity", "Amount of medication per dose.", 0, 1, dose);
-          case 983460768: /*rate[x]*/  return new Property("rate[x]", "Ratio|Range|SimpleQuantity", "Amount of medication per unit of time.", 0, 1, rate);
-          case 3493088: /*rate*/  return new Property("rate[x]", "Ratio|Range|SimpleQuantity", "Amount of medication per unit of time.", 0, 1, rate);
-          case 204021515: /*rateRatio*/  return new Property("rate[x]", "Ratio|Range|SimpleQuantity", "Amount of medication per unit of time.", 0, 1, rate);
-          case 204015677: /*rateRange*/  return new Property("rate[x]", "Ratio|Range|SimpleQuantity", "Amount of medication per unit of time.", 0, 1, rate);
-          case -1085459061: /*rateQuantity*/  return new Property("rate[x]", "Ratio|Range|SimpleQuantity", "Amount of medication per unit of time.", 0, 1, rate);
+          case 1843195715: /*dose[x]*/  return new Property("dose[x]", "Range|Quantity", "Amount of medication per dose.", 0, 1, dose);
+          case 3089437: /*dose*/  return new Property("dose[x]", "Range|Quantity", "Amount of medication per dose.", 0, 1, dose);
+          case 1775578912: /*doseRange*/  return new Property("dose[x]", "Range", "Amount of medication per dose.", 0, 1, dose);
+          case -2083618872: /*doseQuantity*/  return new Property("dose[x]", "Quantity", "Amount of medication per dose.", 0, 1, dose);
+          case 983460768: /*rate[x]*/  return new Property("rate[x]", "Ratio|Range|Quantity", "Amount of medication per unit of time.", 0, 1, rate);
+          case 3493088: /*rate*/  return new Property("rate[x]", "Ratio|Range|Quantity", "Amount of medication per unit of time.", 0, 1, rate);
+          case 204021515: /*rateRatio*/  return new Property("rate[x]", "Ratio", "Amount of medication per unit of time.", 0, 1, rate);
+          case 204015677: /*rateRange*/  return new Property("rate[x]", "Range", "Amount of medication per unit of time.", 0, 1, rate);
+          case -1085459061: /*rateQuantity*/  return new Property("rate[x]", "Quantity", "Amount of medication per unit of time.", 0, 1, rate);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -326,8 +328,8 @@ public class Dosage extends BackboneType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 3089437: /*dose*/ return new String[] {"Range", "SimpleQuantity"};
-        case 3493088: /*rate*/ return new String[] {"Ratio", "Range", "SimpleQuantity"};
+        case 3089437: /*dose*/ return new String[] {"Range", "Quantity"};
+        case 3493088: /*rate*/ return new String[] {"Ratio", "Range", "Quantity"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -651,7 +653,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #additionalInstruction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #additionalInstruction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getAdditionalInstructionFirstRep() { 
       if (getAdditionalInstruction().isEmpty()) {
@@ -900,7 +902,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #doseAndRate}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #doseAndRate}, creating it if it does not already exist {3}
      */
     public DosageDoseAndRateComponent getDoseAndRateFirstRep() { 
       if (getDoseAndRate().isEmpty()) {
@@ -994,8 +996,8 @@ public class Dosage extends BackboneType implements ICompositeType {
         children.add(new Property("method", "CodeableConcept", "Technique for administering medication.", 0, 1, method));
         children.add(new Property("doseAndRate", "", "The amount of medication administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRate));
         children.add(new Property("maxDosePerPeriod", "Ratio", "Upper limit on medication per unit of time.", 0, 1, maxDosePerPeriod));
-        children.add(new Property("maxDosePerAdministration", "SimpleQuantity", "Upper limit on medication per administration.", 0, 1, maxDosePerAdministration));
-        children.add(new Property("maxDosePerLifetime", "SimpleQuantity", "Upper limit on medication per lifetime of the patient.", 0, 1, maxDosePerLifetime));
+        children.add(new Property("maxDosePerAdministration", "Quantity", "Upper limit on medication per administration.", 0, 1, maxDosePerAdministration));
+        children.add(new Property("maxDosePerLifetime", "Quantity", "Upper limit on medication per lifetime of the patient.", 0, 1, maxDosePerLifetime));
       }
 
       @Override
@@ -1008,15 +1010,15 @@ public class Dosage extends BackboneType implements ICompositeType {
         case -873664438: /*timing*/  return new Property("timing", "Timing", "When medication should be administered.", 0, 1, timing);
         case -544329575: /*asNeeded[x]*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
         case -1432923513: /*asNeeded*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
-        case -591717471: /*asNeededBoolean*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
-        case 1556420122: /*asNeededCodeableConcept*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
+        case -591717471: /*asNeededBoolean*/  return new Property("asNeeded[x]", "boolean", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
+        case 1556420122: /*asNeededCodeableConcept*/  return new Property("asNeeded[x]", "CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
         case 3530567: /*site*/  return new Property("site", "CodeableConcept", "Body site to administer to.", 0, 1, site);
         case 108704329: /*route*/  return new Property("route", "CodeableConcept", "How drug should enter body.", 0, 1, route);
         case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Technique for administering medication.", 0, 1, method);
         case -611024774: /*doseAndRate*/  return new Property("doseAndRate", "", "The amount of medication administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRate);
         case 1506263709: /*maxDosePerPeriod*/  return new Property("maxDosePerPeriod", "Ratio", "Upper limit on medication per unit of time.", 0, 1, maxDosePerPeriod);
-        case 2004889914: /*maxDosePerAdministration*/  return new Property("maxDosePerAdministration", "SimpleQuantity", "Upper limit on medication per administration.", 0, 1, maxDosePerAdministration);
-        case 642099621: /*maxDosePerLifetime*/  return new Property("maxDosePerLifetime", "SimpleQuantity", "Upper limit on medication per lifetime of the patient.", 0, 1, maxDosePerLifetime);
+        case 2004889914: /*maxDosePerAdministration*/  return new Property("maxDosePerAdministration", "Quantity", "Upper limit on medication per administration.", 0, 1, maxDosePerAdministration);
+        case 642099621: /*maxDosePerLifetime*/  return new Property("maxDosePerLifetime", "Quantity", "Upper limit on medication per lifetime of the patient.", 0, 1, maxDosePerLifetime);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1159,8 +1161,8 @@ public class Dosage extends BackboneType implements ICompositeType {
         case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
         case -611024774: /*doseAndRate*/ return new String[] {};
         case 1506263709: /*maxDosePerPeriod*/ return new String[] {"Ratio"};
-        case 2004889914: /*maxDosePerAdministration*/ return new String[] {"SimpleQuantity"};
-        case 642099621: /*maxDosePerLifetime*/ return new String[] {"SimpleQuantity"};
+        case 2004889914: /*maxDosePerAdministration*/ return new String[] {"Quantity"};
+        case 642099621: /*maxDosePerLifetime*/ return new String[] {"Quantity"};
         default: return super.getTypesForProperty(hash, name);
         }
 

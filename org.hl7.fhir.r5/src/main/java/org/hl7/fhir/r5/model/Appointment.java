@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
  */
@@ -109,8 +111,7 @@ public class Appointment extends DomainResource {
          */
         CHECKEDIN, 
         /**
-         * The appointment has been placed on a waitlist, to be scheduled/confirmed in the future when a slot/service is available.
-A specific time might or might not be pre-allocated.
+         * The appointment has been placed on a waitlist, to be scheduled/confirmed in the future when a slot/service is available.\nA specific time might or might not be pre-allocated.
          */
         WAITLIST, 
         /**
@@ -400,130 +401,6 @@ A specific time might or might not be pre-allocated.
       }
     }
 
-    public enum ParticipationStatus {
-        /**
-         * The participant has accepted the appointment.
-         */
-        ACCEPTED, 
-        /**
-         * The participant has declined the appointment and will not participate in the appointment.
-         */
-        DECLINED, 
-        /**
-         * The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.
-         */
-        TENTATIVE, 
-        /**
-         * The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.
-         */
-        NEEDSACTION, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ParticipationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("accepted".equals(codeString))
-          return ACCEPTED;
-        if ("declined".equals(codeString))
-          return DECLINED;
-        if ("tentative".equals(codeString))
-          return TENTATIVE;
-        if ("needs-action".equals(codeString))
-          return NEEDSACTION;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ParticipationStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACCEPTED: return "accepted";
-            case DECLINED: return "declined";
-            case TENTATIVE: return "tentative";
-            case NEEDSACTION: return "needs-action";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ACCEPTED: return "http://hl7.org/fhir/participationstatus";
-            case DECLINED: return "http://hl7.org/fhir/participationstatus";
-            case TENTATIVE: return "http://hl7.org/fhir/participationstatus";
-            case NEEDSACTION: return "http://hl7.org/fhir/participationstatus";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACCEPTED: return "The participant has accepted the appointment.";
-            case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
-            case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
-            case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACCEPTED: return "Accepted";
-            case DECLINED: return "Declined";
-            case TENTATIVE: return "Tentative";
-            case NEEDSACTION: return "Needs Action";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ParticipationStatusEnumFactory implements EnumFactory<ParticipationStatus> {
-    public ParticipationStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("accepted".equals(codeString))
-          return ParticipationStatus.ACCEPTED;
-        if ("declined".equals(codeString))
-          return ParticipationStatus.DECLINED;
-        if ("tentative".equals(codeString))
-          return ParticipationStatus.TENTATIVE;
-        if ("needs-action".equals(codeString))
-          return ParticipationStatus.NEEDSACTION;
-        throw new IllegalArgumentException("Unknown ParticipationStatus code '"+codeString+"'");
-        }
-        public Enumeration<ParticipationStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ParticipationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("accepted".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.ACCEPTED);
-        if ("declined".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.DECLINED);
-        if ("tentative".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.TENTATIVE);
-        if ("needs-action".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NEEDSACTION);
-        throw new FHIRException("Unknown ParticipationStatus code '"+codeString+"'");
-        }
-    public String toCode(ParticipationStatus code) {
-      if (code == ParticipationStatus.ACCEPTED)
-        return "accepted";
-      if (code == ParticipationStatus.DECLINED)
-        return "declined";
-      if (code == ParticipationStatus.TENTATIVE)
-        return "tentative";
-      if (code == ParticipationStatus.NEEDSACTION)
-        return "needs-action";
-      return "?";
-      }
-    public String toSystem(ParticipationStatus code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class AppointmentParticipantComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -576,9 +453,9 @@ A specific time might or might not be pre-allocated.
     /**
      * Constructor
      */
-      public AppointmentParticipantComponent(Enumeration<ParticipationStatus> status) {
+      public AppointmentParticipantComponent(ParticipationStatus status) {
         super();
-        this.status = status;
+        this.setStatus(status);
       }
 
         /**
@@ -625,7 +502,7 @@ A specific time might or might not be pre-allocated.
         }
 
         /**
-         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
          */
         public CodeableConcept getTypeFirstRep() { 
           if (getType().isEmpty()) {
@@ -891,10 +768,10 @@ A specific time might or might not be pre-allocated.
           return this.actor;
         }
         else if (name.equals("required")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Appointment.required");
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.participant.required");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Appointment.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.participant.status");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1131,9 +1008,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
   /**
    * Constructor
    */
-    public Appointment(Enumeration<AppointmentStatus> status) {
+    public Appointment(AppointmentStatus status, AppointmentParticipantComponent participant) {
       super();
-      this.status = status;
+      this.setStatus(status);
+      this.addParticipant(participant);
     }
 
     /**
@@ -1180,7 +1058,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1302,7 +1180,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #serviceCategory}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #serviceCategory}, creating it if it does not already exist {3}
      */
     public CodeableConcept getServiceCategoryFirstRep() { 
       if (getServiceCategory().isEmpty()) {
@@ -1355,7 +1233,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #serviceType}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #serviceType}, creating it if it does not already exist {3}
      */
     public CodeableConcept getServiceTypeFirstRep() { 
       if (getServiceType().isEmpty()) {
@@ -1408,7 +1286,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSpecialtyFirstRep() { 
       if (getSpecialty().isEmpty()) {
@@ -1485,7 +1363,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
@@ -1538,7 +1416,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
      */
     public Reference getReasonReferenceFirstRep() { 
       if (getReasonReference().isEmpty()) {
@@ -1685,7 +1563,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #supportingInformation}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #supportingInformation}, creating it if it does not already exist {3}
      */
     public Reference getSupportingInformationFirstRep() { 
       if (getSupportingInformation().isEmpty()) {
@@ -1881,7 +1759,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #slot}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #slot}, creating it if it does not already exist {3}
      */
     public Reference getSlotFirstRep() { 
       if (getSlot().isEmpty()) {
@@ -2081,7 +1959,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
      */
     public Reference getBasedOnFirstRep() { 
       if (getBasedOn().isEmpty()) {
@@ -2134,7 +2012,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
      */
     public AppointmentParticipantComponent getParticipantFirstRep() { 
       if (getParticipant().isEmpty()) {
@@ -2189,7 +2067,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #requestedPeriod}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #requestedPeriod}, creating it if it does not already exist {3}
      */
     public Period getRequestedPeriodFirstRep() { 
       if (getRequestedPeriod().isEmpty()) {
@@ -2675,6 +2553,78 @@ The duration (usually in minutes) could also be provided to indicate the length 
    }
 
  /**
+   * Search parameter: <b>actor</b>
+   * <p>
+   * Description: <b>Any one of the individuals participating in the appointment</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.participant.actor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="actor", path="Appointment.participant.actor", description="Any one of the individuals participating in the appointment", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_ACTOR = "actor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>actor</b>
+   * <p>
+   * Description: <b>Any one of the individuals participating in the appointment</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.participant.actor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACTOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:actor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACTOR = new ca.uhn.fhir.model.api.Include("Appointment:actor").toLocked();
+
+ /**
+   * Search parameter: <b>appointment-type</b>
+   * <p>
+   * Description: <b>The style of appointment or patient that has been booked in the slot (not service type)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Appointment.appointmentType</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="appointment-type", path="Appointment.appointmentType", description="The style of appointment or patient that has been booked in the slot (not service type)", type="token" )
+  public static final String SP_APPOINTMENT_TYPE = "appointment-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>appointment-type</b>
+   * <p>
+   * Description: <b>The style of appointment or patient that has been booked in the slot (not service type)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Appointment.appointmentType</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam APPOINTMENT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_APPOINTMENT_TYPE);
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>The service request this appointment is allocated to assess</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="Appointment.basedOn", description="The service request this appointment is allocated to assess", type="reference", target={ServiceRequest.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>The service request this appointment is allocated to assess</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("Appointment:based-on").toLocked();
+
+ /**
    * Search parameter: <b>date</b>
    * <p>
    * Description: <b>Appointment date/time.</b><br>
@@ -2715,70 +2665,30 @@ The duration (usually in minutes) could also be provided to indicate the length 
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>specialty</b>
+   * Search parameter: <b>location</b>
    * <p>
-   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.specialty</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="specialty", path="Appointment.specialty", description="The specialty of a practitioner that would be required to perform the service requested in this appointment", type="token" )
-  public static final String SP_SPECIALTY = "specialty";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
-   * <p>
-   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.specialty</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
-
- /**
-   * Search parameter: <b>service-category</b>
-   * <p>
-   * Description: <b>A broad categorization of the service that is to be performed during this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.serviceCategory</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-category", path="Appointment.serviceCategory", description="A broad categorization of the service that is to be performed during this appointment", type="token" )
-  public static final String SP_SERVICE_CATEGORY = "service-category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-category</b>
-   * <p>
-   * Description: <b>A broad categorization of the service that is to be performed during this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.serviceCategory</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
-
- /**
-   * Search parameter: <b>practitioner</b>
-   * <p>
-   * Description: <b>One of the individuals of the appointment is this practitioner</b><br>
+   * Description: <b>This location is listed in the participants of the appointment</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
+   * Path: <b>Appointment.participant.actor.where(resolve() is Location)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="practitioner", path="Appointment.participant.actor.where(resolve() is Practitioner)", description="One of the individuals of the appointment is this practitioner", type="reference", target={Practitioner.class } )
-  public static final String SP_PRACTITIONER = "practitioner";
+  @SearchParamDefinition(name="location", path="Appointment.participant.actor.where(resolve() is Location)", description="This location is listed in the participants of the appointment", type="reference", target={Location.class } )
+  public static final String SP_LOCATION = "location";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
+   * <b>Fluent Client</b> search parameter constant for <b>location</b>
    * <p>
-   * Description: <b>One of the individuals of the appointment is this practitioner</b><br>
+   * Description: <b>This location is listed in the participants of the appointment</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
+   * Path: <b>Appointment.participant.actor.where(resolve() is Location)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:practitioner</b>".
+   * the path value of "<b>Appointment:location</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("Appointment:practitioner").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("Appointment:location").toLocked();
 
  /**
    * Search parameter: <b>part-status</b>
@@ -2801,24 +2711,122 @@ The duration (usually in minutes) could also be provided to indicate the length 
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PART_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PART_STATUS);
 
  /**
-   * Search parameter: <b>appointment-type</b>
+   * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>The style of appointment or patient that has been booked in the slot (not service type)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.appointmentType</b><br>
+   * Description: <b>One of the individuals of the appointment is this patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.participant.actor.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="appointment-type", path="Appointment.appointmentType", description="The style of appointment or patient that has been booked in the slot (not service type)", type="token" )
-  public static final String SP_APPOINTMENT_TYPE = "appointment-type";
+  @SearchParamDefinition(name="patient", path="Appointment.participant.actor.where(resolve() is Patient)", description="One of the individuals of the appointment is this patient", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>appointment-type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>The style of appointment or patient that has been booked in the slot (not service type)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.appointmentType</b><br>
+   * Description: <b>One of the individuals of the appointment is this patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.participant.actor.where(resolve() is Patient)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam APPOINTMENT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_APPOINTMENT_TYPE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Appointment:patient").toLocked();
+
+ /**
+   * Search parameter: <b>practitioner</b>
+   * <p>
+   * Description: <b>One of the individuals of the appointment is this practitioner</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.participant.actor.where(resolve() is Practitioner)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="practitioner", path="Appointment.participant.actor.where(resolve() is Practitioner)", description="One of the individuals of the appointment is this practitioner", type="reference", target={Practitioner.class } )
+  public static final String SP_PRACTITIONER = "practitioner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
+   * <p>
+   * Description: <b>One of the individuals of the appointment is this practitioner</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.participant.actor.where(resolve() is Practitioner)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:practitioner</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("Appointment:practitioner").toLocked();
+
+ /**
+   * Search parameter: <b>reason-code</b>
+   * <p>
+   * Description: <b>Coded reason this appointment is scheduled</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Appointment.reasonCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="reason-code", path="Appointment.reasonCode", description="Coded reason this appointment is scheduled", type="token" )
+  public static final String SP_REASON_CODE = "reason-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>reason-code</b>
+   * <p>
+   * Description: <b>Coded reason this appointment is scheduled</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Appointment.reasonCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam REASON_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REASON_CODE);
+
+ /**
+   * Search parameter: <b>reason-reference</b>
+   * <p>
+   * Description: <b>Reason the appointment is to take place (resource)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.reasonReference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="reason-reference", path="Appointment.reasonReference", description="Reason the appointment is to take place (resource)", type="reference", target={Condition.class, ImmunizationRecommendation.class, Observation.class, Procedure.class } )
+  public static final String SP_REASON_REFERENCE = "reason-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>reason-reference</b>
+   * <p>
+   * Description: <b>Reason the appointment is to take place (resource)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.reasonReference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REASON_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REASON_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:reason-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REASON_REFERENCE = new ca.uhn.fhir.model.api.Include("Appointment:reason-reference").toLocked();
+
+ /**
+   * Search parameter: <b>service-category</b>
+   * <p>
+   * Description: <b>A broad categorization of the service that is to be performed during this appointment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Appointment.serviceCategory</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="service-category", path="Appointment.serviceCategory", description="A broad categorization of the service that is to be performed during this appointment", type="token" )
+  public static final String SP_SERVICE_CATEGORY = "service-category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>service-category</b>
+   * <p>
+   * Description: <b>A broad categorization of the service that is to be performed during this appointment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Appointment.serviceCategory</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
 
  /**
    * Search parameter: <b>service-type</b>
@@ -2867,180 +2875,24 @@ The duration (usually in minutes) could also be provided to indicate the length 
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SLOT = new ca.uhn.fhir.model.api.Include("Appointment:slot").toLocked();
 
  /**
-   * Search parameter: <b>reason-code</b>
+   * Search parameter: <b>specialty</b>
    * <p>
-   * Description: <b>Coded reason this appointment is scheduled</b><br>
+   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Appointment.reasonCode</b><br>
+   * Path: <b>Appointment.specialty</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reason-code", path="Appointment.reasonCode", description="Coded reason this appointment is scheduled", type="token" )
-  public static final String SP_REASON_CODE = "reason-code";
+  @SearchParamDefinition(name="specialty", path="Appointment.specialty", description="The specialty of a practitioner that would be required to perform the service requested in this appointment", type="token" )
+  public static final String SP_SPECIALTY = "specialty";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>reason-code</b>
+   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
    * <p>
-   * Description: <b>Coded reason this appointment is scheduled</b><br>
+   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Appointment.reasonCode</b><br>
+   * Path: <b>Appointment.specialty</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam REASON_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REASON_CODE);
-
- /**
-   * Search parameter: <b>actor</b>
-   * <p>
-   * Description: <b>Any one of the individuals participating in the appointment</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="actor", path="Appointment.participant.actor", description="Any one of the individuals participating in the appointment", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ACTOR = "actor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>actor</b>
-   * <p>
-   * Description: <b>Any one of the individuals participating in the appointment</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACTOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:actor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACTOR = new ca.uhn.fhir.model.api.Include("Appointment:actor").toLocked();
-
- /**
-   * Search parameter: <b>based-on</b>
-   * <p>
-   * Description: <b>The service request this appointment is allocated to assess</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.basedOn</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="based-on", path="Appointment.basedOn", description="The service request this appointment is allocated to assess", type="reference", target={ServiceRequest.class } )
-  public static final String SP_BASED_ON = "based-on";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
-   * <p>
-   * Description: <b>The service request this appointment is allocated to assess</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.basedOn</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:based-on</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("Appointment:based-on").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>One of the individuals of the appointment is this patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Appointment.participant.actor.where(resolve() is Patient)", description="One of the individuals of the appointment is this patient", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>One of the individuals of the appointment is this patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Appointment:patient").toLocked();
-
- /**
-   * Search parameter: <b>reason-reference</b>
-   * <p>
-   * Description: <b>Reason the appointment is to take place (resource)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.reasonReference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="reason-reference", path="Appointment.reasonReference", description="Reason the appointment is to take place (resource)", type="reference", target={Condition.class, ImmunizationRecommendation.class, Observation.class, Procedure.class } )
-  public static final String SP_REASON_REFERENCE = "reason-reference";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>reason-reference</b>
-   * <p>
-   * Description: <b>Reason the appointment is to take place (resource)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.reasonReference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REASON_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REASON_REFERENCE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:reason-reference</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REASON_REFERENCE = new ca.uhn.fhir.model.api.Include("Appointment:reason-reference").toLocked();
-
- /**
-   * Search parameter: <b>supporting-info</b>
-   * <p>
-   * Description: <b>Additional information to support the appointment</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.supportingInformation</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference" )
-  public static final String SP_SUPPORTING_INFO = "supporting-info";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>supporting-info</b>
-   * <p>
-   * Description: <b>Additional information to support the appointment</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.supportingInformation</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUPPORTING_INFO = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUPPORTING_INFO);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:supporting-info</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORTING_INFO = new ca.uhn.fhir.model.api.Include("Appointment:supporting-info").toLocked();
-
- /**
-   * Search parameter: <b>location</b>
-   * <p>
-   * Description: <b>This location is listed in the participants of the appointment</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="location", path="Appointment.participant.actor.where(resolve() is Location)", description="This location is listed in the participants of the appointment", type="reference", target={Location.class } )
-  public static final String SP_LOCATION = "location";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>location</b>
-   * <p>
-   * Description: <b>This location is listed in the participants of the appointment</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:location</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("Appointment:location").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
 
  /**
    * Search parameter: <b>status</b>
@@ -3061,6 +2913,32 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>supporting-info</b>
+   * <p>
+   * Description: <b>Additional information to support the appointment</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.supportingInformation</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUPPORTING_INFO = "supporting-info";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>supporting-info</b>
+   * <p>
+   * Description: <b>Additional information to support the appointment</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Appointment.supportingInformation</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUPPORTING_INFO = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUPPORTING_INFO);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:supporting-info</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORTING_INFO = new ca.uhn.fhir.model.api.Include("Appointment:supporting-info").toLocked();
 
 
 }

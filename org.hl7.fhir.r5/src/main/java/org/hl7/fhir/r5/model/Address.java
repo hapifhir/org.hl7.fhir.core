@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,51 +25,159 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
- * An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
+ * Base StructureDefinition for Address Type: An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
  */
 @DatatypeDef(name="Address")
 public class Address extends DataType implements ICompositeType {
+
+    public enum AddressType {
+        /**
+         * Mailing addresses - PO Boxes and care-of addresses.
+         */
+        POSTAL, 
+        /**
+         * A physical address that can be visited.
+         */
+        PHYSICAL, 
+        /**
+         * An address that is both physical and postal.
+         */
+        BOTH, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static AddressType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("postal".equals(codeString))
+          return POSTAL;
+        if ("physical".equals(codeString))
+          return PHYSICAL;
+        if ("both".equals(codeString))
+          return BOTH;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown AddressType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case POSTAL: return "postal";
+            case PHYSICAL: return "physical";
+            case BOTH: return "both";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case POSTAL: return "http://hl7.org/fhir/address-type";
+            case PHYSICAL: return "http://hl7.org/fhir/address-type";
+            case BOTH: return "http://hl7.org/fhir/address-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
+            case PHYSICAL: return "A physical address that can be visited.";
+            case BOTH: return "An address that is both physical and postal.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case POSTAL: return "Postal";
+            case PHYSICAL: return "Physical";
+            case BOTH: return "Postal & Physical";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class AddressTypeEnumFactory implements EnumFactory<AddressType> {
+    public AddressType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("postal".equals(codeString))
+          return AddressType.POSTAL;
+        if ("physical".equals(codeString))
+          return AddressType.PHYSICAL;
+        if ("both".equals(codeString))
+          return AddressType.BOTH;
+        throw new IllegalArgumentException("Unknown AddressType code '"+codeString+"'");
+        }
+        public Enumeration<AddressType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<AddressType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("postal".equals(codeString))
+          return new Enumeration<AddressType>(this, AddressType.POSTAL);
+        if ("physical".equals(codeString))
+          return new Enumeration<AddressType>(this, AddressType.PHYSICAL);
+        if ("both".equals(codeString))
+          return new Enumeration<AddressType>(this, AddressType.BOTH);
+        throw new FHIRException("Unknown AddressType code '"+codeString+"'");
+        }
+    public String toCode(AddressType code) {
+      if (code == AddressType.POSTAL)
+        return "postal";
+      if (code == AddressType.PHYSICAL)
+        return "physical";
+      if (code == AddressType.BOTH)
+        return "both";
+      return "?";
+      }
+    public String toSystem(AddressType code) {
+      return code.getSystem();
+      }
+    }
 
     public enum AddressUse {
         /**
@@ -206,114 +315,6 @@ public class Address extends DataType implements ICompositeType {
       return "?";
       }
     public String toSystem(AddressUse code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum AddressType {
-        /**
-         * Mailing addresses - PO Boxes and care-of addresses.
-         */
-        POSTAL, 
-        /**
-         * A physical address that can be visited.
-         */
-        PHYSICAL, 
-        /**
-         * An address that is both physical and postal.
-         */
-        BOTH, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static AddressType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("postal".equals(codeString))
-          return POSTAL;
-        if ("physical".equals(codeString))
-          return PHYSICAL;
-        if ("both".equals(codeString))
-          return BOTH;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown AddressType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case POSTAL: return "postal";
-            case PHYSICAL: return "physical";
-            case BOTH: return "both";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case POSTAL: return "http://hl7.org/fhir/address-type";
-            case PHYSICAL: return "http://hl7.org/fhir/address-type";
-            case BOTH: return "http://hl7.org/fhir/address-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
-            case PHYSICAL: return "A physical address that can be visited.";
-            case BOTH: return "An address that is both physical and postal.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case POSTAL: return "Postal";
-            case PHYSICAL: return "Physical";
-            case BOTH: return "Postal & Physical";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class AddressTypeEnumFactory implements EnumFactory<AddressType> {
-    public AddressType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("postal".equals(codeString))
-          return AddressType.POSTAL;
-        if ("physical".equals(codeString))
-          return AddressType.PHYSICAL;
-        if ("both".equals(codeString))
-          return AddressType.BOTH;
-        throw new IllegalArgumentException("Unknown AddressType code '"+codeString+"'");
-        }
-        public Enumeration<AddressType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<AddressType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("postal".equals(codeString))
-          return new Enumeration<AddressType>(this, AddressType.POSTAL);
-        if ("physical".equals(codeString))
-          return new Enumeration<AddressType>(this, AddressType.PHYSICAL);
-        if ("both".equals(codeString))
-          return new Enumeration<AddressType>(this, AddressType.BOTH);
-        throw new FHIRException("Unknown AddressType code '"+codeString+"'");
-        }
-    public String toCode(AddressType code) {
-      if (code == AddressType.POSTAL)
-        return "postal";
-      if (code == AddressType.PHYSICAL)
-        return "physical";
-      if (code == AddressType.BOTH)
-        return "both";
-      return "?";
-      }
-    public String toSystem(AddressType code) {
       return code.getSystem();
       }
     }
@@ -1007,7 +1008,7 @@ public class Address extends DataType implements ICompositeType {
         case 109757585:  return getStateElement();
         case 2011152728:  return getPostalCodeElement();
         case 957831062:  return getCountryElement();
-        case -991726143:  return getPeriod(); 
+        case -991726143:  return getPeriod();
         default: return super.makeProperty(hash, name);
         }
 

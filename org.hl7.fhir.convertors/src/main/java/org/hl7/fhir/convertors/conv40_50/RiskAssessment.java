@@ -144,23 +144,23 @@ public class RiskAssessment extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ObservationStatus convertRiskAssessmentStatus(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case REGISTERED: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.REGISTERED;
-    case PRELIMINARY: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.AMENDED;
-    case CORRECTED: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.CORRECTED;
-    case CANCELLED: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.CANCELLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus.NULL;
+    case REGISTERED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED;
+    case PRELIMINARY: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY;
+    case FINAL: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL;
+    case AMENDED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED;
+    case CORRECTED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.r5.model.Enumerations.ObservationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

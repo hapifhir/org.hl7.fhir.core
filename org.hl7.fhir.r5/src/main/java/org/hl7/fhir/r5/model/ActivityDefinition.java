@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,14 +66,14 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.
  */
 @ResourceDef(name="ActivityDefinition", profile="http://hl7.org/fhir/StructureDefinition/ActivityDefinition")
-@ChildOrder(names={"url", "identifier", "version", "name", "title", "subtitle", "status", "experimental", "subject[x]", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "usage", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "library", "kind", "profile", "code", "intent", "priority", "doNotPerform", "timing[x]", "location", "participant", "product[x]", "quantity", "dosage", "bodySite", "specimenRequirement", "observationRequirement", "observationResultRequirement", "transform", "dynamicValue"})
-public class ActivityDefinition extends CanonicalResource {
+public class ActivityDefinition extends MetadataResource {
 
-    public enum ActivityDefinitionKind {
+    public enum RequestResourceType {
         /**
          * A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
          */
@@ -138,7 +138,7 @@ public class ActivityDefinition extends CanonicalResource {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static ActivityDefinitionKind fromCode(String codeString) throws FHIRException {
+        public static RequestResourceType fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("Appointment".equals(codeString))
@@ -174,7 +174,7 @@ public class ActivityDefinition extends CanonicalResource {
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown ActivityDefinitionKind code '"+codeString+"'");
+          throw new FHIRException("Unknown RequestResourceType code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -258,569 +258,117 @@ public class ActivityDefinition extends CanonicalResource {
         }
     }
 
-  public static class ActivityDefinitionKindEnumFactory implements EnumFactory<ActivityDefinitionKind> {
-    public ActivityDefinitionKind fromCode(String codeString) throws IllegalArgumentException {
+  public static class RequestResourceTypeEnumFactory implements EnumFactory<RequestResourceType> {
+    public RequestResourceType fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("Appointment".equals(codeString))
-          return ActivityDefinitionKind.APPOINTMENT;
+          return RequestResourceType.APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
-          return ActivityDefinitionKind.APPOINTMENTRESPONSE;
+          return RequestResourceType.APPOINTMENTRESPONSE;
         if ("CarePlan".equals(codeString))
-          return ActivityDefinitionKind.CAREPLAN;
+          return RequestResourceType.CAREPLAN;
         if ("Claim".equals(codeString))
-          return ActivityDefinitionKind.CLAIM;
+          return RequestResourceType.CLAIM;
         if ("CommunicationRequest".equals(codeString))
-          return ActivityDefinitionKind.COMMUNICATIONREQUEST;
+          return RequestResourceType.COMMUNICATIONREQUEST;
         if ("Contract".equals(codeString))
-          return ActivityDefinitionKind.CONTRACT;
+          return RequestResourceType.CONTRACT;
         if ("DeviceRequest".equals(codeString))
-          return ActivityDefinitionKind.DEVICEREQUEST;
+          return RequestResourceType.DEVICEREQUEST;
         if ("EnrollmentRequest".equals(codeString))
-          return ActivityDefinitionKind.ENROLLMENTREQUEST;
+          return RequestResourceType.ENROLLMENTREQUEST;
         if ("ImmunizationRecommendation".equals(codeString))
-          return ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION;
+          return RequestResourceType.IMMUNIZATIONRECOMMENDATION;
         if ("MedicationRequest".equals(codeString))
-          return ActivityDefinitionKind.MEDICATIONREQUEST;
+          return RequestResourceType.MEDICATIONREQUEST;
         if ("NutritionOrder".equals(codeString))
-          return ActivityDefinitionKind.NUTRITIONORDER;
+          return RequestResourceType.NUTRITIONORDER;
         if ("ServiceRequest".equals(codeString))
-          return ActivityDefinitionKind.SERVICEREQUEST;
+          return RequestResourceType.SERVICEREQUEST;
         if ("SupplyRequest".equals(codeString))
-          return ActivityDefinitionKind.SUPPLYREQUEST;
+          return RequestResourceType.SUPPLYREQUEST;
         if ("Task".equals(codeString))
-          return ActivityDefinitionKind.TASK;
+          return RequestResourceType.TASK;
         if ("VisionPrescription".equals(codeString))
-          return ActivityDefinitionKind.VISIONPRESCRIPTION;
-        throw new IllegalArgumentException("Unknown ActivityDefinitionKind code '"+codeString+"'");
+          return RequestResourceType.VISIONPRESCRIPTION;
+        throw new IllegalArgumentException("Unknown RequestResourceType code '"+codeString+"'");
         }
-        public Enumeration<ActivityDefinitionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestResourceType> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActivityDefinitionKind>(this);
+            return new Enumeration<RequestResourceType>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Appointment".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.APPOINTMENT);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.APPOINTMENT);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.APPOINTMENTRESPONSE);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.APPOINTMENTRESPONSE);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CAREPLAN);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.CAREPLAN);
         if ("Claim".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CLAIM);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.CLAIM);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.COMMUNICATIONREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.COMMUNICATIONREQUEST);
         if ("Contract".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CONTRACT);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.CONTRACT);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.DEVICEREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.DEVICEREQUEST);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.ENROLLMENTREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.ENROLLMENTREQUEST);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.IMMUNIZATIONRECOMMENDATION);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.MEDICATIONREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.MEDICATIONREQUEST);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.NUTRITIONORDER);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.NUTRITIONORDER);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.SERVICEREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.SERVICEREQUEST);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.SUPPLYREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.SUPPLYREQUEST);
         if ("Task".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.TASK);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.TASK);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.VISIONPRESCRIPTION);
-        throw new FHIRException("Unknown ActivityDefinitionKind code '"+codeString+"'");
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.VISIONPRESCRIPTION);
+        throw new FHIRException("Unknown RequestResourceType code '"+codeString+"'");
         }
-    public String toCode(ActivityDefinitionKind code) {
-      if (code == ActivityDefinitionKind.APPOINTMENT)
+    public String toCode(RequestResourceType code) {
+      if (code == RequestResourceType.APPOINTMENT)
         return "Appointment";
-      if (code == ActivityDefinitionKind.APPOINTMENTRESPONSE)
+      if (code == RequestResourceType.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
-      if (code == ActivityDefinitionKind.CAREPLAN)
+      if (code == RequestResourceType.CAREPLAN)
         return "CarePlan";
-      if (code == ActivityDefinitionKind.CLAIM)
+      if (code == RequestResourceType.CLAIM)
         return "Claim";
-      if (code == ActivityDefinitionKind.COMMUNICATIONREQUEST)
+      if (code == RequestResourceType.COMMUNICATIONREQUEST)
         return "CommunicationRequest";
-      if (code == ActivityDefinitionKind.CONTRACT)
+      if (code == RequestResourceType.CONTRACT)
         return "Contract";
-      if (code == ActivityDefinitionKind.DEVICEREQUEST)
+      if (code == RequestResourceType.DEVICEREQUEST)
         return "DeviceRequest";
-      if (code == ActivityDefinitionKind.ENROLLMENTREQUEST)
+      if (code == RequestResourceType.ENROLLMENTREQUEST)
         return "EnrollmentRequest";
-      if (code == ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION)
+      if (code == RequestResourceType.IMMUNIZATIONRECOMMENDATION)
         return "ImmunizationRecommendation";
-      if (code == ActivityDefinitionKind.MEDICATIONREQUEST)
+      if (code == RequestResourceType.MEDICATIONREQUEST)
         return "MedicationRequest";
-      if (code == ActivityDefinitionKind.NUTRITIONORDER)
+      if (code == RequestResourceType.NUTRITIONORDER)
         return "NutritionOrder";
-      if (code == ActivityDefinitionKind.SERVICEREQUEST)
+      if (code == RequestResourceType.SERVICEREQUEST)
         return "ServiceRequest";
-      if (code == ActivityDefinitionKind.SUPPLYREQUEST)
+      if (code == RequestResourceType.SUPPLYREQUEST)
         return "SupplyRequest";
-      if (code == ActivityDefinitionKind.TASK)
+      if (code == RequestResourceType.TASK)
         return "Task";
-      if (code == ActivityDefinitionKind.VISIONPRESCRIPTION)
+      if (code == RequestResourceType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
       }
-    public String toSystem(ActivityDefinitionKind code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RequestIntent {
-        /**
-         * The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.
-         */
-        PROPOSAL, 
-        /**
-         * The request represents an intention to ensure something occurs without providing an authorization for others to act.
-         */
-        PLAN, 
-        /**
-         * The request represents a legally binding instruction authored by a Patient or RelatedPerson.
-         */
-        DIRECTIVE, 
-        /**
-         * The request represents a request/demand and authorization for action by a Practitioner.
-         */
-        ORDER, 
-        /**
-         * The request represents an original authorization for action.
-         */
-        ORIGINALORDER, 
-        /**
-         * The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.
-         */
-        REFLEXORDER, 
-        /**
-         * The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.
-         */
-        FILLERORDER, 
-        /**
-         * An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.
-         */
-        INSTANCEORDER, 
-        /**
-         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
-         */
-        OPTION, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestIntent fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposal".equals(codeString))
-          return PROPOSAL;
-        if ("plan".equals(codeString))
-          return PLAN;
-        if ("directive".equals(codeString))
-          return DIRECTIVE;
-        if ("order".equals(codeString))
-          return ORDER;
-        if ("original-order".equals(codeString))
-          return ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return INSTANCEORDER;
-        if ("option".equals(codeString))
-          return OPTION;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROPOSAL: return "proposal";
-            case PLAN: return "plan";
-            case DIRECTIVE: return "directive";
-            case ORDER: return "order";
-            case ORIGINALORDER: return "original-order";
-            case REFLEXORDER: return "reflex-order";
-            case FILLERORDER: return "filler-order";
-            case INSTANCEORDER: return "instance-order";
-            case OPTION: return "option";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PROPOSAL: return "http://hl7.org/fhir/request-intent";
-            case PLAN: return "http://hl7.org/fhir/request-intent";
-            case DIRECTIVE: return "http://hl7.org/fhir/request-intent";
-            case ORDER: return "http://hl7.org/fhir/request-intent";
-            case ORIGINALORDER: return "http://hl7.org/fhir/request-intent";
-            case REFLEXORDER: return "http://hl7.org/fhir/request-intent";
-            case FILLERORDER: return "http://hl7.org/fhir/request-intent";
-            case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
-            case OPTION: return "http://hl7.org/fhir/request-intent";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
-            case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
-            case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
-            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
-            case ORIGINALORDER: return "The request represents an original authorization for action.";
-            case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
-            case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
-            case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
-            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROPOSAL: return "Proposal";
-            case PLAN: return "Plan";
-            case DIRECTIVE: return "Directive";
-            case ORDER: return "Order";
-            case ORIGINALORDER: return "Original Order";
-            case REFLEXORDER: return "Reflex Order";
-            case FILLERORDER: return "Filler Order";
-            case INSTANCEORDER: return "Instance Order";
-            case OPTION: return "Option";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestIntentEnumFactory implements EnumFactory<RequestIntent> {
-    public RequestIntent fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposal".equals(codeString))
-          return RequestIntent.PROPOSAL;
-        if ("plan".equals(codeString))
-          return RequestIntent.PLAN;
-        if ("directive".equals(codeString))
-          return RequestIntent.DIRECTIVE;
-        if ("order".equals(codeString))
-          return RequestIntent.ORDER;
-        if ("original-order".equals(codeString))
-          return RequestIntent.ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return RequestIntent.REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return RequestIntent.FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return RequestIntent.INSTANCEORDER;
-        if ("option".equals(codeString))
-          return RequestIntent.OPTION;
-        throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
-        }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("proposal".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL);
-        if ("plan".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN);
-        if ("directive".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE);
-        if ("order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER);
-        if ("original-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER);
-        if ("reflex-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER);
-        if ("filler-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER);
-        if ("instance-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER);
-        if ("option".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION);
-        throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
-        }
-    public String toCode(RequestIntent code) {
-      if (code == RequestIntent.PROPOSAL)
-        return "proposal";
-      if (code == RequestIntent.PLAN)
-        return "plan";
-      if (code == RequestIntent.DIRECTIVE)
-        return "directive";
-      if (code == RequestIntent.ORDER)
-        return "order";
-      if (code == RequestIntent.ORIGINALORDER)
-        return "original-order";
-      if (code == RequestIntent.REFLEXORDER)
-        return "reflex-order";
-      if (code == RequestIntent.FILLERORDER)
-        return "filler-order";
-      if (code == RequestIntent.INSTANCEORDER)
-        return "instance-order";
-      if (code == RequestIntent.OPTION)
-        return "option";
-      return "?";
-      }
-    public String toSystem(RequestIntent code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RequestPriority {
-        /**
-         * The request has normal priority.
-         */
-        ROUTINE, 
-        /**
-         * The request should be actioned promptly - higher priority than routine.
-         */
-        URGENT, 
-        /**
-         * The request should be actioned as soon as possible - higher priority than urgent.
-         */
-        ASAP, 
-        /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
-         */
-        STAT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return ROUTINE;
-        if ("urgent".equals(codeString))
-          return URGENT;
-        if ("asap".equals(codeString))
-          return ASAP;
-        if ("stat".equals(codeString))
-          return STAT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ROUTINE: return "routine";
-            case URGENT: return "urgent";
-            case ASAP: return "asap";
-            case STAT: return "stat";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ROUTINE: return "http://hl7.org/fhir/request-priority";
-            case URGENT: return "http://hl7.org/fhir/request-priority";
-            case ASAP: return "http://hl7.org/fhir/request-priority";
-            case STAT: return "http://hl7.org/fhir/request-priority";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ROUTINE: return "The request has normal priority.";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ROUTINE: return "Routine";
-            case URGENT: return "Urgent";
-            case ASAP: return "ASAP";
-            case STAT: return "STAT";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> {
-    public RequestPriority fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return RequestPriority.ROUTINE;
-        if ("urgent".equals(codeString))
-          return RequestPriority.URGENT;
-        if ("asap".equals(codeString))
-          return RequestPriority.ASAP;
-        if ("stat".equals(codeString))
-          return RequestPriority.STAT;
-        throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
-        if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
-        if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
-        if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
-        throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-    public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
-        return "routine";
-      if (code == RequestPriority.URGENT)
-        return "urgent";
-      if (code == RequestPriority.ASAP)
-        return "asap";
-      if (code == RequestPriority.STAT)
-        return "stat";
-      return "?";
-      }
-    public String toSystem(RequestPriority code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ActivityParticipantType {
-        /**
-         * The participant is the patient under evaluation.
-         */
-        PATIENT, 
-        /**
-         * The participant is a practitioner involved in the patient's care.
-         */
-        PRACTITIONER, 
-        /**
-         * The participant is a person related to the patient.
-         */
-        RELATEDPERSON, 
-        /**
-         * The participant is a system or device used in the care of the patient.
-         */
-        DEVICE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ActivityParticipantType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("patient".equals(codeString))
-          return PATIENT;
-        if ("practitioner".equals(codeString))
-          return PRACTITIONER;
-        if ("related-person".equals(codeString))
-          return RELATEDPERSON;
-        if ("device".equals(codeString))
-          return DEVICE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ActivityParticipantType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PATIENT: return "patient";
-            case PRACTITIONER: return "practitioner";
-            case RELATEDPERSON: return "related-person";
-            case DEVICE: return "device";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PATIENT: return "http://hl7.org/fhir/action-participant-type";
-            case PRACTITIONER: return "http://hl7.org/fhir/action-participant-type";
-            case RELATEDPERSON: return "http://hl7.org/fhir/action-participant-type";
-            case DEVICE: return "http://hl7.org/fhir/action-participant-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PATIENT: return "The participant is the patient under evaluation.";
-            case PRACTITIONER: return "The participant is a practitioner involved in the patient's care.";
-            case RELATEDPERSON: return "The participant is a person related to the patient.";
-            case DEVICE: return "The participant is a system or device used in the care of the patient.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PATIENT: return "Patient";
-            case PRACTITIONER: return "Practitioner";
-            case RELATEDPERSON: return "Related Person";
-            case DEVICE: return "Device";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ActivityParticipantTypeEnumFactory implements EnumFactory<ActivityParticipantType> {
-    public ActivityParticipantType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("patient".equals(codeString))
-          return ActivityParticipantType.PATIENT;
-        if ("practitioner".equals(codeString))
-          return ActivityParticipantType.PRACTITIONER;
-        if ("related-person".equals(codeString))
-          return ActivityParticipantType.RELATEDPERSON;
-        if ("device".equals(codeString))
-          return ActivityParticipantType.DEVICE;
-        throw new IllegalArgumentException("Unknown ActivityParticipantType code '"+codeString+"'");
-        }
-        public Enumeration<ActivityParticipantType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ActivityParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("patient".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.PATIENT);
-        if ("practitioner".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.PRACTITIONER);
-        if ("related-person".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.RELATEDPERSON);
-        if ("device".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.DEVICE);
-        throw new FHIRException("Unknown ActivityParticipantType code '"+codeString+"'");
-        }
-    public String toCode(ActivityParticipantType code) {
-      if (code == ActivityParticipantType.PATIENT)
-        return "patient";
-      if (code == ActivityParticipantType.PRACTITIONER)
-        return "practitioner";
-      if (code == ActivityParticipantType.RELATEDPERSON)
-        return "related-person";
-      if (code == ActivityParticipantType.DEVICE)
-        return "device";
-      return "?";
-      }
-    public String toSystem(ActivityParticipantType code) {
+    public String toSystem(RequestResourceType code) {
       return code.getSystem();
       }
     }
@@ -833,7 +381,7 @@ public class ActivityDefinition extends CanonicalResource {
         @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="patient | practitioner | related-person | device", formalDefinition="The type of participant in the action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-type")
-        protected Enumeration<ActivityParticipantType> type;
+        protected Enumeration<ActionParticipantType> type;
 
         /**
          * The role the participant should play in performing the described action.
@@ -843,7 +391,7 @@ public class ActivityDefinition extends CanonicalResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-role")
         protected CodeableConcept role;
 
-        private static final long serialVersionUID = -1450932564L;
+        private static final long serialVersionUID = -1152013659L;
 
     /**
      * Constructor
@@ -855,20 +403,20 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public ActivityDefinitionParticipantComponent(Enumeration<ActivityParticipantType> type) {
+      public ActivityDefinitionParticipantComponent(ActionParticipantType type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
          * @return {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public Enumeration<ActivityParticipantType> getTypeElement() { 
+        public Enumeration<ActionParticipantType> getTypeElement() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ActivityDefinitionParticipantComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<ActivityParticipantType>(new ActivityParticipantTypeEnumFactory()); // bb
+              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory()); // bb
           return this.type;
         }
 
@@ -883,7 +431,7 @@ public class ActivityDefinition extends CanonicalResource {
         /**
          * @param value {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public ActivityDefinitionParticipantComponent setTypeElement(Enumeration<ActivityParticipantType> value) { 
+        public ActivityDefinitionParticipantComponent setTypeElement(Enumeration<ActionParticipantType> value) { 
           this.type = value;
           return this;
         }
@@ -891,16 +439,16 @@ public class ActivityDefinition extends CanonicalResource {
         /**
          * @return The type of participant in the action.
          */
-        public ActivityParticipantType getType() { 
+        public ActionParticipantType getType() { 
           return this.type == null ? null : this.type.getValue();
         }
 
         /**
          * @param value The type of participant in the action.
          */
-        public ActivityDefinitionParticipantComponent setType(ActivityParticipantType value) { 
+        public ActivityDefinitionParticipantComponent setType(ActionParticipantType value) { 
             if (this.type == null)
-              this.type = new Enumeration<ActivityParticipantType>(new ActivityParticipantTypeEnumFactory());
+              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory());
             this.type.setValue(value);
           return this;
         }
@@ -948,7 +496,7 @@ public class ActivityDefinition extends CanonicalResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActivityParticipantType>
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -959,8 +507,8 @@ public class ActivityDefinition extends CanonicalResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ActivityParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<ActivityParticipantType>
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
           return value;
         case 3506294: // role
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -973,8 +521,8 @@ public class ActivityDefinition extends CanonicalResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ActivityParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<ActivityParticipantType>
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
         } else if (name.equals("role")) {
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
@@ -986,7 +534,7 @@ public class ActivityDefinition extends CanonicalResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
-        case 3506294:  return getRole(); 
+        case 3506294:  return getRole();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1005,7 +553,7 @@ public class ActivityDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.participant.type");
         }
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
@@ -1086,10 +634,10 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public ActivityDefinitionDynamicValueComponent(StringType path, Expression expression) {
+      public ActivityDefinitionDynamicValueComponent(String path, Expression expression) {
         super();
-        this.path = path;
-        this.expression = expression;
+        this.setPath(path);
+        this.setExpression(expression);
       }
 
         /**
@@ -1216,7 +764,7 @@ public class ActivityDefinition extends CanonicalResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3433509:  return getPathElement();
-        case -1795452264:  return getExpression(); 
+        case -1795452264:  return getExpression();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1235,7 +783,7 @@ public class ActivityDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.path");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.dynamicValue.path");
         }
         else if (name.equals("expression")) {
           this.expression = new Expression();
@@ -1289,73 +837,159 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
     /**
+     * An absolute URI that is used to identify this activity definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this activity definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the activity definition is stored on different servers.
+     */
+    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical identifier for this activity definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this activity definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this activity definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the activity definition is stored on different servers." )
+    protected UriType url;
+
+    /**
      * A formal identifier that is used to identify this activity definition when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Additional identifier for the activity definition", formalDefinition="A formal identifier that is used to identify this activity definition when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
+     * The identifier that is used to identify this version of the activity definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the activity definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active assets.
+     */
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the activity definition", formalDefinition="The identifier that is used to identify this version of the activity definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the activity definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active assets." )
+    protected StringType version;
+
+    /**
+     * A natural language name identifying the activity definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this activity definition (computer friendly)", formalDefinition="A natural language name identifying the activity definition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
+     * A short, descriptive, user-friendly title for the activity definition.
+     */
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this activity definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the activity definition." )
+    protected StringType title;
+
+    /**
      * An explanatory or alternate title for the activity definition giving additional information about its content.
      */
-    @Child(name = "subtitle", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subtitle", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Subordinate title of the activity definition", formalDefinition="An explanatory or alternate title for the activity definition giving additional information about its content." )
     protected StringType subtitle;
 
     /**
+     * The status of this activity definition. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this activity definition. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
+     * A Boolean value to indicate that this activity definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this activity definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
+
+    /**
      * A code or group definition that describes the intended subject of the activity being defined.
      */
-    @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=2, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Type of individual the activity definition is intended for", formalDefinition="A code or group definition that describes the intended subject of the activity being defined." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
     protected DataType subject;
 
     /**
+     * The date  (and optionally time) when the activity definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the activity definition changes.
+     */
+    @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the activity definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the activity definition changes." )
+    protected DateTimeType date;
+
+    /**
+     * The name of the organization or individual that published the activity definition.
+     */
+    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the activity definition." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
+
+    /**
+     * A free text natural language description of the activity definition from a consumer's perspective.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Natural language description of the activity definition", formalDefinition="A free text natural language description of the activity definition from a consumer's perspective." )
+    protected MarkdownType description;
+
+    /**
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate activity definition instances.
+     */
+    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate activity definition instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the activity definition is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction for activity definition (if applicable)", formalDefinition="A legal or geographic region in which the activity definition is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
+    protected List<CodeableConcept> jurisdiction;
+
+    /**
      * Explanation of why this activity definition is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this activity definition is defined", formalDefinition="Explanation of why this activity definition is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A detailed description of how the activity definition is used from a clinical perspective.
      */
-    @Child(name = "usage", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "usage", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Describes the clinical usage of the activity definition", formalDefinition="A detailed description of how the activity definition is used from a clinical perspective." )
     protected StringType usage;
 
     /**
      * A copyright statement relating to the activity definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the activity definition.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the activity definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the activity definition." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the activity definition was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the activity definition was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the activity definition content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the activity definition is expected to be used", formalDefinition="The period during which the activity definition content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * Descriptive topics related to the content of the activity. Topics provide a high-level categorization of the activity that can be useful for filtering and searching.
      */
-    @Child(name = "topic", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "topic", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="E.g. Education, Treatment, Assessment, etc.", formalDefinition="Descriptive topics related to the content of the activity. Topics provide a high-level categorization of the activity that can be useful for filtering and searching." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
     protected List<CodeableConcept> topic;
@@ -1363,64 +997,64 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * An individiual or organization primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individual or organization primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individual or organization primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individual or organization primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individual or organization primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individual or organization responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individual or organization responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Related artifacts such as additional documentation, justification, or bibliographic references.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, or bibliographic references." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * A reference to a Library resource containing any formal logic used by the activity definition.
      */
-    @Child(name = "library", type = {CanonicalType.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "library", type = {CanonicalType.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Logic used by the activity definition", formalDefinition="A reference to a Library resource containing any formal logic used by the activity definition." )
     protected List<CanonicalType> library;
 
     /**
      * A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.
      */
-    @Child(name = "kind", type = {CodeType.class}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "kind", type = {CodeType.class}, order=28, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Kind of resource", formalDefinition="A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-resource-types")
-    protected Enumeration<ActivityDefinitionKind> kind;
+    protected Enumeration<RequestResourceType> kind;
 
     /**
      * A profile to which the target of the activity definition is expected to conform.
      */
-    @Child(name = "profile", type = {CanonicalType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "profile", type = {CanonicalType.class}, order=29, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="What profile the resource needs to conform to", formalDefinition="A profile to which the target of the activity definition is expected to conform." )
     protected CanonicalType profile;
 
     /**
      * Detailed description of the type of activity; e.g. What lab test, what procedure, what kind of encounter.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableConcept.class}, order=30, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Detail type of activity", formalDefinition="Detailed description of the type of activity; e.g. What lab test, what procedure, what kind of encounter." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-code")
     protected CodeableConcept code;
@@ -1428,7 +1062,7 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Indicates the level of authority/intentionality associated with the activity and where the request should fit into the workflow chain.
      */
-    @Child(name = "intent", type = {CodeType.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "intent", type = {CodeType.class}, order=31, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the activity and where the request should fit into the workflow chain." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
     protected Enumeration<RequestIntent> intent;
@@ -1436,7 +1070,7 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Indicates how quickly the activity  should be addressed with respect to other requests.
      */
-    @Child(name = "priority", type = {CodeType.class}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "priority", type = {CodeType.class}, order=32, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the activity  should be addressed with respect to other requests." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
     protected Enumeration<RequestPriority> priority;
@@ -1444,35 +1078,35 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Set this to true if the definition is to indicate that a particular activity should NOT be performed. If true, this element should be interpreted to reinforce a negative coding. For example NPO as a code with a doNotPerform of true would still indicate to NOT perform the action.
      */
-    @Child(name = "doNotPerform", type = {BooleanType.class}, order=21, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "doNotPerform", type = {BooleanType.class}, order=33, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="True if the activity should not be performed", formalDefinition="Set this to true if the definition is to indicate that a particular activity should NOT be performed. If true, this element should be interpreted to reinforce a negative coding. For example NPO as a code with a doNotPerform of true would still indicate to NOT perform the action." )
     protected BooleanType doNotPerform;
 
     /**
      * The period, timing or frequency upon which the described activity is to occur.
      */
-    @Child(name = "timing", type = {Timing.class, DateTimeType.class, Age.class, Period.class, Range.class, Duration.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "timing", type = {Timing.class, DateTimeType.class, Age.class, Period.class, Range.class, Duration.class}, order=34, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When activity is to occur", formalDefinition="The period, timing or frequency upon which the described activity is to occur." )
     protected DataType timing;
 
     /**
      * Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.
      */
-    @Child(name = "location", type = {Location.class}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "location", type = {Location.class}, order=35, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Where it should happen", formalDefinition="Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc." )
     protected Reference location;
 
     /**
      * Indicates who should participate in performing the action described.
      */
-    @Child(name = "participant", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "participant", type = {}, order=36, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who should participate in the action", formalDefinition="Indicates who should participate in performing the action described." )
     protected List<ActivityDefinitionParticipantComponent> participant;
 
     /**
      * Identifies the food, drug or other product being consumed or supplied in the activity.
      */
-    @Child(name = "product", type = {Medication.class, Substance.class, CodeableConcept.class}, order=25, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "product", type = {Medication.class, Substance.class, CodeableConcept.class}, order=37, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="What's administered/supplied", formalDefinition="Identifies the food, drug or other product being consumed or supplied in the activity." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-codes")
     protected DataType product;
@@ -1480,21 +1114,21 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Identifies the quantity expected to be consumed at once (per dose, per meal, etc.).
      */
-    @Child(name = "quantity", type = {Quantity.class}, order=26, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "quantity", type = {Quantity.class}, order=38, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="How much is administered/consumed/supplied", formalDefinition="Identifies the quantity expected to be consumed at once (per dose, per meal, etc.)." )
     protected Quantity quantity;
 
     /**
      * Provides detailed dosage instructions in the same way that they are described for MedicationRequest resources.
      */
-    @Child(name = "dosage", type = {Dosage.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "dosage", type = {Dosage.class}, order=39, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Detailed dosage instructions", formalDefinition="Provides detailed dosage instructions in the same way that they are described for MedicationRequest resources." )
     protected List<Dosage> dosage;
 
     /**
      * Indicates the sites on the subject's body where the procedure should be performed (I.e. the target sites).
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=40, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What part of body to perform on", formalDefinition="Indicates the sites on the subject's body where the procedure should be performed (I.e. the target sites)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected List<CodeableConcept> bodySite;
@@ -1502,39 +1136,39 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * Defines specimen requirements for the action to be performed, such as required specimens for a lab test.
      */
-    @Child(name = "specimenRequirement", type = {SpecimenDefinition.class}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "specimenRequirement", type = {SpecimenDefinition.class}, order=41, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What specimens are required to perform this action", formalDefinition="Defines specimen requirements for the action to be performed, such as required specimens for a lab test." )
     protected List<Reference> specimenRequirement;
 
     /**
      * Defines observation requirements for the action to be performed, such as body weight or surface area.
      */
-    @Child(name = "observationRequirement", type = {ObservationDefinition.class}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "observationRequirement", type = {ObservationDefinition.class}, order=42, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What observations are required to perform this action", formalDefinition="Defines observation requirements for the action to be performed, such as body weight or surface area." )
     protected List<Reference> observationRequirement;
 
     /**
      * Defines the observations that are expected to be produced by the action.
      */
-    @Child(name = "observationResultRequirement", type = {ObservationDefinition.class}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "observationResultRequirement", type = {ObservationDefinition.class}, order=43, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What observations must be produced by this action", formalDefinition="Defines the observations that are expected to be produced by the action." )
     protected List<Reference> observationResultRequirement;
 
     /**
      * A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.
      */
-    @Child(name = "transform", type = {CanonicalType.class}, order=32, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "transform", type = {CanonicalType.class}, order=44, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Transform to apply the template", formalDefinition="A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input." )
     protected CanonicalType transform;
 
     /**
      * Dynamic values that will be evaluated to produce values for elements of the resulting resource. For example, if the dosage of a medication must be computed based on the patient's weight, a dynamic value would be used to specify an expression that calculated the weight, and the path on the request resource that would contain the result.
      */
-    @Child(name = "dynamicValue", type = {}, order=33, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "dynamicValue", type = {}, order=45, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Dynamic aspects of the definition", formalDefinition="Dynamic values that will be evaluated to produce values for elements of the resulting resource. For example, if the dosage of a medication must be computed based on the patient's weight, a dynamic value would be used to specify an expression that calculated the weight, and the path on the request resource that would contain the result." )
     protected List<ActivityDefinitionDynamicValueComponent> dynamicValue;
 
-    private static final long serialVersionUID = -2129841377L;
+    private static final long serialVersionUID = 1615489416L;
 
   /**
    * Constructor
@@ -1546,9 +1180,9 @@ public class ActivityDefinition extends CanonicalResource {
   /**
    * Constructor
    */
-    public ActivityDefinition(Enumeration<PublicationStatus> status) {
+    public ActivityDefinition(PublicationStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -1644,7 +1278,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2132,7 +1766,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -2234,7 +1868,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -2287,7 +1921,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -2609,7 +2243,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {3}
      */
     public CodeableConcept getTopicFirstRep() { 
       if (getTopic().isEmpty()) {
@@ -2662,7 +2296,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
      */
     public ContactDetail getAuthorFirstRep() { 
       if (getAuthor().isEmpty()) {
@@ -2715,7 +2349,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {3}
      */
     public ContactDetail getEditorFirstRep() { 
       if (getEditor().isEmpty()) {
@@ -2768,7 +2402,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {3}
      */
     public ContactDetail getReviewerFirstRep() { 
       if (getReviewer().isEmpty()) {
@@ -2821,7 +2455,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {3}
      */
     public ContactDetail getEndorserFirstRep() { 
       if (getEndorser().isEmpty()) {
@@ -2874,7 +2508,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
       if (getRelatedArtifact().isEmpty()) {
@@ -2939,7 +2573,7 @@ public class ActivityDefinition extends CanonicalResource {
       if (this.library == null)
         return false;
       for (CanonicalType v : this.library)
-        if (v.getValue().equals(value)) // canonical(Library)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -2947,12 +2581,12 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * @return {@link #kind} (A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
      */
-    public Enumeration<ActivityDefinitionKind> getKindElement() { 
+    public Enumeration<RequestResourceType> getKindElement() { 
       if (this.kind == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ActivityDefinition.kind");
         else if (Configuration.doAutoCreate())
-          this.kind = new Enumeration<ActivityDefinitionKind>(new ActivityDefinitionKindEnumFactory()); // bb
+          this.kind = new Enumeration<RequestResourceType>(new RequestResourceTypeEnumFactory()); // bb
       return this.kind;
     }
 
@@ -2967,7 +2601,7 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * @param value {@link #kind} (A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
      */
-    public ActivityDefinition setKindElement(Enumeration<ActivityDefinitionKind> value) { 
+    public ActivityDefinition setKindElement(Enumeration<RequestResourceType> value) { 
       this.kind = value;
       return this;
     }
@@ -2975,19 +2609,19 @@ public class ActivityDefinition extends CanonicalResource {
     /**
      * @return A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.
      */
-    public ActivityDefinitionKind getKind() { 
+    public RequestResourceType getKind() { 
       return this.kind == null ? null : this.kind.getValue();
     }
 
     /**
      * @param value A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.
      */
-    public ActivityDefinition setKind(ActivityDefinitionKind value) { 
+    public ActivityDefinition setKind(RequestResourceType value) { 
       if (value == null)
         this.kind = null;
       else {
         if (this.kind == null)
-          this.kind = new Enumeration<ActivityDefinitionKind>(new ActivityDefinitionKindEnumFactory());
+          this.kind = new Enumeration<RequestResourceType>(new RequestResourceTypeEnumFactory());
         this.kind.setValue(value);
       }
       return this;
@@ -3388,7 +3022,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
      */
     public ActivityDefinitionParticipantComponent getParticipantFirstRep() { 
       if (getParticipant().isEmpty()) {
@@ -3516,7 +3150,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #dosage}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #dosage}, creating it if it does not already exist {3}
      */
     public Dosage getDosageFirstRep() { 
       if (getDosage().isEmpty()) {
@@ -3569,7 +3203,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist {3}
      */
     public CodeableConcept getBodySiteFirstRep() { 
       if (getBodySite().isEmpty()) {
@@ -3622,7 +3256,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specimenRequirement}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specimenRequirement}, creating it if it does not already exist {3}
      */
     public Reference getSpecimenRequirementFirstRep() { 
       if (getSpecimenRequirement().isEmpty()) {
@@ -3675,7 +3309,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #observationRequirement}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #observationRequirement}, creating it if it does not already exist {3}
      */
     public Reference getObservationRequirementFirstRep() { 
       if (getObservationRequirement().isEmpty()) {
@@ -3728,7 +3362,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #observationResultRequirement}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #observationResultRequirement}, creating it if it does not already exist {3}
      */
     public Reference getObservationResultRequirementFirstRep() { 
       if (getObservationResultRequirement().isEmpty()) {
@@ -3830,7 +3464,7 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #dynamicValue}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #dynamicValue}, creating it if it does not already exist {3}
      */
     public ActivityDefinitionDynamicValueComponent getDynamicValueFirstRep() { 
       if (getDynamicValue().isEmpty()) {
@@ -3879,7 +3513,7 @@ public class ActivityDefinition extends CanonicalResource {
         children.add(new Property("location", "Reference(Location)", "Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.", 0, 1, location));
         children.add(new Property("participant", "", "Indicates who should participate in performing the action described.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("product[x]", "Reference(Medication|Substance)|CodeableConcept", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product));
-        children.add(new Property("quantity", "SimpleQuantity", "Identifies the quantity expected to be consumed at once (per dose, per meal, etc.).", 0, 1, quantity));
+        children.add(new Property("quantity", "Quantity", "Identifies the quantity expected to be consumed at once (per dose, per meal, etc.).", 0, 1, quantity));
         children.add(new Property("dosage", "Dosage", "Provides detailed dosage instructions in the same way that they are described for MedicationRequest resources.", 0, java.lang.Integer.MAX_VALUE, dosage));
         children.add(new Property("bodySite", "CodeableConcept", "Indicates the sites on the subject's body where the procedure should be performed (I.e. the target sites).", 0, java.lang.Integer.MAX_VALUE, bodySite));
         children.add(new Property("specimenRequirement", "Reference(SpecimenDefinition)", "Defines specimen requirements for the action to be performed, such as required specimens for a lab test.", 0, java.lang.Integer.MAX_VALUE, specimenRequirement));
@@ -3902,8 +3536,8 @@ public class ActivityDefinition extends CanonicalResource {
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this activity definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the activity being defined.", 0, 1, subject);
         case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the activity being defined.", 0, 1, subject);
-        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the activity being defined.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the activity being defined.", 0, 1, subject);
+        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of the activity being defined.", 0, 1, subject);
+        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of the activity being defined.", 0, 1, subject);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the activity definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the activity definition changes.", 0, 1, date);
         case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the activity definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -3931,19 +3565,19 @@ public class ActivityDefinition extends CanonicalResource {
         case -1788508167: /*doNotPerform*/  return new Property("doNotPerform", "boolean", "Set this to true if the definition is to indicate that a particular activity should NOT be performed. If true, this element should be interpreted to reinforce a negative coding. For example NPO as a code with a doNotPerform of true would still indicate to NOT perform the action.", 0, 1, doNotPerform);
         case 164632566: /*timing[x]*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
         case -873664438: /*timing*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
-        case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
-        case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
-        case 164607061: /*timingAge*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
-        case -615615829: /*timingPeriod*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
-        case -710871277: /*timingRange*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
-        case -1327253506: /*timingDuration*/  return new Property("timing[x]", "Timing|dateTime|Age|Period|Range|Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
+        case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
+        case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "dateTime", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
+        case 164607061: /*timingAge*/  return new Property("timing[x]", "Age", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
+        case -615615829: /*timingPeriod*/  return new Property("timing[x]", "Period", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
+        case -710871277: /*timingRange*/  return new Property("timing[x]", "Range", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
+        case -1327253506: /*timingDuration*/  return new Property("timing[x]", "Duration", "The period, timing or frequency upon which the described activity is to occur.", 0, 1, timing);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.", 0, 1, location);
         case 767422259: /*participant*/  return new Property("participant", "", "Indicates who should participate in performing the action described.", 0, java.lang.Integer.MAX_VALUE, participant);
         case 1753005361: /*product[x]*/  return new Property("product[x]", "Reference(Medication|Substance)|CodeableConcept", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product);
         case -309474065: /*product*/  return new Property("product[x]", "Reference(Medication|Substance)|CodeableConcept", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product);
-        case -669667556: /*productReference*/  return new Property("product[x]", "Reference(Medication|Substance)|CodeableConcept", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product);
-        case 906854066: /*productCodeableConcept*/  return new Property("product[x]", "Reference(Medication|Substance)|CodeableConcept", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product);
-        case -1285004149: /*quantity*/  return new Property("quantity", "SimpleQuantity", "Identifies the quantity expected to be consumed at once (per dose, per meal, etc.).", 0, 1, quantity);
+        case -669667556: /*productReference*/  return new Property("product[x]", "Reference(Medication|Substance)", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product);
+        case 906854066: /*productCodeableConcept*/  return new Property("product[x]", "CodeableConcept", "Identifies the food, drug or other product being consumed or supplied in the activity.", 0, 1, product);
+        case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "Identifies the quantity expected to be consumed at once (per dose, per meal, etc.).", 0, 1, quantity);
         case -1326018889: /*dosage*/  return new Property("dosage", "Dosage", "Provides detailed dosage instructions in the same way that they are described for MedicationRequest resources.", 0, java.lang.Integer.MAX_VALUE, dosage);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Indicates the sites on the subject's body where the procedure should be performed (I.e. the target sites).", 0, java.lang.Integer.MAX_VALUE, bodySite);
         case 1498467355: /*specimenRequirement*/  return new Property("specimenRequirement", "Reference(SpecimenDefinition)", "Defines specimen requirements for the action to be performed, such as required specimens for a lab test.", 0, java.lang.Integer.MAX_VALUE, specimenRequirement);
@@ -3967,7 +3601,7 @@ public class ActivityDefinition extends CanonicalResource {
         case -2060497896: /*subtitle*/ return this.subtitle == null ? new Base[0] : new Base[] {this.subtitle}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Type
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
@@ -3987,16 +3621,16 @@ public class ActivityDefinition extends CanonicalResource {
         case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case 166208699: /*library*/ return this.library == null ? new Base[0] : this.library.toArray(new Base[this.library.size()]); // CanonicalType
-        case 3292052: /*kind*/ return this.kind == null ? new Base[0] : new Base[] {this.kind}; // Enumeration<ActivityDefinitionKind>
+        case 3292052: /*kind*/ return this.kind == null ? new Base[0] : new Base[] {this.kind}; // Enumeration<RequestResourceType>
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : new Base[] {this.profile}; // CanonicalType
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<RequestIntent>
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
         case -1788508167: /*doNotPerform*/ return this.doNotPerform == null ? new Base[0] : new Base[] {this.doNotPerform}; // BooleanType
-        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // Type
+        case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // ActivityDefinitionParticipantComponent
-        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // Type
+        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // DataType
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -1326018889: /*dosage*/ return this.dosage == null ? new Base[0] : this.dosage.toArray(new Base[this.dosage.size()]); // Dosage
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // CodeableConcept
@@ -4039,7 +3673,7 @@ public class ActivityDefinition extends CanonicalResource {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1867885268: // subject
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -4099,8 +3733,8 @@ public class ActivityDefinition extends CanonicalResource {
           this.getLibrary().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 3292052: // kind
-          value = new ActivityDefinitionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.kind = (Enumeration) value; // Enumeration<ActivityDefinitionKind>
+          value = new RequestResourceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.kind = (Enumeration) value; // Enumeration<RequestResourceType>
           return value;
         case -309425751: // profile
           this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
@@ -4120,7 +3754,7 @@ public class ActivityDefinition extends CanonicalResource {
           this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -873664438: // timing
-          this.timing = TypeConvertor.castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
           return value;
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
@@ -4129,7 +3763,7 @@ public class ActivityDefinition extends CanonicalResource {
           this.getParticipant().add((ActivityDefinitionParticipantComponent) value); // ActivityDefinitionParticipantComponent
           return value;
         case -309474065: // product
-          this.product = TypeConvertor.castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // DataType
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -4180,7 +3814,7 @@ public class ActivityDefinition extends CanonicalResource {
         } else if (name.equals("experimental")) {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
-          this.subject = TypeConvertor.castToType(value); // Type
+          this.subject = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
@@ -4220,8 +3854,8 @@ public class ActivityDefinition extends CanonicalResource {
         } else if (name.equals("library")) {
           this.getLibrary().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("kind")) {
-          value = new ActivityDefinitionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.kind = (Enumeration) value; // Enumeration<ActivityDefinitionKind>
+          value = new RequestResourceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.kind = (Enumeration) value; // Enumeration<RequestResourceType>
         } else if (name.equals("profile")) {
           this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("code")) {
@@ -4235,13 +3869,13 @@ public class ActivityDefinition extends CanonicalResource {
         } else if (name.equals("doNotPerform")) {
           this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("timing[x]")) {
-          this.timing = TypeConvertor.castToType(value); // Type
+          this.timing = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participant")) {
           this.getParticipant().add((ActivityDefinitionParticipantComponent) value);
         } else if (name.equals("product[x]")) {
-          this.product = TypeConvertor.castToType(value); // Type
+          this.product = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("dosage")) {
@@ -4274,8 +3908,8 @@ public class ActivityDefinition extends CanonicalResource {
         case -2060497896:  return getSubtitleElement();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
-        case -573640748:  return getSubject(); 
-        case -1867885268:  return getSubject(); 
+        case -573640748:  return getSubject();
+        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
@@ -4287,7 +3921,7 @@ public class ActivityDefinition extends CanonicalResource {
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod(); 
+        case -403934648:  return getEffectivePeriod();
         case 110546223:  return addTopic(); 
         case -1406328437:  return addAuthor(); 
         case -1307827859:  return addEditor(); 
@@ -4297,17 +3931,17 @@ public class ActivityDefinition extends CanonicalResource {
         case 166208699:  return addLibraryElement();
         case 3292052:  return getKindElement();
         case -309425751:  return getProfileElement();
-        case 3059181:  return getCode(); 
+        case 3059181:  return getCode();
         case -1183762788:  return getIntentElement();
         case -1165461084:  return getPriorityElement();
         case -1788508167:  return getDoNotPerformElement();
-        case 164632566:  return getTiming(); 
-        case -873664438:  return getTiming(); 
-        case 1901043637:  return getLocation(); 
+        case 164632566:  return getTiming();
+        case -873664438:  return getTiming();
+        case 1901043637:  return getLocation();
         case 767422259:  return addParticipant(); 
-        case 1753005361:  return getProduct(); 
-        case -309474065:  return getProduct(); 
-        case -1285004149:  return getQuantity(); 
+        case 1753005361:  return getProduct();
+        case -309474065:  return getProduct();
+        case -1285004149:  return getQuantity();
         case -1326018889:  return addDosage(); 
         case 1702620169:  return addBodySite(); 
         case 1498467355:  return addSpecimenRequirement(); 
@@ -4361,7 +3995,7 @@ public class ActivityDefinition extends CanonicalResource {
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case 767422259: /*participant*/ return new String[] {};
         case -309474065: /*product*/ return new String[] {"Reference", "CodeableConcept"};
-        case -1285004149: /*quantity*/ return new String[] {"SimpleQuantity"};
+        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -1326018889: /*dosage*/ return new String[] {"Dosage"};
         case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
         case 1498467355: /*specimenRequirement*/ return new String[] {"Reference"};
@@ -4697,17 +4331,21 @@ public class ActivityDefinition extends CanonicalResource {
         if (!(other_ instanceof ActivityDefinition))
           return false;
         ActivityDefinition o = (ActivityDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(subtitle, o.subtitle, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(purpose, o.purpose, true) && compareDeep(usage, o.usage, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
-           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true)
-           && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
-           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(library, o.library, true)
-           && compareDeep(kind, o.kind, true) && compareDeep(profile, o.profile, true) && compareDeep(code, o.code, true)
-           && compareDeep(intent, o.intent, true) && compareDeep(priority, o.priority, true) && compareDeep(doNotPerform, o.doNotPerform, true)
-           && compareDeep(timing, o.timing, true) && compareDeep(location, o.location, true) && compareDeep(participant, o.participant, true)
-           && compareDeep(product, o.product, true) && compareDeep(quantity, o.quantity, true) && compareDeep(dosage, o.dosage, true)
-           && compareDeep(bodySite, o.bodySite, true) && compareDeep(specimenRequirement, o.specimenRequirement, true)
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(subtitle, o.subtitle, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(usage, o.usage, true)
+           && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
+           && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
+           && compareDeep(library, o.library, true) && compareDeep(kind, o.kind, true) && compareDeep(profile, o.profile, true)
+           && compareDeep(code, o.code, true) && compareDeep(intent, o.intent, true) && compareDeep(priority, o.priority, true)
+           && compareDeep(doNotPerform, o.doNotPerform, true) && compareDeep(timing, o.timing, true) && compareDeep(location, o.location, true)
+           && compareDeep(participant, o.participant, true) && compareDeep(product, o.product, true) && compareDeep(quantity, o.quantity, true)
+           && compareDeep(dosage, o.dosage, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(specimenRequirement, o.specimenRequirement, true)
            && compareDeep(observationRequirement, o.observationRequirement, true) && compareDeep(observationResultRequirement, o.observationResultRequirement, true)
            && compareDeep(transform, o.transform, true) && compareDeep(dynamicValue, o.dynamicValue, true)
           ;
@@ -4720,19 +4358,25 @@ public class ActivityDefinition extends CanonicalResource {
         if (!(other_ instanceof ActivityDefinition))
           return false;
         ActivityDefinition o = (ActivityDefinition) other_;
-        return compareValues(subtitle, o.subtitle, true) && compareValues(purpose, o.purpose, true) && compareValues(usage, o.usage, true)
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(subtitle, o.subtitle, true) && compareValues(status, o.status, true)
+           && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
+           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(usage, o.usage, true)
            && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(kind, o.kind, true) && compareValues(intent, o.intent, true)
-           && compareValues(priority, o.priority, true) && compareValues(doNotPerform, o.doNotPerform, true);
+           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(library, o.library, true)
+           && compareValues(kind, o.kind, true) && compareValues(profile, o.profile, true) && compareValues(intent, o.intent, true)
+           && compareValues(priority, o.priority, true) && compareValues(doNotPerform, o.doNotPerform, true) && compareValues(transform, o.transform, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, subtitle, subject
-          , purpose, usage, copyright, approvalDate, lastReviewDate, effectivePeriod, topic
-          , author, editor, reviewer, endorser, relatedArtifact, library, kind, profile
-          , code, intent, priority, doNotPerform, timing, location, participant, product
-          , quantity, dosage, bodySite, specimenRequirement, observationRequirement, observationResultRequirement
-          , transform, dynamicValue);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
+          , name, title, subtitle, status, experimental, subject, date, publisher, contact
+          , description, useContext, jurisdiction, purpose, usage, copyright, approvalDate
+          , lastReviewDate, effectivePeriod, topic, author, editor, reviewer, endorser, relatedArtifact
+          , library, kind, profile, code, intent, priority, doNotPerform, timing, location
+          , participant, product, quantity, dosage, bodySite, specimenRequirement, observationRequirement
+          , observationResultRequirement, transform, dynamicValue);
       }
 
   @Override
@@ -4741,77 +4385,77 @@ public class ActivityDefinition extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The activity definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ActivityDefinition.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="ActivityDefinition.date", description="The activity definition publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The activity definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ActivityDefinition.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier", description="External identifier for the activity definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>successor</b>
+   * Search parameter: <b>composed-of</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="ActivityDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_SUCCESSOR = "successor";
+  @SearchParamDefinition(name="composed-of", path="ActivityDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_COMPOSED_OF = "composed-of";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>successor</b>
+   * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUCCESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUCCESSOR);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSED_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSED_OF);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ActivityDefinition:successor</b>".
+   * the path value of "<b>ActivityDefinition:composed-of</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUCCESSOR = new ca.uhn.fhir.model.api.Include("ActivityDefinition:successor").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("ActivityDefinition:composed-of").toLocked();
+
+ /**
+   * Search parameter: <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the activity definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the activity definition", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the activity definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the activity definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ActivityDefinition.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="ActivityDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the activity definition", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the activity definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ActivityDefinition.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
 
  /**
    * Search parameter: <b>context-type-value</b>
    * <p>
    * Description: <b>A use context type and value assigned to the activity definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>ActivityDefinition.useContext</b><br>
    * </p>
    */
   @SearchParamDefinition(name="context-type-value", path="ActivityDefinition.useContext", description="A use context type and value assigned to the activity definition", type="composite", compositeOf={"context-type", "context"} )
@@ -4821,76 +4465,10 @@ public class ActivityDefinition extends CanonicalResource {
    * <p>
    * Description: <b>A use context type and value assigned to the activity definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>ActivityDefinition.useContext</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="ActivityDefinition.jurisdiction", description="Intended jurisdiction for the activity definition", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the activity definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ActivityDefinition.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="ActivityDefinition.description", description="The description of the activity definition", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the activity definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ActivityDefinition.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>derived-from</b>
-   * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="derived-from", path="ActivityDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_DERIVED_FROM = "derived-from";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
-   * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ActivityDefinition:derived-from</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("ActivityDefinition:derived-from").toLocked();
 
  /**
    * Search parameter: <b>context-type</b>
@@ -4913,136 +4491,116 @@ public class ActivityDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
-   * Search parameter: <b>predecessor</b>
+   * Search parameter: <b>context</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
+   * Description: <b>A use context assigned to the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="ActivityDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_PREDECESSOR = "predecessor";
+  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the activity definition", type="token" )
+  public static final String SP_CONTEXT = "context";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The activity definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ActivityDefinition.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="ActivityDefinition.date", description="The activity definition publication date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The activity definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ActivityDefinition.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>depends-on</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='depends-on').resource | ActivityDefinition.library</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+  @SearchParamDefinition(name="depends-on", path="ActivityDefinition.relatedArtifact.where(type='depends-on').resource | ActivityDefinition.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DEPENDS_ON = "depends-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='depends-on').resource | ActivityDefinition.library</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDS_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDS_ON);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ActivityDefinition:predecessor</b>".
+   * the path value of "<b>ActivityDefinition:depends-on</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("ActivityDefinition:predecessor").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDS_ON = new ca.uhn.fhir.model.api.Include("ActivityDefinition:depends-on").toLocked();
 
  /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the activity definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ActivityDefinition.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ActivityDefinition.title", description="The human-friendly name of the activity definition", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the activity definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ActivityDefinition.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>composed-of</b>
+   * Search parameter: <b>derived-from</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="ActivityDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_COMPOSED_OF = "composed-of";
+  @SearchParamDefinition(name="derived-from", path="ActivityDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DERIVED_FROM = "derived-from";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
+   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSED_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSED_OF);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ActivityDefinition:composed-of</b>".
+   * the path value of "<b>ActivityDefinition:derived-from</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("ActivityDefinition:composed-of").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("ActivityDefinition:derived-from").toLocked();
 
  /**
-   * Search parameter: <b>version</b>
+   * Search parameter: <b>description</b>
    * <p>
-   * Description: <b>The business version of the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.version</b><br>
+   * Description: <b>The description of the activity definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ActivityDefinition.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="ActivityDefinition.version", description="The business version of the activity definition", type="token" )
-  public static final String SP_VERSION = "version";
+  @SearchParamDefinition(name="description", path="ActivityDefinition.description", description="The description of the activity definition", type="string" )
+  public static final String SP_DESCRIPTION = "description";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
    * <p>
-   * Description: <b>The business version of the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.version</b><br>
+   * Description: <b>The description of the activity definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ActivityDefinition.description</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the activity definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ActivityDefinition.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="ActivityDefinition.url", description="The uri that identifies the activity definition", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the activity definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ActivityDefinition.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the activity definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ActivityDefinition.useContext.valueQuantity, ActivityDefinition.useContext.valueRange</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the activity definition", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the activity definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ActivityDefinition.useContext.valueQuantity, ActivityDefinition.useContext.valueRange</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
    * Search parameter: <b>effective</b>
@@ -5065,30 +4623,44 @@ public class ActivityDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
 
  /**
-   * Search parameter: <b>depends-on</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource, ActivityDefinition.library</b><br>
+   * Description: <b>External identifier for the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="ActivityDefinition.relatedArtifact.where(type='depends-on').resource | ActivityDefinition.library", description="What resource is being referenced", type="reference" )
-  public static final String SP_DEPENDS_ON = "depends-on";
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier", description="External identifier for the activity definition", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ActivityDefinition.relatedArtifact.resource, ActivityDefinition.library</b><br>
+   * Description: <b>External identifier for the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDS_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDS_ON);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ActivityDefinition:depends-on</b>".
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.jurisdiction</b><br>
+   * </p>
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDS_ON = new ca.uhn.fhir.model.api.Include("ActivityDefinition:depends-on").toLocked();
+  @SearchParamDefinition(name="jurisdiction", path="ActivityDefinition.jurisdiction", description="Intended jurisdiction for the activity definition", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
 
  /**
    * Search parameter: <b>name</b>
@@ -5111,24 +4683,30 @@ public class ActivityDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>predecessor</b>
    * <p>
-   * Description: <b>A use context assigned to the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.useContext.valueCodeableConcept</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the activity definition", type="token" )
-  public static final String SP_CONTEXT = "context";
+  @SearchParamDefinition(name="predecessor", path="ActivityDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PREDECESSOR = "predecessor";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
    * <p>
-   * Description: <b>A use context assigned to the activity definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.useContext.valueCodeableConcept</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ActivityDefinition:predecessor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("ActivityDefinition:predecessor").toLocked();
 
  /**
    * Search parameter: <b>publisher</b>
@@ -5151,6 +4729,72 @@ public class ActivityDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="ActivityDefinition.status", description="The current status of the activity definition", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the activity definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>successor</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='successor').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="successor", path="ActivityDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUCCESSOR = "successor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>successor</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ActivityDefinition.relatedArtifact.where(type='successor').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUCCESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUCCESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ActivityDefinition:successor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUCCESSOR = new ca.uhn.fhir.model.api.Include("ActivityDefinition:successor").toLocked();
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the activity definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ActivityDefinition.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ActivityDefinition.title", description="The human-friendly name of the activity definition", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the activity definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ActivityDefinition.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
    * Search parameter: <b>topic</b>
    * <p>
    * Description: <b>Topics associated with the module</b><br>
@@ -5171,44 +4815,44 @@ public class ActivityDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
+   * Search parameter: <b>url</b>
    * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the activity definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Description: <b>The uri that identifies the activity definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ActivityDefinition.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-type-quantity", path="ActivityDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the activity definition", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+  @SearchParamDefinition(name="url", path="ActivityDefinition.url", description="The uri that identifies the activity definition", type="uri" )
+  public static final String SP_URL = "url";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
    * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the activity definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Description: <b>The uri that identifies the activity definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ActivityDefinition.url</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
  /**
-   * Search parameter: <b>status</b>
+   * Search parameter: <b>version</b>
    * <p>
-   * Description: <b>The current status of the activity definition</b><br>
+   * Description: <b>The business version of the activity definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.status</b><br>
+   * Path: <b>ActivityDefinition.version</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="ActivityDefinition.status", description="The current status of the activity definition", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="version", path="ActivityDefinition.version", description="The business version of the activity definition", type="token" )
+  public static final String SP_VERSION = "version";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
    * <p>
-   * Description: <b>The current status of the activity definition</b><br>
+   * Description: <b>The business version of the activity definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.status</b><br>
+   * Path: <b>ActivityDefinition.version</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

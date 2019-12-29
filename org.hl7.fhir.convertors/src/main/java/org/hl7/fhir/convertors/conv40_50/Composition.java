@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -136,19 +136,19 @@ public class Composition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Composition.CompositionStatus convertCompositionStatus(org.hl7.fhir.r4.model.Composition.CompositionStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.CompositionStatus convertCompositionStatus(org.hl7.fhir.r4.model.Composition.CompositionStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PRELIMINARY: return org.hl7.fhir.r5.model.Composition.CompositionStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r5.model.Composition.CompositionStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r5.model.Composition.CompositionStatus.AMENDED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Composition.CompositionStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Composition.CompositionStatus.NULL;
+    case PRELIMINARY: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.PRELIMINARY;
+    case FINAL: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.FINAL;
+    case AMENDED: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.AMENDED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Composition.CompositionStatus convertCompositionStatus(org.hl7.fhir.r5.model.Composition.CompositionStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Composition.CompositionStatus convertCompositionStatus(org.hl7.fhir.r5.model.Enumerations.CompositionStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -160,21 +160,21 @@ public class Composition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.Composition.DocumentConfidentiality convertDocumentConfidentiality(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification convertDocumentConfidentiality(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case U: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.U;
-    case L: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.L;
-    case M: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.M;
-    case N: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.N;
-    case R: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.R;
-    case V: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.V;
-    default: return org.hl7.fhir.r5.model.Composition.DocumentConfidentiality.NULL;
+    case U: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.U;
+    case L: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.L;
+    case M: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.M;
+    case N: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.N;
+    case R: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.R;
+    case V: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.V;
+    default: return org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Composition.DocumentConfidentiality convertDocumentConfidentiality(org.hl7.fhir.r5.model.Composition.DocumentConfidentiality src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Composition.DocumentConfidentiality convertDocumentConfidentiality(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -264,19 +264,19 @@ public class Composition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Composition.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case REPLACES: return org.hl7.fhir.r5.model.Composition.DocumentRelationshipType.REPLACES;
-    case TRANSFORMS: return org.hl7.fhir.r5.model.Composition.DocumentRelationshipType.TRANSFORMS;
-    case SIGNS: return org.hl7.fhir.r5.model.Composition.DocumentRelationshipType.SIGNS;
-    case APPENDS: return org.hl7.fhir.r5.model.Composition.DocumentRelationshipType.APPENDS;
-    default: return org.hl7.fhir.r5.model.Composition.DocumentRelationshipType.NULL;
+    case REPLACES: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.REPLACES;
+    case TRANSFORMS: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.TRANSFORMS;
+    case SIGNS: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.SIGNS;
+    case APPENDS: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.APPENDS;
+    default: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Composition.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r5.model.Composition.DocumentRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Composition.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -372,18 +372,18 @@ public class Composition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Composition.SectionMode convertSectionMode(org.hl7.fhir.r4.model.Composition.SectionMode src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ListMode convertSectionMode(org.hl7.fhir.r4.model.Composition.SectionMode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case WORKING: return org.hl7.fhir.r5.model.Composition.SectionMode.WORKING;
-    case SNAPSHOT: return org.hl7.fhir.r5.model.Composition.SectionMode.SNAPSHOT;
-    case CHANGES: return org.hl7.fhir.r5.model.Composition.SectionMode.CHANGES;
-    default: return org.hl7.fhir.r5.model.Composition.SectionMode.NULL;
+    case WORKING: return org.hl7.fhir.r5.model.Enumerations.ListMode.WORKING;
+    case SNAPSHOT: return org.hl7.fhir.r5.model.Enumerations.ListMode.SNAPSHOT;
+    case CHANGES: return org.hl7.fhir.r5.model.Enumerations.ListMode.CHANGES;
+    default: return org.hl7.fhir.r5.model.Enumerations.ListMode.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Composition.SectionMode convertSectionMode(org.hl7.fhir.r5.model.Composition.SectionMode src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Composition.SectionMode convertSectionMode(org.hl7.fhir.r5.model.Enumerations.ListMode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

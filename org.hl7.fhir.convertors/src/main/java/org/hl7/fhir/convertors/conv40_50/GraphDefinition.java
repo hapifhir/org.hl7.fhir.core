@@ -22,7 +22,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -90,7 +92,7 @@ public class GraphDefinition extends VersionConvertor_40_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
     if (src.hasStart())
-      tgt.setStartElement(convertCode(src.getStartElement()));
+      tgt.setStartElement(convertResourceEnum(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfileElement(convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
@@ -128,7 +130,7 @@ public class GraphDefinition extends VersionConvertor_40_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
     if (src.hasStart())
-      tgt.setStartElement(convertCode(src.getStartElement()));
+      tgt.setStartElement(convertResourceEnum(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfileElement(convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
@@ -182,7 +184,7 @@ public class GraphDefinition extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
     copyElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
     if (src.hasParams())
       tgt.setParamsElement(convertString(src.getParamsElement()));
     if (src.hasProfile())
@@ -200,7 +202,7 @@ public class GraphDefinition extends VersionConvertor_40_50 {
     org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
     copyElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
     if (src.hasParams())
       tgt.setParamsElement(convertString(src.getParamsElement()));
     if (src.hasProfile())
@@ -268,20 +270,20 @@ public class GraphDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode convertCompartmentCode(org.hl7.fhir.r4.model.GraphDefinition.CompartmentCode src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.CompartmentType convertCompartmentCode(org.hl7.fhir.r4.model.GraphDefinition.CompartmentCode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PATIENT: return org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode.PATIENT;
-    case ENCOUNTER: return org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode.ENCOUNTER;
-    case RELATEDPERSON: return org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode.RELATEDPERSON;
-    case PRACTITIONER: return org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode.PRACTITIONER;
-    case DEVICE: return org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode.DEVICE;
-    default: return org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode.NULL;
+    case PATIENT: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT;
+    case ENCOUNTER: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER;
+    case RELATEDPERSON: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON;
+    case PRACTITIONER: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER;
+    case DEVICE: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE;
+    default: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.GraphDefinition.CompartmentCode convertCompartmentCode(org.hl7.fhir.r5.model.GraphDefinition.CompartmentCode src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.GraphDefinition.CompartmentCode convertCompartmentCode(org.hl7.fhir.r5.model.Enumerations.CompartmentType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

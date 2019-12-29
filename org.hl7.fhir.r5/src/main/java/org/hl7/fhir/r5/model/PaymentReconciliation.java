@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,135 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * This resource provides the details including amount of a payment and allocates the payment items being paid.
  */
 @ResourceDef(name="PaymentReconciliation", profile="http://hl7.org/fhir/StructureDefinition/PaymentReconciliation")
 public class PaymentReconciliation extends DomainResource {
-
-    public enum PaymentReconciliationStatus {
-        /**
-         * The instance is currently in-force.
-         */
-        ACTIVE, 
-        /**
-         * The instance is withdrawn, rescinded or reversed.
-         */
-        CANCELLED, 
-        /**
-         * A new instance the contents of which is not complete.
-         */
-        DRAFT, 
-        /**
-         * The instance was entered in error.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static PaymentReconciliationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case CANCELLED: return "cancelled";
-            case DRAFT: return "draft";
-            case ENTEREDINERROR: return "entered-in-error";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ACTIVE: return "http://hl7.org/fhir/fm-status";
-            case CANCELLED: return "http://hl7.org/fhir/fm-status";
-            case DRAFT: return "http://hl7.org/fhir/fm-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "The instance is currently in-force.";
-            case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
-            case DRAFT: return "A new instance the contents of which is not complete.";
-            case ENTEREDINERROR: return "The instance was entered in error.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case CANCELLED: return "Cancelled";
-            case DRAFT: return "Draft";
-            case ENTEREDINERROR: return "Entered in Error";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class PaymentReconciliationStatusEnumFactory implements EnumFactory<PaymentReconciliationStatus> {
-    public PaymentReconciliationStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return PaymentReconciliationStatus.ACTIVE;
-        if ("cancelled".equals(codeString))
-          return PaymentReconciliationStatus.CANCELLED;
-        if ("draft".equals(codeString))
-          return PaymentReconciliationStatus.DRAFT;
-        if ("entered-in-error".equals(codeString))
-          return PaymentReconciliationStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
-        }
-        public Enumeration<PaymentReconciliationStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<PaymentReconciliationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("active".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.ACTIVE);
-        if ("cancelled".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.CANCELLED);
-        if ("draft".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.DRAFT);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
-        }
-    public String toCode(PaymentReconciliationStatus code) {
-      if (code == PaymentReconciliationStatus.ACTIVE)
-        return "active";
-      if (code == PaymentReconciliationStatus.CANCELLED)
-        return "cancelled";
-      if (code == PaymentReconciliationStatus.DRAFT)
-        return "draft";
-      if (code == PaymentReconciliationStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      return "?";
-      }
-    public String toSystem(PaymentReconciliationStatus code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class DetailsComponent extends BackboneElement implements IBaseBackboneElement {
@@ -283,7 +160,7 @@ public class PaymentReconciliation extends DomainResource {
      */
       public DetailsComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -729,7 +606,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.response;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.date");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.detail.date");
         }
         else if (name.equals("responsible")) {
           this.responsible = new Reference();
@@ -1002,10 +879,10 @@ public class PaymentReconciliation extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.type");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.processNote.type");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.text");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.processNote.text");
         }
         else
           return super.addChild(name);
@@ -1067,7 +944,7 @@ public class PaymentReconciliation extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | cancelled | draft | entered-in-error", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fm-status")
-    protected Enumeration<PaymentReconciliationStatus> status;
+    protected Enumeration<FinancialResourceStatusCodes> status;
 
     /**
      * The period of time for which payments have been gathered into this bulk payment for settlement.
@@ -1110,7 +987,7 @@ public class PaymentReconciliation extends DomainResource {
     @Child(name = "outcome", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="queued | complete | error | partial", formalDefinition="The outcome of a request for a reconciliation." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/remittance-outcome")
-    protected Enumeration<RemittanceOutcome> outcome;
+    protected Enumeration<ClaimProcessingCodes> outcome;
 
     /**
      * A human readable description of the status of the request for the reconciliation.
@@ -1162,7 +1039,7 @@ public class PaymentReconciliation extends DomainResource {
     @Description(shortDefinition="Note concerning processing", formalDefinition="A note that describes or explains the processing in a human readable form." )
     protected List<NotesComponent> processNote;
 
-    private static final long serialVersionUID = -111567260L;
+    private static final long serialVersionUID = -1613598933L;
 
   /**
    * Constructor
@@ -1174,12 +1051,12 @@ public class PaymentReconciliation extends DomainResource {
   /**
    * Constructor
    */
-    public PaymentReconciliation(Enumeration<PaymentReconciliationStatus> status, DateTimeType created, DateType paymentDate, Money paymentAmount) {
+    public PaymentReconciliation(FinancialResourceStatusCodes status, Date created, Date paymentDate, Money paymentAmount) {
       super();
-      this.status = status;
-      this.created = created;
-      this.paymentDate = paymentDate;
-      this.paymentAmount = paymentAmount;
+      this.setStatus(status);
+      this.setCreated(created);
+      this.setPaymentDate(paymentDate);
+      this.setPaymentAmount(paymentAmount);
     }
 
     /**
@@ -1226,7 +1103,7 @@ public class PaymentReconciliation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1238,12 +1115,12 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<PaymentReconciliationStatus> getStatusElement() { 
+    public Enumeration<FinancialResourceStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<PaymentReconciliationStatus>(new PaymentReconciliationStatusEnumFactory()); // bb
+          this.status = new Enumeration<FinancialResourceStatusCodes>(new FinancialResourceStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -1258,7 +1135,7 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @param value {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public PaymentReconciliation setStatusElement(Enumeration<PaymentReconciliationStatus> value) { 
+    public PaymentReconciliation setStatusElement(Enumeration<FinancialResourceStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -1266,16 +1143,16 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The status of the resource instance.
      */
-    public PaymentReconciliationStatus getStatus() { 
+    public FinancialResourceStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the resource instance.
      */
-    public PaymentReconciliation setStatus(PaymentReconciliationStatus value) { 
+    public PaymentReconciliation setStatus(FinancialResourceStatusCodes value) { 
         if (this.status == null)
-          this.status = new Enumeration<PaymentReconciliationStatus>(new PaymentReconciliationStatusEnumFactory());
+          this.status = new Enumeration<FinancialResourceStatusCodes>(new FinancialResourceStatusCodesEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1424,12 +1301,12 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return {@link #outcome} (The outcome of a request for a reconciliation.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public Enumeration<RemittanceOutcome> getOutcomeElement() { 
+    public Enumeration<ClaimProcessingCodes> getOutcomeElement() { 
       if (this.outcome == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<RemittanceOutcome>(new RemittanceOutcomeEnumFactory()); // bb
+          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -1444,7 +1321,7 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @param value {@link #outcome} (The outcome of a request for a reconciliation.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public PaymentReconciliation setOutcomeElement(Enumeration<RemittanceOutcome> value) { 
+    public PaymentReconciliation setOutcomeElement(Enumeration<ClaimProcessingCodes> value) { 
       this.outcome = value;
       return this;
     }
@@ -1452,19 +1329,19 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The outcome of a request for a reconciliation.
      */
-    public RemittanceOutcome getOutcome() { 
+    public ClaimProcessingCodes getOutcome() { 
       return this.outcome == null ? null : this.outcome.getValue();
     }
 
     /**
      * @param value The outcome of a request for a reconciliation.
      */
-    public PaymentReconciliation setOutcome(RemittanceOutcome value) { 
+    public PaymentReconciliation setOutcome(ClaimProcessingCodes value) { 
       if (value == null)
         this.outcome = null;
       else {
         if (this.outcome == null)
-          this.outcome = new Enumeration<RemittanceOutcome>(new RemittanceOutcomeEnumFactory());
+          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory());
         this.outcome.setValue(value);
       }
       return this;
@@ -1656,7 +1533,7 @@ public class PaymentReconciliation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #detail}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #detail}, creating it if it does not already exist {3}
      */
     public DetailsComponent getDetailFirstRep() { 
       if (getDetail().isEmpty()) {
@@ -1733,7 +1610,7 @@ public class PaymentReconciliation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #processNote}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #processNote}, creating it if it does not already exist {3}
      */
     public NotesComponent getProcessNoteFirstRep() { 
       if (getProcessNote().isEmpty()) {
@@ -1788,13 +1665,13 @@ public class PaymentReconciliation extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PaymentReconciliationStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FinancialResourceStatusCodes>
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
         case 1144026207: /*paymentIssuer*/ return this.paymentIssuer == null ? new Base[0] : new Base[] {this.paymentIssuer}; // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
         case 693934258: /*requestor*/ return this.requestor == null ? new Base[0] : new Base[] {this.requestor}; // Reference
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<RemittanceOutcome>
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case -1540873516: /*paymentDate*/ return this.paymentDate == null ? new Base[0] : new Base[] {this.paymentDate}; // DateType
         case 909332990: /*paymentAmount*/ return this.paymentAmount == null ? new Base[0] : new Base[] {this.paymentAmount}; // Money
@@ -1814,8 +1691,8 @@ public class PaymentReconciliation extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new PaymentReconciliationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<PaymentReconciliationStatus>
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
           return value;
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
@@ -1833,8 +1710,8 @@ public class PaymentReconciliation extends DomainResource {
           this.requestor = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
+          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
           return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
@@ -1867,8 +1744,8 @@ public class PaymentReconciliation extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new PaymentReconciliationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<PaymentReconciliationStatus>
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("created")) {
@@ -1880,8 +1757,8 @@ public class PaymentReconciliation extends DomainResource {
         } else if (name.equals("requestor")) {
           this.requestor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new RemittanceOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<RemittanceOutcome>
+          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("paymentDate")) {
@@ -2090,50 +1967,24 @@ public class PaymentReconciliation extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>created</b>
    * <p>
-   * Description: <b>The business identifier of the ExplanationOfBenefit</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PaymentReconciliation.identifier</b><br>
+   * Description: <b>The creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PaymentReconciliation.created</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="PaymentReconciliation.identifier", description="The business identifier of the ExplanationOfBenefit", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="created", path="PaymentReconciliation.created", description="The creation date", type="date" )
+  public static final String SP_CREATED = "created";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>created</b>
    * <p>
-   * Description: <b>The business identifier of the ExplanationOfBenefit</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PaymentReconciliation.identifier</b><br>
+   * Description: <b>The creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PaymentReconciliation.created</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>request</b>
-   * <p>
-   * Description: <b>The reference to the claim</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PaymentReconciliation.request</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="request", path="PaymentReconciliation.request", description="The reference to the claim", type="reference", target={Task.class } )
-  public static final String SP_REQUEST = "request";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>request</b>
-   * <p>
-   * Description: <b>The reference to the claim</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PaymentReconciliation.request</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PaymentReconciliation:request</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("PaymentReconciliation:request").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
 
  /**
    * Search parameter: <b>disposition</b>
@@ -2156,24 +2007,44 @@ public class PaymentReconciliation extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DISPOSITION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DISPOSITION);
 
  /**
-   * Search parameter: <b>created</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>The creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>PaymentReconciliation.created</b><br>
+   * Description: <b>The business identifier of the ExplanationOfBenefit</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="created", path="PaymentReconciliation.created", description="The creation date", type="date" )
-  public static final String SP_CREATED = "created";
+  @SearchParamDefinition(name="identifier", path="PaymentReconciliation.identifier", description="The business identifier of the ExplanationOfBenefit", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>created</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>The creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>PaymentReconciliation.created</b><br>
+   * Description: <b>The business identifier of the ExplanationOfBenefit</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>outcome</b>
+   * <p>
+   * Description: <b>The processing outcome</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.outcome</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="outcome", path="PaymentReconciliation.outcome", description="The processing outcome", type="token" )
+  public static final String SP_OUTCOME = "outcome";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>outcome</b>
+   * <p>
+   * Description: <b>The processing outcome</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.outcome</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OUTCOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OUTCOME);
 
  /**
    * Search parameter: <b>payment-issuer</b>
@@ -2202,24 +2073,30 @@ public class PaymentReconciliation extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PAYMENT_ISSUER = new ca.uhn.fhir.model.api.Include("PaymentReconciliation:payment-issuer").toLocked();
 
  /**
-   * Search parameter: <b>outcome</b>
+   * Search parameter: <b>request</b>
    * <p>
-   * Description: <b>The processing outcome</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PaymentReconciliation.outcome</b><br>
+   * Description: <b>The reference to the claim</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.request</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="outcome", path="PaymentReconciliation.outcome", description="The processing outcome", type="token" )
-  public static final String SP_OUTCOME = "outcome";
+  @SearchParamDefinition(name="request", path="PaymentReconciliation.request", description="The reference to the claim", type="reference", target={Task.class } )
+  public static final String SP_REQUEST = "request";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>outcome</b>
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
    * <p>
-   * Description: <b>The processing outcome</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PaymentReconciliation.outcome</b><br>
+   * Description: <b>The reference to the claim</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.request</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OUTCOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OUTCOME);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PaymentReconciliation:request</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("PaymentReconciliation:request").toLocked();
 
  /**
    * Search parameter: <b>requestor</b>
@@ -2229,7 +2106,7 @@ public class PaymentReconciliation extends DomainResource {
    * Path: <b>PaymentReconciliation.requestor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="requestor", path="PaymentReconciliation.requestor", description="The reference to the provider who submitted the claim", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="requestor", path="PaymentReconciliation.requestor", description="The reference to the provider who submitted the claim", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_REQUESTOR = "requestor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>requestor</b>

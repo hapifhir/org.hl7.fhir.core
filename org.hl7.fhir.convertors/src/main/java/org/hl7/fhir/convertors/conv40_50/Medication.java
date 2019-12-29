@@ -108,18 +108,18 @@ public class Medication extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Medication.MedicationStatus convertMedicationStatus(org.hl7.fhir.r4.model.Medication.MedicationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Medication.MedicationStatusCodes convertMedicationStatus(org.hl7.fhir.r4.model.Medication.MedicationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Medication.MedicationStatus.ACTIVE;
-    case INACTIVE: return org.hl7.fhir.r5.model.Medication.MedicationStatus.INACTIVE;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Medication.MedicationStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Medication.MedicationStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.ACTIVE;
+    case INACTIVE: return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.INACTIVE;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Medication.MedicationStatus convertMedicationStatus(org.hl7.fhir.r5.model.Medication.MedicationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Medication.MedicationStatus convertMedicationStatus(org.hl7.fhir.r5.model.Medication.MedicationStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

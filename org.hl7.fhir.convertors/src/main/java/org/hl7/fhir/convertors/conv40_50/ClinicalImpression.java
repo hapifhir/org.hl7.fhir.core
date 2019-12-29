@@ -71,8 +71,8 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
       tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
     if (src.hasStatusReason())
       tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
+//    if (src.hasCode())
+//      tgt.setCode(convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
     if (src.hasSubject())
@@ -117,8 +117,8 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
       tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
     if (src.hasStatusReason())
       tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
+//    if (src.hasCode())
+//      tgt.setCode(convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
     if (src.hasSubject())
@@ -152,18 +152,18 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionStatus convertClinicalImpressionStatus(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.EventStatus convertClinicalImpressionStatus(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case INPROGRESS: return org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionStatus.INPROGRESS;
-    case COMPLETED: return org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionStatus.NULL;
+    case INPROGRESS: return org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus convertClinicalImpressionStatus(org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus convertClinicalImpressionStatus(org.hl7.fhir.r5.model.Enumerations.EventStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

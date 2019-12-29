@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A guidance response is the formal response to a guidance request, including any output parameters returned by the evaluation, as well as the description of any proposed actions to be taken.
  */
@@ -333,7 +335,7 @@ public class GuidanceResponse extends DomainResource {
     @Description(shortDefinition="Additional required data", formalDefinition="If the evaluation could not be completed due to lack of information, or additional information would potentially result in a more accurate response, this element will a description of the data required in order to proceed with the evaluation. A subsequent request to the service should include this data." )
     protected List<DataRequirement> dataRequirement;
 
-    private static final long serialVersionUID = -159555787L;
+    private static final long serialVersionUID = -1656211969L;
 
   /**
    * Constructor
@@ -345,10 +347,10 @@ public class GuidanceResponse extends DomainResource {
   /**
    * Constructor
    */
-    public GuidanceResponse(DataType module, Enumeration<GuidanceResponseStatus> status) {
+    public GuidanceResponse(DataType module, GuidanceResponseStatus status) {
       super();
-      this.module = module;
-      this.status = status;
+      this.setModule(module);
+      this.setStatus(status);
     }
 
     /**
@@ -419,7 +421,7 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -704,7 +706,7 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
@@ -757,7 +759,7 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
      */
     public Reference getReasonReferenceFirstRep() { 
       if (getReasonReference().isEmpty()) {
@@ -810,7 +812,7 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -863,7 +865,7 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #evaluationMessage}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #evaluationMessage}, creating it if it does not already exist {3}
      */
     public Reference getEvaluationMessageFirstRep() { 
       if (getEvaluationMessage().isEmpty()) {
@@ -964,7 +966,7 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #dataRequirement}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #dataRequirement}, creating it if it does not already exist {3}
      */
     public DataRequirement getDataRequirementFirstRep() { 
       if (getDataRequirement().isEmpty()) {
@@ -999,9 +1001,9 @@ public class GuidanceResponse extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Allows a service to provide  unique, business identifiers for the response.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1552083308: /*module[x]*/  return new Property("module[x]", "uri|canonical|CodeableConcept", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
         case -1068784020: /*module*/  return new Property("module[x]", "uri|canonical|CodeableConcept", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
-        case -1552089248: /*moduleUri*/  return new Property("module[x]", "uri|canonical|CodeableConcept", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
-        case -1153656856: /*moduleCanonical*/  return new Property("module[x]", "uri|canonical|CodeableConcept", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
-        case -1157899371: /*moduleCodeableConcept*/  return new Property("module[x]", "uri|canonical|CodeableConcept", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
+        case -1552089248: /*moduleUri*/  return new Property("module[x]", "uri", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
+        case -1153656856: /*moduleCanonical*/  return new Property("module[x]", "canonical", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
+        case -1157899371: /*moduleCodeableConcept*/  return new Property("module[x]", "CodeableConcept", "An identifier, CodeableConcept or canonical reference to the guidance that was requested.", 0, 1, module);
         case -892481550: /*status*/  return new Property("status", "code", "The status of the response. If the evaluation is completed successfully, the status will indicate success. However, in order to complete the evaluation, the engine may require more information. In this case, the status will be data-required, and the response will contain a description of the additional required information. If the evaluation completed successfully, but the engine determines that a potentially more accurate response could be provided if more data was available, the status will be data-requested, and the response will contain a description of the additional requested information.", 0, 1, status);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The patient for which the request was processed.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The encounter during which this response was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
@@ -1024,7 +1026,7 @@ public class GuidanceResponse extends DomainResource {
         switch (hash) {
         case -354233192: /*requestIdentifier*/ return this.requestIdentifier == null ? new Base[0] : new Base[] {this.requestIdentifier}; // Identifier
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -1068784020: /*module*/ return this.module == null ? new Base[0] : new Base[] {this.module}; // Type
+        case -1068784020: /*module*/ return this.module == null ? new Base[0] : new Base[] {this.module}; // DataType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<GuidanceResponseStatus>
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
@@ -1052,7 +1054,7 @@ public class GuidanceResponse extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -1068784020: // module
-          this.module = TypeConvertor.castToType(value); // Type
+          this.module = TypeConvertor.castToType(value); // DataType
           return value;
         case -892481550: // status
           value = new GuidanceResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -1103,7 +1105,7 @@ public class GuidanceResponse extends DomainResource {
         } else if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("module[x]")) {
-          this.module = TypeConvertor.castToType(value); // Type
+          this.module = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("status")) {
           value = new GuidanceResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<GuidanceResponseStatus>
@@ -1345,26 +1347,6 @@ public class GuidanceResponse extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>request</b>
-   * <p>
-   * Description: <b>The identifier of the request associated with the response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>GuidanceResponse.requestIdentifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="request", path="GuidanceResponse.requestIdentifier", description="The identifier of the request associated with the response", type="token" )
-  public static final String SP_REQUEST = "request";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>request</b>
-   * <p>
-   * Description: <b>The identifier of the request associated with the response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>GuidanceResponse.requestIdentifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam REQUEST = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REQUEST);
-
- /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>The identifier of the guidance response</b><br>
@@ -1389,7 +1371,7 @@ public class GuidanceResponse extends DomainResource {
    * <p>
    * Description: <b>The identity of a patient to search for guidance response results</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>GuidanceResponse.subject</b><br>
+   * Path: <b>GuidanceResponse.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="patient", path="GuidanceResponse.subject.where(resolve() is Patient)", description="The identity of a patient to search for guidance response results", type="reference", target={Patient.class } )
@@ -1399,7 +1381,7 @@ public class GuidanceResponse extends DomainResource {
    * <p>
    * Description: <b>The identity of a patient to search for guidance response results</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>GuidanceResponse.subject</b><br>
+   * Path: <b>GuidanceResponse.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -1409,6 +1391,26 @@ public class GuidanceResponse extends DomainResource {
    * the path value of "<b>GuidanceResponse:patient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("GuidanceResponse:patient").toLocked();
+
+ /**
+   * Search parameter: <b>request</b>
+   * <p>
+   * Description: <b>The identifier of the request associated with the response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.requestIdentifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="request", path="GuidanceResponse.requestIdentifier", description="The identifier of the request associated with the response", type="token" )
+  public static final String SP_REQUEST = "request";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
+   * <p>
+   * Description: <b>The identifier of the request associated with the response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.requestIdentifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam REQUEST = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REQUEST);
 
  /**
    * Search parameter: <b>subject</b>

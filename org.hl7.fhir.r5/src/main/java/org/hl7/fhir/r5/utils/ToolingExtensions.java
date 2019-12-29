@@ -133,6 +133,7 @@ public class ToolingExtensions {
   public static final String EXT_FMM_LEVEL = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm";
   public static final String EXT_SEC_CAT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-security-category";
   public static final String EXT_RESOURCE_CATEGORY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-category";
+  public static final String EXT_RESOURCE_INTERFACE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-interface";
   public static final String EXT_TABLE_NAME = "http://hl7.org/fhir/StructureDefinition/structuredefinition-table-name";
   public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";
   public static final String EXT_WORKGROUP = "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg";
@@ -487,7 +488,7 @@ public class ToolingExtensions {
     if (ext != null)
       ext.setValue(new StringType(value));
     else
-      resource.getExtension().add(new Extension(new UriType(uri)).setValue(new StringType(value)));
+      resource.getExtension().add(new Extension(uri).setValue(new StringType(value)));
   }
 
   public static void setStringExtension(Element resource, String uri, String value) {
@@ -497,7 +498,7 @@ public class ToolingExtensions {
     if (ext != null)
       ext.setValue(new StringType(value));
     else
-      resource.getExtension().add(new Extension(new UriType(uri)).setValue(new StringType(value)));
+      resource.getExtension().add(new Extension(uri).setValue(new StringType(value)));
   }
 
   public static void setCodeExtension(DomainResource resource, String uri, String value) {
@@ -508,7 +509,7 @@ public class ToolingExtensions {
     if (ext != null)
       ext.setValue(new CodeType(value));
     else
-      resource.getExtension().add(new Extension(new UriType(uri)).setValue(new CodeType(value)));
+      resource.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
   }
 
   public static void setCodeExtension(Element element, String uri, String value) {
@@ -519,7 +520,7 @@ public class ToolingExtensions {
     if (ext != null)
       ext.setValue(new CodeType(value));
     else
-      element.getExtension().add(new Extension(new UriType(uri)).setValue(new CodeType(value)));
+      element.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
   }
 
   public static void setIntegerExtension(DomainResource resource, String uri, int value) {
@@ -527,7 +528,7 @@ public class ToolingExtensions {
     if (ext != null)
       ext.setValue(new IntegerType(value));
     else
-      resource.getExtension().add(new Extension(new UriType(uri)).setValue(new IntegerType(value)));
+      resource.getExtension().add(new Extension(uri).setValue(new IntegerType(value)));
   }
 
 //  public static String getOID(CodeSystem define) {

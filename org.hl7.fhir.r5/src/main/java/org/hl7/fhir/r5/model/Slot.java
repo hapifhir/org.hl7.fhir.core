@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A slot of time on a schedule that may be available for booking appointments.
  */
@@ -305,12 +307,12 @@ public class Slot extends DomainResource {
   /**
    * Constructor
    */
-    public Slot(Reference schedule, Enumeration<SlotStatus> status, InstantType start, InstantType end) {
+    public Slot(Reference schedule, SlotStatus status, Date start, Date end) {
       super();
-      this.schedule = schedule;
-      this.status = status;
-      this.start = start;
-      this.end = end;
+      this.setSchedule(schedule);
+      this.setStatus(status);
+      this.setStart(start);
+      this.setEnd(end);
     }
 
     /**
@@ -357,7 +359,7 @@ public class Slot extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -410,7 +412,7 @@ public class Slot extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #serviceCategory}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #serviceCategory}, creating it if it does not already exist {3}
      */
     public CodeableConcept getServiceCategoryFirstRep() { 
       if (getServiceCategory().isEmpty()) {
@@ -463,7 +465,7 @@ public class Slot extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #serviceType}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #serviceType}, creating it if it does not already exist {3}
      */
     public CodeableConcept getServiceTypeFirstRep() { 
       if (getServiceType().isEmpty()) {
@@ -516,7 +518,7 @@ public class Slot extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSpecialtyFirstRep() { 
       if (getSpecialty().isEmpty()) {
@@ -1089,6 +1091,46 @@ public class Slot extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>appointment-type</b>
+   * <p>
+   * Description: <b>The style of appointment or patient that may be booked in the slot (not service type)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Slot.appointmentType</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="appointment-type", path="Slot.appointmentType", description="The style of appointment or patient that may be booked in the slot (not service type)", type="token" )
+  public static final String SP_APPOINTMENT_TYPE = "appointment-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>appointment-type</b>
+   * <p>
+   * Description: <b>The style of appointment or patient that may be booked in the slot (not service type)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Slot.appointmentType</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam APPOINTMENT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_APPOINTMENT_TYPE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>A Slot Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Slot.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Slot.identifier", description="A Slot Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>A Slot Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Slot.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
    * Search parameter: <b>schedule</b>
    * <p>
    * Description: <b>The Schedule Resource that we are seeking a slot within</b><br>
@@ -1115,46 +1157,6 @@ public class Slot extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SCHEDULE = new ca.uhn.fhir.model.api.Include("Slot:schedule").toLocked();
 
  /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>A Slot Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Slot.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Slot.identifier", description="A Slot Identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>A Slot Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Slot.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>specialty</b>
-   * <p>
-   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Slot.specialty</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="specialty", path="Slot.specialty", description="The specialty of a practitioner that would be required to perform the service requested in this appointment", type="token" )
-  public static final String SP_SPECIALTY = "specialty";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
-   * <p>
-   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Slot.specialty</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
-
- /**
    * Search parameter: <b>service-category</b>
    * <p>
    * Description: <b>A broad categorization of the service that is to be performed during this appointment</b><br>
@@ -1175,26 +1177,6 @@ public class Slot extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
 
  /**
-   * Search parameter: <b>appointment-type</b>
-   * <p>
-   * Description: <b>The style of appointment or patient that may be booked in the slot (not service type)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Slot.appointmentType</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="appointment-type", path="Slot.appointmentType", description="The style of appointment or patient that may be booked in the slot (not service type)", type="token" )
-  public static final String SP_APPOINTMENT_TYPE = "appointment-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>appointment-type</b>
-   * <p>
-   * Description: <b>The style of appointment or patient that may be booked in the slot (not service type)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Slot.appointmentType</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam APPOINTMENT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_APPOINTMENT_TYPE);
-
- /**
    * Search parameter: <b>service-type</b>
    * <p>
    * Description: <b>The type of appointments that can be booked into the slot</b><br>
@@ -1213,6 +1195,26 @@ public class Slot extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_TYPE);
+
+ /**
+   * Search parameter: <b>specialty</b>
+   * <p>
+   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Slot.specialty</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="specialty", path="Slot.specialty", description="The specialty of a practitioner that would be required to perform the service requested in this appointment", type="token" )
+  public static final String SP_SPECIALTY = "specialty";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
+   * <p>
+   * Description: <b>The specialty of a practitioner that would be required to perform the service requested in this appointment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Slot.specialty</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
 
  /**
    * Search parameter: <b>start</b>

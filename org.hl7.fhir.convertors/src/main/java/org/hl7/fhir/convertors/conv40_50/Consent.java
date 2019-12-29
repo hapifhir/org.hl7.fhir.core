@@ -137,9 +137,9 @@ public class Consent extends VersionConvertor_40_50 {
       return null;
     switch (src) {
     case DRAFT: return org.hl7.fhir.r5.model.Consent.ConsentState.DRAFT;
-    case PROPOSED: return org.hl7.fhir.r5.model.Consent.ConsentState.PROPOSED;
+    case PROPOSED: return org.hl7.fhir.r5.model.Consent.ConsentState.DRAFT;
     case ACTIVE: return org.hl7.fhir.r5.model.Consent.ConsentState.ACTIVE;
-    case REJECTED: return org.hl7.fhir.r5.model.Consent.ConsentState.REJECTED;
+    case REJECTED: return org.hl7.fhir.r5.model.Consent.ConsentState.INACTIVE;
     case INACTIVE: return org.hl7.fhir.r5.model.Consent.ConsentState.INACTIVE;
     case ENTEREDINERROR: return org.hl7.fhir.r5.model.Consent.ConsentState.ENTEREDINERROR;
     default: return org.hl7.fhir.r5.model.Consent.ConsentState.NULL;
@@ -151,9 +151,7 @@ public class Consent extends VersionConvertor_40_50 {
       return null;
     switch (src) {
     case DRAFT: return org.hl7.fhir.r4.model.Consent.ConsentState.DRAFT;
-    case PROPOSED: return org.hl7.fhir.r4.model.Consent.ConsentState.PROPOSED;
     case ACTIVE: return org.hl7.fhir.r4.model.Consent.ConsentState.ACTIVE;
-    case REJECTED: return org.hl7.fhir.r4.model.Consent.ConsentState.REJECTED;
     case INACTIVE: return org.hl7.fhir.r4.model.Consent.ConsentState.INACTIVE;
     case ENTEREDINERROR: return org.hl7.fhir.r4.model.Consent.ConsentState.ENTEREDINERROR;
     default: return org.hl7.fhir.r4.model.Consent.ConsentState.NULL;
@@ -194,7 +192,7 @@ public class Consent extends VersionConvertor_40_50 {
     if (src.hasVerifiedWith())
       tgt.setVerifiedWith(convertReference(src.getVerifiedWith()));
     if (src.hasVerificationDate())
-      tgt.setVerificationDateElement(convertDateTime(src.getVerificationDateElement()));
+      tgt.getVerificationDate().add(convertDateTime(src.getVerificationDateElement()));
     return tgt;
   }
 
@@ -208,14 +206,14 @@ public class Consent extends VersionConvertor_40_50 {
     if (src.hasVerifiedWith())
       tgt.setVerifiedWith(convertReference(src.getVerifiedWith()));
     if (src.hasVerificationDate())
-      tgt.setVerificationDateElement(convertDateTime(src.getVerificationDateElement()));
+      tgt.setVerificationDateElement(convertDateTime(src.getVerificationDate().get(0)));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Consent.provisionComponent convertprovisionComponent(org.hl7.fhir.r4.model.Consent.provisionComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Consent.ProvisionComponent convertprovisionComponent(org.hl7.fhir.r4.model.Consent.provisionComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Consent.provisionComponent tgt = new org.hl7.fhir.r5.model.Consent.provisionComponent();
+    org.hl7.fhir.r5.model.Consent.ProvisionComponent tgt = new org.hl7.fhir.r5.model.Consent.ProvisionComponent();
     copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(convertConsentProvisionType(src.getType()));
@@ -242,7 +240,7 @@ public class Consent extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.Consent.provisionComponent convertprovisionComponent(org.hl7.fhir.r5.model.Consent.provisionComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Consent.provisionComponent convertprovisionComponent(org.hl7.fhir.r5.model.Consent.ProvisionComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Consent.provisionComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionComponent();
@@ -251,7 +249,7 @@ public class Consent extends VersionConvertor_40_50 {
       tgt.setType(convertConsentProvisionType(src.getType()));
     if (src.hasPeriod())
       tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.Consent.provisionActorComponent t : src.getActor())
+    for (org.hl7.fhir.r5.model.Consent.ProvisionActorComponent t : src.getActor())
       tgt.addActor(convertprovisionActorComponent(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAction())
       tgt.addAction(convertCodeableConcept(t));
@@ -265,9 +263,9 @@ public class Consent extends VersionConvertor_40_50 {
       tgt.addCode(convertCodeableConcept(t));
     if (src.hasDataPeriod())
       tgt.setDataPeriod(convertPeriod(src.getDataPeriod()));
-    for (org.hl7.fhir.r5.model.Consent.provisionDataComponent t : src.getData())
+    for (org.hl7.fhir.r5.model.Consent.ProvisionDataComponent t : src.getData())
       tgt.addData(convertprovisionDataComponent(t));
-    for (org.hl7.fhir.r5.model.Consent.provisionComponent t : src.getProvision())
+    for (org.hl7.fhir.r5.model.Consent.ProvisionComponent t : src.getProvision())
       tgt.addProvision(convertprovisionComponent(t));
     return tgt;
   }
@@ -292,10 +290,10 @@ public class Consent extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.Consent.provisionActorComponent convertprovisionActorComponent(org.hl7.fhir.r4.model.Consent.provisionActorComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Consent.ProvisionActorComponent convertprovisionActorComponent(org.hl7.fhir.r4.model.Consent.provisionActorComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Consent.provisionActorComponent tgt = new org.hl7.fhir.r5.model.Consent.provisionActorComponent();
+    org.hl7.fhir.r5.model.Consent.ProvisionActorComponent tgt = new org.hl7.fhir.r5.model.Consent.ProvisionActorComponent();
     copyElement(src, tgt);
     if (src.hasRole())
       tgt.setRole(convertCodeableConcept(src.getRole()));
@@ -304,7 +302,7 @@ public class Consent extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.Consent.provisionActorComponent convertprovisionActorComponent(org.hl7.fhir.r5.model.Consent.provisionActorComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Consent.provisionActorComponent convertprovisionActorComponent(org.hl7.fhir.r5.model.Consent.ProvisionActorComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Consent.provisionActorComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionActorComponent();
@@ -316,10 +314,10 @@ public class Consent extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Consent.provisionDataComponent convertprovisionDataComponent(org.hl7.fhir.r4.model.Consent.provisionDataComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Consent.ProvisionDataComponent convertprovisionDataComponent(org.hl7.fhir.r4.model.Consent.provisionDataComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Consent.provisionDataComponent tgt = new org.hl7.fhir.r5.model.Consent.provisionDataComponent();
+    org.hl7.fhir.r5.model.Consent.ProvisionDataComponent tgt = new org.hl7.fhir.r5.model.Consent.ProvisionDataComponent();
     copyElement(src, tgt);
     if (src.hasMeaning())
       tgt.setMeaning(convertConsentDataMeaning(src.getMeaning()));
@@ -328,7 +326,7 @@ public class Consent extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.Consent.provisionDataComponent convertprovisionDataComponent(org.hl7.fhir.r5.model.Consent.provisionDataComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Consent.provisionDataComponent convertprovisionDataComponent(org.hl7.fhir.r5.model.Consent.ProvisionDataComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Consent.provisionDataComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionDataComponent();

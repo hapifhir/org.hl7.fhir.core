@@ -168,22 +168,22 @@ public class CarePlan extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.CarePlan.CarePlanStatus convertCarePlanStatus(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertCarePlanStatus(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case DRAFT: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.DRAFT;
-    case ACTIVE: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.ONHOLD;
-    case REVOKED: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.REVOKED;
-    case COMPLETED: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.CarePlan.CarePlanStatus.NULL;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+    case ONHOLD: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+    case REVOKED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.CarePlan.CarePlanStatus convertCarePlanStatus(org.hl7.fhir.r5.model.CarePlan.CarePlanStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.CarePlan.CarePlanStatus convertCarePlanStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

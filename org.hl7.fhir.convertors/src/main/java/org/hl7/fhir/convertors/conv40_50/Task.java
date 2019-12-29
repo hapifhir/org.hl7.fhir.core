@@ -274,19 +274,19 @@ public class Task extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.Task.TaskPriority convertTaskPriority(org.hl7.fhir.r4.model.Task.TaskPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertTaskPriority(org.hl7.fhir.r4.model.Task.TaskPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.Task.TaskPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.Task.TaskPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.Task.TaskPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.Task.TaskPriority.STAT;
-    default: return org.hl7.fhir.r5.model.Task.TaskPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Task.TaskPriority convertTaskPriority(org.hl7.fhir.r5.model.Task.TaskPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Task.TaskPriority convertTaskPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

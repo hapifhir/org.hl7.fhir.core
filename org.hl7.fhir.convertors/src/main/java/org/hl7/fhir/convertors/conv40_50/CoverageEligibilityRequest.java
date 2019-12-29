@@ -132,19 +132,19 @@ public class CoverageEligibilityRequest extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus convertEligibilityRequestStatus(org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertEligibilityRequestStatus(org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestStatus convertEligibilityRequestStatus(org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestStatus convertEligibilityRequestStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

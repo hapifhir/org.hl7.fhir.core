@@ -22,7 +22,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -82,7 +84,7 @@ public class Questionnaire extends VersionConvertor_40_50 {
     if (src.hasExperimental())
       tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getSubjectType())
-      tgt.getSubjectType().add(convertCode(t));
+      tgt.getSubjectType().add(convertResourceEnum(t));
     if (src.hasDate())
       tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -133,8 +135,8 @@ public class Questionnaire extends VersionConvertor_40_50 {
       tgt.setStatus(Enumerations.convertPublicationStatus(src.getStatus()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getSubjectType())
-      tgt.getSubjectType().add(convertCode(t));
+    for (CodeType t : src.getSubjectType())
+      tgt.getSubjectType().add(convertResourceEnum(t));
     if (src.hasDate())
       tgt.setDateElement(convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -250,7 +252,7 @@ public class Questionnaire extends VersionConvertor_40_50 {
     switch (src) {
     case GROUP: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.GROUP;
     case DISPLAY: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.DISPLAY;
-    case QUESTION: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.QUESTION;
+    case QUESTION: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.GROUP;
     case BOOLEAN: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.BOOLEAN;
     case DECIMAL: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.DECIMAL;
     case INTEGER: return org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.INTEGER;
@@ -275,7 +277,7 @@ public class Questionnaire extends VersionConvertor_40_50 {
     switch (src) {
     case GROUP: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP;
     case DISPLAY: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DISPLAY;
-    case QUESTION: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUESTION;
+//    case QUESTION: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUESTION;
     case BOOLEAN: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.BOOLEAN;
     case DECIMAL: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DECIMAL;
     case INTEGER: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.INTEGER;
