@@ -1,6 +1,8 @@
 package org.hl7.fhir.validation.tests;
 
 import com.google.common.base.Charsets;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
@@ -29,11 +31,14 @@ import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.r5.validation.InstanceValidator;
 import org.hl7.fhir.r5.validation.ValidationEngine;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,13 +58,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
-    JsonObject json =  (JsonObject) new com.google.gson.JsonParser().parse(contents);
-    json = json.getAsJsonObject("validator-tests");
-    for (Entry<String, JsonElement> e : json.getAsJsonObject("Json").entrySet()) {
-      examples.put("Json."+e.getKey(), e.getValue().getAsJsonObject());
-    }
-    for (Entry<String, JsonElement> e : json.getAsJsonObject("Xml").entrySet()) {
-      examples.put("Xml."+e.getKey(), e.getValue().getAsJsonObject());
+    manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
+    for (Entry<String, JsonElement> e : manifest.getAsJsonObject("test-cases").entrySet()) {
+      examples.put(e.getKey(), e.getValue().getAsJsonObject());
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -73,6 +74,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     return objects;
   }
 
+  private static JsonObject manifest;
+  
   private String name;
   private JsonObject content;
   
@@ -105,6 +108,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         ve.put(v, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, true));
       else if (v.startsWith("1.0"))
         ve.put(v, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, true));
+      else if (v.startsWith("1.4"))
+        ve.put(v, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, null, FhirPublication.DSTU2016May, true));
       else
         throw new Exception("unknown version "+v);
     }
@@ -114,7 +119,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    String testCaseContent = TestingUtilities.loadTestResource("validator", name.substring(name.indexOf(".")+1));
+    String testCaseContent = TestingUtilities.loadTestResource("validator", name);
 
     InstanceValidator val = vCurr.getValidator();
     val.setDebug(false);
@@ -150,7 +155,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
     }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-    if (name.startsWith("Json."))
+    if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
@@ -171,7 +176,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, contents, v, messages);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
-      if (name.startsWith("Json."))
+      if (name.endsWith(".json"))
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, sd);
       else
          val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, sd);
@@ -191,7 +196,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         }
       }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
-      Element le = val.validate(null, errorsLogical, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), (name.startsWith("Json.")) ? FhirFormat.JSON : FhirFormat.XML);
+      Element le = val.validate(null, errorsLogical, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), (name.endsWith(".json")) ? FhirFormat.JSON : FhirFormat.XML);
       if (logical.has("expressions")) {
         FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
         for (JsonElement e : logical.getAsJsonArray("expressions")) {
@@ -202,6 +207,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       checkOutcomes(errorsLogical, logical);
     }
   }
+
 
   public StructureDefinition loadProfile(String filename, String contents, String v, List<ValidationMessage> messages)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     StructureDefinition sd = (StructureDefinition) loadResource(filename, contents, v);
@@ -256,6 +262,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   }
 
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus) {
+    JsonObject java = focus.getAsJsonObject("java");
     int ec = 0;
     int wc = 0;
     int hc = 0;
@@ -270,17 +277,25 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) { 
         hc++;
-        if (focus.has("infoCount")) {
+        if (java.has("infoCount")) {
           System.out.println("hint: "+vm.getDisplay());          
         }
       }
     }
     if (TestingUtilities.context().isNoTerminologyServer() || !focus.has("tx-dependent")) {
-      Assert.assertEquals("Expected "+Integer.toString(focus.get("errorCount").getAsInt())+" errors, but found "+Integer.toString(ec)+".", focus.get("errorCount").getAsInt(), ec);
-      if (focus.has("warningCount"))
-        Assert.assertEquals("Expected "+Integer.toString(focus.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", focus.get("warningCount").getAsInt(), wc);
-      if (focus.has("infoCount"))
-        Assert.assertEquals("Expected "+Integer.toString(focus.get("infoCount").getAsInt())+" hints, but found "+Integer.toString(hc)+".", focus.get("infoCount").getAsInt(), hc);
+      Assert.assertEquals("Expected "+Integer.toString(java.get("errorCount").getAsInt())+" errors, but found "+Integer.toString(ec)+".", java.get("errorCount").getAsInt(), ec);
+      if (java.has("warningCount"))
+        Assert.assertEquals("Expected "+Integer.toString(java.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", java.get("warningCount").getAsInt(), wc);
+      if (java.has("infoCount"))
+        Assert.assertEquals("Expected "+Integer.toString(java.get("infoCount").getAsInt())+" hints, but found "+Integer.toString(hc)+".", java.get("infoCount").getAsInt(), hc);
+    }
+    if (focus.has("output")) {
+      focus.remove("output");
+    } 
+    JsonArray vr = new JsonArray();
+    java.add("output", vr);
+    for (ValidationMessage vm : errors) {
+      vr.add(vm.getDisplay());
     }
   }
 
@@ -373,4 +388,10 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     return vCurr.getContext().fetchResource(ValueSet.class, url);
   }
 
+  @AfterClass
+  public static void saveWhenDone() throws IOException {
+    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
+    TextFile.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+    
+  }
 }
