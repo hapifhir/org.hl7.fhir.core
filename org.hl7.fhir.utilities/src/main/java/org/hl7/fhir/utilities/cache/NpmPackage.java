@@ -415,6 +415,18 @@ public class NpmPackage {
   }
 
   /**
+   * use the name from listResources()
+   * 
+   * @param id
+   * @return
+   * @throws IOException
+   */
+  public InputStream loadResource(String file) throws IOException {
+    NpmPackageFolder folder = folders.get("package");
+    return new ByteArrayInputStream(folder.fetchFile(file));
+  }
+
+  /**
    * get a stream that contains the contents of one of the files in a folder
    * 
    * @param folder

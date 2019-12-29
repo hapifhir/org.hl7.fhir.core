@@ -1908,7 +1908,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("uri") || type.equals("oid") || type.equals("uuid")  || type.equals("url") || type.equals("canonical")) {
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !e.primitiveValue().startsWith("oid:"), "URI values cannot start with oid:");
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !e.primitiveValue().startsWith("uuid:"), "URI values cannot start with uuid:");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().equals(e.primitiveValue().trim().replace(" ", "")), "URI values cannot have whitespace");
+      rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().equals(e.primitiveValue().trim().replace(" ", ""))
+          // work around an old invalid example in a core package
+           && !"http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(e.primitiveValue()), "URI values cannot have whitespace('"+e.primitiveValue()+"')");
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength()==0 ||  e.primitiveValue().length() <= context.getMaxLength(), "value is longer than permitted maximum length of " + context.getMaxLength());
 
 
@@ -1932,7 +1934,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("id")) {
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), "id value '"+e.primitiveValue()+"' is not valid");
+      // work around an old issue with ElementDefinition.id
+      if (!context.getPath().equals("ElementDefinition.id") && !VersionUtilities.versionsCompatible("1.4", this.context.getVersion())) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), "id value '"+e.primitiveValue()+"' is not valid");
+      }
     }
     if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
       if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().length() > 0, "@value cannot be empty")) {
@@ -2193,6 +2198,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (Utilities.noString(reference.getIdentifier().getSystem()) && Utilities.noString(reference.getIdentifier().getValue())) {
         warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !Utilities.noString(element.getNamedChildValue("display")), "A Reference without an actual reference or identifier should have a display");
       }
+      return;
+    } else if (Utilities.existsInList(ref, "http://tools.ietf.org/html/bcp47")) {
+      // special known URLs that can't be validated but are known to be valid
       return;
     }
 
@@ -3596,7 +3604,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string", true);
             }
             break;
-          case QUESTION:
+//          case QUESTION:
           case NULL:
             // no validation
             break;
